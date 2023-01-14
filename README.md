@@ -1,27 +1,30 @@
 # ChainBrary
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.0.
+Welcome to Chainbrary, the open-source project dedicated to making blockchain technology more accessible for everyone. Our goal is to create a wide range of tools that will help users better understand and utilize the power of the blockchain.
 
-## Development server
+Chainbrary is designed to be safe, secure, and transparent. We take the security of our users' data very seriously and have implemented strict measures to ensure that all information is kept private and confidential.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Our project currently includes a variety of tools such as:
 
-## Code scaffolding
+ - Block explorer for easily tracking transactions on the blockchain
+ - Smart contract development framework
+ - SDK for integrating blockchain into your existing applications
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+We are continuously working to improve and add new features to Chainbrary. If you have any suggestions or ideas, please don't hesitate to reach out to us on our GitHub page or through our [Discord](https://discord.gg/Y3pTujEsMe).
 
-## Build
+Thank you for choosing Chainbrary, we hope you find it useful in your blockchain journey!
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### How to get started
+ - Clone the repository
+ - Install dependencies with `npm i`
+ - Run the Chainbrary app with `ng s`
+ - Go to `http://localhost:4200/` in your browser
 
-## Running unit tests
+### Contribution
+We welcome contributions from anyone interested in improving Chainbrary. If you have a bug fix or new feature that you would like to contribute, please submit a pull request.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Support
+Please open an issue if you need any help or have any questions. Our team will get back to you as soon as possible.
 
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### License
+Chainbrary is released under the MIT License.
