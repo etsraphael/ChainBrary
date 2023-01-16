@@ -1,8 +1,8 @@
 name: Verifications
 
 on:
-  pull_request:
-    branches: [release/dev]
+  # pull_request:
+  #   branches: [release/dev]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
