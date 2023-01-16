@@ -66,12 +66,12 @@ jobs:
           platforms: linux/amd64
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_CONTAINER_NAME }}
+          tags: etsraphael/chainbrary-dev:latest
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/${{ vars.DOCKERHUB_CONTAINER_NAME }}
+          image: etsraphael/chainbrary-dev:latest
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
