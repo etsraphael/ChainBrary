@@ -7,5 +7,5 @@ RUN npm run build --prod
 
 #stage 2
 FROM nginx:alpine
-COPY --from=node /app/dist/ChainBrary /usr/share/nginx/html
+COPY --from=node /app/dist/chain-brary /usr/share/nginx/html
 CMD ["nginx", "-g", "daemon off;"]
