@@ -2,10 +2,8 @@ name: Docker Deploy
 
 on:
   pull_request:
+    types: [closed]
     branches: [release/dev]
-  # pull_request:
-  #   types: [closed]
-  #   branches: [release/dev]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -39,7 +37,7 @@ jobs:
           npm run build --prod
   push_to_Docker_Hub:
     environment: dev
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
     # build docker image and push to docker hub
@@ -47,9 +45,6 @@ jobs:
     needs: [build_test]
 
     steps:
-
-      - run: echo "repository variable ${{ vars.DOCKERHUB_CONTAINER_NAME }}"
-      - run: echo 'Hi 2'
 
       - name: checkout repo
         uses: actions/checkout@v3
