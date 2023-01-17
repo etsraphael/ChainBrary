@@ -49,6 +49,10 @@ jobs:
     needs: [build_test]
 
     steps:
+
+      - run: echo 'Hi 1'
+      - run: echo 'Hi 2'
+
       - name: checkout repo
         uses: actions/checkout@v3
 
