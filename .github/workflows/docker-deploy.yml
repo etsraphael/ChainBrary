@@ -48,7 +48,7 @@ jobs:
 
     steps:
 
-      - run: echo "repository variable ${{ secrets.DOCKERHUB_CONTAINER_NAME }}"
+      - run: echo "repository variable ${{ vars.DOCKERHUB_CONTAINER_NAME }}"
       - run: echo 'Hi 2'
 
       - name: checkout repo
@@ -73,12 +73,12 @@ jobs:
           platforms: linux/amd64
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKERHUB_CONTAINER_NAME }}
+          tags: ${{ vars.DOCKERHUB_CONTAINER_NAME }}
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: ${{ secrets.DOCKERHUB_CONTAINER_NAME }}
+          image: ${{ vars.DOCKERHUB_CONTAINER_NAME }}
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
