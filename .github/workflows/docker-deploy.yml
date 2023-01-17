@@ -6,6 +6,9 @@ on:
   # pull_request:
   #   types: [closed]
   #   branches: [release/dev]
+env:
+  # Setting an environment variable with the value of a configuration variable
+  env_docker_name: ${{ vars.DOCKERHUB_CONTAINER_NAME }}
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -68,12 +71,12 @@ jobs:
           platforms: linux/amd64
           file: ./Dockerfile
           push: true
-          tags: ${{vars.DOCKERHUB_CONTAINER_NAME}}:latest
+          tags: $env_docker_name
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: ${{vars.DOCKERHUB_CONTAINER_NAME}}:latest
+          image: $env_docker_name
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
