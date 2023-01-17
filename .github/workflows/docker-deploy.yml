@@ -75,12 +75,12 @@ jobs:
           platforms: linux/amd64
           file: ./Dockerfile
           push: true
-          tags: $env_docker_name
+          tags: $env.env_docker_name
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3
         with:
-          image: $env_docker_name
+          image: $env.env_docker_name
           run: |
             echo "runing the docker image"
             echo "Testing the nodejs  app endpoints"
