@@ -1,4 +1,4 @@
-name: Docker Deploy
+name: Docker Deploy Prod
 
 on:
   pull_request:
@@ -45,7 +45,6 @@ jobs:
     needs: [build_test]
 
     steps:
-
       - name: checkout repo
         uses: actions/checkout@v3
 
