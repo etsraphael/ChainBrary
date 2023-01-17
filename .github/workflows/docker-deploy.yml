@@ -50,7 +50,7 @@ jobs:
 
     steps:
 
-      - run: echo 'Hi 1'
+      - run: echo "repository variable ${{ vars.DOCKERHUB_CONTAINER_NAME }}"
       - run: echo 'Hi 2'
 
       - name: checkout repo
