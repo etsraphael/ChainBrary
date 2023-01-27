@@ -1,4 +1,4 @@
-import { IAuth } from "src/app/shared/interfaces";
+import { IAuth } from 'src/app/shared/interfaces';
 
 export const AUTH_FEATURE_KEY = 'auth';
 

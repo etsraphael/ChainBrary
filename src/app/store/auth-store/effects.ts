@@ -1,6 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 
 @Injectable()
-export class AuthEffects implements AuthEffects {
-
-}
+export class AuthEffects implements AuthEffects {}
