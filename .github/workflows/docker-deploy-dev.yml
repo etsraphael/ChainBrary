@@ -71,7 +71,7 @@ jobs:
         with:
           context: ./
           platforms: linux/amd64
-          file: ./Dockerfile
+          file: ./UI/Dockerfile
           push: true
           tags: ${{ vars.DOCKERHUB_CONTAINER_NAME }}
 
