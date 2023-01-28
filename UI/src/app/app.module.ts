@@ -6,7 +6,6 @@ import { LayoutModule } from './page/layout/layout.module';
 import { RootStateModule } from './store';
 import { MaterialModule } from './material/material.module';
 
-
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule, AppRoutingModule, LayoutModule, MaterialModule, RootStateModule],
