@@ -8,6 +8,7 @@ UI/bazel-out
 UI/.angular
 
 # Node
+node_modules
 UI/node_modules
 Graph/node_modules
 npm-debug.log
