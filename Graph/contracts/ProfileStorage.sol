@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CertifiedProfiles is Ownable {
+    event ProfileAdded(address indexed userAddress, string username, string description, uint256 expirationDate);
+
     struct ProfileStruct {
         address userAddress;
         string username;
@@ -27,6 +29,7 @@ contract CertifiedProfiles is Ownable {
         require(profiles[_msgSender()].userAddress != _msgSender(), "Profile already exists");
         uint256 oneYearInSeconds = 365 days;
         uint256 expirationDate = block.timestamp + oneYearInSeconds;
+        emit ProfileAdded(_msgSender(), _username, _description, expirationDate);
         profiles[_msgSender()] = ProfileStruct(_msgSender(), _username, _description, expirationDate);
     }
 
