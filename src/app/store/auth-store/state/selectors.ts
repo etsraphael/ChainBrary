@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { IAuth, IUserAccount } from '../../shared/interfaces';
+import { IAuth, IUserAccount } from '../../../shared/interfaces';
 import { AUTH_FEATURE_KEY } from './interfaces';
 
 export const selectAuth = createFeatureSelector<IAuth>(AUTH_FEATURE_KEY);
