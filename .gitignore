@@ -9,6 +9,7 @@ UI/.angular
 
 # Node
 UI/node_modules
+Graph/node_modules
 npm-debug.log
 yarn-error.log
 
