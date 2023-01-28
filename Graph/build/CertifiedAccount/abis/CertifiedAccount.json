@@ -36,6 +36,12 @@
       {
         "indexed": false,
         "internalType": "string",
+        "name": "imgUrl",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
         "name": "description",
         "type": "string"
       },
@@ -54,6 +60,11 @@
       {
         "internalType": "string",
         "name": "_username",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_imgUrl",
         "type": "string"
       },
       {
@@ -155,6 +166,11 @@
         "internalType": "address",
         "name": "userAddress",
         "type": "address"
+      },
+      {
+        "internalType": "string",
+        "name": "imgUrl",
+        "type": "string"
       },
       {
         "internalType": "string",

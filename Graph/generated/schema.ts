@@ -141,6 +141,15 @@ export class ProfileAdded extends Entity {
     this.set("username", Value.fromString(value));
   }
 
+  get imgUrl(): string {
+    let value = this.get("imgUrl");
+    return value!.toString();
+  }
+
+  set imgUrl(value: string) {
+    this.set("imgUrl", Value.fromString(value));
+  }
+
   get description(): string {
     let value = this.get("description");
     return value!.toString();

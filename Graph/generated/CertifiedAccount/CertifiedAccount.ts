@@ -53,12 +53,16 @@ export class ProfileAdded__Params {
     return this._event.parameters[1].value.toString();
   }
 
-  get description(): string {
+  get imgUrl(): string {
     return this._event.parameters[2].value.toString();
   }
 
+  get description(): string {
+    return this._event.parameters[3].value.toString();
+  }
+
   get expirationDate(): BigInt {
-    return this._event.parameters[3].value.toBigInt();
+    return this._event.parameters[4].value.toBigInt();
   }
 }
 
@@ -105,13 +109,21 @@ export class CertifiedAccount__profilesResult {
   value0: Address;
   value1: string;
   value2: string;
-  value3: BigInt;
+  value3: string;
+  value4: BigInt;
 
-  constructor(value0: Address, value1: string, value2: string, value3: BigInt) {
+  constructor(
+    value0: Address,
+    value1: string,
+    value2: string,
+    value3: string,
+    value4: BigInt
+  ) {
     this.value0 = value0;
     this.value1 = value1;
     this.value2 = value2;
     this.value3 = value3;
+    this.value4 = value4;
   }
 
   toMap(): TypedMap<string, ethereum.Value> {
@@ -119,7 +131,8 @@ export class CertifiedAccount__profilesResult {
     map.set("value0", ethereum.Value.fromAddress(this.value0));
     map.set("value1", ethereum.Value.fromString(this.value1));
     map.set("value2", ethereum.Value.fromString(this.value2));
-    map.set("value3", ethereum.Value.fromUnsignedBigInt(this.value3));
+    map.set("value3", ethereum.Value.fromString(this.value3));
+    map.set("value4", ethereum.Value.fromUnsignedBigInt(this.value4));
     return map;
   }
 
@@ -127,16 +140,20 @@ export class CertifiedAccount__profilesResult {
     return this.value0;
   }
 
-  getUsername(): string {
+  getImgUrl(): string {
     return this.value1;
   }
 
-  getDescription(): string {
+  getUsername(): string {
     return this.value2;
   }
 
-  getExpirationDate(): BigInt {
+  getDescription(): string {
     return this.value3;
+  }
+
+  getExpirationDate(): BigInt {
+    return this.value4;
   }
 }
 
@@ -200,7 +217,7 @@ export class CertifiedAccount extends ethereum.SmartContract {
   profiles(param0: Address): CertifiedAccount__profilesResult {
     let result = super.call(
       "profiles",
-      "profiles(address):(address,string,string,uint256)",
+      "profiles(address):(address,string,string,string,uint256)",
       [ethereum.Value.fromAddress(param0)]
     );
 
@@ -208,7 +225,8 @@ export class CertifiedAccount extends ethereum.SmartContract {
       result[0].toAddress(),
       result[1].toString(),
       result[2].toString(),
-      result[3].toBigInt()
+      result[3].toString(),
+      result[4].toBigInt()
     );
   }
 
@@ -217,7 +235,7 @@ export class CertifiedAccount extends ethereum.SmartContract {
   ): ethereum.CallResult<CertifiedAccount__profilesResult> {
     let result = super.tryCall(
       "profiles",
-      "profiles(address):(address,string,string,uint256)",
+      "profiles(address):(address,string,string,string,uint256)",
       [ethereum.Value.fromAddress(param0)]
     );
     if (result.reverted) {
@@ -229,7 +247,8 @@ export class CertifiedAccount extends ethereum.SmartContract {
         value[0].toAddress(),
         value[1].toString(),
         value[2].toString(),
-        value[3].toBigInt()
+        value[3].toString(),
+        value[4].toBigInt()
       )
     );
   }
@@ -256,8 +275,12 @@ export class AddProfileCall__Inputs {
     return this._call.inputValues[0].value.toString();
   }
 
-  get _description(): string {
+  get _imgUrl(): string {
     return this._call.inputValues[1].value.toString();
+  }
+
+  get _description(): string {
+    return this._call.inputValues[2].value.toString();
   }
 }
 

@@ -21,6 +21,6 @@ dataSources:
       eventHandlers:
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-        - event: ProfileAdded(indexed address,string,string,uint256)
+        - event: ProfileAdded(indexed address,string,string,string,uint256)
           handler: handleProfileAdded
       file: ./src/certified-account.ts

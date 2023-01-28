@@ -11,6 +11,7 @@ type ProfileAdded @entity(immutable: true) {
   id: Bytes!
   userAddress: Bytes! # address
   username: String! # string
+  imgUrl: String! # string
   description: String! # string
   expirationDate: BigInt! # uint256
   blockNumber: BigInt!
