@@ -8,7 +8,8 @@
     "create-local": "graph create --node http://localhost:8020/ chainbrary",
     "remove-local": "graph remove --node http://localhost:8020/ chainbrary",
     "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 chainbrary",
-    "test": "graph test"
+    "test": "graph test",
+    "prettier": "prettier --write 'contracts/*.sol'"
   },
   "dependencies": {
     "@graphprotocol/graph-cli": "0.37.6",
@@ -16,6 +17,8 @@
     "@openzeppelin/contracts": "^4.8.1"
   },
   "devDependencies": {
-    "matchstick-as": "0.5.0"
+    "matchstick-as": "0.5.0",
+    "prettier": "^2.8.3",
+    "prettier-plugin-solidity": "^1.1.1"
   }
 }

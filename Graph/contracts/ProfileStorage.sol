@@ -4,7 +4,6 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract CertifiedProfiles is Ownable {
-
     struct ProfileStruct {
         address userAddress;
         string username;
@@ -42,8 +41,15 @@ contract CertifiedProfiles is Ownable {
         profiles[_msgSender()].description = _description;
     }
 
-    function getProfile(address _address) public view profileNotNull returns (address, string memory, string memory, uint256)  {
-        return (profiles[_address].userAddress, profiles[_address].username, profiles[_address].description, profiles[_address].expirationDate);
+    function getProfile(
+        address _address
+    ) public view profileNotNull returns (address, string memory, string memory, uint256) {
+        return (
+            profiles[_address].userAddress,
+            profiles[_address].username,
+            profiles[_address].description,
+            profiles[_address].expirationDate
+        );
     }
 
     function deleteProfileByAddress(address _address) public profileNotNull onlyOwner {
