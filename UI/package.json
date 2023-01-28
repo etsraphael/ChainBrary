@@ -7,7 +7,8 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "prettier": "prettier --write ."
   },
   "private": true,
   "dependencies": {
@@ -21,7 +22,9 @@
     "@angular/platform-browser": "^15.1.0",
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
-    "@openzeppelin/contracts": "^4.8.1",
+    "@ngrx/effects": "^15.2.1",
+    "@ngrx/store": "^15.2.1",
+    "@ngrx/store-devtools": "^15.2.1",
     "bootstrap": "^5.2.3",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
@@ -36,6 +39,7 @@
     "@angular-eslint/template-parser": "15.1.0",
     "@angular/cli": "~15.1.1",
     "@angular/compiler-cli": "^15.1.0",
+    "@ngrx/eslint-plugin": "^15.2.1",
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "5.44.0",
     "@typescript-eslint/parser": "5.44.0",
