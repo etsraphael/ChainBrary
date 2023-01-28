@@ -1,5 +1,5 @@
 import { Action, createReducer } from '@ngrx/store';
-import { IAuth } from 'src/app/shared/interfaces';
+import { IAuth } from '../../shared/interfaces';
 import { initialState } from './init';
 
 export const authReducer = createReducer(initialState);
