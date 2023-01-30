@@ -1,4 +1,5 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
+import { AuthStatusCode } from './../../../../app/shared/enum';
 import { IAuth, IUserAccount } from '../../../shared/interfaces';
 import { AUTH_FEATURE_KEY } from './interfaces';
 
@@ -22,7 +23,7 @@ export const selectIsConnected: MemoizedSelector<IAuth, boolean, (s1: IAuth) => 
   (s) => s.connectedUser
 );
 
-export const selectSideBarMode: MemoizedSelector<IAuth, 0 | 1 | 2, (s1: IAuth) => 0 | 1 | 2> = createSelector(
+export const selectSideBarMode: MemoizedSelector<IAuth, AuthStatusCode, (s1: IAuth) => AuthStatusCode> = createSelector(
   selectAuth,
   (s) => {
     const isVerified = s.verifiedAccount;
@@ -30,13 +31,13 @@ export const selectSideBarMode: MemoizedSelector<IAuth, 0 | 1 | 2, (s1: IAuth) =
 
     switch (isVerified && isAuth) {
       case !isVerified && !isAuth:
-        return 0;
+        return AuthStatusCode.NotConnected;
       case !isVerified && isAuth:
-        return 1;
+        return AuthStatusCode.NotVerifiedAndConnected;
       case isVerified && isAuth:
-        return 2;
+        return AuthStatusCode.VerifiedAndConnected;
       default:
-        return 0;
+        return AuthStatusCode.NotConnected;
     }
   }
 );
