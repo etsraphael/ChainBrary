@@ -1,5 +1,15 @@
 {
+  "name": "chainbrary-smart-contacts",
+  "license": "UNLICENSED",
+  "scripts": {
+    "prettier": "prettier --write 'contracts/*.sol'",
+    "compile": "npx hardhat compile",
+    "test": "npx hardhat test",
+    "deploy": "npx hardhat run scripts/deploy.ts" 
+  },
   "devDependencies": {
+    "prettier": "^2.8.3",
+    "prettier-plugin-solidity": "^1.1.1",
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
     "hardhat": "^2.12.6"
   },
