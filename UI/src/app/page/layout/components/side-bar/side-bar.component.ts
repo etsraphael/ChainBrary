@@ -1,6 +1,4 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { State } from './../../../../store/root-state';
 import { AuthStatusCode } from './../../../../shared/enum';
 @Component({
   selector: 'app-side-bar',
@@ -9,10 +7,4 @@ import { AuthStatusCode } from './../../../../shared/enum';
 })
 export class SideBarComponent {
   authStatusCode = AuthStatusCode;
-
-  constructor(private store: Store<State>) {}
-
-  ngOnInit() {
-    // get your selectors to know what to display
-  }
 }
