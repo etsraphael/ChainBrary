@@ -1,12 +1,13 @@
 {
   "name": "chainbrary-smart-contacts",
-  "license": "UNLICENSED",
+  "version": "0.0.0",
   "scripts": {
     "prettier": "prettier --write 'contracts/*.sol'",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.ts",
-    "abi": "npx hardhat abi-exporter"
+    "abi": "npx hardhat abi-exporter",
+    "graphgen": "npx hardhat run scripts/deploy-graph.ts"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^2.0.1",
@@ -16,6 +17,7 @@
     "prettier-plugin-solidity": "^1.1.1"
   },
   "dependencies": {
+    "@graphprotocol/graph-cli": "^0.37.7",
     "@openzeppelin/contracts": "^4.8.1"
   }
 }
