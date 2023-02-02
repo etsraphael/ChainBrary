@@ -6,7 +6,7 @@
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.ts",
-    "abi": "npx hardhat abi-exporter",
+    "abi": "npx hardhat export-abi",
     "graphgen": "npx hardhat run scripts/deploy-graph.ts"
   },
   "devDependencies": {
