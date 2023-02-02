@@ -169,12 +169,12 @@
       },
       {
         "internalType": "string",
-        "name": "imgUrl",
+        "name": "username",
         "type": "string"
       },
       {
         "internalType": "string",
-        "name": "username",
+        "name": "imgUrl",
         "type": "string"
       },
       {
