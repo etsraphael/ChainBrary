@@ -19,28 +19,35 @@ const contracts: IContract[] = [
   },
 ];
 
+// TODO
+// graph init \
+// --product subgraph-studio
+// --from-contract <CONTRACT_ADDRESS> \
+// [--network <ETHEREUM_NETWORK>] \
+// [--abi <FILE>] \
+// <SUBGRAPH_SLUG> [<DIRECTORY>]
+
 async function main(): Promise<void> {
-  // loops through the contracts and deploys them
-  for (let c of contracts) {
-    // TODO
-    // graph init \
-    // --product subgraph-studio
-    // --from-contract <CONTRACT_ADDRESS> \
-    // [--network <ETHEREUM_NETWORK>] \
-    // [--abi <FILE>] \
-    // <SUBGRAPH_SLUG> [<DIRECTORY>]
-    //   exec(`graph init --product subgraph-studio --from-contract ${c.address} --network ${c.network} --abi ${c.abi} ${c.subgrapSlug} ${c.directory}`, (error, stdout, stderr) => {
-    //     if (error) {
-    //       console.log(`error: ${error.message}`);
-    //       return;
-    //     }
-    //     if (stderr) {
-    //       console.log(`stderr: ${stderr}`);
-    //       return;
-    //     }
-    //     console.log(`stdout: ${stdout}`);
-    //   });
+  for (const contract of contracts) {
+    // const { address, abi, network, subgrapSlug, directory } = contract;
+    // const command = `graph init --product subgraph-studio --from-contract ${address} --network ${network} --abi ${abi} ${subgrapSlug} ${directory}`;
+    // console.log("command", command);
+    // exec(command, (error, stdout, stderr) => {
+    //   if (error) {
+    //     console.log(`error: ${error.message}`);
+    //     return;
+    //   }
+    //   if (stderr) {
+    //     console.log(`stderr: ${stderr}`);
+    //     return;
+    //   }
+    //   console.log(`stdout: ${stdout}`);
+    // });
+    // has to be fix
   }
+
+ 
+
 }
 
 // We recommend this pattern to be able to use async/await everywhere
