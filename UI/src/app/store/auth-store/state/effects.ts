@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { mergeMap, map, catchError, of } from 'rxjs';
-import { IAuth } from 'src/app/shared/interfaces';
-import { AccountService } from '../services/account/account.service';
-import { loadAuth, loadAuthSuccess } from './actions';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { catchError, map, mergeMap, of } from 'rxjs';
+import { AccountService } from '../services/account/account.service';
+import { IProfileAdded } from './../../../shared/interfaces';
+import * as AuthActions from './actions';
 
 @Injectable()
 export class AuthEffects {
@@ -12,11 +12,13 @@ export class AuthEffects {
 
   loadAuth$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(loadAuth),
+      ofType(AuthActions.loadAuth),
       mergeMap(() =>
         this.accountService.getAccountByPublicAddress('0xbA3Fc0648186a79baEF8DCeE9e055873F432a351').pipe(
-          map((response: ApolloQueryResult<IAuth>) => loadAuthSuccess({ auth: response.data })),
-          catchError(() => of({ type: '[Auth] Load Auth Failure' }))
+          map((response: ApolloQueryResult<{ profileAddeds: IProfileAdded[] }>) =>
+            AuthActions.loadAuthSuccess({ auth: response.data.profileAddeds[0] })
+          ),
+          catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
         )
       )
     );

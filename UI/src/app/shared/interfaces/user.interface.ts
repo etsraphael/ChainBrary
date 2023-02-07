@@ -11,3 +11,10 @@ export interface IUserAccount {
   imgUrl: string;
   expirationDate: Date;
 }
+
+export interface IProfileAdded {
+  id: string;
+  userAddress: string;
+  username: string;
+  imgUrl: string;
+}

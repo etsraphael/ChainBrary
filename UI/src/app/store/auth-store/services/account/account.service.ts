@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
+import { ApolloQueryResult } from '@apollo/client/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { IAuth } from './../../../../shared/interfaces';
-import { ApolloQueryResult } from '@apollo/client/core';
+import { IProfileAdded } from './../../../../shared/interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -10,11 +10,11 @@ import { ApolloQueryResult } from '@apollo/client/core';
 export class AccountService {
   constructor(private apollo: Apollo) {}
 
-  getAccountByPublicAddress(userAddress: string): Observable<ApolloQueryResult<IAuth>> {
+  getAccountByPublicAddress(userAddress: string): Observable<ApolloQueryResult<{ profileAddeds: IProfileAdded[] }>> {
     return this.apollo.query({
       query: gql`
-        query profileAddeds(userAddress: String!) {
-          users(where: { userAddress: $userAddress }) {
+        query ($userAddress: String!) {
+          profileAddeds(where: { userAddress: $userAddress }) {
             id
             userAddress
             username
