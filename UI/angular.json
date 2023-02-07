@@ -103,6 +103,42 @@
           }
         }
       }
+    },
+    "web3-login": {
+      "projectType": "library",
+      "root": "projects/web3-login",
+      "sourceRoot": "projects/web3-login/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/web3-login/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/web3-login/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/web3-login/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/web3-login/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/web3-login/**/*.ts", "projects/web3-login/**/*.html"]
+          }
+        }
+      }
     }
   },
   "cli": {
