@@ -9,5 +9,13 @@ export interface IUserAccount {
   username: string;
   description: string;
   imgUrl: string;
-  expirationDate: Date;
+  expirationDate: number;
+}
+
+export interface IProfileAdded {
+  id: string;
+  userAddress: string;
+  username: string;
+  imgUrl: string;
+  expirationDate: number;
 }
