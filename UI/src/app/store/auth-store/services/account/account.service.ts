@@ -19,6 +19,7 @@ export class AccountService {
             userAddress
             username
             imgUrl
+            expirationDate
           }
         }
       `,

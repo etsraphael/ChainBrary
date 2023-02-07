@@ -9,7 +9,7 @@ export interface IUserAccount {
   username: string;
   description: string;
   imgUrl: string;
-  expirationDate: Date;
+  expirationDate: number;
 }
 
 export interface IProfileAdded {
@@ -17,4 +17,5 @@ export interface IProfileAdded {
   userAddress: string;
   username: string;
   imgUrl: string;
+  expirationDate: number;
 }

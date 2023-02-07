@@ -1,7 +1,4 @@
 import { Component } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { Apollo } from 'apollo-angular';
-import { loadAuth } from './store/auth-store/state/actions';
 
 @Component({
   selector: 'app-root',
@@ -10,10 +7,4 @@ import { loadAuth } from './store/auth-store/state/actions';
 })
 export class AppComponent {
   title = 'ChainBrary';
-
-  constructor(private store: Store, private apollo: Apollo) {}
-
-  ngOnInit(): void {
-    this.store.dispatch(loadAuth());
-  }
 }
