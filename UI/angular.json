@@ -135,7 +135,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/web3-login/**/*.ts", "projects/web3-login/**/*.html"]
+            "lintFilePatterns": ["projects/web3-login/src/**/*.ts", "projects/web3-login/src/**/*.html"]
           }
         }
       }
