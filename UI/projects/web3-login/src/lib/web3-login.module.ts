@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Web3LoginComponent } from './web3-login.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { Web3LoginComponent } from './containers/web3-login/web3-login.component';
 
 @NgModule({
   declarations: [Web3LoginComponent],

@@ -3,5 +3,5 @@
  */
 
 export * from './lib/web3-login.service';
-export * from './lib/web3-login.component';
+export * from './lib/containers/web3-login/web3-login.component';
 export * from './lib/web3-login.module';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Web3LoginComponent } from './web3-login.component';
+import { Web3LoginComponent } from './containers/web3-login/web3-login.component';
 
 @Injectable({
   providedIn: 'root'
