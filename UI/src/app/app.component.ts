@@ -10,6 +10,6 @@ export class AppComponent {
   constructor(private web3LoginService: Web3LoginService) {}
 
   openDialog(): void {
-    this.web3LoginService.openDialog('500ms', '500ms');
+    this.web3LoginService.openLoginModal();
   }
 }
