@@ -12,7 +12,8 @@ export class Web3LoginService {
     this.dialog.open(Web3LoginComponent, {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
-      panelClass: ['col-12', 'col-sm-5', 'col-md-6', 'col-lg-5', 'col-xl-4', 'p-0']
+      panelClass: ['col-12', 'col-sm-5', 'col-md-6', 'col-lg-5', 'col-xl-4'],
+      position: { top: '5%' },
     });
   }
 }
