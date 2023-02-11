@@ -7,7 +7,9 @@ import { Web3LoginService } from 'web3-login';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  constructor(private web3LoginService: Web3LoginService) {}
+  constructor(private web3LoginService: Web3LoginService) {
+    this.openDialog()
+  }
 
   openDialog(): void {
     this.web3LoginService.openLoginModal();
