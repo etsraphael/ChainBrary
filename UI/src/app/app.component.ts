@@ -8,7 +8,7 @@ import { Web3LoginService } from 'web3-login';
 })
 export class AppComponent {
   constructor(private web3LoginService: Web3LoginService) {
-    this.openDialog()
+    this.openDialog();
   }
 
   openDialog(): void {

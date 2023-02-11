@@ -4,7 +4,8 @@
   "peerDependencies": {
     "@angular/common": "^15.1.0",
     "@angular/core": "^15.1.0",
-    "@angular/material": "^15.1.0"
+    "@angular/material": "^15.1.0",
+    "web3": "^1.8.2"
   },
   "dependencies": {
     "tslib": "^2.3.0"

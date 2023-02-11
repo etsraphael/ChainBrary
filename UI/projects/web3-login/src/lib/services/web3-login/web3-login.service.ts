@@ -13,7 +13,7 @@ export class Web3LoginService {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
       panelClass: ['col-12', 'col-sm-5', 'col-md-6', 'col-lg-5', 'col-xl-4'],
-      position: { top: '5%' },
+      position: { top: '5%' }
     });
   }
 }

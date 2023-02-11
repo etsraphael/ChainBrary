@@ -5,16 +5,25 @@
         <div class="border-title px-3">
           <p class="mb-0">Choose your current wallet</p>
         </div>
-        <div class="wallet-container my-3" *ngFor="let item of providers"
-          [ngStyle]="{background: getGradientStyle(item)}">
-          <div class="wallet-row row py-2 mx-0">
-            <div class="col-6 brand-image-container ps-3">
-              <img [src]="item.iconUrl" alt="icon" class="h-100 icon-content" />
-            </div>
-            <div class="col-6 text-end text-light pe-3 my-auto">
-              {{item.name}}
+        <div class="container" [ngClass]="{ hidden: isLoading }">
+          <div
+            class="wallet-container my-3"
+            *ngFor="let item of providers"
+            [ngStyle]="{ background: getGradientStyle(item) }"
+            (click)="openWalletProvider(item.key)"
+          >
+            <div class="wallet-row row py-2 mx-0">
+              <div class="col-6 brand-image-container ps-3">
+                <img [src]="item.iconUrl" alt="icon" class="h-100 icon-content" />
+              </div>
+              <div class="col-6 text-end text-light pe-3 my-auto">
+                {{ item.name }}
+              </div>
             </div>
           </div>
+        </div>
+        <div class="loading-container" *ngIf="isLoading">
+          <lib-loading></lib-loading>
         </div>
       </div>
     </div>
