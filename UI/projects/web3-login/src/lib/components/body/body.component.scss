@@ -19,3 +19,26 @@
 .brand-image-container {
   height: 1.8rem;
 }
+
+.wallet-container {
+  overflow: hidden;
+
+  .icon-content {
+    position: relative;
+    transform: translateX(-200%);
+    transition: transform 0.5s ease;
+  }
+
+}
+
+
+.wallet-container:hover {
+
+  .wallet-row {
+    background-color: #c1c1c142;
+  }
+
+  .icon-content {
+    transform: translateX(0px);
+  }
+}

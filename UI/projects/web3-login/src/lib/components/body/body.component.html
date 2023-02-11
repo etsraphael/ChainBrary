@@ -7,9 +7,9 @@
         </div>
         <div class="wallet-container my-3" *ngFor="let item of providers"
           [ngStyle]="{background: getGradientStyle(item)}">
-          <div class="row py-2 mx-0">
-            <div class="col-6 brand-image-container">
-              <img [src]="item.iconUrl" alt="icon" class="h-100" />
+          <div class="wallet-row row py-2 mx-0">
+            <div class="col-6 brand-image-container ps-3">
+              <img [src]="item.iconUrl" alt="icon" class="h-100 icon-content" />
             </div>
             <div class="col-6 text-end text-light pe-3 my-auto">
               {{item.name}}
