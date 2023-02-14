@@ -13,7 +13,7 @@ export class BodyComponent {
   @Output() closeDialogEvent = new EventEmitter();
 
   web3: Web3;
-
+  isLoading = false;
   providers: Web3Provider[] = [
     {
       key: 'metamask',
@@ -27,23 +27,8 @@ export class BodyComponent {
           end: [0, 1]
         }
       }
-    },
-    {
-      key: 'ledger',
-      name: 'Ledger',
-      iconUrl: './../assets/ledger.svg',
-      backgroundColorGradient: {
-        start: '#1B1713',
-        end: '#303030',
-        orientation: {
-          start: [0, 0],
-          end: [0, 1]
-        }
-      }
     }
   ];
-
-  isLoading = false;
 
   getGradientStyle(provider: Web3Provider): string {
     return `linear-gradient(${provider.backgroundColorGradient.orientation.start[0]}deg, ${provider.backgroundColorGradient.start}, ${provider.backgroundColorGradient.end})`;
