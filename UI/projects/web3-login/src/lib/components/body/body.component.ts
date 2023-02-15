@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import Web3 from 'web3';
+import { ModalState } from '../../interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -11,6 +12,7 @@ declare let window: any;
 })
 export class BodyComponent {
   @Output() closeDialogEvent = new EventEmitter();
+  @Output() stateEvent = new EventEmitter<ModalState>();
 
   web3: Web3;
   isLoading = false;
@@ -38,9 +40,6 @@ export class BodyComponent {
     switch (providerKey) {
       case 'metamask':
         return this.logInWithMetamask();
-      case 'ledger':
-      default:
-        break;
     }
   }
 
@@ -50,7 +49,7 @@ export class BodyComponent {
       this.web3 = new Web3(window.ethereum);
       window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
         this.isLoading = false;
-        this.closeDialogEvent.emit();
+        this.stateEvent.emit({ type: 'success' });
       });
     } else {
       console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');

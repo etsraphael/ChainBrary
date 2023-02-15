@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Web3LoginService } from 'web3-login';
+import { ModalState, Web3LoginService } from 'web3-login';
 
 @Component({
   selector: 'app-root',
@@ -12,6 +12,8 @@ export class AppComponent {
   }
 
   openDialog(): void {
-    this.web3LoginService.openLoginModal();
+    this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
+      console.log(state);
+    });
   }
 }

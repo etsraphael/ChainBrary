@@ -9,7 +9,7 @@
 
 <body class="py-3">
   <lib-header></lib-header>
-  <lib-body (closeDialogEvent)="dialogRef.close()"></lib-body>
+  <lib-body (closeDialogEvent)="dialogRef.close()" (stateEvent)="stateEvent.emit($event)"></lib-body>
 </body>
 
 <script
