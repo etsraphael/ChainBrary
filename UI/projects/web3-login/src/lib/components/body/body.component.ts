@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import Web3 from 'web3';
-import { ModalState } from '../../interfaces';
+import { ModalState, ModalStateType } from '../../interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -11,8 +12,11 @@ declare let window: any;
   styleUrls: ['./body.component.scss']
 })
 export class BodyComponent {
-  @Output() closeDialogEvent = new EventEmitter();
   @Output() stateEvent = new EventEmitter<ModalState>();
+
+  constructor(
+    private _snackBar: MatSnackBar
+  ) {}
 
   web3: Web3;
   isLoading = false;
@@ -48,12 +52,27 @@ export class BodyComponent {
     if (window.ethereum) {
       this.web3 = new Web3(window.ethereum);
       window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
+        this.stateEvent.emit({ type: ModalStateType.SUCCESS, data: { publicAddress: accounts[0] } });
+      }).catch((error: Error) => {
+        this._snackBar.open(
+          error.message,
+          'Close',
+          {
+            duration: 5000,
+          });
+        this.stateEvent.emit({ type: ModalStateType.ERROR, message: error.message });
+      }).finally(() => {
         this.isLoading = false;
-        this.stateEvent.emit({ type: 'success' });
       });
     } else {
-      console.log('Non-Ethereum browser detected. You should consider trying MetaMask!');
+      this._snackBar.open(
+        'Non-Ethereum browser detected. You should consider trying MetaMask!',
+        'Close',
+        {
+          duration: 5000,
+        });
       this.isLoading = false;
+      this.stateEvent.emit({ type: ModalStateType.ERROR, message: 'Non-Ethereum browser detected. You should consider trying MetaMask!' });
     }
   }
 }
