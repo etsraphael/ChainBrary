@@ -2,8 +2,8 @@ export interface ModalState {
   type: ModalStateType;
   message?: string;
   data?: {
-    publicAddress: string
-  }
+    publicAddress: string;
+  };
 }
 
 export enum ModalStateType {

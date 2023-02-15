@@ -14,10 +14,7 @@ export class Web3LoginComponent {
 
   eventHandler(state: ModalState): void {
     this.stateEvent.emit(state);
-    if (
-      state.type === ModalStateType.SUCCESS ||
-      state.type === ModalStateType.CANCEL
-    ) {
+    if (state.type === ModalStateType.SUCCESS || state.type === ModalStateType.CANCEL) {
       this.dialogRef.close();
     }
   }

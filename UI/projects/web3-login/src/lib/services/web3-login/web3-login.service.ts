@@ -17,6 +17,10 @@ export class Web3LoginService {
       position: { top: '5%' }
     });
 
-    return dialogRef.componentInstance.stateEvent
+    return dialogRef.componentInstance.stateEvent;
+  }
+
+  closeLoginModal(): void {
+    return this.dialog.closeAll();
   }
 }

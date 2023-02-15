@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { Web3LoginComponent } from './web3-login.component';
 
 describe('Web3LoginComponent', () => {
