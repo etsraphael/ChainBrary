@@ -1,25 +1,47 @@
-# Web3Login
+# @chainbrary/web3-login
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.0.
+The `@chainbrary/web3-login` package provides a simple way for users to connect to web3 providers and interact with decentralized applications.
 
-## Code scaffolding
+## Installation
 
-Run `ng generate component component-name --project web3-login` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project web3-login`.
+You can install the package using npm:
+```
+npm install @chainbrary/web3-login
+```
 
-> Note: Don't forget to add `--project web3-login` or else it will be added to the default project in your `angular.json` file.
+## Usage
+To use the @chainbrary/web3-login package, first add it to your Angular project:
 
-## Build
+```
+import Web3Login from '@chainbrary/web3-login';
 
-Run `ng build web3-login` to build the project. The build artifacts will be stored in the `dist/` directory.
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    ...
+    Web3LoginModule // <-- Add this line
+  ],
+```
 
-## Publishing
+You can then use the Web3Login class to connect to a web3 provider and retrieve the user's account:
 
-After building your library with `ng build web3-login`, go to the dist folder `cd dist/web3-login` and run `npm publish`.
+```
+import { Web3LoginService, ModalState } from '@chainbrary/web3-login';
 
-## Running unit tests
+constructor(private web3LoginService: Web3LoginService) { }
 
-Run `ng test web3-login` to execute the unit tests via [Karma](https://karma-runner.github.io).
+sampleFunctionToOpenTheModal(): void {
+  this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
+    console.log(state);
+  });
+}
 
-## Further help
+forceToQuitTheModal(): void {
+  this.web3LoginService.closeLoginModal();
+}
+```
+The connect method will prompt the user to connect to a web3 provider (such as MetaMask) and grant permission to access their account. The getAccount method will then retrieve the user's account from the web3 provider.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+
+## License
+The `@chainbrary/web3-login` package is released under the MIT License.
