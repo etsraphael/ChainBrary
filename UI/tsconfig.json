@@ -22,7 +22,7 @@
     "lib": ["ES2022", "dom", "esnext.asynciterable"],
     "allowSyntheticDefaultImports": true,
     "paths": {
-      "web3-login": ["dist/web3-login"]
+      "@chainbrary/web3-login": ["dist/web3-login"]
     }
   },
   "angularCompilerOptions": {

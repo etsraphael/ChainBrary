@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalState, Web3LoginService } from 'web3-login';
+import { Web3LoginService, ModalState } from '@chainbrary/web3-login';
 
 @Component({
   selector: 'app-root',
