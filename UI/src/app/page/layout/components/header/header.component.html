@@ -1,1 +1,37 @@
-<p>header works!</p>
+<div class="row nav-bar-container px-4 py-3 mx-0">
+  <div class="col-9 col-sm-5 col-md-6 col-lg-7 col-xl-9">
+    <div class="title-container d-flex">
+      <img src="./../../../../../assets/icons/cb-icon.png" alt="logo" class="me-3 my-auto" />
+      <h3 class="my-auto">ChainBrary</h3>
+    </div>
+  </div>
+  <div class="d-none d-sm-block col-sm-7 col-md-6 col-lg-5 col-xl-3">
+    <div class="row">
+      <div class="d-flex justify-content-center">
+        <div class="btn-container" *ngFor="let item of headerBtns">
+          <button (click)="item.action()" class="btn mx-2">{{ item.text }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-menu-icon col-3 d-block d-sm-none d-flex justify-content-end">
+    <button
+      class="border-0"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarToggleExternalContent"
+      aria-controls="navbarToggleExternalContent"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <i class="bi bi-list d-flex justify-content-end"></i>
+    </button>
+  </div>
+  <div class="d-block d-sm-none px-0">
+    <div class="collapse" id="navbarToggleExternalContent">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item" (click)="item.action()" *ngFor="let item of headerBtns">{{ item.text }}</li>
+      </ul>
+    </div>
+  </div>
+</div>

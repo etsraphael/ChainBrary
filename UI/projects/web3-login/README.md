@@ -5,11 +5,13 @@ The `@chainbrary/web3-login` package provides a simple way for users to connect 
 ## Installation
 
 You can install the package using npm:
+
 ```
 npm install @chainbrary/web3-login
 ```
 
 ## Usage
+
 To use the @chainbrary/web3-login package, first add it to your Angular project:
 
 ```
@@ -40,8 +42,9 @@ forceToQuitTheModal(): void {
   this.web3LoginService.closeLoginModal();
 }
 ```
+
 The connect method will prompt the user to connect to a web3 provider (such as MetaMask) and grant permission to access their account. The getAccount method will then retrieve the user's account from the web3 provider.
 
-
 ## License
+
 The `@chainbrary/web3-login` package is released under the MIT License.
