@@ -27,7 +27,7 @@ We welcome contributions from anyone interested in improving Chainbrary. If you 
 
 ### Support
 
-Please open an issue if you need any help or have any questions. Our team will get back to you as soon as possible.
+Please open an issue if you need any help or have any questions. Our team will get back to you as soon as possible. You can also reach out to us on our [Discord](https://discord.gg/Y3pTujEsMe).
 
 ### License
 
