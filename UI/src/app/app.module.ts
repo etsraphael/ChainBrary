@@ -8,6 +8,7 @@ import { GraphQLModule } from './graphql.module';
 import { MaterialModule } from './material/material.module';
 import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { LayoutModule } from './page/layout/layout.module';
+import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
 
 @NgModule({
@@ -21,7 +22,8 @@ import { RootStateModule } from './store';
     GraphQLModule,
     HttpClientModule,
     Web3LoginModule,
-    LandingPageModule
+    LandingPageModule,
+    SharedComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

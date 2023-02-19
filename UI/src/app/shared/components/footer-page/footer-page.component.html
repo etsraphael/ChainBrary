@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="py-4 py-sm-4 py-md-5"></div>
+  <div class="row text-center d-block d-sm-none">
+    <h2 class="text-primary">Know us better</h2>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-6 col-lg-4 d-flex align-items-center">
+      <div class="container">
+        <div class="row d-none d-sm-block">
+          <h2 class="text-primary">Know us better</h2>
+        </div>
+        <div class="row">
+          <p class="text-secondary">Got questions? Reach us our social media</p>
+        </div>
+      </div>
+    </div>
+    <div class="col-5 col-lg-4 offset-md-1 offset-lg-2">
+      <h3 class="ps-2 d-none d-sm-block">Social</h3>
+      <div *ngFor="let item of footerBtns">
+        <a [href]="item.url" target="_blank">
+          <button class="btn btn-block">
+            {{ item.text }}
+          </button>
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="py-4 py-sm-4 py-md-5"></div>
+</div>
