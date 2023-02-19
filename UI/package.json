@@ -29,6 +29,7 @@
     "@ngrx/store-devtools": "^15.2.1",
     "apollo-angular": "^4.2.0",
     "bootstrap": "^5.2.3",
+    "bootstrap-icons": "^1.10.3",
     "graphql": "^16.6.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",

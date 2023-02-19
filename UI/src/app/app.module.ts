@@ -2,11 +2,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { Web3LoginModule } from '@chainbrary/web3-login';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './module/app-routing.module';
 import { AppComponent } from './app.component';
-import { GraphQLModule } from './graphql.module';
-import { MaterialModule } from './material/material.module';
+import { GraphQLModule } from './module/graphql.module';
+import { MaterialModule } from './module/material.module';
+import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { LayoutModule } from './page/layout/layout.module';
+import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
 
 @NgModule({
@@ -19,7 +21,9 @@ import { RootStateModule } from './store';
     RootStateModule,
     GraphQLModule,
     HttpClientModule,
-    Web3LoginModule
+    Web3LoginModule,
+    LandingPageModule,
+    SharedComponentsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

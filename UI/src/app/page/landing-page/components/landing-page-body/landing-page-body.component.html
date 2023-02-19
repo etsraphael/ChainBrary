@@ -1,0 +1,25 @@
+<div class="container-page">
+  <div class="py-sm-4 py-md-5"></div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12 col-sm-8 col-lg-4 my-2 my-lg-0" *ngFor="let item of cards">
+        <div class="card shadow p-3 pl-4 h-100">
+          <div class="container container-icon-card">
+            <div class="row">
+              <div class="col">
+                <i class="bi" [ngClass]="item.icon"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-body">
+            <h3 class="mb-3">{{ item.title }}</h3>
+            <p>
+              {{ item.description }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="py-sm-5"></div>
+</div>
