@@ -1,4 +1,11 @@
+$primary: #7951f9;
+
+$light: #15202b;
+$dark: #f8f9fa;
+
 :root {
-  --color-primary: #fff;
-  --color-secondary: #000;
+  --color-primary: #{$primary};
+  --color-dark: #{$dark};
 }
+
+@import 'bootstrap';

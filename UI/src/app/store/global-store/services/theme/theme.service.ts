@@ -7,7 +7,7 @@ import { Inject, Injectable } from '@angular/core';
 export class ThemeService {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  loadTheme(themeName: string) {
+  loadTheme(themeName: 'light' | 'dark') {
     const head = this.document.getElementsByTagName('head')[0];
     const themeSrc = this.document.getElementById('client-theme') as HTMLLinkElement;
 
