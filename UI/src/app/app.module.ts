@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { GraphQLModule } from './graphql.module';
 import { MaterialModule } from './material/material.module';
+import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { LayoutModule } from './page/layout/layout.module';
 import { RootStateModule } from './store';
 
@@ -19,7 +20,8 @@ import { RootStateModule } from './store';
     RootStateModule,
     GraphQLModule,
     HttpClientModule,
-    Web3LoginModule
+    Web3LoginModule,
+    LandingPageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

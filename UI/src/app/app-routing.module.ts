@@ -3,12 +3,12 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'payment-request',
-    loadChildren: () => import('./page/payment-request/payment-request.module').then((m) => m.PaymentRequestModule)
+    path: '',
+    loadChildren: () => import('./page/landing-page/landing-page.module').then((m) => m.LandingPageModule)
   },
   {
-    path: 'certification',
-    loadChildren: () => import('./page/certification/certification.module').then((m) => m.CertificationModule)
+    path: '**',
+    redirectTo: ''
   }
 ];
 

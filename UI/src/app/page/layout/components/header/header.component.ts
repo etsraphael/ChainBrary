@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,19 +9,21 @@ import { Component, OnInit } from '@angular/core';
 export class HeaderComponent implements OnInit {
   headerBtns: IHeaderBtn[] = [];
 
+  constructor(private router: Router) {}
+
   ngOnInit(): void {
     this.headerBtns = [
       {
         text: 'Home',
-        action: () => {}
+        action: (): Promise<boolean> => this.router.navigate(['/'])
       },
       {
         text: 'Github',
-        action: () => this.goToLinkOutsideApp('https://github.com/etsraphael/ChainBrary')
+        action: (): Window | null => this.goToLinkOutsideApp('https://github.com/etsraphael/ChainBrary')
       },
       {
         text: 'Discord',
-        action: () => this.goToLinkOutsideApp('https://discord.gg/Y3pTujEsMe')
+        action: (): Window | null => this.goToLinkOutsideApp('https://discord.gg/Y3pTujEsMe')
       }
     ];
   }
@@ -32,5 +35,5 @@ export class HeaderComponent implements OnInit {
 
 interface IHeaderBtn {
   text: string;
-  action: () => void;
+  action: () => Promise<boolean> | Window | null;
 }
