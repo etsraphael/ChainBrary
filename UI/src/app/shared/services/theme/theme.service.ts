@@ -15,8 +15,7 @@ export class ThemeService {
   }
 
   get pathAssets(): string {
-    if (this.currentTheme === ThemeTypes.Light) return '/assets/icons/light/';
-    else return '/assets/icons/dark/';
+    return `/assets/icons/${this.currentTheme}/`;
   }
 
   initTheme(): void {
