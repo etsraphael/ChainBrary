@@ -11,10 +11,7 @@ import { ThemeService } from './../../../../shared/services/theme/theme.service'
 export class HeaderComponent implements OnInit {
   headerBtns: IHeaderBtn[] = [];
 
-  constructor(
-    private router: Router,
-    private themeService: ThemeService
-  ) {}
+  constructor(private router: Router, public themeService: ThemeService) {}
 
   get iconTheme(): string {
     return this.themeService.currentTheme === ThemeTypes.Light ? 'bi-moon-fill' : 'bi-brightness-high-fill';
