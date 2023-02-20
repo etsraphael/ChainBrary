@@ -14,8 +14,8 @@ export class ThemeService {
     else return ThemeTypes.Light;
   }
 
-  get pathAssets(): string {
-    return `/assets/icons/${this.currentTheme}/`;
+  get bgPath(): string {
+    return `/assets/bg/${this.currentTheme}/`;
   }
 
   initTheme(): void {
