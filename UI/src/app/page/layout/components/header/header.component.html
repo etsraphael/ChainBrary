@@ -30,10 +30,12 @@
       <i class="bi bi-list d-flex justify-content-end text-dark"></i>
     </button>
   </div>
-  <div class="d-block d-sm-none px-0">
+  <div class="d-block d-sm-none px-0 bg-light">
     <div class="collapse" id="navbarToggleExternalContent">
       <ul class="list-group list-group-flush">
-        <li class="list-group-item" (click)="item.action()" *ngFor="let item of headerBtns">{{ item.text }}</li>
+        <li class="list-group-item bg-light text-dark" (click)="item.action()" *ngFor="let item of headerBtns">
+          {{ item.text }}
+        </li>
       </ul>
     </div>
   </div>
