@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable } from '@angular/core';
+import { ThemeTypes } from '../../enum';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,19 @@ import { Inject, Injectable } from '@angular/core';
 export class ThemeService {
   constructor(@Inject(DOCUMENT) private document: Document) {}
 
-  loadTheme(themeName: 'light' | 'dark') {
+  get currentTheme(): ThemeTypes {
+    const theme: string | null = localStorage.getItem('theme');
+    if (theme) return theme as ThemeTypes;
+    else return ThemeTypes.Light;
+  }
+
+  initTheme(): void {
+    if (this.currentTheme) this.loadTheme(this.currentTheme as ThemeTypes);
+    else this.loadTheme(ThemeTypes.Light);
+  }
+
+  loadTheme(themeName: ThemeTypes): void {
+    localStorage.setItem('theme', themeName);
     const head = this.document.getElementsByTagName('head')[0];
     const themeSrc = this.document.getElementById('client-theme') as HTMLLinkElement;
 
@@ -21,5 +34,10 @@ export class ThemeService {
 
       head.appendChild(style);
     }
+  }
+
+  toggleTheme(): void {
+    if (this.currentTheme === ThemeTypes.Light) this.loadTheme(ThemeTypes.Dark);
+    else this.loadTheme(ThemeTypes.Light);
   }
 }

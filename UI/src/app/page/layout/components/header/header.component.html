@@ -11,6 +11,9 @@
         <div class="btn-container" *ngFor="let item of headerBtns">
           <button (click)="item.action()" class="btn mx-2 text-dark">{{ item.text }}</button>
         </div>
+        <button class="btn" (click)="toggleTheme()">
+          <i class="bi text-dark" [ngClass]="iconTheme"></i>
+        </button>
       </div>
     </div>
   </div>
