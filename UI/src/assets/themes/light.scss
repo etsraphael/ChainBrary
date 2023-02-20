@@ -4,8 +4,16 @@ $light: #f8f9fa;
 $dark: #212529;
 
 :root {
-  --color-primary: #{$primary};
-  --color-dark: #{$dark};
+  --color-primary: $primary;
+  --color-dark: $dark;
+
+  body {
+    background-color: $light;
+  }
+
+  .theme-assets-wrapper {
+    filter: none;
+  }
 }
 
 @import 'bootstrap';
