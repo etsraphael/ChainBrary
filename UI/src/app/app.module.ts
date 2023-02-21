@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { GraphQLModule } from './module/graphql.module';
 import { MaterialModule } from './module/material.module';
 import { LandingPageModule } from './page/landing-page/landing-page.module';
-import { LayoutModule } from './page/layout/layout.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
 
@@ -16,7 +15,6 @@ import { RootStateModule } from './store';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    LayoutModule,
     MaterialModule,
     RootStateModule,
     GraphQLModule,

@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ThemeTypes } from './../../../../shared/enum';
-import { ThemeService } from './../../../../shared/services/theme/theme.service';
+import { ThemeTypes } from '../../enum';
+import { ThemeService } from '../../services/theme/theme.service';
 
 @Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss']
+  selector: 'app-header-page',
+  templateUrl: './header-page.component.html',
+  styleUrls: ['./header-page.component.scss']
 })
-export class HeaderComponent implements OnInit {
+export class HeaderPageComponent implements OnInit {
   headerBtns: IHeaderBtn[] = [];
 
   constructor(private router: Router, private themeService: ThemeService) {}

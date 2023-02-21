@@ -1,17 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LandingPageHeaderComponent } from './landing-page-header.component';
+import { LandingPageHeaderPageComponent } from './landing-page-header.component';
 
-describe('LandingPageHeaderComponent', () => {
-  let component: LandingPageHeaderComponent;
-  let fixture: ComponentFixture<LandingPageHeaderComponent>;
+describe('LandingPageHeaderPageComponent', () => {
+  let component: LandingPageHeaderPageComponent;
+  let fixture: ComponentFixture<LandingPageHeaderPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LandingPageHeaderComponent]
+      declarations: [LandingPageHeaderPageComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(LandingPageHeaderComponent);
+    fixture = TestBed.createComponent(LandingPageHeaderPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
