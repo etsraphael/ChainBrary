@@ -1,7 +1,7 @@
 import { AuthState } from './auth-store/state/interfaces';
-import { GlobalState } from './global-store/state/interfaces';
+import { IGlobalState } from './global-store/state/interfaces';
 
-export interface State {
+export interface RootState {
   auth: AuthState;
-  global: GlobalState;
+  global: IGlobalState;
 }

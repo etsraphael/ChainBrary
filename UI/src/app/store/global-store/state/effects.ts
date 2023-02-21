@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
 import { tap } from 'rxjs';
-import { ThemeService } from '../services/theme/theme.service';
+import { ThemeService } from './../../../shared/services/theme/theme.service';
 import { initGlobalValues } from './actions';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class GlobalEffects implements OnInitEffects {
     () => {
       return this.actions$.pipe(
         ofType(initGlobalValues),
-        tap(() => this.themeService.loadTheme('light'))
+        tap(() => this.themeService.initTheme())
       );
     },
     { dispatch: false }
