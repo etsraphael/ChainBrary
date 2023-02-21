@@ -1,16 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PaymentRequestContainerComponent } from './payment-request/containers/payment-request-container/payment-request-container.component';
+import { UseCasesPageComponent } from './use-cases-page.component';
 
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () =>
-      import('./payment-request/payment-request-routing.module').then((m) => m.PaymentRequestRoutingModule)
-  },
-  {
-    path: '**',
-    redirectTo: '',
-    pathMatch: 'full'
+    component: UseCasesPageComponent,
+    children: [
+      {
+        path: 'payment-request',
+        component: PaymentRequestContainerComponent
+      },
+      {
+        path: '',
+        redirectTo: 'payment-request',
+        pathMatch: 'full'
+      }
+    ]
   }
 ];
 
