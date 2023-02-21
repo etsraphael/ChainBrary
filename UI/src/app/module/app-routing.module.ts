@@ -7,8 +7,13 @@ const routes: Routes = [
     loadChildren: () => import('../page/landing-page/landing-page.module').then((m) => m.LandingPageModule)
   },
   {
+    path: 'use-cases',
+    loadChildren: () => import('../page/use-cases-page/use-cases-page.module').then((m) => m.UseCasesPageModule)
+  },
+  {
     path: '**',
-    redirectTo: ''
+    redirectTo: '',
+    pathMatch: 'full'
   }
 ];
 
