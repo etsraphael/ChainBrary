@@ -13,23 +13,20 @@ export const selectVerifiedAccount: MemoizedSelector<IAuth, boolean, (s1: IAuth)
 export const selectAccount: MemoizedSelector<IAuth, IUserAccount | null, (s1: IAuth) => IUserAccount | null> =
   createSelector(selectAuth, (s) => s.userAccount);
 
-export const selectPublicAddress: MemoizedSelector<IAuth, string | null, (s1: IAuth) => string | null> = createSelector(
-  selectAuth,
-  (s) => s.publicAddress
-);
+export const selectPublicAddress: MemoizedSelector<object, string | null, (s1: IAuth) => string | null> =
+  createSelector(selectAuth, (s) => s.publicAddress);
 
 export const selectIsConnected: MemoizedSelector<IAuth, boolean, (s1: IAuth) => boolean> = createSelector(
   selectAuth,
   (s) => s.connectedUser
 );
 
-export const selectSideBarMode: MemoizedSelector<IAuth, AuthStatusCode, (s1: IAuth) => AuthStatusCode> = createSelector(
-  selectAuth,
-  (s) => {
+export const selectSideBarMode: MemoizedSelector<object, AuthStatusCode, (s1: IAuth) => AuthStatusCode> =
+  createSelector(selectAuth, (s) => {
     const isVerified = s.verifiedAccount;
     const isAuth = s.connectedUser;
 
-    switch (isVerified && isAuth) {
+    switch (true) {
       case !isVerified && !isAuth:
         return AuthStatusCode.NotConnected;
       case !isVerified && isAuth:
@@ -39,5 +36,4 @@ export const selectSideBarMode: MemoizedSelector<IAuth, AuthStatusCode, (s1: IAu
       default:
         return AuthStatusCode.NotConnected;
     }
-  }
-);
+  });

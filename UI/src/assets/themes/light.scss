@@ -14,6 +14,11 @@ $dark: #212529;
   .theme-assets-wrapper {
     filter: none;
   }
+
+  .btn-primary-gradient {
+    border-radius: 10px;
+    background: linear-gradient(90deg, #4776e6 0%, #8e54e9 100%);
+  }
 }
 
 @import 'bootstrap';
