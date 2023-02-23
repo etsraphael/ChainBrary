@@ -53,3 +53,23 @@ body {
   background-color: #e2e2e2 !important;
   border: 0;
 }
+
+.bi-envelope-fill {
+  background: linear-gradient(41.63deg, #f12711 24.71%, #f5af19 59.12%);
+  background: -webkit-linear-gradient(41.63deg, #f12711 24.71%, #f5af19 59.12%);
+  background: -moz-linear-gradient(41.63deg, #f12711 24.71%, #f5af19 59.12%);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.bi-patch-check-fill {
+  background: linear-gradient(41.63deg, #56ccf2 24.71%, #2f80ed 59.12%);
+  background: -webkit-linear-gradient(41.63deg, #56ccf2 24.71%, #2f80ed 59.12%);
+  background: -moz-linear-gradient(41.63deg, #56ccf2 24.71%, #2f80ed 59.12%);
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
