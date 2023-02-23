@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { FormatService } from './../../../../shared/services/format/format.service';
 import { AuthStatusCode } from './../../../../shared/enum';
 import { selectPublicAddress, selectSideBarMode } from './../../../../store/auth-store/state/selectors';
 @Component({
@@ -13,7 +14,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit {
   sidebarMode$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, public formatService: FormatService) {}
 
   ngOnInit(): void {
     this.sidebarMode$ = this.store.select(selectSideBarMode);

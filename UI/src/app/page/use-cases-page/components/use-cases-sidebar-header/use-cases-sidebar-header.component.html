@@ -10,10 +10,10 @@
         <div class="container">
           <div class="row">
             <div class="container-user-icon col-2 d-flex justify-content-center align-items-center">
-              <i class="bi bi-person-circle"></i>
+              <i class="bi bi-person-circle theme-assets-wrapper"></i>
             </div>
             <div class="col-10">
-              <h6 class="text-dark mb-0">{{ publicAddress$ | async }}</h6>
+              <h6 class="text-dark mb-0">{{ formatService.formatPublicAddress((publicAddress$ | async)!) }}</h6>
               <p class="text-muted mb-0">Be verified</p>
             </div>
           </div>
