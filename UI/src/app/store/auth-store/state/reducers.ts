@@ -47,6 +47,14 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
     })
   ),
   on(
+    AuthActions.setAuthPublicAddress,
+    (_, { publicAddress }): IAuthState => ({
+      ...initialState,
+      publicAddress: publicAddress,
+      connectedUser: true
+    })
+  ),
+  on(
     AuthActions.resetAuth,
     (): IAuthState => ({
       ...initialState

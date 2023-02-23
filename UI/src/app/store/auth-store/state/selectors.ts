@@ -10,7 +10,7 @@ export const selectVerifiedAccount: MemoizedSelector<object, boolean, (s1: IAuth
   (s) => s.verifiedAccount
 );
 
-export const selectAccount: MemoizedSelector<object, IProfileAdded | null, (s1: IAuthState) => IProfileAdded | null>  =
+export const selectAccount: MemoizedSelector<object, IProfileAdded | null, (s1: IAuthState) => IProfileAdded | null> =
   createSelector(selectAuth, (s) => s.userAccount.data);
 
 export const selectPublicAddress: MemoizedSelector<object, string | null, (s1: IAuthState) => string | null> =

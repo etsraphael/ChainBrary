@@ -2,7 +2,7 @@
   <div class="card-body">
     <ng-container [ngSwitch]="sidebarMode$ | async">
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotConnected">
-        <button class="btn btn-primary-gradient w-100 py-2">
+        <button class="btn btn-primary-gradient w-100 py-2" (click)="openLoginModal()">
           <h5 class="text-light mb-0">Login</h5>
         </button>
       </ng-container>
@@ -24,7 +24,7 @@
           <div class="row">
             <div class="container-user-icon col-2 d-flex justify-content-center align-items-center">
               <div class="avatar position-relative">
-                <img [src]="(verifiedAccount$|async)?.imgUrl" class="rounded-circle" alt="avatar">
+                <img [src]="(verifiedAccount$ | async)?.imgUrl" class="rounded-circle" alt="avatar" />
                 <div class="avatar-badge" data-toggle="tooltip" data-placement="top" title="Verified">
                   <i class="bi bi-patch-check-fill"></i>
                 </div>
