@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import useCaseRoutes from './../../../../shared/data/useCaseRoutes';
+import { SideBarRoute } from './../../../../shared/interfaces';
 
 @Component({
   selector: 'app-use-cases-sidebar',
@@ -6,22 +8,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./use-cases-sidebar.component.scss']
 })
 export class UseCasesSidebarComponent {
-  useCaseRoutes: UseCaseRoute[] = [
-    {
-      title: 'Payment Request',
-      path: '/payment-request',
-      icon: 'bi-envelope-fill'
-    },
-    {
-      title: 'Certification',
-      path: '/certification',
-      icon: 'bi-patch-check-fill'
-    }
-  ];
-}
-
-export interface UseCaseRoute {
-  title: string;
-  path: string;
-  icon: string;
+  useCaseRoutes: SideBarRoute[] = useCaseRoutes;
 }

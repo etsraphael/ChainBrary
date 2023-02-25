@@ -1,0 +1,18 @@
+<div class="nav-bar-movile-container py-2 border-top bg-light">
+  <div class="container-fluid">
+    <div class="row justify-content-center">
+      <button
+        *ngFor="let item of routes"
+        class="col-4 btn btn-light my-2 border-0"
+        routerLinkActive="active"
+        [routerLink]="'/use-cases' + item.path"
+      >
+        <div class="nav-bar-movile-item d-flex justify-content-center">
+          <div class="nav-bar-movile-item-icon">
+            <i class="bi" [ngClass]="item.icon"></i>
+          </div>
+        </div>
+      </button>
+    </div>
+  </div>
+</div>

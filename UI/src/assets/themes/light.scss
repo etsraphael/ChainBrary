@@ -1,5 +1,5 @@
 $primary: #7951f9;
-$tertiary: #00b09b;
+$tertiary: #9092942b;
 
 $white: #fff;
 $black: #000;
@@ -10,6 +10,7 @@ $dark: #212529;
 :root {
   --color-primary: $primary;
   --color-dark: $dark;
+  --bs-border-color: #{$tertiary} !important;
 
   .card {
     --bs-card-bg: #{$white};

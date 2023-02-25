@@ -11,6 +11,7 @@ $dark: #f8f9fa;
   --color-primary: $primary;
   --color-dark: $dark;
   --color-tertiary: $tertiary;
+  --bs-border-color: #{$tertiary} !important;
 
   .card {
     --bs-card-bg: #{$tertiary};
