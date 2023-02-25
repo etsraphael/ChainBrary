@@ -5,4 +5,10 @@ import { Component } from '@angular/core';
   templateUrl: './payment-request-container.component.html',
   styleUrls: ['./payment-request-container.component.scss']
 })
-export class PaymentRequestContainerComponent {}
+export class PaymentRequestContainerComponent {
+  certifficationCardVisible = true;
+
+  hideCertifficationCard(): void {
+    this.certifficationCardVisible = false;
+  }
+}
