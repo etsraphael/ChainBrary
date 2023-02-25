@@ -1,4 +1,8 @@
 $primary: #7951f9;
+$tertiary: #00b09b;
+
+$white: #fff;
+$black: #000;
 
 $light: #f8f9fa;
 $dark: #212529;
@@ -6,6 +10,22 @@ $dark: #212529;
 :root {
   --color-primary: $primary;
   --color-dark: $dark;
+
+  .card {
+    --bs-card-bg: #{$white};
+  }
+
+  .btn {
+    h5,
+    h6 {
+      color: $white;
+    }
+  }
+
+  .btn.active {
+    background-color: #e2e2e2 !important;
+    border: 0;
+  }
 
   body {
     background-color: $light;
