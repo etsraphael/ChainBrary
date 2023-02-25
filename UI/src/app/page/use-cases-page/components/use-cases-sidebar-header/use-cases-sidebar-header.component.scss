@@ -17,3 +17,11 @@
     font-size: 1.5rem;
   }
 }
+
+.btn-container p {
+  cursor: pointer;
+}
+
+.btn-container p:hover {
+  text-decoration: underline;
+}

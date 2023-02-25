@@ -1,11 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { setAuthPublicAddress } from 'src/app/store/auth-store/state/actions';
 import { AuthStatusCode } from './../../../../shared/enum';
 import { IProfileAdded } from './../../../../shared/interfaces';
 import { FormatService } from './../../../../shared/services/format/format.service';
+import { resetAuth, setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
 import { selectAccount, selectPublicAddress, selectSideBarMode } from './../../../../store/auth-store/state/selectors';
 @Component({
   selector: 'app-use-cases-sidebar-header',
@@ -19,7 +20,12 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   verifiedAccount$: Observable<IProfileAdded | null>;
   modalSub: Subscription;
 
-  constructor(private store: Store, public formatService: FormatService, private web3LoginService: Web3LoginService) {}
+  constructor(
+    private store: Store,
+    public formatService: FormatService,
+    private web3LoginService: Web3LoginService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.sidebarMode$ = this.store.select(selectSideBarMode);
@@ -42,5 +48,13 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  logOut(): void {
+    return this.store.dispatch(resetAuth());
+  }
+
+  goToCertification(): Promise<boolean> {
+    return this.router.navigate(['/use-cases/certification']);
   }
 }
