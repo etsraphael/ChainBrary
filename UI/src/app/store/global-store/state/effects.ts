@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType, OnInitEffects } from '@ngrx/effects';
-import { tap } from 'rxjs';
-import { ThemeService } from './../../../shared/services/theme/theme.service';
+import { mergeMap, tap } from 'rxjs';
+import { ThemeService } from 'src/app/shared/services/theme/theme.service';
+import { addressChecking } from '../../auth-store/state/actions';
 import { initGlobalValues } from './actions';
 
 @Injectable()
@@ -12,13 +13,13 @@ export class GlobalEffects implements OnInitEffects {
     return initGlobalValues();
   }
 
-  $initGlobalValues = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(initGlobalValues),
-        tap(() => this.themeService.initTheme())
-      );
-    },
-    { dispatch: false }
-  );
+  $initGlobalValues = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(initGlobalValues),
+      tap(() => {
+        this.themeService.initTheme();
+      }),
+      mergeMap(() => [addressChecking()])
+    );
+  });
 }

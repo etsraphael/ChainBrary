@@ -6,6 +6,6 @@ import { ThemeService } from './../../../../shared/services/theme/theme.service'
   templateUrl: './landing-page-header.component.html',
   styleUrls: ['./landing-page-header.component.scss']
 })
-export class LandingPageHeaderComponent {
+export class LandingPageHeaderPageComponent {
   constructor(public themeService: ThemeService) {}
 }

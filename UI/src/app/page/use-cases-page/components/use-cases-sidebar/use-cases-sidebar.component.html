@@ -1,0 +1,25 @@
+<!-- Header -->
+<div class="my-3">
+  <app-use-cases-sidebar-header></app-use-cases-sidebar-header>
+</div>
+
+<!-- Body -->
+<div class="d-none d-md-block my-3 card shadow-sm border-0 cb-card">
+  <div class="card-body">
+    <button
+      class="w-100 btn btn-light my-2 border-0"
+      *ngFor="let item of useCaseRoutes"
+      [routerLink]="'/use-cases' + item.path"
+      routerLinkActive="active"
+    >
+      <div class="row py-1 px-3">
+        <div class="col-3">
+          <i class="bi" [ngClass]="item.icon"></i>
+        </div>
+        <div class="col-9 d-flex justify-content-start align-items-center">
+          <span>{{ item.title }}</span>
+        </div>
+      </div>
+    </button>
+  </div>
+</div>

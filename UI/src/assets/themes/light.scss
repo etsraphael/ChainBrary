@@ -1,4 +1,8 @@
 $primary: #7951f9;
+$tertiary: #9092942b;
+
+$white: #fff;
+$black: #000;
 
 $light: #f8f9fa;
 $dark: #212529;
@@ -6,6 +10,23 @@ $dark: #212529;
 :root {
   --color-primary: $primary;
   --color-dark: $dark;
+  --bs-border-color: #{$tertiary} !important;
+
+  .card {
+    --bs-card-bg: #{$white};
+  }
+
+  .btn {
+    h5,
+    h6 {
+      color: $white;
+    }
+  }
+
+  .btn.active {
+    background-color: #e2e2e2 !important;
+    border: 0;
+  }
 
   body {
     background-color: $light;
@@ -13,6 +34,16 @@ $dark: #212529;
 
   .theme-assets-wrapper {
     filter: none;
+  }
+
+  .btn-primary-gradient {
+    border-radius: 10px;
+    background: linear-gradient(90deg, #4776e6 0%, #8e54e9 100%);
+  }
+
+  .btn-success-gradient {
+    border-radius: 10px;
+    background: linear-gradient(90deg, #00b09b 0%, #96c93d 100%);
   }
 }
 
