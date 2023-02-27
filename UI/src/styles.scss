@@ -68,3 +68,9 @@ body {
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+
+// Material
+
+::ng-deep .mdc-notched-outline__leading {
+  border-top-left-radius: 5rem !important;
+}
