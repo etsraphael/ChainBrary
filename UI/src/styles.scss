@@ -69,8 +69,11 @@ body {
   -webkit-text-fill-color: transparent;
 }
 
-// Material
+// Buttons
 
-::ng-deep .mdc-notched-outline__leading {
-  border-top-left-radius: 5rem !important;
+.btn-primary-gradient,
+.btn-success-gradient,
+.btn-info-gradient {
+  border-radius: 10px !important;
+  border: 0 !important;
 }
