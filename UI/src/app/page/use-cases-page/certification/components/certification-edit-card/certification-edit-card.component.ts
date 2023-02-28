@@ -5,4 +5,6 @@ import { Component } from '@angular/core';
   templateUrl: './certification-edit-card.component.html',
   styleUrls: ['./certification-edit-card.component.scss']
 })
-export class CertificationEditCardComponent {}
+export class CertificationEditCardComponent {
+  // input for authentication to do
+}
