@@ -1,7 +1,25 @@
-// i {
-//   font-size: 8.5vw;
-// }
+.bi-person-circle {
+  font-size: 500%;
+  border-radius: 50%;
+  padding: 0px 10px;
+  background: var(--bs-border-color);
+}
 
-div {
-  background-color: red;
+.container-edit-button {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  bottom: 8px;
+  right: 25%;
+  border-radius: 50%;
+}
+
+.bi-pencil-square {
+  position: relative;
+  bottom: -4px;
+  color: white;
+}
+
+.container-edit-button:hover {
+  cursor: pointer;
 }

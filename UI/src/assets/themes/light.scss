@@ -74,15 +74,18 @@ $dark: #212529;
     filter: none;
   }
 
-  .btn-primary-gradient {
+  .btn-primary-gradient,
+  .gradient-primary {
     background: linear-gradient(90deg, #4776e6 0%, #8e54e9 100%);
   }
 
-  .btn-success-gradient {
+  .btn-success-gradient,
+  .gradient-success {
     background: linear-gradient(90deg, #00b09b 0%, #96c93d 100%);
   }
 
-  .btn-info-gradient {
+  .btn-info-gradient,
+  .gradient-info {
     background: linear-gradient(90deg, #56ccf2 0%, #2f80ed 100%);
   }
 }
