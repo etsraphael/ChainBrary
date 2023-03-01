@@ -7,67 +7,75 @@
         <div class="card-header-custom position-absolute w-100">
           <div class="row justify-content-center">
             <div class="col-4 text-center">
-              <app-user-avatar (onEditClick)="enableAvatarEdit()"></app-user-avatar>
+              <app-user-avatar [editable]="avatarEditEnabled" (onEditClick)="enableAvatarEdit()"></app-user-avatar>
             </div>
           </div>
         </div>
       </div>
       <!-- Form -->
-      <div class="row justify-content-center" *ngIf="avatarEditEnabled">
-        <div class="col-7">
-          <mat-form-field class="w-100 example-full-width" appearance="outline">
-            <mat-label>Url</mat-label>
-            <input type="name" class="text-center" matInput placeholder="Url" />
-          </mat-form-field>
+      <form [formGroup]="mainForm">
+        <div class="row justify-content-center" *ngIf="!avatarInputVisible">
+          <div class="col-7">
+            <mat-form-field class="w-100 example-full-width" appearance="outline">
+              <mat-label>Url</mat-label>
+              <input
+                formControlName="avatarUrl"
+                type="link"
+                class="text-center"
+                matInput
+                placeholder="https://my-url"
+              />
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-7">
-          <mat-form-field class="w-100 example-full-width" appearance="outline">
-            <mat-label>Name</mat-label>
-            <input type="name" class="text-center" matInput placeholder="Name" />
-          </mat-form-field>
+        <div class="row justify-content-center">
+          <div class="col-7">
+            <mat-form-field class="w-100 example-full-width" appearance="outline">
+              <mat-label>Name</mat-label>
+              <input type="name" class="text-center" matInput placeholder="Name" />
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-7">
-          <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-            <mat-label>Subtitle</mat-label>
-            <input type="name" class="text-center" matInput placeholder="Subtitle" />
-          </mat-form-field>
+        <div class="row justify-content-center">
+          <div class="col-7">
+            <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+              <mat-label>Subtitle</mat-label>
+              <input type="name" class="text-center" matInput placeholder="Subtitle" />
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-8 row mytest">
-          <p class="text-muted text-center">Certified from now - 1 successful transaction</p>
+        <div class="row justify-content-center">
+          <div class="col-8 row mytest">
+            <p class="text-muted text-center">Certified from now - 1 successful transaction</p>
+          </div>
         </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-8 row justify-content-center">
-          <hr class="col-4" />
-          <div class="col-2"></div>
-          <hr class="col-4" />
+        <div class="row justify-content-center">
+          <div class="col-8 row justify-content-center">
+            <hr class="col-4" />
+            <div class="col-2"></div>
+            <hr class="col-4" />
+          </div>
         </div>
-      </div>
-      <div class="row justify-content-center">
-        <div class="col-10 body-sample-container text-center py-4">
-          <h1 class="text-muted">Request body</h1>
+        <div class="row justify-content-center">
+          <div class="col-10 body-sample-container text-center py-4">
+            <h1 class="text-muted">Request body</h1>
+          </div>
         </div>
-      </div>
-      <div class="row justify-content-center my-4">
-        <div class="col-8">
-          <div class="row">
-            <div class="col-6">
-              <button class="btn btn-info-gradient w-100 py-2">Web3 login</button>
-            </div>
-            <div class="col-6">
-              <button class="btn btn-success-gradient w-100 py-2">
-                <span>Confirm</span>
-              </button>
+        <div class="row justify-content-center my-4">
+          <div class="col-8">
+            <div class="row">
+              <div class="col-6">
+                <button class="btn btn-info-gradient w-100 py-2">Web3 login</button>
+              </div>
+              <div class="col-6" (click)="submitForm()">
+                <button class="btn btn-success-gradient w-100 py-2">
+                  <span>Confirm</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </form>
     </div>
   </div>
 </div>

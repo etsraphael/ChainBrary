@@ -23,3 +23,11 @@
 .container-edit-button:hover {
   cursor: pointer;
 }
+
+.avatar-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  padding: 7px;
+  background: var(--bs-border-color);
+}
