@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   selector: 'app-user-avatar',
@@ -6,5 +6,6 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./user-avatar.component.scss']
 })
 export class UserAvatarComponent {
-  @Input() editable = false;
+  @Output() onEditClick = new EventEmitter<void>();
+  // avatar editable to do here
 }

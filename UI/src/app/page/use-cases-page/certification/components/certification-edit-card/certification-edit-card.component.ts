@@ -6,5 +6,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./certification-edit-card.component.scss']
 })
 export class CertificationEditCardComponent {
-  // input for authentication to do
+  avatarEditEnabled = false;
+
+  enableAvatarEdit(): void {
+    this.avatarEditEnabled = true;
+  }
+
 }

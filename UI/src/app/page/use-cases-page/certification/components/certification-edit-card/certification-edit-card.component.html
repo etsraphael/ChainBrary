@@ -7,12 +7,20 @@
         <div class="card-header-custom position-absolute w-100">
           <div class="row justify-content-center">
             <div class="col-4 text-center">
-              <app-user-avatar></app-user-avatar>
+              <app-user-avatar (onEditClick)="enableAvatarEdit()"></app-user-avatar>
             </div>
           </div>
         </div>
       </div>
       <!-- Form -->
+      <div class="row justify-content-center" *ngIf="avatarEditEnabled">
+        <div class="col-7">
+          <mat-form-field class="w-100 example-full-width" appearance="outline">
+            <mat-label>Url</mat-label>
+            <input type="name" class="text-center" matInput placeholder="Url" />
+          </mat-form-field>
+        </div>
+      </div>
       <div class="row justify-content-center">
         <div class="col-7">
           <mat-form-field class="w-100 example-full-width" appearance="outline">
