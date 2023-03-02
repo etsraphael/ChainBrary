@@ -1,6 +1,7 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { AuthStatusCode } from './../../../../../shared/enum';
 
 @Component({
   selector: 'app-certification-edit-card',
@@ -8,43 +9,58 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
   styleUrls: ['./certification-edit-card.component.scss']
 })
 export class CertificationEditCardComponent implements OnInit, AfterViewInit {
-  avatarEditEnabled = true;
-  avatarInputVisible = false;
+  @Input() authStatus: AuthStatusCode | null;
+  AuthStatusCodeTypes = AuthStatusCode;
+
   mainForm: FormGroup<CertificationForm>;
 
-  enableAvatarEdit(): void {
-    this.avatarEditEnabled = false;
-    this.avatarInputVisible = true;
-  }
+  avatarEditEnabled = true;
+  avatarInputVisible = false;
+  avatarUrl: string | null;
 
   ngOnInit(): void {
     this.mainForm = new FormGroup({
-      avatarUrl: new FormControl('', [Validators.required]),
-      username: new FormControl('', [Validators.required]),
-      subtitle: new FormControl('', [Validators.required])
+      avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
+      username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      subtitle: new FormControl('', [Validators.required, Validators.maxLength(20)])
     });
   }
 
   ngAfterViewInit(): void {
     this.mainForm
       .get('avatarUrl')!
-      .valueChanges.pipe(
-        filter((value: string | null) => value !== null && value !== ''),
-        debounceTime(350),
-        distinctUntilChanged()
-      )
+      .valueChanges.pipe(debounceTime(350), distinctUntilChanged())
       .subscribe((value: string | null) => {
-        console.log(value);
-        // this.urlChanged(value);
+        switch (true) {
+          case !value: {
+            break;
+          }
+          case value == '' || !value!.includes('https'): {
+            this.avatarUrl = null;
+            break;
+          }
+          case value && value.replace(/\s/g, '').length > 0: {
+            this.avatarUrl = value;
+            break;
+          }
+        }
       });
   }
 
-  submitForm(): void {
-    console.log(this.mainForm.value);
+  enableAvatarEdit(): void {
+    this.avatarEditEnabled = false;
+    this.avatarInputVisible = true;
   }
 
-  urlChanged(url: string): void {
-    console.log('url', url);
+  submitForm(): void {
+    console.log(this.mainForm);
+  }
+
+  urlValidator(control: FormControl) {
+    if (control.value && !control.value.includes('https')) {
+      return { invalidUrl: true };
+    }
+    return null;
   }
 }
 

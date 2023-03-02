@@ -8,4 +8,5 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 export class UserAvatarComponent {
   @Output() onEditClick = new EventEmitter<void>();
   @Input() editable: boolean;
+  @Input() avatarUrl: string | null;
 }

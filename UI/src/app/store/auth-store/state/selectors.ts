@@ -21,7 +21,7 @@ export const selectIsConnected: MemoizedSelector<object, boolean, (s1: IAuthStat
   (s) => s.connectedUser
 );
 
-export const selectSideBarMode: MemoizedSelector<object, AuthStatusCode, (s1: IAuthState) => AuthStatusCode> =
+export const selectAuthStatus: MemoizedSelector<object, AuthStatusCode, (s1: IAuthState) => AuthStatusCode> =
   createSelector(selectAuth, (s) => {
     const isVerified = s.verifiedAccount;
     const isAuth = s.connectedUser;

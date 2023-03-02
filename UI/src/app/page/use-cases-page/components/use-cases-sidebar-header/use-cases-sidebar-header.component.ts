@@ -7,7 +7,7 @@ import { AuthStatusCode } from './../../../../shared/enum';
 import { IProfileAdded } from './../../../../shared/interfaces';
 import { FormatService } from './../../../../shared/services/format/format.service';
 import { resetAuth, setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
-import { selectAccount, selectPublicAddress, selectSideBarMode } from './../../../../store/auth-store/state/selectors';
+import { selectAccount, selectPublicAddress, selectAuthStatus } from './../../../../store/auth-store/state/selectors';
 @Component({
   selector: 'app-use-cases-sidebar-header',
   templateUrl: './use-cases-sidebar-header.component.html',
@@ -28,7 +28,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.sidebarMode$ = this.store.select(selectSideBarMode);
+    this.sidebarMode$ = this.store.select(selectAuthStatus);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.verifiedAccount$ = this.store.select(selectAccount);
   }
