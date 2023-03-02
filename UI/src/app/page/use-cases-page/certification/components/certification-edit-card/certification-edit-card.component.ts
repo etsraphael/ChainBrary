@@ -1,5 +1,6 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 
@@ -9,18 +10,16 @@ import { AuthStatusCode } from './../../../../../shared/enum';
   styleUrls: ['./certification-edit-card.component.scss']
 })
 export class CertificationEditCardComponent implements OnInit, AfterViewInit, OnDestroy {
-
   @Input() authStatus: AuthStatusCode | null;
   @Output() openLoginModal = new EventEmitter<void>();
-
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
-
   avatarEditEnabled = true;
   avatarInputVisible = false;
   avatarUrl: string | null;
+  avatarUrlControlSub: Subscription;
 
-  avatarUrlControlSub: Subscription
+  constructor(private snackbar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.mainForm = new FormGroup({
@@ -31,10 +30,10 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   }
 
   ngAfterViewInit(): void {
-
     const avatarUrlControl: FormControl<string | null> = this.mainForm.get('avatarUrl') as FormControl<string | null>;
 
-    this.avatarUrlControlSub = avatarUrlControl.valueChanges.pipe(debounceTime(350), distinctUntilChanged())
+    this.avatarUrlControlSub = avatarUrlControl.valueChanges
+      .pipe(debounceTime(350), distinctUntilChanged())
       .subscribe((value: string | null) => {
         switch (true) {
           case !value: {
@@ -57,8 +56,22 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     this.avatarInputVisible = true;
   }
 
+  checkingFormValidity(): boolean {
+    Object.keys(this.mainForm.controls).forEach((key: string) => {
+      this.mainForm.get(key)?.markAsTouched();
+    });
+
+    if (this.mainForm.invalid) {
+      this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
+      return false;
+    }
+
+    return true;
+  }
+
   submitForm(): void {
-    console.log(this.mainForm);
+    if (!this.checkingFormValidity()) return;
+    console.log(this.mainForm.value);
   }
 
   urlValidator(control: FormControl) {
