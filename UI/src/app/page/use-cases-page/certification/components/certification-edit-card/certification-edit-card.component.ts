@@ -1,6 +1,6 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { debounceTime, distinctUntilChanged } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 
 @Component({
@@ -8,15 +8,19 @@ import { AuthStatusCode } from './../../../../../shared/enum';
   templateUrl: './certification-edit-card.component.html',
   styleUrls: ['./certification-edit-card.component.scss']
 })
-export class CertificationEditCardComponent implements OnInit, AfterViewInit {
-  @Input() authStatus: AuthStatusCode | null;
-  AuthStatusCodeTypes = AuthStatusCode;
+export class CertificationEditCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
+  @Input() authStatus: AuthStatusCode | null;
+  @Output() openLoginModal = new EventEmitter<void>();
+
+  AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
 
   avatarEditEnabled = true;
   avatarInputVisible = false;
   avatarUrl: string | null;
+
+  avatarUrlControlSub: Subscription
 
   ngOnInit(): void {
     this.mainForm = new FormGroup({
@@ -27,15 +31,16 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.mainForm
-      .get('avatarUrl')!
-      .valueChanges.pipe(debounceTime(350), distinctUntilChanged())
+
+    const avatarUrlControl: FormControl<string | null> = this.mainForm.get('avatarUrl') as FormControl<string | null>;
+
+    this.avatarUrlControlSub = avatarUrlControl.valueChanges.pipe(debounceTime(350), distinctUntilChanged())
       .subscribe((value: string | null) => {
         switch (true) {
           case !value: {
             break;
           }
-          case value == '' || !value!.includes('https'): {
+          case value == '' || !(value as string).includes('https'): {
             this.avatarUrl = null;
             break;
           }
@@ -61,6 +66,10 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit {
       return { invalidUrl: true };
     }
     return null;
+  }
+
+  ngOnDestroy(): void {
+    this.avatarUrlControlSub?.unsubscribe();
   }
 }
 

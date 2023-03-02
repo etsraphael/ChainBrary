@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
   styleUrls: ['./user-avatar.component.scss']
 })
 export class UserAvatarComponent {
-  @Output() onEditClick = new EventEmitter<void>();
+  @Output() editClickEvent = new EventEmitter<void>();
   @Input() editable: boolean;
   @Input() avatarUrl: string | null;
 }

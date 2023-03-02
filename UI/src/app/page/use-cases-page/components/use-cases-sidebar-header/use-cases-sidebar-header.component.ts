@@ -38,8 +38,6 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): void {
-    this.web3LoginService.openLoginModal();
-
     this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
       switch (state.type) {
         case ModalStateType.SUCCESS:

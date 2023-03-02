@@ -1,7 +1,7 @@
 <!-- Default Avatar -->
 <div class="avatar-container position-relative" *ngIf="!avatarUrl">
   <i class="bi bi-person-circle theme-assets-wrapper"></i>
-  <div *ngIf="editable" class="container-edit-button gradient-info" (click)="onEditClick.emit()">
+  <div *ngIf="editable" class="container-edit-button gradient-info" (click)="editClickEvent.emit()">
     <i class="bi bi-pencil-square theme-assets-wrapper"></i>
   </div>
 </div>
