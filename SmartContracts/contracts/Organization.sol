@@ -135,13 +135,13 @@ contract Organization is Ownable {
         require(msg.value >= pricePerDay, "Not enough ETH sent.");
         uint256 availableDays = msg.value / pricePerDay;
         uint256 expirationDate = block.timestamp + availableDays * 1 days;
-
         emit MemberAccountAdded(_msgSender(), _userName, _imgUrl, _description, expirationDate);
         organizations[_key].accounts[_msgSender()].userAddress = _msgSender();
         organizations[_key].accounts[_msgSender()].userName = _userName;
         organizations[_key].accounts[_msgSender()].imgUrl = _imgUrl;
         organizations[_key].accounts[_msgSender()].description = _description;
         organizations[_key].accounts[_msgSender()].expirationDate = expirationDate;
+        payable(organizations[_key].manager).transfer(msg.value);
     }
 
     function addAmountToAccount(
@@ -154,6 +154,7 @@ contract Organization is Ownable {
             availableDays *
             1 days;
         organizations[_organizationKey].accounts[_msgSender()].expirationDate = expirationDate;
+        payable(organizations[_organizationKey].manager).transfer(msg.value);
     }
 
     function getAccountByOrganizationAndUserAddress(
