@@ -7,18 +7,12 @@ contract Organization is Ownable {
     event MemberAccountAdded(
         address indexed userAddress,
         string userName,
-        string ImgUrl,
+        string imgUrl,
         string description,
-        uint256 ExpirationDate
+        uint256 expirationDate
     );
 
-    event MemberAccountEdited(
-        address indexed userAddress,
-        string userName,
-        string ImgUrl,
-        string description,
-        uint256 ExpirationDate
-    );
+    event MemberAccountEdited(address indexed userAddress, string userName, string imgUrl, string description);
 
     event MemberAccountDeleted(address indexed userAddress);
 
@@ -31,9 +25,9 @@ contract Organization is Ownable {
     struct MemberAccount {
         address userAddress;
         string userName;
-        string ImgUrl;
+        string imgUrl;
         string description;
-        uint256 ExpirationDate;
+        uint256 expirationDate;
     }
 
     struct OrganizationData {
@@ -75,7 +69,19 @@ contract Organization is Ownable {
         _;
     }
 
-    function addOrganization(string memory _name, string memory _key, string memory _supportUrl) public validateOrganizationParams(_name, _key, _supportUrl) {
+    modifier memberAccountAlreadyExists(string memory _key) {
+        require(
+            organizations[_key].accounts[_msgSender()].userAddress != _msgSender(),
+            "Member account already exists."
+        );
+        _;
+    }
+
+    function addOrganization(
+        string memory _name,
+        string memory _key,
+        string memory _supportUrl
+    ) public validateOrganizationParams(_name, _key, _supportUrl) {
         require(organizations[_key].manager == address(0), "Organization key already exists.");
         emit OrganizationAdded(_name, _key, _supportUrl, _msgSender());
         organizations[_key].name = _name;
@@ -84,9 +90,17 @@ contract Organization is Ownable {
         organizations[_key].manager = _msgSender();
     }
 
-    function getOrganizationByManagerAndKey(address _manager, string memory _key) public organizationNotNull(_key) view returns (string memory, string memory, string memory, address) {
+    function getOrganizationByManagerAndKey(
+        address _manager,
+        string memory _key
+    ) public view organizationNotNull(_key) returns (string memory, string memory, string memory, address) {
         require(organizations[_key].manager == _manager, "Organization not found.");
-        return (organizations[_key].name, organizations[_key].key, organizations[_key].supportUrl, organizations[_key].manager);
+        return (
+            organizations[_key].name,
+            organizations[_key].key,
+            organizations[_key].supportUrl,
+            organizations[_key].manager
+        );
     }
 
     function editOrganization(
@@ -108,34 +122,57 @@ contract Organization is Ownable {
     function addAccount(
         string memory _key,
         string memory _userName,
-        string memory _ImgUrl,
+        string memory _imgUrl,
         string memory _description,
-        uint256 _ExpirationDate
-    ) public organizationNotNull(_key) {
-        emit MemberAccountAdded(_msgSender(), _userName, _ImgUrl, _description, _ExpirationDate);
+        uint256 _daysRemaning
+    ) public organizationNotNull(_key) memberAccountAlreadyExists(_key) {
+        uint256 expirationDate = block.timestamp + _daysRemaning * 1 days;
+        emit MemberAccountAdded(_msgSender(), _userName, _imgUrl, _description, expirationDate);
         organizations[_key].accounts[_msgSender()].userAddress = _msgSender();
         organizations[_key].accounts[_msgSender()].userName = _userName;
-        organizations[_key].accounts[_msgSender()].ImgUrl = _ImgUrl;
+        organizations[_key].accounts[_msgSender()].imgUrl = _imgUrl;
         organizations[_key].accounts[_msgSender()].description = _description;
-        organizations[_key].accounts[_msgSender()].ExpirationDate = _ExpirationDate;
+        organizations[_key].accounts[_msgSender()].expirationDate = expirationDate;
+    }
+
+    function getAccountByOrganizationAndUserAddress(
+        string memory _organizationKey,
+        address _userAddress
+    )
+        public
+        view
+        organizationNotNull(_organizationKey)
+        returns (address, string memory, string memory, string memory, uint256)
+    {
+        require(
+            organizations[_organizationKey].accounts[_userAddress].userAddress == _userAddress,
+            "Member account not found."
+        );
+        return (
+            organizations[_organizationKey].accounts[_userAddress].userAddress,
+            organizations[_organizationKey].accounts[_userAddress].userName,
+            organizations[_organizationKey].accounts[_userAddress].imgUrl,
+            organizations[_organizationKey].accounts[_userAddress].description,
+            organizations[_organizationKey].accounts[_userAddress].expirationDate
+        );
     }
 
     function editAccount(
-        string memory _key,
+        string memory _organizationKey,
         string memory _userName,
-        string memory _ImgUrl,
-        string memory _description,
-        uint256 _ExpirationDate
-    ) public accountOwner(_key) {
-        emit MemberAccountEdited(_msgSender(), _userName, _ImgUrl, _description, _ExpirationDate);
-        organizations[_key].accounts[_msgSender()].userName = _userName;
-        organizations[_key].accounts[_msgSender()].ImgUrl = _ImgUrl;
-        organizations[_key].accounts[_msgSender()].description = _description;
-        organizations[_key].accounts[_msgSender()].ExpirationDate = _ExpirationDate;
+        string memory _imgUrl,
+        string memory _description
+    ) public organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
+        emit MemberAccountEdited(_msgSender(), _userName, _imgUrl, _description);
+        organizations[_organizationKey].accounts[_msgSender()].userName = _userName;
+        organizations[_organizationKey].accounts[_msgSender()].imgUrl = _imgUrl;
+        organizations[_organizationKey].accounts[_msgSender()].description = _description;
     }
 
-    function deleteMyAccount(string memory _key) public accountOwner(_key) {
+    function deleteMyAccount(
+        string memory _organizationKey
+    ) public organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
         emit MemberAccountDeleted(_msgSender());
-        delete organizations[_key].accounts[_msgSender()];
+        delete organizations[_organizationKey].accounts[_msgSender()];
     }
 }
