@@ -144,6 +144,18 @@ contract Organization is Ownable {
         organizations[_key].accounts[_msgSender()].expirationDate = expirationDate;
     }
 
+    function addAmountToAccount(
+        string memory _organizationKey
+    ) public payable organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
+        uint256 pricePerDay = organizations[_organizationKey].pricePerDay;
+        require(msg.value >= pricePerDay, "Not enough ETH sent.");
+        uint256 availableDays = msg.value / pricePerDay;
+        uint256 expirationDate = organizations[_organizationKey].accounts[_msgSender()].expirationDate +
+            availableDays *
+            1 days;
+        organizations[_organizationKey].accounts[_msgSender()].expirationDate = expirationDate;
+    }
+
     function getAccountByOrganizationAndUserAddress(
         string memory _organizationKey,
         address _userAddress
