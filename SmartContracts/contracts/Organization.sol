@@ -16,9 +16,9 @@ contract Organization is Ownable {
 
     event MemberAccountDeleted(address indexed userAddress);
 
-    event OrganizationAdded(string name, string key, string supportUrl, address manager);
+    event OrganizationAdded(string name, string key, string supportUrl, address manager, uint256 pricePerDay);
 
-    event OrganizationEdited(string name, string key, string supportUrl, address manager);
+    event OrganizationEdited(string name, string key, string supportUrl, address manager, uint256 pricePerDay);
 
     event OrganizationDeleted(string key);
 
@@ -36,6 +36,7 @@ contract Organization is Ownable {
         string supportUrl;
         address manager;
         mapping(address => MemberAccount) accounts;
+        uint256 pricePerDay;
     }
 
     mapping(string => OrganizationData) public organizations;
@@ -80,14 +81,16 @@ contract Organization is Ownable {
     function addOrganization(
         string memory _name,
         string memory _key,
-        string memory _supportUrl
+        string memory _supportUrl,
+        uint256 _pricePerDay
     ) public validateOrganizationParams(_name, _key, _supportUrl) {
         require(organizations[_key].manager == address(0), "Organization key already exists.");
-        emit OrganizationAdded(_name, _key, _supportUrl, _msgSender());
+        emit OrganizationAdded(_name, _key, _supportUrl, _msgSender(), _pricePerDay);
         organizations[_key].name = _name;
         organizations[_key].key = _key;
         organizations[_key].supportUrl = _supportUrl;
         organizations[_key].manager = _msgSender();
+        organizations[_key].pricePerDay = _pricePerDay;
     }
 
     function getOrganizationByManagerAndKey(
@@ -106,12 +109,14 @@ contract Organization is Ownable {
     function editOrganization(
         string memory _key,
         string memory _name,
-        string memory _supportUrl
+        string memory _supportUrl,
+        uint256 _pricePerDay
     ) public organizationNotNull(_key) organizationManager(_key) {
-        emit OrganizationEdited(_name, _key, _supportUrl, _msgSender());
+        emit OrganizationEdited(_name, _key, _supportUrl, _msgSender(), _pricePerDay);
         organizations[_key].name = _name;
         organizations[_key].supportUrl = _supportUrl;
         organizations[_key].manager = _msgSender();
+        organizations[_key].pricePerDay = _pricePerDay;
     }
 
     function deleteOrganization(string memory _key) public organizationNotNull(_key) organizationManager(_key) {
@@ -123,10 +128,13 @@ contract Organization is Ownable {
         string memory _key,
         string memory _userName,
         string memory _imgUrl,
-        string memory _description,
-        uint256 _daysRemaning
-    ) public organizationNotNull(_key) memberAccountAlreadyExists(_key) {
-        uint256 expirationDate = block.timestamp + _daysRemaning * 1 days;
+        string memory _description
+    ) public payable organizationNotNull(_key) memberAccountAlreadyExists(_key) {
+        uint256 pricePerDay = organizations[_key].pricePerDay;
+        require(msg.value >= pricePerDay, "Not enough ETH sent.");
+        uint256 availableDays = msg.value / pricePerDay;
+        uint256 expirationDate = block.timestamp + availableDays * 1 days;
+
         emit MemberAccountAdded(_msgSender(), _userName, _imgUrl, _description, expirationDate);
         organizations[_key].accounts[_msgSender()].userAddress = _msgSender();
         organizations[_key].accounts[_msgSender()].userName = _userName;
