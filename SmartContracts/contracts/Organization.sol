@@ -64,7 +64,18 @@ contract Organization is Ownable {
         _;
     }
 
-    function addOrganization(string memory _name, string memory _key, string memory _supportUrl) public {
+    modifier validateOrganizationParams(
+        string memory _name,
+        string memory _key,
+        string memory _supportUrl
+    ) {
+        require(bytes(_name).length > 0, "Name is required.");
+        require(bytes(_key).length > 0, "Key is required.");
+        require(bytes(_supportUrl).length > 0, "Support URL is required.");
+        _;
+    }
+
+    function addOrganization(string memory _name, string memory _key, string memory _supportUrl) public validateOrganizationParams(_name, _key, _supportUrl) {
         require(organizations[_key].manager == address(0), "Organization key already exists.");
         emit OrganizationAdded(_name, _key, _supportUrl, _msgSender());
         organizations[_key].name = _name;
@@ -73,11 +84,16 @@ contract Organization is Ownable {
         organizations[_key].manager = _msgSender();
     }
 
+    function getOrganizationByManagerAndKey(address _manager, string memory _key) public organizationNotNull(_key) view returns (string memory, string memory, string memory, address) {
+        require(organizations[_key].manager == _manager, "Organization not found.");
+        return (organizations[_key].name, organizations[_key].key, organizations[_key].supportUrl, organizations[_key].manager);
+    }
+
     function editOrganization(
         string memory _key,
         string memory _name,
         string memory _supportUrl
-    ) public organizationManager(_key) {
+    ) public organizationNotNull(_key) organizationManager(_key) {
         emit OrganizationEdited(_name, _key, _supportUrl, _msgSender());
         organizations[_key].name = _name;
         organizations[_key].supportUrl = _supportUrl;
