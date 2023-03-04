@@ -96,13 +96,14 @@ contract Organization is Ownable {
     function getOrganizationByManagerAndKey(
         address _manager,
         string memory _key
-    ) public view organizationNotNull(_key) returns (string memory, string memory, string memory, address) {
+    ) public view organizationNotNull(_key) returns (string memory, string memory, string memory, address, uint256) {
         require(organizations[_key].manager == _manager, "Organization not found.");
         return (
             organizations[_key].name,
             organizations[_key].key,
             organizations[_key].supportUrl,
-            organizations[_key].manager
+            organizations[_key].manager,
+            organizations[_key].pricePerDay
         );
     }
 
