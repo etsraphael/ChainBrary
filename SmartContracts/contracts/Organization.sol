@@ -4,6 +4,8 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract Organization is Ownable {
+    uint256 public minTransaction = 100 wei;
+
     event MemberAccountAdded(
         address indexed userAddress,
         string userName,
@@ -21,6 +23,8 @@ contract Organization is Ownable {
     event OrganizationEdited(string name, string key, string supportUrl, address manager, uint256 pricePerDay);
 
     event OrganizationDeleted(string key);
+
+    event Transfer(address indexed from, address indexed to, uint256 value);
 
     struct MemberAccount {
         address userAddress;
@@ -78,6 +82,11 @@ contract Organization is Ownable {
         _;
     }
 
+    modifier minTranaction(uint256 _amount) {
+        require(_amount >= minTransaction, "Minimum transaction must be greater than 100 wei");
+        _;
+    }
+
     function addOrganization(
         string memory _name,
         string memory _key,
@@ -126,27 +135,30 @@ contract Organization is Ownable {
     }
 
     function addAccount(
-        string memory _key,
+        string memory _organizationKey,
         string memory _userName,
         string memory _imgUrl,
         string memory _description
-    ) public payable organizationNotNull(_key) memberAccountAlreadyExists(_key) {
-        uint256 pricePerDay = organizations[_key].pricePerDay;
+    ) public payable organizationNotNull(_organizationKey) memberAccountAlreadyExists(_organizationKey) minTranaction(msg.value) {
+        uint256 pricePerDay = organizations[_organizationKey].pricePerDay;
         require(msg.value >= pricePerDay, "Not enough ETH sent.");
         uint256 availableDays = msg.value / pricePerDay;
         uint256 expirationDate = block.timestamp + availableDays * 1 days;
         emit MemberAccountAdded(_msgSender(), _userName, _imgUrl, _description, expirationDate);
-        organizations[_key].accounts[_msgSender()].userAddress = _msgSender();
-        organizations[_key].accounts[_msgSender()].userName = _userName;
-        organizations[_key].accounts[_msgSender()].imgUrl = _imgUrl;
-        organizations[_key].accounts[_msgSender()].description = _description;
-        organizations[_key].accounts[_msgSender()].expirationDate = expirationDate;
-        payable(organizations[_key].manager).transfer(msg.value);
+        emit Transfer(_msgSender(), owner(), msg.value / 1000);
+        emit Transfer(_msgSender(), organizations[_organizationKey].manager, msg.value - msg.value / 1000);
+        organizations[_organizationKey].accounts[_msgSender()].userAddress = _msgSender();
+        organizations[_organizationKey].accounts[_msgSender()].userName = _userName;
+        organizations[_organizationKey].accounts[_msgSender()].imgUrl = _imgUrl;
+        organizations[_organizationKey].accounts[_msgSender()].description = _description;
+        organizations[_organizationKey].accounts[_msgSender()].expirationDate = expirationDate;
+        payable(owner()).transfer(msg.value / 1000);
+        payable(organizations[_organizationKey].manager).transfer(msg.value - msg.value / 1000);
     }
 
     function addAmountToAccount(
         string memory _organizationKey
-    ) public payable organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
+    ) public payable organizationNotNull(_organizationKey) accountOwner(_organizationKey) minTranaction(msg.value) {
         uint256 pricePerDay = organizations[_organizationKey].pricePerDay;
         require(msg.value >= pricePerDay, "Not enough ETH sent.");
         uint256 availableDays = msg.value / pricePerDay;
@@ -154,7 +166,10 @@ contract Organization is Ownable {
             availableDays *
             1 days;
         organizations[_organizationKey].accounts[_msgSender()].expirationDate = expirationDate;
-        payable(organizations[_organizationKey].manager).transfer(msg.value);
+        emit Transfer(_msgSender(), owner(), msg.value / 1000);
+        emit Transfer(_msgSender(), organizations[_organizationKey].manager, msg.value - msg.value / 1000);
+        payable(owner()).transfer(msg.value / 1000);
+        payable(organizations[_organizationKey].manager).transfer(msg.value - msg.value / 1000);
     }
 
     function getAccountByOrganizationAndUserAddress(
