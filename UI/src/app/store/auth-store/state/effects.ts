@@ -14,11 +14,16 @@ export class AuthEffects {
   loadAuth$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.loadAuth),
+      filter(() => !!this.authService.getPublicAddress()),
       mergeMap(() =>
-        this.accountService.getAccountByPublicAddress('0xbA3Fc0648186a79baEF8DCeE9e055873F432a351').pipe(
-          map((response: ApolloQueryResult<{ profileAddeds: IProfileAdded[] }>) =>
-            AuthActions.loadAuthSuccess({ auth: response.data.profileAddeds[0] })
-          ),
+        this.accountService.getAccountByPublicAddress(this.authService.getPublicAddress() as string).pipe(
+          map((response: ApolloQueryResult<{ memberAccountAddeds: IProfileAdded[] }>) => {
+            if (response.data.memberAccountAddeds.length > 0) {
+              return AuthActions.loadAuthSuccess({ auth: response.data.memberAccountAddeds[0] });
+            } else {
+              return AuthActions.loadAuthFailure({ message: 'User not found' });
+            }
+          }),
           catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
         )
       )
@@ -39,9 +44,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.addressChecking),
       filter(() => !!this.authService.getPublicAddress()),
-      map(() => {
-        return AuthActions.setAuthPublicAddress({ publicAddress: this.authService.getPublicAddress() as string });
-      })
+      map(() => AuthActions.setAuthPublicAddress({ publicAddress: this.authService.getPublicAddress() as string }))
     );
   });
 

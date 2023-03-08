@@ -21,6 +21,7 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
     (state, { auth }): IAuthState => ({
       ...state,
       publicAddress: auth.userAddress,
+      verifiedAccount: true,
       connectedUser: true,
       userAccount: {
         error: null,
@@ -30,7 +31,8 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
           username: auth.username,
           imgUrl: auth.imgUrl,
           expirationDate: auth.expirationDate,
-          userAddress: auth.userAddress
+          userAddress: auth.userAddress,
+          blockTimestamp: auth.blockTimestamp
         }
       }
     })

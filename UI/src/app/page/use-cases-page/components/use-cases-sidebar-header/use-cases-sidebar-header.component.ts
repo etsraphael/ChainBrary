@@ -6,7 +6,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from './../../../../shared/enum';
 import { IProfileAdded } from './../../../../shared/interfaces';
 import { FormatService } from './../../../../shared/services/format/format.service';
-import { resetAuth, setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
+import { loadAuth, resetAuth, setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
 import { selectAccount, selectPublicAddress, selectAuthStatus } from './../../../../store/auth-store/state/selectors';
 @Component({
   selector: 'app-use-cases-sidebar-header',
@@ -42,6 +42,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
       switch (state.type) {
         case ModalStateType.SUCCESS:
           this.store.dispatch(setAuthPublicAddress({ publicAddress: state.data?.publicAddress as string }));
+          this.store.dispatch(loadAuth());
           this.web3LoginService.closeLoginModal();
           break;
       }

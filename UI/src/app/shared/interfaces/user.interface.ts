@@ -18,4 +18,5 @@ export interface IProfileAdded {
   username: string;
   imgUrl: string;
   expirationDate: number;
+  blockTimestamp: number;
 }
