@@ -7,4 +7,8 @@ export class FormatService {
   formatPublicAddress(address: string): string {
     return `${address.slice(0, 15)}...${address.slice(-15)}`;
   }
+
+  timeStampToDate(timestamp: number): Date {
+    return new Date(timestamp * 1000);
+  }
 }
