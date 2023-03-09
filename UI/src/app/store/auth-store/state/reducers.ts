@@ -28,7 +28,7 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
         loading: false,
         data: {
           id: auth.id,
-          username: auth.username,
+          userName: auth.userName,
           imgUrl: auth.imgUrl,
           expirationDate: auth.expirationDate,
           userAddress: auth.userAddress,

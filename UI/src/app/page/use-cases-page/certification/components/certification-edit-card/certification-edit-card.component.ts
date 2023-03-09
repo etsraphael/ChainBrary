@@ -1,16 +1,18 @@
 import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { debounceTime, distinctUntilChanged, Subscription } from 'rxjs';
+import { debounceTime, distinctUntilChanged, filter, Observable, Subscription, take } from 'rxjs';
+import { IProfileAdded } from './../../../../../shared/interfaces';
 import { AuthStatusCode } from './../../../../../shared/enum';
 
 @Component({
-  selector: 'app-certification-edit-card',
+  selector: 'app-certification-edit-card[authStatus][profileAccount]',
   templateUrl: './certification-edit-card.component.html',
   styleUrls: ['./certification-edit-card.component.scss']
 })
 export class CertificationEditCardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() authStatus: AuthStatusCode | null;
+  @Input() profileAccount: Observable<IProfileAdded | null>;
   @Output() openLoginModal = new EventEmitter<void>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
@@ -18,15 +20,39 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   avatarInputVisible = false;
   avatarUrl: string | null;
   avatarUrlControlSub: Subscription;
+  profileAccountSub: Subscription;
 
   constructor(private snackbar: MatSnackBar) {}
 
   ngOnInit(): void {
+    this.setUpForm();
+  }
+
+  setUpForm(): void {
     this.mainForm = new FormGroup({
       avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
       username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       subtitle: new FormControl('', [Validators.required, Validators.maxLength(20)])
     });
+    this.completeForm();
+  }
+
+  completeForm(): void {
+    this.profileAccountSub = this.profileAccount.pipe(
+    ).subscribe((value: IProfileAdded | null) => {
+      if(!value) {
+        this.mainForm.reset();
+        this.avatarUrl = null;
+      } else {
+        const profile = value as IProfileAdded;
+        this.mainForm.patchValue({
+          avatarUrl: profile.imgUrl,
+          username: profile.userName,
+          subtitle: 'Certified Developer'
+        });
+        this.avatarUrl = profile.imgUrl;
+      }
+    })
   }
 
   ngAfterViewInit(): void {
@@ -83,6 +109,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
 
   ngOnDestroy(): void {
     this.avatarUrlControlSub?.unsubscribe();
+    this.profileAccountSub?.unsubscribe();
   }
 }
 

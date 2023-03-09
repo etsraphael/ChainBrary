@@ -1,6 +1,7 @@
 <div class="container">
   <app-certification-edit-card
     [authStatus]="authStatus$ | async"
+    [profileAccount]="profileAccount$"
     (openLoginModal)="openLoginModal()"
   ></app-certification-edit-card>
 </div>
