@@ -1,5 +1,5 @@
 <!-- Default Avatar -->
-<div class="avatar-container position-relative" *ngIf="!avatarUrl">
+<div class="default-avatar avatar-container position-relative" *ngIf="!avatarUrl">
   <i class="bi bi-person-circle theme-assets-wrapper"></i>
   <div *ngIf="editable" class="container-edit-button gradient-info" (click)="editClickEvent.emit()">
     <i class="bi bi-pencil-square theme-assets-wrapper"></i>
@@ -7,8 +7,11 @@
 </div>
 
 <!-- Custom Avatar -->
-<div class="row justify-content-center" *ngIf="avatarUrl">
-  <div class="col-12 col-sm-12 col-xl-9 avatar-container">
+<div class="custom-avatar row justify-content-center" *ngIf="avatarUrl">
+  <div class="col-12 col-sm-12 col-xl-9 avatar-container position-relative">
     <img class="avatar-img avatar rounded-circle" [src]="avatarUrl" alt="avatar image" />
+    <div *ngIf="editable" class="container-edit-button gradient-info" (click)="editClickEvent.emit()">
+      <i class="bi bi-pencil-square theme-assets-wrapper"></i>
+    </div>
   </div>
 </div>

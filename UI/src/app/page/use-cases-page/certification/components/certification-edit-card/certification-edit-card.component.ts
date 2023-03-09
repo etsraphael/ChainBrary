@@ -38,9 +38,8 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   }
 
   completeForm(): void {
-    this.profileAccountSub = this.profileAccount.pipe(
-    ).subscribe((value: IProfileAdded | null) => {
-      if(!value) {
+    this.profileAccountSub = this.profileAccount.pipe().subscribe((value: IProfileAdded | null) => {
+      if (!value) {
         this.mainForm.reset();
         this.avatarUrl = null;
       } else {
@@ -52,7 +51,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
         });
         this.avatarUrl = profile.imgUrl;
       }
-    })
+    });
   }
 
   ngAfterViewInit(): void {
@@ -63,6 +62,14 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       .subscribe((value: string | null) => {
         switch (true) {
           case !value: {
+            this.profileAccount
+              .pipe(
+                take(1),
+                filter((profile: IProfileAdded | null) => !!profile)
+              )
+              .subscribe((profile: IProfileAdded | null) => {
+                this.avatarUrl = (profile as IProfileAdded).imgUrl;
+              });
             break;
           }
           case value == '' || !(value as string).includes('https'): {
@@ -100,7 +107,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     console.log(this.mainForm.value);
   }
 
-  urlValidator(control: FormControl) {
+  urlValidator(control: FormControl): { [key: string]: boolean } | null {
     if (control.value && !control.value.includes('https')) {
       return { invalidUrl: true };
     }

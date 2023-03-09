@@ -5,12 +5,21 @@
   background: var(--bs-border-color);
 }
 
-.container-edit-button {
+.default-avatar .container-edit-button {
   position: absolute;
   height: 2rem;
   width: 2rem;
   bottom: 8px;
   right: 25%;
+  border-radius: 50%;
+}
+
+.custom-avatar .container-edit-button {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  bottom: 8px;
+  right: 12%;
   border-radius: 50%;
 }
 
