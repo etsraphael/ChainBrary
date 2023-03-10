@@ -32,7 +32,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     this.mainForm = new FormGroup({
       avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
       username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      subtitle: new FormControl('', [Validators.required, Validators.maxLength(20)])
+      description: new FormControl('', [Validators.required, Validators.maxLength(20)])
     });
     this.completeForm();
   }
@@ -47,7 +47,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
         this.mainForm.patchValue({
           avatarUrl: profile.imgUrl,
           username: profile.userName,
-          subtitle: 'Certified Developer'
+          description: profile.description
         });
         this.avatarUrl = profile.imgUrl;
       }
@@ -123,5 +123,5 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
 export interface CertificationForm {
   avatarUrl: FormControl<string | null>;
   username: FormControl<string | null>;
-  subtitle: FormControl<string | null>;
+  description: FormControl<string | null>;
 }

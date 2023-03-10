@@ -23,6 +23,7 @@ export class AccountService {
             imgUrl
             blockTimestamp
             expirationDate
+            description
           }
         }
       `,

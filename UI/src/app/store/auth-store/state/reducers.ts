@@ -32,7 +32,8 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
           imgUrl: auth.imgUrl,
           expirationDate: auth.expirationDate,
           userAddress: auth.userAddress,
-          blockTimestamp: auth.blockTimestamp
+          blockTimestamp: auth.blockTimestamp,
+          description: auth.description
         }
       }
     })
