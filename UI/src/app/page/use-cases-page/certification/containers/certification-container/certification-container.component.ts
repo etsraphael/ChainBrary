@@ -7,6 +7,8 @@ import { AuthStatusCode } from './../../../../../shared/enum';
 import { selectAccount, selectAuthStatus } from './../../../../../store/auth-store/state/selectors';
 import { IProfileAdded } from './../../../../../shared/interfaces';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
+import Web3 from 'web3';
+import { OrganizationContract } from 'src/app/shared/contracts';
 
 @Component({
   selector: 'app-certification-container',
@@ -17,6 +19,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
   authStatus$: Observable<AuthStatusCode>;
   profileAccount$: Observable<IProfileAdded | null>;
   modalSub: Subscription;
+  web3: Web3;
 
   constructor(private store: Store, private web3LoginService: Web3LoginService) {}
 
@@ -45,7 +48,14 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveProfile(profile: ProfileCreation): void {
-    console.log('profile', profile);
+  async saveProfile(profile: ProfileCreation) {
+    this.web3 = new Web3(window.ethereum);
+    const organizationContract = new OrganizationContract();
+    const payload = new this.web3.eth.Contract(organizationContract.getAbi(), organizationContract.getAddress());
+
+    const create = await payload.methods
+      .addAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
+      .send({ from: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24', value: this.web3.utils.toWei(String(0), 'ether')  });
+    return create;
   }
 }

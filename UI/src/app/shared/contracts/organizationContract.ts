@@ -1,12 +1,13 @@
 import { environment } from './../../../environments/environment';
 import { BaseContract } from './baseContract';
+import { AbiItem } from 'web3-utils';
 
-export class OrganizationContract implements BaseContract {
+export class OrganizationContract extends BaseContract {
   getAddress(): string {
-    return environment.contractLink.abiSrc;
+    return environment.contractLink.organizationAddress;
   }
 
-  getAbiContract(): object[] {
+  getAbi(): AbiItem[] {
     return [
       {
         anonymous: false,
