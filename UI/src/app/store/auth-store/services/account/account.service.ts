@@ -12,31 +12,21 @@ export class AccountService {
 
   getAccountByPublicAddress(
     userAddress: string
-  ): Observable<ApolloQueryResult<{ memberAccountAddeds: IProfileAdded[]; memberAccountEditeds: IProfileAdded[] }>> {
+  ): Observable<ApolloQueryResult<{ memberAccountSaveds: IProfileAdded[] }>> {
     return this.apollo.query({
       query: gql`
         query ($userAddress: String!) {
-          memberAccountAddeds(where: { userAddress: $userAddress }) {
+          memberAccountSaveds(where: { userAddress: $userAddress }) {
             id
-            userAddress
-            userName
-            imgUrl
+            blockNumber
             blockTimestamp
+            description
             expirationDate
-            description
-          }
-          memberAccountEditeds(
-            orderBy: blockTimestamp
-            orderDirection: desc
-            first: 1
-            where: { userAddress: $userAddress }
-          ) {
-            id
-            userAddress
-            userName
             imgUrl
-            blockTimestamp
-            description
+            organizationKey
+            transactionHash
+            userName
+            userAddress
           }
         }
       `,

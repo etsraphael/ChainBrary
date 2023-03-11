@@ -17,23 +17,13 @@ export class AuthEffects {
       filter(() => !!this.authService.getPublicAddress()),
       mergeMap(() =>
         this.accountService.getAccountByPublicAddress(this.authService.getPublicAddress() as string).pipe(
-          map(
-            (
-              response: ApolloQueryResult<{
-                memberAccountAddeds: IProfileAdded[];
-                memberAccountEditeds: IProfileAdded[];
-              }>
-            ) => {
-              if (response.data.memberAccountEditeds.length > 0) {
-                return AuthActions.loadAuthSuccess({ auth: response.data.memberAccountEditeds[0] });
-              }
-              if (response.data.memberAccountAddeds.length > 0) {
-                return AuthActions.loadAuthSuccess({ auth: response.data.memberAccountAddeds[0] });
-              } else {
-                return AuthActions.loadAuthFailure({ message: 'User not found' });
-              }
+          map((response: ApolloQueryResult<{ memberAccountSaveds: IProfileAdded[] }>) => {
+            if (response.data.memberAccountSaveds.length > 0) {
+              return AuthActions.loadAuthSuccess({ auth: response.data.memberAccountSaveds[0] });
+            } else {
+              return AuthActions.loadAuthFailure({ message: 'User not found' });
             }
-          ),
+          }),
           catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
         )
       )
