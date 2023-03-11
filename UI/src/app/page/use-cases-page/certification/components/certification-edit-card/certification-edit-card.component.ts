@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, filter, Observable, Subscription, take } from 'rxjs';
 import { IProfileAdded } from './../../../../../shared/interfaces';
 import { AuthStatusCode } from './../../../../../shared/enum';
+import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 
 @Component({
   selector: 'app-certification-edit-card[authStatus][profileAccount]',
@@ -14,6 +15,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Input() authStatus: AuthStatusCode | null;
   @Input() profileAccount: Observable<IProfileAdded | null>;
   @Output() openLoginModal = new EventEmitter<void>();
+  @Output() saveProfile = new EventEmitter<ProfileCreation>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
   avatarEditEnabled = true;
@@ -90,6 +92,11 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   }
 
   checkingFormValidity(): boolean {
+    if (!this.mainForm.dirty) {
+      this.snackbar.open('Please update the form', 'Close', { duration: 3000 });
+      return false;
+    }
+
     Object.keys(this.mainForm.controls).forEach((key: string) => {
       this.mainForm.get(key)?.markAsTouched();
     });
@@ -104,7 +111,15 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
 
   submitForm(): void {
     if (!this.checkingFormValidity()) return;
-    console.log(this.mainForm.value);
+
+    const profileSubmitted = new ProfileCreation(
+      '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
+      this.mainForm.value.username as string,
+      this.mainForm.value.avatarUrl as string,
+      this.mainForm.value.description as string
+    );
+
+    return this.saveProfile.emit(profileSubmitted);
   }
 
   urlValidator(control: FormControl): { [key: string]: boolean } | null {

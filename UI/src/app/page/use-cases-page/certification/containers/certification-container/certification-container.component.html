@@ -3,5 +3,6 @@
     [authStatus]="authStatus$ | async"
     [profileAccount]="profileAccount$"
     (openLoginModal)="openLoginModal()"
+    (saveProfile)="saveProfile($event)"
   ></app-certification-edit-card>
 </div>

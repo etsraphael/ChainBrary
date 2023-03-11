@@ -6,6 +6,7 @@ import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-stor
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { selectAccount, selectAuthStatus } from './../../../../../store/auth-store/state/selectors';
 import { IProfileAdded } from './../../../../../shared/interfaces';
+import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 
 @Component({
   selector: 'app-certification-container',
@@ -42,5 +43,9 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
           break;
       }
     });
+  }
+
+  saveProfile(profile: ProfileCreation): void {
+    console.log('profile', profile);
   }
 }
