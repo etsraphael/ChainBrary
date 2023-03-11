@@ -6,6 +6,15 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Organization is Ownable {
     uint256 public minTransaction = 100 wei;
 
+    event MemberAccountSaved(
+        address indexed userAddress,
+        string userName,
+        string imgUrl,
+        string description,
+        uint256 expirationDate,
+        string organizationKey
+    );
+
     event MemberAccountAdded(
         address indexed userAddress,
         string userName,
@@ -139,12 +148,19 @@ contract Organization is Ownable {
         string memory _userName,
         string memory _imgUrl,
         string memory _description
-    ) public payable organizationNotNull(_organizationKey) memberAccountAlreadyExists(_organizationKey) minTranaction(msg.value) {
+    )
+        public
+        payable
+        organizationNotNull(_organizationKey)
+        memberAccountAlreadyExists(_organizationKey)
+        minTranaction(msg.value)
+    {
         uint256 pricePerDay = organizations[_organizationKey].pricePerDay;
         require(msg.value >= pricePerDay, "Not enough ETH sent.");
         uint256 availableDays = msg.value / pricePerDay;
         uint256 expirationDate = block.timestamp + availableDays * 1 days;
         emit MemberAccountAdded(_msgSender(), _userName, _imgUrl, _description, expirationDate);
+        emit MemberAccountSaved(_msgSender(), _userName, _imgUrl, _description, expirationDate, _organizationKey);
         emit Transfer(_msgSender(), owner(), msg.value / 1000);
         emit Transfer(_msgSender(), organizations[_organizationKey].manager, msg.value - msg.value / 1000);
         organizations[_organizationKey].accounts[_msgSender()].userAddress = _msgSender();
@@ -168,6 +184,14 @@ contract Organization is Ownable {
         organizations[_organizationKey].accounts[_msgSender()].expirationDate = expirationDate;
         emit Transfer(_msgSender(), owner(), msg.value / 1000);
         emit Transfer(_msgSender(), organizations[_organizationKey].manager, msg.value - msg.value / 1000);
+        emit MemberAccountSaved(
+            _msgSender(),
+            organizations[_organizationKey].accounts[_msgSender()].userName,
+            organizations[_organizationKey].accounts[_msgSender()].imgUrl,
+            organizations[_organizationKey].accounts[_msgSender()].description,
+            expirationDate,
+            _organizationKey
+        );
         payable(owner()).transfer(msg.value / 1000);
         payable(organizations[_organizationKey].manager).transfer(msg.value - msg.value / 1000);
     }
@@ -201,6 +225,14 @@ contract Organization is Ownable {
         string memory _description
     ) public organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
         emit MemberAccountEdited(_msgSender(), _userName, _imgUrl, _description);
+        emit MemberAccountSaved(
+            _msgSender(),
+            _userName,
+            _imgUrl,
+             _description,
+            organizations[_organizationKey].accounts[_msgSender()].expirationDate,
+            _organizationKey
+        );
         organizations[_organizationKey].accounts[_msgSender()].userName = _userName;
         organizations[_organizationKey].accounts[_msgSender()].imgUrl = _imgUrl;
         organizations[_organizationKey].accounts[_msgSender()].description = _description;
@@ -210,6 +242,14 @@ contract Organization is Ownable {
         string memory _organizationKey
     ) public organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
         emit MemberAccountDeleted(_msgSender());
+        emit MemberAccountSaved(
+            _msgSender(),
+            organizations[_organizationKey].accounts[_msgSender()].userName,
+            organizations[_organizationKey].accounts[_msgSender()].imgUrl,
+            organizations[_organizationKey].accounts[_msgSender()].description,
+            block.timestamp,
+            _organizationKey
+        );
         delete organizations[_organizationKey].accounts[_msgSender()];
     }
 }
