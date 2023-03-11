@@ -53,9 +53,12 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     const organizationContract = new OrganizationContract();
     const payload = new this.web3.eth.Contract(organizationContract.getAbi(), organizationContract.getAddress());
 
-    const create = await payload.methods
-      .addAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
-      .send({ from: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24', value: this.web3.utils.toWei(String(0), 'ether')  });
-    return create;
+    // const create = await payload.methods
+    //   .addAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
+    //   .send({ from: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24', value: this.web3.utils.toWei(String(0), 'ether')  });
+
+    // const create = await payload.methods
+    //   .editAccount('ChainBrary0', profile.userName, 'https://pbs.twimg.com/profile_images/1633389227047260160/eG55D0eG_400x400.jpg', profile.description)
+    //   .send({ from: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24' });
   }
 }
