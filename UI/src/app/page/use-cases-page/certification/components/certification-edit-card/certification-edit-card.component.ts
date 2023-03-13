@@ -14,6 +14,7 @@ import { ProfileCreation } from './../../../../../shared/creations/profileCreati
 export class CertificationEditCardComponent implements OnInit, AfterViewInit, OnDestroy {
   @Input() authStatus: AuthStatusCode | null;
   @Input() profileAccount: Observable<IProfileAdded | null>;
+  @Input() publicAddress: string | null;
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() saveProfile = new EventEmitter<ProfileCreation>();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -113,7 +114,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     if (!this.checkingFormValidity()) return;
 
     const profileSubmitted = new ProfileCreation(
-      '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
+      this.publicAddress as string,
       this.mainForm.value.username as string,
       this.mainForm.value.avatarUrl as string,
       this.mainForm.value.description as string

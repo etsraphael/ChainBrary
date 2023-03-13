@@ -2,6 +2,7 @@
   <app-certification-edit-card
     [authStatus]="authStatus$ | async"
     [profileAccount]="profileAccount$"
+    [publicAddress]="publicAddress$ | async"
     (openLoginModal)="openLoginModal()"
     (saveProfile)="saveProfile($event)"
   ></app-certification-edit-card>
