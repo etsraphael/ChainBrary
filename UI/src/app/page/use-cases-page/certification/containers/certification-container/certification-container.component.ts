@@ -67,22 +67,22 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     //   .addAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
     //   .send({ from: profile.userAddress, value: this.web3.utils.toWei(String(0), 'ether')  });
 
-    // const create = await contract.methods
-    //   .editAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
-    //   .send({ from: profile.userAddress })
-    //   .on('transactionHash', (hash: any) => {
-    //     console.log(`Transaction hash: ${hash}`);
-    //   })
-    //   .on('confirmation', (confirmationNumber: any, receipt: any) => {
-    //     console.log(`Confirmation number: ${confirmationNumber}`);
-    //     console.log(`Receipt: ${receipt}`);
-    //   })
-    //   .on('receipt', (receipt: any) => {
-    //     console.log(`Receipt: ${receipt}`);
-    //   })
-    //   .on('error', (error: any, receipt: any) => {
-    //     console.log(`Error `, error);
-    //     console.log(`Receipt:`, receipt);
-    //   });
+    const create = await contract.methods
+      .editAccount('chainbrary0', profile.userName, profile.imgUrl, profile.description)
+      .send({ from: profile.userAddress })
+      .on('transactionHash', (hash: string) => {
+        console.log(`Transaction hash: ${hash}`);
+      })
+      .on('confirmation', (confirmationNumber: any, receipt: any) => {
+        console.log(`Confirmation number: ${confirmationNumber}`);
+        console.log(`Receipt: ${receipt}`);
+      })
+      .on('receipt', (receipt: any) => {
+        console.log(`Receipt: ${receipt}`);
+      })
+      .on('error', (error: any, receipt: any) => {
+        console.log(`Error `, error);
+        console.log(`Receipt:`, receipt);
+      });
   }
 }
