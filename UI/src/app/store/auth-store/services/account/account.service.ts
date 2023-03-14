@@ -16,7 +16,12 @@ export class AccountService {
     return this.apollo.query({
       query: gql`
         query ($userAddress: String!) {
-          memberAccountSaveds(where: { userAddress: $userAddress }) {
+          memberAccountSaveds(
+            orderBy: blockTimestamp
+            orderDirection: desc
+            first: 1
+            where: { userAddress: $userAddress }
+          ) {
             id
             blockNumber
             blockTimestamp

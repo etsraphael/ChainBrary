@@ -1,19 +1,19 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { catchError, map, Observable, Subscription } from 'rxjs';
-import { addAccount, loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
+import { Observable, Subscription } from 'rxjs';
+import { OrganizationContract } from 'src/app/shared/contracts';
+import Web3 from 'web3';
+import { Contract } from 'web3-eth-contract';
+import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 import { AuthStatusCode } from './../../../../../shared/enum';
+import { IProfileAdded, IReceiptTransaction } from './../../../../../shared/interfaces';
+import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectAuthStatus,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
-import { IProfileAdded } from './../../../../../shared/interfaces';
-import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
-import Web3 from 'web3';
-import { OrganizationContract } from 'src/app/shared/contracts';
-import { Contract } from 'web3-eth-contract';
 
 @Component({
   selector: 'app-certification-container',
@@ -55,7 +55,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  async saveProfile(profile: ProfileCreation) {
+  saveProfile(profile: ProfileCreation): Promise<IReceiptTransaction> {
     this.web3 = new Web3(window.ethereum);
     const organizationContract = new OrganizationContract();
     const contract: Contract = new this.web3.eth.Contract(
@@ -67,20 +67,20 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     //   .addAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
     //   .send({ from: profile.userAddress, value: this.web3.utils.toWei(String(0), 'ether')  });
 
-    const create = await contract.methods
+    return contract.methods
       .editAccount('chainbrary0', profile.userName, profile.imgUrl, profile.description)
       .send({ from: profile.userAddress })
       .on('transactionHash', (hash: string) => {
         console.log(`Transaction hash: ${hash}`);
       })
-      .on('confirmation', (confirmationNumber: any, receipt: any) => {
-        console.log(`Confirmation number: ${confirmationNumber}`);
-        console.log(`Receipt: ${receipt}`);
+      .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) => {
+        console.log(`Confirmation number:`, confirmationNumber);
+        console.log(`Receipt:`, receipt);
       })
-      .on('receipt', (receipt: any) => {
-        console.log(`Receipt: ${receipt}`);
+      .on('receipt', (receipt: IReceiptTransaction) => {
+        console.log(`Receipt`, receipt);
       })
-      .on('error', (error: any, receipt: any) => {
+      .on('error', (error: Error, receipt: IReceiptTransaction) => {
         console.log(`Error `, error);
         console.log(`Receipt:`, receipt);
       });
