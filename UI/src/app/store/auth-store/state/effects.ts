@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
+import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AccountService } from '../services/account/account.service';
 import { IProfileAdded } from './../../../shared/interfaces';
 import { AuthService } from './../../../shared/services/auth/auth.service';
@@ -72,4 +73,18 @@ export class AuthEffects {
     },
     { dispatch: false }
   );
+
+  errorAccountTransactions$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.editAccountFailure, AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
+      map((action: { message: string }) => showErrorNotification({ message: action.message }))
+    );
+  });
+
+  successAccountTransactions$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.editAccountSuccess, AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
+      map(() => showSuccessNotification({ message: 'Transaction is processing' }))
+    );
+  });
 }

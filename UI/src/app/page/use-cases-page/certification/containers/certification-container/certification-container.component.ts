@@ -8,7 +8,12 @@ import { Contract } from 'web3-eth-contract';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IProfileAdded, IReceiptTransaction } from './../../../../../shared/interfaces';
-import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
+import {
+  editAccountFailure,
+  editAccountSuccess,
+  loadAuth,
+  setAuthPublicAddress
+} from './../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectAuthStatus,
@@ -76,13 +81,13 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) => {
         console.log(`Confirmation number:`, confirmationNumber);
         console.log(`Receipt:`, receipt);
+        this.store.dispatch(editAccountSuccess());
       })
       .on('receipt', (receipt: IReceiptTransaction) => {
         console.log(`Receipt`, receipt);
       })
-      .on('error', (error: Error, receipt: IReceiptTransaction) => {
-        console.log(`Error `, error);
-        console.log(`Receipt:`, receipt);
+      .on('error', (error: Error) => {
+        return this.store.dispatch(editAccountFailure({ message: error.message }));
       });
   }
 }

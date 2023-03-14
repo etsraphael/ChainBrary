@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AuthStoreModule } from './auth-store';
 import { GlobalStoreModule } from './global-store';
+import { NotificationStoreModule } from './notification-store';
 
 @NgModule({
   declarations: [],
@@ -14,6 +15,7 @@ import { GlobalStoreModule } from './global-store';
     EffectsModule.forRoot([]),
     AuthStoreModule,
     GlobalStoreModule,
+    NotificationStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ]
 })
