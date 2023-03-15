@@ -3,5 +3,6 @@ export const environment = {
   contractLink: {
     organizationAddress: '0xc4E84da25fc7450c53919031B5a98e790F38F4d0',
     abiSrc: './../'
-  }
+  },
+  organizationName: 'chainbrary0'
 };

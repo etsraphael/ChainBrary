@@ -16,7 +16,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Input() profileAccount: Observable<IProfileAdded | null>;
   @Input() publicAddress: string | null;
   @Output() openLoginModal = new EventEmitter<void>();
-  @Output() saveProfile = new EventEmitter<ProfileCreation>();
+  @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean }>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
   avatarEditEnabled = true;
@@ -24,6 +24,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   avatarUrl: string | null;
   avatarUrlControlSub: Subscription;
   profileAccountSub: Subscription;
+  edited = false;
 
   constructor(private snackbar: MatSnackBar) {}
 
@@ -53,6 +54,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
           description: profile.description
         });
         this.avatarUrl = profile.imgUrl;
+        profile.id ? (this.edited = true) : (this.edited = false);
       }
     });
   }
@@ -120,7 +122,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       this.mainForm.value.description as string
     );
 
-    return this.saveProfile.emit(profileSubmitted);
+    return this.saveProfile.emit({ profile: profileSubmitted, edited: this.edited });
   }
 
   urlValidator(control: FormControl): { [key: string]: boolean } | null {

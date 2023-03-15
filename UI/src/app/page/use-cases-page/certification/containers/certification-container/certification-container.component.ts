@@ -3,13 +3,18 @@ import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-l
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { OrganizationContract } from 'src/app/shared/contracts';
+import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IProfileAdded, IReceiptTransaction } from './../../../../../shared/interfaces';
 import {
+  addAccountFailure,
+  addAccountSent,
+  addAccountSuccess,
   editAccountFailure,
+  editAccountSent,
   editAccountSuccess,
   loadAuth,
   setAuthPublicAddress
@@ -60,7 +65,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveProfile(profile: ProfileCreation): Promise<IReceiptTransaction> {
+  saveProfile(payload: { profile: ProfileCreation; edited: boolean }): Promise<IReceiptTransaction> {
     this.web3 = new Web3(window.ethereum);
     const organizationContract = new OrganizationContract();
     const contract: Contract = new this.web3.eth.Contract(
@@ -68,26 +73,33 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
       organizationContract.getAddress()
     );
 
-    // const create = await contract.methods
-    //   .addAccount('ChainBrary0', profile.userName, profile.imgUrl, profile.description)
-    //   .send({ from: profile.userAddress, value: this.web3.utils.toWei(String(0), 'ether')  });
+    if (payload.edited) return this.editAccount(contract, payload.profile);
+    else return this.addAccount(contract, payload.profile);
+  }
 
+  editAccount(contract: Contract, profile: ProfileCreation): Promise<IReceiptTransaction> {
     return contract.methods
-      .editAccount('chainbrary0', profile.userName, profile.imgUrl, profile.description)
+      .editAccount(environment.organizationName, profile.userName, profile.imgUrl, profile.description)
       .send({ from: profile.userAddress })
-      .on('transactionHash', (hash: string) => {
-        console.log(`Transaction hash: ${hash}`);
-      })
-      .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) => {
-        console.log(`Confirmation number:`, confirmationNumber);
-        console.log(`Receipt:`, receipt);
-        this.store.dispatch(editAccountSuccess());
-      })
-      .on('receipt', (receipt: IReceiptTransaction) => {
-        console.log(`Receipt`, receipt);
-      })
-      .on('error', (error: Error) => {
-        return this.store.dispatch(editAccountFailure({ message: error.message }));
-      });
+      .on('transactionHash', (hash: string) => this.store.dispatch(editAccountSent({ account: profile, hash })))
+      .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
+        this.store.dispatch(
+          editAccountSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
+        )
+      )
+      .on('error', (error: Error) => this.store.dispatch(editAccountFailure({ message: error.message })));
+  }
+
+  addAccount(contract: Contract, profile: ProfileCreation): Promise<IReceiptTransaction> {
+    return contract.methods
+      .addAccount(environment.organizationName, profile.userName, profile.imgUrl, profile.description)
+      .send({ from: profile.userAddress, value: this.web3.utils.toWei(String(0), 'ether') })
+      .on('transactionHash', (hash: string) => this.store.dispatch(addAccountSent({ account: profile, hash })))
+      .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
+        this.store.dispatch(
+          addAccountSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
+        )
+      )
+      .on('error', (error: Error) => this.store.dispatch(addAccountFailure({ message: error.message })));
   }
 }
