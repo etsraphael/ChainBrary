@@ -1,8 +1,7 @@
 export const environment = {
-  certificationUri: 'https://api.studio.thegraph.com/query/43513/organizationschainbrary/v0.0.2',
+  certificationUri: 'https://api.studio.thegraph.com/query/43513/organizationschainbrary/v0.0.3',
   contractLink: {
-    organizationAddress: '0xc4E84da25fc7450c53919031B5a98e790F38F4d0',
-    abiSrc: './../'
+    organizationAddress: '0x9839e975d9ab1b18f9708DeBAc5bfCD75Cff2684'
   },
   organizationName: 'chainbrary0'
 };
