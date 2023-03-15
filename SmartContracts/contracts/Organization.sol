@@ -15,6 +15,8 @@ contract Organization is Ownable {
         string organizationKey
     );
 
+    event OrganizationSaved(string name, string key, string supportUrl, address manager, uint256 pricePerDay);
+
     event MemberAccountAdded(
         address indexed userAddress,
         string userName,
@@ -104,6 +106,7 @@ contract Organization is Ownable {
     ) public validateOrganizationParams(_name, _key, _supportUrl) {
         require(organizations[_key].manager == address(0), "Organization key already exists.");
         emit OrganizationAdded(_name, _key, _supportUrl, _msgSender(), _pricePerDay);
+        emit OrganizationSaved(_name, _key, _supportUrl, _msgSender(), _pricePerDay);
         organizations[_key].name = _name;
         organizations[_key].key = _key;
         organizations[_key].supportUrl = _supportUrl;
@@ -132,6 +135,7 @@ contract Organization is Ownable {
         uint256 _pricePerDay
     ) public organizationNotNull(_key) organizationManager(_key) {
         emit OrganizationEdited(_name, _key, _supportUrl, _msgSender(), _pricePerDay);
+        emit OrganizationSaved(_name, _key, _supportUrl, _msgSender(), _pricePerDay);
         organizations[_key].name = _name;
         organizations[_key].supportUrl = _supportUrl;
         organizations[_key].manager = _msgSender();
@@ -139,6 +143,13 @@ contract Organization is Ownable {
     }
 
     function deleteOrganization(string memory _key) public organizationNotNull(_key) organizationManager(_key) {
+        emit OrganizationSaved(
+            organizations[_key].name,
+            organizations[_key].key,
+            organizations[_key].supportUrl,
+            _msgSender(),
+            0
+        );
         emit OrganizationDeleted(_key);
         delete organizations[_key];
     }
@@ -229,7 +240,7 @@ contract Organization is Ownable {
             _msgSender(),
             _userName,
             _imgUrl,
-             _description,
+            _description,
             organizations[_organizationKey].accounts[_msgSender()].expirationDate,
             _organizationKey
         );
