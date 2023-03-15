@@ -21,3 +21,8 @@ export interface IProfileAdded {
   blockTimestamp: number;
   description: string;
 }
+
+export interface IOrganization {
+  key: string;
+  pricePerDay: number;
+}

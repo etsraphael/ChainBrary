@@ -8,5 +8,6 @@ export const initialState: IAuthState = {
     loading: false,
     error: null,
     data: null
-  }
+  },
+  organization: null
 };
