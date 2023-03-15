@@ -10,16 +10,28 @@ import { IProfileAdded } from './../../../../shared/interfaces';
 export class AccountService {
   constructor(private apollo: Apollo) {}
 
-  getAccountByPublicAddress(userAddress: string): Observable<ApolloQueryResult<{ profileAddeds: IProfileAdded[] }>> {
+  getAccountByPublicAddress(
+    userAddress: string
+  ): Observable<ApolloQueryResult<{ memberAccountSaveds: IProfileAdded[] }>> {
     return this.apollo.query({
       query: gql`
         query ($userAddress: String!) {
-          profileAddeds(where: { userAddress: $userAddress }) {
+          memberAccountSaveds(
+            orderBy: blockTimestamp
+            orderDirection: desc
+            first: 1
+            where: { userAddress: $userAddress }
+          ) {
             id
-            userAddress
-            username
-            imgUrl
+            blockNumber
+            blockTimestamp
+            description
             expirationDate
+            imgUrl
+            organizationKey
+            transactionHash
+            userName
+            userAddress
           }
         }
       `,

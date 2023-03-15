@@ -1,5 +1,8 @@
 <div class="container px-0">
-  <div class="row my-3" *ngIf="certifficationCardVisible">
+  <div
+    class="row my-3"
+    *ngIf="certifficationCardVisible && (authStatus$ | async) !== AuthStatusCodeTypes.VerifiedAndConnected"
+  >
     <app-certification-message (hideCertifficationCard)="hideCertifficationCard()"></app-certification-message>
   </div>
 

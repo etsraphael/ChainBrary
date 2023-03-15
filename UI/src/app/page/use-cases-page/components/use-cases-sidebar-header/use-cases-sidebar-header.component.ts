@@ -6,8 +6,8 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from './../../../../shared/enum';
 import { IProfileAdded } from './../../../../shared/interfaces';
 import { FormatService } from './../../../../shared/services/format/format.service';
-import { resetAuth, setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
-import { selectAccount, selectPublicAddress, selectSideBarMode } from './../../../../store/auth-store/state/selectors';
+import { loadAuth, resetAuth, setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
+import { selectAccount, selectPublicAddress, selectAuthStatus } from './../../../../store/auth-store/state/selectors';
 @Component({
   selector: 'app-use-cases-sidebar-header',
   templateUrl: './use-cases-sidebar-header.component.html',
@@ -28,7 +28,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    this.sidebarMode$ = this.store.select(selectSideBarMode);
+    this.sidebarMode$ = this.store.select(selectAuthStatus);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.verifiedAccount$ = this.store.select(selectAccount);
   }
@@ -38,12 +38,11 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): void {
-    this.web3LoginService.openLoginModal();
-
     this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
       switch (state.type) {
         case ModalStateType.SUCCESS:
           this.store.dispatch(setAuthPublicAddress({ publicAddress: state.data?.publicAddress as string }));
+          this.store.dispatch(loadAuth());
           this.web3LoginService.closeLoginModal();
           break;
       }

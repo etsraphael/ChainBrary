@@ -1,0 +1,42 @@
+.bi-person-circle {
+  font-size: 500%;
+  border-radius: 50%;
+  padding: 0px 10px;
+  background: var(--bs-border-color);
+}
+
+.default-avatar .container-edit-button {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  bottom: 8px;
+  right: 25%;
+  border-radius: 50%;
+}
+
+.custom-avatar .container-edit-button {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  bottom: 8px;
+  right: 12%;
+  border-radius: 50%;
+}
+
+.bi-pencil-square {
+  position: relative;
+  bottom: -4px;
+  color: white;
+}
+
+.container-edit-button:hover {
+  cursor: pointer;
+}
+
+.avatar-img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  padding: 7px;
+  background: var(--bs-border-color);
+}

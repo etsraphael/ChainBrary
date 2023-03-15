@@ -15,7 +15,9 @@ export interface IUserAccount {
 export interface IProfileAdded {
   id: string;
   userAddress: string;
-  username: string;
+  userName: string;
   imgUrl: string;
   expirationDate: number;
+  blockTimestamp: number;
+  description: string;
 }
