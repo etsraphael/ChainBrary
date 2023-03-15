@@ -5,6 +5,7 @@ import { debounceTime, distinctUntilChanged, filter, Observable, Subscription, t
 import { IProfileAdded } from './../../../../../shared/interfaces';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
+import { FormatService } from './../../../../../shared/services/format/format.service';
 
 @Component({
   selector: 'app-certification-edit-card[authStatus][profileAccount]',
@@ -25,8 +26,14 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   avatarUrlControlSub: Subscription;
   profileAccountSub: Subscription;
   edited = false;
+  minMonth = 1;
+  accountExpired = false;
 
-  constructor(private snackbar: MatSnackBar) {}
+  constructor(private snackbar: MatSnackBar, public formatService: FormatService) {}
+
+  get formIsDirty(): boolean {
+    return this.mainForm.dirty;
+  }
 
   ngOnInit(): void {
     this.setUpForm();
@@ -36,9 +43,21 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     this.mainForm = new FormGroup({
       avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
       username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      description: new FormControl('', [Validators.required, Validators.maxLength(20)])
+      description: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      month: new FormControl(this.minMonth, [Validators.required, Validators.min(this.minMonth)])
     });
     this.completeForm();
+  }
+
+  setUpControl(profile: IProfileAdded): void {
+    this.accountExpired = this.formatService.timeStampToDate(profile.expirationDate) < new Date();
+
+    if (this.accountExpired) {
+      this.mainForm.get('month')?.setValue(this.minMonth);
+    } else {
+      this.mainForm.get('month')?.setValidators(null);
+      this.mainForm.get('month')?.setValue(null);
+    }
   }
 
   completeForm(): void {
@@ -55,6 +74,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
         });
         this.avatarUrl = profile.imgUrl;
         profile.id ? (this.edited = true) : (this.edited = false);
+        this.setUpControl(profile);
       }
     });
   }
@@ -142,4 +162,5 @@ export interface CertificationForm {
   avatarUrl: FormControl<string | null>;
   username: FormControl<string | null>;
   description: FormControl<string | null>;
+  month: FormControl<number | null>;
 }

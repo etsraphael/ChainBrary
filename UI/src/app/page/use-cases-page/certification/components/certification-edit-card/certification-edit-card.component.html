@@ -57,9 +57,41 @@
             </mat-form-field>
           </div>
         </div>
+        <div [hidden]="!formIsDirty">
+          <div class="row justify-content-center" *ngIf="edited && !accountExpired">
+            <div class="col-7 text-end">
+              <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-primary">
+                Already certified until: {{ formatService.timeStampToDate(p.expirationDate) | date : 'shortDate' }}
+              </p>
+            </div>
+          </div>
+          <div class="row justify-content-center" *ngIf="edited && accountExpired">
+            <div class="col-7 text-end">
+              <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-success">Certified until XX</p>
+            </div>
+          </div>
+          <div class="row justify-content-center">
+            <div class="col-7">
+              <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+                <mat-label> Add Months {{ mainForm.get('month')?.validator ? '' : '(optional)' }} </mat-label>
+                <input
+                  formControlName="month"
+                  type="number"
+                  class="text-center"
+                  matInput
+                  placeholder="Number of month"
+                />
+                <mat-error *ngIf="mainForm.get('month')!.hasError('min')">
+                  Number of month must be greater than 0
+                </mat-error>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+
         <div class="row justify-content-center">
           <div class="col-8 row mytest">
-            <p class="text-muted text-center">Certified from now - 1 successful transaction</p>
+            <p class="text-muted text-center">Certified - 1 successful transaction</p>
           </div>
         </div>
         <div class="row justify-content-center">
