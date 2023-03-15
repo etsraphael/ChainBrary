@@ -1,4 +1,4 @@
-import { IProfileAdded, StoreState } from '../../../shared/interfaces';
+import { IProfileAdded, IOrganization, StoreState } from '../../../shared/interfaces';
 
 export const AUTH_FEATURE_KEY = 'auth';
 
@@ -7,6 +7,7 @@ export interface IAuthState {
   verifiedAccount: boolean;
   connectedUser: boolean;
   userAccount: StoreState<IProfileAdded | null>;
+  organization: IOrganization | null;
 }
 
 export interface AuthState {
