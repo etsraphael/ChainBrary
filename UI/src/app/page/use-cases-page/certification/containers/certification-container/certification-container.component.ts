@@ -22,6 +22,7 @@ import {
 import {
   selectAccount,
   selectAuthStatus,
+  selectDailyPrice,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
 
@@ -34,6 +35,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
   authStatus$: Observable<AuthStatusCode>;
   profileAccount$: Observable<IProfileAdded | null>;
   publicAddress$: Observable<string | null>;
+  dailyPrice$: Observable<number | undefined>;
   modalSub: Subscription;
   web3: Web3;
 
@@ -47,6 +49,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);
+    this.dailyPrice$ = this.store.select(selectDailyPrice);
   }
 
   ngOnDestroy(): void {

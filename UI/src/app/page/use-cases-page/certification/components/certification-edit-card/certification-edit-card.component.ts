@@ -16,6 +16,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Input() authStatus: AuthStatusCode | null;
   @Input() profileAccount: Observable<IProfileAdded | null>;
   @Input() publicAddress: string | null;
+  @Input() dailyPrice: number | undefined;
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean }>();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -28,6 +29,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   edited = false;
   minMonth = 1;
   accountExpired = false;
+  priceEth: number;
 
   constructor(private snackbar: MatSnackBar, public formatService: FormatService) {}
 
@@ -47,6 +49,15 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       month: new FormControl(this.minMonth, [Validators.required, Validators.min(this.minMonth)])
     });
     this.completeForm();
+
+    // listen month value changes
+    this.mainForm
+      .get('month')
+      ?.valueChanges.pipe(debounceTime(350), distinctUntilChanged())
+      .subscribe((value: number | null) => {
+        if (!value) this.priceEth = 0;
+        else this.priceEth = (this.dailyPrice as number) * 30 * value * 1e-18;
+      });
   }
 
   setUpControl(profile: IProfileAdded): void {
@@ -54,6 +65,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
 
     if (this.accountExpired) {
       this.mainForm.get('month')?.setValue(this.minMonth);
+      this.mainForm.get('month')?.setValue(0);
     } else {
       this.mainForm.get('month')?.setValidators(null);
       this.mainForm.get('month')?.setValue(null);
