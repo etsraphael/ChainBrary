@@ -237,7 +237,9 @@ contract Organization is Ownable {
     {
         uint256 pricePerDay = organizations[_organizationKey].pricePerDay;
         uint256 availableDays = msg.value.div(pricePerDay);
-        uint256 expirationDate = organizations[_organizationKey].accounts[_msgSender()].expirationDate.add(availableDays.mul(1 days));
+        uint256 expirationDate = organizations[_organizationKey].accounts[_msgSender()].expirationDate.add(
+            availableDays.mul(1 days)
+        );
         require(
             expirationDate <= block.timestamp.add(MAX_DAYS.mul(1 days)),
             "Maximum days exceeded. You can't subscribe for more than a year."
