@@ -2,9 +2,9 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Outpu
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, filter, Observable, Subscription, take } from 'rxjs';
-import { IProfileAdded } from './../../../../../shared/interfaces';
-import { AuthStatusCode } from './../../../../../shared/enum';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
+import { AuthStatusCode } from './../../../../../shared/enum';
+import { IProfileAdded } from './../../../../../shared/interfaces';
 import { FormatService } from './../../../../../shared/services/format/format.service';
 
 @Component({
@@ -30,12 +30,9 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   minMonth = 1;
   accountExpired = false;
   priceEth: number;
+  newEstimatedExpirationDate: Date | null;
 
   constructor(private snackbar: MatSnackBar, public formatService: FormatService) {}
-
-  get formIsDirty(): boolean {
-    return this.mainForm.dirty;
-  }
 
   ngOnInit(): void {
     this.setUpForm();
@@ -46,7 +43,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
       username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
       description: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      month: new FormControl(this.minMonth, [Validators.required, Validators.min(this.minMonth)])
+      month: new FormControl(this.minMonth, [Validators.required, Validators.min(this.minMonth), Validators.max(12)])
     });
     this.completeForm();
 
@@ -54,9 +51,27 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     this.mainForm
       .get('month')
       ?.valueChanges.pipe(debounceTime(350), distinctUntilChanged())
-      .subscribe((value: number | null) => {
-        if (!value) this.priceEth = 0;
-        else this.priceEth = (this.dailyPrice as number) * 30 * value * 1e-18;
+      .subscribe((month: number | null) => {
+        if (!month) {
+          this.priceEth = 0;
+          this.newEstimatedExpirationDate = null;
+        } else {
+          this.priceEth = (this.dailyPrice as number) * 30 * month * 1e-18;
+          this.profileAccount
+            .pipe(
+              take(1),
+              filter((val) => !!val)
+            )
+            .subscribe((profile: IProfileAdded | null) => {
+              if (this.accountExpired) {
+                const currentDate = new Date();
+                this.newEstimatedExpirationDate = new Date(currentDate.setDate(currentDate.getDate() + month * 30));
+              } else {
+                const startDay = this.formatService.timeStampToDate((profile as IProfileAdded).expirationDate);
+                this.newEstimatedExpirationDate = new Date(startDay.setDate(startDay.getDate() + month * 30));
+              }
+            });
+        }
       });
   }
 
