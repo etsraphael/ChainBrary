@@ -30,7 +30,7 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
           id: auth.id,
           userName: auth.userName,
           imgUrl: auth.imgUrl,
-          expirationDate: auth.expirationDate,
+          expirationDate: 1689399687, // TODO: remove this hardcode
           userAddress: auth.userAddress,
           blockTimestamp: auth.blockTimestamp,
           description: auth.description

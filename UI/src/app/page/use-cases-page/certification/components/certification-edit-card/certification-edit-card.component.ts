@@ -18,7 +18,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Input() publicAddress: string | null;
   @Input() dailyPrice: number | undefined;
   @Output() openLoginModal = new EventEmitter<void>();
-  @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean }>();
+  @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean; priceValue: number }>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
   avatarEditEnabled = true;
@@ -82,7 +82,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       this.mainForm.get('month')?.setValue(this.minMonth);
       this.mainForm.get('month')?.setValue(0);
     } else {
-      this.mainForm.get('month')?.setValidators(null);
+      this.mainForm.get('month')?.setValidators([Validators.min(this.minMonth), Validators.max(12)]);
       this.mainForm.get('month')?.setValue(null);
     }
   }
@@ -169,7 +169,11 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       this.mainForm.value.description as string
     );
 
-    return this.saveProfile.emit({ profile: profileSubmitted, edited: this.edited });
+    return this.saveProfile.emit({
+      profile: profileSubmitted,
+      edited: this.edited,
+      priceValue: Number(this.formatService.removeScientificNotation(this.priceEth * 1e18))
+    });
   }
 
   urlValidator(control: FormControl): { [key: string]: boolean } | null {
