@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PaymentPageComponent } from '../page/use-cases-page/payment-request/containers/payment-page/payment-page.component';
 
 const routes: Routes = [
   {
@@ -9,6 +10,10 @@ const routes: Routes = [
   {
     path: 'use-cases',
     loadChildren: () => import('../page/use-cases-page/use-cases-page.module').then((m) => m.UseCasesPageModule)
+  },
+  {
+    path: 'payment-page/:id',
+    component: PaymentPageComponent
   },
   {
     path: '**',
