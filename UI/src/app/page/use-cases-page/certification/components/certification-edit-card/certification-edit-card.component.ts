@@ -2,9 +2,10 @@ import { AfterViewInit, Component, EventEmitter, Input, OnDestroy, OnInit, Outpu
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { debounceTime, distinctUntilChanged, filter, Observable, Subscription, take } from 'rxjs';
-import { IProfileAdded } from './../../../../../shared/interfaces';
-import { AuthStatusCode } from './../../../../../shared/enum';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
+import { AuthStatusCode } from './../../../../../shared/enum';
+import { IProfileAdded } from './../../../../../shared/interfaces';
+import { FormatService } from './../../../../../shared/services/format/format.service';
 
 @Component({
   selector: 'app-certification-edit-card[authStatus][profileAccount]',
@@ -15,8 +16,9 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Input() authStatus: AuthStatusCode | null;
   @Input() profileAccount: Observable<IProfileAdded | null>;
   @Input() publicAddress: string | null;
+  @Input() dailyPrice: number | undefined;
   @Output() openLoginModal = new EventEmitter<void>();
-  @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean }>();
+  @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean; priceValue: number }>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
   avatarEditEnabled = true;
@@ -25,8 +27,12 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   avatarUrlControlSub: Subscription;
   profileAccountSub: Subscription;
   edited = false;
+  minMonth = 1;
+  accountExpired = false;
+  priceEth: number;
+  newEstimatedExpirationDate: Date | null;
 
-  constructor(private snackbar: MatSnackBar) {}
+  constructor(private snackbar: MatSnackBar, public formatService: FormatService) {}
 
   ngOnInit(): void {
     this.setUpForm();
@@ -36,9 +42,49 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
     this.mainForm = new FormGroup({
       avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
       username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-      description: new FormControl('', [Validators.required, Validators.maxLength(20)])
+      description: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+      month: new FormControl(this.minMonth, [Validators.required, Validators.min(this.minMonth), Validators.max(12)])
     });
     this.completeForm();
+
+    // listen month value changes
+    this.mainForm
+      .get('month')
+      ?.valueChanges.pipe(debounceTime(350), distinctUntilChanged())
+      .subscribe((month: number | null) => {
+        if (!month) {
+          this.priceEth = 0;
+          this.newEstimatedExpirationDate = null;
+        } else {
+          this.priceEth = (this.dailyPrice as number) * 30 * month * 1e-18;
+          this.profileAccount
+            .pipe(
+              take(1),
+              filter((val) => !!val)
+            )
+            .subscribe((profile: IProfileAdded | null) => {
+              if (this.accountExpired) {
+                const currentDate = new Date();
+                this.newEstimatedExpirationDate = new Date(currentDate.setDate(currentDate.getDate() + month * 30));
+              } else {
+                const startDay = this.formatService.timeStampToDate((profile as IProfileAdded).expirationDate);
+                this.newEstimatedExpirationDate = new Date(startDay.setDate(startDay.getDate() + month * 30));
+              }
+            });
+        }
+      });
+  }
+
+  setUpControl(profile: IProfileAdded): void {
+    this.accountExpired = this.formatService.timeStampToDate(profile.expirationDate) < new Date();
+
+    if (this.accountExpired) {
+      this.mainForm.get('month')?.setValue(this.minMonth);
+      this.mainForm.get('month')?.setValue(0);
+    } else {
+      this.mainForm.get('month')?.setValidators([Validators.min(this.minMonth), Validators.max(12)]);
+      this.mainForm.get('month')?.setValue(null);
+    }
   }
 
   completeForm(): void {
@@ -55,6 +101,7 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
         });
         this.avatarUrl = profile.imgUrl;
         profile.id ? (this.edited = true) : (this.edited = false);
+        this.setUpControl(profile);
       }
     });
   }
@@ -122,7 +169,11 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
       this.mainForm.value.description as string
     );
 
-    return this.saveProfile.emit({ profile: profileSubmitted, edited: this.edited });
+    return this.saveProfile.emit({
+      profile: profileSubmitted,
+      edited: this.edited,
+      priceValue: Number(this.formatService.removeScientificNotation(this.priceEth * 1e18))
+    });
   }
 
   urlValidator(control: FormControl): { [key: string]: boolean } | null {
@@ -142,4 +193,5 @@ export interface CertificationForm {
   avatarUrl: FormControl<string | null>;
   username: FormControl<string | null>;
   description: FormControl<string | null>;
+  month: FormControl<number | null>;
 }

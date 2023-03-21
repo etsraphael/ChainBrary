@@ -22,6 +22,7 @@ import {
 import {
   selectAccount,
   selectAuthStatus,
+  selectDailyPrice,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
 
@@ -34,6 +35,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
   authStatus$: Observable<AuthStatusCode>;
   profileAccount$: Observable<IProfileAdded | null>;
   publicAddress$: Observable<string | null>;
+  dailyPrice$: Observable<number | undefined>;
   modalSub: Subscription;
   web3: Web3;
 
@@ -47,6 +49,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);
+    this.dailyPrice$ = this.store.select(selectDailyPrice);
   }
 
   ngOnDestroy(): void {
@@ -65,7 +68,11 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveProfile(payload: { profile: ProfileCreation; edited: boolean }): Promise<IReceiptTransaction> {
+  saveProfile(payload: {
+    profile: ProfileCreation;
+    edited: boolean;
+    priceValue: number;
+  }): Promise<IReceiptTransaction> {
     this.web3 = new Web3(window.ethereum);
     const organizationContract = new OrganizationContract();
     const contract: Contract = new this.web3.eth.Contract(
@@ -73,14 +80,14 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
       organizationContract.getAddress()
     );
 
-    if (payload.edited) return this.editAccount(contract, payload.profile);
-    else return this.addAccount(contract, payload.profile);
+    if (payload.edited) return this.editAccount(contract, payload.profile, payload.priceValue);
+    else return this.addAccount(contract, payload.profile, payload.priceValue);
   }
 
-  editAccount(contract: Contract, profile: ProfileCreation): Promise<IReceiptTransaction> {
+  editAccount(contract: Contract, profile: ProfileCreation, priceValue: number): Promise<IReceiptTransaction> {
     return contract.methods
       .editAccount(environment.organizationName, profile.userName, profile.imgUrl, profile.description)
-      .send({ from: profile.userAddress })
+      .send({ from: profile.userAddress, value: String(priceValue) })
       .on('transactionHash', (hash: string) => this.store.dispatch(editAccountSent({ account: profile, hash })))
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
         this.store.dispatch(
@@ -90,10 +97,10 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
       .on('error', (error: Error) => this.store.dispatch(editAccountFailure({ message: error.message })));
   }
 
-  addAccount(contract: Contract, profile: ProfileCreation): Promise<IReceiptTransaction> {
+  addAccount(contract: Contract, profile: ProfileCreation, priceValue: number): Promise<IReceiptTransaction> {
     return contract.methods
       .addAccount(environment.organizationName, profile.userName, profile.imgUrl, profile.description)
-      .send({ from: profile.userAddress, value: this.web3.utils.toWei(String(0), 'ether') })
+      .send({ from: profile.userAddress, value: String(priceValue) })
       .on('transactionHash', (hash: string) => this.store.dispatch(addAccountSent({ account: profile, hash })))
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
         this.store.dispatch(

@@ -302,6 +302,32 @@ export class OrganizationContract extends BaseContract {
         type: 'event'
       },
       {
+        inputs: [],
+        name: 'MAX_DAYS',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'MIN_MONTHLY_TRANSACTION',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
         inputs: [
           {
             internalType: 'string',
@@ -427,6 +453,32 @@ export class OrganizationContract extends BaseContract {
       {
         inputs: [
           {
+            internalType: 'uint256',
+            name: '_maxDaysValue',
+            type: 'uint256'
+          }
+        ],
+        name: 'editMaxDays',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function'
+      },
+      {
+        inputs: [
+          {
+            internalType: 'uint256',
+            name: '_minTransactionValue',
+            type: 'uint256'
+          }
+        ],
+        name: 'editMinTransaction',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function'
+      },
+      {
+        inputs: [
+          {
             internalType: 'string',
             name: '_key',
             type: 'string'
@@ -448,6 +500,13 @@ export class OrganizationContract extends BaseContract {
           }
         ],
         name: 'editOrganization',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'exportExceed',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function'
@@ -531,19 +590,6 @@ export class OrganizationContract extends BaseContract {
             name: '',
             type: 'address'
           },
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'minTransaction',
-        outputs: [
           {
             internalType: 'uint256',
             name: '',

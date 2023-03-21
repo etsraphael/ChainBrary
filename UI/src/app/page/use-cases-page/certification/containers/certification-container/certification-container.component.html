@@ -3,6 +3,7 @@
     [authStatus]="authStatus$ | async"
     [profileAccount]="profileAccount$"
     [publicAddress]="publicAddress$ | async"
+    [dailyPrice]="(dailyPrice$ | async)!"
     (openLoginModal)="openLoginModal()"
     (saveProfile)="saveProfile($event)"
   ></app-certification-edit-card>

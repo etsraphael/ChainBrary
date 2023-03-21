@@ -18,7 +18,7 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
   ),
   on(
     AuthActions.loadAuthSuccess,
-    (state, { auth, organization }): IAuthState => ({
+    (state, { auth }): IAuthState => ({
       ...state,
       publicAddress: auth.userAddress,
       verifiedAccount: true,
@@ -35,8 +35,14 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
           blockTimestamp: auth.blockTimestamp,
           description: auth.description
         }
-      },
-      organization: organization
+      }
+    })
+  ),
+  on(
+    AuthActions.loadOrgnisationSuccess,
+    (state, { organization }): IAuthState => ({
+      ...state,
+      organization
     })
   ),
   on(
