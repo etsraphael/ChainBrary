@@ -19,20 +19,32 @@ export class AuthEffects {
       mergeMap(
         (): Actions =>
           this.accountService.getAccountByPublicAddress(this.authService.getPublicAddress() as string).pipe(
-            map(
+            mergeMap(
               (
                 response: ApolloQueryResult<{
                   memberAccountSaveds: IProfileAdded[];
                   organizationSaveds: IOrganization[];
                 }>
               ) => {
-                if (response.data.memberAccountSaveds.length > 0) {
-                  return AuthActions.loadAuthSuccess({
-                    auth: response.data.memberAccountSaveds[0],
-                    organization: response.data.organizationSaveds[0]
-                  });
-                } else {
-                  return AuthActions.loadAuthFailure({ message: 'User not found' });
+                switch (true) {
+                  case response.data.memberAccountSaveds.length > 0 && response.data.organizationSaveds.length > 0:
+                    return [
+                      AuthActions.loadAuthSuccess({
+                        auth: response.data.memberAccountSaveds[0]
+                      }),
+                      AuthActions.loadOrgnisationSuccess({
+                        organization: response.data.organizationSaveds[0]
+                      })
+                    ];
+                  case response.data.memberAccountSaveds.length == 0 && response.data.organizationSaveds.length > 0:
+                    return [
+                      AuthActions.loadAuthFailure({ message: 'User not found' }),
+                      AuthActions.loadOrgnisationSuccess({
+                        organization: response.data.organizationSaveds[0]
+                      })
+                    ];
+                  default:
+                    return [AuthActions.loadAuthFailure({ message: 'User not found' })];
                 }
               }
             ),
