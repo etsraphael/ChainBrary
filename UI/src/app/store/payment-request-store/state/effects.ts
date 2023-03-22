@@ -15,9 +15,15 @@ export class PaymentRequestEffects {
       map((action: { encodedRequest: string }) => {
         const decodedPayment = Buffer.from(action.encodedRequest, 'base64').toString('utf-8');
         const decodedPaymentRequest: IPaymentRequest = JSON.parse(decodedPayment);
-        return PaymentRequestActions.generatePaymentRequestSuccess({
-          paymentRequest: decodedPaymentRequest
-        });
+        if (this.isIPaymentRequest(decodedPaymentRequest)) {
+          return PaymentRequestActions.generatePaymentRequestSuccess({
+            paymentRequest: decodedPaymentRequest
+          });
+        } else {
+          return PaymentRequestActions.generatePaymentRequestFailure({
+            errorMessage: 'Error decoding payment request'
+          });
+        }
       }),
       catchError(() =>
         of(
@@ -28,4 +34,10 @@ export class PaymentRequestEffects {
       )
     );
   });
+
+  isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
+    return (
+      typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.amount === 'number'
+    );
+  }
 }
