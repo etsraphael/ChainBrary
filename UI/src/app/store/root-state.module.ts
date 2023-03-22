@@ -6,6 +6,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { AuthStoreModule } from './auth-store';
 import { GlobalStoreModule } from './global-store';
 import { NotificationStoreModule } from './notification-store';
+import { PaymentRequestStoreModule } from './payment-request-store';
 
 @NgModule({
   declarations: [],
@@ -15,6 +16,7 @@ import { NotificationStoreModule } from './notification-store';
     EffectsModule.forRoot([]),
     AuthStoreModule,
     GlobalStoreModule,
+    PaymentRequestStoreModule,
     NotificationStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ]

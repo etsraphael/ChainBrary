@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "allowedCommonJsDependencies": ["web3"],
+            "allowedCommonJsDependencies": ["web3", "buffer"],
             "outputPath": "dist/chain-brary",
             "index": "src/index.html",
             "main": "src/main.ts",
