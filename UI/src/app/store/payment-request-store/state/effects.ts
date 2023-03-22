@@ -22,7 +22,7 @@ export class PaymentRequestEffects {
       catchError(() =>
         of(
           PaymentRequestActions.generatePaymentRequestFailure({
-            error: 'Error decoding payment request'
+            errorMessage: 'Error decoding payment request'
           })
         )
       )

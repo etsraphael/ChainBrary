@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IPaymentRequest } from './../../../shared/interfaces';
+import { IPaymentRequest, IProfileAdded } from './../../../shared/interfaces';
 
 export const generatePaymentRequest = createAction(
   '[Payment Request] Generate Payment Request',
@@ -11,5 +11,20 @@ export const generatePaymentRequestSuccess = createAction(
 );
 export const generatePaymentRequestFailure = createAction(
   '[Payment Request] Generate Payment Request Failure',
+  props<{ errorMessage: string }>()
+);
+
+export const loadVerifiedAccount = createAction(
+  '[Payment Request] Load Verified Account',
+  props<{ address: string }>()
+);
+
+export const loadVerifiedAccountSuccess = createAction(
+  '[Payment Request] Load Verified Account Success',
+  props<{ verifiedAccount: IProfileAdded }>()
+);
+
+export const loadVerifiedAccountFailure = createAction(
+  '[Payment Request] Load Verified Account Failure',
   props<{ error: string }>()
 );
