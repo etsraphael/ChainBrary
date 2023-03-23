@@ -57,7 +57,7 @@ export class AccountService {
   getCertifiedAccountByPublicAddress(
     userAddress: string
   ): Observable<ApolloQueryResult<{ memberAccountSaveds: IProfileAdded[] }>> {
-    const currentDate = String(new Date().getTime() / 1000);
+    const currentDate = String(Math.round(new Date().getTime() / 1000));
 
     return this.apollo.query({
       query: gql`
