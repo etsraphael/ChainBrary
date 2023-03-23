@@ -26,5 +26,5 @@ export const loadVerifiedAccountSuccess = createAction(
 
 export const loadVerifiedAccountFailure = createAction(
   '[Payment Request] Load Verified Account Failure',
-  props<{ error: string }>()
+  props<{ errorMessage: string }>()
 );

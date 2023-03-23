@@ -56,24 +56,23 @@ export class AccountService {
 
   getCertifiedAccountByPublicAddress(
     userAddress: string
-  ): Observable<ApolloQueryResult<{ memberAccountSaveds: IProfileAdded[]; organizationSaveds: IOrganization[] }>> {
+  ): Observable<ApolloQueryResult<{ memberAccountSaveds: IProfileAdded[] }>> {
+    const currentDate = String(new Date().getTime() / 1000);
+
     return this.apollo.query({
       query: gql`
-        query ($userAddress: String!, $organizationName: String!) {
+        query ($userAddress: String!, $organizationName: String!, $currentDate: String!) {
           memberAccountSaveds(
             orderBy: blockTimestamp
             orderDirection: desc
             first: 1
-            where: { userAddress: $userAddress, organizationKey: $organizationName }
+            where: { userAddress: $userAddress, organizationKey: $organizationName, expirationDate_gt: $currentDate }
           ) {
             id
-            blockNumber
-            blockTimestamp
             description
             expirationDate
             imgUrl
             organizationKey
-            transactionHash
             userName
             userAddress
           }
@@ -81,7 +80,8 @@ export class AccountService {
       `,
       variables: {
         userAddress,
-        organizationName: this.organizationName
+        organizationName: this.organizationName,
+        currentDate
       }
     });
   }
