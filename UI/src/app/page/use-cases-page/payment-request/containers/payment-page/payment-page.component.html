@@ -1,1 +1,7 @@
-<p>payment-page works!</p>
+<div class="container bg-light">
+  <div class="d-flex justify-content-center">
+    <div class="col-4 my-5">
+      <app-payment-request-card [paymentRequest]="(selectPaymentRequestState$ | async)!"> </app-payment-request-card>
+    </div>
+  </div>
+</div>
