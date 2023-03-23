@@ -11,6 +11,5 @@ export const initialState: IPaymentRequestState = {
     loading: false,
     error: null,
     data: null
-  },
-  errorMessage: null
+  }
 };

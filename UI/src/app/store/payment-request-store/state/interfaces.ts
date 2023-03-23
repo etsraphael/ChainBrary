@@ -6,7 +6,6 @@ export interface IPaymentRequestState {
   payment: StoreState<IPaymentRequest | null>;
   userAccount: StoreState<IProfileAdded | null>;
   verifiedAccount: boolean;
-  errorMessage: string | null;
 }
 
 export interface PaymentRequestState {
