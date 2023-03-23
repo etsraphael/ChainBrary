@@ -3,7 +3,7 @@ import { ApolloQueryResult } from '@apollo/client/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
-import { AccountService } from '../services/account/account.service';
+import { AccountService } from '../../../shared/services/account/account.service';
 import { IOrganization, IProfileAdded } from './../../../shared/interfaces';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -18,38 +18,40 @@ export class AuthEffects {
       filter(() => !!this.authService.getPublicAddress()),
       mergeMap(
         (): Actions =>
-          this.accountService.getAccountByPublicAddress(this.authService.getPublicAddress() as string).pipe(
-            mergeMap(
-              (
-                response: ApolloQueryResult<{
-                  memberAccountSaveds: IProfileAdded[];
-                  organizationSaveds: IOrganization[];
-                }>
-              ) => {
-                switch (true) {
-                  case response.data.memberAccountSaveds.length > 0 && response.data.organizationSaveds.length > 0:
-                    return [
-                      AuthActions.loadAuthSuccess({
-                        auth: response.data.memberAccountSaveds[0]
-                      }),
-                      AuthActions.loadOrgnisationSuccess({
-                        organization: response.data.organizationSaveds[0]
-                      })
-                    ];
-                  case response.data.memberAccountSaveds.length == 0 && response.data.organizationSaveds.length > 0:
-                    return [
-                      AuthActions.loadAuthFailure({ message: 'User not found' }),
-                      AuthActions.loadOrgnisationSuccess({
-                        organization: response.data.organizationSaveds[0]
-                      })
-                    ];
-                  default:
-                    return [AuthActions.loadAuthFailure({ message: 'User not found' })];
+          this.accountService
+            .getAccountByPublicAddressAndOrganization(this.authService.getPublicAddress() as string)
+            .pipe(
+              mergeMap(
+                (
+                  response: ApolloQueryResult<{
+                    memberAccountSaveds: IProfileAdded[];
+                    organizationSaveds: IOrganization[];
+                  }>
+                ) => {
+                  switch (true) {
+                    case response.data.memberAccountSaveds.length > 0 && response.data.organizationSaveds.length > 0:
+                      return [
+                        AuthActions.loadAuthSuccess({
+                          auth: response.data.memberAccountSaveds[0]
+                        }),
+                        AuthActions.loadOrgnisationSuccess({
+                          organization: response.data.organizationSaveds[0]
+                        })
+                      ];
+                    case response.data.memberAccountSaveds.length == 0 && response.data.organizationSaveds.length > 0:
+                      return [
+                        AuthActions.loadAuthFailure({ message: 'User not found' }),
+                        AuthActions.loadOrgnisationSuccess({
+                          organization: response.data.organizationSaveds[0]
+                        })
+                      ];
+                    default:
+                      return [AuthActions.loadAuthFailure({ message: 'User not found' })];
+                  }
                 }
-              }
-            ),
-            catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
-          )
+              ),
+              catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
+            )
       )
     );
   });
