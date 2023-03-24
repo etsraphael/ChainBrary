@@ -4,9 +4,10 @@ import { SharedComponentsModule } from './../../../shared/components/shared-comp
 import { PaymentRequestContainerComponent } from './containers/payment-request-container/payment-request-container.component';
 import { PaymentPageComponent } from './containers/payment-page/payment-page.component';
 import { PaymentRequestCardComponent } from './components/payment-request-card/payment-request-card.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [PaymentRequestContainerComponent, PaymentPageComponent, PaymentRequestCardComponent],
-  imports: [CommonModule, SharedComponentsModule]
+  imports: [CommonModule, SharedComponentsModule, RouterModule]
 })
 export class PaymentRequestModule {}

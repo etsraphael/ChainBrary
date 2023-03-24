@@ -1,7 +1,16 @@
 <div class="container bg-light">
   <div class="d-flex justify-content-center">
-    <div class="col-4 my-5" *ngIf="!!(selectPaymentRequestState$ | async)">
-      <app-payment-request-card [paymentRequest]="(selectPaymentRequestState$ | async)!"> </app-payment-request-card>
+    <div class="col-4 my-5" *ngIf="cardIsLoading$ | async; else paymentRequestCard">
+      <div class="d-flex justify-content-center">
+        <div class="spinner-container spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
     </div>
+    <ng-template #paymentRequestCard>
+      <div class="col-4 my-5">
+        <app-payment-request-card [paymentRequest]="(selectPaymentRequestState$ | async)!"></app-payment-request-card>
+      </div>
+    </ng-template>
   </div>
 </div>

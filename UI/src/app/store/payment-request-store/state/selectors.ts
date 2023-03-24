@@ -30,3 +30,8 @@ export const selectPaymentRequestError: MemoizedSelector<object, string | null> 
   selectPaymentRequest,
   (s) => s.payment.error
 );
+
+export const selectCardIsLoading: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentRequest,
+  (s) => s.payment.loading || s.userAccount.loading
+);

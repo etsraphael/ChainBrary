@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { generatePaymentRequest } from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
-import { selectPaymentRequest } from './../../../../../store/payment-request-store/state/selectors';
+import { selectCardIsLoading, selectPaymentRequest } from './../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-page',
@@ -13,6 +13,7 @@ import { selectPaymentRequest } from './../../../../../store/payment-request-sto
 })
 export class PaymentPageComponent implements OnInit {
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
+  cardIsLoading$: Observable<boolean>;
 
   constructor(private route: ActivatedRoute, private store: Store) {
     this.setUpId();
@@ -28,5 +29,6 @@ export class PaymentPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.selectPaymentRequestState$ = this.store.select(selectPaymentRequest);
+    this.cardIsLoading$ = this.store.select(selectCardIsLoading);
   }
 }
