@@ -2,7 +2,7 @@
   <!-- Payment Request Card -->
   <ng-template [ngIf]="paymentRequest.payment.data">
     <!-- Avatar -->
-    <div class="position-relative" *ngIf="paymentRequest.verifiedAccount">
+    <div class="position-relative">
       <div class="card-header-custom position-absolute w-100">
         <div class="row justify-content-center mx-0">
           <div class="col-4 text-center">
@@ -16,21 +16,24 @@
     </div>
     <!-- Body -->
     <div class="card-body mt-5">
-      <div class="row text-center">
-        <div class="col-12">
-          <h4 class="card-title text-primary">{{ paymentRequest.userAccount.data?.userName }}</h4>
-          <h5>{{ paymentRequest.userAccount.data?.description }}</h5>
-          <p class="text-muted text-center">Certified - X successful transaction</p>
-          <p></p>
+      <div *ngIf="paymentRequest.verifiedAccount">
+        <div class="row text-center">
+          <div class="col-12">
+            <h4 class="card-title text-primary">{{ paymentRequest.userAccount.data?.userName }}</h4>
+            <h5>{{ paymentRequest.userAccount.data?.description }}</h5>
+            <p class="text-muted text-center">Certified - X successful transaction</p>
+            <p></p>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8 row justify-content-center">
+            <hr class="col-4" />
+            <div class="col-2"></div>
+            <hr class="col-4" />
+          </div>
         </div>
       </div>
-      <div class="row justify-content-center">
-        <div class="col-8 row justify-content-center">
-          <hr class="col-4" />
-          <div class="col-2"></div>
-          <hr class="col-4" />
-        </div>
-      </div>
+
       <div class="row text-center">
         <div class="col-12">
           <h2>{{ paymentRequest.payment.data.amount }} eth</h2>

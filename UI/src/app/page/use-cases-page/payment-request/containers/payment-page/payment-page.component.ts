@@ -4,7 +4,10 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { generatePaymentRequest } from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
-import { selectCardIsLoading, selectPaymentRequest } from './../../../../../store/payment-request-store/state/selectors';
+import {
+  selectCardIsLoading,
+  selectPaymentRequest
+} from './../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-page',
