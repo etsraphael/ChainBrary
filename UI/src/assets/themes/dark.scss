@@ -89,6 +89,16 @@ $dark: #f8f9fa;
   .gradient-info {
     background: linear-gradient(90deg, #56ccf2 0%, #2f80ed 100%);
   }
+
+  .btn-warning-gradient,
+  .gradient-warning {
+    background: linear-gradient(90deg, #f2994a 0%, #f2c94c 100%);
+  }
+
+  .btn-secondary-gradient,
+  .gradient-secondary {
+    background: linear-gradient(90deg, #808080 0%, #808080 100%);
+  }
 }
 
 @import 'bootstrap';

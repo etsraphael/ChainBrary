@@ -7,6 +7,7 @@ import { PaymentRequestCardComponent } from './components/payment-request-card/p
 import { RouterModule } from '@angular/router';
 import { PaymentRequestMakerComponent } from './components/payment-request-maker/payment-request-maker.component';
 import { MaterialModule } from './../../../module/material.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,6 @@ import { MaterialModule } from './../../../module/material.module';
     PaymentRequestCardComponent,
     PaymentRequestMakerComponent
   ],
-  imports: [CommonModule, SharedComponentsModule, RouterModule, MaterialModule]
+  imports: [CommonModule, SharedComponentsModule, RouterModule, MaterialModule, ReactiveFormsModule]
 })
 export class PaymentRequestModule {}

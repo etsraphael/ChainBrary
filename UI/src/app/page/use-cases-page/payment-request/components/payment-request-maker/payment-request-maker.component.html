@@ -20,39 +20,107 @@
       </div>
     </div>
   </div>
-  <!-- Form -->
-  <form class="container">
-    <div class="row justify-content-center">
-      <div class="col-7">
-        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-          <mat-label> Amount (by ETH) </mat-label>
-          <input type="number" class="text-center" matInput placeholder="Amount" />
-        </mat-form-field>
+  <!-- Page Container -->
+  <div [ngSwitch]="page">
+    <!-- Form -->
+    <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
+      <form class="container" [formGroup]="mainForm">
+        <div class="row justify-content-center">
+          <div class="col-7">
+            <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+              <mat-label> Amount (by ETH) </mat-label>
+              <input formControlName="amount" type="number" class="text-center" matInput placeholder="Amount" />
+            </mat-form-field>
+          </div>
+        </div>
+        <!-- Add a description textarea here -->
+        <div class="row justify-content-center">
+          <div class="col-7">
+            <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+              <mat-label> Description </mat-label>
+              <textarea
+                formControlName="description"
+                cdkTextareaAutosize
+                cdkAutosizeMinRows="1"
+                cdkAutosizeMaxRows="5"
+                matInput
+                placeholder="Description"
+                maxlength="150"
+              ></textarea>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <div class="row justify-content-center mb-4">
+        <div class="col-4">
+          <button class="btn btn-info-gradient w-100 py-2" (click)="goToNextPage()">
+            <span class="text-light">Next</span>
+          </button>
+        </div>
       </div>
     </div>
-    <!-- Add a description textarea here -->
-    <div class="row justify-content-center">
-      <div class="col-7">
-        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-          <mat-label> Description </mat-label>
-          <textarea
-            cdkTextareaAutosize
-            cdkAutosizeMinRows="1"
-            cdkAutosizeMaxRows="5"
-            matInput
-            placeholder="Description"
-            maxlength="150"
-          ></textarea>
-        </mat-form-field>
+    <div *ngSwitchCase="paymentMakePageTypes.review">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="col-9">
+            <table class="table">
+              <tbody>
+                <tr *ngIf="AuthStatusCodeTypes.VerifiedAndConnected === authStatus">
+                  <td>Account</td>
+                  <td>{{ profileAccount?.userName }}</td>
+                </tr>
+                <tr>
+                  <td>Payment</td>
+                  <td>{{ mainForm.get('amount')?.value }} ETH</td>
+                </tr>
+                <tr>
+                  <td>Protocol Fee (0.1%)</td>
+                  <td>{{ protocolFeeAmount }} ETH</td>
+                </tr>
+                <tr>
+                  <td><strong>Receiving Amount</strong></td>
+                  <td>
+                    <strong>{{ totalAmount }} ETH</strong>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="row justify-content-center my-3">
+          <div class="col-9">
+            <div class="row">
+              <div class="col-6">
+                <button class="btn btn-secondary-gradient w-100 py-2" (click)="goToPreviousPage()">
+                  <span class="text-light">Go Back</span>
+                </button>
+              </div>
+              <div class="col-6">
+                <button class="btn btn-warning-gradient w-100 py-2">
+                  <span class="text-light">Get Preview</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Link generated -->
+        <div class="row justify-content-center mb-4">
+          <div class="col-9">
+            <div class="row">
+              <h6 class="text-muted">Link generated</h6>
+
+              <div class="input-group">
+                <input type="text" class="form-control" [value]="'iuwnrfoiwrjfwiuofnwiofjwefoiuwejfowiufj'" readonly />
+                <div class="input-group-append">
+                  <button class="btn btn-outline-secondary" matTooltip="Copy to clipboard">
+                    <i class="bi bi-files"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </form>
-  <!-- Footer -->
-  <div class="row justify-content-center mb-4">
-    <div class="col-4">
-      <button class="btn btn-info-gradient w-100 py-2">
-        <span class="text-light">Next</span>
-      </button>
     </div>
   </div>
 </div>
