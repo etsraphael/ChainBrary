@@ -43,3 +43,6 @@ export const selectAuthStatus: MemoizedSelector<object, AuthStatusCode, (s1: IAu
         return AuthStatusCode.NotConnected;
     }
   });
+
+export const selectUserAccountIsLoading: MemoizedSelector<object, boolean, (s1: IAuthState) => boolean> =
+  createSelector(selectAuth, (s) => s.userAccount.loading);

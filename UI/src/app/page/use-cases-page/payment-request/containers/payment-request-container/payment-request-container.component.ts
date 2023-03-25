@@ -6,7 +6,8 @@ import { IProfileAdded } from './../../../../../shared/interfaces';
 import {
   selectAccount,
   selectAuthStatus,
-  selectPublicAddress
+  selectPublicAddress,
+  selectUserAccountIsLoading
 } from './../../../../../store/auth-store/state/selectors';
 
 @Component({
@@ -20,6 +21,7 @@ export class PaymentRequestContainerComponent implements OnInit {
   AuthStatusCodeTypes = AuthStatusCode;
   profileAccount$: Observable<IProfileAdded | null>;
   publicAddress$: Observable<string | null>;
+  userAccountIsLoading$: Observable<boolean>;
 
   constructor(private store: Store) {}
 
@@ -31,5 +33,6 @@ export class PaymentRequestContainerComponent implements OnInit {
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);
+    this.userAccountIsLoading$ = this.store.select(selectUserAccountIsLoading);
   }
 }

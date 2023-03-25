@@ -21,7 +21,7 @@
     </div>
   </div>
   <!-- Form -->
-  <form>
+  <form class="container">
     <div class="row justify-content-center">
       <div class="col-7">
         <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
@@ -30,5 +30,29 @@
         </mat-form-field>
       </div>
     </div>
+    <!-- Add a description textarea here -->
+    <div class="row justify-content-center">
+      <div class="col-7">
+        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+          <mat-label> Description </mat-label>
+          <textarea
+            cdkTextareaAutosize
+            cdkAutosizeMinRows="1"
+            cdkAutosizeMaxRows="5"
+            matInput
+            placeholder="Description"
+            maxlength="150"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </div>
   </form>
+  <!-- Footer -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-4">
+      <button class="btn btn-info-gradient w-100 py-2">
+        <span class="text-light">Next</span>
+      </button>
+    </div>
+  </div>
 </div>
