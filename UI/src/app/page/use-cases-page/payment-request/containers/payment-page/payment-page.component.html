@@ -9,7 +9,12 @@
     </div>
     <ng-template #paymentRequestCard>
       <div class="col-4 my-5">
-        <app-payment-request-card [paymentRequest]="(selectPaymentRequestState$ | async)!"></app-payment-request-card>
+        <app-payment-request-card
+          [authStatus]="(authStatus$ | async)!"
+          [publicAddress]="publicAddress$ | async"
+          [paymentRequest]="(selectPaymentRequestState$ | async)!"
+          (openLoginModal)="openLoginModal()"
+        ></app-payment-request-card>
       </div>
     </ng-template>
   </div>

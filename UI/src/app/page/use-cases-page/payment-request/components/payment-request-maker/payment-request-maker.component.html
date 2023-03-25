@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                   <td>Payment</td>
-                  <td>{{ receivingAmount }} ETH</td>
+                  <td>{{ mainForm.get('amount')?.value }} ETH</td>
                 </tr>
                 <tr>
                   <td>Protocol Fee (0.1%)</td>
@@ -80,7 +80,7 @@
                 <tr>
                   <td><strong>Receiving Amount</strong></td>
                   <td>
-                    <strong>{{ mainForm.get('amount')?.value }} ETH</strong>
+                    <strong>{{ receivingAmount }} ETH</strong>
                   </td>
                 </tr>
               </tbody>
