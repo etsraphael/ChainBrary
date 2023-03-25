@@ -35,9 +35,8 @@
       <div class="row text-center">
         <div class="col-12">
           <h2>{{ paymentRequest.payment.data.amount }} eth</h2>
-          <p class="text-muted px-5 text-start">
-            This bill request covers the software development services provided by Tim Jerry. The amount includes hours
-            worked and related project expenses, all in accordance with the project agreement.
+          <p class="text-muted px-5 text-start" *ngIf="paymentRequest.payment.data.description">
+            {{ paymentRequest.payment.data.description }}
           </p>
         </div>
       </div>

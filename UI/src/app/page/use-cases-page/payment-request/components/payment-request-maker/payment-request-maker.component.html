@@ -71,7 +71,7 @@
                 </tr>
                 <tr>
                   <td>Payment</td>
-                  <td>{{ mainForm.get('amount')?.value }} ETH</td>
+                  <td>{{ receivingAmount }} ETH</td>
                 </tr>
                 <tr>
                   <td>Protocol Fee (0.1%)</td>
@@ -80,7 +80,7 @@
                 <tr>
                   <td><strong>Receiving Amount</strong></td>
                   <td>
-                    <strong>{{ totalAmount }} ETH</strong>
+                    <strong>{{ mainForm.get('amount')?.value }} ETH</strong>
                   </td>
                 </tr>
               </tbody>
@@ -96,7 +96,7 @@
                 </button>
               </div>
               <div class="col-6">
-                <button class="btn btn-warning-gradient w-100 py-2">
+                <button class="btn btn-warning-gradient w-100 py-2" (click)="goToPaymentPage()">
                   <span class="text-light">Get Preview</span>
                 </button>
               </div>
@@ -108,11 +108,15 @@
           <div class="col-9">
             <div class="row">
               <h6 class="text-muted">Link generated</h6>
-
               <div class="input-group">
-                <input type="text" class="form-control" [value]="'iuwnrfoiwrjfwiuofnwiofjwefoiuwejfowiufj'" readonly />
+                <input type="text" class="form-control" [value]="linkGenerated" readonly />
                 <div class="input-group-append">
-                  <button class="btn btn-outline-secondary" matTooltip="Copy to clipboard">
+                  <button
+                    class="btn btn-outline-secondary"
+                    matTooltip="Copy to clipboard"
+                    [cdkCopyToClipboard]="linkGenerated"
+                    (click)="clickCopyLinkEvent()"
+                  >
                     <i class="bi bi-files"></i>
                   </button>
                 </div>
