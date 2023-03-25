@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectAuthStatus } from './../../../../../store/auth-store/state/selectors';
 import { AuthStatusCode } from './../../../../../shared/enum';
+import { IProfileAdded } from './../../../../../shared/interfaces';
+import {
+  selectAccount,
+  selectAuthStatus,
+  selectPublicAddress
+} from './../../../../../store/auth-store/state/selectors';
 
 @Component({
   selector: 'app-payment-request-container',
@@ -13,6 +18,8 @@ export class PaymentRequestContainerComponent implements OnInit {
   certifficationCardVisible = true;
   authStatus$: Observable<AuthStatusCode>;
   AuthStatusCodeTypes = AuthStatusCode;
+  profileAccount$: Observable<IProfileAdded | null>;
+  publicAddress$: Observable<string | null>;
 
   constructor(private store: Store) {}
 
@@ -22,5 +29,7 @@ export class PaymentRequestContainerComponent implements OnInit {
 
   ngOnInit(): void {
     this.authStatus$ = this.store.select(selectAuthStatus);
+    this.profileAccount$ = this.store.select(selectAccount);
+    this.publicAddress$ = this.store.select(selectPublicAddress);
   }
 }

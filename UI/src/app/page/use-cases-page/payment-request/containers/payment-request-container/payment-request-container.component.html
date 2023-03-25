@@ -5,9 +5,13 @@
   >
     <app-certification-message (hideCertifficationCard)="hideCertifficationCard()"></app-certification-message>
   </div>
-
-  <div class="row my-3">
-    <!-- TODO -->
-    <p>payment-request-container works!</p>
+  <div class="row justify-content-center my-3">
+    <div class="col-11 col-sm-12 col-md-10 col-lg-8">
+      <app-payment-request-maker
+        [authStatus]="(authStatus$ | async)!"
+        [profileAccount]="(profileAccount$ | async)!"
+        [publicAddress]="(publicAddress$ | async)!"
+      ></app-payment-request-maker>
+    </div>
   </div>
 </div>

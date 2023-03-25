@@ -1,0 +1,34 @@
+<div class="card cb-card border-0 shadow position-relative">
+  <!-- Avatar -->
+  <div class="position-relative">
+    <div class="card-header-custom position-absolute w-100">
+      <div class="row justify-content-center">
+        <div class="col-4 text-center">
+          <app-user-avatar [avatarUrl]="profileAccount?.imgUrl!" [editable]="false"></app-user-avatar>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="my-5"></div>
+  <!-- Verified description -->
+  <div *ngIf="AuthStatusCodeTypes.VerifiedAndConnected === authStatus" class="container">
+    <div class="row text-center">
+      <div class="col-12">
+        <h4 class="card-title text-primary">{{ profileAccount?.userName }}</h4>
+        <h5>{{ profileAccount?.description }}</h5>
+        <p class="text-muted text-center">Certified - X successful transaction</p>
+      </div>
+    </div>
+  </div>
+  <!-- Form -->
+  <form>
+    <div class="row justify-content-center">
+      <div class="col-7">
+        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+          <mat-label> Amount (by ETH) </mat-label>
+          <input type="number" class="text-center" matInput placeholder="Amount" />
+        </mat-form-field>
+      </div>
+    </div>
+  </form>
+</div>
