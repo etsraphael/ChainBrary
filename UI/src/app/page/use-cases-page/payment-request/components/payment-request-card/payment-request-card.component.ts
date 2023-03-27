@@ -13,8 +13,8 @@ export class PaymentRequestCardComponent {
   @Input() paymentRequest: IPaymentRequestState;
   @Input() authStatus: AuthStatusCode;
   @Input() publicAddress: string | null;
-
   @Output() openLoginModal = new EventEmitter<void>();
+  @Output() submitPayment = new EventEmitter<{ priceValue: number; to: string[] }>();
 
   constructor(private snackbar: MatSnackBar) {}
 
@@ -23,5 +23,10 @@ export class PaymentRequestCardComponent {
       this.snackbar.open('Please connect your wallet', '', { duration: 3000 });
       return;
     }
+
+    return this.submitPayment.emit({
+      priceValue: (this.paymentRequest.payment.data?.amount as number) * 1e18,
+      to: [this.paymentRequest.payment.data?.publicAddress as string]
+    });
   }
 }
