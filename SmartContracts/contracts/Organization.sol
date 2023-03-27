@@ -279,6 +279,13 @@ contract Organization is Ownable {
         organizations[_organizationKey].accounts[_msgSender()].description = _description;
     }
 
+    function isAccountCertificateValid(
+        string memory _organizationKey,
+        address _accountAddress
+    ) public view organizationNotNull(_organizationKey) returns (bool) {
+        return organizations[_organizationKey].accounts[_accountAddress].expirationDate > block.timestamp;
+    }
+
     function deleteMyAccount(
         string memory _organizationKey
     ) public organizationNotNull(_organizationKey) accountOwner(_organizationKey) {
