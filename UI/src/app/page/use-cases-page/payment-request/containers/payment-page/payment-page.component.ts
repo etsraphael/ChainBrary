@@ -23,6 +23,7 @@ import {
   styleUrls: ['./payment-page.component.scss']
 })
 export class PaymentPageComponent implements OnInit, OnDestroy {
+  AuthStatusCodeTypes = AuthStatusCode;
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
   cardIsLoading$: Observable<boolean>;
   modalSub: Subscription;
