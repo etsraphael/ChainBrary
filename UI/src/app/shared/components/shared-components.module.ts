@@ -8,6 +8,7 @@ import { NavBarMobileComponent } from './nav-bar-mobile/nav-bar-mobile.component
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header/use-cases-sidebar-header.component';
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { TransactionCardComponent } from './transaction-card/transaction-card.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     NavBarMobileComponent,
     UserAvatarComponent,
     UseCasesSidebarHeaderComponent,
-    UseCasesSidebarComponent
+    UseCasesSidebarComponent,
+    TransactionCardComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -27,7 +29,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     NavBarMobileComponent,
     UserAvatarComponent,
     UseCasesSidebarHeaderComponent,
-    UseCasesSidebarComponent
+    UseCasesSidebarComponent,
+    TransactionCardComponent
   ]
 })
 export class SharedComponentsModule {}
