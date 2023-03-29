@@ -7,6 +7,7 @@ import { AuthStoreModule } from './auth-store';
 import { GlobalStoreModule } from './global-store';
 import { NotificationStoreModule } from './notification-store';
 import { PaymentRequestStoreModule } from './payment-request-store';
+import { TransactionStoreModule } from './transaction-store';
 
 @NgModule({
   declarations: [],
@@ -18,6 +19,7 @@ import { PaymentRequestStoreModule } from './payment-request-store';
     GlobalStoreModule,
     PaymentRequestStoreModule,
     NotificationStoreModule,
+    TransactionStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ]
 })
