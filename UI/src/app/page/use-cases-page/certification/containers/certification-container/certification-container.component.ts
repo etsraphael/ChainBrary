@@ -2,13 +2,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { OrganizationContract } from 'src/app/shared/contracts';
-import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
+import { environment } from './../../../../../../environments/environment';
+import { OrganizationContract } from './../../../../../shared/contracts';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { IProfileAdded, IReceiptTransaction } from './../../../../../shared/interfaces';
+import { IProfileAdded, IReceiptTransaction, ITransactionCard } from './../../../../../shared/interfaces';
 import {
   addAccountFailure,
   addAccountSent,
@@ -25,6 +25,7 @@ import {
   selectDailyPrice,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
+import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-certification-container',
@@ -38,6 +39,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
   dailyPrice$: Observable<number | undefined>;
   modalSub: Subscription;
   web3: Web3;
+  transactionCards$: Observable<ITransactionCard[]>;
 
   constructor(private store: Store, private web3LoginService: Web3LoginService) {}
 
@@ -50,6 +52,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.dailyPrice$ = this.store.select(selectDailyPrice);
+    this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('CertificationContainer'))
   }
 
   ngOnDestroy(): void {

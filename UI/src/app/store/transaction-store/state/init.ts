@@ -8,5 +8,4 @@ export const transactionAdapter: EntityAdapter<ITransactionCard> = createEntityA
 
 export const initialState: ITransactionsState = {
   recentTransactions: transactionAdapter.getInitialState(),
-  transactionHistory: transactionAdapter.getInitialState()
 };

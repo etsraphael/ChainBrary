@@ -5,7 +5,6 @@ export const TRANSACTION_FEATURE_KEY = 'transactions';
 
 export interface ITransactionsState {
   recentTransactions: EntityState<ITransactionCard>;
-  transactionHistory: EntityState<ITransactionCard>;
 }
 
 export interface TransactionsState {
