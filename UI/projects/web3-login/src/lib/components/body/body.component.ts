@@ -37,7 +37,15 @@ export class BodyComponent {
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
         .then((accounts: string[]) => {
-          this.stateEvent.emit({ type: ModalStateType.SUCCESS, data: { publicAddress: accounts[0] } });
+          const payload: ModalState = {
+            type: ModalStateType.SUCCESS,
+            data: {
+              publicAddress: accounts[0],
+              networkId: window.ethereum.networkVersion,
+              networkName: this.getEthNetworkName(window.ethereum.networkVersion)
+            }
+          };
+          this.stateEvent.emit(payload);
         })
         .catch((error: Error) => {
           this.errorHandlerService.showSnackBar(error.message);
@@ -53,6 +61,25 @@ export class BodyComponent {
         type: ModalStateType.ERROR,
         message: 'Non-Ethereum browser detected. You should consider trying MetaMask!'
       });
+    }
+  }
+
+  getEthNetworkName(networkId: string): string {
+    switch (networkId) {
+      case '1':
+        return 'Mainnet';
+      case '3':
+        return 'Ropsten';
+      case '4':
+        return 'Rinkeby';
+      case '5':
+        return 'Goerli';
+      case '42':
+        return 'Kovan';
+      case '56':
+        return 'Binance Smart Chain';
+      default:
+        return 'Unknown';
     }
   }
 }

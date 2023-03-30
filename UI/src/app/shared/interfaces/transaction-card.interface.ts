@@ -1,6 +1,6 @@
 export interface ITransactionCard {
   title: string;
-  type: 'success' | 'failure' | 'pending';
+  type: 'success' | 'danger';
   hash: string;
   component: string;
 }

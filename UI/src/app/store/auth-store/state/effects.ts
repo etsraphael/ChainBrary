@@ -70,7 +70,13 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.addressChecking),
       filter(() => !!this.authService.getPublicAddress()),
-      map(() => AuthActions.setAuthPublicAddress({ publicAddress: this.authService.getPublicAddress() as string }))
+      map(() =>
+        AuthActions.setAuthPublicAddress({
+          publicAddress: this.authService.getPublicAddress() as string,
+          networkId: null,
+          networkName: null
+        })
+      )
     );
   });
 

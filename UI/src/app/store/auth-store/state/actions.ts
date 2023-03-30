@@ -2,7 +2,10 @@ import { createAction, props } from '@ngrx/store';
 import { ProfileCreation } from '../../../shared/creations/profileCreation';
 import { IOrganization, IProfileAdded } from '../../../shared/interfaces';
 
-export const setAuthPublicAddress = createAction('[Auth] Set Auth Public Address', props<{ publicAddress: string }>());
+export const setAuthPublicAddress = createAction(
+  '[Auth] Set Auth Public Address',
+  props<{ publicAddress: string; networkId: string | null; networkName: string | null }>()
+);
 export const addressChecking = createAction('[Auth] Address Checking');
 
 export const loadAuth = createAction('[Auth] Load Auth');

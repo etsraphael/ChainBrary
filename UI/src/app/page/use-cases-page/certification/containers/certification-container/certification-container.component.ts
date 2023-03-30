@@ -2,6 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
+import { localTransactionSentSuccessfully } from 'src/app/store/transaction-store/state/actions';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
@@ -45,6 +46,19 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.generateObs();
+
+    setTimeout(() => {
+      this.store.dispatch(
+        localTransactionSentSuccessfully({
+          card: {
+            title: 'Transaction sent successfully',
+            type: 'success',
+            hash: '0x341b0cdc3ed04e9b1f98ebd05225834eefe1f680fe2e311bcce6e3b8d4b48ad9',
+            component: 'CertificationContainer'
+          }
+        })
+      );
+    }, 5000);
   }
 
   generateObs(): void {
@@ -52,7 +66,7 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.dailyPrice$ = this.store.select(selectDailyPrice);
-    this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('CertificationContainer'))
+    this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('CertificationContainer'));
   }
 
   ngOnDestroy(): void {
@@ -63,7 +77,13 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
       switch (state.type) {
         case ModalStateType.SUCCESS:
-          this.store.dispatch(setAuthPublicAddress({ publicAddress: state.data?.publicAddress as string }));
+          this.store.dispatch(
+            setAuthPublicAddress({
+              publicAddress: state.data?.publicAddress as string,
+              networkId: state.data?.networkId as string,
+              networkName: state.data?.networkName as string
+            })
+          );
           this.store.dispatch(loadAuth());
           this.web3LoginService.closeLoginModal();
           break;

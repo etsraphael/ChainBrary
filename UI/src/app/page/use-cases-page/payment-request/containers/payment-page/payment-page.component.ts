@@ -58,7 +58,13 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
       switch (state.type) {
         case ModalStateType.SUCCESS:
-          this.store.dispatch(setAuthPublicAddress({ publicAddress: state.data?.publicAddress as string }));
+          this.store.dispatch(
+            setAuthPublicAddress({
+              publicAddress: state.data?.publicAddress as string,
+              networkId: state.data?.networkId as string,
+              networkName: state.data?.networkName as string
+            })
+          );
           this.store.dispatch(loadAuth());
           this.web3LoginService.closeLoginModal();
           break;

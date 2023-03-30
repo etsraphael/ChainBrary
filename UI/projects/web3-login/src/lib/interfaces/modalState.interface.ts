@@ -3,6 +3,8 @@ export interface ModalState {
   message?: string;
   data?: {
     publicAddress: string;
+    networkId: string;
+    networkName: string;
   };
 }
 

@@ -8,6 +8,10 @@ export interface IAuthState {
   connectedUser: boolean;
   userAccount: StoreState<IProfileAdded | null>;
   organization: IOrganization | null;
+  network: {
+    networkId: string | null;
+    networkName: string | null;
+  };
 }
 
 export interface AuthState {
