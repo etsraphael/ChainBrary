@@ -2,6 +2,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import Web3 from 'web3';
 import { ModalState, ModalStateType, providerData, Web3Provider } from '../../interfaces';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
+import { NetworkServiceWeb3Login } from '../../services/network/network.service';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -17,7 +18,7 @@ export class BodyComponent {
   isLoading = false;
   providers = providerData;
 
-  constructor(private errorHandlerService: ErrorHandlerService) {}
+  constructor(private errorHandlerService: ErrorHandlerService, private networkService: NetworkServiceWeb3Login) {}
 
   getGradientStyle(provider: Web3Provider): string {
     return `linear-gradient(${provider.backgroundColorGradient.orientation.start[0]}deg, ${provider.backgroundColorGradient.start}, ${provider.backgroundColorGradient.end})`;
@@ -37,12 +38,13 @@ export class BodyComponent {
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
         .then((accounts: string[]) => {
+          const networkId = window.ethereum.networkVersion;
           const payload: ModalState = {
             type: ModalStateType.SUCCESS,
             data: {
               publicAddress: accounts[0],
-              networkId: window.ethereum.networkVersion,
-              networkName: this.getEthNetworkName(window.ethereum.networkVersion)
+              networkId: networkId,
+              networkName: this.networkService.getNetworkName(networkId)
             }
           };
           this.stateEvent.emit(payload);
@@ -61,25 +63,6 @@ export class BodyComponent {
         type: ModalStateType.ERROR,
         message: 'Non-Ethereum browser detected. You should consider trying MetaMask!'
       });
-    }
-  }
-
-  getEthNetworkName(networkId: string): string {
-    switch (networkId) {
-      case '1':
-        return 'Mainnet';
-      case '3':
-        return 'Ropsten';
-      case '4':
-        return 'Rinkeby';
-      case '5':
-        return 'Goerli';
-      case '42':
-        return 'Kovan';
-      case '56':
-        return 'Binance Smart Chain';
-      default:
-        return 'Unknown';
     }
   }
 }

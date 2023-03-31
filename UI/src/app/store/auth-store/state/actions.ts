@@ -4,7 +4,7 @@ import { IOrganization, IProfileAdded } from '../../../shared/interfaces';
 
 export const setAuthPublicAddress = createAction(
   '[Auth] Set Auth Public Address',
-  props<{ publicAddress: string; networkId: string | null; networkName: string | null }>()
+  props<{ publicAddress: string; networkId: string; networkName: string }>()
 );
 export const addressChecking = createAction('[Auth] Address Checking');
 

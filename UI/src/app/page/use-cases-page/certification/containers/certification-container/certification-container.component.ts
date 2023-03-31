@@ -47,18 +47,18 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.generateObs();
 
-    setTimeout(() => {
-      this.store.dispatch(
-        localTransactionSentSuccessfully({
-          card: {
-            title: 'Transaction sent successfully',
-            type: 'success',
-            hash: '0x341b0cdc3ed04e9b1f98ebd05225834eefe1f680fe2e311bcce6e3b8d4b48ad9',
-            component: 'CertificationContainer'
-          }
-        })
-      );
-    }, 5000);
+    // setTimeout(() => {
+    //   this.store.dispatch(
+    //     localTransactionSentSuccessfully({
+    //       card: {
+    //         title: 'Transaction sent successfully',
+    //         type: 'success',
+    //         hash: '0x341b0cdc3ed04e9b1f98ebd05225834eefe1f680fe2e311bcce6e3b8d4b48ad9',
+    //         component: 'CertificationContainer'
+    //       }
+    //     })
+    //   );
+    // }, 5000);
   }
 
   generateObs(): void {
