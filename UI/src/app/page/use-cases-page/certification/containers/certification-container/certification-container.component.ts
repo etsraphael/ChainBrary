@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { localTransactionSentSuccessfully } from 'src/app/store/transaction-store/state/actions';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
@@ -27,6 +26,8 @@ import {
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
+import { ProfileCreationCommand } from 'src/app/shared/commands';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-certification-container',
@@ -42,23 +43,10 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
   web3: Web3;
   transactionCards$: Observable<ITransactionCard[]>;
 
-  constructor(private store: Store, private web3LoginService: Web3LoginService) {}
+  constructor(private store: Store, private web3LoginService: Web3LoginService, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.generateObs();
-
-    // setTimeout(() => {
-    //   this.store.dispatch(
-    //     localTransactionSentSuccessfully({
-    //       card: {
-    //         title: 'Transaction sent successfully',
-    //         type: 'success',
-    //         hash: '0x341b0cdc3ed04e9b1f98ebd05225834eefe1f680fe2e311bcce6e3b8d4b48ad9',
-    //         component: 'CertificationContainer'
-    //       }
-    //     })
-    //   );
-    // }, 5000);
   }
 
   generateObs(): void {
@@ -91,11 +79,11 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     });
   }
 
-  saveProfile(payload: {
+  async saveProfile(payload: {
     profile: ProfileCreation;
     edited: boolean;
     priceValue: number;
-  }): Promise<IReceiptTransaction> {
+  }): Promise<IReceiptTransaction | void> {
     this.web3 = new Web3(window.ethereum);
     const organizationContract = new OrganizationContract();
     const contract: Contract = new this.web3.eth.Contract(
@@ -103,15 +91,37 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
       organizationContract.getAddress()
     );
 
-    if (payload.edited) return this.editAccount(contract, payload.profile, payload.priceValue);
-    else return this.addAccount(contract, payload.profile, payload.priceValue);
+    const networkId: number = await this.web3.eth.net.getId();
+    if (environment.networkSupported.indexOf(networkId) === -1) {
+      this._snackBar.open('Network not supported', 'Close', {
+        duration: 2000
+      });
+      return;
+    }
+
+    const command: ProfileCreationCommand = {
+      contract,
+      profile: payload.profile,
+      priceValue: payload.priceValue,
+      networkId
+    };
+
+    if (payload.edited) return this.editAccount(command);
+    else return this.addAccount(command);
   }
 
-  editAccount(contract: Contract, profile: ProfileCreation, priceValue: number): Promise<IReceiptTransaction> {
-    return contract.methods
-      .editAccount(environment.organizationName, profile.userName, profile.imgUrl, profile.description)
-      .send({ from: profile.userAddress, value: String(priceValue) })
-      .on('transactionHash', (hash: string) => this.store.dispatch(editAccountSent({ account: profile, hash })))
+  editAccount(command: ProfileCreationCommand): Promise<IReceiptTransaction> {
+    return command.contract.methods
+      .editAccount(
+        environment.organizationName,
+        command.profile.userName,
+        command.profile.imgUrl,
+        command.profile.description
+      )
+      .send({ from: command.profile.userAddress, value: String(command.priceValue) })
+      .on('transactionHash', (hash: string) =>
+        this.store.dispatch(editAccountSent({ account: command.profile, hash, networkId: command.networkId }))
+      )
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
         this.store.dispatch(
           editAccountSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
@@ -120,11 +130,18 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
       .on('error', (error: Error) => this.store.dispatch(editAccountFailure({ message: error.message })));
   }
 
-  addAccount(contract: Contract, profile: ProfileCreation, priceValue: number): Promise<IReceiptTransaction> {
-    return contract.methods
-      .addAccount(environment.organizationName, profile.userName, profile.imgUrl, profile.description)
-      .send({ from: profile.userAddress, value: String(priceValue) })
-      .on('transactionHash', (hash: string) => this.store.dispatch(addAccountSent({ account: profile, hash })))
+  addAccount(command: ProfileCreationCommand): Promise<IReceiptTransaction> {
+    return command.contract.methods
+      .addAccount(
+        environment.organizationName,
+        command.profile.userName,
+        command.profile.imgUrl,
+        command.profile.description
+      )
+      .send({ from: command.profile.userAddress, value: String(command.priceValue) })
+      .on('transactionHash', (hash: string) =>
+        this.store.dispatch(addAccountSent({ account: command.profile, hash, networkId: command.networkId }))
+      )
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
         this.store.dispatch(
           addAccountSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })

@@ -3,4 +3,5 @@ export interface ITransactionCard {
   type: 'success' | 'danger';
   hash: string;
   component: string;
+  networkId: number;
 }
