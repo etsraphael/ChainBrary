@@ -1,142 +1,119 @@
-<div class="row justify-content-center my-3">
-  <div class="col-11 col-sm-12 col-md-10 col-lg-8 card cb-card border-0 shadow position-relative">
-    <!-- Body -->
-    <div class="card-body">
-      <!-- Avatar -->
-      <div class="position-relative">
-        <div class="card-header-custom position-absolute w-100">
-          <div class="row justify-content-center">
-            <div class="col-4 text-center">
-              <app-user-avatar
-                [avatarUrl]="avatarUrl"
-                [editable]="avatarEditEnabled"
-                (editClickEvent)="enableAvatarEdit()"
-              ></app-user-avatar>
-            </div>
+<!-- Body -->
+<div class="card-body">
+  <!-- Avatar -->
+  <div class="position-relative">
+    <div class="card-header-custom position-absolute w-100">
+      <div class="row justify-content-center">
+        <div class="col-4 text-center">
+          <app-user-avatar
+            [avatarUrl]="avatarUrl"
+            [editable]="avatarEditEnabled"
+            (editClickEvent)="enableAvatarEdit()"
+          ></app-user-avatar>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Form -->
+  <form [formGroup]="mainForm">
+    <div class="row justify-content-center" *ngIf="avatarInputVisible">
+      <div class="col-7">
+        <mat-form-field class="w-100 example-full-width" appearance="outline">
+          <mat-label>Url</mat-label>
+          <input formControlName="avatarUrl" type="link" class="text-center" matInput placeholder="https://my-url" />
+          <mat-error *ngIf="mainForm.get('avatarUrl')!.hasError('invalidUrl')">
+            Url does not include <strong>https</strong>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-7">
+        <mat-form-field class="w-100 example-full-width" appearance="outline">
+          <mat-label>Name</mat-label>
+          <input formControlName="username" type="name" class="text-center" matInput placeholder="Name" />
+          <mat-error *ngIf="mainForm.get('username')!.hasError('maxlength')">
+            Name must be less than 20 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-7">
+        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+          <mat-label>Description</mat-label>
+          <input formControlName="description" type="name" class="text-center" matInput placeholder="Description" />
+          <mat-error *ngIf="mainForm.get('description')!.hasError('maxlength')">
+            Name must be less than 20 characters
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="!newEstimatedExpirationDate && edited && !accountExpired">
+      <div class="col-7 text-end">
+        <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-primary">
+          Already certified until: {{ formatService.timeStampToDate(p.expirationDate) | date : 'dd/MM/yyyy' }}
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="!newEstimatedExpirationDate && edited && accountExpired">
+      <div class="col-7 text-end">
+        <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-danger">
+          Expired since : {{ formatService.timeStampToDate(p.expirationDate) | date : 'dd/MM/yyyy' }}
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-center" *ngIf="newEstimatedExpirationDate">
+      <div class="col-7 text-end">
+        <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-success">
+          Expired until : {{ newEstimatedExpirationDate | date : 'dd/MM/yyyy' }}
+        </p>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-7">
+        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+          <mat-label> Add Months (by 30days) {{ mainForm.get('month')?.validator ? '' : '(optional)' }} </mat-label>
+          <input formControlName="month" type="number" class="text-center" matInput placeholder="Number of month" />
+          <mat-error *ngIf="mainForm.get('month')!.hasError('min')"> Number of month must be greater than 0 </mat-error>
+          <mat-error *ngIf="mainForm.get('month')!.hasError('max')"> Number of month must be less than 12 </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-8 row justify-content-center">
+        <hr class="col-4" />
+        <div class="col-2"></div>
+        <hr class="col-4" />
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-10 body-sample-container text-center py-4">
+        <h1 class="text-muted">Request body</h1>
+      </div>
+    </div>
+    <div class="row justify-content-center my-4">
+      <div class="col-8">
+        <div class="row justify-content-center">
+          <div (click)="openLoginModal.emit()" class="col-6" *ngIf="AuthStatusCodeTypes.NotConnected === authStatus">
+            <button class="btn btn-info-gradient w-100 py-2">Web3 login</button>
+          </div>
+          <div class="col-6" (click)="submitForm()">
+            <button class="btn btn-success-gradient w-100 py-2">
+              <span>Confirm</span>
+            </button>
           </div>
         </div>
       </div>
-      <!-- Form -->
-      <form [formGroup]="mainForm">
-        <div class="row justify-content-center" *ngIf="avatarInputVisible">
-          <div class="col-7">
-            <mat-form-field class="w-100 example-full-width" appearance="outline">
-              <mat-label>Url</mat-label>
-              <input
-                formControlName="avatarUrl"
-                type="link"
-                class="text-center"
-                matInput
-                placeholder="https://my-url"
-              />
-              <mat-error *ngIf="mainForm.get('avatarUrl')!.hasError('invalidUrl')">
-                Url does not include <strong>https</strong>
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-7">
-            <mat-form-field class="w-100 example-full-width" appearance="outline">
-              <mat-label>Name</mat-label>
-              <input formControlName="username" type="name" class="text-center" matInput placeholder="Name" />
-              <mat-error *ngIf="mainForm.get('username')!.hasError('maxlength')">
-                Name must be less than 20 characters
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-7">
-            <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-              <mat-label>Description</mat-label>
-              <input formControlName="description" type="name" class="text-center" matInput placeholder="Description" />
-              <mat-error *ngIf="mainForm.get('description')!.hasError('maxlength')">
-                Name must be less than 20 characters
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row justify-content-center" *ngIf="!newEstimatedExpirationDate && edited && !accountExpired">
-          <div class="col-7 text-end">
-            <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-primary">
-              Already certified until: {{ formatService.timeStampToDate(p.expirationDate) | date : 'dd/MM/yyyy' }}
-            </p>
-          </div>
-        </div>
-        <div class="row justify-content-center" *ngIf="!newEstimatedExpirationDate && edited && accountExpired">
-          <div class="col-7 text-end">
-            <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-danger">
-              Expired since : {{ formatService.timeStampToDate(p.expirationDate) | date : 'dd/MM/yyyy' }}
-            </p>
-          </div>
-        </div>
-        <div class="row justify-content-center" *ngIf="newEstimatedExpirationDate">
-          <div class="col-7 text-end">
-            <p *ngIf="profileAccount | async; let p" class="pe-3 mb-0 text-success">
-              Expired until : {{ newEstimatedExpirationDate | date : 'dd/MM/yyyy' }}
-            </p>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-7">
-            <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-              <mat-label> Add Months (by 30days) {{ mainForm.get('month')?.validator ? '' : '(optional)' }} </mat-label>
-              <input formControlName="month" type="number" class="text-center" matInput placeholder="Number of month" />
-              <mat-error *ngIf="mainForm.get('month')!.hasError('min')">
-                Number of month must be greater than 0
-              </mat-error>
-              <mat-error *ngIf="mainForm.get('month')!.hasError('max')">
-                Number of month must be less than 12
-              </mat-error>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-8 row mytest">
-            <p class="text-muted text-center">Certified - 1 successful transaction</p>
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-8 row justify-content-center">
-            <hr class="col-4" />
-            <div class="col-2"></div>
-            <hr class="col-4" />
-          </div>
-        </div>
-        <div class="row justify-content-center">
-          <div class="col-10 body-sample-container text-center py-4">
-            <h1 class="text-muted">Request body</h1>
-          </div>
-        </div>
-        <div class="row justify-content-center my-4">
-          <div class="col-8">
-            <div class="row justify-content-center">
-              <div
-                (click)="openLoginModal.emit()"
-                class="col-6"
-                *ngIf="AuthStatusCodeTypes.NotConnected === authStatus"
-              >
-                <button class="btn btn-info-gradient w-100 py-2">Web3 login</button>
-              </div>
-              <div class="col-6" (click)="submitForm()">
-                <button class="btn btn-success-gradient w-100 py-2">
-                  <span>Confirm</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div *ngIf="priceEth > 0" class="row justify-content-center my-4">
-          <div class="col-8">
-            <div class="row justify-content-center">
-              <div class="col-10 text-center">
-                <h6 class="text-primary">Price : {{ priceEth.toFixed(18) }} ETH</h6>
-              </div>
-            </div>
-          </div>
-        </div>
-      </form>
     </div>
-  </div>
+    <div *ngIf="priceEth > 0" class="row justify-content-center my-4">
+      <div class="col-8">
+        <div class="row justify-content-center">
+          <div class="col-10 text-center">
+            <h6 class="text-primary">Price : {{ priceEth.toFixed(18) }} ETH</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
 </div>

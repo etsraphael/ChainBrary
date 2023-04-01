@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import useCaseRoutes from './../../../../shared/data/useCaseRoutes';
-import { SideBarRoute } from './../../../../shared/interfaces';
+import useCaseRoutes from '../../data/useCaseRoutes';
+import { SideBarRoute } from '../../interfaces';
 
 @Component({
   selector: 'app-use-cases-sidebar',

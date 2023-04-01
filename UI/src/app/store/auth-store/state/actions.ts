@@ -2,7 +2,10 @@ import { createAction, props } from '@ngrx/store';
 import { ProfileCreation } from '../../../shared/creations/profileCreation';
 import { IOrganization, IProfileAdded } from '../../../shared/interfaces';
 
-export const setAuthPublicAddress = createAction('[Auth] Set Auth Public Address', props<{ publicAddress: string }>());
+export const setAuthPublicAddress = createAction(
+  '[Auth] Set Auth Public Address',
+  props<{ publicAddress: string; networkId: string; networkName: string }>()
+);
 export const addressChecking = createAction('[Auth] Address Checking');
 
 export const loadAuth = createAction('[Auth] Load Auth');
@@ -11,7 +14,7 @@ export const loadAuthFailure = createAction('[Auth] Load Auth Failure', props<{ 
 
 export const editAccountSent = createAction(
   '[Auth] Edit Account Sent',
-  props<{ account: ProfileCreation; hash: string }>()
+  props<{ account: ProfileCreation; hash: string; networkId: number }>()
 );
 export const editAccountSuccess = createAction(
   '[Auth] Edit Account Success',
@@ -21,7 +24,7 @@ export const editAccountFailure = createAction('[Auth] Edit Account Failure', pr
 
 export const addAccountSent = createAction(
   '[Auth] Add Account Sent',
-  props<{ account: ProfileCreation; hash: string }>()
+  props<{ account: ProfileCreation; hash: string; networkId: number }>()
 );
 export const addAccountSuccess = createAction(
   '[Auth] Add Account Success',
@@ -29,7 +32,10 @@ export const addAccountSuccess = createAction(
 );
 export const addAccountFailure = createAction('[Auth] Add Account Failure', props<{ message: string }>());
 
-export const deleteAccountSent = createAction('[Auth] Delete Account Sent', props<{ hash: string }>());
+export const deleteAccountSent = createAction(
+  '[Auth] Delete Account Sent',
+  props<{ hash: string; networkId: number }>()
+);
 export const deleteAccountSuccess = createAction(
   '[Auth] Delete Account Success',
   props<{ hash: string; numberConfirmation: number }>()

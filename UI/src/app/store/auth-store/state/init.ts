@@ -9,5 +9,9 @@ export const initialState: IAuthState = {
     error: null,
     data: null
   },
-  organization: null
+  organization: null,
+  network: {
+    networkId: null,
+    networkName: null
+  }
 };

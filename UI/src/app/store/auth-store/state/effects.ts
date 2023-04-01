@@ -1,16 +1,22 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
+import { NetworkServiceWeb3Login } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
+import { AccountService } from '../../../shared/services/account/account.service';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
-import { AccountService } from '../services/account/account.service';
 import { IOrganization, IProfileAdded } from './../../../shared/interfaces';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
 
 @Injectable()
 export class AuthEffects {
-  constructor(private actions$: Actions, private accountService: AccountService, private authService: AuthService) {}
+  constructor(
+    private actions$: Actions,
+    private accountService: AccountService,
+    private authService: AuthService,
+    private networkServiceWeb3Login: NetworkServiceWeb3Login
+  ) {}
 
   loadAuth$ = createEffect(() => {
     return this.actions$.pipe(
@@ -18,38 +24,40 @@ export class AuthEffects {
       filter(() => !!this.authService.getPublicAddress()),
       mergeMap(
         (): Actions =>
-          this.accountService.getAccountByPublicAddress(this.authService.getPublicAddress() as string).pipe(
-            mergeMap(
-              (
-                response: ApolloQueryResult<{
-                  memberAccountSaveds: IProfileAdded[];
-                  organizationSaveds: IOrganization[];
-                }>
-              ) => {
-                switch (true) {
-                  case response.data.memberAccountSaveds.length > 0 && response.data.organizationSaveds.length > 0:
-                    return [
-                      AuthActions.loadAuthSuccess({
-                        auth: response.data.memberAccountSaveds[0]
-                      }),
-                      AuthActions.loadOrgnisationSuccess({
-                        organization: response.data.organizationSaveds[0]
-                      })
-                    ];
-                  case response.data.memberAccountSaveds.length == 0 && response.data.organizationSaveds.length > 0:
-                    return [
-                      AuthActions.loadAuthFailure({ message: 'User not found' }),
-                      AuthActions.loadOrgnisationSuccess({
-                        organization: response.data.organizationSaveds[0]
-                      })
-                    ];
-                  default:
-                    return [AuthActions.loadAuthFailure({ message: 'User not found' })];
+          this.accountService
+            .getAccountByPublicAddressAndOrganization(this.authService.getPublicAddress() as string)
+            .pipe(
+              mergeMap(
+                (
+                  response: ApolloQueryResult<{
+                    memberAccountSaveds: IProfileAdded[];
+                    organizationSaveds: IOrganization[];
+                  }>
+                ) => {
+                  switch (true) {
+                    case response.data.memberAccountSaveds.length > 0 && response.data.organizationSaveds.length > 0:
+                      return [
+                        AuthActions.loadAuthSuccess({
+                          auth: response.data.memberAccountSaveds[0]
+                        }),
+                        AuthActions.loadOrgnisationSuccess({
+                          organization: response.data.organizationSaveds[0]
+                        })
+                      ];
+                    case response.data.memberAccountSaveds.length == 0 && response.data.organizationSaveds.length > 0:
+                      return [
+                        AuthActions.loadAuthFailure({ message: 'User not found' }),
+                        AuthActions.loadOrgnisationSuccess({
+                          organization: response.data.organizationSaveds[0]
+                        })
+                      ];
+                    default:
+                      return [AuthActions.loadAuthFailure({ message: 'User not found' })];
+                  }
                 }
-              }
-            ),
-            catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
-          )
+              ),
+              catchError(() => of(AuthActions.loadAuthFailure({ message: 'Error loading auth' })))
+            )
       )
     );
   });
@@ -58,7 +66,10 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.setAuthPublicAddress),
-        tap((action: { publicAddress: string }) => this.authService.savePublicAddress(action.publicAddress))
+        tap((action: { publicAddress: string; networkId: string; networkName: string }) => {
+          this.authService.savePublicAddress(action.publicAddress);
+          this.authService.saveNetworkId(action.networkId);
+        })
       );
     },
     { dispatch: false }
@@ -67,8 +78,15 @@ export class AuthEffects {
   addressChecking$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.addressChecking),
-      filter(() => !!this.authService.getPublicAddress()),
-      map(() => AuthActions.setAuthPublicAddress({ publicAddress: this.authService.getPublicAddress() as string }))
+      filter(() => !!this.authService.getPublicAddress() && !!this.authService.getNetworkId()),
+      map(() => {
+        const networkId: string = this.authService.getNetworkId() as string;
+        return AuthActions.setAuthPublicAddress({
+          publicAddress: this.authService.getPublicAddress() as string,
+          networkId: networkId,
+          networkName: this.networkServiceWeb3Login.getNetworkName(networkId)
+        });
+      })
     );
   });
 
@@ -76,7 +94,10 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.resetAuth),
-        map(() => this.authService.removePublicAddress())
+        map(() => {
+          this.authService.removePublicAddress();
+          this.authService.removeNetworkId();
+        })
       );
     },
     { dispatch: false }

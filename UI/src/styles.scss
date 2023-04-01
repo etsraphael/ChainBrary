@@ -2,9 +2,14 @@ html,
 body {
   height: 100%;
 }
+
 body {
   margin: 0;
   font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+a {
+  cursor: pointer;
 }
 
 .cb-card {
@@ -35,7 +40,9 @@ body {
 
 .btn-primary-gradient,
 .btn-success-gradient,
-.btn-info-gradient {
+.btn-info-gradient,
+.btn-warning-gradient,
+.btn-secondary-gradient {
   border-radius: 10px !important;
   border: 0 !important;
 }

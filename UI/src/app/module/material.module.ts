@@ -1,3 +1,4 @@
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatBadgeModule } from '@angular/material/badge';
@@ -38,6 +39,7 @@ import { MatTreeModule } from '@angular/material/tree';
 @NgModule({
   declarations: [],
   exports: [
+    ClipboardModule,
     MatAutocompleteModule,
     MatCheckboxModule,
     MatDatepickerModule,

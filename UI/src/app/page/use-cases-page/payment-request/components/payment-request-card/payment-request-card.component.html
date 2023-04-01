@@ -1,0 +1,80 @@
+<div class="card cb-card shadow border-0 mt-5">
+  <!-- Payment Request Card -->
+  <ng-template [ngIf]="paymentRequest.payment.data">
+    <!-- Avatar -->
+    <div class="position-relative">
+      <div class="card-header-custom position-absolute w-100">
+        <div class="row justify-content-center mx-0">
+          <div class="col-4 text-center">
+            <app-user-avatar
+              [avatarUrl]="paymentRequest.userAccount.data?.imgUrl!"
+              [editable]="false"
+            ></app-user-avatar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Body -->
+    <div class="card-body mt-5">
+      <div *ngIf="paymentRequest.verifiedAccount">
+        <div class="row text-center">
+          <div class="col-12">
+            <h4 class="card-title text-primary">{{ paymentRequest.userAccount.data?.userName }}</h4>
+            <h5>{{ paymentRequest.userAccount.data?.description }}</h5>
+          </div>
+        </div>
+        <div class="row justify-content-center">
+          <div class="col-8 row justify-content-center">
+            <hr class="col-4" />
+            <div class="col-2"></div>
+            <hr class="col-4" />
+          </div>
+        </div>
+      </div>
+      <div class="row text-center">
+        <div class="col-12">
+          <h2>{{ paymentRequest.payment.data.amount }} eth</h2>
+          <p class="text-muted px-5 text-start" *ngIf="paymentRequest.payment.data.description">
+            {{ paymentRequest.payment.data.description }}
+          </p>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center my-2">
+        <div class="col-10">
+          <div class="row justify-content-center">
+            <div class="col-6" *ngIf="AuthStatusCodeTypes.NotConnected === authStatus">
+              <button class="btn btn-info-gradient w-100 py-2" (click)="openLoginModal.emit()">
+                <span class="text-light">Web3 login</span>
+              </button>
+            </div>
+            <div class="col-6">
+              <button class="btn btn-success-gradient w-100 py-2" (click)="submitAmount()">
+                <span class="text-light">Confirm</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <!-- Payment Expired -->
+  <ng-template [ngIf]="paymentRequest.payment.error">
+    <div class="card-body my-3">
+      <div class="row text-center">
+        <div class="col-12">
+          <h4 class="card-title text-danger">Payment Expired</h4>
+          <p class="text-muted text-center">{{ paymentRequest.payment.error }}</p>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>
+<!-- Powered by ChainBrary message -->
+<div class="container">
+  <div class="row text-end mt-2">
+    <h6 class="text-muted">
+      Powered by
+      <a [routerLink]="['/']">ChainBrary</a>
+    </h6>
+  </div>
+</div>

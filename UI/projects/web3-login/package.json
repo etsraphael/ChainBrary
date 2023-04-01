@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/web3-login",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "peerDependencies": {
     "@angular/common": "^15.1.0",
     "@angular/core": "^15.1.0",
@@ -14,7 +14,7 @@
     "type": "git",
     "url": "https://github.com/etsraphael/ChainBrary.git"
   },
-  "homepage": "https://github.com/etsraphael/ChainBrary/tree/feature/24-web3-login/UI/projects/web3-login",
+  "homepage": "https://github.com/etsraphael/ChainBrary/tree/release/dev/UI/projects/web3-login",
   "sideEffects": false,
   "keywords": [
     "ng",
