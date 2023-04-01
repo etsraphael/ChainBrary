@@ -5,18 +5,14 @@
     <div class="card-header-custom position-absolute w-100">
       <div class="row justify-content-center">
         <div class="col-4 text-center">
-          <app-user-avatar
-            [avatarUrl]="avatarUrl"
-            [editable]="avatarEditEnabled"
-            (editClickEvent)="enableAvatarEdit()"
-          ></app-user-avatar>
+          <app-user-avatar [avatarUrl]="avatarUrl"></app-user-avatar>
         </div>
       </div>
     </div>
   </div>
   <!-- Form -->
   <form [formGroup]="mainForm">
-    <div class="row justify-content-center" *ngIf="avatarInputVisible">
+    <div class="row justify-content-center">
       <div class="col-7">
         <mat-form-field class="w-100 example-full-width" appearance="outline">
           <mat-label>Url</mat-label>

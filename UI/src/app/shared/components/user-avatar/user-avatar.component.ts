@@ -1,12 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-user-avatar[editable]',
+  selector: 'app-user-avatar',
   templateUrl: './user-avatar.component.html',
   styleUrls: ['./user-avatar.component.scss']
 })
 export class UserAvatarComponent {
-  @Output() editClickEvent = new EventEmitter<void>();
-  @Input() editable: boolean;
   @Input() avatarUrl: string | null;
 }
