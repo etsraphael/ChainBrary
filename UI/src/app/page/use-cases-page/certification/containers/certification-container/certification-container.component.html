@@ -1,16 +1,16 @@
 <div class="container">
   <div class="row justify-content-center mt-3 mb-5">
-    <div class="col-11 col-sm-12 col-md-10 col-lg-8 text-center">
+    <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8 text-center">
       <h2 class="text-dark mb-4">Certification</h2>
     </div>
   </div>
   <div class="row justify-content-center mt-3 mb-5" *ngIf="(transactionCards$ | async)?.length! > 0">
-    <div class="col-11 col-sm-12 col-md-10 col-lg-8 px-0">
+    <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8 px-0">
       <app-transaction-card [cardContent]="(transactionCards$ | async)![0]"></app-transaction-card>
     </div>
   </div>
   <div class="row justify-content-center my-3" *ngIf="(transactionCards$ | async)?.length! === 0">
-    <div class="col-11 col-sm-12 col-md-10 col-lg-8 card cb-card border-0 shadow position-relative">
+    <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8 card cb-card border-0 shadow-sm position-relative">
       <app-certification-edit-card
         [authStatus]="authStatus$ | async"
         [profileAccount]="profileAccount$"
