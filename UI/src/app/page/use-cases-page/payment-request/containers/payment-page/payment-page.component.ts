@@ -1,16 +1,24 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { filter, Observable, Subscription, take } from 'rxjs';
-import { IReceiptTransaction } from './../../../../../shared/interfaces';
+import { Observable, Subscription, filter, take } from 'rxjs';
+import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
+import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { TransactionBridgeContract } from './../../../../../shared/contracts';
 import { AuthStatusCode } from './../../../../../shared/enum';
+import { IReceiptTransaction, ITransactionCard } from './../../../../../shared/interfaces';
 import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import { selectAuthStatus, selectPublicAddress } from './../../../../../store/auth-store/state/selectors';
-import { generatePaymentRequest } from './../../../../../store/payment-request-store/state/actions';
+import {
+  amountSent,
+  amountSentFailure,
+  amountSentSuccess,
+  generatePaymentRequest
+} from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
@@ -30,8 +38,14 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   authStatus$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
   web3: Web3;
+  transactionCards$: Observable<ITransactionCard[]>;
 
-  constructor(private route: ActivatedRoute, private store: Store, private web3LoginService: Web3LoginService) {
+  constructor(
+    private route: ActivatedRoute,
+    private store: Store,
+    private web3LoginService: Web3LoginService,
+    private _snackBar: MatSnackBar
+  ) {
     this.setUpId();
   }
 
@@ -52,6 +66,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.cardIsLoading$ = this.store.select(selectCardIsLoading);
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.publicAddress$ = this.store.select(selectPublicAddress);
+    this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
   }
 
   openLoginModal(): void {
@@ -85,15 +100,25 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         take(1),
         filter((publicAddress: string | null) => !!publicAddress)
       )
-      .subscribe((publicAddress: string | null) => {
+      .subscribe(async (publicAddress: string | null) => {
+        const networkId: number = await this.web3.eth.net.getId();
+        if (environment.networkSupported.indexOf(networkId) === -1) {
+          this._snackBar.open('Network not supported', 'Close', {
+            duration: 2000
+          });
+          return;
+        }
+
         return contract.methods
           .transferEth(payload.to)
           .send({ from: publicAddress as string, value: String(payload.priceValue) })
-          .on('transactionHash', (hash: string) => console.log(hash))
+          .on('transactionHash', (hash: string) => this.store.dispatch(amountSent({ hash, networkId })))
           .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
-            console.log(confirmationNumber, receipt)
+            this.store.dispatch(
+              amountSentSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
+            )
           )
-          .on('error', (error: Error) => console.log(error));
+          .on('error', (error: Error) => this.store.dispatch(amountSentFailure({ message: error.message })));
       });
   }
 

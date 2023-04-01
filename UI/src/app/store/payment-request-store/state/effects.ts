@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Buffer } from 'buffer';
-import { catchError, map, mergeMap, of } from 'rxjs';
+import { catchError, filter, map, mergeMap, of } from 'rxjs';
 import { AccountService } from './../../../shared/services/account/account.service';
 import { IPaymentRequest, IProfileAdded } from './../../../shared/interfaces';
 import * as PaymentRequestActions from './actions';
+import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -82,6 +83,21 @@ export class PaymentRequestEffects {
             )
           )
       )
+    );
+  });
+
+  sendAmountTransactionsError$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.amountSentFailure),
+      map((action: { message: string }) => showErrorNotification({ message: action.message }))
+    );
+  });
+
+  sendAmountTransactionsSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.amountSentSuccess),
+      filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
+      map(() => showSuccessNotification({ message: 'Transaction is processing' }))
     );
   });
 }

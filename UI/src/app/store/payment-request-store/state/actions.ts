@@ -18,13 +18,19 @@ export const loadVerifiedAccount = createAction(
   '[Payment Request] Load Verified Account',
   props<{ address: string }>()
 );
-
 export const loadVerifiedAccountSuccess = createAction(
   '[Payment Request] Load Verified Account Success',
   props<{ verifiedAccount: IProfileAdded }>()
 );
-
 export const loadVerifiedAccountFailure = createAction(
   '[Payment Request] Load Verified Account Failure',
   props<{ errorMessage: string }>()
 );
+
+export const amountSent = createAction('[Payment Request] Amount Sent', props<{ hash: string; networkId: number }>());
+
+export const amountSentSuccess = createAction(
+  '[Payment Request] Amount Sent Success',
+  props<{ hash: string; numberConfirmation: number }>()
+);
+export const amountSentFailure = createAction('[Payment Request] Amount Sent Failure', props<{ message: string }>());
