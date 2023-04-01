@@ -19,6 +19,9 @@ export const selectPublicAddress: MemoizedSelector<object, string | null, (s1: I
 export const selectAvatarUrl: MemoizedSelector<object, string | undefined, (s1: IAuthState) => string | undefined> =
   createSelector(selectAuth, (s) => s.userAccount.data?.imgUrl);
 
+export const selectErrorAccount: MemoizedSelector<object, string | null, (s1: IAuthState) => string | null> =
+  createSelector(selectAuth, (s) => s.userAccount.error);
+
 export const selectIsConnected: MemoizedSelector<object, boolean, (s1: IAuthState) => boolean> = createSelector(
   selectAuth,
   (s) => s.connectedUser
