@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { NetworkServiceWeb3Login } from '@chainbrary/web3-login';
+import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
 import { AccountService } from '../../../shared/services/account/account.service';
@@ -15,7 +15,7 @@ export class AuthEffects {
     private actions$: Actions,
     private accountService: AccountService,
     private authService: AuthService,
-    private networkServiceWeb3Login: NetworkServiceWeb3Login
+    private web3LoginService: Web3LoginService
   ) {}
 
   loadAuth$ = createEffect(() => {
@@ -84,7 +84,7 @@ export class AuthEffects {
         return AuthActions.setAuthPublicAddress({
           publicAddress: this.authService.getPublicAddress() as string,
           networkId: networkId,
-          networkName: this.networkServiceWeb3Login.getNetworkName(networkId)
+          networkName: this.web3LoginService.getNetworkName(networkId)
         });
       })
     );
