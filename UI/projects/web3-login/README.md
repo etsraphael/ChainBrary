@@ -1,50 +1,85 @@
 # @chainbrary/web3-login
 
-The `@chainbrary/web3-login` package provides a simple way for users to connect to web3 providers and interact with decentralized applications.
+This package provides a simple and customizable Web3 login modal for Angular applications. It supports account and network change events and provides methods to interact with the Ethereum blockchain.
 
 ## Installation
 
-You can install the package using npm:
+Use the package manager [npm](https://www.npmjs.com/package/@chainbrary/web3-login) to install `@chainbrary/web3-login`.
 
-```
+```bash
 npm install @chainbrary/web3-login
 ```
 
-## Usage
+### Usage
+Import the Web3LoginModule into your Angular application and add it to the imports array in the @NgModule decorator of your AppModule:
 
-To use the @chainbrary/web3-login package, first add it to your Angular project:
-
-```
-import Web3Login from '@chainbrary/web3-login';
+```typescript
+import { Web3LoginModule } from '@chainbrary/web3-login';
 
 @NgModule({
-  declarations: [AppComponent],
-  imports: [
-    ...
-    Web3LoginModule // <-- Add this line
-  ],
+  imports: [Web3LoginModule],
+})
+export class AppModule {}
+```
+Inject the Web3LoginService into your component or service where you want to use the Web3 login functionality:
+
+```typescript
+import { Web3LoginService } from '@chainbrary/web3-login';
+
+constructor(private web3LoginService: Web3LoginService) {}
+```
+Use the service methods as needed:
+
+### Opening the login modal
+To open the login modal, call the openLoginModal() method. This method returns an EventEmitter that emits a ModalState object containing the current state of the modal (either 'opened' or 'closed').
+
+```typescript
+const stateEvent = this.web3LoginService.openLoginModal();
+
+stateEvent.subscribe((state: ModalState) => {
+  // Handle the modal state here
+});
+```
+### Closing the login modal
+To close the login modal programmatically, call the closeLoginModal() method.
+
+```typescript
+this.web3LoginService.closeLoginModal();
+```
+### Listening to account changes
+To listen for account changes, use the onAccountChangedEvent$ observable:
+
+```typescript
+this.web3LoginService.onAccountChangedEvent$.subscribe((account: string | undefined) => {
+  // Handle account changes here
+});
+```
+### Listening to chain changes
+To listen for chain changes, use the onChainChangedEvent$ observable:
+
+```typescript
+this.web3LoginService.onChainChangedEvent$.subscribe(({ networkId, networkName }) => {
+  // Handle chain changes here
+});
+```
+### Getting the network name
+To get the network name based on the network ID, use the getNetworkName(networkId: string) method:
+
+```typescript
+const networkName = this.web3LoginService.getNetworkName(networkId);
 ```
 
-You can then use the Web3Login class to connect to a web3 provider and retrieve the user's account:
+### Customization
+To customize the appearance of the login modal, modify the following CSS classes in your application:
 
 ```
-import { Web3LoginService, ModalState } from '@chainbrary/web3-login';
-
-constructor(private web3LoginService: Web3LoginService) { }
-
-sampleFunctionToOpenTheModal(): void {
-  this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
-    console.log(state);
-  });
-}
-
-forceToQuitTheModal(): void {
-  this.web3LoginService.closeLoginModal();
-}
+.web3-login-modal: The modal container
+.web3-login-header: The modal header
+.web3-login-content: The modal content
+.web3-login-footer: The modal footer
 ```
 
-The connect method will prompt the user to connect to a web3 provider (such as MetaMask) and grant permission to access their account. The getAccount method will then retrieve the user's account from the web3 provider.
-
-## License
-
+### License
 The `@chainbrary/web3-login` package is released under the MIT License.
+
+Let me know if you need any additional information or if you have any questions.
