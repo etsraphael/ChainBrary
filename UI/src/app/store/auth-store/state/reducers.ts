@@ -57,6 +57,26 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
     })
   ),
   on(
+    AuthActions.networkChanged,
+    (state, { networkId, networkName }): IAuthState => ({
+      ...state,
+      network: {
+        networkId,
+        networkName
+      }
+    })
+  ),
+  on(
+    AuthActions.accountChanged,
+    (state, { publicAddress }): IAuthState => ({
+      ...state,
+      publicAddress: publicAddress,
+      userAccount: initialState.userAccount,
+      organization: initialState.organization,
+      verifiedAccount: false
+    })
+  ),
+  on(
     AuthActions.setAuthPublicAddress,
     (_, { publicAddress, networkId, networkName }): IAuthState => ({
       ...initialState,

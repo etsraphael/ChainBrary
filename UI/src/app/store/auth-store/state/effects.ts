@@ -117,4 +117,30 @@ export class AuthEffects {
       map(() => showSuccessNotification({ message: 'Transaction is processing' }))
     );
   });
+
+  networkChanged$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.networkChanged),
+        tap((action: { networkId: string; networkName: string }) => {
+          this.authService.saveNetworkId(action.networkId);
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  accountChanged$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.accountChanged),
+      tap((action: { publicAddress: string | null }) => {
+        if (action.publicAddress) {
+          this.authService.savePublicAddress(action.publicAddress);
+        } else {
+          this.authService.removePublicAddress();
+        }
+      }),
+      map(() => AuthActions.loadAuth())
+    );
+  });
 }
