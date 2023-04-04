@@ -47,4 +47,11 @@ export const loadOrgnisationSuccess = createAction(
   props<{ organization: IOrganization }>()
 );
 
+export const networkChanged = createAction(
+  '[Auth] Network Changed',
+  props<{ networkId: string; networkName: string }>()
+);
+
+export const accountChanged = createAction('[Auth] Account Changed', props<{ publicAddress: string | null }>());
+
 export const resetAuth = createAction('[Auth] Reset Auth');

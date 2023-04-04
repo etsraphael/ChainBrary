@@ -43,6 +43,11 @@ export class PaymentRequestMakerComponent implements OnInit {
   }
 
   goToNextPage(): void {
+    if (this.authStatus == AuthStatusCode.NotConnected) {
+      this.snackbar.open('Please login to continue', 'Close', { duration: 3000 });
+      return;
+    }
+
     if (this.mainForm.invalid) {
       this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
       return;

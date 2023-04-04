@@ -21,8 +21,6 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean; priceValue: number }>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;
-  avatarEditEnabled = true;
-  avatarInputVisible = false;
   avatarUrl: string | null;
   avatarUrlControlSub: Subscription;
   profileAccountSub: Subscription;
@@ -134,11 +132,6 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
           }
         }
       });
-  }
-
-  enableAvatarEdit(): void {
-    this.avatarEditEnabled = false;
-    this.avatarInputVisible = true;
   }
 
   checkingFormValidity(): boolean {
