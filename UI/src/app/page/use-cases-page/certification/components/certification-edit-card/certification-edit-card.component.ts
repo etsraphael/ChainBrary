@@ -17,7 +17,6 @@ export class CertificationEditCardComponent implements OnInit, AfterViewInit, On
   @Input() profileAccount: Observable<IProfileAdded | null>;
   @Input() publicAddress: string | null;
   @Input() dailyPrice: number | undefined;
-  @Output() openLoginModal = new EventEmitter<void>();
   @Output() saveProfile = new EventEmitter<{ profile: ProfileCreation; edited: boolean; priceValue: number }>();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm: FormGroup<CertificationForm>;

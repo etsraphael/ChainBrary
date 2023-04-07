@@ -49,7 +49,7 @@ $dark: #f8f9fa;
   --color-primary: $primary;
   --color-dark: $dark;
   --color-tertiary: $tertiary;
-  --bs-border-color: #{$tertiary} !important;
+  --bs-border-color: #d8d8d8 !important;
 
   .card {
     --bs-card-bg: #{$tertiary};

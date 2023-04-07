@@ -3,7 +3,7 @@
   <div class="position-relative">
     <div class="card-header-custom position-absolute w-100">
       <div class="row justify-content-center">
-        <div class="col-4 text-center">
+        <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
           <app-user-avatar [avatarUrl]="profileAccount?.imgUrl!"></app-user-avatar>
         </div>
       </div>
@@ -25,7 +25,7 @@
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <form class="container" [formGroup]="mainForm">
         <div class="row justify-content-center">
-          <div class="col-7">
+          <div class="col-10 col-lg-7">
             <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
               <mat-label> Amount (by ETH) </mat-label>
               <input formControlName="amount" type="number" class="text-center" matInput placeholder="Amount" />
@@ -34,7 +34,7 @@
         </div>
         <!-- Add a description textarea here -->
         <div class="row justify-content-center">
-          <div class="col-7">
+          <div class="col-10 col-lg-7">
             <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
               <mat-label> Description </mat-label>
               <textarea
@@ -51,9 +51,9 @@
         </div>
       </form>
       <div class="row justify-content-center mb-4">
-        <div class="col-4">
+        <div class="col-8 col-md-8 col-lg-5">
           <button class="btn btn-info-gradient w-100 py-2" (click)="goToNextPage()">
-            <span class="text-light">Next</span>
+            <span class="text-white">Next</span>
           </button>
         </div>
       </div>
@@ -61,8 +61,8 @@
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <div class="container">
         <div class="row justify-content-center">
-          <div class="col-9">
-            <table class="table">
+          <div class="col-9 col-md-11 col-lg-9">
+            <table class="table text-dark">
               <tbody>
                 <tr *ngIf="AuthStatusCodeTypes.VerifiedAndConnected === authStatus">
                   <td>Account</td>
@@ -89,14 +89,14 @@
         <div class="row justify-content-center my-3">
           <div class="col-9">
             <div class="row">
-              <div class="col-6">
+              <div class="col-12 col-lg-6 py-2 py-lg-0">
                 <button class="btn btn-secondary-gradient w-100 py-2" (click)="goToPreviousPage()">
-                  <span class="text-light">Back</span>
+                  <span class="text-white">Back</span>
                 </button>
               </div>
-              <div class="col-6">
+              <div class="col-12 col-lg-6 py-2 py-lg-0">
                 <button class="btn btn-warning-gradient w-100 py-2" (click)="goToPaymentPage()">
-                  <span class="text-light">Preview</span>
+                  <span class="text-white">Preview</span>
                 </button>
               </div>
             </div>

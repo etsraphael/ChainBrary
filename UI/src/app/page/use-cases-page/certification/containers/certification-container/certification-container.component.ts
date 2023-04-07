@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
+import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
+import { ProfileCreationCommand } from 'src/app/shared/commands';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
@@ -15,9 +16,7 @@ import {
   addAccountSuccess,
   editAccountFailure,
   editAccountSent,
-  editAccountSuccess,
-  loadAuth,
-  setAuthPublicAddress
+  editAccountSuccess
 } from './../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
@@ -26,24 +25,21 @@ import {
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
-import { ProfileCreationCommand } from 'src/app/shared/commands';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-certification-container',
   templateUrl: './certification-container.component.html',
   styleUrls: ['./certification-container.component.scss']
 })
-export class CertificationContainerComponent implements OnInit, OnDestroy {
+export class CertificationContainerComponent implements OnInit {
   authStatus$: Observable<AuthStatusCode>;
   profileAccount$: Observable<IProfileAdded | null>;
   publicAddress$: Observable<string | null>;
   dailyPrice$: Observable<number | undefined>;
-  modalSub: Subscription;
   web3: Web3;
   transactionCards$: Observable<ITransactionCard[]>;
 
-  constructor(private store: Store, private web3LoginService: Web3LoginService, private _snackBar: MatSnackBar) {}
+  constructor(private store: Store, private _snackBar: MatSnackBar) {}
 
   ngOnInit(): void {
     this.generateObs();
@@ -55,28 +51,6 @@ export class CertificationContainerComponent implements OnInit, OnDestroy {
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.dailyPrice$ = this.store.select(selectDailyPrice);
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('CertificationContainer'));
-  }
-
-  ngOnDestroy(): void {
-    this.modalSub?.unsubscribe();
-  }
-
-  openLoginModal(): void {
-    this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
-      switch (state.type) {
-        case ModalStateType.SUCCESS:
-          this.store.dispatch(
-            setAuthPublicAddress({
-              publicAddress: state.data?.publicAddress as string,
-              networkId: state.data?.networkId as string,
-              networkName: state.data?.networkName as string
-            })
-          );
-          this.store.dispatch(loadAuth());
-          this.web3LoginService.closeLoginModal();
-          break;
-      }
-    });
   }
 
   async saveProfile(payload: {
