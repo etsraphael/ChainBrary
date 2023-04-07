@@ -2,10 +2,10 @@
   <div class="d-flex justify-content-center">
     <div class="col-10">
       <div class="custom-container p-3">
-        <div class="border-title px-3">
+        <div class="border-title px-3 bg-light">
           <p class="mb-0">Choose your current wallet</p>
         </div>
-        <div class="container" [ngClass]="{ hidden: isLoading }">
+        <div class="container mt-4 mt-md-0" [ngClass]="{ hidden: isLoading }">
           <div
             class="wallet-container my-3"
             *ngFor="let item of providers"
@@ -13,10 +13,10 @@
             (click)="openWalletProvider(item.key)"
           >
             <div class="wallet-row row py-2 mx-0">
-              <div class="col-6 brand-image-container ps-3">
+              <div class="col-3 col-md-6 brand-image-container ps-3">
                 <img [src]="item.iconUrl" alt="icon" class="h-100 icon-content" />
               </div>
-              <div class="col-6 text-end text-light pe-3 my-auto">
+              <div class="col-9 col-md-6 text-end text-light pe-3 my-auto">
                 {{ item.name }}
               </div>
             </div>

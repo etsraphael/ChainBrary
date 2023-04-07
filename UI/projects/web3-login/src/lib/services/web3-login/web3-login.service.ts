@@ -23,7 +23,7 @@ export class Web3LoginService {
     const dialogRef: MatDialogRef<Web3LoginComponent> = this.dialog.open(Web3LoginComponent, {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
-      panelClass: ['col-12', 'col-sm-5', 'col-md-6', 'col-lg-5', 'col-xl-4'],
+      panelClass: ['col-12', 'col-md-6', 'col-lg-5', 'col-xl-4'],
       position: { top: '5%' }
     });
 
