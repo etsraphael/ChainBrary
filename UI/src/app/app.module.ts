@@ -11,7 +11,7 @@ import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { UseCasesPageModule } from './page/use-cases-page/use-cases-page.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
-import * as Sentry from "@sentry/angular-ivy";
+import * as Sentry from '@sentry/angular-ivy';
 import { Router } from '@angular/router';
 
 @NgModule({
@@ -34,18 +34,19 @@ import { Router } from '@angular/router';
       provide: ErrorHandler,
       useValue: Sentry.createErrorHandler({
         showDialog: false
-      }),
+      })
     },
     {
       provide: Sentry.TraceService,
-      deps: [Router],
+      deps: [Router]
     },
     {
       provide: APP_INITIALIZER,
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
       useFactory: () => () => {},
       deps: [Sentry.TraceService],
-      multi: true,
-    },
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

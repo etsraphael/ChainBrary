@@ -1,13 +1,12 @@
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import * as Sentry from '@sentry/angular-ivy';
-
 import { AppModule } from './app/app.module';
 
 Sentry.init({
   dsn: 'https://415f8b817ed645bebb202692d45953bc@o4504970938023936.ingest.sentry.io/4504970946412544',
   integrations: [
     new Sentry.BrowserTracing({
-      tracePropagationTargets: ['localhost', 'https://chainbrary.app.runonflux.io'],
+      tracePropagationTargets: ['https://chainbrary.app.runonflux.io'],
       routingInstrumentation: Sentry.routingInstrumentation
     }),
     new Sentry.Replay({
