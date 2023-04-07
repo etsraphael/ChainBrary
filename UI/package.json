@@ -28,6 +28,7 @@
     "@ngrx/entity": "^15.4.0",
     "@ngrx/store": "^15.4.0",
     "@ngrx/store-devtools": "^15.4.0",
+    "@sentry/angular-ivy": "^7.47.0",
     "apollo-angular": "^4.2.0",
     "bootstrap": "^5.2.3",
     "bootstrap-icons": "^1.10.3",
