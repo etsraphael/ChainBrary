@@ -70,6 +70,28 @@
               "outputHashing": "all",
               "sourceMap": true
             },
+            "test": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "3mb",
+                  "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all",
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ]
+            },
             "development": {
               "buildOptimizer": false,
               "optimization": false,
@@ -92,6 +114,9 @@
           "configurations": {
             "production": {
               "browserTarget": "ChainBrary:build:production"
+            },
+            "test": {
+              "browserTarget": "ChainBrary:build:test"
             },
             "development": {
               "browserTarget": "ChainBrary:build:development"
