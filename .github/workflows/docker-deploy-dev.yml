@@ -37,7 +37,7 @@ jobs:
       # build and test the apps
       - name: build
         run: |
-          npm run build --prod
+          npm run build
   push_to_Docker_Hub:
     environment: dev
     if: github.event.pull_request.merged == true
