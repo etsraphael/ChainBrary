@@ -9,12 +9,14 @@ Sentry.init({
     new Sentry.BrowserTracing({
       tracePropagationTargets: ['localhost', 'https://chainbrary.app.runonflux.io'],
       routingInstrumentation: Sentry.routingInstrumentation
+    }),
+    new Sentry.Replay({
+      maskAllText: true,
+      blockAllMedia: true
     })
   ],
-
-  // Set tracesSampleRate to 1.0 to capture 100%
-  // of transactions for performance monitoring.
-  // We recommend adjusting this value in production
+  replaysSessionSampleRate: 0.1,
+  replaysOnErrorSampleRate: 1.0,
   tracesSampleRate: 1.0
 });
 
