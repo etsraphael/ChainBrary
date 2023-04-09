@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { EMPTY, Observable, defer, of } from 'rxjs';
 import Web3 from 'web3';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -45,24 +45,36 @@ export class NetworkServiceWeb3Login {
   }
 
   onAccountChangedEvent(): Observable<string | undefined> {
-    return new Observable<string>((subscriber) => {
-      window.ethereum.on('accountsChanged', (accounts: string[]) => {
-        if (accounts.length === 0) {
-          subscriber.next(undefined);
-        } else {
-          subscriber.next(accounts[0]);
-        }
+    return defer(() => {
+      if (typeof window.ethereum === 'undefined') {
+        return EMPTY as Observable<string | undefined>;
+      }
+
+      return new Observable<string>((subscriber) => {
+        window.ethereum.on('accountsChanged', (accounts: string[]) => {
+          if (accounts.length === 0) {
+            subscriber.next(undefined);
+          } else {
+            subscriber.next(accounts[0]);
+          }
+        });
       });
     });
   }
 
   onChainChangedEvent(): Observable<{ networkId: string; networkName: string }> {
-    return new Observable<{ networkId: string; networkName: string }>((subscriber) => {
-      window.ethereum.on('chainChanged', (networkId: string) => {
-        const idFormat: string = parseInt(networkId.slice(2), 16).toString();
-        subscriber.next({
-          networkId: idFormat,
-          networkName: this.getNetworkName(idFormat)
+    return defer(() => {
+      if (typeof window.ethereum === 'undefined') {
+        return of(this.getCurrentNetwork());
+      }
+
+      return new Observable<{ networkId: string; networkName: string }>((subscriber) => {
+        window.ethereum.on('chainChanged', (networkId: string) => {
+          const idFormat: string = parseInt(networkId.slice(2), 16).toString();
+          subscriber.next({
+            networkId: idFormat,
+            networkName: this.getNetworkName(idFormat)
+          });
         });
       });
     });
