@@ -17,7 +17,8 @@ Sentry.init({
   replaysSessionSampleRate: 0.1,
   replaysOnErrorSampleRate: 1.0,
   tracesSampleRate: 1.0,
-  release: '0.0.1'
+  release: '0.0.2',
+  environment: 'test'
 });
 
 platformBrowserDynamic()
