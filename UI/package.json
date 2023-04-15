@@ -1,11 +1,12 @@
 {
   "name": "chain-brary",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
     "build:test": "ng build --configuration test",
+    "build:production": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "lint": "ng lint",

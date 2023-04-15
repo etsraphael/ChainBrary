@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ThemeTypes } from '../../enum';
-import { ThemeService } from '../../services/theme/theme.service';
 
 @Component({
   selector: 'app-header-page',
@@ -11,11 +9,7 @@ import { ThemeService } from '../../services/theme/theme.service';
 export class HeaderPageComponent implements OnInit {
   headerBtns: IHeaderBtn[] = [];
 
-  constructor(private router: Router, private themeService: ThemeService) {}
-
-  get iconTheme(): string {
-    return this.themeService.currentTheme === ThemeTypes.Light ? 'bi-moon-fill' : 'bi-brightness-high-fill';
-  }
+  constructor(private router: Router) {}
 
   ngOnInit(): void {
     this.headerBtns = [
@@ -32,10 +26,6 @@ export class HeaderPageComponent implements OnInit {
         action: (): Window | null => this.goToLinkOutsideApp('https://discord.gg/Y3pTujEsMe')
       }
     ];
-  }
-
-  toggleTheme(): void {
-    return this.themeService.toggleTheme();
   }
 
   goToLinkOutsideApp(link: string): Window | null {
