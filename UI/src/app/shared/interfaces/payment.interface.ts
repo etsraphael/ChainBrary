@@ -1,4 +1,4 @@
-import { FormControl } from "@angular/forms";
+import { FormControl, FormGroup } from '@angular/forms';
 
 export interface IPaymentRequest {
   publicAddress: string;
@@ -6,8 +6,18 @@ export interface IPaymentRequest {
   description: string | null;
 }
 
-
-export interface PaymentMakerForm {
+export interface PriceSettingsForm {
   description: FormControl<string | null>;
   amount: FormControl<number | null>;
+}
+
+export interface ProfileForm {
+  avatarUrl: FormControl<string | null>;
+  username: FormControl<string | null>;
+  description: FormControl<string | null>;
+}
+
+export interface PaymentMakerForm {
+  priceSettings: FormGroup<PriceSettingsForm>;
+  profile: FormGroup<ProfileForm>;
 }

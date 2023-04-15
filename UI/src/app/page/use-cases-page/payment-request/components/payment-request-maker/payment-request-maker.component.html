@@ -14,7 +14,10 @@
   <div [ngSwitch]="page">
     <!-- Form -->
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
-      <app-payment-request-price-settings (goToNextPage)="goToNextPage()"></app-payment-request-price-settings>
+      <app-payment-request-price-settings
+      [priceSettings]="priceSettings"
+      (goToNextPage)="goToNextPage()"
+      ></app-payment-request-price-settings>
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <app-payment-request-review [username]="'john cena'" [amount]="50" [previewLink]="''"
