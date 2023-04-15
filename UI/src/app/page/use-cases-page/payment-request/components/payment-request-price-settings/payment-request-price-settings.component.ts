@@ -8,6 +8,6 @@ import { PriceSettingsForm } from './../../../../../shared/interfaces';
   styleUrls: ['./payment-request-price-settings.component.scss']
 })
 export class PaymentRequestPriceSettingsComponent {
-  @Input() priceSettings: FormGroup<PriceSettingsForm> ;
+  @Input() priceSettings: FormGroup<PriceSettingsForm>;
   @Output() goToNextPage = new EventEmitter<void>();
 }
