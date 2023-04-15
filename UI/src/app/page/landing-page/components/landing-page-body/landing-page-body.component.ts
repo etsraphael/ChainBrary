@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ThemeService } from './../../../../shared/services/theme/theme.service';
 
 @Component({
   selector: 'app-landing-page-body',
@@ -27,8 +26,6 @@ export class LandingPageBodyComponent {
       icon: 'bi-eye'
     }
   ];
-
-  constructor(public themeService: ThemeService) {}
 }
 
 interface LandingPageCard {

@@ -37,16 +37,7 @@
               "src/styles.scss",
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
-              {
-                "input": "src/assets/themes/light.scss",
-                "inject": true,
-                "bundleName": "light"
-              },
-              {
-                "input": "src/assets/themes/dark.scss",
-                "inject": true,
-                "bundleName": "dark"
-              }
+              "src/assets/themes/light.scss"
             ],
             "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
             "customWebpackConfig": {
