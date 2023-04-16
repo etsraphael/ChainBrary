@@ -83,7 +83,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   generatePaymentRequest(): void {
     const paymentRequest: IPaymentRequest = {
       username: this.mainForm.value.profile!.username as string,
-      publicAddress: '123',
+      publicAddress: this.mainForm.value.profile!.publicAddress as string,
       amount: this.mainForm.value.price!.amount as number,
       description: this.mainForm.value.price!.description as string
     };
