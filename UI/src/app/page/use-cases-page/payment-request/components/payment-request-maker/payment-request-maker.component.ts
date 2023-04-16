@@ -51,13 +51,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   listenToAddressChange(): void {
-    this.publicAddressSub = this.publicAddressObs.subscribe((publicAddress) => {
-      if (publicAddress) {
-        this.profileForm.get('publicAddress')!.disable();
-      } else {
-        this.profileForm.get('publicAddress')!.enable();
-      }
-      this.profileForm.get('publicAddress')!.setValue(publicAddress);
+    this.publicAddressSub = this.publicAddressObs.subscribe((publicAddress: string | null) => {
+      if (publicAddress) this.profileForm.get('publicAddress')?.setValue(publicAddress);
+      else this.profileForm.get('publicAddress')?.setValue('');
     });
   }
 
@@ -82,10 +78,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   generatePaymentRequest(): void {
     const paymentRequest: IPaymentRequest = {
-      username: this.mainForm.value.profile!.username as string,
-      publicAddress: this.mainForm.value.profile!.publicAddress as string,
-      amount: this.mainForm.value.price!.amount as number,
-      description: this.mainForm.value.price!.description as string
+      username: this.mainForm.value.profile?.username as string,
+      publicAddress: this.mainForm.value.profile?.publicAddress as string,
+      amount: this.mainForm.value.price?.amount as number,
+      description: this.mainForm.value.price?.description as string
     };
     const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
     const url = new URL(window.location.href);
