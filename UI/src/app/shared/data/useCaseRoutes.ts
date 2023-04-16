@@ -8,9 +8,9 @@ const useCaseRoutes: SideBarRoute[] = [
     enabled: true
   },
   {
-    title: 'Certification',
+    title: 'Proposal',
     path: '/certification',
-    icon: 'bi-patch-check-fill',
+    icon: 'bi-inboxes-fill',
     enabled: false
   }
 ];
