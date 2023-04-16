@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { IProfileAdded, PaymentMakerForm, PriceSettingsForm } from './../../../../../shared/interfaces';
+import { IProfileAdded, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-payment-request-maker[authStatus][profileAccount][publicAddress]',
@@ -15,19 +15,23 @@ export class PaymentRequestMakerComponent implements OnInit {
   @Input() profileAccount: IProfileAdded | null;
   @Input() publicAddress: string | null;
   paymentMakePageTypes = PaymentMakePage;
-  page: PaymentMakePage = PaymentMakePage.settingPrice;
+  page: PaymentMakePage = PaymentMakePage.settingProfile;
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
 
   constructor(private snackbar: MatSnackBar) {}
 
-  get priceSettings(): FormGroup<PriceSettingsForm> {
-    return this.mainForm.get('priceSettings') as FormGroup<PriceSettingsForm>;
+  get priceForm(): FormGroup<PriceSettingsForm> {
+    return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
+  }
+
+  get profileForm(): FormGroup<ProfileForm> {
+    return this.mainForm.get('profile') as FormGroup<ProfileForm>;
   }
 
   ngOnInit(): void {
     this.mainForm = new FormGroup({
-      priceSettings: new FormGroup({
+      price: new FormGroup({
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)])
       }),
@@ -83,6 +87,7 @@ export class PaymentRequestMakerComponent implements OnInit {
 }
 
 enum PaymentMakePage {
-  settingPrice = 0,
-  review = 1
+  settingProfile = 0,
+  settingPrice = 1,
+  review = 2
 }

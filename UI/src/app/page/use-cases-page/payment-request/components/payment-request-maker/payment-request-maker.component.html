@@ -13,16 +13,21 @@
   <!-- Page Container -->
   <div [ngSwitch]="page">
     <!-- Form -->
+    <div *ngSwitchCase="paymentMakePageTypes.settingProfile">
+      <app-payment-request-profile-settings [profileForm]="profileForm" (goToNextPage)="goToNextPage()">
+      </app-payment-request-profile-settings>
+    </div>
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <app-payment-request-price-settings
-        [priceSettings]="priceSettings"
+        [priceForm]="priceForm"
         (goToNextPage)="goToNextPage()"
+        (goToPreviousPage)="goToPreviousPage()"
       ></app-payment-request-price-settings>
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <app-payment-request-review
-        [username]="'john cena'"
-        [amount]="50"
+        [username]="mainForm.controls.profile.controls.username.value!"
+        [amount]="mainForm.controls.price.controls.amount.value!"
         [previewLink]="''"
         (goToPreviousPageEvent)="goToPreviousPage()"
       >

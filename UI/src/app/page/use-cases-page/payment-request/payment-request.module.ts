@@ -10,6 +10,7 @@ import { PaymentRequestReviewComponent } from './components/payment-request-revi
 import { PaymentPageComponent } from './containers/payment-page/payment-page.component';
 import { PaymentRequestContainerComponent } from './containers/payment-request-container/payment-request-container.component';
 import { PaymentRequestPriceSettingsComponent } from './components/payment-request-price-settings/payment-request-price-settings.component';
+import { PaymentRequestProfileSettingsComponent } from './components/payment-request-profile-settings/payment-request-profile-settings.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { PaymentRequestPriceSettingsComponent } from './components/payment-reque
     PaymentRequestCardComponent,
     PaymentRequestMakerComponent,
     PaymentRequestReviewComponent,
-    PaymentRequestPriceSettingsComponent
+    PaymentRequestPriceSettingsComponent,
+    PaymentRequestProfileSettingsComponent
   ],
   imports: [CommonModule, SharedComponentsModule, RouterModule, MaterialModule, ReactiveFormsModule]
 })

@@ -18,6 +18,6 @@ export interface ProfileForm {
 }
 
 export interface PaymentMakerForm {
-  priceSettings: FormGroup<PriceSettingsForm>;
+  price: FormGroup<PriceSettingsForm>;
   profile: FormGroup<ProfileForm>;
 }
