@@ -1,11 +1,11 @@
 import { IPaymentRequestState } from './interfaces';
 
 export const initialState: IPaymentRequestState = {
-  verifiedAccount: false,
-  userAccount: {
-    loading: false,
-    error: null,
-    data: null
+  profile: {
+    publicAddress: null,
+    avatarUrl: null,
+    username: null,
+    subtitle: null
   },
   payment: {
     loading: false,

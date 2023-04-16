@@ -45,7 +45,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         publicAddress: new FormControl('', [Validators.required]),
         avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-        description: new FormControl('', [Validators.required, Validators.maxLength(20)])
+        subtitle: new FormControl('', [Validators.required, Validators.maxLength(15)])
       })
     });
   }
@@ -81,7 +81,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       username: this.mainForm.value.profile?.username as string,
       publicAddress: this.mainForm.value.profile?.publicAddress as string,
       amount: this.mainForm.value.price?.amount as number,
-      description: this.mainForm.value.price?.description as string
+      description: this.mainForm.value.price?.description as string,
+      subtitle: this.mainForm.value.profile?.subtitle as string,
+      avatarUrl: this.mainForm.value.profile?.avatarUrl as string
     };
     const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
     const url = new URL(window.location.href);

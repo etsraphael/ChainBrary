@@ -1,11 +1,10 @@
-import { IPaymentRequest, IProfileAdded, StoreState } from '../../../shared/interfaces';
+import { IPaymentRequest, StoreState, IProfilePayment } from '../../../shared/interfaces';
 
 export const PAYMENT_REQUEST_FEATURE_KEY = 'paymentRequest';
 
 export interface IPaymentRequestState {
   payment: StoreState<IPaymentRequest | null>;
-  userAccount: StoreState<IProfileAdded | null>;
-  verifiedAccount: boolean;
+  profile: IProfilePayment;
 }
 
 export interface PaymentRequestState {

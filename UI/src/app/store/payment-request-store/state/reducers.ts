@@ -24,6 +24,12 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         error: null,
         loading: false,
         data: paymentRequest
+      },
+      profile: {
+        publicAddress: paymentRequest.publicAddress,
+        avatarUrl: paymentRequest.avatarUrl,
+        username: paymentRequest.username,
+        subtitle: paymentRequest.subtitle
       }
     })
   ),
@@ -32,41 +38,6 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     (state, { errorMessage }): IPaymentRequestState => ({
       ...state,
       payment: {
-        error: errorMessage,
-        loading: false,
-        data: null
-      }
-    })
-  ),
-  on(
-    AuthActions.loadVerifiedAccount,
-    (state): IPaymentRequestState => ({
-      ...state,
-      userAccount: {
-        ...state.userAccount,
-        error: null,
-        loading: true
-      }
-    })
-  ),
-  on(
-    AuthActions.loadVerifiedAccountSuccess,
-    (state, { verifiedAccount }): IPaymentRequestState => ({
-      ...state,
-      verifiedAccount: true,
-      userAccount: {
-        error: null,
-        loading: false,
-        data: verifiedAccount
-      }
-    })
-  ),
-  on(
-    AuthActions.loadVerifiedAccountFailure,
-    (state, { errorMessage }): IPaymentRequestState => ({
-      ...state,
-      verifiedAccount: false,
-      userAccount: {
         error: errorMessage,
         loading: false,
         data: null
