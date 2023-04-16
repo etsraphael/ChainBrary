@@ -1,0 +1,43 @@
+<form class="container" [formGroup]="priceForm">
+  <div class="row justify-content-center">
+    <div class="col-10 col-lg-7">
+      <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+        <mat-label> Amount (by ETH) </mat-label>
+        <input formControlName="amount" type="number" class="text-center" matInput placeholder="Amount" />
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- Add a description textarea here -->
+  <div class="row justify-content-center">
+    <div class="col-10 col-lg-7">
+      <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+        <mat-label> Description </mat-label>
+        <textarea
+          formControlName="description"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          matInput
+          placeholder="Description"
+          maxlength="150"
+        ></textarea>
+      </mat-form-field>
+    </div>
+  </div>
+</form>
+<div class="row justify-content-center">
+  <div class="col-10 col-lg-7">
+    <div class="row justify-content-center mb-4">
+      <div class="col-12 col-lg-6 py-2 py-lg-0">
+        <button class="btn btn-secondary-gradient w-100 py-2" (click)="goToPreviousPage.emit()">
+          <span class="text-white">Back</span>
+        </button>
+      </div>
+      <div class="col-12 col-lg-6 py-2 py-lg-0">
+        <button class="btn btn-info-gradient w-100 py-2" (click)="goToNextPage.emit()">
+          <span class="text-white">Next</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

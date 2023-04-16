@@ -4,12 +4,14 @@ const useCaseRoutes: SideBarRoute[] = [
   {
     title: 'Payment Request',
     path: '/payment-request',
-    icon: 'bi-envelope-fill'
+    icon: 'bi-envelope-fill',
+    enabled: true
   },
   {
-    title: 'Certification',
+    title: 'Proposal',
     path: '/certification',
-    icon: 'bi-patch-check-fill'
+    icon: 'bi-inboxes-fill',
+    enabled: false
   }
 ];
 

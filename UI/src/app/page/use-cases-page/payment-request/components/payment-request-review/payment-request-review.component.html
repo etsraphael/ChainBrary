@@ -1,0 +1,65 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-9 col-md-11 col-lg-9">
+      <table class="table text-dark">
+        <tbody>
+          <tr>
+            <td>Account</td>
+            <td>{{ username }}</td>
+          </tr>
+          <tr>
+            <td>Payment</td>
+            <td>{{ amount }} ETH</td>
+          </tr>
+          <tr>
+            <td>Protocol Fee (0.1%)</td>
+            <td>{{ protocolFeeAmount }} ETH</td>
+          </tr>
+          <tr>
+            <td><strong>Receiving Amount</strong></td>
+            <td>
+              <strong>{{ receivingAmount }} ETH</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row justify-content-center my-3">
+    <div class="col-9">
+      <div class="row">
+        <div class="col-12 col-lg-6 py-2 py-lg-0">
+          <button class="btn btn-secondary-gradient w-100 py-2" (click)="goToPreviousPageEvent.emit()">
+            <span class="text-white">Back</span>
+          </button>
+        </div>
+        <div class="col-12 col-lg-6 py-2 py-lg-0">
+          <button class="btn btn-warning-gradient w-100 py-2" (click)="goToPaymentPage()">
+            <span class="text-white">Preview</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Link generated -->
+  <div class="row justify-content-center mb-4">
+    <div class="col-9">
+      <div class="row">
+        <h6 class="text-muted">Link generated</h6>
+        <div class="input-group">
+          <input type="text" class="form-control" [value]="previewLink" readonly />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              matTooltip="Copy to clipboard"
+              [cdkCopyToClipboard]="previewLink"
+              (click)="clickCopyLinkEvent()"
+            >
+              <i class="bi bi-files"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

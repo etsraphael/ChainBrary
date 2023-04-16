@@ -11,13 +11,14 @@
       *ngFor="let item of useCaseRoutes"
       [routerLink]="'/use-cases' + item.path"
       routerLinkActive="active"
+      [ngClass]="{ disabled: !item.enabled }"
     >
       <div class="row py-1 px-3">
-        <div class="col-3">
+        <div class="col-2">
           <i class="bi" [ngClass]="item.icon"></i>
         </div>
-        <div class="col-9 d-flex justify-content-start align-items-center">
-          <span>{{ item.title }}</span>
+        <div class="col-10 d-flex justify-content-start align-items-center">
+          <span>{{ item.title }} {{ item.enabled ? '' : '(coming)' }}</span>
         </div>
       </div>
     </button>

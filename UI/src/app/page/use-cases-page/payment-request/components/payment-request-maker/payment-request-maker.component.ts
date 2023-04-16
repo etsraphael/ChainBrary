@@ -1,39 +1,59 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Buffer } from 'buffer';
+import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { IPaymentRequest, IProfileAdded } from './../../../../../shared/interfaces';
+import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-maker[authStatus][profileAccount][publicAddress]',
+  selector: 'app-payment-request-maker[publicAddressObs]',
   templateUrl: './payment-request-maker.component.html',
   styleUrls: ['./payment-request-maker.component.scss']
 })
-export class PaymentRequestMakerComponent implements OnInit {
+export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
+  @Input() publicAddressObs: Observable<string | null>;
+  publicAddressSub: Subscription;
   AuthStatusCodeTypes = AuthStatusCode;
-  @Input() authStatus: AuthStatusCode;
-  @Input() profileAccount: IProfileAdded | null;
-  @Input() publicAddress: string | null;
   paymentMakePageTypes = PaymentMakePage;
-  page: PaymentMakePage = PaymentMakePage.settingPrice;
+  page: PaymentMakePage = PaymentMakePage.settingProfile;
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
 
   constructor(private snackbar: MatSnackBar) {}
 
-  get protocolFeeAmount(): number {
-    return (this.mainForm.get('amount')?.value as number) * 0.001;
+  get priceForm(): FormGroup<PriceSettingsForm> {
+    return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
   }
 
-  get receivingAmount(): number {
-    return (this.mainForm.get('amount')?.value as number) - this.protocolFeeAmount;
+  get profileForm(): FormGroup<ProfileForm> {
+    return this.mainForm.get('profile') as FormGroup<ProfileForm>;
   }
 
   ngOnInit(): void {
+    this.setUpForm();
+    this.listenToAddressChange();
+  }
+
+  setUpForm(): void {
     this.mainForm = new FormGroup({
-      description: new FormControl('', []),
-      amount: new FormControl(1, [Validators.required, Validators.min(0)])
+      price: new FormGroup({
+        description: new FormControl('', []),
+        amount: new FormControl(1, [Validators.required, Validators.min(0)])
+      }),
+      profile: new FormGroup({
+        publicAddress: new FormControl('', [Validators.required]),
+        avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
+        username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
+        subtitle: new FormControl('', [Validators.required, Validators.maxLength(15)])
+      })
+    });
+  }
+
+  listenToAddressChange(): void {
+    this.publicAddressSub = this.publicAddressObs.subscribe((publicAddress: string | null) => {
+      if (publicAddress) this.profileForm.get('publicAddress')?.setValue(publicAddress);
+      else this.profileForm.get('publicAddress')?.setValue('');
     });
   }
 
@@ -43,54 +63,49 @@ export class PaymentRequestMakerComponent implements OnInit {
   }
 
   goToNextPage(): void {
-    if (this.authStatus == AuthStatusCode.NotConnected) {
-      this.snackbar.open('Please login to continue', 'Close', { duration: 3000 });
-      return;
-    }
-
     if (this.mainForm.invalid) {
       this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
       return;
     }
 
-    this.generatePaymentRequest();
+    if (this.page === PaymentMakePage.settingPrice) {
+      this.generatePaymentRequest();
+    }
 
     ++this.page;
     return;
   }
 
   generatePaymentRequest(): void {
-    const { description } = this.mainForm.value;
-
     const paymentRequest: IPaymentRequest = {
-      publicAddress: this.publicAddress as string,
-      amount: this.receivingAmount + this.protocolFeeAmount,
-      description: description as string
+      username: this.mainForm.value.profile?.username as string,
+      publicAddress: this.mainForm.value.profile?.publicAddress as string,
+      amount: this.mainForm.value.price?.amount as number,
+      description: this.mainForm.value.price?.description as string,
+      subtitle: this.mainForm.value.profile?.subtitle as string,
+      avatarUrl: this.mainForm.value.profile?.avatarUrl as string
     };
-
     const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
     const url = new URL(window.location.href);
     const origin = `${url.protocol}//${url.hostname}:${url.port}`;
     this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-
     return;
   }
 
-  clickCopyLinkEvent(): MatSnackBarRef<TextOnlySnackBar> {
-    return this.snackbar.open('Link copied to clipboard', '', { duration: 3000 });
+  urlValidator(control: FormControl): { [key: string]: boolean } | null {
+    if (control.value && !control.value.includes('https')) {
+      return { invalidUrl: true };
+    }
+    return null;
   }
 
-  goToPaymentPage(): Window | null {
-    return window.open(this.linkGenerated, '_blank');
+  ngOnDestroy(): void {
+    this.publicAddressSub?.unsubscribe();
   }
 }
 
 enum PaymentMakePage {
-  settingPrice = 0,
-  review = 1
-}
-
-interface PaymentMakerForm {
-  description: FormControl<string | null>;
-  amount: FormControl<number | null>;
+  settingProfile = 0,
+  settingPrice = 1,
+  review = 2
 }

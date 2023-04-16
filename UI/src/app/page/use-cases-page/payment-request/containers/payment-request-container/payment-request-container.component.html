@@ -1,4 +1,4 @@
-<div class="container px-0" *ngIf="(userAccountIsLoading$ | async) === false">
+<div class="container px-0">
   <!-- Title container -->
   <div class="row justify-content-center mt-3 mb-5">
     <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8 text-center">
@@ -8,20 +8,7 @@
   <!-- Payment request maker -->
   <div class="row justify-content-center my-3">
     <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8">
-      <app-payment-request-maker
-        [authStatus]="(authStatus$ | async)!"
-        [profileAccount]="(profileAccount$ | async)!"
-        [publicAddress]="(publicAddress$ | async)!"
-      ></app-payment-request-maker>
-    </div>
-  </div>
-  <!-- Certification card -->
-  <div
-    class="row justify-content-center my-3"
-    *ngIf="certifficationCardVisible && (authStatus$ | async) !== AuthStatusCodeTypes.VerifiedAndConnected"
-  >
-    <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8">
-      <app-certification-message (hideCertifficationCard)="hideCertifficationCard()"></app-certification-message>
+      <app-payment-request-maker [publicAddressObs]="publicAddress$"></app-payment-request-maker>
     </div>
   </div>
 </div>
