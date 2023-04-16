@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { IProfileAdded, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
+import { IPaymentRequest, IProfileAdded, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
+import { Buffer } from 'buffer';
 
 @Component({
   selector: 'app-payment-request-maker[authStatus][profileAccount][publicAddress]',
@@ -54,28 +55,26 @@ export class PaymentRequestMakerComponent implements OnInit {
       return;
     }
 
-    this.generatePaymentRequest();
+    if(this.page === PaymentMakePage.settingPrice) {
+      this.generatePaymentRequest();
+    }
 
     ++this.page;
     return;
   }
 
   generatePaymentRequest(): void {
-    // const { description } = this.mainForm.value;
-    // const paymentRequest: IPaymentRequest = {
-    //   publicAddress: this.publicAddress as string,
-    //   amount: this.receivingAmount + this.protocolFeeAmount,
-    //   description: description as string
-    // };
-    // const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
-    // const url = new URL(window.location.href);
-    // const origin = `${url.protocol}//${url.hostname}:${url.port}`;
-    // this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-    // return;
-  }
-
-  goToPaymentPage(): Window | null {
-    return window.open(this.linkGenerated, '_blank');
+    const paymentRequest: IPaymentRequest = {
+      username: '123',
+      publicAddress: '123',
+      amount: 50,
+      description: 'qweqwe'
+    };
+    const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
+    const url = new URL(window.location.href);
+    const origin = `${url.protocol}//${url.hostname}:${url.port}`;
+    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
+    return;
   }
 
   urlValidator(control: FormControl): { [key: string]: boolean } | null {
