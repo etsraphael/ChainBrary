@@ -1,20 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AuthStatusCode } from './../../../../../shared/enum';
-import { IPaymentRequest, IProfileAdded, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { Buffer } from 'buffer';
+import { Observable, Subscription } from 'rxjs';
+import { AuthStatusCode } from './../../../../../shared/enum';
+import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-maker[authStatus][profileAccount][publicAddress]',
+  selector: 'app-payment-request-maker[publicAddressObs]',
   templateUrl: './payment-request-maker.component.html',
   styleUrls: ['./payment-request-maker.component.scss']
 })
-export class PaymentRequestMakerComponent implements OnInit {
+export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
+  @Input() publicAddressObs: Observable<string | null>;
+  publicAddressSub: Subscription;
   AuthStatusCodeTypes = AuthStatusCode;
-  @Input() authStatus: AuthStatusCode;
-  @Input() profileAccount: IProfileAdded | null;
-  @Input() publicAddress: string | null;
   paymentMakePageTypes = PaymentMakePage;
   page: PaymentMakePage = PaymentMakePage.settingProfile;
   mainForm: FormGroup<PaymentMakerForm>;
@@ -31,16 +31,33 @@ export class PaymentRequestMakerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setUpForm();
+    this.listenToAddressChange();
+  }
+
+  setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)])
       }),
       profile: new FormGroup({
+        publicAddress: new FormControl('', [Validators.required]),
         avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
         description: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
+    });
+  }
+
+  listenToAddressChange(): void {
+    this.publicAddressSub = this.publicAddressObs.subscribe((publicAddress) => {
+      if (publicAddress) {
+        this.profileForm.get('publicAddress')!.disable();
+      } else {
+        this.profileForm.get('publicAddress')!.enable();
+      }
+      this.profileForm.get('publicAddress')!.setValue(publicAddress);
     });
   }
 
@@ -55,7 +72,7 @@ export class PaymentRequestMakerComponent implements OnInit {
       return;
     }
 
-    if(this.page === PaymentMakePage.settingPrice) {
+    if (this.page === PaymentMakePage.settingPrice) {
       this.generatePaymentRequest();
     }
 
@@ -65,10 +82,10 @@ export class PaymentRequestMakerComponent implements OnInit {
 
   generatePaymentRequest(): void {
     const paymentRequest: IPaymentRequest = {
-      username: '123',
+      username: this.mainForm.value.profile!.username as string,
       publicAddress: '123',
-      amount: 50,
-      description: 'qweqwe'
+      amount: this.mainForm.value.price!.amount as number,
+      description: this.mainForm.value.price!.description as string
     };
     const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
     const url = new URL(window.location.href);
@@ -82,6 +99,10 @@ export class PaymentRequestMakerComponent implements OnInit {
       return { invalidUrl: true };
     }
     return null;
+  }
+
+  ngOnDestroy(): void {
+    this.publicAddressSub?.unsubscribe();
   }
 }
 

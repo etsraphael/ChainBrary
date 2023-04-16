@@ -2,6 +2,14 @@
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
       <mat-form-field class="w-100 example-full-width" appearance="outline">
+        <mat-label>Payment address</mat-label>
+        <input formControlName="publicAddress" type="link" class="text-center" matInput placeholder="0x" />
+      </mat-form-field>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-10 col-lg-7">
+      <mat-form-field class="w-100 example-full-width" appearance="outline">
         <mat-label>Url of your image</mat-label>
         <input formControlName="avatarUrl" type="link" class="text-center" matInput placeholder="https://my-url" />
         <mat-error *ngIf="profileForm.get('avatarUrl')!.hasError('invalidUrl')">

@@ -13,6 +13,7 @@ export interface PriceSettingsForm {
 }
 
 export interface ProfileForm {
+  publicAddress: FormControl<string | null>;
   avatarUrl: FormControl<string | null>;
   username: FormControl<string | null>;
   description: FormControl<string | null>;
