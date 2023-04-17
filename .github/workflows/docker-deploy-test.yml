@@ -1,9 +1,9 @@
-name: Docker Deploy Dev
+name: Docker Deploy Test
 
 on:
   pull_request:
     types: [closed]
-    branches: [release/dev]
+    branches: [release/test]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -71,7 +71,7 @@ jobs:
         with:
           context: ./UI
           platforms: linux/amd64
-          file: ./UI/dockerfile/dockerfile-dev
+          file: ./UI/Dockerfile
           push: true
           tags: ${{ vars.DOCKERHUB_CONTAINER_NAME }}
 
