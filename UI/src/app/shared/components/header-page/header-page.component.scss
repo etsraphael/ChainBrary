@@ -1,0 +1,27 @@
+.nav-bar-container {
+  border-bottom: 0.5px solid rgba(0, 0, 0, 0.17);
+}
+
+.title-container {
+  cursor: pointer;
+
+  img {
+    width: 2rem;
+  }
+
+  h3 {
+    font-weight: 600;
+  }
+}
+
+.container-menu-icon {
+  i {
+    font-size: 1.8rem;
+  }
+}
+
+.container-menu-icon {
+  button {
+    background-color: transparent;
+  }
+}

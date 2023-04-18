@@ -1,27 +1,31 @@
 # ChainBrary
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.0.
+Welcome to the ChainBrary project! This is an open-source library of tools for anyone interested in blockchain development. This project includes all the smart contracts used inside the "SmartContracts" folder, and all the packages used in the "UI" folder are related to all the npm packages with some use cases and examples.
 
-## Development server
+## Smart Contracts
+The SmartContracts folder contains all of the smart contracts used in the ChainBrary project. These contracts have been thoroughly tested and audited to ensure their security and reliability.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## UI
+The UI folder contains the user interface of the ChainBrary project. It is built using React and contains several packages and examples to help you get started with using ChainBrary.
 
-## Code scaffolding
+## Discord
+We have a Discord server for ChainBrary where you can ask questions, get help, and connect with other developers. To join, click on this [Discord invite link](https://discord.gg/Y3pTujEsMe) and follow the instructions.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Contributing
+We welcome contributions to the ChainBrary project! To contribute, please follow these steps:
 
-## Build
+- Fork the repository onto your GitHub account
+- Clone your forked repository onto your local machine using git clone https://github.com/etsraphael/ChainBrary.git
+- Create a new branch for your changes using git checkout -b {branch-name}
+- Make your changes and commit them with a descriptive message
+- Push your changes to your forked repository using git push origin {branch-name}
+- Create a pull request on the original repository
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+Please note that all contributions are subject to our code of conduct.
 
-## Running unit tests
+## License
+The ChainBrary project is licensed under the MIT License.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-## Running end-to-end tests
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.

@@ -1,0 +1,37 @@
+<div class="card cb-card border-0 shadow-sm position-relative">
+  <!-- Avatar -->
+  <div class="position-relative">
+    <div class="card-header-custom position-absolute w-100">
+      <div class="row justify-content-center">
+        <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
+          <app-user-avatar [avatarUrl]="mainForm.controls.profile.controls.avatarUrl.value!"></app-user-avatar>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="my-5"></div>
+  <!-- Page Container -->
+  <div [ngSwitch]="page">
+    <!-- Form -->
+    <div *ngSwitchCase="paymentMakePageTypes.settingProfile">
+      <app-payment-request-profile-settings [profileForm]="profileForm" (goToNextPage)="goToNextPage()">
+      </app-payment-request-profile-settings>
+    </div>
+    <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
+      <app-payment-request-price-settings
+        [priceForm]="priceForm"
+        (goToNextPage)="goToNextPage()"
+        (goToPreviousPage)="goToPreviousPage()"
+      ></app-payment-request-price-settings>
+    </div>
+    <div *ngSwitchCase="paymentMakePageTypes.review">
+      <app-payment-request-review
+        [username]="mainForm.controls.profile.controls.username.value!"
+        [amount]="mainForm.controls.price.controls.amount.value!"
+        [previewLink]="linkGenerated"
+        (goToPreviousPageEvent)="goToPreviousPage()"
+      >
+      </app-payment-request-review>
+    </div>
+  </div>
+</div>

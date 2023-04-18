@@ -1,0 +1,11 @@
+<!-- Default Avatar -->
+<div class="default-avatar avatar-container position-relative" *ngIf="!avatarUrl">
+  <i class="bi bi-person-circle theme-assets-wrapper"></i>
+</div>
+
+<!-- Custom Avatar -->
+<div class="custom-avatar row justify-content-center" *ngIf="avatarUrl">
+  <div class="col-12 col-sm-12 col-xl-9 avatar-container position-relative">
+    <img class="avatar-img avatar rounded-circle" [src]="avatarUrl" alt="avatar image" />
+  </div>
+</div>

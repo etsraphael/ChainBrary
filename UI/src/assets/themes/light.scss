@@ -1,0 +1,103 @@
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+$ChainBrary-primary: mat.define-palette(mat.$blue-gray-palette);
+$ChainBrary-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// The warn palette is optional (defaults to red).
+$ChainBrary-warn: mat.define-palette(mat.$red-palette);
+
+// Create the theme object. A theme consists of configurations for individual
+// theming systems such as "color" or "typography".
+$ChainBrary-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $ChainBrary-primary,
+      accent: $ChainBrary-accent,
+      warn: $ChainBrary-warn
+    )
+  )
+);
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+@include mat.all-component-themes($ChainBrary-theme);
+
+/* You can add global styles to this file, and also import other style files */
+
+$primary: #7951f9;
+$tertiary: #9092942b;
+
+$white: #fff;
+$black: #000;
+
+$light: #f8f9fa;
+$dark: #212529;
+
+:root {
+  --color-primary: $primary;
+  --color-dark: $dark;
+  --bs-border-color: #{$tertiary} !important;
+
+  .card {
+    --bs-card-bg: #{$white};
+  }
+
+  .btn {
+    h5,
+    h6 {
+      color: $white;
+    }
+  }
+
+  .btn.active {
+    background-color: #e2e2e2 !important;
+    border: 0;
+  }
+
+  body {
+    background-color: $light;
+  }
+
+  .theme-assets-wrapper {
+    filter: none;
+  }
+
+  .btn-primary-gradient,
+  .gradient-primary {
+    background: linear-gradient(90deg, #4776e6 0%, #8e54e9 100%);
+  }
+
+  .btn-success-gradient,
+  .gradient-success {
+    background: linear-gradient(90deg, #00b09b 0%, #96c93d 100%);
+  }
+
+  .btn-info-gradient,
+  .gradient-info {
+    background: linear-gradient(90deg, #56ccf2 0%, #2f80ed 100%);
+  }
+
+  .btn-warning-gradient,
+  .gradient-warning {
+    background: linear-gradient(90deg, #f2994a 0%, #f2c94c 100%);
+  }
+
+  .btn-secondary-gradient,
+  .gradient-secondary {
+    background: linear-gradient(90deg, #808080 0%, #808080 100%);
+  }
+}
+
+@import 'bootstrap';
