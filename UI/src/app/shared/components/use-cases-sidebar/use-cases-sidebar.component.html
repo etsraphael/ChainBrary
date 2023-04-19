@@ -6,9 +6,9 @@
 <!-- Body -->
 <div class="d-none d-md-block my-3 card shadow-sm border-0 cb-card">
   <div class="card-body">
-    <button
-      class="w-100 btn btn-light my-2 border-0"
+    <app-chainbrary-button
       *ngFor="let item of useCaseRoutes"
+      [buttonClasses]="['w-100', 'btn-light', 'my-2', 'border-0']"
       [routerLink]="'/use-cases' + item.path"
       routerLinkActive="active"
       [ngClass]="{ disabled: !item.enabled }"
@@ -21,6 +21,6 @@
           <span>{{ item.title }} {{ item.enabled ? '' : '(coming)' }}</span>
         </div>
       </div>
-    </button>
+    </app-chainbrary-button>
   </div>
 </div>

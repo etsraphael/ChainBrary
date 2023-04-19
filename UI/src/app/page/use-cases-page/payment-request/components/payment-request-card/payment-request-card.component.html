@@ -38,14 +38,19 @@
         <div class="col-10">
           <div class="row justify-content-center">
             <div class="col-12 col-md-6 my-2 my-md-0" *ngIf="AuthStatusCodeTypes.NotConnected === authStatus">
-              <button class="btn btn-info-gradient w-100 py-2" (click)="openLoginModal.emit()">
-                <span class="text-light">Web3 login</span>
-              </button>
+              <app-chainbrary-button
+                [buttonClasses]="['btn-info-gradient', 'text-light']"
+                [buttonText]="'Web3 login'"
+                (callToAction)="openLoginModal.emit()"
+              />
             </div>
             <div class="col-12 col-md-6 my-2 my-md-0">
-              <button class="btn btn-success-gradient w-100 py-2" (click)="submitAmount()">
-                <span class="text-light">Confirm</span>
-              </button>
+              <app-chainbrary-button
+                [buttonClasses]="['btn-success-gradient', 'text-light']"
+                [buttonText]="'Confirm'"
+                [buttonType]="'submit'"
+                (callToAction)="submitAmount()"
+              />
             </div>
           </div>
         </div>
