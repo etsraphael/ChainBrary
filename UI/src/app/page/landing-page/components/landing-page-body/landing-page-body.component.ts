@@ -11,7 +11,7 @@ export class LandingPageBodyComponent {
       title: 'Open Source',
       description:
         'Our platform uses blockchain technology to secure your assets and we employ regular audits to our system to protect the confidentiality and integrity of your information.',
-      icon: 'bi-inboxes-fill-code'
+      icon: 'bi-file-earmark-code'
     },
     {
       title: 'Accessible',
