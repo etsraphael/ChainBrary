@@ -12,9 +12,8 @@
       <mat-form-field class="w-100 example-full-width" appearance="outline">
         <mat-label>Url of your image</mat-label>
         <input formControlName="avatarUrl" type="link" class="text-center" matInput placeholder="https://my-url" />
-        <mat-error *ngIf="profileForm.get('avatarUrl')!.hasError('invalidUrl')">
-          Url does not include <strong>https</strong>
-        </mat-error>
+        <mat-error *ngIf="profileForm.get('avatarUrl')?.hasError('required')"> Field is required </mat-error>
+        <mat-error *ngIf="profileForm.get('avatarUrl')!.hasError('invalidUrl')"> Invalid image url </mat-error>
       </mat-form-field>
     </div>
   </div>
