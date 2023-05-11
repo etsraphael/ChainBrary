@@ -6,5 +6,6 @@ export const environment = {
     bridgeTransferAddress: '0x32CBCF3fbca572B7fc6Bb2629B5daBC02B671F6B'
   },
   organizationName: 'chainbrary0',
-  networkSupported: [1, 5]
+  networkSupported: [1, 5],
+  gtagId: 'G-9VFDG96TTF'
 };
