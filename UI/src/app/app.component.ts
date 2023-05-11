@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { AnalyticsService } from './shared/services/analytics/analytics.service';
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -11,4 +12,10 @@ declare global {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {}
+export class AppComponent implements OnInit {
+  constructor(private analyticsService: AnalyticsService) {}
+
+  ngOnInit(): void {
+    this.analyticsService.initializeGoogleAnalytics();
+  }
+}
