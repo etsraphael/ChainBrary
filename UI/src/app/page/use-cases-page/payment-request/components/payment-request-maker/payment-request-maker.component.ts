@@ -1,8 +1,15 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators
+} from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Buffer } from 'buffer';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 
@@ -13,12 +20,13 @@ import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } fro
 })
 export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
-  publicAddressSub: Subscription;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   paymentMakePageTypes = PaymentMakePage;
   page: PaymentMakePage = PaymentMakePage.settingProfile;
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
+  isAvatarUrlValid: boolean;
 
   constructor(private snackbar: MatSnackBar) {}
 
@@ -43,7 +51,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       }),
       profile: new FormGroup({
         publicAddress: new FormControl('', [Validators.required]),
-        avatarUrl: new FormControl('', [Validators.required, this.urlValidator]),
+        avatarUrl: new FormControl('', [Validators.required], [this.urlValidator()]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
         subtitle: new FormControl('', [Validators.required, Validators.maxLength(15)])
       })
@@ -51,7 +59,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   listenToAddressChange(): void {
-    this.publicAddressSub = this.publicAddressObs.subscribe((publicAddress: string | null) => {
+    this.publicAddressObs.pipe(takeUntil(this.destroyed$)).subscribe((publicAddress: string | null) => {
       if (publicAddress) this.profileForm.get('publicAddress')?.setValue(publicAddress);
       else this.profileForm.get('publicAddress')?.setValue('');
     });
@@ -77,30 +85,64 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   generatePaymentRequest(): void {
+    const { username, publicAddress, subtitle, avatarUrl } = this.getProfileControls();
+    const { amount, description } = this.getPriceControls();
+
     const paymentRequest: IPaymentRequest = {
-      username: this.mainForm.value.profile?.username as string,
-      publicAddress: this.mainForm.value.profile?.publicAddress as string,
-      amount: this.mainForm.value.price?.amount as number,
-      description: this.mainForm.value.price?.description as string,
-      subtitle: this.mainForm.value.profile?.subtitle as string,
-      avatarUrl: this.mainForm.value.profile?.avatarUrl as string
+      username: username.value as string,
+      publicAddress: publicAddress.value as string,
+      amount: amount.value as number,
+      description: description.value as string,
+      subtitle: subtitle.value as string,
+      avatarUrl: avatarUrl.value as string
     };
-    const paymentRequestBase64 = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
-    const url = new URL(window.location.href);
+    const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
+    const url: URL = new URL(window.location.href);
     const origin = `${url.protocol}//${url.hostname}:${url.port}`;
     this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
     return;
   }
 
-  urlValidator(control: FormControl): { [key: string]: boolean } | null {
-    if (control.value && !control.value.includes('https')) {
-      return { invalidUrl: true };
-    }
-    return null;
+  urlValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      this.isAvatarUrlValid = false;
+
+      const src: string = control.value;
+      const img: HTMLImageElement = new Image();
+      img.src = src;
+
+      return new Observable((observer) => {
+        img.onload = () => {
+          this.isAvatarUrlValid = true;
+          observer.next(null);
+          observer.complete();
+        };
+
+        img.onerror = () => {
+          this.isAvatarUrlValid = false;
+          observer.next({ invalidUrl: true });
+          observer.complete();
+        };
+      });
+    };
+  }
+
+  getProfileControls(): ProfileForm {
+    return this.mainForm.controls.profile.controls;
+  }
+
+  getPriceControls(): PriceSettingsForm {
+    return this.mainForm.controls.price.controls;
+  }
+
+  getAvatarValue(): string | null {
+    const { avatarUrl } = this.getProfileControls();
+    return avatarUrl.value;
   }
 
   ngOnDestroy(): void {
-    this.publicAddressSub?.unsubscribe();
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
   }
 }
 
