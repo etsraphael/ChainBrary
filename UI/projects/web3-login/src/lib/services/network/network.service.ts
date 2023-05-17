@@ -46,7 +46,7 @@ export class NetworkServiceWeb3Login {
 
   onAccountChangedEvent(): Observable<string | undefined> {
     return defer(() => {
-      if (typeof window.ethereum === 'undefined') {
+      if (typeof window?.ethereum === 'undefined') {
         return EMPTY as Observable<string | undefined>;
       }
 
@@ -64,7 +64,7 @@ export class NetworkServiceWeb3Login {
 
   onChainChangedEvent(): Observable<{ networkId: string; networkName: string }> {
     return defer(() => {
-      if (typeof window.ethereum === 'undefined') {
+      if (typeof window?.ethereum === 'undefined') {
         return of(this.getCurrentNetwork());
       }
 

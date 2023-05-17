@@ -101,7 +101,10 @@ export class CertificationContainerComponent implements OnInit {
           editAccountSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
         )
       )
-      .on('error', (error: Error) => this.store.dispatch(editAccountFailure({ message: error.message })));
+      .on('error', (error: Error) => {
+        this.store.dispatch(editAccountFailure({ message: error.message }));
+        throw error;
+      });
   }
 
   addAccount(command: ProfileCreationCommand): Promise<IReceiptTransaction> {
@@ -121,6 +124,9 @@ export class CertificationContainerComponent implements OnInit {
           addAccountSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
         )
       )
-      .on('error', (error: Error) => this.store.dispatch(addAccountFailure({ message: error.message })));
+      .on('error', (error: Error) => {
+        this.store.dispatch(addAccountFailure({ message: error.message }));
+        throw error;
+      });
   }
 }
