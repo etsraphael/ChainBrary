@@ -118,7 +118,10 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
               amountSentSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })
             )
           )
-          .on('error', (error: Error) => this.store.dispatch(amountSentFailure({ message: error.message })));
+          .on('error', (error: Error) => {
+            this.store.dispatch(amountSentFailure({ message: error.message }));
+            throw error;
+          });
       });
   }
 
