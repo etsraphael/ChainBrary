@@ -1,9 +1,9 @@
 name: Docker Deploy Prod
 
 on:
-  pull_request:
-    types: [closed]
-    branches: [release/prod]
+  push:
+    branches:
+      - release/prod
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
