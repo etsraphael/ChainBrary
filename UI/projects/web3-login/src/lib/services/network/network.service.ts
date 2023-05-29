@@ -25,6 +25,8 @@ export class NetworkServiceWeb3Login {
         return 'Kovan';
       case '56':
         return 'Binance Smart Chain';
+      case '11155111':
+        return 'Sepolia'
       default:
         return 'Unknown';
     }

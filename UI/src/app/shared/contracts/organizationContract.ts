@@ -1,10 +1,14 @@
+import { INetwork } from '../interfaces';
 import { environment } from './../../../environments/environment';
 import { BaseContract } from './baseContract';
 import { AbiItem } from 'web3-utils';
 
 export class OrganizationContract extends BaseContract {
   getAddress(): string {
-    return environment.contractLink.organizationAddress;
+    const contractLink: INetwork = environment.contracts.find(
+      (contract: INetwork) => contract.name === 'Organization'
+    ) as INetwork;
+    return contractLink.address;
   }
 
   getAbi(): AbiItem[] {

@@ -4,10 +4,9 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription, filter, take } from 'rxjs';
-import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
-import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
+import { environment } from './../../../../../../environments/environment';
 import { TransactionBridgeContract } from './../../../../../shared/contracts';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IReceiptTransaction, ITransactionCard } from './../../../../../shared/interfaces';
@@ -24,6 +23,7 @@ import {
   selectCardIsLoading,
   selectPaymentRequest
 } from './../../../../../store/payment-request-store/state/selectors';
+import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-payment-page',
@@ -102,7 +102,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
       )
       .subscribe(async (publicAddress: string | null) => {
         const networkId: number = await this.web3.eth.net.getId();
-        if (environment.networkSupported.indexOf(networkId) === -1) {
+        if (environment.networkSupported.indexOf(String(networkId)) === -1) {
           this._snackBar.open('Network not supported', 'Close', {
             duration: 2000
           });
