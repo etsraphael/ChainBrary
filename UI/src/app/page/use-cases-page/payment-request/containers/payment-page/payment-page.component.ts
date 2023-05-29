@@ -87,9 +87,10 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  submitPayment(payload: { priceValue: number; to: string[] }): Subscription {
+  submitPayment(payload: { priceValue: number; to: string[] }): Subscription | void {
     this.web3 = new Web3(window.ethereum);
-    const transactionContract = new TransactionBridgeContract();
+
+    const transactionContract = new TransactionBridgeContract(this.web3LoginService.getCurrentNetwork().networkName);
     const contract: Contract = new this.web3.eth.Contract(
       transactionContract.getAbi(),
       transactionContract.getAddress()

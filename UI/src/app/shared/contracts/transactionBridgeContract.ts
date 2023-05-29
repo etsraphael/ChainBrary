@@ -4,6 +4,10 @@ import { BaseContract } from './baseContract';
 import { AbiItem } from 'web3-utils';
 
 export class TransactionBridgeContract extends BaseContract {
+  constructor(public networkName: string) {
+    super();
+  }
+
   getAddress(): string {
     const contractLink: INetwork = environment.contracts.find(
       (contract: INetwork) => contract.name === 'BridgeTransfer'
