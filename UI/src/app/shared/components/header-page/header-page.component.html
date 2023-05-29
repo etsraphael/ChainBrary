@@ -9,15 +9,18 @@
     <div class="row">
       <div class="d-flex justify-content-center">
         <div class="btn-container" *ngFor="let item of headerBtns">
-          <button (click)="item.action()" class="btn mx-2 text-dark">{{ item.text }}</button>
+          <app-chainbrary-button
+            [buttonClasses]="['mx-2',' text-dark', 'bg-transparent', 'w-init']"
+            [buttonText]="item.text"
+            (callToAction)="item.action()"
+          />
         </div>
       </div>
     </div>
   </div>
   <div class="container-menu-icon col-3 d-block d-sm-none d-flex justify-content-end">
-    <button
-      class="border-0"
-      type="button"
+    <app-chainbrary-button
+      [buttonClasses]="['border-0', 'bg-transparent', 'w-init']"
       data-bs-toggle="collapse"
       data-bs-target="#navbarToggleExternalContent"
       aria-controls="navbarToggleExternalContent"
@@ -25,7 +28,7 @@
       aria-label="Toggle navigation"
     >
       <i class="bi bi-list d-flex justify-content-end text-dark"></i>
-    </button>
+    </app-chainbrary-button>
   </div>
   <div class="d-block d-sm-none px-0 bg-light">
     <div class="collapse" id="navbarToggleExternalContent">

@@ -16,7 +16,11 @@
           </div>
           <div class="row">
             <div class="col-9 col-sm-6 col-md-5">
-              <button class="btn btn-primary w-100 py-2" [routerLink]="['/use-cases']">Explore solutions</button>
+              <app-chainbrary-button
+                [buttonClasses]="['btn-primary']"
+                [buttonText]="'Explore solutions'"
+                [routerLink]="['/use-cases']"
+              />
             </div>
           </div>
         </div>

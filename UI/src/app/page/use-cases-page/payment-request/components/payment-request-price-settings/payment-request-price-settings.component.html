@@ -29,14 +29,18 @@
   <div class="col-10 col-lg-7">
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <button class="btn btn-secondary-gradient w-100 py-2" (click)="goToPreviousPage.emit()">
-          <span class="text-white">Back</span>
-        </button>
+        <app-chainbrary-button
+          [buttonClasses]="['btn-secondary-gradient', 'text-white']"
+          [buttonText]="'Back'"
+          (callToAction)="goToPreviousPage.emit()"
+        />
       </div>
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <button class="btn btn-info-gradient w-100 py-2" (click)="goToNextPage.emit()">
-          <span class="text-white">Next</span>
-        </button>
+        <app-chainbrary-button
+          [buttonClasses]="['btn-info-gradient', 'text-white']"
+          [buttonText]="'Next'"
+          (callToAction)="goToNextPage.emit()"
+        />
       </div>
     </div>
   </div>

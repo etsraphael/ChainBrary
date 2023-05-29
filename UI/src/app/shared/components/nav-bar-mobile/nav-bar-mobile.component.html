@@ -1,9 +1,9 @@
 <div class="nav-bar-movile-container py-2 border-top bg-light">
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <button
+      <app-chainbrary-button
         *ngFor="let item of routes"
-        class="col-4 btn btn-light my-2 border-0"
+        [buttonClasses]="['col-4','btn-light', 'my-2', 'border-0', 'w-init']"
         routerLinkActive="active"
         [routerLink]="'/use-cases' + item.path"
       >
@@ -12,7 +12,7 @@
             <i class="bi" [ngClass]="item.icon"></i>
           </div>
         </div>
-      </button>
+      </app-chainbrary-button>
     </div>
   </div>
 </div>
