@@ -8,9 +8,8 @@ describe('ChainbraryButtonComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ChainbraryButtonComponent ]
-    })
-    .compileComponents();
+      declarations: [ChainbraryButtonComponent]
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ChainbraryButtonComponent);
     component = fixture.componentInstance;

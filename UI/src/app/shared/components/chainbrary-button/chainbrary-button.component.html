@@ -1,12 +1,6 @@
 <ng-container>
-  <button
-  [type]="buttonType"
-  class="btn w-100 py-2"
-  [ngClass]="buttonClasses"
-  (click)="emit()"
-  [disabled]="isDisabled"
-  >
-  <ng-content *ngIf="!buttonText; else showContent"></ng-content>
+  <button [type]="buttonType" class="btn w-100 py-2" [ngClass]="buttonClasses" (click)="emit()" [disabled]="isDisabled">
+    <ng-content *ngIf="!buttonText; else showContent"></ng-content>
     <ng-template #showContent>
       <span [innerHtml]="buttonText"></span>
     </ng-template>

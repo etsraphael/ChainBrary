@@ -11,7 +11,7 @@
       [buttonClasses]="['w-100', 'btn-light', 'my-2', 'border-0']"
       [routerLink]="'/use-cases' + item.path"
       routerLinkActive="active"
-      [ngClass]="{ disabled: !item.enabled }"
+      [isDisabled]="!item.enabled"
     >
       <div class="row py-1 px-3">
         <div class="col-2">

@@ -1,11 +1,15 @@
 export const environment = {
   environmentName: 'test',
   certificationUri: 'https://api.studio.thegraph.com/query/43513/organizationschainbrary/v0.0.4',
-  contractLink: {
-    organizationAddress: '0xDbF09e2Fdbb624272AE820585a3619586A66a314',
-    bridgeTransferAddress: '0x32CBCF3fbca572B7fc6Bb2629B5daBC02B671F6B'
-  },
+  contracts: [
+    {
+      name: 'BridgeTransfer',
+      networkName: 'Sepolia',
+      networkId: '11155111',
+      address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+    }
+  ],
   organizationName: 'chainbrary0',
-  networkSupported: [1, 5],
+  networkSupported: ['11155111'],
   gtagId: 'G-9VFDG96TTF'
 };
