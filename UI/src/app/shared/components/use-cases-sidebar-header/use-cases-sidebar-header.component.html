@@ -3,7 +3,7 @@
     <ng-container [ngSwitch]="sidebarMode$ | async">
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotConnected">
         <app-chainbrary-button
-          [buttonClasses]="['btn-primary-gradient', 'border-0']"
+          [buttonClasses]="['btn-primary-gradient', 'border-0', 'text-white']"
           [buttonText]="'Login'"
           (callToAction)="openLoginModal()"
         />
