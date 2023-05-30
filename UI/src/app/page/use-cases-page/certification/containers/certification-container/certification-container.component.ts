@@ -66,7 +66,7 @@ export class CertificationContainerComponent implements OnInit {
     );
 
     const networkId: number = await this.web3.eth.net.getId();
-    if (environment.networkSupported.indexOf(String(networkId)) === -1) {
+    if (!environment.networkSupported.includes(String(networkId))) {
       this._snackBar.open('Network not supported', 'Close', {
         duration: 2000
       });

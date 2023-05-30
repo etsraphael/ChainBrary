@@ -10,6 +10,6 @@ export const environment = {
     }
   ],
   organizationName: 'chainbrary0',
-  networkSupported: ['1', '5', '11155111'],
+  networkSupported: ['11155111'],
   gtagId: ''
 };

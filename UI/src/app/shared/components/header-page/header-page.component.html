@@ -10,7 +10,7 @@
       <div class="d-flex justify-content-center">
         <div class="btn-container" *ngFor="let item of headerBtns">
           <app-chainbrary-button
-            [buttonClasses]="['mx-2',' text-dark', 'bg-transparent', 'w-init']"
+            [buttonClasses]="['mx-2', ' text-dark', 'bg-transparent', 'w-init']"
             [buttonText]="item.text"
             (callToAction)="item.action()"
           />
