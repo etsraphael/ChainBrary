@@ -29,14 +29,18 @@
     <div class="col-9">
       <div class="row">
         <div class="col-12 col-lg-6 py-2 py-lg-0">
-          <button class="btn btn-secondary-gradient w-100 py-2" (click)="goToPreviousPageEvent.emit()">
-            <span class="text-white">Back</span>
-          </button>
+          <app-chainbrary-button
+            [buttonClasses]="['btn-secondary-gradient', 'text-white']"
+            [buttonText]="'Back'"
+            (callToAction)="goToPreviousPageEvent.emit()"
+          />
         </div>
         <div class="col-12 col-lg-6 py-2 py-lg-0">
-          <button class="btn btn-warning-gradient w-100 py-2" (click)="goToPaymentPage()">
-            <span class="text-white">Preview</span>
-          </button>
+          <app-chainbrary-button
+            [buttonClasses]="['btn-warning-gradient', 'text-white']"
+            [buttonText]="'Preview'"
+            (callToAction)="goToPaymentPage()"
+          />
         </div>
       </div>
     </div>
@@ -49,14 +53,14 @@
         <div class="input-group">
           <input type="text" class="form-control" [value]="previewLink" readonly />
           <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
+            <app-chainbrary-button
+              [buttonClasses]="['btn-outline-secondary']"
+              (callToAction)="clickCopyLinkEvent()"
               matTooltip="Copy to clipboard"
               [cdkCopyToClipboard]="previewLink"
-              (click)="clickCopyLinkEvent()"
             >
               <i class="bi bi-files"></i>
-            </button>
+            </app-chainbrary-button>
           </div>
         </div>
       </div>

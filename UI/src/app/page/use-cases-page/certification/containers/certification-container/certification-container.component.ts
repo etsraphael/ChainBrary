@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ProfileCreationCommand } from 'src/app/shared/commands';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
+import { ProfileCreationCommand } from './../../../../../shared/commands';
 import { OrganizationContract } from './../../../../../shared/contracts';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 import { AuthStatusCode } from './../../../../../shared/enum';
@@ -66,7 +66,7 @@ export class CertificationContainerComponent implements OnInit {
     );
 
     const networkId: number = await this.web3.eth.net.getId();
-    if (environment.networkSupported.indexOf(networkId) === -1) {
+    if (!environment.networkSupported.includes(String(networkId))) {
       this._snackBar.open('Network not supported', 'Close', {
         duration: 2000
       });

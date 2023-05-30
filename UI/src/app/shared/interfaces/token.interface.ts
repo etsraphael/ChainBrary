@@ -7,6 +7,13 @@ export interface IToken {
   symbol: string;
 }
 
+export interface INetwork {
+  name: string;
+  networkName: string;
+  networkId: string;
+  address: string;
+}
+
 export enum ChainId {
   MAINNET = 1,
   ROPSTEN = 3,

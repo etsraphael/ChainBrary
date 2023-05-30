@@ -13,7 +13,8 @@ const routes: Routes = [
   },
   {
     path: 'payment-page/:id',
-    component: PaymentPageComponent
+    component: PaymentPageComponent,
+    title: 'Payment Request'
   },
   {
     path: '**',
