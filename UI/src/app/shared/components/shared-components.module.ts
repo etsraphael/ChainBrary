@@ -8,6 +8,7 @@ import { TransactionCardComponent } from './transaction-card/transaction-card.co
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header/use-cases-sidebar-header.component';
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     UserAvatarComponent,
     UseCasesSidebarHeaderComponent,
     UseCasesSidebarComponent,
-    TransactionCardComponent
+    TransactionCardComponent,
+    ChainbraryButtonComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -27,7 +29,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     UserAvatarComponent,
     UseCasesSidebarHeaderComponent,
     UseCasesSidebarComponent,
-    TransactionCardComponent
+    TransactionCardComponent,
+    ChainbraryButtonComponent
   ]
 })
 export class SharedComponentsModule {}
