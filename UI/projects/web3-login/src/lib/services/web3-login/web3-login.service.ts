@@ -37,4 +37,8 @@ export class Web3LoginService {
   getNetworkName(networkId: string): string {
     return this.networkServiceWeb3Login.getNetworkName(networkId);
   }
+
+  getCurrentNetwork(): { networkId: string; networkName: string } {
+    return this.networkServiceWeb3Login.getCurrentNetwork();
+  }
 }

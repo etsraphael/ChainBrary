@@ -2,9 +2,11 @@
   <div class="card-body">
     <ng-container [ngSwitch]="sidebarMode$ | async">
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotConnected">
-        <button class="btn btn-primary-gradient w-100 py-2 border-0 py-2" (click)="openLoginModal()">
-          <h5 class="mb-0">Login</h5>
-        </button>
+        <app-chainbrary-button
+          [buttonClasses]="['btn-primary-gradient', 'border-0', 'text-white']"
+          [buttonText]="'Login'"
+          (callToAction)="openLoginModal()"
+        />
       </ng-container>
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotVerifiedAndConnected">
         <div class="container">
