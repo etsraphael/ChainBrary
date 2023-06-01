@@ -28,17 +28,6 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="row justify-content-center">
-    <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-        <mat-label>Subtitle</mat-label>
-        <input formControlName="subtitle" type="name" class="text-center" matInput placeholder="Subtitle" />
-        <mat-error *ngIf="profileForm.get('subtitle')!.hasError('maxlength')">
-          Name must be less than 15 characters
-        </mat-error>
-      </mat-form-field>
-    </div>
-  </div>
   <div class="row justify-content-center my-4">
     <div class="col-8 col-lg-5" (click)="submitForm()">
       <app-chainbrary-button

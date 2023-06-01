@@ -28,8 +28,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       profile: {
         publicAddress: paymentRequest.publicAddress,
         avatarUrl: paymentRequest.avatarUrl,
-        username: paymentRequest.username,
-        subtitle: paymentRequest.subtitle
+        username: paymentRequest.username
       }
     })
   ),
