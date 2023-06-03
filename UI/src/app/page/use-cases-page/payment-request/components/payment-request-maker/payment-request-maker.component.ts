@@ -94,7 +94,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       description: description.value as string,
       avatarUrl: avatarUrl.value as string
     };
-    const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
+    const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
+      .toString('base64')
+      .replace('+', '-')
+      .replace('/', '_');
     const url: URL = new URL(window.location.href);
     const origin = `${url.protocol}//${url.hostname}:${url.port}`;
     this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
