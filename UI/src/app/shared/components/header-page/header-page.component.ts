@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { environment } from './../../../../environments/environment';
 
 @Component({
   selector: 'app-header-page',
@@ -8,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderPageComponent implements OnInit {
   headerBtns: IHeaderBtn[] = [];
+  environment = environment;
 
   constructor(private router: Router) {}
 
