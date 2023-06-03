@@ -52,8 +52,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       profile: new FormGroup({
         publicAddress: new FormControl('', [Validators.required]),
         avatarUrl: new FormControl('', [Validators.required], [this.urlValidator()]),
-        username: new FormControl('', [Validators.required, Validators.maxLength(20)]),
-        subtitle: new FormControl('', [Validators.required, Validators.maxLength(15)])
+        username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
   }
@@ -85,7 +84,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   generatePaymentRequest(): void {
-    const { username, publicAddress, subtitle, avatarUrl } = this.getProfileControls();
+    const { username, publicAddress, avatarUrl } = this.getProfileControls();
     const { amount, description } = this.getPriceControls();
 
     const paymentRequest: IPaymentRequest = {
@@ -93,10 +92,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       publicAddress: publicAddress.value as string,
       amount: amount.value as number,
       description: description.value as string,
-      subtitle: subtitle.value as string,
       avatarUrl: avatarUrl.value as string
     };
-    const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8').toString('base64');
+    const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
+      .toString('base64')
+      .replace('+', '-')
+      .replace('/', '_');
     const url: URL = new URL(window.location.href);
     const origin = `${url.protocol}//${url.hostname}:${url.port}`;
     this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;

@@ -22,6 +22,9 @@ export class TransactionCardComponent implements OnInit {
       case 5:
         this.scanLink = `https://goerli.etherscan.io/tx/${this.cardContent.hash}`;
         break;
+      case 11155111:
+        this.scanLink = `https://sepolia.etherscan.io/tx/${this.cardContent.hash}`;
+        break;
     }
   }
 

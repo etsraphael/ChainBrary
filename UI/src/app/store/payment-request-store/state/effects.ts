@@ -21,7 +21,10 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequest),
       map((action: { encodedRequest: string }) => {
-        const decodedPayment = Buffer.from(action.encodedRequest, 'base64').toString('utf-8');
+        const decodedPayment = Buffer.from(
+          action.encodedRequest.replace('+', '-').replace('/', '_'),
+          'base64'
+        ).toString('utf-8');
         const decodedPaymentRequest: IPaymentRequest = JSON.parse(decodedPayment);
         if (this.isIPaymentRequest(decodedPaymentRequest)) {
           return PaymentRequestActions.generatePaymentRequestSuccess({
