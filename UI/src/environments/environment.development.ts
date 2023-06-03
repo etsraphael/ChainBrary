@@ -7,9 +7,15 @@ export const environment = {
       networkName: 'Sepolia',
       networkId: '11155111',
       address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+    },
+    {
+      name: 'BridgeTransfer',
+      networkName: 'Mainnet',
+      networkId: '1',
+      address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
     }
   ],
   organizationName: 'chainbrary0',
-  networkSupported: ['11155111'],
+  networkSupported: ['1', '11155111'],
   gtagId: ''
 };
