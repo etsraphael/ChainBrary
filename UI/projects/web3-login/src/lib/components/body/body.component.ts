@@ -42,37 +42,19 @@ export class BodyComponent {
     this.isLoading = true;
 
     // mobile app
-    if (this.deviceService.isMobile()) {
+    if (this.deviceService.isMobile() && !window?.ethereum?.isMetaMask) {
       const originLink = window.location.origin.replace(/(^\w+:|^)\/\//, '');
       const url = `https://metamask.app.link/dapp/${originLink}${this.router.url}`;
       window.open(url);
+      return;
+    } else if (this.deviceService.isMobile() && window?.ethereum?.isMetaMask) {
+      this.requestEthAccount();
       return;
     }
 
     // desktop
     if (window.ethereum && window.ethereum.isMetaMask) {
-      this.web3 = new Web3(window.ethereum);
-      window.ethereum
-        .request({ method: 'eth_requestAccounts' })
-        .then((accounts: string[]) => {
-          const networkId = window.ethereum.networkVersion;
-          const payload: ModalState = {
-            type: ModalStateType.SUCCESS,
-            data: {
-              publicAddress: accounts[0],
-              networkId: networkId,
-              networkName: this.networkService.getNetworkName(networkId)
-            }
-          };
-          this.stateEvent.emit(payload);
-        })
-        .catch((error: Error) => {
-          this.errorHandlerService.showSnackBar(error.message);
-          this.stateEvent.emit({ type: ModalStateType.ERROR, message: error.message });
-        })
-        .finally(() => {
-          this.isLoading = false;
-        });
+      this.requestEthAccount();
     } else {
       this.isLoading = false;
       this.errorHandlerService.showSnackBar('Non-Ethereum browser detected. You should consider trying MetaMask!');
@@ -81,5 +63,30 @@ export class BodyComponent {
         message: 'Non-Ethereum browser detected. You should consider trying MetaMask!'
       });
     }
+  }
+
+  requestEthAccount(): void {
+    this.web3 = new Web3(window.ethereum);
+    window.ethereum
+      .request({ method: 'eth_requestAccounts' })
+      .then((accounts: string[]) => {
+        const networkId = window.ethereum.networkVersion;
+        const payload: ModalState = {
+          type: ModalStateType.SUCCESS,
+          data: {
+            publicAddress: accounts[0],
+            networkId: networkId,
+            networkName: this.networkService.getNetworkName(networkId)
+          }
+        };
+        this.stateEvent.emit(payload);
+      })
+      .catch((error: Error) => {
+        this.errorHandlerService.showSnackBar(error.message);
+        this.stateEvent.emit({ type: ModalStateType.ERROR, message: error.message });
+      })
+      .finally(() => {
+        this.isLoading = false;
+      });
   }
 }
