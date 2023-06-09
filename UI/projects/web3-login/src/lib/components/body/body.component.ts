@@ -42,12 +42,12 @@ export class BodyComponent {
     this.isLoading = true;
 
     // mobile app
-    if (this.deviceService.isMobile() && !window?.ethereum.isMetaMask) {
+    if (this.deviceService.isMobile() && !window?.ethereum?.isMetaMask) {
       const originLink = window.location.origin.replace(/(^\w+:|^)\/\//, '');
       const url = `https://metamask.app.link/dapp/${originLink}${this.router.url}`;
       window.open(url);
       return;
-    } else if (this.deviceService.isMobile() && window?.ethereum.isMetaMask) {
+    } else if (this.deviceService.isMobile() && window?.ethereum?.isMetaMask) {
       this.requestEthAccount();
       return;
     }
