@@ -9,6 +9,7 @@ import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header/use-c
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';
+import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/qr-code-container-modal.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button
     UseCasesSidebarHeaderComponent,
     UseCasesSidebarComponent,
     TransactionCardComponent,
-    ChainbraryButtonComponent
+    ChainbraryButtonComponent,
+    QrCodeContainerModalComponent
   ],
   imports: [CommonModule, RouterModule],
   exports: [
@@ -30,7 +32,8 @@ import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button
     UseCasesSidebarHeaderComponent,
     UseCasesSidebarComponent,
     TransactionCardComponent,
-    ChainbraryButtonComponent
+    ChainbraryButtonComponent,
+    QrCodeContainerModalComponent
   ]
 })
 export class SharedComponentsModule {}
