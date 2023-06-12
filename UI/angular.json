@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "allowedCommonJsDependencies": ["web3", "buffer"],
+            "allowedCommonJsDependencies": ["web3", "buffer", "qrcode"],
             "outputPath": "dist/chain-brary",
             "index": "src/index.html",
             "main": "src/main.ts",

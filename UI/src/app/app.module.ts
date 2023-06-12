@@ -13,7 +13,6 @@ import { SharedComponentsModule } from './shared/components/shared-components.mo
 import { RootStateModule } from './store';
 import * as Sentry from '@sentry/angular-ivy';
 import { Router } from '@angular/router';
-
 @NgModule({
   declarations: [AppComponent],
   imports: [

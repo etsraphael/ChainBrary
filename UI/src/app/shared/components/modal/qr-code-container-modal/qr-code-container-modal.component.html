@@ -1,0 +1,16 @@
+<div class="d-flex justify-content-center">
+  <qrcode
+    [qrdata]="data.qrCodeValue"
+    [allowEmptyString]="true"
+    [ariaLabel]="'QR Code image with the following content...'"
+    [cssClass]="'center'"
+    [colorDark]="'#000000ff'"
+    [colorLight]="'#ffffffff'"
+    elementType="url"
+    [errorCorrectionLevel]="'M'"
+    [scale]="1"
+    [title]="'A custom title attribute'"
+    [width]="280"
+  >
+  </qrcode>
+</div>
