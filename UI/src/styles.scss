@@ -43,3 +43,12 @@ a {
   border-radius: 10px !important;
   border: 0 !important;
 }
+
+// Modals
+
+.qr-code-container-modal {
+  .mat-mdc-dialog-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}

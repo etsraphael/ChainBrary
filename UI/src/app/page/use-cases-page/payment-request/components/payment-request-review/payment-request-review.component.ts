@@ -35,7 +35,7 @@ export class PaymentRequestReviewComponent {
 
   showQRCode(): MatDialogRef<QrCodeContainerModalComponent> {
     return this.dialog.open(QrCodeContainerModalComponent, {
-      panelClass: ['col-9', 'col-sm-6', 'col-md-4', 'col-lg-4', 'col-xl-3'],
+      panelClass: ['col-9', 'col-sm-6', 'col-md-4', 'col-lg-4', 'col-xl-3', 'qr-code-container-modal'],
       enterAnimationDuration: 100,
       exitAnimationDuration: 100,
       data: {
