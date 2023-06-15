@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
@@ -15,7 +15,6 @@ import { selectAccount, selectAuthStatus, selectPublicAddress } from './../../..
   styleUrls: ['./use-cases-sidebar-header.component.scss']
 })
 export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
-  @Input() certificationBtnVisible = true;
   authStatusCodeTypes = AuthStatusCode;
   sidebarMode$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
@@ -59,9 +58,5 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
 
   logOut(): void {
     return this.store.dispatch(resetAuth());
-  }
-
-  goToCertification(): Promise<boolean> {
-    return this.router.navigate(['/use-cases/certification']);
   }
 }
