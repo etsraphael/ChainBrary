@@ -17,13 +17,6 @@
             <div class="col-10">
               <h6 class="text-dark mb-0">{{ formatService.formatPublicAddress((publicAddress$ | async)!) }}</h6>
               <div class="d-flex btn-container">
-                <p
-                  *ngIf="certificationBtnVisible"
-                  class="text-primary mb-0 d-inline-block me-3"
-                  (click)="goToCertification()"
-                >
-                  Be certified
-                </p>
                 <p class="text-muted mb-0 d-inline-block" (click)="logOut()">Log out</p>
               </div>
             </div>
@@ -44,13 +37,6 @@
             <div class="col-10">
               <h6 class="text-dark mb-0">{{ formatService.formatPublicAddress((publicAddress$ | async)!) }}</h6>
               <div class="d-flex btn-container">
-                <p
-                  *ngIf="certificationBtnVisible"
-                  class="text-primary mb-0 d-inline-block me-3"
-                  (click)="goToCertification()"
-                >
-                  Edit
-                </p>
                 <p class="text-muted mb-0 d-inline-block" (click)="logOut()">Log out</p>
               </div>
             </div>
