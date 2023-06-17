@@ -1,13 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from '../../enum';
 import { IProfileAdded } from '../../interfaces';
 import { FormatService } from '../../services/format/format.service';
-import { loadAuth, resetAuth, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
-import { selectAccount, selectAuthStatus, selectPublicAddress } from './../../../store/auth-store/state/selectors';
+import { loadAuth, networkChanged, resetAuth, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
+import {
+  selectAccount,
+  selectAuthStatus,
+  selectNetworkName,
+  selectPublicAddress
+} from './../../../store/auth-store/state/selectors';
 
 @Component({
   selector: 'app-use-cases-sidebar-header',
@@ -18,20 +22,27 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   authStatusCodeTypes = AuthStatusCode;
   sidebarMode$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
+  networkName$: Observable<string | null>;
   verifiedAccount$: Observable<IProfileAdded | null>;
+  networkList: INetworkDetail[] = [];
   modalSub: Subscription;
 
-  constructor(
-    private store: Store,
-    public formatService: FormatService,
-    private web3LoginService: Web3LoginService,
-    private router: Router
-  ) {}
+  constructor(private store: Store, public formatService: FormatService, private web3LoginService: Web3LoginService) {}
 
   ngOnInit(): void {
+    this.generateObs();
+    this.networkSetUp();
+  }
+
+  networkSetUp(): void {
+    this.networkList = this.web3LoginService.getNetworkDetailList();
+  }
+
+  generateObs(): void {
     this.sidebarMode$ = this.store.select(selectAuthStatus);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.verifiedAccount$ = this.store.select(selectAccount);
+    this.networkName$ = this.store.select(selectNetworkName);
   }
 
   ngOnDestroy(): void {
@@ -57,5 +68,9 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
 
   logOut(): void {
     return this.store.dispatch(resetAuth());
+  }
+
+  changeNetwork(network: INetworkDetail): void {
+    this.store.dispatch(networkChanged({ network }));
   }
 }

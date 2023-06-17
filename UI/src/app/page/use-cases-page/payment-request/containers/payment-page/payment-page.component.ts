@@ -101,8 +101,8 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         filter((publicAddress: string | null) => !!publicAddress)
       )
       .subscribe(async (publicAddress: string | null) => {
-        const networkId: number = await this.web3.eth.net.getId();
-        if (!environment.networkSupported.includes(String(networkId))) {
+        const chainId: number = await this.web3.eth.net.getId();
+        if (!environment.networkSupported.includes(String(chainId))) {
           this._snackBar.open('Network not supported', 'Close', {
             duration: 2000
           });
@@ -112,7 +112,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         return contract.methods
           .transferEth(payload.to)
           .send({ from: publicAddress as string, value: String(payload.priceValue) })
-          .on('transactionHash', (hash: string) => this.store.dispatch(amountSent({ hash, networkId })))
+          .on('transactionHash', (hash: string) => this.store.dispatch(amountSent({ hash, chainId })))
           .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
             this.store.dispatch(
               amountSentSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })

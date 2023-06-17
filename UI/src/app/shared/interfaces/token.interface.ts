@@ -10,7 +10,7 @@ export interface IToken {
 export interface IContract {
   name: string;
   networkName: string;
-  networkId: string;
+  chainId: string;
   address: string;
 }
 

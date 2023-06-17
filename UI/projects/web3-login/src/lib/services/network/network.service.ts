@@ -12,57 +12,145 @@ declare let window: any;
 export class NetworkServiceWeb3Login {
   web3: Web3;
 
-  getNetworkDetail(networkId: string | null): INetworkDetail {
-    switch (networkId) {
-      case '1':
-        return {
-          chainId: '1',
-          name: 'Ethereum',
-          shortName: 'eth',
-          nativeCurrency: {
-            name: 'Ether',
-            symbol: 'ETH',
-            decimals: 18
-          }
-        };
-      case '56':
-        return {
-          chainId: '56',
-          name: 'Binance Smart Chain Mainnet',
-          shortName: 'BNB Chain',
-          nativeCurrency: {
-            name: 'Binance Chain Native Token',
-            symbol: 'BNB',
-            decimals: 18
-          }
-        };
-      case '11155111':
-        return {
-          chainId: '11155111',
-          name: 'Sepolia',
-          shortName: 'Sepolia',
-          nativeCurrency: {
-            name: 'Sepolia',
-            symbol: 'SEP',
-            decimals: 18
-          }
-        };
-      default:
-        return {
-          chainId: '0',
-          name: 'Unknown',
-          shortName: 'unknown',
-          nativeCurrency: {
-            name: 'Unknown',
-            symbol: 'UNK',
-            decimals: 18
-          }
-        };
+  getNetworkDetail(chainId: string | null): INetworkDetail {
+    const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
+    if (chainId) {
+      const networkDetail: INetworkDetail | undefined = networkDetailList.find(
+        (network: INetworkDetail) => network.chainId === chainId
+      );
+      if (networkDetail) {
+        return networkDetail;
+      }
     }
+    return {
+      chainId: '0',
+      name: 'Unknown',
+      shortName: 'unknown',
+      nativeCurrency: {
+        name: 'Unknown',
+        symbol: 'UNK',
+        decimals: 18
+      }
+    };
   }
 
-  getNetworkName(networkId: string): string {
-    switch (networkId) {
+  getNetworkDetailList(): INetworkDetail[] {
+    return [
+      {
+        chainId: '1',
+        name: 'Ethereum',
+        shortName: 'Ethereum',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '56',
+        name: 'Binance Smart Chain Mainnet',
+        shortName: 'BNB Chain',
+        nativeCurrency: {
+          name: 'Binance Chain Native Token',
+          symbol: 'BNB',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '11155111',
+        name: 'Sepolia',
+        shortName: 'Sepolia',
+        nativeCurrency: {
+          name: 'Sepolia',
+          symbol: 'SEP',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '42161',
+        name: 'Arbitrum One',
+        shortName: 'Arbitrum',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '137',
+        name: 'Polygon',
+        shortName: 'Polygon',
+        nativeCurrency: {
+          name: 'Matic',
+          symbol: 'MATIC',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '10',
+        name: 'Optimism',
+        shortName: 'Optimism',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '43114',
+        name: 'Avalanche',
+        shortName: 'Avalanche',
+        nativeCurrency: {
+          name: 'Avalanche',
+          symbol: 'AVAX',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '1284',
+        name: 'Moonbeam',
+        shortName: 'Moonbeam',
+        nativeCurrency: {
+          name: 'Moonbeam',
+          symbol: 'GLMR',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '222',
+        name: 'KAVA',
+        shortName: 'KAVA',
+        nativeCurrency: {
+          name: 'KAVA',
+          symbol: 'KAVA',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '250',
+        name: 'Fantom',
+        shortName: 'Fantom',
+        nativeCurrency: {
+          name: 'Fantom',
+          symbol: 'FTM',
+          decimals: 18
+        }
+      },
+      {
+        chainId: '42220',
+        name: 'Celo',
+        shortName: 'Celo',
+        nativeCurrency: {
+          name: 'Celo',
+          symbol: 'CELO',
+          decimals: 18
+        }
+      }
+    ];
+  }
+
+  getNetworkName(chainId: string): string {
+    switch (chainId) {
       case '1':
         return 'Mainnet';
       case '56':
@@ -107,8 +195,8 @@ export class NetworkServiceWeb3Login {
       }
 
       return new Observable<INetworkDetail>((subscriber) => {
-        window.ethereum.on('chainChanged', (networkId: string) => {
-          const idFormat: string = parseInt(networkId.slice(2), 16).toString();
+        window.ethereum.on('chainChanged', (chainId: string) => {
+          const idFormat: string = parseInt(chainId.slice(2), 16).toString();
           subscriber.next(this.getNetworkDetail(idFormat));
         });
       });

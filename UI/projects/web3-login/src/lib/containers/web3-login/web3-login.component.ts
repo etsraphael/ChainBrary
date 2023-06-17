@@ -74,12 +74,12 @@ export class Web3LoginComponent {
     window.ethereum
       .request({ method: 'eth_requestAccounts' })
       .then((accounts: string[]) => {
-        const networkId = window.ethereum.networkVersion;
+        const chainId = window.ethereum.networkVersion;
         const payload: IModalState = {
           type: ModalStateType.SUCCESS,
           data: {
             publicAddress: accounts[0],
-            network: this.networkService.getNetworkDetail(networkId)
+            network: this.networkService.getNetworkDetail(chainId)
           }
         };
         this.stateEvent.emit(payload);

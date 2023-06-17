@@ -15,7 +15,7 @@ export const loadAuthFailure = createAction('[Auth] Load Auth Failure', props<{ 
 
 export const editAccountSent = createAction(
   '[Auth] Edit Account Sent',
-  props<{ account: ProfileCreation; hash: string; networkId: number }>()
+  props<{ account: ProfileCreation; hash: string; chainId: number }>()
 );
 export const editAccountSuccess = createAction(
   '[Auth] Edit Account Success',
@@ -25,7 +25,7 @@ export const editAccountFailure = createAction('[Auth] Edit Account Failure', pr
 
 export const addAccountSent = createAction(
   '[Auth] Add Account Sent',
-  props<{ account: ProfileCreation; hash: string; networkId: number }>()
+  props<{ account: ProfileCreation; hash: string; chainId: number }>()
 );
 export const addAccountSuccess = createAction(
   '[Auth] Add Account Success',
@@ -33,10 +33,7 @@ export const addAccountSuccess = createAction(
 );
 export const addAccountFailure = createAction('[Auth] Add Account Failure', props<{ message: string }>());
 
-export const deleteAccountSent = createAction(
-  '[Auth] Delete Account Sent',
-  props<{ hash: string; networkId: number }>()
-);
+export const deleteAccountSent = createAction('[Auth] Delete Account Sent', props<{ hash: string; chainId: number }>());
 export const deleteAccountSuccess = createAction(
   '[Auth] Delete Account Success',
   props<{ hash: string; numberConfirmation: number }>()

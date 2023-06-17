@@ -68,17 +68,17 @@ this.web3LoginService.onAccountChangedEvent$.subscribe((account: string | undefi
 To listen for chain changes, use the onChainChangedEvent$ observable:
 
 ```typescript
-this.web3LoginService.onChainChangedEvent$.subscribe(({ networkId, networkName }) => {
+this.web3LoginService.onChainChangedEvent$.subscribe(({ chainId, networkName }) => {
   // Handle chain changes here
 });
 ```
 
 ### Getting the network name
 
-To get the network name based on the network ID, use the getNetworkName(networkId: string) method:
+To get the network name based on the network ID, use the getNetworkName(chainId: string) method:
 
 ```typescript
-const networkName = this.web3LoginService.getNetworkName(networkId);
+const networkName = this.web3LoginService.getNetworkName(chainId);
 ```
 
 ### Customization

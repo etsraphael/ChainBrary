@@ -68,7 +68,7 @@ export class AuthEffects {
         ofType(AuthActions.setAuthPublicAddress),
         tap((action: { publicAddress: string; network: INetworkDetail }) => {
           this.authService.savePublicAddress(action.publicAddress);
-          this.authService.saveNetworkId(action.network.chainId);
+          this.authService.savechainId(action.network.chainId);
         })
       );
     },
@@ -78,12 +78,12 @@ export class AuthEffects {
   addressChecking$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.addressChecking),
-      filter(() => !!this.authService.getPublicAddress() && !!this.authService.getNetworkId()),
+      filter(() => !!this.authService.getPublicAddress() && !!this.authService.getchainId()),
       map(() => {
-        const networkId: string = this.authService.getNetworkId() as string;
+        const chainId: string = this.authService.getchainId() as string;
         return AuthActions.setAuthPublicAddress({
           publicAddress: this.authService.getPublicAddress() as string,
-          network: this.web3LoginService.getNetworkDetail(networkId)
+          network: this.web3LoginService.getNetworkDetail(chainId)
         });
       })
     );
@@ -95,7 +95,7 @@ export class AuthEffects {
         ofType(AuthActions.resetAuth),
         map(() => {
           this.authService.removePublicAddress();
-          this.authService.removeNetworkId();
+          this.authService.removechainId();
         })
       );
     },
@@ -122,7 +122,7 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(AuthActions.networkChanged),
         tap((action: { network: INetworkDetail }) => {
-          this.authService.saveNetworkId(action.network.chainId);
+          this.authService.savechainId(action.network.chainId);
         })
       );
     },

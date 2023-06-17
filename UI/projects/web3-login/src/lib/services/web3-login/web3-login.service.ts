@@ -34,12 +34,16 @@ export class Web3LoginService {
     return this.dialog.closeAll();
   }
 
-  getNetworkName(networkId: string): string {
-    return this.networkServiceWeb3Login.getNetworkName(networkId);
+  getNetworkName(chainId: string): string {
+    return this.networkServiceWeb3Login.getNetworkName(chainId);
   }
 
-  getNetworkDetail(networkId: string | null): INetworkDetail {
-    return this.networkServiceWeb3Login.getNetworkDetail(networkId);
+  getNetworkDetail(chainId: string | null): INetworkDetail {
+    return this.networkServiceWeb3Login.getNetworkDetail(chainId);
+  }
+
+  getNetworkDetailList(): INetworkDetail[] {
+    return this.networkServiceWeb3Login.getNetworkDetailList();
   }
 
   getCurrentNetwork(): INetworkDetail {

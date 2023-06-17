@@ -66,8 +66,8 @@ export class CertificationContainerComponent implements OnInit {
       organizationContract.getAddress()
     );
 
-    const networkId: number = await this.web3.eth.net.getId();
-    if (!environment.networkSupported.includes(String(networkId))) {
+    const chainId: number = await this.web3.eth.net.getId();
+    if (!environment.networkSupported.includes(String(chainId))) {
       this._snackBar.open('Network not supported', 'Close', {
         duration: 2000
       });
@@ -78,7 +78,7 @@ export class CertificationContainerComponent implements OnInit {
       contract,
       profile: payload.profile,
       priceValue: payload.priceValue,
-      networkId
+      chainId
     };
 
     if (payload.edited) return this.editAccount(command);
@@ -95,7 +95,7 @@ export class CertificationContainerComponent implements OnInit {
       )
       .send({ from: command.profile.userAddress, value: String(command.priceValue) })
       .on('transactionHash', (hash: string) =>
-        this.store.dispatch(editAccountSent({ account: command.profile, hash, networkId: command.networkId }))
+        this.store.dispatch(editAccountSent({ account: command.profile, hash, chainId: command.chainId }))
       )
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
         this.store.dispatch(
@@ -118,7 +118,7 @@ export class CertificationContainerComponent implements OnInit {
       )
       .send({ from: command.profile.userAddress, value: String(command.priceValue) })
       .on('transactionHash', (hash: string) =>
-        this.store.dispatch(addAccountSent({ account: command.profile, hash, networkId: command.networkId }))
+        this.store.dispatch(addAccountSent({ account: command.profile, hash, chainId: command.chainId }))
       )
       .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
         this.store.dispatch(
