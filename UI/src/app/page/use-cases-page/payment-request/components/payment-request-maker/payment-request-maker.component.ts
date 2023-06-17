@@ -8,19 +8,21 @@ import {
   Validators
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
+import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 
 @Component({
-  selector: 'app-payment-request-maker[publicAddressObs][networkSymbol]',
+  selector: 'app-payment-request-maker[publicAddressObs][currentNetwork]',
   templateUrl: './payment-request-maker.component.html',
   styleUrls: ['./payment-request-maker.component.scss']
 })
 export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
-  @Input() networkSymbol: string | null;
+  @Input() currentNetwork: INetworkDetail | null;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -30,7 +32,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(private snackbar: MatSnackBar) {}
+  constructor(
+    private snackbar: MatSnackBar,
+    private walletService: WalletService
+  ) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -77,8 +82,22 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if (this.page === PaymentMakePage.settingPrice) {
+    if(this.page === PaymentMakePage.settingPrice) {
+
+      const { amount } = this.getPriceControls();
+      if (amount.value! <= 0) {
+        this.snackbar.open('Amount must be greater than 0', 'Close', { duration: 3000 });
+        return;
+      }
+
+      const networkIsValid: boolean = this.walletService.curentChainIdIsMatching(this.currentNetwork?.chainId!);
+      if (!networkIsValid) {
+        this.snackbar.open('Please switch to the correct network on MetaMask', 'Close', { duration: 3000 });
+        return;
+      }
+
       this.generatePaymentRequest();
+
     }
 
     ++this.page;

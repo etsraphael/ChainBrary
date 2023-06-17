@@ -9,8 +9,8 @@ export class OrganizationContract extends BaseContract {
   }
 
   getAddress(): string {
-    const contractLink: IContract = environment.contracts.find(
-      (contract: IContract) => contract.name === 'Organization' && this.chainId === contract.chainId
+    const contractLink: IContract = environment.contracts.bridgeTransfer.find(
+      (contract: IContract) => this.chainId === contract.chainId
     ) as IContract;
     return contractLink.address;
   }

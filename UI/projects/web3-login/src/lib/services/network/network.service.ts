@@ -38,7 +38,7 @@ export class NetworkServiceWeb3Login {
     return [
       {
         chainId: '1',
-        name: 'Ethereum',
+        name: 'Ethereum Mainnet',
         shortName: 'Ethereum',
         nativeCurrency: {
           name: 'Ether',
