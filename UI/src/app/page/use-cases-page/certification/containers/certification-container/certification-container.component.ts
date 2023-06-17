@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import Web3 from 'web3';
@@ -39,7 +40,7 @@ export class CertificationContainerComponent implements OnInit {
   web3: Web3;
   transactionCards$: Observable<ITransactionCard[]>;
 
-  constructor(private store: Store, private _snackBar: MatSnackBar) {}
+  constructor(private store: Store, private _snackBar: MatSnackBar, private web3LoginService: Web3LoginService) {}
 
   ngOnInit(): void {
     this.generateObs();
@@ -59,7 +60,7 @@ export class CertificationContainerComponent implements OnInit {
     priceValue: number;
   }): Promise<IReceiptTransaction | void> {
     this.web3 = new Web3(window.ethereum);
-    const organizationContract = new OrganizationContract();
+    const organizationContract = new OrganizationContract(this.web3LoginService.getCurrentNetwork().chainId);
     const contract: Contract = new this.web3.eth.Contract(
       organizationContract.getAbi(),
       organizationContract.getAddress()

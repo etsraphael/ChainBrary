@@ -1,10 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { ProfileCreation } from '../../../shared/creations/profileCreation';
 import { IOrganization, IProfileAdded } from '../../../shared/interfaces';
+import { INetworkDetail } from '@chainbrary/web3-login';
 
 export const setAuthPublicAddress = createAction(
   '[Auth] Set Auth Public Address',
-  props<{ publicAddress: string; networkId: string; networkName: string }>()
+  props<{ publicAddress: string; network: INetworkDetail }>()
 );
 export const addressChecking = createAction('[Auth] Address Checking');
 
@@ -47,10 +48,7 @@ export const loadOrgnisationSuccess = createAction(
   props<{ organization: IOrganization }>()
 );
 
-export const networkChanged = createAction(
-  '[Auth] Network Changed',
-  props<{ networkId: string; networkName: string }>()
-);
+export const networkChanged = createAction('[Auth] Network Changed', props<{ network: INetworkDetail }>());
 
 export const accountChanged = createAction('[Auth] Account Changed', props<{ publicAddress: string | null }>());
 

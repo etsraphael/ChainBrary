@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ModalState, Web3Provider, providerData } from '../../interfaces';
+import { IModalState, Web3Provider, providerData } from '../../interfaces';
 
 @Component({
   selector: 'lib-body[isLoading]',
@@ -8,7 +8,7 @@ import { ModalState, Web3Provider, providerData } from '../../interfaces';
 })
 export class BodyComponent {
   @Input() isLoading = false;
-  @Output() stateEvent = new EventEmitter<ModalState>();
+  @Output() stateEvent = new EventEmitter<IModalState>();
   @Output() openWalletProviderEvent = new EventEmitter<string>();
 
   providers = providerData;

@@ -35,12 +35,12 @@ Use the service methods as needed:
 
 ### Opening the login modal
 
-To open the login modal, call the openLoginModal() method. This method returns an EventEmitter that emits a ModalState object containing the current state of the modal (either 'opened' or 'closed').
+To open the login modal, call the openLoginModal() method. This method returns an EventEmitter that emits a IModalState object containing the current state of the modal (either 'opened' or 'closed').
 
 ```typescript
 const stateEvent = this.web3LoginService.openLoginModal();
 
-stateEvent.subscribe((state: ModalState) => {
+stateEvent.subscribe((state: IModalState) => {
   // Handle the modal state here
 });
 ```

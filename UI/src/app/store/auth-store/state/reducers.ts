@@ -1,7 +1,7 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import * as AuthActions from './actions';
 import { initialState } from './init';
 import { IAuthState } from './interfaces';
-import * as AuthActions from './actions';
 
 export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
   initialState,
@@ -58,12 +58,9 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
   ),
   on(
     AuthActions.networkChanged,
-    (state, { networkId, networkName }): IAuthState => ({
+    (state, { network }): IAuthState => ({
       ...state,
-      network: {
-        networkId,
-        networkName
-      }
+      network: network
     })
   ),
   on(
@@ -78,14 +75,11 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
   ),
   on(
     AuthActions.setAuthPublicAddress,
-    (_, { publicAddress, networkId, networkName }): IAuthState => ({
+    (_, { publicAddress, network }): IAuthState => ({
       ...initialState,
       publicAddress: publicAddress,
       connectedUser: true,
-      network: {
-        networkId,
-        networkName
-      }
+      network: network
     })
   ),
   on(

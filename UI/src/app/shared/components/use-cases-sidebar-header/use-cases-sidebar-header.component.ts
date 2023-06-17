@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { ModalState, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
+import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from '../../enum';
@@ -39,14 +39,13 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): void {
-    this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: ModalState) => {
+    this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: IModalState) => {
       switch (state.type) {
         case ModalStateType.SUCCESS:
           this.store.dispatch(
             setAuthPublicAddress({
               publicAddress: state.data?.publicAddress as string,
-              networkId: state.data?.networkId as string,
-              networkName: state.data?.networkName as string
+              network: state.data?.network as INetworkDetail
             })
           );
           this.store.dispatch(loadAuth());

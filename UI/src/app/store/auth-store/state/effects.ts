@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
 import { AccountService } from '../../../shared/services/account/account.service';
@@ -66,9 +66,9 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.setAuthPublicAddress),
-        tap((action: { publicAddress: string; networkId: string; networkName: string }) => {
+        tap((action: { publicAddress: string; network: INetworkDetail }) => {
           this.authService.savePublicAddress(action.publicAddress);
-          this.authService.saveNetworkId(action.networkId);
+          this.authService.saveNetworkId(action.network.chainId);
         })
       );
     },
@@ -83,8 +83,7 @@ export class AuthEffects {
         const networkId: string = this.authService.getNetworkId() as string;
         return AuthActions.setAuthPublicAddress({
           publicAddress: this.authService.getPublicAddress() as string,
-          networkId: networkId,
-          networkName: this.web3LoginService.getNetworkName(networkId)
+          network: this.web3LoginService.getNetworkDetail(networkId)
         });
       })
     );
@@ -122,8 +121,8 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.networkChanged),
-        tap((action: { networkId: string; networkName: string }) => {
-          this.authService.saveNetworkId(action.networkId);
+        tap((action: { network: INetworkDetail }) => {
+          this.authService.saveNetworkId(action.network.chainId);
         })
       );
     },

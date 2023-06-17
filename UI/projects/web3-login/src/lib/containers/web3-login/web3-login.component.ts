@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import Web3 from 'web3';
-import { ModalState, ModalStateType } from '../../interfaces';
+import { IModalState, ModalStateType } from '../../interfaces';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { NetworkServiceWeb3Login } from '../../services/network/network.service';
 
@@ -16,7 +16,7 @@ declare let window: any;
   styleUrls: ['./web3-login.component.scss']
 })
 export class Web3LoginComponent {
-  @Output() stateEvent = new EventEmitter<ModalState>();
+  @Output() stateEvent = new EventEmitter<IModalState>();
   web3: Web3;
   isLoading = false;
 
@@ -28,7 +28,7 @@ export class Web3LoginComponent {
     private router: Router
   ) {}
 
-  eventHandler(state: ModalState): void {
+  eventHandler(state: IModalState): void {
     this.stateEvent.emit(state);
     if (state.type === ModalStateType.SUCCESS || state.type === ModalStateType.CANCEL) {
       this.dialogRef.close();
@@ -75,12 +75,11 @@ export class Web3LoginComponent {
       .request({ method: 'eth_requestAccounts' })
       .then((accounts: string[]) => {
         const networkId = window.ethereum.networkVersion;
-        const payload: ModalState = {
+        const payload: IModalState = {
           type: ModalStateType.SUCCESS,
           data: {
             publicAddress: accounts[0],
-            networkId: networkId,
-            networkName: this.networkService.getNetworkName(networkId)
+            network: this.networkService.getNetworkDetail(networkId)
           }
         };
         this.stateEvent.emit(payload);

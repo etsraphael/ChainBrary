@@ -1,10 +1,20 @@
-export interface ModalState {
+export interface IModalState {
   type: ModalStateType;
   message?: string;
   data?: {
     publicAddress: string;
-    networkId: string;
-    networkName: string;
+    network: INetworkDetail | null;
+  };
+}
+
+export interface INetworkDetail {
+  chainId: string;
+  name: string;
+  shortName: string;
+  nativeCurrency: {
+    name: string;
+    symbol: string;
+    decimals: number;
   };
 }
 
