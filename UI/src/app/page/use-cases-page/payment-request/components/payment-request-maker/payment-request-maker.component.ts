@@ -14,12 +14,14 @@ import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-maker[publicAddressObs]',
+  selector: 'app-payment-request-maker[publicAddressObs][networkSymbol]',
   templateUrl: './payment-request-maker.component.html',
   styleUrls: ['./payment-request-maker.component.scss']
 })
 export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
+  @Input() networkSymbol: string | null;
+
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   paymentMakePageTypes = PaymentMakePage;

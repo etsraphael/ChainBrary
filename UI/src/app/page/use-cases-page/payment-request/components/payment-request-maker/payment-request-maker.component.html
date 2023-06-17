@@ -20,6 +20,7 @@
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <app-payment-request-price-settings
         [priceForm]="priceForm"
+        [networkSymbol]="networkSymbol"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"
       ></app-payment-request-price-settings>
