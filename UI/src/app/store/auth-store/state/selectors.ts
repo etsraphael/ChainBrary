@@ -11,8 +11,11 @@ export const selectVerifiedAccount: MemoizedSelector<object, boolean, (s1: IAuth
   (s) => s.verifiedAccount
 );
 
-export const selectCurrentNetwork: MemoizedSelector<object, INetworkDetail | null, (s1: IAuthState) => INetworkDetail | null> =
-  createSelector(selectAuth, (s) => s.network ? s.network : null);
+export const selectCurrentNetwork: MemoizedSelector<
+  object,
+  INetworkDetail | null,
+  (s1: IAuthState) => INetworkDetail | null
+> = createSelector(selectAuth, (s) => (s.network ? s.network : null));
 
 export const selectNetworkSymbol: MemoizedSelector<object, string | null, (s1: IAuthState) => string | null> =
   createSelector(selectAuth, (s) => s.network?.nativeCurrency.symbol ?? null);

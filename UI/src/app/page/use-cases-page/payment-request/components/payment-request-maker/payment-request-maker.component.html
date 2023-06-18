@@ -18,15 +18,21 @@
       </app-payment-request-profile-settings>
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
-      <app-payment-request-price-settings [priceForm]="priceForm"
-        [networkSymbol]="currentNetwork?.nativeCurrency!.symbol" (goToNextPage)="goToNextPage()"
-        (goToPreviousPage)="goToPreviousPage()"></app-payment-request-price-settings>
+      <app-payment-request-price-settings
+        [priceForm]="priceForm"
+        [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
+        (goToNextPage)="goToNextPage()"
+        (goToPreviousPage)="goToPreviousPage()"
+      ></app-payment-request-price-settings>
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
-      <app-payment-request-review [networkSymbol]="currentNetwork?.nativeCurrency!.symbol"
+      <app-payment-request-review
+        [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
         [username]="mainForm.controls.profile.controls.username.value!"
-        [amount]="mainForm.controls.price.controls.amount.value!" [previewLink]="linkGenerated"
-        (goToPreviousPageEvent)="goToPreviousPage()">
+        [amount]="mainForm.controls.price.controls.amount.value!"
+        [previewLink]="linkGenerated"
+        (goToPreviousPageEvent)="goToPreviousPage()"
+      >
       </app-payment-request-review>
     </div>
   </div>

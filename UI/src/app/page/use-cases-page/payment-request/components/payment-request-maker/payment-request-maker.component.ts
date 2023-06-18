@@ -32,10 +32,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(
-    private snackbar: MatSnackBar,
-    private walletService: WalletService
-  ) {}
+  constructor(private snackbar: MatSnackBar, private walletService: WalletService) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -82,22 +79,24 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       return;
     }
 
-    if(this.page === PaymentMakePage.settingPrice) {
-
+    if (this.page === PaymentMakePage.settingPrice) {
       const { amount } = this.getPriceControls();
-      if (amount.value! <= 0) {
+      if ((amount.value as number) <= 0) {
         this.snackbar.open('Amount must be greater than 0', 'Close', { duration: 3000 });
         return;
       }
 
-      const networkIsValid: boolean = this.walletService.curentChainIdIsMatching(this.currentNetwork?.chainId!);
+      const networkIsValid: boolean = this.walletService.curentChainIdIsMatching(
+        this.currentNetwork?.chainId as string
+      );
       if (!networkIsValid) {
-        this.snackbar.open('Please switch to the correct network on MetaMask', 'Close', { duration: 3000 });
+        this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
+          duration: 3000
+        });
         return;
       }
 
       this.generatePaymentRequest();
-
     }
 
     ++this.page;

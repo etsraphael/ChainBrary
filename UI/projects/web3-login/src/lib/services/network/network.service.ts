@@ -24,6 +24,28 @@ export class NetworkServiceWeb3Login {
     }
     return {
       chainId: '0',
+      chainCode: 'unknown',
+      name: 'Unknown',
+      shortName: 'unknown',
+      nativeCurrency: {
+        name: 'Unknown',
+        symbol: 'UNK',
+        decimals: 18
+      }
+    };
+  }
+
+  getNetworkDetailByChainCode(chainCode: string): INetworkDetail {
+    const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
+    const networkDetail: INetworkDetail | undefined = networkDetailList.find(
+      (network: INetworkDetail) => network.chainCode === chainCode
+    );
+    if (networkDetail) {
+      return networkDetail;
+    }
+    return {
+      chainId: '0',
+      chainCode: 'unknown',
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
@@ -38,6 +60,7 @@ export class NetworkServiceWeb3Login {
     return [
       {
         chainId: '1',
+        chainCode: '0x1',
         name: 'Ethereum Mainnet',
         shortName: 'Ethereum',
         nativeCurrency: {
@@ -48,6 +71,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '56',
+        chainCode: '0x38',
         name: 'Binance Smart Chain Mainnet',
         shortName: 'BNB Chain',
         nativeCurrency: {
@@ -58,6 +82,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '11155111',
+        chainCode: '0xaa36a7',
         name: 'Sepolia',
         shortName: 'Sepolia',
         nativeCurrency: {
@@ -68,6 +93,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '42161',
+        chainCode: '0xa4b1',
         name: 'Arbitrum One',
         shortName: 'Arbitrum',
         nativeCurrency: {
@@ -78,6 +104,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '137',
+        chainCode: '0x89',
         name: 'Polygon',
         shortName: 'Polygon',
         nativeCurrency: {
@@ -88,6 +115,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '10',
+        chainCode: '0xa',
         name: 'Optimism',
         shortName: 'Optimism',
         nativeCurrency: {
@@ -98,6 +126,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '43114',
+        chainCode: '0xa86a',
         name: 'Avalanche',
         shortName: 'Avalanche',
         nativeCurrency: {
@@ -108,6 +137,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '1284',
+        chainCode: '0x504',
         name: 'Moonbeam',
         shortName: 'Moonbeam',
         nativeCurrency: {
@@ -118,6 +148,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '222',
+        chainCode: '0x8ae',
         name: 'KAVA',
         shortName: 'KAVA',
         nativeCurrency: {
@@ -128,6 +159,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '250',
+        chainCode: '0xfa',
         name: 'Fantom',
         shortName: 'Fantom',
         nativeCurrency: {
@@ -138,6 +170,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: '42220',
+        chainCode: '0xa4ec',
         name: 'Celo',
         shortName: 'Celo',
         nativeCurrency: {
@@ -165,6 +198,7 @@ export class NetworkServiceWeb3Login {
   getCurrentNetwork(): INetworkDetail {
     if (window.ethereum && window.ethereum.isMetaMask) {
       this.web3 = new Web3(window.ethereum);
+      console.log('window.ethereum.networkVersion', window.ethereum.networkVersion);
       return this.getNetworkDetail(window.ethereum.networkVersion);
     }
     return this.getNetworkDetail(null);
@@ -195,10 +229,9 @@ export class NetworkServiceWeb3Login {
       }
 
       return new Observable<INetworkDetail>((subscriber) => {
-        window.ethereum.on('chainChanged', (chainId: string) => {
-          const idFormat: string = parseInt(chainId.slice(2), 16).toString();
-          subscriber.next(this.getNetworkDetail(idFormat));
-        });
+        window.ethereum.on('chainChanged', (chainCode: string) =>
+          subscriber.next(this.getNetworkDetailByChainCode(chainCode))
+        );
       });
     });
   }

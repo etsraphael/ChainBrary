@@ -9,6 +9,7 @@ export interface IModalState {
 
 export interface INetworkDetail {
   chainId: string;
+  chainCode: string;
   name: string;
   shortName: string;
   nativeCurrency: {
