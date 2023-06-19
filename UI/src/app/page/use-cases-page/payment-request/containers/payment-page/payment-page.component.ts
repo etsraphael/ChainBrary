@@ -11,7 +11,11 @@ import { TransactionBridgeContract } from './../../../../../shared/contracts';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IReceiptTransaction, ITransactionCard } from './../../../../../shared/interfaces';
 import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
-import { selectAuthStatus, selectPublicAddress } from './../../../../../store/auth-store/state/selectors';
+import {
+  selectAuthStatus,
+  selectCurrentNetwork,
+  selectPublicAddress
+} from './../../../../../store/auth-store/state/selectors';
 import {
   amountSent,
   amountSentFailure,
@@ -39,6 +43,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   publicAddress$: Observable<string | null>;
   web3: Web3;
   transactionCards$: Observable<ITransactionCard[]>;
+  currentNetwork$: Observable<INetworkDetail | null>;
 
   constructor(
     private route: ActivatedRoute,
@@ -67,6 +72,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
+    this.currentNetwork$ = this.store.select(selectCurrentNetwork);
   }
 
   openLoginModal(): void {

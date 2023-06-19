@@ -198,7 +198,6 @@ export class NetworkServiceWeb3Login {
   getCurrentNetwork(): INetworkDetail {
     if (window.ethereum && window.ethereum.isMetaMask) {
       this.web3 = new Web3(window.ethereum);
-      console.log('window.ethereum.networkVersion', window.ethereum.networkVersion);
       return this.getNetworkDetail(window.ethereum.networkVersion);
     }
     return this.getNetworkDetail(null);
