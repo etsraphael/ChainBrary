@@ -12,7 +12,7 @@ declare let window: any;
 export class NetworkServiceWeb3Login {
   web3: Web3;
 
-  getNetworkDetail(chainId: string | null): INetworkDetail {
+  getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
     const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
     if (chainId) {
       const networkDetail: INetworkDetail | undefined = networkDetailList.find(
@@ -198,9 +198,9 @@ export class NetworkServiceWeb3Login {
   getCurrentNetwork(): INetworkDetail {
     if (window.ethereum && window.ethereum.isMetaMask) {
       this.web3 = new Web3(window.ethereum);
-      return this.getNetworkDetail(window.ethereum.networkVersion);
+      return this.getNetworkDetailByChainId(window.ethereum.networkVersion);
     }
-    return this.getNetworkDetail(null);
+    return this.getNetworkDetailByChainId(null);
   }
 
   onAccountChangedEvent(): Observable<string | undefined> {

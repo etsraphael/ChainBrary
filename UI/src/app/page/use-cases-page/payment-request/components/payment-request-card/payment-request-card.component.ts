@@ -6,7 +6,7 @@ import { WalletService } from './../../../../../shared/services/wallet/wallet.se
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 
 @Component({
-  selector: 'app-payment-request-card[paymentRequest][authStatus][paymentRequest][currentNetwork]',
+  selector: 'app-payment-request-card[paymentRequest][authStatus][paymentRequest][currentNetwork][paymentNetwork]',
   templateUrl: './payment-request-card.component.html',
   styleUrls: ['./payment-request-card.component.scss']
 })
@@ -16,6 +16,7 @@ export class PaymentRequestCardComponent {
   @Input() authStatus: AuthStatusCode;
   @Input() publicAddress: string | null;
   @Input() currentNetwork: INetworkDetail | null;
+  @Input() paymentNetwork: INetworkDetail | null;
 
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ priceValue: number; to: string[] }>();

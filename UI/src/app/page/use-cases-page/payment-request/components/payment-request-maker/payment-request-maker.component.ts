@@ -108,6 +108,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     const { amount, description } = this.getPriceControls();
 
     const paymentRequest: IPaymentRequest = {
+      chainId: this.currentNetwork?.chainId as string,
+      tokenId: '0',
       username: username.value as string,
       publicAddress: publicAddress.value as string,
       amount: amount.value as number,

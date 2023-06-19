@@ -83,7 +83,7 @@ export class AuthEffects {
         const chainId: string = this.authService.getchainId() as string;
         return AuthActions.setAuthPublicAddress({
           publicAddress: this.authService.getPublicAddress() as string,
-          network: this.web3LoginService.getNetworkDetail(chainId)
+          network: this.web3LoginService.getNetworkDetailByChainId(chainId)
         });
       })
     );

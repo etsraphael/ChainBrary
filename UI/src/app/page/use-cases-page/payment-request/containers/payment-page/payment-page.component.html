@@ -37,6 +37,7 @@
         <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-2">
           <app-payment-request-card
             [currentNetwork]="currentNetwork$ | async"
+            [paymentNetwork]="paymentNetwork$ | async"
             [authStatus]="(authStatus$ | async)!"
             [publicAddress]="publicAddress$ | async"
             [paymentRequest]="(selectPaymentRequestState$ | async)!"

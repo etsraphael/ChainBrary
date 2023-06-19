@@ -25,6 +25,7 @@ import {
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
+  selectPaymentNetwork,
   selectPaymentRequest
 } from './../../../../../store/payment-request-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
@@ -44,6 +45,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   web3: Web3;
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
+  paymentNetwork$: Observable<INetworkDetail | null>;
 
   constructor(
     private route: ActivatedRoute,
@@ -73,6 +75,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
+    this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
   }
 
   openLoginModal(): void {

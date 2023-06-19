@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { IPaymentRequest, IProfilePayment } from './../../../shared/interfaces';
 import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
+import { INetworkDetail } from '@chainbrary/web3-login';
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
 
@@ -21,6 +22,11 @@ export const selectPaymentRequestError: MemoizedSelector<object, string | null> 
 export const selectCardIsLoading: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   (s) => s.payment.loading
+);
+
+export const selectPaymentNetwork: MemoizedSelector<object, INetworkDetail | null> = createSelector(
+  selectPaymentRequest,
+  (s) => s.network
 );
 
 export const selectProfilePayment: MemoizedSelector<

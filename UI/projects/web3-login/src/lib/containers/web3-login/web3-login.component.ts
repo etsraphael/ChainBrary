@@ -79,7 +79,7 @@ export class Web3LoginComponent {
           type: ModalStateType.SUCCESS,
           data: {
             publicAddress: accounts[0],
-            network: this.networkService.getNetworkDetail(chainId)
+            network: this.networkService.getNetworkDetailByChainId(chainId)
           }
         };
         this.stateEvent.emit(payload);

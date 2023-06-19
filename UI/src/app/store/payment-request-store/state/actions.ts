@@ -1,3 +1,4 @@
+import { INetworkDetail } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { IPaymentRequest, IProfileAdded } from './../../../shared/interfaces';
 
@@ -7,13 +8,12 @@ export const generatePaymentRequest = createAction(
 );
 export const generatePaymentRequestSuccess = createAction(
   '[Payment Request] Generate Payment Request Success',
-  props<{ paymentRequest: IPaymentRequest }>()
+  props<{ paymentRequest: IPaymentRequest; network: INetworkDetail }>()
 );
 export const generatePaymentRequestFailure = createAction(
   '[Payment Request] Generate Payment Request Failure',
   props<{ errorMessage: string }>()
 );
-
 export const loadVerifiedAccount = createAction(
   '[Payment Request] Load Verified Account',
   props<{ address: string }>()

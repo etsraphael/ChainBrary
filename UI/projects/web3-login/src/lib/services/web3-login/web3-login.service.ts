@@ -38,8 +38,8 @@ export class Web3LoginService {
     return this.networkServiceWeb3Login.getNetworkName(chainId);
   }
 
-  getNetworkDetail(chainId: string | null): INetworkDetail {
-    return this.networkServiceWeb3Login.getNetworkDetail(chainId);
+  getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
+    return this.networkServiceWeb3Login.getNetworkDetailByChainId(chainId);
   }
 
   getNetworkDetailList(): INetworkDetail[] {
