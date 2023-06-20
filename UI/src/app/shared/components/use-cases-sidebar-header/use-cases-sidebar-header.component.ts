@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
@@ -19,6 +19,7 @@ import {
   styleUrls: ['./use-cases-sidebar-header.component.scss']
 })
 export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
+  @Input() networkFrozen: boolean = false;
   authStatusCodeTypes = AuthStatusCode;
   sidebarMode$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
@@ -71,6 +72,6 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   changeNetwork(network: INetworkDetail): void {
-    this.store.dispatch(networkChanged({ network }));
+    return this.store.dispatch(networkChanged({ network }));
   }
 }

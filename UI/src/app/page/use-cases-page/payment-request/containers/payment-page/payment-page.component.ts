@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, filter, take } from 'rxjs';
+import { Observable, Subscription, combineLatest, filter, map, take } from 'rxjs';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
@@ -54,6 +54,17 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     private _snackBar: MatSnackBar
   ) {
     this.setUpId();
+  }
+
+  get paymentSelectedInvalid$(): Observable<boolean> {
+    return combineLatest([this.currentNetwork$, this.paymentNetwork$]).pipe(
+      map(([currentNetwork, paymentNetwork]) => {
+        if (!currentNetwork || !paymentNetwork) {
+          return false;
+        }
+        return currentNetwork.chainId !== paymentNetwork.chainId;
+      })
+    );
   }
 
   setUpId(): Subscription {
