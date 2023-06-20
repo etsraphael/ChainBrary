@@ -69,6 +69,19 @@ export class TransactionBridgeContract extends BaseContract {
       },
       {
         inputs: [],
+        name: 'MAX_RECIPIENTS',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
         name: 'feeRate',
         outputs: [
           {
@@ -108,7 +121,7 @@ export class TransactionBridgeContract extends BaseContract {
             type: 'address[]'
           }
         ],
-        name: 'transferEth',
+        name: 'transferFund',
         outputs: [],
         stateMutability: 'payable',
         type: 'function'

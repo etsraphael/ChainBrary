@@ -5,7 +5,7 @@ export const environment = {
     bridgeTransfer: [
       {
         chainId: '11155111',
-        address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+        address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
       },
       {
         chainId: '1',

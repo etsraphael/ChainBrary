@@ -13,7 +13,7 @@ contract TransactionBridge is Ownable, ReentrancyGuard {
 
     event Transfer(address indexed from, address indexed to, uint256 value, uint256 fee);
 
-    function transferEth(address payable[] memory recipients) external payable nonReentrant {
+    function transferFund(address payable[] memory recipients) external payable nonReentrant {
         uint256 numOfRecipients = recipients.length;
         require(
             numOfRecipients > 0 && numOfRecipients <= MAX_RECIPIENTS,

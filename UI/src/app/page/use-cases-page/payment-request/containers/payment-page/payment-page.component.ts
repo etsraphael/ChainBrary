@@ -130,7 +130,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         }
 
         return contract.methods
-          .transferEth(payload.to)
+          .transferFund(payload.to)
           .send({ from: publicAddress as string, value: String(payload.priceValue) })
           .on('transactionHash', (hash: string) => this.store.dispatch(amountSent({ hash, chainId })))
           .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
