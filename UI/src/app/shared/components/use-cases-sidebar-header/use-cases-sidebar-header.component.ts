@@ -19,7 +19,7 @@ import {
   styleUrls: ['./use-cases-sidebar-header.component.scss']
 })
 export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
-  @Input() networkFrozen: boolean = false;
+  @Input() networkFrozen = false;
   authStatusCodeTypes = AuthStatusCode;
   sidebarMode$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;

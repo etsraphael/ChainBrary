@@ -10,7 +10,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
@@ -86,20 +86,21 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         return;
       }
 
-      const networkIsValid: boolean = this.walletService.curentChainIdIsMatching(
-        this.currentNetwork?.chainId as string
-      );
-      if (!networkIsValid) {
-        this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
-          duration: 3000
-        });
-        return;
-      }
+      this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid) => {
+        if (!networkIsValid) {
+          this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
+            duration: 3000
+          });
+          return;
+        }
 
-      this.generatePaymentRequest();
+        this.generatePaymentRequest();
+
+        ++this.page;
+      });
+    } else {
+      ++this.page;
     }
-
-    ++this.page;
     return;
   }
 

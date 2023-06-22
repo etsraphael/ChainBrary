@@ -109,20 +109,25 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   submitPayment(payload: { priceValue: number; to: string[] }): Subscription | void {
     this.web3 = new Web3(window.ethereum);
 
-    const transactionContract = new TransactionBridgeContract(this.web3LoginService.getCurrentNetwork().chainId);
-    const contract: Contract = new this.web3.eth.Contract(
-      transactionContract.getAbi(),
-      transactionContract.getAddress()
-    );
-
-    return this.publicAddress$
+    return combineLatest([this.publicAddress$, this.web3LoginService.currentNetwork$])
       .pipe(
         take(1),
-        filter((publicAddress: string | null) => !!publicAddress)
+        filter(([publicAddress, network]: [string | null, INetworkDetail | null]) => !!publicAddress && !!network),
+        map(
+          ([publicAddress, network]: [string | null, INetworkDetail | null]) =>
+            [publicAddress as string, network as INetworkDetail] as (string | INetworkDetail)[]
+        )
       )
-      .subscribe(async (publicAddress: string | null) => {
-        const chainId: number = await this.web3.eth.net.getId();
-        if (!environment.networkSupported.includes(String(chainId))) {
+      .subscribe((result: (string | INetworkDetail)[]) => {
+        const [publicAddress, network] = result as [string, INetworkDetail];
+
+        const transactionContract = new TransactionBridgeContract(network.chainId);
+        const contract: Contract = new this.web3.eth.Contract(
+          transactionContract.getAbi(),
+          transactionContract.getAddress()
+        );
+
+        if (!environment.networkSupported.includes(network.chainId)) {
           this._snackBar.open('Network not supported', 'Close', {
             duration: 2000
           });
@@ -132,7 +137,9 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         return contract.methods
           .transferFund(payload.to)
           .send({ from: publicAddress as string, value: String(payload.priceValue) })
-          .on('transactionHash', (hash: string) => this.store.dispatch(amountSent({ hash, chainId })))
+          .on('transactionHash', (hash: string) =>
+            this.store.dispatch(amountSent({ hash, chainId: Number(network.chainId) }))
+          )
           .on('confirmation', (confirmationNumber: number, receipt: IReceiptTransaction) =>
             this.store.dispatch(
               amountSentSuccess({ hash: receipt.transactionHash, numberConfirmation: confirmationNumber })

@@ -19,6 +19,10 @@ export class Web3LoginService {
     return this.networkServiceWeb3Login.onChainChangedEvent();
   }
 
+  get currentNetwork$(): Observable<INetworkDetail | null> {
+    return this.networkServiceWeb3Login.currentNetwork$;
+  }
+
   openLoginModal(): EventEmitter<IModalState> {
     const dialogRef: MatDialogRef<Web3LoginComponent> = this.dialog.open(Web3LoginComponent, {
       enterAnimationDuration: '200ms',
@@ -44,9 +48,5 @@ export class Web3LoginService {
 
   getNetworkDetailList(): INetworkDetail[] {
     return this.networkServiceWeb3Login.getNetworkDetailList();
-  }
-
-  getCurrentNetwork(): INetworkDetail {
-    return this.networkServiceWeb3Login.getCurrentNetwork();
   }
 }

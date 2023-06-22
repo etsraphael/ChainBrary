@@ -2,11 +2,15 @@
   <div class="card-body">
     <ng-container [ngSwitch]="sidebarMode$ | async">
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotConnected">
-        <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'border-0', 'text-white']"
-          [buttonText]="'Login'" (callToAction)="openLoginModal()" />
+        <app-chainbrary-button
+          [buttonClasses]="['btn-primary-gradient', 'border-0', 'text-white']"
+          [buttonText]="'Login'"
+          (callToAction)="openLoginModal()"
+        />
       </ng-container>
       <ng-container
-        *ngSwitchCase="authStatusCodeTypes.NotVerifiedAndConnected || authStatusCodeTypes.VerifiedAndConnected">
+        *ngSwitchCase="authStatusCodeTypes.NotVerifiedAndConnected || authStatusCodeTypes.VerifiedAndConnected"
+      >
         <div class="container">
           <div class="row align-items-center">
             <div class="container-user-icon col-2 d-flex justify-content-center align-items-center">

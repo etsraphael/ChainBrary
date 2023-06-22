@@ -4,10 +4,8 @@ import { Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
 import { ProfileCreationCommand } from './../../../../../shared/commands';
-import { OrganizationContract } from './../../../../../shared/contracts';
 import { ProfileCreation } from './../../../../../shared/creations/profileCreation';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IProfileAdded, IReceiptTransaction, ITransactionCard } from './../../../../../shared/interfaces';
@@ -59,30 +57,31 @@ export class CertificationContainerComponent implements OnInit {
     edited: boolean;
     priceValue: number;
   }): Promise<IReceiptTransaction | void> {
-    this.web3 = new Web3(window.ethereum);
-    const organizationContract = new OrganizationContract(this.web3LoginService.getCurrentNetwork().chainId);
-    const contract: Contract = new this.web3.eth.Contract(
-      organizationContract.getAbi(),
-      organizationContract.getAddress()
-    );
+    console.log(payload);
+    // this.web3 = new Web3(window.ethereum);
+    // const organizationContract = new OrganizationContract(this.web3LoginService.getCurrentNetwork().chainId);
+    // const contract: Contract = new this.web3.eth.Contract(
+    //   organizationContract.getAbi(),
+    //   organizationContract.getAddress()
+    // );
 
-    const chainId: number = await this.web3.eth.net.getId();
-    if (!environment.networkSupported.includes(String(chainId))) {
-      this._snackBar.open('Network not supported', 'Close', {
-        duration: 2000
-      });
-      return;
-    }
+    // const chainId: number = await this.web3.eth.net.getId();
+    // if (!environment.networkSupported.includes(String(chainId))) {
+    //   this._snackBar.open('Network not supported', 'Close', {
+    //     duration: 2000
+    //   });
+    //   return;
+    // }
 
-    const command: ProfileCreationCommand = {
-      contract,
-      profile: payload.profile,
-      priceValue: payload.priceValue,
-      chainId
-    };
+    // const command: ProfileCreationCommand = {
+    //   contract,
+    //   profile: payload.profile,
+    //   priceValue: payload.priceValue,
+    //   chainId
+    // };
 
-    if (payload.edited) return this.editAccount(command);
-    else return this.addAccount(command);
+    // if (payload.edited) return this.editAccount(command);
+    // else return this.addAccount(command);
   }
 
   editAccount(command: ProfileCreationCommand): Promise<IReceiptTransaction> {

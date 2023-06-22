@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
+import { take } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
@@ -29,15 +30,18 @@ export class PaymentRequestCardComponent {
       return;
     }
 
-    const networkIsValid: boolean = this.walletService.curentChainIdIsMatching(this.currentNetwork?.chainId as string);
-    if (!networkIsValid) {
-      this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', { duration: 3000 });
-      return;
-    }
+    this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid: boolean) => {
+      if (!networkIsValid) {
+        this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
+          duration: 3000
+        });
+        return;
+      }
 
-    return this.submitPayment.emit({
-      priceValue: (this.paymentRequest.payment.data?.amount as number) * 1e18,
-      to: [this.paymentRequest.payment.data?.publicAddress as string]
+      return this.submitPayment.emit({
+        priceValue: (this.paymentRequest.payment.data?.amount as number) * 1e18,
+        to: [this.paymentRequest.payment.data?.publicAddress as string]
+      });
     });
   }
 }

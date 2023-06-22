@@ -11,6 +11,19 @@ declare let window: any;
 })
 export class NetworkServiceWeb3Login {
   web3: Web3;
+  currentNetwork$: Observable<INetworkDetail | null> = EMPTY;
+
+  constructor() {
+    setTimeout(() => {
+      this.web3 = new Web3(window.ethereum);
+      this.currentNetwork$ = defer(() => {
+        if (window.ethereum) {
+          return of(this.getNetworkDetailByChainCode(window.ethereum.chainId));
+        }
+        return of(this.getNetworkDetailByChainId(null));
+      });
+    }, 1000);
+  }
 
   getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
     const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
@@ -228,9 +241,10 @@ export class NetworkServiceWeb3Login {
       }
 
       return new Observable<INetworkDetail>((subscriber) => {
-        window.ethereum.on('chainChanged', (chainCode: string) =>
-          subscriber.next(this.getNetworkDetailByChainCode(chainCode))
-        );
+        window.ethereum.on('chainChanged', (chainCode: string) => {
+          subscriber.next(this.getNetworkDetailByChainCode(chainCode));
+          this.currentNetwork$ = of(this.getNetworkDetailByChainCode(chainCode));
+        });
       });
     });
   }
