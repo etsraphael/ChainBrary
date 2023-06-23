@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CertificationContainerComponent } from './certification/containers/certification-container/certification-container.component';
 import { PaymentRequestContainerComponent } from './payment-request/containers/payment-request-container/payment-request-container.component';
 import { UseCasesPageComponent } from './use-cases-page.component';
 import { AuthCheckingGuard } from './guards/auth-checking/auth-checking.guard';
@@ -14,10 +13,6 @@ const routes: Routes = [
       {
         path: 'payment-request',
         component: PaymentRequestContainerComponent
-      },
-      {
-        path: 'certification',
-        component: CertificationContainerComponent
       },
       {
         path: '',

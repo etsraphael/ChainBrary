@@ -121,18 +121,18 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
       .subscribe((result: (string | INetworkDetail)[]) => {
         const [publicAddress, network] = result as [string, INetworkDetail];
 
-        const transactionContract = new TransactionBridgeContract(network.chainId);
-        const contract: Contract = new this.web3.eth.Contract(
-          transactionContract.getAbi(),
-          transactionContract.getAddress()
-        );
-
         if (!environment.networkSupported.includes(network.chainId)) {
           this._snackBar.open('Network not supported', 'Close', {
             duration: 2000
           });
           return;
         }
+
+        const transactionContract = new TransactionBridgeContract(network.chainId);
+        const contract: Contract = new this.web3.eth.Contract(
+          transactionContract.getAbi(),
+          transactionContract.getAddress()
+        );
 
         return contract.methods
           .transferFund(payload.to)

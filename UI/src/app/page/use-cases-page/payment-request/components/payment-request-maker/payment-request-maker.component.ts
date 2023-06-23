@@ -122,7 +122,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       .replace('+', '-')
       .replace('/', '_');
     const url: URL = new URL(window.location.href);
-    const origin = `${url.protocol}//${url.hostname}:${url.port}`;
+    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
     this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
     return;
   }

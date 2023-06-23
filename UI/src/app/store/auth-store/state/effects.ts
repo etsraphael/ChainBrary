@@ -104,14 +104,14 @@ export class AuthEffects {
 
   errorAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.editAccountFailure, AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
+      ofType(AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
       map((action: { message: string }) => showErrorNotification({ message: action.message }))
     );
   });
 
   successAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.editAccountSuccess, AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
+      ofType(AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
       filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
       map(() => showSuccessNotification({ message: 'Transaction is processing' }))
     );
