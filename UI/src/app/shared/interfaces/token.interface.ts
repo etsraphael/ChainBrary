@@ -7,10 +7,8 @@ export interface IToken {
   symbol: string;
 }
 
-export interface INetwork {
-  name: string;
-  networkName: string;
-  networkId: string;
+export interface IContract {
+  chainId: string;
   address: string;
 }
 

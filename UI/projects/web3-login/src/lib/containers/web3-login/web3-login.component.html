@@ -9,7 +9,12 @@
 
 <body class="py-3 bg-light">
   <lib-header></lib-header>
-  <lib-body (stateEvent)="eventHandler($event)"></lib-body>
+  <lib-body
+    [isLoading]="isLoading"
+    (stateEvent)="eventHandler($event)"
+    (openWalletProviderEvent)="openWalletProvider($event)"
+  >
+  </lib-body>
 </body>
 
 <script

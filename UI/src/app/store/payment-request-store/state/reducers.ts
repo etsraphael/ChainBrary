@@ -18,7 +18,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   ),
   on(
     AuthActions.generatePaymentRequestSuccess,
-    (state, { paymentRequest }): IPaymentRequestState => ({
+    (state, { paymentRequest, network }): IPaymentRequestState => ({
       ...state,
       payment: {
         error: null,
@@ -29,7 +29,8 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         publicAddress: paymentRequest.publicAddress,
         avatarUrl: paymentRequest.avatarUrl,
         username: paymentRequest.username
-      }
+      },
+      network
     })
   ),
   on(

@@ -35,12 +35,12 @@ Use the service methods as needed:
 
 ### Opening the login modal
 
-To open the login modal, call the openLoginModal() method. This method returns an EventEmitter that emits a ModalState object containing the current state of the modal (either 'opened' or 'closed').
+To open the login modal, call the openLoginModal() method. This method returns an EventEmitter that emits a IModalState object containing the current state of the modal (either 'opened' or 'closed').
 
 ```typescript
 const stateEvent = this.web3LoginService.openLoginModal();
 
-stateEvent.subscribe((state: ModalState) => {
+stateEvent.subscribe((state: IModalState) => {
   // Handle the modal state here
 });
 ```
@@ -68,18 +68,29 @@ this.web3LoginService.onAccountChangedEvent$.subscribe((account: string | undefi
 To listen for chain changes, use the onChainChangedEvent$ observable:
 
 ```typescript
-this.web3LoginService.onChainChangedEvent$.subscribe(({ networkId, networkName }) => {
+this.web3LoginService.onChainChangedEvent$.subscribe(({ chainId, networkName }) => {
   // Handle chain changes here
 });
 ```
 
-### Getting the network name
+### Accessing the Current Network
 
-To get the network name based on the network ID, use the getNetworkName(networkId: string) method:
+Subscribe to the currentNetwork$ observable to get the current network details:
 
 ```typescript
-const networkName = this.web3LoginService.getNetworkName(networkId);
+this.web3LoginService.currentNetwork$.subscribe((networkDetail: INetworkDetail | null) => {
+  // Handle current network details here
+});
 ```
+
+### Obtaining Network Information
+
+Use getNetworkDetailByChainId(chainId: string | null) to get detailed information about a network based on its chain ID:
+
+```typescript
+const networkDetail = this.web3LoginService.getNetworkDetailByChainId(chainId);
+```
+
 
 ### Customization
 
