@@ -5,6 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from '../../enum';
 import { IProfileAdded } from '../../interfaces';
 import { FormatService } from '../../services/format/format.service';
+import { environment } from './../../../../environments/environment';
 import { loadAuth, networkChanged, resetAuth, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
 import {
   selectAccount,
@@ -36,7 +37,9 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   networkSetUp(): void {
-    this.networkList = this.web3LoginService.getNetworkDetailList();
+    this.networkList = this.web3LoginService
+      .getNetworkDetailList()
+      .filter(({ chainId }: INetworkDetail) => environment.networkSupported.includes(chainId));
   }
 
   generateObs(): void {
