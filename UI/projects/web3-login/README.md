@@ -73,13 +73,24 @@ this.web3LoginService.onChainChangedEvent$.subscribe(({ chainId, networkName }) 
 });
 ```
 
-### Getting the network name
+### Accessing the Current Network
 
-To get the network name based on the network ID, use the getNetworkName(chainId: string) method:
+Subscribe to the currentNetwork$ observable to get the current network details:
 
 ```typescript
-const networkName = this.web3LoginService.getNetworkName(chainId);
+this.web3LoginService.currentNetwork$.subscribe((networkDetail: INetworkDetail | null) => {
+  // Handle current network details here
+});
 ```
+
+### Obtaining Network Information
+
+Use getNetworkDetailByChainId(chainId: string | null) to get detailed information about a network based on its chain ID:
+
+```typescript
+const networkDetail = this.web3LoginService.getNetworkDetailByChainId(chainId);
+```
+
 
 ### Customization
 
