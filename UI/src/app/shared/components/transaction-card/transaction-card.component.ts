@@ -11,11 +11,11 @@ export class TransactionCardComponent implements OnInit {
   scanLink: string;
 
   ngOnInit(): void {
-    this.generateScanLink(this.cardContent.networkId);
+    this.generateScanLink(this.cardContent.chainId);
   }
 
-  generateScanLink(networkId: number): void {
-    switch (networkId) {
+  generateScanLink(chainId: number): void {
+    switch (chainId) {
       case 1:
         this.scanLink = `https://etherscan.io/tx/${this.cardContent.hash}`;
         break;

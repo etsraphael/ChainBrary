@@ -1,3 +1,13 @@
+<!-- Error -->
+<div
+  *ngIf="(walletService.networkIsMatching$ | async) === false"
+  class="alert alert-warning border-0 shadow-sm"
+  role="alert"
+>
+  <h4 class="alert-heading">Wrong network</h4>
+  <p>Your wallet does not match with the current selected network.</p>
+</div>
+
 <!-- Header -->
 <div class="my-3">
   <app-use-cases-sidebar-header></app-use-cases-sidebar-header>

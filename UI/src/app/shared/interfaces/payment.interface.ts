@@ -1,6 +1,8 @@
 import { FormControl, FormGroup } from '@angular/forms';
 
 export interface IPaymentRequest {
+  chainId: string;
+  tokenId: string;
   publicAddress: string;
   username: string;
   amount: number;

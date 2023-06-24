@@ -22,6 +22,11 @@
   cursor: pointer;
 }
 
-.btn-container p:hover {
+.btn-container .btn-logout:hover {
   text-decoration: underline;
+}
+
+.menu-btn i {
+  position: relative;
+  top: 1.5px;
 }

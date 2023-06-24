@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, filter, map, mergeMap, of, tap } from 'rxjs';
 import { AccountService } from '../../../shared/services/account/account.service';
@@ -66,9 +66,9 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.setAuthPublicAddress),
-        tap((action: { publicAddress: string; networkId: string; networkName: string }) => {
+        tap((action: { publicAddress: string; network: INetworkDetail }) => {
           this.authService.savePublicAddress(action.publicAddress);
-          this.authService.saveNetworkId(action.networkId);
+          this.authService.savechainId(action.network.chainId);
         })
       );
     },
@@ -78,13 +78,12 @@ export class AuthEffects {
   addressChecking$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.addressChecking),
-      filter(() => !!this.authService.getPublicAddress() && !!this.authService.getNetworkId()),
+      filter(() => !!this.authService.getPublicAddress() && !!this.authService.getchainId()),
       map(() => {
-        const networkId: string = this.authService.getNetworkId() as string;
+        const chainId: string = this.authService.getchainId() as string;
         return AuthActions.setAuthPublicAddress({
           publicAddress: this.authService.getPublicAddress() as string,
-          networkId: networkId,
-          networkName: this.web3LoginService.getNetworkName(networkId)
+          network: this.web3LoginService.getNetworkDetailByChainId(chainId)
         });
       })
     );
@@ -96,7 +95,7 @@ export class AuthEffects {
         ofType(AuthActions.resetAuth),
         map(() => {
           this.authService.removePublicAddress();
-          this.authService.removeNetworkId();
+          this.authService.removechainId();
         })
       );
     },
@@ -105,14 +104,14 @@ export class AuthEffects {
 
   errorAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.editAccountFailure, AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
+      ofType(AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
       map((action: { message: string }) => showErrorNotification({ message: action.message }))
     );
   });
 
   successAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.editAccountSuccess, AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
+      ofType(AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
       filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
       map(() => showSuccessNotification({ message: 'Transaction is processing' }))
     );
@@ -122,8 +121,8 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.networkChanged),
-        tap((action: { networkId: string; networkName: string }) => {
-          this.authService.saveNetworkId(action.networkId);
+        tap((action: { network: INetworkDetail }) => {
+          this.authService.savechainId(action.network.chainId);
         })
       );
     },
