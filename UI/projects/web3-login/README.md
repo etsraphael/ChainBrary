@@ -91,7 +91,6 @@ Use getNetworkDetailByChainId(chainId: string | null) to get detailed informatio
 const networkDetail = this.web3LoginService.getNetworkDetailByChainId(chainId);
 ```
 
-
 ### Customization
 
 To customize the appearance of the login modal, modify the following CSS classes in your application:
