@@ -10,7 +10,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, of, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
@@ -55,7 +55,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       }),
       profile: new FormGroup({
         publicAddress: new FormControl('', [Validators.required]),
-        avatarUrl: new FormControl('', [Validators.required], [this.urlValidator()]),
+        avatarUrl: new FormControl('', [], [this.urlValidator()]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
@@ -129,6 +129,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   urlValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) return of(null);
       this.isAvatarUrlValid = false;
 
       const src: string = control.value;
