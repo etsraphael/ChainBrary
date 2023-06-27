@@ -19,7 +19,6 @@ import {
 import {
   amountSent,
   amountSentFailure,
-  amountSentSuccess,
   generatePaymentRequest
 } from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
@@ -46,6 +45,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentNetwork$: Observable<INetworkDetail | null>;
+  walletInProcess = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -138,13 +138,15 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
           .transferFund(payload.to)
           .estimateGas({ from: publicAddress, value: String(payload.priceValue) })
           .then((gas: number) => {
+            this.walletInProcess = true;
             return contract.methods
               .transferFund(payload.to)
               .send({ from: publicAddress as string, value: String(payload.priceValue), gas: gas })
-              .then((receipt: IReceiptTransaction) => {
+              .then((receipt: IReceiptTransaction) =>
                 this.store.dispatch(amountSent({ hash: receipt.transactionHash, chainId: Number(network.chainId) }))
-              })
-              .catch((error: Error) => this.store.dispatch(amountSentFailure({ message: error.message })));
+              )
+              .catch((error: Error) => this.store.dispatch(amountSentFailure({ message: error.message })))
+              .finally(() => (this.walletInProcess = false));
           });
       });
   }
