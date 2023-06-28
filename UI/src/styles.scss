@@ -56,6 +56,10 @@ a {
 :root {
   --mdc-shape-medium: 10px;
   --mdc-shape-small: 10px;
+
+  .card {
+    --bs-card-border-radius: 1.5rem;
+  }
 }
 
 .alert {
