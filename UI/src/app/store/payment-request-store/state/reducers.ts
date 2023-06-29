@@ -1,12 +1,12 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import * as AuthActions from './actions';
+import * as PaymentActions from './actions';
 import { initialState } from './init';
 import { IPaymentRequestState } from './interfaces';
 
 export const authReducer: ActionReducer<IPaymentRequestState, Action> = createReducer(
   initialState,
   on(
-    AuthActions.generatePaymentRequest,
+    PaymentActions.generatePaymentRequest,
     (state): IPaymentRequestState => ({
       ...state,
       payment: {
@@ -17,7 +17,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
-    AuthActions.generatePaymentRequestSuccess,
+    PaymentActions.generatePaymentRequestSuccess,
     (state, { paymentRequest, network }): IPaymentRequestState => ({
       ...state,
       payment: {
@@ -34,13 +34,36 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
-    AuthActions.generatePaymentRequestFailure,
+    PaymentActions.generatePaymentRequestFailure,
     (state, { errorMessage }): IPaymentRequestState => ({
       ...state,
       payment: {
         error: errorMessage,
         loading: false,
         data: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.sendAmount,
+    (state): IPaymentRequestState => ({
+      ...state,
+      payment: {
+        ...state.payment,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.amountSent,
+    PaymentActions.amountSentFailure,
+    (state): IPaymentRequestState => ({
+      ...state,
+      payment: {
+        ...state.payment,
+        loading: false,
+        error: null
       }
     })
   )

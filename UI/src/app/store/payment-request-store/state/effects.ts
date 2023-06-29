@@ -1,15 +1,21 @@
 import { Injectable } from '@angular/core';
 import { Web3LoginService } from '@chainbrary/web3-login';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Buffer } from 'buffer';
-import { catchError, filter, map, of } from 'rxjs';
+import { Observable, catchError, filter, from, map, of, switchMap } from 'rxjs';
+import Web3 from 'web3';
+import { Contract } from 'web3-eth-contract';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
-import { IPaymentRequest } from './../../../shared/interfaces';
+import { TransactionBridgeContract } from './../../../shared/contracts';
+import { IPaymentRequest, IReceiptTransaction } from './../../../shared/interfaces';
 import * as PaymentRequestActions from './actions';
+import { Store } from '@ngrx/store';
+import { selectPublicAddress } from '../../auth-store/state/selectors';
+import { selectPayment } from './selectors';
 
 @Injectable()
 export class PaymentRequestEffects {
-  constructor(private actions$: Actions, private web3LoginService: Web3LoginService) {}
+  constructor(private actions$: Actions, private web3LoginService: Web3LoginService, private store: Store) {}
 
   isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
     return (
@@ -59,6 +65,46 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.amountSentSuccess),
       filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
       map(() => showSuccessNotification({ message: 'Transaction is processing' }))
+    );
+  });
+
+  transferFunds$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.sendAmount),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
+      switchMap((payload: [{ priceValue: string }, string | null, IPaymentRequest | null]) => {
+        const web3: Web3 = new Web3(window.ethereum);
+        const transactionContract = new TransactionBridgeContract(String(payload[2]?.chainId));
+        const contract: Contract = new web3.eth.Contract(
+          transactionContract.getAbi(),
+          transactionContract.getAddress()
+        );
+        return (
+          from(
+            contract.methods
+              .transferFund([payload[2]?.publicAddress])
+              .estimateGas({ from: payload[1], value: String(payload[0].priceValue) })
+          ) as Observable<number>
+        ).pipe(
+          switchMap((gas: number) => {
+            return (
+              from(
+                contract.methods
+                  .transferFund([payload[2]?.publicAddress])
+                  .send({ from: payload[1], value: String(payload[0].priceValue), gas: gas })
+              ) as Observable<IReceiptTransaction>
+            ).pipe(
+              map((receipt: IReceiptTransaction) =>
+                PaymentRequestActions.amountSent({
+                  hash: receipt.transactionHash,
+                  chainId: Number(payload[2]?.chainId)
+                })
+              ),
+              catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+            );
+          })
+        );
+      })
     );
   });
 }
