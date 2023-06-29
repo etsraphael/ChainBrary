@@ -4,23 +4,16 @@ import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription, combineLatest, filter, map, take } from 'rxjs';
-import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
 import { environment } from './../../../../../../environments/environment';
-import { TransactionBridgeContract } from './../../../../../shared/contracts';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { IReceiptTransaction, ITransactionCard } from './../../../../../shared/interfaces';
+import { ITransactionCard } from './../../../../../shared/interfaces';
 import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
   selectCurrentNetwork,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
-import {
-  amountSent,
-  amountSentFailure,
-  generatePaymentRequest
-} from './../../../../../store/payment-request-store/state/actions';
+import { generatePaymentRequest, sendAmount } from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
@@ -37,15 +30,13 @@ import { selectRecentTransactionsByComponent } from './../../../../../store/tran
 export class PaymentPageComponent implements OnInit, OnDestroy {
   AuthStatusCodeTypes = AuthStatusCode;
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
-  cardIsLoading$: Observable<boolean>;
+  paymentIsLoading$: Observable<boolean>;
   modalSub: Subscription;
   authStatus$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
-  web3: Web3;
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentNetwork$: Observable<INetworkDetail | null>;
-  walletInProcess = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -81,7 +72,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
 
   generateObs(): void {
     this.selectPaymentRequestState$ = this.store.select(selectPaymentRequest);
-    this.cardIsLoading$ = this.store.select(selectCardIsLoading);
+    this.paymentIsLoading$ = this.store.select(selectCardIsLoading);
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
@@ -106,21 +97,14 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  submitPayment(payload: { priceValue: number; to: string[] }): Subscription | void {
-    this.web3 = new Web3(window.ethereum);
-
-    return combineLatest([this.publicAddress$, this.web3LoginService.currentNetwork$])
+  submitPayment(payload: { priceValue: number }): Subscription | void {
+    return this.web3LoginService.currentNetwork$
       .pipe(
         take(1),
-        filter(([publicAddress, network]: [string | null, INetworkDetail | null]) => !!publicAddress && !!network),
-        map(
-          ([publicAddress, network]: [string | null, INetworkDetail | null]) =>
-            [publicAddress as string, network as INetworkDetail] as (string | INetworkDetail)[]
-        )
+        filter((network: INetworkDetail | null) => !!network),
+        map((network: INetworkDetail | null) => network as INetworkDetail)
       )
-      .subscribe((result: (string | INetworkDetail)[]) => {
-        const [publicAddress, network] = result as [string, INetworkDetail];
-
+      .subscribe((network: INetworkDetail) => {
         if (!environment.networkSupported.includes(network.chainId)) {
           this._snackBar.open('Network not supported', 'Close', {
             duration: 2000
@@ -128,26 +112,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
           return;
         }
 
-        const transactionContract = new TransactionBridgeContract(network.chainId);
-        const contract: Contract = new this.web3.eth.Contract(
-          transactionContract.getAbi(),
-          transactionContract.getAddress()
-        );
-
-        return contract.methods
-          .transferFund(payload.to)
-          .estimateGas({ from: publicAddress, value: String(payload.priceValue) })
-          .then((gas: number) => {
-            this.walletInProcess = true;
-            return contract.methods
-              .transferFund(payload.to)
-              .send({ from: publicAddress as string, value: String(payload.priceValue), gas: gas })
-              .then((receipt: IReceiptTransaction) =>
-                this.store.dispatch(amountSent({ hash: receipt.transactionHash, chainId: Number(network.chainId) }))
-              )
-              .catch((error: Error) => this.store.dispatch(amountSentFailure({ message: error.message })))
-              .finally(() => (this.walletInProcess = false));
-          });
+        return this.store.dispatch(sendAmount({ priceValue: String(payload.priceValue) }));
       });
   }
 

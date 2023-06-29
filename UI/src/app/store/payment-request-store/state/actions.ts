@@ -27,6 +27,10 @@ export const loadVerifiedAccountFailure = createAction(
   props<{ errorMessage: string }>()
 );
 
+export const sendAmount = createAction('[Payment Request] Send Amount Transactions', props<{ priceValue: string }>());
+
+export const sendAmountCompleted = createAction('[Payment Request] Send Amount Transactions Completed');
+
 export const amountSent = createAction('[Payment Request] Amount Sent', props<{ hash: string; chainId: number }>());
 
 export const amountSentSuccess = createAction(
