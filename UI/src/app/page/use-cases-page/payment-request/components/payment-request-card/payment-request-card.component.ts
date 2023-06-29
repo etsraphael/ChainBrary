@@ -20,7 +20,7 @@ export class PaymentRequestCardComponent {
   @Input() paymentNetwork: INetworkDetail | null;
 
   @Output() openLoginModal = new EventEmitter<void>();
-  @Output() submitPayment = new EventEmitter<{ priceValue: number; to: string[] }>();
+  @Output() submitPayment = new EventEmitter<{ priceValue: number }>();
 
   constructor(private snackbar: MatSnackBar, private walletService: WalletService) {}
 
@@ -39,8 +39,7 @@ export class PaymentRequestCardComponent {
       }
 
       return this.submitPayment.emit({
-        priceValue: (this.paymentRequest.payment.data?.amount as number) * 1e18,
-        to: [this.paymentRequest.payment.data?.publicAddress as string]
+        priceValue: (this.paymentRequest.payment.data?.amount as number) * 1e18
       });
     });
   }
