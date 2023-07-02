@@ -10,7 +10,7 @@
     "graphgen": "npx hardhat run scripts/deploy-graph.ts"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-toolbox": "^2.0.1",
+    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "hardhat": "^2.16.1",
     "hardhat-abi-exporter": "^2.10.1",
     "prettier": "^2.8.3",
