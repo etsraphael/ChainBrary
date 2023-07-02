@@ -1,13 +1,17 @@
-import { INetwork } from '../interfaces';
+import { IContract } from '../interfaces';
 import { environment } from './../../../environments/environment';
 import { BaseContract } from './baseContract';
 import { AbiItem } from 'web3-utils';
 
 export class OrganizationContract extends BaseContract {
+  constructor(public chainId: string) {
+    super();
+  }
+
   getAddress(): string {
-    const contractLink: INetwork = environment.contracts.find(
-      (contract: INetwork) => contract.name === 'Organization'
-    ) as INetwork;
+    const contractLink: IContract = environment.contracts.bridgeTransfer.find(
+      (contract: IContract) => this.chainId === contract.chainId
+    ) as IContract;
     return contractLink.address;
   }
 

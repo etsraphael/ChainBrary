@@ -14,18 +14,28 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="(transactionCards$ | async)?.length! === 0">
+  <div class="mt-5" *ngIf="(transactionCards$ | async)?.length! === 0">
+    <div *ngIf="paymentSelectedInvalid$ | async" class="d-flex justify-content-center">
+      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+        <div class="alert alert-danger border-0 shadow-sm" role="alert">
+          <h4 class="alert-heading">Wrong network</h4>
+          <p>Please be connected on the {{ (paymentNetwork$ | async)?.name }} network to use this feature.</p>
+        </div>
+      </div>
+    </div>
     <div class="d-flex justify-content-center">
-      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-5">
-        <app-use-cases-sidebar-header *ngIf="AuthStatusCodeTypes.NotConnected !== (authStatus$ | async)">
+      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+        <app-use-cases-sidebar-header
+          [networkFrozen]="true"
+          *ngIf="AuthStatusCodeTypes.NotConnected !== (authStatus$ | async)"
+        >
         </app-use-cases-sidebar-header>
       </div>
     </div>
     <div class="d-flex justify-content-center">
       <div
         class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 my-5"
-        *ngIf="cardIsLoading$ | async; else paymentRequestCard"
+        *ngIf="paymentIsLoading$ | async; else paymentRequestCard"
       >
         <div class="d-flex justify-content-center">
           <div class="spinner-container spinner-border text-primary" role="status">
@@ -36,6 +46,8 @@
       <ng-template #paymentRequestCard>
         <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-2">
           <app-payment-request-card
+            [currentNetwork]="currentNetwork$ | async"
+            [paymentNetwork]="paymentNetwork$ | async"
             [authStatus]="(authStatus$ | async)!"
             [publicAddress]="publicAddress$ | async"
             [paymentRequest]="(selectPaymentRequestState$ | async)!"

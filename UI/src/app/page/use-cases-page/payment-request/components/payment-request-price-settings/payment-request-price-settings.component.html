@@ -2,8 +2,11 @@
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
       <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-        <mat-label> Amount (by ETH) </mat-label>
-        <input formControlName="amount" type="number" class="text-center" matInput placeholder="Amount" />
+        <mat-label> Amount</mat-label>
+        <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
+        <div matSuffix>
+          <h6 class="mb-0 pe-3">{{ networkSymbol }}</h6>
+        </div>
       </mat-form-field>
     </div>
   </div>

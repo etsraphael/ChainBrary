@@ -5,5 +5,5 @@ export interface ProfileCreationCommand {
   contract: Contract;
   profile: ProfileCreation;
   priceValue: number;
-  networkId: number;
+  chainId: number;
 }

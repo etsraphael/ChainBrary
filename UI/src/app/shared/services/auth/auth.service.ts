@@ -16,15 +16,15 @@ export class AuthService {
     return localStorage.removeItem('publicAddress');
   }
 
-  saveNetworkId(networkId: string): void {
-    return localStorage.setItem('networkId', networkId);
+  savechainId(chainId: string): void {
+    return localStorage.setItem('chainId', chainId);
   }
 
-  getNetworkId(): string | null {
-    return localStorage.getItem('networkId');
+  getchainId(): string | null {
+    return localStorage.getItem('chainId');
   }
 
-  removeNetworkId(): void {
-    return localStorage.removeItem('networkId');
+  removechainId(): void {
+    return localStorage.removeItem('chainId');
   }
 }

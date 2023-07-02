@@ -8,18 +8,22 @@ import {
   Validators
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, of, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
+import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 
 @Component({
-  selector: 'app-payment-request-maker[publicAddressObs]',
+  selector: 'app-payment-request-maker[publicAddressObs][currentNetwork]',
   templateUrl: './payment-request-maker.component.html',
   styleUrls: ['./payment-request-maker.component.scss']
 })
 export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
+  @Input() currentNetwork: INetworkDetail | null;
+
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   paymentMakePageTypes = PaymentMakePage;
@@ -28,7 +32,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(private snackbar: MatSnackBar) {}
+  constructor(private snackbar: MatSnackBar, private walletService: WalletService) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -51,7 +55,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       }),
       profile: new FormGroup({
         publicAddress: new FormControl('', [Validators.required]),
-        avatarUrl: new FormControl('', [Validators.required], [this.urlValidator()]),
+        avatarUrl: new FormControl('', [], [this.urlValidator()]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
@@ -76,10 +80,27 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     }
 
     if (this.page === PaymentMakePage.settingPrice) {
-      this.generatePaymentRequest();
-    }
+      const { amount } = this.getPriceControls();
+      if ((amount.value as number) <= 0) {
+        this.snackbar.open('Amount must be greater than 0', 'Close', { duration: 3000 });
+        return;
+      }
 
-    ++this.page;
+      this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid) => {
+        if (!networkIsValid) {
+          this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
+            duration: 3000
+          });
+          return;
+        }
+
+        this.generatePaymentRequest();
+
+        ++this.page;
+      });
+    } else {
+      ++this.page;
+    }
     return;
   }
 
@@ -88,6 +109,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     const { amount, description } = this.getPriceControls();
 
     const paymentRequest: IPaymentRequest = {
+      chainId: this.currentNetwork?.chainId as string,
+      tokenId: '0',
       username: username.value as string,
       publicAddress: publicAddress.value as string,
       amount: amount.value as number,
@@ -99,13 +122,14 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       .replace('+', '-')
       .replace('/', '_');
     const url: URL = new URL(window.location.href);
-    const origin = `${url.protocol}//${url.hostname}:${url.port}`;
+    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
     this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
     return;
   }
 
   urlValidator(): AsyncValidatorFn {
     return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) return of(null);
       this.isAvatarUrlValid = false;
 
       const src: string = control.value;
