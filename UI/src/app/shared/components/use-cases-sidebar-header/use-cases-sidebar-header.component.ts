@@ -39,7 +39,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   networkSetUp(): void {
     this.networkList = this.web3LoginService
       .getNetworkDetailList()
-      .filter(({ chainId }: INetworkDetail) => environment.networkSupported.includes(chainId));
+      .filter(({ chainId }: INetworkDetail) => environment.contracts.bridgeTransfer.networkSupported.includes(chainId));
   }
 
   generateObs(): void {
