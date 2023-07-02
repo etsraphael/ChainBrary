@@ -14,10 +14,18 @@ export const environment = {
       {
         chainId: '56',
         address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+      },
+      {
+        chainId: '1',
+        address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+      },
+      {
+        chainId: '43114',
+        address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
       }
     ]
   },
   organizationName: 'chainbrary0',
-  networkSupported: ['137', '56', '11155111'],
+  networkSupported: ['137', '56', '11155111', '1', '43114'],
   gtagId: 'G-PDSWHFJSN0'
 };
