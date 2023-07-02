@@ -7,7 +7,7 @@ import { Observable, Subscription, combineLatest, filter, map, take } from 'rxjs
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { ITransactionCard } from './../../../../../shared/interfaces';
-import { loadAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
+import { setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
   selectCurrentNetwork,
@@ -90,7 +90,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
               network: state.data?.network as INetworkDetail
             })
           );
-          this.store.dispatch(loadAuth());
           this.web3LoginService.closeLoginModal();
           break;
       }
