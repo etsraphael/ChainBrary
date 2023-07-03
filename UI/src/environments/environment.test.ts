@@ -29,7 +29,12 @@ export const environment = {
     },
     priceFeed: {
       networkSupported: ['11155111'],
-      contracts: []
+      contracts: [
+        {
+          chainId: '11155111',
+          address: '0x8E34a012E4B3f7065F1c2022ed889eE843350D98'
+        }
+      ]
     }
   },
   organizationName: 'chainbrary0',
