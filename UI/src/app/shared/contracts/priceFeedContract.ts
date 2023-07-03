@@ -5,29 +5,50 @@ import { BaseContract } from './baseContract';
 import { TokenPair } from '../enum';
 
 export class PriceFeedContract extends BaseContract {
-  PRICE_FEED_DATA: IPriceFeedData[] = [
-    {
-      pair: TokenPair.EthToUsd,
-      address: '0x694AA1769357215DE4FAC081bf1f309aDC325306'
-    },
-    {
-      pair: TokenPair.BtcToUsd,
-      address: '0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43'
-    }
-  ];
+  PRICE_FEED_DATA: IPriceFeedData = {
+    '11155111': [
+      {
+        pair: TokenPair.EthToUsd,
+        address: '0x694AA1769357215DE4FAC081bf1f309aDC325306'
+      },
+      {
+        pair: TokenPair.BtcToUsd,
+        address: '0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43'
+      }
+    ]
+  };
 
-  constructor(public chainId: string) {
+  constructor(public chainId: string, public pair: TokenPair) {
     super();
   }
 
-  getPairAddress(pair: TokenPair): string {
-    const priceFeedData: IPriceFeedData = this.PRICE_FEED_DATA.find((data) => data.pair === pair) as IPriceFeedData;
-    return priceFeedData.address;
+  getPairAddress(): string | null {
+    const addressList: IPriceFeedPair[] = this.PRICE_FEED_DATA[this.chainId];
+
+    if (!addressList) {
+      return null;
+    }
+
+    const addressObj = addressList.find((a: IPriceFeedPair) => a.pair === this.pair);
+
+    if (!addressObj) {
+      return null;
+    }
+
+    return addressObj.address;
   }
 
-  priceIsAvailable(pair: TokenPair): boolean {
+  priceIsAvailable(): boolean {
     const { contracts } = environment.contracts.priceFeed;
-    return contracts.some((c) => this.chainId === c.chainId && this.PRICE_FEED_DATA.some((d) => d.pair === pair));
+
+    const existsInData = !!this.PRICE_FEED_DATA[this.chainId];
+    const existsInContracts = contracts.some((c) => c.chainId === this.chainId);
+
+    if (existsInData && existsInContracts) {
+      return this.PRICE_FEED_DATA[this.chainId].some((d) => d.pair === this.pair);
+    }
+
+    return false;
   }
 
   getAddress(): string {
@@ -83,6 +104,10 @@ export class PriceFeedContract extends BaseContract {
 }
 
 interface IPriceFeedData {
+  [chainId: string]: IPriceFeedPair[];
+}
+
+interface IPriceFeedPair {
   pair: TokenPair;
   address: string;
 }
