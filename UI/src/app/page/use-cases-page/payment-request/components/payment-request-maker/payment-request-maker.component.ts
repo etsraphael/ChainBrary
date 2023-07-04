@@ -52,6 +52,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.setUpForm();
     this.listenToAddressChange();
     this.listenToAmountChange();
+    this.setUpPriceCurrentPrice(null);
+  }
+
+  async setUpPriceCurrentPrice(amount: number | null): Promise<number> {
+    return this.priceFeedService
+      .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
+      .then((result: number) => {
+        if (amount === null) {
+          return (this.priceInUsd = result);
+        } else {
+          return (this.priceInUsd = result * (amount as number));
+        }
+      })
+      .catch(() => (this.priceInUsd = 0));
   }
 
   setUpForm(): void {
@@ -76,12 +90,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         debounceTime(1000),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number | null) => {
-        this.priceFeedService
-          .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
-          .then((result: number) => (this.priceInUsd = result * (amount as number)))
-          .catch(() => (this.priceInUsd = 0));
-      });
+      .subscribe((amount: number | null) => this.setUpPriceCurrentPrice(amount));
   }
 
   listenToAddressChange(): void {
