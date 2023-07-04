@@ -76,14 +76,23 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe((amount: number | null) => {
-        this.priceFeedService
-          .getCurrentPrice(TokenPair.EthToUsd, this.currentNetwork?.chainId as string)
-          .then((result: number) => {
-            console.log('price : ' + result * (amount as number));
-          })
-          .catch((err: string) => {
-            console.log(err);
-          });
+        // First option
+        // this.priceFeedService
+        //   .getCurrentPrice(TokenPair.EthToUsd, this.currentNetwork?.chainId as string)
+        //   .then((result: number) => {
+        //     console.log('price : ' + result * (amount as number));
+        //   })
+        //   .catch((err: string) => {
+        //     console.log(err);
+        //   });
+
+        // second option
+        // this.priceFeedService.getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string).then((result: number) => {
+        //   console.log('price : ' + result * (amount as number));
+        // }).catch((err: string) => {
+        //   console.log(err);
+        // });
+
       });
   }
 

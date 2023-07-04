@@ -26,4 +26,17 @@ export class PriceFeedService {
         return convertedNum.toFixed(2);
       });
   }
+
+  getCurrentPriceOfNativeToken(chainId: string): Promise<number> {
+    let pair: TokenPair;
+    switch (chainId) {
+      case '11155111':
+        pair = TokenPair.EthToUsd;
+        break;
+      default:
+        return Promise.reject('Pair not found');
+    }
+
+    return this.getCurrentPrice(pair, chainId);
+  }
 }
