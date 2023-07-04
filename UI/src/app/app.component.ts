@@ -14,9 +14,7 @@ declare global {
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private analyticsService: AnalyticsService
-  ) {}
+  constructor(private analyticsService: AnalyticsService) {}
 
   ngOnInit(): void {
     this.analyticsService.initializeGoogleAnalytics();
