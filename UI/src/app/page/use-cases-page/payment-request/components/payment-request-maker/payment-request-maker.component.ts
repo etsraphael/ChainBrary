@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, debounceTime, filter, of, take, takeUntil } from 'rxjs';
-import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
+import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
@@ -32,6 +32,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
+  priceInUsd: number;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -76,23 +77,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe((amount: number | null) => {
-        // First option
-        // this.priceFeedService
-        //   .getCurrentPrice(TokenPair.EthToUsd, this.currentNetwork?.chainId as string)
-        //   .then((result: number) => {
-        //     console.log('price : ' + result * (amount as number));
-        //   })
-        //   .catch((err: string) => {
-        //     console.log(err);
-        //   });
-
-        // second option
-        // this.priceFeedService.getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string).then((result: number) => {
-        //   console.log('price : ' + result * (amount as number));
-        // }).catch((err: string) => {
-        //   console.log(err);
-        // });
-
+        this.priceFeedService
+          .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
+          .then((result: number) => (this.priceInUsd = result * (amount as number)))
+          .catch(() => (this.priceInUsd = 0));
       });
   }
 
