@@ -10,10 +10,14 @@ import { TokenPair } from '../../enum';
 export class PriceFeedService {
   constructor() {}
 
-  getCurrentPrice(pair: TokenPair, chainId: string) {
+  async getCurrentPrice(pair: TokenPair, chainId: string): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new PriceFeedContract(chainId, pair);
-    const isAvailable = transactionContract.priceIsAvailable();
+
+    if (!transactionContract.getPairAddress()) {
+      return Promise.reject('Pair not found');
+    }
+
     const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
     return contract.methods

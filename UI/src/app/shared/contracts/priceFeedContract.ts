@@ -22,33 +22,16 @@ export class PriceFeedContract extends BaseContract {
     super();
   }
 
-  getPairAddress(): string | null {
+  getPairAddress(): string | void {
     const addressList: IPriceFeedPair[] = this.PRICE_FEED_DATA[this.chainId];
 
-    if (!addressList) {
-      return null;
-    }
+    if (!addressList) return;
 
     const addressObj = addressList.find((a: IPriceFeedPair) => a.pair === this.pair);
 
-    if (!addressObj) {
-      return null;
-    }
+    if (!addressObj) return;
 
     return addressObj.address;
-  }
-
-  priceIsAvailable(): boolean {
-    const { contracts } = environment.contracts.priceFeed;
-
-    const existsInData = !!this.PRICE_FEED_DATA[this.chainId];
-    const existsInContracts = contracts.some((c) => c.chainId === this.chainId);
-
-    if (existsInData && existsInContracts) {
-      return this.PRICE_FEED_DATA[this.chainId].some((d) => d.pair === this.pair);
-    }
-
-    return false;
   }
 
   getAddress(): string {

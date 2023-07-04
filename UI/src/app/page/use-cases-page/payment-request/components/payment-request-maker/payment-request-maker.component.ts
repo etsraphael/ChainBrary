@@ -10,9 +10,10 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, of, take, takeUntil } from 'rxjs';
-import { AuthStatusCode } from './../../../../../shared/enum';
+import { Observable, ReplaySubject, debounceTime, filter, of, take, takeUntil } from 'rxjs';
+import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
+import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 
 @Component({
@@ -32,7 +33,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(private snackbar: MatSnackBar, private walletService: WalletService) {}
+  constructor(
+    private snackbar: MatSnackBar,
+    private walletService: WalletService,
+    private priceFeedService: PriceFeedService
+  ) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -45,6 +50,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setUpForm();
     this.listenToAddressChange();
+    this.listenToAmountChange();
   }
 
   setUpForm(): void {
@@ -59,6 +65,26 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
+  }
+
+  listenToAmountChange(): void {
+    this.priceForm
+      .get('amount')
+      ?.valueChanges.pipe(
+        filter((amount: number | null) => amount !== null && amount > 0 && this.currentNetwork?.chainId !== null),
+        debounceTime(1000),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((amount: number | null) => {
+        this.priceFeedService
+          .getCurrentPrice(TokenPair.EthToUsd, this.currentNetwork?.chainId as string)
+          .then((result: number) => {
+            console.log('price : ' + result * (amount as number));
+          })
+          .catch((err: string) => {
+            console.log(err);
+          });
+      });
   }
 
   listenToAddressChange(): void {
