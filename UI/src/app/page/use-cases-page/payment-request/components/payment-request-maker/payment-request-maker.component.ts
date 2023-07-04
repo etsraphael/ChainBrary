@@ -33,6 +33,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   linkGenerated: string;
   isAvatarUrlValid: boolean;
   priceInUsd: number;
+  priceInUsdEnabled = false;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -195,6 +196,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   getAvatarValue(): string | null {
     const { avatarUrl } = this.getProfileControls();
     return avatarUrl.value;
+  }
+
+  swapCurrency(): void {
+    this.priceInUsdEnabled = !this.priceInUsdEnabled;
   }
 
   ngOnDestroy(): void {

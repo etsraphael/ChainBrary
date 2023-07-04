@@ -11,6 +11,8 @@ export class PaymentRequestPriceSettingsComponent {
   @Input() priceForm: FormGroup<PriceSettingsForm>;
   @Input() networkSymbol: string | null;
   @Input() priceInUsd: number | null;
+  @Input() priceInUsdEnabled = false;
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
+  @Output() swapCurrency = new EventEmitter<void>();
 }

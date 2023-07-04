@@ -6,11 +6,13 @@
           <mat-label> Amount</mat-label>
           <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
           <div matSuffix>
-            <h6 class="mb-0 pe-3">{{ networkSymbol }}</h6>
+            <h6 *ngIf="!priceInUsdEnabled" class="mb-0 pe-3">{{ networkSymbol }}</h6>
+            <h6 *ngIf="priceInUsdEnabled" class="mb-0 pe-3">$USD</h6>
           </div>
-          <mat-hint *ngIf="priceInUsd && priceInUsd > 0"
-            >${{ priceInUsd }}<i class="bi bi-arrow-left-right px-2"></i
-          ></mat-hint>
+          <mat-hint *ngIf="priceInUsd && priceInUsd > 0">
+            ${{ priceInUsd }}
+            <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
+          </mat-hint>
         </mat-form-field>
       </p>
     </div>

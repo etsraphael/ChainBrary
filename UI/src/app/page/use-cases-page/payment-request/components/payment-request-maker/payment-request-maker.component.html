@@ -19,11 +19,13 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <app-payment-request-price-settings
+        [priceInUsdEnabled]="priceInUsdEnabled"
         [priceInUsd]="priceInUsd"
         [priceForm]="priceForm"
         [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"
+        (swapCurrency)="swapCurrency()"
       ></app-payment-request-price-settings>
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
