@@ -13,7 +13,7 @@
             ${{ usdConversionRate }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
-          <mat-hint *ngIf="priceForm.get('usdEnabled')?.value">
+          <mat-hint *ngIf="priceForm.get('usdEnabled')?.value && tokenConversionRate && tokenConversionRate > 0">
             {{ tokenConversionRate }} {{ networkSymbol }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>

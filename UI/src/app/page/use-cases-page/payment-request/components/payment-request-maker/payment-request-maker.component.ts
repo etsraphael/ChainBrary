@@ -49,6 +49,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.mainForm.get('profile') as FormGroup<ProfileForm>;
   }
 
+  get amount(): number {
+    if (this.priceForm?.get('usdEnabled')?.value as boolean) return this.tokenConversionRate;
+    else return this.priceForm.get('amount')?.value as number;
+  }
+
   ngOnInit(): void {
     this.setUpForm();
     this.listenToAddressChange();

@@ -32,7 +32,7 @@
       <app-payment-request-review
         [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
         [username]="mainForm.controls.profile.controls.username.value!"
-        [amount]="mainForm.controls.price.controls.amount.value!"
+        [amount]="amount"
         [previewLink]="linkGenerated"
         (goToPreviousPageEvent)="goToPreviousPage()"
       >
