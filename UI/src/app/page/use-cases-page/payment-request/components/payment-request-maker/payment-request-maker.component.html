@@ -19,7 +19,8 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <app-payment-request-price-settings
-        [usdAmount]="usdAmount"
+        [usdConversionRate]="usdConversionRate"
+        [tokenConversionRate]="tokenConversionRate"
         [priceForm]="priceForm"
         [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
         (goToNextPage)="goToNextPage()"

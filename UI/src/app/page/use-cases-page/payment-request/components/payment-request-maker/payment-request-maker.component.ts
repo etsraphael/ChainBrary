@@ -32,7 +32,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
-  usdAmount = 0;
+  usdConversionRate = 0;
+  tokenConversionRate = 0;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -59,13 +60,14 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.priceFeedService
       .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
       .then((result: number) => {
-        if (amount === null) {
-          return (this.usdAmount = result);
+        if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
+          if (amount === null) return (this.usdConversionRate = result);
+          else return (this.usdConversionRate = result * (amount as number));
         } else {
-          return (this.usdAmount = result * (amount as number));
+          return (this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / result);
         }
       })
-      .catch(() => (this.usdAmount = 0));
+      .catch(() => (this.usdConversionRate = 0));
   }
 
   setUpForm(): void {
@@ -92,9 +94,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe((amount: number | null) => {
-        if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
-          this.setUpPriceCurrentPrice(amount);
-        }
+        this.setUpPriceCurrentPrice(amount);
       });
   }
 
@@ -203,16 +203,21 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   swapCurrency(): void {
-    if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
-      (this.mainForm.get('price') as FormGroup).patchValue({
-        amount: this.usdAmount,
+    if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
+      this.priceForm.patchValue({
+        amount: this.usdConversionRate,
         usdEnabled: true
       });
     } else {
-      (this.mainForm.get('price') as FormGroup).patchValue({
-        amount: 0,
-        usdEnabled: false
-      });
+      this.priceFeedService
+        .getCurrentPriceOfNativeToken('11155111')
+        .then((result: number) => {
+          this.priceForm.patchValue({
+            amount: (this.priceForm.get('amount')?.value as number) / result,
+            usdEnabled: false
+          });
+        })
+        .catch(() => (this.usdConversionRate = 0));
     }
   }
 

@@ -9,12 +9,12 @@
             <h6 *ngIf="!priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">{{ networkSymbol }}</h6>
             <h6 *ngIf="priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">$USD</h6>
           </div>
-          <mat-hint *ngIf="!priceForm.get('usdEnabled')?.value && usdAmount && usdAmount > 0">
-            ${{ usdAmount }}
+          <mat-hint *ngIf="!priceForm.get('usdEnabled')?.value && usdConversionRate && usdConversionRate > 0">
+            ${{ usdConversionRate }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
           <mat-hint *ngIf="priceForm.get('usdEnabled')?.value">
-            {{ usdConversionRate }} {{ networkSymbol }}
+            {{ tokenConversionRate }} {{ networkSymbol }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
         </mat-form-field>
