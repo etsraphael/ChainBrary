@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-9 col-md-11 col-lg-9">
-      <p class="px-2 text-dark">
+      <p *ngIf="usdEnabled" class="px-2 text-dark">
         The transaction price, fixed in USD, may equate to a varying number of tokens upon execution.
       </p>
       <table class="table text-dark">

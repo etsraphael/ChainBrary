@@ -4,7 +4,7 @@ import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material
 import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
 
 @Component({
-  selector: 'app-payment-request-review[username][amount][previewLink][networkSymbol]',
+  selector: 'app-payment-request-review[username][amount][previewLink][networkSymbol][usdEnabled]',
   templateUrl: './payment-request-review.component.html',
   styleUrls: ['./payment-request-review.component.scss']
 })
@@ -13,6 +13,7 @@ export class PaymentRequestReviewComponent {
   @Input() amount: number;
   @Input() previewLink: string;
   @Input() networkSymbol: string | null;
+  @Input() usdEnabled: boolean;
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
   protocolFee = 0.001;
 
