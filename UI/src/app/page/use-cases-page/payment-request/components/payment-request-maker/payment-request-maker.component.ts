@@ -32,8 +32,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
-  priceInUsd: number;
-  priceInUsdEnabled = false;
+  usdAmount = 0;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -61,19 +60,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
       .then((result: number) => {
         if (amount === null) {
-          return (this.priceInUsd = result);
+          return (this.usdAmount = result);
         } else {
-          return (this.priceInUsd = result * (amount as number));
+          return (this.usdAmount = result * (amount as number));
         }
       })
-      .catch(() => (this.priceInUsd = 0));
+      .catch(() => (this.usdAmount = 0));
   }
 
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
         description: new FormControl('', []),
-        amount: new FormControl(1, [Validators.required, Validators.min(0)])
+        amount: new FormControl(1, [Validators.required, Validators.min(0)]),
+        usdEnabled: new FormControl(false, []),
       }),
       profile: new FormGroup({
         publicAddress: new FormControl('', [Validators.required]),
@@ -91,7 +91,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         debounceTime(1000),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number | null) => this.setUpPriceCurrentPrice(amount));
+      .subscribe((amount: number | null) => {
+        if(!this.mainForm.get('price')?.get('usdEnabled')?.value!) {
+          this.setUpPriceCurrentPrice(amount);
+        }
+      });
   }
 
   listenToAddressChange(): void {
@@ -199,7 +203,21 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   swapCurrency(): void {
-    this.priceInUsdEnabled = !this.priceInUsdEnabled;
+    if(!this.mainForm.get('price')?.get('usdEnabled')?.value!){
+      (this.mainForm.get('price') as FormGroup).patchValue({
+        amount: this.usdAmount,
+        usdEnabled: true
+      });
+    } else {
+
+
+
+
+      (this.mainForm.get('price') as FormGroup).patchValue({
+        amount: 0,
+        usdEnabled: false
+      });
+    }
   }
 
   ngOnDestroy(): void {
