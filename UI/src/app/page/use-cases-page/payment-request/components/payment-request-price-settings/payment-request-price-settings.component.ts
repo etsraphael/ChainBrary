@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
+import { debounceTime, filter } from 'rxjs';
 import { PriceSettingsForm } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
-import { debounceTime, filter, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-payment-request-price-settings[priceForm][networkSymbol]',
@@ -16,15 +16,12 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
   @Output() swapCurrency = new EventEmitter<void>();
-  usdConversionRate: number
+  usdConversionRate: number;
 
-
-  constructor(
-    private priceFeedService: PriceFeedService
-  ) {}
+  constructor(private priceFeedService: PriceFeedService) {}
 
   ngOnInit(): void {
-    this.listenToAmountChange()
+    this.listenToAmountChange();
   }
 
   listenToAmountChange(): void {
@@ -35,12 +32,11 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
         debounceTime(1000)
       )
       .subscribe((amount: number | null) => {
-        if(this.priceForm.get('usdEnabled')?.value!) {
+        if (this.priceForm.get('usdEnabled')?.value as boolean) {
           this.setUpPriceCurrentPrice(amount);
         }
       });
   }
-
 
   async setUpPriceCurrentPrice(amount: number | null): Promise<number> {
     return this.priceFeedService
@@ -49,10 +45,9 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
         if (amount === null) {
           return (this.usdConversionRate = result);
         } else {
-          return (this.usdConversionRate = this.priceForm.get('amount')?.value! / result);
+          return (this.usdConversionRate = (this.priceForm.get('amount')?.value as number) / result);
         }
       })
       .catch(() => (this.usdConversionRate = 0));
   }
-
 }

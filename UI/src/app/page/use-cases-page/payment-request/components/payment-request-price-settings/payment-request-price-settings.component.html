@@ -14,7 +14,7 @@
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
           <mat-hint *ngIf="priceForm.get('usdEnabled')?.value">
-            {{usdConversionRate}} {{ networkSymbol }}
+            {{ usdConversionRate }} {{ networkSymbol }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
         </mat-form-field>
@@ -26,8 +26,15 @@
     <div class="col-10 col-lg-7">
       <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
         <mat-label> Description </mat-label>
-        <textarea formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-          matInput placeholder="Description" maxlength="150"></textarea>
+        <textarea
+          formControlName="description"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          matInput
+          placeholder="Description"
+          maxlength="150"
+        ></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -36,12 +43,18 @@
   <div class="col-10 col-lg-7">
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <app-chainbrary-button [buttonClasses]="['btn-secondary-gradient', 'text-white']" [buttonText]="'Back'"
-          (callToAction)="goToPreviousPage.emit()" />
+        <app-chainbrary-button
+          [buttonClasses]="['btn-secondary-gradient', 'text-white']"
+          [buttonText]="'Back'"
+          (callToAction)="goToPreviousPage.emit()"
+        />
       </div>
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-white']" [buttonText]="'Next'"
-          (callToAction)="goToNextPage.emit()" />
+        <app-chainbrary-button
+          [buttonClasses]="['btn-info-gradient', 'text-white']"
+          [buttonText]="'Next'"
+          (callToAction)="goToNextPage.emit()"
+        />
       </div>
     </div>
   </div>

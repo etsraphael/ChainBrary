@@ -73,7 +73,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       price: new FormGroup({
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)]),
-        usdEnabled: new FormControl(false, []),
+        usdEnabled: new FormControl(false, [])
       }),
       profile: new FormGroup({
         publicAddress: new FormControl('', [Validators.required]),
@@ -92,7 +92,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe((amount: number | null) => {
-        if(!this.mainForm.get('price')?.get('usdEnabled')?.value!) {
+        if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
           this.setUpPriceCurrentPrice(amount);
         }
       });
@@ -203,16 +203,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   swapCurrency(): void {
-    if(!this.mainForm.get('price')?.get('usdEnabled')?.value!){
+    if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
       (this.mainForm.get('price') as FormGroup).patchValue({
         amount: this.usdAmount,
         usdEnabled: true
       });
     } else {
-
-
-
-
       (this.mainForm.get('price') as FormGroup).patchValue({
         amount: 0,
         usdEnabled: false
