@@ -34,6 +34,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   isAvatarUrlValid: boolean;
   usdConversionRate = 0;
   tokenConversionRate = 0;
+  usdAmount: number | null;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -61,18 +62,24 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.setUpPriceCurrentPrice(null);
   }
 
-  async setUpPriceCurrentPrice(amount: number | null): Promise<number> {
-    return this.priceFeedService
+  async setUpPriceCurrentPrice(amount: number | null): Promise<void> {
+    this.priceFeedService
       .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
       .then((result: number) => {
         if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
-          if (amount === null) return (this.usdConversionRate = result);
-          else return (this.usdConversionRate = result * (amount as number));
+          if (amount === null) {
+            this.usdConversionRate = result;
+            this.usdAmount = this.usdConversionRate;
+          } else {
+            this.usdConversionRate = result * (amount as number);
+          }
         } else {
-          return (this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / result);
+          this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / result;
         }
       })
-      .catch(() => (this.usdConversionRate = 0));
+      .catch(() => {
+        this.usdConversionRate = 0;
+      });
   }
 
   setUpForm(): void {
@@ -100,6 +107,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       )
       .subscribe((amount: number | null) => {
         this.setUpPriceCurrentPrice(amount);
+        if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
+          this.usdAmount = amount as number;
+        } else {
+          this.usdAmount = null;
+        }
       });
   }
 

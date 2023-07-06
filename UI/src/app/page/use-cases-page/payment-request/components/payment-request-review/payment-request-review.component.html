@@ -2,26 +2,38 @@
   <div class="row justify-content-center">
     <div class="col-9 col-md-11 col-lg-9">
       <p *ngIf="usdEnabled" class="px-2 text-dark">
-        The transaction price, fixed in USD, may equate to a varying number of tokens upon execution.
+        You're requesting <strong>$USD {{ usdAmount }}</strong
+        >. Rest assured, the transaction will be initiated to precisely match this amount, irrespective of any token
+        volatility.
       </p>
       <table class="table text-dark">
         <tbody>
           <tr>
-            <td>Account</td>
+            <td class="align-middle">Account</td>
             <td>{{ username }}</td>
           </tr>
           <tr>
-            <td>Payment</td>
-            <td>{{ amount }} {{ networkSymbol }}</td>
-          </tr>
-          <tr>
-            <td>Protocol Fee (0.1%)</td>
-            <td>{{ protocolFeeAmount }} {{ networkSymbol }}</td>
-          </tr>
-          <tr>
-            <td><strong>Receiving Amount</strong></td>
+            <td class="align-middle">Payment</td>
             <td>
-              <strong>{{ receivingAmount }} {{ networkSymbol }}</strong>
+              {{ amount }} {{ networkSymbol }} <br />
+              <span class="convertion-rate text-secondary">($USD {{ usdAmount }})</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle">Protocol Fee (0.1%)</td>
+            <td>
+              {{ protocolFeeAmount }} {{ networkSymbol }} <br />
+              <span class="convertion-rate text-secondary">($USD {{ usdProtocolFeeAmount }})</span>
+            </td>
+          </tr>
+          <tr>
+            <td class="align-middle"><strong>Receiving Amount</strong></td>
+            <td>
+              <strong>
+                {{ receivingAmount }} {{ networkSymbol }}
+                <br />
+                <span class="convertion-rate text-secondary">(USD$ {{ usdReceivingAmount }})</span>
+              </strong>
             </td>
           </tr>
         </tbody>

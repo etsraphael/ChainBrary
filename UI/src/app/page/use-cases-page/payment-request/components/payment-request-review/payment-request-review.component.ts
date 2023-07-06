@@ -11,6 +11,8 @@ import { QrCodeContainerModalComponent } from './../../../../../shared/component
 export class PaymentRequestReviewComponent {
   @Input() username: string;
   @Input() amount: number;
+  @Input() usdAmount: number | null;
+  @Input() tokenConversionRate: number | null;
   @Input() previewLink: string;
   @Input() networkSymbol: string | null;
   @Input() usdEnabled: boolean;
@@ -20,11 +22,19 @@ export class PaymentRequestReviewComponent {
   constructor(private snackbar: MatSnackBar, public dialog: MatDialog) {}
 
   get receivingAmount(): number {
-    return this.amount - this.protocolFee;
+    return this.amount - this.protocolFeeAmount;
   }
 
   get protocolFeeAmount(): number {
     return this.amount * this.protocolFee;
+  }
+
+  get usdReceivingAmount(): number {
+    return this.usdAmount ? Number((this.usdAmount - this.usdProtocolFeeAmount).toFixed(2)) : 0;
+  }
+
+  get usdProtocolFeeAmount(): number {
+    return this.usdAmount ? Number((this.usdAmount * this.protocolFee).toFixed(2)) : 0;
   }
 
   goToPaymentPage(): Window | null {
