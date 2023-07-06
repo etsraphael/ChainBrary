@@ -22,7 +22,7 @@
         [usdConversionRate]="usdConversionRate"
         [tokenConversionRate]="tokenConversionRate"
         [priceForm]="priceForm"
-        [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
+        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"
         (swapCurrency)="swapCurrency()"
@@ -30,7 +30,7 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <app-payment-request-review
-        [networkSymbol]="(currentNetwork?.nativeCurrency)!.symbol"
+        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
         [username]="mainForm.controls.profile.controls.username.value!"
         [amount]="amount"
         [previewLink]="linkGenerated"

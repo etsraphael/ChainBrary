@@ -10,20 +10,31 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, debounceTime, filter, of, take, takeUntil } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  debounceTime,
+  filter,
+  map,
+  of,
+  startWith,
+  switchMap,
+  take,
+  takeUntil
+} from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 
 @Component({
-  selector: 'app-payment-request-maker[publicAddressObs][currentNetwork]',
+  selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
   templateUrl: './payment-request-maker.component.html',
   styleUrls: ['./payment-request-maker.component.scss']
 })
 export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
-  @Input() currentNetwork: INetworkDetail | null;
+  @Input() currentNetworkObs: Observable<INetworkDetail | null>;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -71,12 +82,17 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.setUpForm();
     this.listenToAddressChange();
     this.listenToAmountChange();
-    this.setUpPriceCurrentPrice(null);
+
+    this.currentNetworkObs
+      .pipe(filter((network: INetworkDetail | null) => network !== null))
+      .subscribe((network: INetworkDetail | null) => {
+        this.setUpPriceCurrentPrice(1, network?.chainId as string);
+      });
   }
 
-  async setUpPriceCurrentPrice(amount: number | null): Promise<void> {
+  async setUpPriceCurrentPrice(amount: number | null, chainId: string): Promise<void> {
     return this.priceFeedService
-      .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
+      .getCurrentPriceOfNativeToken(chainId)
       .then((result: number) => {
         if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
           if (amount === null) {
@@ -113,12 +129,24 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.priceForm
       .get('amount')
       ?.valueChanges.pipe(
-        filter((amount: number | null) => amount !== null && amount > 0 && this.currentNetwork?.chainId !== null),
+        startWith(this.priceForm.get('amount')?.value || 0),
         debounceTime(1000),
+        filter((amount: number | null) => amount !== null && amount > 0),
+        switchMap((amount: number | null) => {
+          return this.currentNetworkObs.pipe(
+            take(1),
+            filter(
+              (currentNetwork: INetworkDetail | null) => currentNetwork !== null && currentNetwork?.chainId !== null
+            ),
+            map((currentNetwork: INetworkDetail | null) => {
+              return { amount: amount, currentNetwork: currentNetwork };
+            })
+          );
+        }),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number | null) => {
-        this.setUpPriceCurrentPrice(amount);
+      .subscribe(({ amount, currentNetwork }) => {
+        this.setUpPriceCurrentPrice(amount, currentNetwork?.chainId as string);
         if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
           this.usdAmount = amount as number;
         } else {
@@ -175,7 +203,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     const { amount, description } = this.priceControls;
 
     const paymentRequest: IPaymentRequest = {
-      chainId: this.currentNetwork?.chainId as string,
+      chainId: '11155111',
       tokenId: '0',
       username: username.value as string,
       publicAddress: publicAddress.value as string,
