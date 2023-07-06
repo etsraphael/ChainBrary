@@ -1,7 +1,7 @@
 <form class="container" [formGroup]="priceForm">
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
-      <p>
+      <p [ngClass]="{ 'mb-0': !usdConversionRate }">
         <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
           <mat-label> Amount</mat-label>
           <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />

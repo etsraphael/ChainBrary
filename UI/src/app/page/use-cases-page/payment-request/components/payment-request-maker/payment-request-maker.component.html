@@ -4,7 +4,7 @@
     <div class="card-header-custom position-absolute w-100">
       <div class="row justify-content-center">
         <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
-          <app-user-avatar [avatarUrl]="isAvatarUrlValid ? getAvatarValue() : null"></app-user-avatar>
+          <app-user-avatar [avatarUrl]="isAvatarUrlValid ? avatarValue : null"></app-user-avatar>
         </div>
       </div>
     </div>
@@ -35,9 +35,9 @@
         [amount]="amount"
         [previewLink]="linkGenerated"
         [usdAmount]="usdAmount"
+        [usdEnabled]="priceForm.controls.usdEnabled.value!"
         [tokenConversionRate]="tokenConversionRate"
         (goToPreviousPageEvent)="goToPreviousPage()"
-        [usdEnabled]="priceForm.controls.usdEnabled.value!"
       >
       </app-payment-request-review>
     </div>

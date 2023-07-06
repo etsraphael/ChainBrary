@@ -55,6 +55,18 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     else return this.priceForm.get('amount')?.value as number;
   }
 
+  get avatarValue(): string | null {
+    return this.profileControls.avatarUrl.value;
+  }
+
+  get profileControls(): ProfileForm {
+    return this.mainForm.controls.profile.controls;
+  }
+
+  get priceControls(): PriceSettingsForm {
+    return this.mainForm.controls.price.controls;
+  }
+
   ngOnInit(): void {
     this.setUpForm();
     this.listenToAddressChange();
@@ -63,16 +75,16 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   async setUpPriceCurrentPrice(amount: number | null): Promise<void> {
-    this.priceFeedService
+    return this.priceFeedService
       .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
       .then((result: number) => {
         if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
           if (amount === null) {
             this.usdConversionRate = result;
-            this.usdAmount = this.usdConversionRate;
           } else {
             this.usdConversionRate = result * (amount as number);
           }
+          this.usdAmount = this.usdConversionRate;
         } else {
           this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / result;
         }
@@ -134,7 +146,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     }
 
     if (this.page === PaymentMakePage.settingPrice) {
-      const { amount } = this.getPriceControls();
+      const { amount } = this.priceControls;
       if ((amount.value as number) <= 0) {
         this.snackbar.open('Amount must be greater than 0', 'Close', { duration: 3000 });
         return;
@@ -159,8 +171,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   generatePaymentRequest(): void {
-    const { username, publicAddress, avatarUrl } = this.getProfileControls();
-    const { amount, description } = this.getPriceControls();
+    const { username, publicAddress, avatarUrl } = this.profileControls;
+    const { amount, description } = this.priceControls;
 
     const paymentRequest: IPaymentRequest = {
       chainId: this.currentNetwork?.chainId as string,
@@ -204,19 +216,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         };
       });
     };
-  }
-
-  getProfileControls(): ProfileForm {
-    return this.mainForm.controls.profile.controls;
-  }
-
-  getPriceControls(): PriceSettingsForm {
-    return this.mainForm.controls.price.controls;
-  }
-
-  getAvatarValue(): string | null {
-    const { avatarUrl } = this.getProfileControls();
-    return avatarUrl.value;
   }
 
   swapCurrency(): void {
