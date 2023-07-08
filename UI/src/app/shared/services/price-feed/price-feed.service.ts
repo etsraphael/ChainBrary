@@ -8,7 +8,6 @@ import { TokenPair } from '../../enum';
   providedIn: 'root'
 })
 export class PriceFeedService {
-
   async getCurrentPrice(pair: TokenPair, chainId: string): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new PriceFeedContract(chainId, pair);

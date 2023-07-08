@@ -11,3 +11,9 @@ export interface IContract {
   chainId: string;
   address: string;
 }
+
+export interface INativeToken {
+  decimals: number;
+  name: string;
+  symbol: string;
+}

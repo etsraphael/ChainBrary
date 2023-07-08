@@ -8,6 +8,7 @@ export interface IPaymentRequest {
   amount: number;
   description: string | null;
   avatarUrl: string;
+  usdEnabled: boolean;
 }
 
 export interface PriceSettingsForm {

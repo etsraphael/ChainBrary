@@ -45,6 +45,19 @@
       </div>
       <ng-template #paymentRequestCard>
         <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-2">
+          <div
+            *ngIf="(selectPaymentRequestState$ | async)?.payment?.data?.usdEnabled && tokenInfo"
+            class="card shadow-sm border-0 mt-2"
+          >
+            <div class="card-body">
+              <p class="text-dark mb-0 px-2">
+                The present request calls for a sum equivalent to
+                <strong>{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>. To ensure
+                accuracy, the transaction will be precisely calibrated to match this amount in {{ tokenInfo }} prior to
+                processing the payment.
+              </p>
+            </div>
+          </div>
           <app-payment-request-card
             [currentNetwork]="currentNetwork$ | async"
             [paymentNetwork]="paymentNetwork$ | async"

@@ -10,18 +10,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import {
-  Observable,
-  ReplaySubject,
-  debounceTime,
-  filter,
-  map,
-  of,
-  startWith,
-  switchMap,
-  take,
-  takeUntil
-} from 'rxjs';
+import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
@@ -200,25 +189,27 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   generatePaymentRequest(): void {
     const { username, publicAddress, avatarUrl } = this.profileControls;
-    const { amount, description } = this.priceControls;
+    const { amount, description, usdEnabled } = this.priceControls;
 
-    const paymentRequest: IPaymentRequest = {
-      chainId: '11155111',
-      tokenId: '0',
-      username: username.value as string,
-      publicAddress: publicAddress.value as string,
-      amount: amount.value as number,
-      description: description.value as string,
-      avatarUrl: avatarUrl.value as string
-    };
-    const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
-      .toString('base64')
-      .replace('+', '-')
-      .replace('/', '_');
-    const url: URL = new URL(window.location.href);
-    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-    return;
+    this.currentNetworkObs.pipe(take(1)).subscribe((network: INetworkDetail | null) => {
+      const paymentRequest: IPaymentRequest = {
+        chainId: network?.chainId as string,
+        tokenId: '0',
+        username: username.value as string,
+        publicAddress: publicAddress.value as string,
+        amount: amount.value as number,
+        description: description.value as string,
+        avatarUrl: avatarUrl.value as string,
+        usdEnabled: usdEnabled.value as boolean
+      };
+      const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
+        .toString('base64')
+        .replace('+', '-')
+        .replace('/', '_');
+      const url: URL = new URL(window.location.href);
+      const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
+      this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
+    });
   }
 
   urlValidator(): AsyncValidatorFn {
