@@ -1,13 +1,24 @@
 <form class="container" [formGroup]="priceForm">
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
-        <mat-label> Amount</mat-label>
-        <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
-        <div matSuffix>
-          <h6 class="mb-0 pe-3">{{ networkSymbol }}</h6>
-        </div>
-      </mat-form-field>
+      <p [ngClass]="{ 'mb-0': !usdConversionRate }">
+        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+          <mat-label> Amount</mat-label>
+          <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
+          <div matSuffix>
+            <h6 *ngIf="!priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">{{ networkSymbol }}</h6>
+            <h6 *ngIf="priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">$USD</h6>
+          </div>
+          <mat-hint *ngIf="!priceForm.get('usdEnabled')?.value && usdConversionRate && usdConversionRate > 0">
+            ${{ usdConversionRate }}
+            <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
+          </mat-hint>
+          <mat-hint *ngIf="priceForm.get('usdEnabled')?.value && tokenConversionRate && tokenConversionRate > 0">
+            {{ tokenConversionRate }} {{ networkSymbol }}
+            <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
+          </mat-hint>
+        </mat-form-field>
+      </p>
     </div>
   </div>
   <!-- Add a description textarea here -->

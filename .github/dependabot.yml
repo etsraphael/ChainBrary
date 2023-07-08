@@ -6,7 +6,7 @@ updates:
     directory: "/UI"
     # Check the npm registry for updates every day (weekdays)
     schedule:
-      interval: "daily"
+      interval: "weekly"
 
   # Enable version updates for npm
   - package-ecosystem: "npm"
@@ -14,4 +14,4 @@ updates:
     directory: "/SmartContracts"
     # Check for updates once a week
     schedule:
-      interval: "daily"
+      interval: "weekly"
