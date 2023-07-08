@@ -16,13 +16,21 @@ export class TransactionCardComponent implements OnInit {
   }
 
   generateScanLink(chainId: NetworkChainId): void {
-    // TODO: Add more chainId
     switch (chainId) {
       case NetworkChainId.ETHEREUM:
         this.scanLink = `https://etherscan.io/tx/${this.cardContent.hash}`;
         break;
       case NetworkChainId.SEPOLIA:
         this.scanLink = `https://sepolia.etherscan.io/tx/${this.cardContent.hash}`;
+        break;
+      case NetworkChainId.POLYGON:
+        this.scanLink = `https://polygonscan.com/tx/${this.cardContent.hash}`;
+        break;
+      case NetworkChainId.BNB:
+        this.scanLink = `https://bscscan.com/tx/${this.cardContent.hash}`;
+        break;
+      case NetworkChainId.AVALANCHE:
+        this.scanLink = `https://snowtrace.io/tx/${this.cardContent.hash}`;
         break;
     }
   }

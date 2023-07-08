@@ -71,12 +71,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.setUpForm();
     this.listenToAddressChange();
     this.listenToAmountChange();
-
-    this.currentNetworkObs
-      .pipe(filter((network: INetworkDetail | null) => network !== null))
-      .subscribe((network: INetworkDetail | null) => {
-        this.setUpPriceCurrentPrice(1, network?.chainId as NetworkChainId);
-      });
   }
 
   async setUpPriceCurrentPrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
@@ -112,6 +106,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
+    this.currentNetworkObs
+      .pipe(filter((network: INetworkDetail | null) => network !== null))
+      .subscribe((network: INetworkDetail | null) => {
+        this.setUpPriceCurrentPrice(1, network?.chainId as NetworkChainId);
+      });
   }
 
   listenToAmountChange(): void {
@@ -244,16 +243,22 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         usdEnabled: true
       });
     } else {
-      // TODO  get the current price of native token
-      this.priceFeedService
-        .getCurrentPriceOfNativeToken(NetworkChainId.SEPOLIA)
-        .then((result: number) => {
-          this.priceForm.patchValue({
-            amount: (this.priceForm.get('amount')?.value as number) / result,
-            usdEnabled: false
-          });
-        })
-        .catch(() => (this.usdConversionRate = 0));
+      this.currentNetworkObs
+        .pipe(
+          filter((network: INetworkDetail | null) => network !== null),
+          map((network: INetworkDetail | null) => network?.chainId as NetworkChainId)
+        )
+        .subscribe((chainId: NetworkChainId) => {
+          this.priceFeedService
+            .getCurrentPriceOfNativeToken(chainId)
+            .then((result: number) => {
+              this.priceForm.patchValue({
+                amount: (this.priceForm.get('amount')?.value as number) / result,
+                usdEnabled: false
+              });
+            })
+            .catch(() => (this.usdConversionRate = 0));
+        });
     }
   }
 
