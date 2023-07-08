@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Buffer } from 'buffer';
 import { Observable, catchError, filter, from, map, of, switchMap } from 'rxjs';
@@ -97,7 +97,7 @@ export class PaymentRequestEffects {
               map((receipt: IReceiptTransaction) =>
                 PaymentRequestActions.amountSent({
                   hash: receipt.transactionHash,
-                  chainId: Number(payload[2]?.chainId)
+                  chainId: payload[2]?.chainId as NetworkChainId
                 })
               ),
               catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))

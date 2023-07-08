@@ -8,7 +8,7 @@ import {
   Validators
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
@@ -75,11 +75,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.currentNetworkObs
       .pipe(filter((network: INetworkDetail | null) => network !== null))
       .subscribe((network: INetworkDetail | null) => {
-        this.setUpPriceCurrentPrice(1, network?.chainId as string);
+        this.setUpPriceCurrentPrice(1, network?.chainId as NetworkChainId);
       });
   }
 
-  async setUpPriceCurrentPrice(amount: number | null, chainId: string): Promise<void> {
+  async setUpPriceCurrentPrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
     return this.priceFeedService
       .getCurrentPriceOfNativeToken(chainId)
       .then((result: number) => {
@@ -135,7 +135,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe(({ amount, currentNetwork }) => {
-        this.setUpPriceCurrentPrice(amount, currentNetwork?.chainId as string);
+        this.setUpPriceCurrentPrice(amount, currentNetwork?.chainId as NetworkChainId);
         if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
           this.usdAmount = amount as number;
         } else {
@@ -193,7 +193,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
     this.currentNetworkObs.pipe(take(1)).subscribe((network: INetworkDetail | null) => {
       const paymentRequest: IPaymentRequest = {
-        chainId: network?.chainId as string,
+        chainId: network?.chainId as NetworkChainId,
         tokenId: '0',
         username: username.value as string,
         publicAddress: publicAddress.value as string,
@@ -244,8 +244,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         usdEnabled: true
       });
     } else {
+      // TODO  get the current price of native token
       this.priceFeedService
-        .getCurrentPriceOfNativeToken('11155111')
+        .getCurrentPriceOfNativeToken(NetworkChainId.SEPOLIA)
         .then((result: number) => {
           this.priceForm.patchValue({
             amount: (this.priceForm.get('amount')?.value as number) / result,

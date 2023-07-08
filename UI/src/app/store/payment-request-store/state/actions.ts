@@ -1,4 +1,4 @@
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { IPaymentRequest, IProfileAdded } from './../../../shared/interfaces';
 
@@ -31,7 +31,10 @@ export const sendAmount = createAction('[Payment Request] Send Amount Transactio
 
 export const sendAmountCompleted = createAction('[Payment Request] Send Amount Transactions Completed');
 
-export const amountSent = createAction('[Payment Request] Amount Sent', props<{ hash: string; chainId: number }>());
+export const amountSent = createAction(
+  '[Payment Request] Amount Sent',
+  props<{ hash: string; chainId: NetworkChainId }>()
+);
 
 export const amountSentSuccess = createAction(
   '[Payment Request] Amount Sent Success',

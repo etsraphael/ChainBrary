@@ -3,12 +3,13 @@ import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { PriceFeedContract } from '../../contracts';
 import { TokenPair } from '../../enum';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PriceFeedService {
-  async getCurrentPrice(pair: TokenPair, chainId: string): Promise<number> {
+  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new PriceFeedContract(chainId, pair);
 
@@ -27,10 +28,10 @@ export class PriceFeedService {
       });
   }
 
-  getCurrentPriceOfNativeToken(chainId: string): Promise<number> {
+  getCurrentPriceOfNativeToken(chainId: NetworkChainId): Promise<number> {
     let pair: TokenPair;
     switch (chainId) {
-      case '11155111':
+      case NetworkChainId.SEPOLIA:
         pair = TokenPair.EthToUsd;
         break;
       default:

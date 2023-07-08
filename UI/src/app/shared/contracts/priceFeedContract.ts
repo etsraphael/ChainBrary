@@ -3,10 +3,11 @@ import { environment } from '../../../environments/environment';
 import { IContract } from '../interfaces';
 import { BaseContract } from './baseContract';
 import { TokenPair } from '../enum';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 export class PriceFeedContract extends BaseContract {
   PRICE_FEED_DATA: IPriceFeedData = {
-    '11155111': [
+    [NetworkChainId.SEPOLIA]: [
       {
         pair: TokenPair.EthToUsd,
         address: '0x694AA1769357215DE4FAC081bf1f309aDC325306'
@@ -18,7 +19,7 @@ export class PriceFeedContract extends BaseContract {
     ]
   };
 
-  constructor(public chainId: string, public pair: TokenPair) {
+  constructor(public chainId: NetworkChainId, public pair: TokenPair) {
     super();
   }
 

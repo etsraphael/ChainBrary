@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ITransactionCard } from '../../interfaces';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Component({
   selector: 'app-transaction-card[cardContent]',
@@ -14,15 +15,13 @@ export class TransactionCardComponent implements OnInit {
     this.generateScanLink(this.cardContent.chainId);
   }
 
-  generateScanLink(chainId: number): void {
+  generateScanLink(chainId: NetworkChainId): void {
+    // TODO: Add more chainId
     switch (chainId) {
-      case 1:
+      case NetworkChainId.ETHEREUM:
         this.scanLink = `https://etherscan.io/tx/${this.cardContent.hash}`;
         break;
-      case 5:
-        this.scanLink = `https://goerli.etherscan.io/tx/${this.cardContent.hash}`;
-        break;
-      case 11155111:
+      case NetworkChainId.SEPOLIA:
         this.scanLink = `https://sepolia.etherscan.io/tx/${this.cardContent.hash}`;
         break;
     }

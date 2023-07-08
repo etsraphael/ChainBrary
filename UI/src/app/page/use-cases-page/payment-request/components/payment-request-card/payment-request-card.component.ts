@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { take } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
@@ -36,7 +36,7 @@ export class PaymentRequestCardComponent implements OnInit {
   setUpCurrentPrice(): void {
     if (this.paymentRequest.payment.data?.usdEnabled as boolean) {
       this.priceFeedService
-        .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as string)
+        .getCurrentPriceOfNativeToken(this.currentNetwork?.chainId as NetworkChainId)
         .then((result: number) => {
           this.tokenConversionRate = (this.paymentRequest?.payment?.data?.amount as number) / result;
         });

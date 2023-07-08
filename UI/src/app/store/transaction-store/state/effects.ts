@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NetworkChainId } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { map } from 'rxjs';
 import { amountSent } from '../../payment-request-store/state/actions';
@@ -11,7 +12,7 @@ export class TransactionEffects {
   paymentTransactionSent$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(amountSent),
-      map((action: { hash: string; chainId: number }) => {
+      map((action: { hash: string; chainId: NetworkChainId }) => {
         return localTransactionSentSuccessfully({
           card: {
             title: 'Transaction sent successfully',
