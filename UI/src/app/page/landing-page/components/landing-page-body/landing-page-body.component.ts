@@ -28,7 +28,7 @@ export class LandingPageBodyComponent {
   ];
 }
 
-interface LandingPageCard {
+export interface LandingPageCard {
   title: string;
   description: string;
   icon: string;
