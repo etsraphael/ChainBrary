@@ -51,10 +51,11 @@
           >
             <div class="card-body">
               <p class="text-dark mb-0 px-2">
-                The present request calls for a sum equivalent to
-                <strong>{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>. To ensure
-                accuracy, the transaction will be precisely calibrated to match this amount in {{ tokenInfo }} prior to
-                processing the payment.
+                <strong>{{ (selectPaymentRequestState$ | async)?.profile?.username }}</strong> is requesting a sum
+                equivalent to <strong>${{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>.
+                <br />
+                To ensure accuracy, the transaction will be precisely calculated to match this amount in
+                {{ tokenInfo }} prior to processing the payment.
               </p>
             </div>
           </div>

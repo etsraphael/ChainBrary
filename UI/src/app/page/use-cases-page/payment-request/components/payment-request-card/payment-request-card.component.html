@@ -30,9 +30,11 @@
           <h2 *ngIf="!paymentRequest.payment.data.usdEnabled">
             {{ paymentRequest.payment.data.amount }} {{ paymentNetwork?.nativeCurrency?.symbol }}
           </h2>
-          <h2 *ngIf="paymentRequest.payment.data.usdEnabled && tokenConversionRate">
+          <h4 *ngIf="paymentRequest.payment.data.usdEnabled && tokenConversionRate">
             {{ tokenConversionRate }} {{ paymentNetwork?.nativeCurrency?.symbol }}
-          </h2>
+            <br />
+            <span class="conversionValue">(${{ paymentRequest.payment.data.amount }} USD)</span>
+          </h4>
           <p class="text-muted px-2 px-md-5 text-start" *ngIf="paymentRequest.payment.data.description">
             {{ paymentRequest.payment.data.description }}
           </p>
