@@ -18,7 +18,6 @@ import {
   styleUrls: ['./payment-request-container.component.scss']
 })
 export class PaymentRequestContainerComponent implements OnInit {
-  certifficationCardVisible = true;
   authStatus$: Observable<AuthStatusCode>;
   AuthStatusCodeTypes = AuthStatusCode;
   profileAccount$: Observable<IProfileAdded | null>;
@@ -27,10 +26,6 @@ export class PaymentRequestContainerComponent implements OnInit {
   currentNetwork$: Observable<INetworkDetail | null>;
 
   constructor(private store: Store) {}
-
-  hideCertifficationCard(): void {
-    this.certifficationCardVisible = false;
-  }
 
   ngOnInit(): void {
     this.authStatus$ = this.store.select(selectAuthStatus);

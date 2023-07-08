@@ -6,7 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable, Subscription, combineLatest, filter, map, take } from 'rxjs';
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { ITransactionCard } from './../../../../../shared/interfaces';
+import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
 import { setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
@@ -37,6 +37,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentNetwork$: Observable<INetworkDetail | null>;
+  nativeTokenInfo: INativeToken;
 
   constructor(
     private route: ActivatedRoute,
@@ -58,6 +59,10 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get tokenInfo(): string {
+    return `${this.nativeTokenInfo.name} (${this.nativeTokenInfo.symbol})`;
+  }
+
   setUpId(): Subscription {
     return this.route.params.subscribe((params: Params) => {
       if (params['id']) {
@@ -68,6 +73,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.generateObs();
+    this.setUpMessage();
   }
 
   generateObs(): void {
@@ -78,6 +84,20 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
     this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
+  }
+
+  setUpMessage(): void {
+    this.selectPaymentRequestState$
+      .pipe(
+        take(1),
+        filter((state: IPaymentRequestState) => !!state?.payment?.data?.usdEnabled),
+        map((state: IPaymentRequestState) => state?.payment?.data as IPaymentRequest),
+        map((paymentRequest: IPaymentRequest) => paymentRequest as IPaymentRequest)
+      )
+      .subscribe(
+        (payment: IPaymentRequest) =>
+          (this.nativeTokenInfo = this.web3LoginService.getNetworkDetailByChainId(payment.chainId).nativeCurrency)
+      );
   }
 
   openLoginModal(): void {
@@ -104,7 +124,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         map((network: INetworkDetail | null) => network as INetworkDetail)
       )
       .subscribe((network: INetworkDetail) => {
-        if (!environment.networkSupported.includes(network.chainId)) {
+        if (!environment.contracts.bridgeTransfer.networkSupported.includes(network.chainId)) {
           this._snackBar.open('Network not supported', 'Close', {
             duration: 2000
           });

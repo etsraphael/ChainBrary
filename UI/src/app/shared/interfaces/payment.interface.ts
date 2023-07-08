@@ -1,18 +1,21 @@
 import { FormControl, FormGroup } from '@angular/forms';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 export interface IPaymentRequest {
-  chainId: string;
+  chainId: NetworkChainId;
   tokenId: string;
   publicAddress: string;
   username: string;
   amount: number;
   description: string | null;
   avatarUrl: string;
+  usdEnabled: boolean;
 }
 
 export interface PriceSettingsForm {
   description: FormControl<string | null>;
   amount: FormControl<number | null>;
+  usdEnabled: FormControl<boolean | null>;
 }
 
 export interface ProfileForm {
