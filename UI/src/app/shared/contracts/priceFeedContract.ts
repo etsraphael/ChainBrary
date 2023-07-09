@@ -16,6 +16,12 @@ export class PriceFeedContract extends BaseContract {
         pair: TokenPair.BtcToUsd,
         address: '0x1b44F3514812d835EB1BDB0acB33d3fA3351Ee43'
       }
+    ],
+    [NetworkChainId.BNB]: [
+      {
+        pair: TokenPair.BnbToUsd,
+        address: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE'
+      }
     ]
   };
 

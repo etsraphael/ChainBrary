@@ -34,6 +34,9 @@ export class PriceFeedService {
       case NetworkChainId.SEPOLIA:
         pair = TokenPair.EthToUsd;
         break;
+      case NetworkChainId.BNB:
+        pair = TokenPair.BnbToUsd;
+        break;
       default:
         return Promise.reject('Pair not found');
     }
