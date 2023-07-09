@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { INetworkDetail } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
@@ -11,6 +10,7 @@ import {
   selectPublicAddress,
   selectUserAccountIsLoading
 } from './../../../../../store/auth-store/state/selectors';
+import { INetworkDetail } from '@chainbrary/web3-login';
 
 @Component({
   selector: 'app-payment-request-container',
@@ -25,7 +25,7 @@ export class PaymentRequestContainerComponent implements OnInit {
   userAccountIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.authStatus$ = this.store.select(selectAuthStatus);

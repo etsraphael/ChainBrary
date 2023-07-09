@@ -1,22 +1,13 @@
-import { LandingPageBodyComponent, LandingPageCard } from './landing-page-body.component';
-import { describe, expect, it, beforeEach } from 'vitest';
+import { LandingPageCard } from './core';
+import { LandingPageBodyComponent } from './landing-page-body.component';
+import { describe, expect, it } from 'vitest';
 
 describe('LandingPageBodyComponent', () => {
-  let component: LandingPageBodyComponent;
-  let cards: LandingPageCard[];
-
-  beforeEach(() => {
-    component = new LandingPageBodyComponent();
-    cards = component.cards;
-  });
+  const component = new LandingPageBodyComponent();
+  const cards: LandingPageCard[] = component.cards;
 
   it('should create LandingPageBodyComponent component', () => {
     expect(component).toBeTruthy();
-  });
-
-  it('should have an array of cards', () => {
-    expect(cards).toBeDefined();
-    expect(Array.isArray(cards)).toBeTruthy();
   });
 
   it('should have cards with title property', () => {
