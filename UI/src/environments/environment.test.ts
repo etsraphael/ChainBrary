@@ -1,3 +1,5 @@
+import '@angular/compiler';
+import '@ngrx/store';
 import { NetworkChainId } from '@chainbrary/web3-login';
 
 export const environment = {

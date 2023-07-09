@@ -1,12 +1,8 @@
 import { LandingPageHeaderPageComponent } from './landing-page-header.component';
-import { describe, expect, it, beforeEach } from 'vitest';
+import { describe, expect, it } from 'vitest';
 
 describe('LandingPageHeaderPageComponent', () => {
-  let component: LandingPageHeaderPageComponent;
-
-  beforeEach(() => {
-    component = new LandingPageHeaderPageComponent();
-  });
+  const component = new LandingPageHeaderPageComponent();
 
   it('should create LandingPageHeaderPageComponent component', () => {
     expect(component).toBeTruthy();

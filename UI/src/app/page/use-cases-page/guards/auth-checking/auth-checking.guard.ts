@@ -11,7 +11,6 @@ import { selectAuthStatus, selectErrorAccount } from './../../../../store/auth-s
   providedIn: 'root'
 })
 export class AuthCheckingGuard {
-  authStatusCodeTypes = AuthStatusCode;
   authStatusCode$: Observable<AuthStatusCode>;
   errorAccount$: Observable<string | null>;
 
@@ -28,13 +27,10 @@ export class AuthCheckingGuard {
 
   logUser(): Subscription {
     return this.authStatusCode$.pipe(take(1)).subscribe((authStatusCode: AuthStatusCode) => {
-      switch (authStatusCode) {
-        case AuthStatusCode.NotConnected:
-          return this.store.dispatch(loadAuth());
-        case AuthStatusCode.NotVerifiedAndConnected:
-          return this.profileChecking();
-        default:
-          return;
+      if (authStatusCode && AuthStatusCode.NotConnected) {
+        return this.store.dispatch(loadAuth());
+      } else if (authStatusCode && AuthStatusCode.NotVerifiedAndConnected) {
+        return this.profileChecking();
       }
     });
   }

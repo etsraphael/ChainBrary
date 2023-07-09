@@ -18,24 +18,27 @@
 
   .bi-file-earmark-code,
   .bi-inboxes-fill-code {
-    background: -webkit-linear-gradient(top, #e72c83 0%, #a742c6 100%);
     background: linear-gradient(to bottom, #e72c83 0%, #a742c6 100%);
+    background: -webkit-linear-gradient(top, #e72c83 0%, #a742c6 100%);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
   }
 
   .bi-universal-access {
-    background: -webkit-linear-gradient(to top, #904e95, #e96443);
     background: linear-gradient(to top, #904e95, #e96443);
+    background: -webkit-linear-gradient(to top, #904e95, #e96443);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
   }
 
   .bi-eye {
-    background: -webkit-linear-gradient(to left, #e100ff, #7f00ff);
     background: linear-gradient(to left, #e100ff, #7f00ff);
+    background: -webkit-linear-gradient(to left, #e100ff, #7f00ff);
+    background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     display: inline-block;
