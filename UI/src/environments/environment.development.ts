@@ -36,7 +36,13 @@ export const environment = {
       ]
     },
     priceFeed: {
-      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.BNB],
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.BNB,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.ETHEREUM
+      ],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
@@ -44,7 +50,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.POLYGON,
-          address: ''
+          address: '0xd24b2117886ecbcdefa7d229d3401e859bdf96f0'
         },
         {
           chainId: NetworkChainId.BNB,
@@ -52,11 +58,11 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.ETHEREUM,
-          address: ''
+          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: ''
+          address: '0x537339ca0a52a79cd1509ee340113a10b25ab2b0'
         }
       ]
     }

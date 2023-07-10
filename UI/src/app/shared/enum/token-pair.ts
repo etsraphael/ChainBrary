@@ -1,5 +1,7 @@
 export enum TokenPair {
   EthToUsd,
   BtcToUsd,
-  BnbToUsd
+  BnbToUsd,
+  AvaxToUsd,
+  MaticToUsd
 }
