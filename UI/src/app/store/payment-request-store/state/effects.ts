@@ -1,16 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import { Observable, catchError, filter, from, map, of, switchMap } from 'rxjs';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
+import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionBridgeContract } from './../../../shared/contracts';
 import { IPaymentRequest, IReceiptTransaction } from './../../../shared/interfaces';
 import * as PaymentRequestActions from './actions';
-import { Store } from '@ngrx/store';
-import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectPayment } from './selectors';
 
 @Injectable()
@@ -97,7 +97,24 @@ export class PaymentRequestEffects {
               map((receipt: IReceiptTransaction) =>
                 PaymentRequestActions.amountSent({
                   hash: receipt.transactionHash,
-                  chainId: Number(payload[2]?.chainId)
+                  chainId: payload[2]?.chainId as NetworkChainId
+                })
+              ),
+              catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+            );
+          }),
+          catchError(() => {
+            return (
+              from(
+                contract.methods
+                  .transferFund([payload[2]?.publicAddress])
+                  .send({ from: payload[1], value: String(payload[0].priceValue) })
+              ) as Observable<IReceiptTransaction>
+            ).pipe(
+              map((receipt: IReceiptTransaction) =>
+                PaymentRequestActions.amountSent({
+                  hash: receipt.transactionHash,
+                  chainId: payload[2]?.chainId as NetworkChainId
                 })
               ),
               catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))

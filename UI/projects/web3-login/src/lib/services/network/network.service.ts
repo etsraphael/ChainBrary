@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, defer, of } from 'rxjs';
 import Web3 from 'web3';
-import { INetworkDetail } from '../../interfaces';
+import { INetworkDetail, NetworkChainCode, NetworkChainId } from '../../interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -36,8 +36,8 @@ export class NetworkServiceWeb3Login {
       }
     }
     return {
-      chainId: '0',
-      chainCode: 'unknown',
+      chainId: NetworkChainId.UNKNOWN,
+      chainCode: NetworkChainCode.UNKNOWN,
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
@@ -57,8 +57,8 @@ export class NetworkServiceWeb3Login {
       return networkDetail;
     }
     return {
-      chainId: '0',
-      chainCode: 'unknown',
+      chainId: NetworkChainId.UNKNOWN,
+      chainCode: NetworkChainCode.UNKNOWN,
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
@@ -72,8 +72,8 @@ export class NetworkServiceWeb3Login {
   getNetworkDetailList(): INetworkDetail[] {
     return [
       {
-        chainId: '1',
-        chainCode: '0x1',
+        chainId: NetworkChainId.ETHEREUM,
+        chainCode: NetworkChainCode.ETHEREUM,
         name: 'Ethereum Mainnet',
         shortName: 'Ethereum',
         nativeCurrency: {
@@ -83,8 +83,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '56',
-        chainCode: '0x38',
+        chainId: NetworkChainId.BNB,
+        chainCode: NetworkChainCode.BNB,
         name: 'Binance Smart Chain Mainnet',
         shortName: 'BNB Chain',
         nativeCurrency: {
@@ -94,8 +94,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '11155111',
-        chainCode: '0xaa36a7',
+        chainId: NetworkChainId.SEPOLIA,
+        chainCode: NetworkChainCode.SEPOLIA,
         name: 'Sepolia',
         shortName: 'Sepolia',
         nativeCurrency: {
@@ -105,8 +105,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '42161',
-        chainCode: '0xa4b1',
+        chainId: NetworkChainId.ARBITRUM,
+        chainCode: NetworkChainCode.ARBITRUM,
         name: 'Arbitrum One',
         shortName: 'Arbitrum',
         nativeCurrency: {
@@ -116,8 +116,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '137',
-        chainCode: '0x89',
+        chainId: NetworkChainId.POLYGON,
+        chainCode: NetworkChainCode.POLYGON,
         name: 'Polygon',
         shortName: 'Polygon',
         nativeCurrency: {
@@ -127,8 +127,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '10',
-        chainCode: '0xa',
+        chainId: NetworkChainId.OPTIMISM,
+        chainCode: NetworkChainCode.OPTIMISM,
         name: 'Optimism',
         shortName: 'Optimism',
         nativeCurrency: {
@@ -138,8 +138,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '43114',
-        chainCode: '0xa86a',
+        chainId: NetworkChainId.AVALANCHE,
+        chainCode: NetworkChainCode.AVALANCHE,
         name: 'Avalanche',
         shortName: 'Avalanche',
         nativeCurrency: {
@@ -149,8 +149,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '1284',
-        chainCode: '0x504',
+        chainId: NetworkChainId.MOONBEAM,
+        chainCode: NetworkChainCode.MOONBEAM,
         name: 'Moonbeam',
         shortName: 'Moonbeam',
         nativeCurrency: {
@@ -160,8 +160,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '222',
-        chainCode: '0x8ae',
+        chainId: NetworkChainId.KAVA,
+        chainCode: NetworkChainCode.KAVA,
         name: 'KAVA',
         shortName: 'KAVA',
         nativeCurrency: {
@@ -171,8 +171,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '250',
-        chainCode: '0xfa',
+        chainId: NetworkChainId.FANTOM,
+        chainCode: NetworkChainCode.FANTOM,
         name: 'Fantom',
         shortName: 'Fantom',
         nativeCurrency: {
@@ -182,8 +182,8 @@ export class NetworkServiceWeb3Login {
         }
       },
       {
-        chainId: '42220',
-        chainCode: '0xa4ec',
+        chainId: NetworkChainId.CELO,
+        chainCode: NetworkChainCode.CELO,
         name: 'Celo',
         shortName: 'Celo',
         nativeCurrency: {
@@ -195,13 +195,13 @@ export class NetworkServiceWeb3Login {
     ];
   }
 
-  getNetworkName(chainId: string): string {
+  getNetworkName(chainId: NetworkChainId): string {
     switch (chainId) {
-      case '1':
+      case NetworkChainId.ETHEREUM:
         return 'Mainnet';
-      case '56':
+      case NetworkChainId.BNB:
         return 'Binance Smart Chain';
-      case '11155111':
+      case NetworkChainId.SEPOLIA:
         return 'Sepolia';
       default:
         return 'Unknown';
