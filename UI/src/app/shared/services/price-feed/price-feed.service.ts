@@ -37,6 +37,9 @@ export class PriceFeedService {
       case NetworkChainId.BNB:
         pair = TokenPair.BnbToUsd;
         break;
+      case NetworkChainId.AVALANCHE:
+        pair = TokenPair.AvaxToUsd;
+        break;
       default:
         return Promise.reject('Pair not found');
     }

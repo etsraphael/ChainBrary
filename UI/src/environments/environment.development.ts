@@ -56,7 +56,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: ''
+          address: '0x537339ca0a52a79cd1509ee340113a10b25ab2b0'
         }
       ]
     }

@@ -22,6 +22,12 @@ export class PriceFeedContract extends BaseContract {
         pair: TokenPair.BnbToUsd,
         address: '0x0567F2323251f0Aab15c8dFb1967E4e8A7D42aeE'
       }
+    ],
+    [NetworkChainId.AVALANCHE]: [
+      {
+        pair: TokenPair.AvaxToUsd,
+        address: '0x0A77230d17318075983913bC2145DB16C7366156'
+      }
     ]
   };
 
