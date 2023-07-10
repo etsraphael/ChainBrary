@@ -28,6 +28,12 @@ export class PriceFeedContract extends BaseContract {
         pair: TokenPair.AvaxToUsd,
         address: '0x0A77230d17318075983913bC2145DB16C7366156'
       }
+    ],
+    [NetworkChainId.POLYGON]: [
+      {
+        pair: TokenPair.MaticToUsd,
+        address: '0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'
+      }
     ]
   };
 

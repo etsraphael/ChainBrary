@@ -40,6 +40,9 @@ export class PriceFeedService {
       case NetworkChainId.AVALANCHE:
         pair = TokenPair.AvaxToUsd;
         break;
+      case NetworkChainId.POLYGON:
+        pair = TokenPair.MaticToUsd;
+        break;
       default:
         return Promise.reject('Pair not found');
     }
