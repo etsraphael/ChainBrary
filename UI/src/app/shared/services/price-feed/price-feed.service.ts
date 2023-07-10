@@ -31,8 +31,18 @@ export class PriceFeedService {
   getCurrentPriceOfNativeToken(chainId: NetworkChainId): Promise<number> {
     let pair: TokenPair;
     switch (chainId) {
+      case NetworkChainId.ETHEREUM:
       case NetworkChainId.SEPOLIA:
         pair = TokenPair.EthToUsd;
+        break;
+      case NetworkChainId.BNB:
+        pair = TokenPair.BnbToUsd;
+        break;
+      case NetworkChainId.AVALANCHE:
+        pair = TokenPair.AvaxToUsd;
+        break;
+      case NetworkChainId.POLYGON:
+        pair = TokenPair.MaticToUsd;
         break;
       default:
         return Promise.reject('Pair not found');
