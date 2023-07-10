@@ -31,6 +31,7 @@ export class PriceFeedService {
   getCurrentPriceOfNativeToken(chainId: NetworkChainId): Promise<number> {
     let pair: TokenPair;
     switch (chainId) {
+      case NetworkChainId.ETHEREUM:
       case NetworkChainId.SEPOLIA:
         pair = TokenPair.EthToUsd;
         break;

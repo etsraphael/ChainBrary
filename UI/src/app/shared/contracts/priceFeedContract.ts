@@ -34,6 +34,12 @@ export class PriceFeedContract extends BaseContract {
         pair: TokenPair.MaticToUsd,
         address: '0xAB594600376Ec9fD91F8e885dADF0CE036862dE0'
       }
+    ],
+    [NetworkChainId.ETHEREUM]: [
+      {
+        pair: TokenPair.EthToUsd,
+        address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
+      }
     ]
   };
 

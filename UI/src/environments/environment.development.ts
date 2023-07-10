@@ -36,7 +36,13 @@ export const environment = {
       ]
     },
     priceFeed: {
-      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.BNB],
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.BNB,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.ETHEREUM
+      ],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
@@ -52,7 +58,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.ETHEREUM,
-          address: ''
+          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
         },
         {
           chainId: NetworkChainId.AVALANCHE,
