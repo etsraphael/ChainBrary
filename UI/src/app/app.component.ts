@@ -42,8 +42,9 @@ export class AppComponent implements OnInit {
     ]);
 
     const allLogs = [...senderLogs, ...receiverLogs];
+    const sortedLogs = allLogs.sort((a, b) => b.date - a.date);
 
-    console.log('All Logs:', allLogs);
+    console.log('All Logs:', sortedLogs);
   }
 
   async getTransactionLogs(web3: Web3, fromBlock: number, topics: string[], role: string): Promise<any[]> {
@@ -57,10 +58,14 @@ export class AppComponent implements OnInit {
       const processedLogs = await Promise.all(
         res.map(async (rec) => {
           const transaction = await web3.eth.getTransaction(rec.transactionHash);
+          const test = (await web3.eth.getBlock(rec.blockNumber)).timestamp;
+          const date = new Date(test as number * 1000);
+
           return {
             role,
             transaction,
-            valueInEther: web3.utils.fromWei(transaction.value, 'ether')
+            valueInEther: web3.utils.fromWei(transaction.value, 'ether'),
+            date
           };
         })
       );
