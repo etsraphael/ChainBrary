@@ -54,17 +54,16 @@ export class AppComponent implements OnInit {
         topics
       });
 
-      console.log(role, res);
-
-      const processedLogs = await Promise.all(res.map(async (rec) => {
-        const transaction = await web3.eth.getTransaction(rec.transactionHash);
-        console.log(role, 'Value:', web3.utils.fromWei(transaction.value, 'ether'), 'ETH');
-        return {
-          role,
-          transaction,
-          valueInEther: web3.utils.fromWei(transaction.value, 'ether')
-        };
-      }));
+      const processedLogs = await Promise.all(
+        res.map(async (rec) => {
+          const transaction = await web3.eth.getTransaction(rec.transactionHash);
+          return {
+            role,
+            transaction,
+            valueInEther: web3.utils.fromWei(transaction.value, 'ether')
+          };
+        })
+      );
 
       return processedLogs;
     } catch (err) {
@@ -72,6 +71,4 @@ export class AppComponent implements OnInit {
       return [];
     }
   }
-
-
 }
