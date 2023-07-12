@@ -59,7 +59,8 @@ export class AppComponent implements OnInit {
         res.map(async (rec) => {
           const transaction = await web3.eth.getTransaction(rec.transactionHash);
           const test = (await web3.eth.getBlock(rec.blockNumber)).timestamp;
-          const date = new Date(test as number * 1000);
+          const date = new Date((test as number) * 1000);
+          console.log(rec);
 
           return {
             role,
