@@ -8,6 +8,12 @@ const useCaseRoutes: SideBarRoute[] = [
     enabled: true
   },
   {
+    title: 'Activity',
+    path: '/activity',
+    icon: 'bi-clipboard-data-fill',
+    enabled: true
+  },
+  {
     title: 'Proposal',
     path: '/payment-request',
     icon: 'bi-inboxes-fill',
