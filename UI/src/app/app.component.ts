@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TransactionSearchService } from '@chainbrary/transaction-search';
+import { ITransactionLog, TransactionSearchService } from '@chainbrary/transaction-search';
 import Web3 from 'web3';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
 
@@ -24,7 +24,7 @@ export class AppComponent implements OnInit {
     setTimeout(() => {
       this.transactionSearchService
         .getTransactions(new Web3(window.ethereum), 1, 1000000, '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac')
-        .then((res) => {
+        .then((res: ITransactionLog[]) => {
           console.log('res', res);
         });
     }, 2000);
