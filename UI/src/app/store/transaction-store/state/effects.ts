@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
+import { ITransactionLog, TransactionOptions, TransactionSearchService } from '@chainbrary/transaction-search';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, from, map, mergeMap, of } from 'rxjs';
+import { catchError, concatMap, from, map, of } from 'rxjs';
+import Web3 from 'web3';
 import { amountSent } from '../../payment-request-store/state/actions';
 import {
   loadTransactionsFromBridgeTransfer,
@@ -9,8 +11,6 @@ import {
   loadTransactionsFromBridgeTransferSuccess,
   localTransactionSentSuccessfully
 } from './actions';
-import { ITransactionLog, TransactionOptions, TransactionSearchService } from '@chainbrary/transaction-search';
-import Web3 from 'web3';
 
 @Injectable()
 export class TransactionEffects {

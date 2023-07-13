@@ -13,5 +13,9 @@ export const historicalTransactionAdapter: EntityAdapter<ITransactionLog> = crea
 
 export const initialState: ITransactionsState = {
   recentTransactions: transactionAdapter.getInitialState(),
-  historicalTransactions: historicalTransactionAdapter.getInitialState()
+  historicalTransactions: {
+    loading: false,
+    error: null,
+    data: historicalTransactionAdapter.getInitialState()
+  }
 };
