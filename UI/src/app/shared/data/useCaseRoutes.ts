@@ -15,7 +15,7 @@ const useCaseRoutes: SideBarRoute[] = [
   },
   {
     title: 'Proposal',
-    path: '/payment-request',
+    path: '/NA',
     icon: 'bi-inboxes-fill',
     enabled: false
   }
