@@ -1,23 +1,38 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-import { ITransactionLog, ITransactionPayload, TransactionRole } from '../models/transaction.model';
+import { ITransactionLog, ITransactionPayload, TransactionOptions, TransactionRole } from '../models/transaction.model';
 import { Transaction, BlockTransactionString } from 'web3-eth';
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
-  async getTransactions(web3: Web3, page: number, limit: number, address: string): Promise<ITransactionLog[]> {
-    const latestBlock: number = await web3.eth.getBlockNumber();
+  async getTransactions(options: TransactionOptions): Promise<ITransactionLog[]> {
+    const latestBlock: number = await options.web3.eth.getBlockNumber();
+    const { page, limit } = options.pagination;
     const fromBlock: number = latestBlock - page * limit;
-    const transferEventSignature: string = web3.utils.sha3('Transfer(address,address,uint256,uint256)') as string;
-    const myAddressPadded: string = web3.utils.padLeft(address, 64);
+    const transferEventSignature: string = options.web3.utils.sha3(
+      'Transfer(address,address,uint256,uint256)'
+    ) as string;
+    const myAddressPadded: string = options.web3.utils.padLeft(options.address.accountAddress, 64);
 
     const senderTopics: (string | null)[] = [transferEventSignature, null, myAddressPadded];
     const receiverTopics: (string | null)[] = [transferEventSignature, myAddressPadded, null];
 
     const [senderLogs, receiverLogs] = await Promise.all([
-      this.getTransactionLogs(web3, fromBlock, senderTopics as string[], TransactionRole.Sender),
-      this.getTransactionLogs(web3, fromBlock, receiverTopics as string[], TransactionRole.Receiver)
+      this.getTransactionLogs(
+        options.web3,
+        fromBlock,
+        senderTopics as string[],
+        TransactionRole.Sender,
+        options.address.smartContractAddress
+      ),
+      this.getTransactionLogs(
+        options.web3,
+        fromBlock,
+        receiverTopics as string[],
+        TransactionRole.Receiver,
+        options.address.smartContractAddress
+      )
     ]);
 
     const allLogs: ITransactionLog[] = [...senderLogs, ...receiverLogs];
@@ -30,12 +45,13 @@ export class TransactionService {
     web3: Web3,
     fromBlock: number,
     topics: string[],
-    role: TransactionRole
+    role: TransactionRole,
+    contractAddress: string
   ): Promise<ITransactionLog[]> {
     try {
       const res: ITransactionPayload[] = await web3.eth.getPastLogs({
         fromBlock,
-        address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81',
+        address: contractAddress,
         topics
       });
 

@@ -1,4 +1,5 @@
 import { Transaction, BlockTransactionString } from 'web3-eth';
+import Web3 from 'web3';
 
 export interface ITransactionLog {
   role: TransactionRole;
@@ -18,6 +19,18 @@ export interface ITransactionPayload {
   blockHash: string;
   blockNumber: number;
   removed: boolean;
+}
+
+export interface TransactionOptions {
+  web3: Web3;
+  pagination: {
+    page: number;
+    limit: number;
+  };
+  address: {
+    smartContractAddress: string;
+    accountAddress: string;
+  };
 }
 
 export enum TransactionRole {

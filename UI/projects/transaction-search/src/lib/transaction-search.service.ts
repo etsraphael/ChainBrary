@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import Web3 from 'web3';
-import { ITransactionLog } from './models';
+import { ITransactionLog, TransactionOptions } from './models';
 import { TransactionService } from './services/transaction.service';
 
 @Injectable({
@@ -9,7 +8,7 @@ import { TransactionService } from './services/transaction.service';
 export class TransactionSearchService {
   constructor(private transactionService: TransactionService) {}
 
-  async getTransactions(web3: Web3, page: number, limit: number, address: string): Promise<ITransactionLog[]> {
-    return this.transactionService.getTransactions(web3, page, limit, address);
+  async getTransactions(options: TransactionOptions): Promise<ITransactionLog[]> {
+    return this.transactionService.getTransactions(options);
   }
 }
