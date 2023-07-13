@@ -1,13 +1,20 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map } from 'rxjs';
+import { catchError, concatMap, from, map, mergeMap, of } from 'rxjs';
 import { amountSent } from '../../payment-request-store/state/actions';
-import { localTransactionSentSuccessfully } from './actions';
+import {
+  loadTransactionsFromBridgeTransfer,
+  loadTransactionsFromBridgeTransferFailure,
+  loadTransactionsFromBridgeTransferSuccess,
+  localTransactionSentSuccessfully
+} from './actions';
+import { ITransactionLog, TransactionOptions, TransactionSearchService } from '@chainbrary/transaction-search';
+import Web3 from 'web3';
 
 @Injectable()
 export class TransactionEffects {
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions, private transactionSearchService: TransactionSearchService) {}
 
   paymentTransactionSent$ = createEffect(() => {
     return this.actions$.pipe(
@@ -22,6 +29,30 @@ export class TransactionEffects {
             chainId: action.chainId
           }
         });
+      })
+    );
+  });
+
+  loadTransactionsFromBridgeTransfer$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadTransactionsFromBridgeTransfer),
+      concatMap((action: { chainId: NetworkChainId; page: number; limit: number }) => {
+        const options: TransactionOptions = {
+          web3: new Web3(window.ethereum),
+          pagination: {
+            page: action.page,
+            limit: action.limit
+          },
+          address: {
+            smartContractAddress: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81',
+            accountAddress: '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac'
+          }
+        };
+
+        return from(this.transactionSearchService.getTransactions(options)).pipe(
+          map((list: ITransactionLog[]) => loadTransactionsFromBridgeTransferSuccess({ list })),
+          catchError((error: string) => of(loadTransactionsFromBridgeTransferFailure({ error })))
+        );
       })
     );
   });
