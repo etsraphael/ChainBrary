@@ -23,7 +23,6 @@ export class ActivityContainerComponent implements OnInit {
 
   generateObs(): void {
     this.transactions$ = this.store.select(selectHistoricalTransactions);
-    this.transactions$.subscribe(console.log);
   }
 
   callActions(): void {

@@ -1,6 +1,6 @@
 <div class="container py-3">
   <app-transaction-activity-header></app-transaction-activity-header>
   <div class="my-3">
-    <app-transaction-activity-table></app-transaction-activity-table>
+    <app-transaction-activity-table [transactionsTable]="(transactions$ | async)!"></app-transaction-activity-table>
   </div>
 </div>
