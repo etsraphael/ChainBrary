@@ -16,21 +16,17 @@
 <!-- Body -->
 <div class="d-none d-md-block my-3 card shadow-sm border-0 cb-card">
   <div class="card-body">
-    <button
-      *ngFor="let item of useCaseRoutes"
-      class="btn w-100 py-2 w-100 btn-light my-2 border-0"
-      [routerLink]="'/use-cases' + item.path"
-      routerLinkActive="active"
-      [disabled]="!item.enabled"
-    >
-      <div class="row py-1 px-3">
-        <div class="col-2">
-          <i class="bi" [ngClass]="item.icon"></i>
+    <a *ngFor="let item of useCaseRoutes" [routerLink]="'/use-cases' + item.path">
+      <button class="btn w-100 py-2 w-100 btn-light my-2 border-0" routerLinkActive="active" [disabled]="!item.enabled">
+        <div class="row py-1 px-3">
+          <div class="col-2">
+            <i class="bi" [ngClass]="item.icon"></i>
+          </div>
+          <div class="col-10 d-flex justify-content-start align-items-center">
+            <span>{{ item.title }} {{ item.enabled ? '' : '(coming)' }}</span>
+          </div>
         </div>
-        <div class="col-10 d-flex justify-content-start align-items-center">
-          <span>{{ item.title }} {{ item.enabled ? '' : '(coming)' }}</span>
-        </div>
-      </div>
-    </button>
+      </button>
+    </a>
   </div>
 </div>
