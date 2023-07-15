@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ITransactionLog } from '@chainbrary/transaction-search';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { selectCurrentNetwork } from './../../../../../store/auth-store/state/selectors';
 import { loadTransactionsFromBridgeTransfer } from './../../../../../store/transaction-store/state/actions';
 import { selectHistoricalTransactions } from './../../../../../store/transaction-store/state/selectors';
 
@@ -13,6 +14,7 @@ import { selectHistoricalTransactions } from './../../../../../store/transaction
 })
 export class ActivityContainerComponent implements OnInit {
   transactions$: Observable<ITransactionLog[]>;
+  currentNetwork$: Observable<INetworkDetail | null>;
 
   constructor(private store: Store) {}
 
@@ -23,6 +25,7 @@ export class ActivityContainerComponent implements OnInit {
 
   generateObs(): void {
     this.transactions$ = this.store.select(selectHistoricalTransactions);
+    this.currentNetwork$ = this.store.select(selectCurrentNetwork);
   }
 
   callActions(): void {
