@@ -1,5 +1,5 @@
 <!-- Loading view -->
-<table class="w-100 shadow-sm bg-white" *ngIf="transactionsIsLoading">
+<table class="w-100 shadow-sm bg-white" *ngIf="transactionsIsLoading && transactionsTable.length === 0">
   <thead>
     <tr class="skeleton-header px-4">
       <th class="text-start py-3 ps-4">Action</th>
@@ -9,21 +9,21 @@
   </thead>
   <tbody>
     <tr *ngFor="let item of [1, 2, 3, 4, 5, 6, 7]">
-      <td class="px-4">
+      <td class="px-4 py-2">
         <div class="d-flex justify-content-center">
           <div class="col-12">
             <ngx-skeleton-loader count="1"></ngx-skeleton-loader>
           </div>
         </div>
       </td>
-      <td>
+      <td class="py-2">
         <div class="d-flex justify-content-center">
           <div class="col-6">
             <ngx-skeleton-loader count="1"></ngx-skeleton-loader>
           </div>
         </div>
       </td>
-      <td class="px-4">
+      <td class="px-4 py-2">
         <div class="d-flex justify-content-end">
           <div class="col-10">
             <ngx-skeleton-loader count="1"></ngx-skeleton-loader>
@@ -39,7 +39,7 @@
   mat-table
   [dataSource]="transactionsTable"
   class="w-100 shadow-sm"
-  [hidden]="transactionsTable.length === 0 && transactionsIsLoading"
+  [hidden]="transactionsTable.length === 0 && !transactionsIsLoading"
 >
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef class="text-start">Action</th>
@@ -71,7 +71,10 @@
 </table>
 
 <!-- Empty view -->
-<div class="d-flex flex-column align-items-center justify-content-center pt-5" *ngIf="transactionsTable.length === 0 && !transactionsIsLoading">
+<div
+  class="d-flex flex-column align-items-center justify-content-center pt-5"
+  *ngIf="transactionsTable.length === 0 && !transactionsIsLoading"
+>
   <div class="d-flex flex-column align-items-center justify-content-center">
     <i class="bi bi-database-slash text-secondary"></i>
     <p class="text-center mt-3">No transactions found.</p>

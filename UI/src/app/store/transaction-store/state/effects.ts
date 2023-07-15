@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ITransactionLog, TransactionOptions, TransactionSearchService } from '@chainbrary/transaction-search';
 import { NetworkChainId } from '@chainbrary/web3-login';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, concatMap, from, map, of } from 'rxjs';
+import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { catchError, concatMap, filter, from, map, of } from 'rxjs';
 import Web3 from 'web3';
 import { amountSent } from '../../payment-request-store/state/actions';
 import {
@@ -11,10 +11,17 @@ import {
   loadTransactionsFromBridgeTransferSuccess,
   localTransactionSentSuccessfully
 } from './actions';
+import { Store } from '@ngrx/store';
+import { selectCurrentChainId, selectPublicAddress } from '../../auth-store/state/selectors';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TransactionEffects {
-  constructor(private actions$: Actions, private transactionSearchService: TransactionSearchService) {}
+  constructor(
+    private actions$: Actions,
+    private transactionSearchService: TransactionSearchService,
+    private store: Store
+  ) {}
 
   paymentTransactionSent$ = createEffect(() => {
     return this.actions$.pipe(
@@ -36,24 +43,32 @@ export class TransactionEffects {
   loadTransactionsFromBridgeTransfer$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadTransactionsFromBridgeTransfer),
-      concatMap((action: { chainId: NetworkChainId; page: number; limit: number }) => {
-        const options: TransactionOptions = {
-          web3: new Web3(window.ethereum),
-          pagination: {
-            page: action.page,
-            limit: action.limit
-          },
-          address: {
-            smartContractAddress: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81',
-            accountAddress: '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac'
-          }
-        };
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectCurrentChainId)]),
+      filter((action) => action[1] !== null && action[2] !== null),
+      concatMap(
+        (action: [{ page: number; limit: number }, string | null, NetworkChainId | null]) => {
+          const addressContract: string = environment.contracts.bridgeTransfer.contracts.find(
+            (contract) => contract.chainId === action[2]
+          )?.address as string;
 
-        return from(this.transactionSearchService.getTransactions(options)).pipe(
-          map((list: ITransactionLog[]) => loadTransactionsFromBridgeTransferSuccess({ list })),
-          catchError((error: string) => of(loadTransactionsFromBridgeTransferFailure({ error })))
-        );
-      })
+          const options: TransactionOptions = {
+            web3: new Web3(window.ethereum),
+            pagination: {
+              page: action[0].page,
+              limit: action[0].limit
+            },
+            address: {
+              smartContractAddress: addressContract,
+              accountAddress: action[1] as string
+            }
+          };
+
+          return from(this.transactionSearchService.getTransactions(options)).pipe(
+            map((list: ITransactionLog[]) => loadTransactionsFromBridgeTransferSuccess({ list })),
+            catchError((error: string) => of(loadTransactionsFromBridgeTransferFailure({ error })))
+          );
+        }
+      )
     );
   });
 }
