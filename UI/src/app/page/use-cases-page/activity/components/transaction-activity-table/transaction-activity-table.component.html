@@ -2,18 +2,25 @@
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef class="text-start">Action</th>
     <td mat-cell *matCellDef="let element" class="text-start">
-      {{ formatService.formatPublicAddress(element.transaction.hash) }}
+      <span class="d-block d-lg-none">{{ formatService.formatPublicAddress(element.transaction.hash, 3) }}</span>
+      <span class="d-none d-lg-block">{{ formatService.formatPublicAddress(element.transaction.hash, 10) }}</span>
     </td>
   </ng-container>
 
   <ng-container matColumnDef="amount">
     <th mat-header-cell *matHeaderCellDef class="text-center">Amount</th>
-    <td mat-cell *matCellDef="let element" class="text-center">{{ element.amount }}</td>
+    <td mat-cell *matCellDef="let element" class="text-center price-container">
+      <span class="text-success" *ngIf="element.role === role.Receiver"> + {{ element.amount }}</span>
+      <span class="text-danger" *ngIf="element.role === role.Sender"> - {{ element.amount }}</span>
+    </td>
   </ng-container>
 
   <ng-container matColumnDef="date">
     <th mat-header-cell *matHeaderCellDef class="text-end">Date</th>
-    <td mat-cell *matCellDef="let element" class="text-end">{{ element.submittedDate | date : 'medium' }}</td>
+    <td mat-cell *matCellDef="let element" class="text-end">
+      <span class="d-block d-lg-none">{{ element.submittedDate | date : 'short' }}</span>
+      <span class="d-none d-lg-block">{{ element.submittedDate | date : 'medium' }}</span>
+    </td>
   </ng-container>
 
   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

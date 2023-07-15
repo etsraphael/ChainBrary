@@ -5,4 +5,12 @@ table {
   .mdc-data-table__row:hover {
     background-color: #f5f5f5 !important;
   }
+
+  .mat-mdc-header-cell {
+    font-weight: 200;
+  }
+
+  .price-container span {
+    font-weight: 700;
+  }
 }
