@@ -6,9 +6,10 @@ import { SharedComponentsModule } from './../../../shared/components/shared-comp
 import { TransactionActivityHeaderComponent } from './components/transaction-activity-header/transaction-activity-header.component';
 import { TransactionActivityTableComponent } from './components/transaction-activity-table/transaction-activity-table.component';
 import { ActivityContainerComponent } from './containers/activity-container/activity-container.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [ActivityContainerComponent, TransactionActivityHeaderComponent, TransactionActivityTableComponent],
-  imports: [CommonModule, SharedComponentsModule, UseCasesPageRoutingModule, MaterialModule]
+  imports: [CommonModule, SharedComponentsModule, UseCasesPageRoutingModule, MaterialModule, NgxSkeletonLoaderModule]
 })
 export class ActivityModule {}

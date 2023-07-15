@@ -5,7 +5,10 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { selectCurrentNetwork } from './../../../../../store/auth-store/state/selectors';
 import { loadTransactionsFromBridgeTransfer } from './../../../../../store/transaction-store/state/actions';
-import { selectHistoricalTransactions } from './../../../../../store/transaction-store/state/selectors';
+import {
+  selectHistoricalTransactions,
+  selectHistoricalTransactionsIsLoading
+} from './../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-activity-container',
@@ -14,6 +17,7 @@ import { selectHistoricalTransactions } from './../../../../../store/transaction
 })
 export class ActivityContainerComponent implements OnInit {
   transactions$: Observable<ITransactionLog[]>;
+  transactionsIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
 
   constructor(private store: Store) {}
@@ -26,6 +30,7 @@ export class ActivityContainerComponent implements OnInit {
   generateObs(): void {
     this.transactions$ = this.store.select(selectHistoricalTransactions);
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
+    this.transactionsIsLoading$ = this.store.select(selectHistoricalTransactionsIsLoading);
   }
 
   callActions(): void {

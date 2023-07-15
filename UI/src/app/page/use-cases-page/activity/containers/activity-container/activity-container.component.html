@@ -4,6 +4,7 @@
     <app-transaction-activity-table
       [transactionsTable]="(transactions$ | async)!"
       [currentNetwork]="currentNetwork$ | async"
+      [transactionsIsLoading]="(transactionsIsLoading$ | async)!"
     >
     </app-transaction-activity-table>
   </div>

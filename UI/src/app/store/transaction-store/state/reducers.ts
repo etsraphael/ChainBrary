@@ -17,7 +17,7 @@ export const transactionReducer: ActionReducer<ITransactionsState, Action> = cre
     (state): ITransactionsState => ({
       ...state,
       historicalTransactions: {
-        ...state.historicalTransactions,
+        data: historicalTransactionAdapter.removeAll(state.historicalTransactions.data),
         loading: true,
         error: null
       }

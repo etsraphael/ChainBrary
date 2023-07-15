@@ -11,6 +11,7 @@ import { FormatService } from './../../../../../shared/services/format/format.se
 export class TransactionActivityTableComponent {
   @Input() transactionsTable: ITransactionLog[] = [];
   @Input() currentNetwork: INetworkDetail | null;
+  @Input() transactionsIsLoading: boolean;
   displayedColumns: string[] = ['action', 'amount', 'date'];
   role = TransactionRole;
 

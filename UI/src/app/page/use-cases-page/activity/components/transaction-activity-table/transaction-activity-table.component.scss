@@ -6,7 +6,8 @@ table {
     background-color: #f5f5f5 !important;
   }
 
-  .mat-mdc-header-cell {
+  .mat-mdc-header-cell,
+  .skeleton-header th {
     font-weight: 200;
   }
 
