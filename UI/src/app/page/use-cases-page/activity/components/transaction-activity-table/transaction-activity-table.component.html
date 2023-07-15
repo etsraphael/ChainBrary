@@ -39,7 +39,7 @@
   mat-table
   [dataSource]="transactionsTable"
   class="w-100 shadow-sm"
-  [hidden]="transactionsTable.length === 0 && !transactionsIsLoading"
+  *ngIf="transactionsTable.length > 0 && !transactionsIsLoading"
 >
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef class="text-start">Action</th>

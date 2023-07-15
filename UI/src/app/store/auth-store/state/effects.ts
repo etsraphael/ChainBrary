@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { filter, map, tap } from 'rxjs';
-import { AccountService } from '../../../shared/services/account/account.service';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -11,7 +10,6 @@ import * as AuthActions from './actions';
 export class AuthEffects {
   constructor(
     private actions$: Actions,
-    private accountService: AccountService,
     private authService: AuthService,
     private web3LoginService: Web3LoginService
   ) {}
