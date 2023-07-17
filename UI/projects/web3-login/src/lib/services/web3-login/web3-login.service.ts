@@ -1,7 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Web3LoginComponent } from '../../containers/web3-login/web3-login.component';
-import { ModalState } from '../../interfaces';
+import { IModalState, INetworkDetail, NetworkChainId } from '../../interfaces';
 import { NetworkServiceWeb3Login } from '../network/network.service';
 import { Observable } from 'rxjs';
 
@@ -15,11 +15,15 @@ export class Web3LoginService {
     return this.networkServiceWeb3Login.onAccountChangedEvent();
   }
 
-  get onChainChangedEvent$(): Observable<{ networkId: string; networkName: string }> {
+  get onChainChangedEvent$(): Observable<INetworkDetail> {
     return this.networkServiceWeb3Login.onChainChangedEvent();
   }
 
-  openLoginModal(): EventEmitter<ModalState> {
+  get currentNetwork$(): Observable<INetworkDetail | null> {
+    return this.networkServiceWeb3Login.currentNetwork$;
+  }
+
+  openLoginModal(): EventEmitter<IModalState> {
     const dialogRef: MatDialogRef<Web3LoginComponent> = this.dialog.open(Web3LoginComponent, {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
@@ -34,7 +38,15 @@ export class Web3LoginService {
     return this.dialog.closeAll();
   }
 
-  getNetworkName(networkId: string): string {
-    return this.networkServiceWeb3Login.getNetworkName(networkId);
+  getNetworkName(chainId: NetworkChainId): string {
+    return this.networkServiceWeb3Login.getNetworkName(chainId);
+  }
+
+  getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
+    return this.networkServiceWeb3Login.getNetworkDetailByChainId(chainId);
+  }
+
+  getNetworkDetailList(): INetworkDetail[] {
+    return this.networkServiceWeb3Login.getNetworkDetailList();
   }
 }

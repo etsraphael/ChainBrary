@@ -1,4 +1,5 @@
-import { IProfileAdded, IOrganization, StoreState } from '../../../shared/interfaces';
+import { INetworkDetail } from '@chainbrary/web3-login';
+import { IOrganization, IProfileAdded, StoreState } from '../../../shared/interfaces';
 
 export const AUTH_FEATURE_KEY = 'auth';
 
@@ -8,10 +9,7 @@ export interface IAuthState {
   connectedUser: boolean;
   userAccount: StoreState<IProfileAdded | null>;
   organization: IOrganization | null;
-  network: {
-    networkId: string | null;
-    networkName: string | null;
-  };
+  network: INetworkDetail | null;
 }
 
 export interface AuthState {

@@ -9,7 +9,7 @@ const useCaseRoutes: SideBarRoute[] = [
   },
   {
     title: 'Proposal',
-    path: '/certification',
+    path: '/payment-request',
     icon: 'bi-inboxes-fill',
     enabled: false
   }

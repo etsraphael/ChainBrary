@@ -15,7 +15,7 @@ export class FooterPageComponent implements OnInit {
     this.footerBtns = [
       {
         text: 'Twitter',
-        url: 'https://twitter.com/iamraphaelsalei'
+        url: 'https://twitter.com/chainbrary'
       },
       {
         text: 'Github',

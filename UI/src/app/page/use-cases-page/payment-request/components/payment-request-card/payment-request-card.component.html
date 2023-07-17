@@ -16,7 +16,6 @@
       <div class="row text-center">
         <div class="col-12">
           <h4 class="card-title text-primary">{{ paymentRequest.profile.username }}</h4>
-          <h5>{{ paymentRequest.profile.subtitle }}</h5>
         </div>
       </div>
       <div class="row justify-content-center">
@@ -28,7 +27,14 @@
       </div>
       <div class="row text-center">
         <div class="col-12">
-          <h2>{{ paymentRequest.payment.data.amount }} eth</h2>
+          <h2 *ngIf="!paymentRequest.payment.data.usdEnabled">
+            {{ paymentRequest.payment.data.amount }} {{ paymentNetwork?.nativeCurrency?.symbol }}
+          </h2>
+          <h4 *ngIf="paymentRequest.payment.data.usdEnabled && tokenConversionRate">
+            {{ tokenConversionRate }} {{ paymentNetwork?.nativeCurrency?.symbol }}
+            <br />
+            <span class="conversionValue">(${{ paymentRequest.payment.data.amount }} USD)</span>
+          </h4>
           <p class="text-muted px-2 px-md-5 text-start" *ngIf="paymentRequest.payment.data.description">
             {{ paymentRequest.payment.data.description }}
           </p>
@@ -38,14 +44,19 @@
         <div class="col-10">
           <div class="row justify-content-center">
             <div class="col-12 col-md-6 my-2 my-md-0" *ngIf="AuthStatusCodeTypes.NotConnected === authStatus">
-              <button class="btn btn-info-gradient w-100 py-2" (click)="openLoginModal.emit()">
-                <span class="text-light">Web3 login</span>
-              </button>
+              <app-chainbrary-button
+                [buttonClasses]="['btn-info-gradient', 'text-light']"
+                [buttonText]="'Web3 login'"
+                (callToAction)="openLoginModal.emit()"
+              />
             </div>
             <div class="col-12 col-md-6 my-2 my-md-0">
-              <button class="btn btn-success-gradient w-100 py-2" (click)="submitAmount()">
-                <span class="text-light">Confirm</span>
-              </button>
+              <app-chainbrary-button
+                [buttonClasses]="['btn-success-gradient', 'text-light']"
+                [buttonText]="'Confirm'"
+                [buttonType]="'submit'"
+                (callToAction)="submitAmount()"
+              />
             </div>
           </div>
         </div>

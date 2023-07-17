@@ -19,22 +19,18 @@ a {
 .bi-envelope-fill {
   background: linear-gradient(41.63deg, #f12711 24.71%, #f5af19 59.12%);
   background: -webkit-linear-gradient(41.63deg, #f12711 24.71%, #f5af19 59.12%);
-  background: -moz-linear-gradient(41.63deg, #f12711 24.71%, #f5af19 59.12%);
   -webkit-background-clip: text;
-  -moz-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .bi-inboxes-fill,
 .bi-patch-check-fill {
   background: linear-gradient(41.63deg, #56ccf2 24.71%, #2f80ed 59.12%);
   background: -webkit-linear-gradient(41.63deg, #56ccf2 24.71%, #2f80ed 59.12%);
-  background: -moz-linear-gradient(41.63deg, #56ccf2 24.71%, #2f80ed 59.12%);
   -webkit-background-clip: text;
-  -moz-background-clip: text;
-  background-clip: text;
   -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 // Buttons
@@ -46,4 +42,26 @@ a {
 .btn-secondary-gradient {
   border-radius: 10px !important;
   border: 0 !important;
+}
+
+// Modals
+
+.qr-code-container-modal {
+  .mat-mdc-dialog-surface {
+    background: transparent !important;
+    box-shadow: none !important;
+  }
+}
+
+:root {
+  --mdc-shape-medium: 10px;
+  --mdc-shape-small: 10px;
+
+  .card {
+    --bs-card-border-radius: 1.5rem;
+  }
+}
+
+.alert {
+  --bs-alert-border-radius: 15px !important;
 }

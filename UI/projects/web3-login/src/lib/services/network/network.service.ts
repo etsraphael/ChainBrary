@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { EMPTY, Observable, defer, of } from 'rxjs';
 import Web3 from 'web3';
+import { INetworkDetail, NetworkChainCode, NetworkChainId } from '../../interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -10,38 +11,209 @@ declare let window: any;
 })
 export class NetworkServiceWeb3Login {
   web3: Web3;
+  currentNetwork$: Observable<INetworkDetail | null> = EMPTY;
 
-  getNetworkName(networkId: string): string {
-    switch (networkId) {
-      case '1':
+  constructor() {
+    setTimeout(() => {
+      this.web3 = new Web3(window.ethereum);
+      this.currentNetwork$ = defer(() => {
+        if (window.ethereum) {
+          return of(this.getNetworkDetailByChainCode(window.ethereum.chainId));
+        }
+        return of(this.getNetworkDetailByChainId(null));
+      });
+    }, 1000);
+  }
+
+  getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
+    const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
+    if (chainId) {
+      const networkDetail: INetworkDetail | undefined = networkDetailList.find(
+        (network: INetworkDetail) => network.chainId === chainId
+      );
+      if (networkDetail) {
+        return networkDetail;
+      }
+    }
+    return {
+      chainId: NetworkChainId.UNKNOWN,
+      chainCode: NetworkChainCode.UNKNOWN,
+      name: 'Unknown',
+      shortName: 'unknown',
+      nativeCurrency: {
+        name: 'Unknown',
+        symbol: 'UNK',
+        decimals: 18
+      }
+    };
+  }
+
+  getNetworkDetailByChainCode(chainCode: string): INetworkDetail {
+    const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
+    const networkDetail: INetworkDetail | undefined = networkDetailList.find(
+      (network: INetworkDetail) => network.chainCode === chainCode
+    );
+    if (networkDetail) {
+      return networkDetail;
+    }
+    return {
+      chainId: NetworkChainId.UNKNOWN,
+      chainCode: NetworkChainCode.UNKNOWN,
+      name: 'Unknown',
+      shortName: 'unknown',
+      nativeCurrency: {
+        name: 'Unknown',
+        symbol: 'UNK',
+        decimals: 18
+      }
+    };
+  }
+
+  getNetworkDetailList(): INetworkDetail[] {
+    return [
+      {
+        chainId: NetworkChainId.ETHEREUM,
+        chainCode: NetworkChainCode.ETHEREUM,
+        name: 'Ethereum Mainnet',
+        shortName: 'Ethereum',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.BNB,
+        chainCode: NetworkChainCode.BNB,
+        name: 'Binance Smart Chain Mainnet',
+        shortName: 'BNB Chain',
+        nativeCurrency: {
+          name: 'Binance Chain Native Token',
+          symbol: 'BNB',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.SEPOLIA,
+        chainCode: NetworkChainCode.SEPOLIA,
+        name: 'Sepolia',
+        shortName: 'Sepolia',
+        nativeCurrency: {
+          name: 'Sepolia',
+          symbol: 'SEP',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.ARBITRUM,
+        chainCode: NetworkChainCode.ARBITRUM,
+        name: 'Arbitrum One',
+        shortName: 'Arbitrum',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.POLYGON,
+        chainCode: NetworkChainCode.POLYGON,
+        name: 'Polygon',
+        shortName: 'Polygon',
+        nativeCurrency: {
+          name: 'Matic',
+          symbol: 'MATIC',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.OPTIMISM,
+        chainCode: NetworkChainCode.OPTIMISM,
+        name: 'Optimism',
+        shortName: 'Optimism',
+        nativeCurrency: {
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.AVALANCHE,
+        chainCode: NetworkChainCode.AVALANCHE,
+        name: 'Avalanche',
+        shortName: 'Avalanche',
+        nativeCurrency: {
+          name: 'Avalanche',
+          symbol: 'AVAX',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.MOONBEAM,
+        chainCode: NetworkChainCode.MOONBEAM,
+        name: 'Moonbeam',
+        shortName: 'Moonbeam',
+        nativeCurrency: {
+          name: 'Moonbeam',
+          symbol: 'GLMR',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.KAVA,
+        chainCode: NetworkChainCode.KAVA,
+        name: 'KAVA',
+        shortName: 'KAVA',
+        nativeCurrency: {
+          name: 'KAVA',
+          symbol: 'KAVA',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.FANTOM,
+        chainCode: NetworkChainCode.FANTOM,
+        name: 'Fantom',
+        shortName: 'Fantom',
+        nativeCurrency: {
+          name: 'Fantom',
+          symbol: 'FTM',
+          decimals: 18
+        }
+      },
+      {
+        chainId: NetworkChainId.CELO,
+        chainCode: NetworkChainCode.CELO,
+        name: 'Celo',
+        shortName: 'Celo',
+        nativeCurrency: {
+          name: 'Celo',
+          symbol: 'CELO',
+          decimals: 18
+        }
+      }
+    ];
+  }
+
+  getNetworkName(chainId: NetworkChainId): string {
+    switch (chainId) {
+      case NetworkChainId.ETHEREUM:
         return 'Mainnet';
-      case '3':
-        return 'Ropsten';
-      case '4':
-        return 'Rinkeby';
-      case '5':
-        return 'Goerli';
-      case '42':
-        return 'Kovan';
-      case '56':
+      case NetworkChainId.BNB:
         return 'Binance Smart Chain';
+      case NetworkChainId.SEPOLIA:
+        return 'Sepolia';
       default:
         return 'Unknown';
     }
   }
 
-  getCurrentNetwork(): { networkId: string; networkName: string } {
+  getCurrentNetwork(): INetworkDetail {
     if (window.ethereum && window.ethereum.isMetaMask) {
       this.web3 = new Web3(window.ethereum);
-      return {
-        networkId: window.ethereum.networkVersion,
-        networkName: this.getNetworkName(window.ethereum.networkVersion)
-      };
+      return this.getNetworkDetailByChainId(window.ethereum.networkVersion);
     }
-    return {
-      networkId: '0',
-      networkName: 'Unknown'
-    };
+    return this.getNetworkDetailByChainId(null);
   }
 
   onAccountChangedEvent(): Observable<string | undefined> {
@@ -62,19 +234,16 @@ export class NetworkServiceWeb3Login {
     });
   }
 
-  onChainChangedEvent(): Observable<{ networkId: string; networkName: string }> {
+  onChainChangedEvent(): Observable<INetworkDetail> {
     return defer(() => {
       if (typeof window?.ethereum === 'undefined') {
         return of(this.getCurrentNetwork());
       }
 
-      return new Observable<{ networkId: string; networkName: string }>((subscriber) => {
-        window.ethereum.on('chainChanged', (networkId: string) => {
-          const idFormat: string = parseInt(networkId.slice(2), 16).toString();
-          subscriber.next({
-            networkId: idFormat,
-            networkName: this.getNetworkName(idFormat)
-          });
+      return new Observable<INetworkDetail>((subscriber) => {
+        window.ethereum.on('chainChanged', (chainCode: string) => {
+          subscriber.next(this.getNetworkDetailByChainCode(chainCode));
+          this.currentNetwork$ = of(this.getNetworkDetailByChainCode(chainCode));
         });
       });
     });

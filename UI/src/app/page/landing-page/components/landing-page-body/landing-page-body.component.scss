@@ -8,7 +8,7 @@
 
 .card {
   border: 0;
-  border-radius: 15px;
+  box-shadow: 1px 1px 1.875rem rgba(216, 125, 251, 0.42);
 }
 
 .container-icon-card {
@@ -18,32 +18,26 @@
 
   .bi-file-earmark-code,
   .bi-inboxes-fill-code {
-    background: -moz-linear-gradient(top, #e72c83 0%, #a742c6 100%);
     background: -webkit-linear-gradient(top, #e72c83 0%, #a742c6 100%);
     background: linear-gradient(to bottom, #e72c83 0%, #a742c6 100%);
     -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
+    display: inline-block;
   }
 
   .bi-universal-access {
-    background: -moz-linear-gradient(top, #904e95 0%, #e96443 100%);
     background: -webkit-linear-gradient(to top, #904e95, #e96443);
     background: linear-gradient(to top, #904e95, #e96443);
     -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
+    display: inline-block;
   }
 
   .bi-eye {
-    background: -moz-linear-gradient(left, #e100ff 0%, #7f00ff 100%);
     background: -webkit-linear-gradient(to left, #e100ff, #7f00ff);
     background: linear-gradient(to left, #e100ff, #7f00ff);
     -webkit-background-clip: text;
-    -moz-background-clip: text;
-    background-clip: text;
     -webkit-text-fill-color: transparent;
+    display: inline-block;
   }
 }

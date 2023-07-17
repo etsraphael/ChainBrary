@@ -14,12 +14,19 @@
       </div>
     </div>
   </div>
-
-  <div *ngIf="(transactionCards$ | async)?.length! === 0">
+  <div class="mt-5" *ngIf="(transactionCards$ | async)?.length! === 0">
+    <div *ngIf="paymentSelectedInvalid$ | async" class="d-flex justify-content-center">
+      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
+        <div class="alert alert-danger border-0 shadow-sm" role="alert">
+          <h4 class="alert-heading">Wrong network</h4>
+          <p>Please be connected on the {{ (paymentNetwork$ | async)?.name }} network to use this feature.</p>
+        </div>
+      </div>
+    </div>
     <div class="d-flex justify-content-center">
-      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-5">
+      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
         <app-use-cases-sidebar-header
-          [certificationBtnVisible]="false"
+          [networkFrozen]="true"
           *ngIf="AuthStatusCodeTypes.NotConnected !== (authStatus$ | async)"
         >
         </app-use-cases-sidebar-header>
@@ -28,7 +35,7 @@
     <div class="d-flex justify-content-center">
       <div
         class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 my-5"
-        *ngIf="cardIsLoading$ | async; else paymentRequestCard"
+        *ngIf="paymentIsLoading$ | async; else paymentRequestCard"
       >
         <div class="d-flex justify-content-center">
           <div class="spinner-container spinner-border text-primary" role="status">
@@ -38,7 +45,23 @@
       </div>
       <ng-template #paymentRequestCard>
         <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-2">
+          <div
+            *ngIf="(selectPaymentRequestState$ | async)?.payment?.data?.usdEnabled && tokenInfo"
+            class="card shadow-sm border-0 mt-2"
+          >
+            <div class="card-body">
+              <p class="text-dark mb-0 px-2">
+                <strong>{{ (selectPaymentRequestState$ | async)?.profile?.username }}</strong> is requesting a sum
+                equivalent to <strong>${{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>.
+                <br />
+                To ensure accuracy, the transaction will be precisely calculated to match this amount in
+                {{ tokenInfo }} prior to processing the payment.
+              </p>
+            </div>
+          </div>
           <app-payment-request-card
+            [currentNetwork]="currentNetwork$ | async"
+            [paymentNetwork]="paymentNetwork$ | async"
             [authStatus]="(authStatus$ | async)!"
             [publicAddress]="publicAddress$ | async"
             [paymentRequest]="(selectPaymentRequestState$ | async)!"

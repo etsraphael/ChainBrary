@@ -4,7 +4,7 @@
     <div class="card-header-custom position-absolute w-100">
       <div class="row justify-content-center">
         <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
-          <app-user-avatar [avatarUrl]="isAvatarUrlValid ? getAvatarValue() : null"></app-user-avatar>
+          <app-user-avatar [avatarUrl]="isAvatarUrlValid ? avatarValue : null"></app-user-avatar>
         </div>
       </div>
     </div>
@@ -19,16 +19,24 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <app-payment-request-price-settings
+        [usdConversionRate]="usdConversionRate"
+        [tokenConversionRate]="tokenConversionRate"
         [priceForm]="priceForm"
+        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"
+        (swapCurrency)="swapCurrency()"
       ></app-payment-request-price-settings>
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <app-payment-request-review
+        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
         [username]="mainForm.controls.profile.controls.username.value!"
-        [amount]="mainForm.controls.price.controls.amount.value!"
+        [amount]="amount"
         [previewLink]="linkGenerated"
+        [usdAmount]="usdAmount"
+        [usdEnabled]="priceForm.controls.usdEnabled.value!"
+        [tokenConversionRate]="tokenConversionRate"
         (goToPreviousPageEvent)="goToPreviousPage()"
       >
       </app-payment-request-review>

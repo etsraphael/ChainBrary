@@ -1,10 +1,18 @@
 import { environment } from '../../../environments/environment';
+import { IContract } from '../interfaces';
 import { BaseContract } from './baseContract';
 import { AbiItem } from 'web3-utils';
 
 export class TransactionBridgeContract extends BaseContract {
+  constructor(public chainId: string) {
+    super();
+  }
+
   getAddress(): string {
-    return environment.contractLink.bridgeTransferAddress;
+    const contractLink: IContract = environment.contracts.bridgeTransfer.contracts.find(
+      (contract: IContract) => this.chainId === contract.chainId
+    ) as IContract;
+    return contractLink.address;
   }
 
   getAbi(): AbiItem[] {
@@ -61,6 +69,19 @@ export class TransactionBridgeContract extends BaseContract {
       },
       {
         inputs: [],
+        name: 'MAX_RECIPIENTS',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
         name: 'feeRate',
         outputs: [
           {
@@ -100,7 +121,7 @@ export class TransactionBridgeContract extends BaseContract {
             type: 'address[]'
           }
         ],
-        name: 'transferEth',
+        name: 'transferFund',
         outputs: [],
         stateMutability: 'payable',
         type: 'function'

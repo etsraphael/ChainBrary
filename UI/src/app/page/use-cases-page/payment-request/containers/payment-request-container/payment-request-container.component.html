@@ -8,7 +8,8 @@
   <!-- Payment request maker -->
   <div class="row justify-content-center my-3">
     <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8">
-      <app-payment-request-maker [publicAddressObs]="publicAddress$"></app-payment-request-maker>
+      <app-payment-request-maker [publicAddressObs]="publicAddress$" [currentNetworkObs]="currentNetwork$">
+      </app-payment-request-maker>
     </div>
   </div>
 </div>
