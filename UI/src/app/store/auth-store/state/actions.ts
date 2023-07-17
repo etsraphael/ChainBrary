@@ -35,7 +35,13 @@ export const loadOrgnisationSuccess = createAction(
   props<{ organization: IOrganization }>()
 );
 
-export const networkChanged = createAction('[Auth] Network Changed', props<{ network: INetworkDetail }>());
+export const networkChange = createAction('[Auth] Network Change', props<{ network: INetworkDetail }>());
+
+export const networkChangeSuccess = createAction('[Auth] Network Change Success', props<{ network: INetworkDetail }>());
+
+export const networkChangeSuccessOutside = createAction('[Auth] Network Change Success Outside');
+
+export const networkChangeFailure = createAction('[Auth] Network Change Failure', props<{ message: string }>());
 
 export const accountChanged = createAction('[Auth] Account Changed', props<{ publicAddress: string | null }>());
 

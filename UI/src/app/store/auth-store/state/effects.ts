@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, tap } from 'rxjs';
+import { EMPTY, filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -69,12 +69,40 @@ export class AuthEffects {
     );
   });
 
-  networkChanged$ = createEffect(
+  networkChangeSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.networkChangeSuccess),
+      tap((action: ReturnType<typeof AuthActions.networkChangeSuccess>) => {
+        this.authService.savechainId(action.network.chainId);
+      }),
+      map(() => showSuccessNotification({ message: 'Network is updated' }))
+    );
+  });
+
+  networkChangeError$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.networkChangeFailure),
+      map((action: ReturnType<typeof AuthActions.networkChangeFailure>) =>
+        showErrorNotification({ message: action.message })
+      )
+    );
+  });
+
+  networkChanges$ = createEffect(
     () => {
       return this.actions$.pipe(
-        ofType(AuthActions.networkChanged),
-        tap((action: ReturnType<typeof AuthActions.networkChanged>) => {
-          this.authService.savechainId(action.network.chainId);
+        ofType(AuthActions.networkChange),
+        switchMap(async (action: ReturnType<typeof AuthActions.networkChange>) => {
+          try {
+            await window.ethereum.request({
+              method: 'wallet_switchEthereumChain',
+              params: [{ chainId: action.network.chainCode }]
+            });
+            return EMPTY;
+          } catch (error: unknown) {
+            const errorMessage = (error as { message: string }).message || 'An unexpected error occurred';
+            return AuthActions.networkChangeFailure({ message: errorMessage });
+          }
         })
       );
     },
