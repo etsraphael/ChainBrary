@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
+import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { filter, map, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
@@ -18,7 +18,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.setAuthPublicAddress),
-        tap((action: { publicAddress: string; network: INetworkDetail }) => {
+        tap((action: ReturnType<typeof AuthActions.setAuthPublicAddress>) => {
           this.authService.savePublicAddress(action.publicAddress);
           this.authService.savechainId(action.network.chainId);
         })
@@ -73,7 +73,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.networkChanged),
-        tap((action: { network: INetworkDetail }) => {
+        tap((action: ReturnType<typeof AuthActions.networkChanged>) => {
           this.authService.savechainId(action.network.chainId);
         })
       );
@@ -85,7 +85,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.accountChanged),
-        tap((action: { publicAddress: string | null }) => {
+        tap((action: ReturnType<typeof AuthActions.accountChanged>) => {
           if (action.publicAddress) {
             this.authService.savePublicAddress(action.publicAddress);
           } else {

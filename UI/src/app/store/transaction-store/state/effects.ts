@@ -2,8 +2,11 @@ import { Injectable } from '@angular/core';
 import { ITransactionLog, TransactionOptions, TransactionSearchService } from '@chainbrary/transaction-search';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { catchError, concatMap, filter, from, map, of } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
+import { selectCurrentChainId, selectPublicAddress } from '../../auth-store/state/selectors';
 import { amountSent } from '../../payment-request-store/state/actions';
 import {
   loadTransactionsFromBridgeTransfer,
@@ -11,9 +14,6 @@ import {
   loadTransactionsFromBridgeTransferSuccess,
   localTransactionSentSuccessfully
 } from './actions';
-import { Store } from '@ngrx/store';
-import { selectCurrentChainId, selectPublicAddress } from '../../auth-store/state/selectors';
-import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class TransactionEffects {
@@ -26,7 +26,7 @@ export class TransactionEffects {
   paymentTransactionSent$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(amountSent),
-      map((action: { hash: string; chainId: NetworkChainId }) => {
+      map((action: ReturnType<typeof amountSent>) => {
         return localTransactionSentSuccessfully({
           card: {
             title: 'Transaction sent successfully',
@@ -46,7 +46,7 @@ export class TransactionEffects {
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectCurrentChainId)]),
       filter((action) => action[1] !== null && action[2] !== null),
       concatMap(
-        (action: [{ page: number; limit: number }, string | null, NetworkChainId | null]) => {
+        (action: [ReturnType<typeof loadTransactionsFromBridgeTransfer>, string | null, NetworkChainId | null]) => {
           const addressContract: string = environment.contracts.bridgeTransfer.contracts.find(
             (contract) => contract.chainId === action[2]
           )?.address as string;

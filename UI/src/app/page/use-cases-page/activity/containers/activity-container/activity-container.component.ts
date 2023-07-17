@@ -36,20 +36,18 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
   }
 
   callActions(): void {
-    this.store.dispatch(
-      loadTransactionsFromBridgeTransfer({ page: 1, limit: 1000000 })
-    );
+    this.store.dispatch(loadTransactionsFromBridgeTransfer({ page: 1, limit: 1000000 }));
   }
 
   // call list of transactions after network changes
   generateSubs(): void {
     this.currentNetworkSub = this.currentNetwork$
-    .pipe(
-      distinctUntilChanged(),
-      filter((network) => network !== null),
-      skip(1)
-    )
-    .subscribe(() => (this.callActions()))
+      .pipe(
+        distinctUntilChanged(),
+        filter((network) => network !== null),
+        skip(1)
+      )
+      .subscribe(() => this.callActions());
   }
 
   ngOnDestroy(): void {

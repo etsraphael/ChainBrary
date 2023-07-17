@@ -12,7 +12,7 @@ export class NotificationEffects {
     () => {
       return this.actions$.pipe(
         ofType(NotificationActions.showSuccessNotification),
-        map((action: { message: string }) =>
+        map((action: ReturnType<typeof NotificationActions.showSuccessNotification>) =>
           this._snackBar.open(action.message, 'Close', {
             duration: 5000,
             panelClass: ['success-snackbar']
@@ -27,7 +27,7 @@ export class NotificationEffects {
     () => {
       return this.actions$.pipe(
         ofType(NotificationActions.showErrorNotification),
-        map((action: { message: string }) =>
+        map((action: ReturnType<typeof NotificationActions.showErrorNotification>) =>
           this._snackBar.open(action.message, 'Close', {
             duration: 5000,
             panelClass: ['error-snackbar']
