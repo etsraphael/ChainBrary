@@ -13,9 +13,9 @@ export class NotificationEffects {
       return this.actions$.pipe(
         ofType(NotificationActions.showSuccessNotification),
         map((action: ReturnType<typeof NotificationActions.showSuccessNotification>) =>
-          this._snackBar.open(action.message, 'Close', {
+          this._snackBar.open(action.message, '', {
             duration: 5000,
-            panelClass: ['success-snackbar']
+            panelClass: ['success-snackbar', 'text-center']
           })
         )
       );

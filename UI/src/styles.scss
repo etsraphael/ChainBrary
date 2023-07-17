@@ -61,6 +61,10 @@ a {
   }
 }
 
+.mat-mdc-snack-bar-container.success-snackbar {
+  --mdc-snackbar-container-color: #198754;
+}
+
 :root {
   --mdc-shape-medium: 10px;
   --mdc-shape-small: 10px;

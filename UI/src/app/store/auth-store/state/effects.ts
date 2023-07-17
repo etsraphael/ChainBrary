@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { EMPTY, filter, map, switchMap, tap } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -88,26 +88,29 @@ export class AuthEffects {
     );
   });
 
-  networkChanges$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(AuthActions.networkChange),
-        switchMap(async (action: ReturnType<typeof AuthActions.networkChange>) => {
-          try {
-            await window.ethereum.request({
-              method: 'wallet_switchEthereumChain',
-              params: [{ chainId: action.network.chainCode }]
+  networkChanges$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.networkChange),
+      switchMap(async (action: ReturnType<typeof AuthActions.networkChange>) => {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: action.network.chainCode }]
+          });
+          return AuthActions.networkChangeSuccessOutside();
+        } catch (error: unknown) {
+          const errorPayload = error as { code: number; message: string };
+          if (errorPayload.code === 4902) {
+            return AuthActions.addNetworkToWallet({ network: action.network });
+          } else {
+            return AuthActions.networkChangeFailure({
+              message: errorPayload.message || 'An unexpected error occurred'
             });
-            return EMPTY;
-          } catch (error: unknown) {
-            const errorMessage = (error as { message: string }).message || 'An unexpected error occurred';
-            return AuthActions.networkChangeFailure({ message: errorMessage });
           }
-        })
-      );
-    },
-    { dispatch: false }
-  );
+        }
+      })
+    );
+  });
 
   accountChanged$ = createEffect(
     () => {
