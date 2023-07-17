@@ -5,7 +5,7 @@ import { AuthStatusCode } from './../../../../../shared/enum';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 
 @Component({
   selector: 'app-payment-request-card[paymentRequest][authStatus][paymentRequest][currentNetwork][paymentNetwork]',
