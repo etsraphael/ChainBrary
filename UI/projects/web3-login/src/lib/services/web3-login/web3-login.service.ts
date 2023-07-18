@@ -9,7 +9,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class Web3LoginService {
-  constructor(public dialog: MatDialog, private networkServiceWeb3Login: NetworkServiceWeb3Login) {}
+  constructor(
+    public dialog: MatDialog,
+    private networkServiceWeb3Login: NetworkServiceWeb3Login
+  ) {}
 
   get onAccountChangedEvent$(): Observable<string | undefined> {
     return this.networkServiceWeb3Login.onAccountChangedEvent();
