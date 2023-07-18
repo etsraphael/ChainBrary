@@ -6,7 +6,10 @@ import * as NotificationActions from './actions';
 
 @Injectable()
 export class NotificationEffects {
-  constructor(private actions$: Actions, private _snackBar: MatSnackBar) {}
+  constructor(
+    private actions$: Actions,
+    private _snackBar: MatSnackBar
+  ) {}
 
   successNotification$ = createEffect(
     () => {
