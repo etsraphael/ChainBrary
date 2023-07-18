@@ -44,7 +44,8 @@ export class NetworkServiceWeb3Login {
         name: 'Unknown',
         symbol: 'UNK',
         decimals: 18
-      }
+      },
+      blockExplorerUrls: ''
     };
   }
 
@@ -65,7 +66,8 @@ export class NetworkServiceWeb3Login {
         name: 'Unknown',
         symbol: 'UNK',
         decimals: 18
-      }
+      },
+      blockExplorerUrls: ''
     };
   }
 
@@ -80,7 +82,8 @@ export class NetworkServiceWeb3Login {
           name: 'Ether',
           symbol: 'ETH',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://etherscan.io'
       },
       {
         chainId: NetworkChainId.BNB,
@@ -91,7 +94,8 @@ export class NetworkServiceWeb3Login {
           name: 'Binance Chain Native Token',
           symbol: 'BNB',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://bscscan.com'
       },
       {
         chainId: NetworkChainId.SEPOLIA,
@@ -102,7 +106,8 @@ export class NetworkServiceWeb3Login {
           name: 'Sepolia',
           symbol: 'SEP',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://sepolia.etherscan.io'
       },
       {
         chainId: NetworkChainId.ARBITRUM,
@@ -113,7 +118,8 @@ export class NetworkServiceWeb3Login {
           name: 'Ether',
           symbol: 'ETH',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://arbiscan.io'
       },
       {
         chainId: NetworkChainId.POLYGON,
@@ -124,7 +130,8 @@ export class NetworkServiceWeb3Login {
           name: 'Matic',
           symbol: 'MATIC',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://www.polygonscan.com'
       },
       {
         chainId: NetworkChainId.OPTIMISM,
@@ -135,7 +142,8 @@ export class NetworkServiceWeb3Login {
           name: 'Ether',
           symbol: 'ETH',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://optimistic.etherscan.io'
       },
       {
         chainId: NetworkChainId.AVALANCHE,
@@ -146,7 +154,8 @@ export class NetworkServiceWeb3Login {
           name: 'Avalanche',
           symbol: 'AVAX',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://snowtrace.io'
       },
       {
         chainId: NetworkChainId.MOONBEAM,
@@ -157,7 +166,8 @@ export class NetworkServiceWeb3Login {
           name: 'Moonbeam',
           symbol: 'GLMR',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://moonbeam.moonscan.io'
       },
       {
         chainId: NetworkChainId.KAVA,
@@ -168,7 +178,8 @@ export class NetworkServiceWeb3Login {
           name: 'KAVA',
           symbol: 'KAVA',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://explorer.kava.io'
       },
       {
         chainId: NetworkChainId.FANTOM,
@@ -179,7 +190,8 @@ export class NetworkServiceWeb3Login {
           name: 'Fantom',
           symbol: 'FTM',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://ftmscan.com'
       },
       {
         chainId: NetworkChainId.CELO,
@@ -190,7 +202,8 @@ export class NetworkServiceWeb3Login {
           name: 'Celo',
           symbol: 'CELO',
           decimals: 18
-        }
+        },
+        blockExplorerUrls: 'https://celoscan.io'
       }
     ];
   }

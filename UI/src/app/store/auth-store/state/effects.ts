@@ -88,6 +88,34 @@ export class AuthEffects {
     );
   });
 
+  addNetworkToWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.addNetworkToWallet),
+      switchMap(async (action: ReturnType<typeof AuthActions.addNetworkToWallet>) => {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: action.network.chainCode,
+                chainName: action.network.name,
+                rpcUrls: ['https://polygon-rpc.com'],
+                nativeCurrency: action.network.nativeCurrency,
+                blockExplorerUrls: [action.network.blockExplorerUrls]
+              }
+            ]
+          });
+          return AuthActions.addNetworkToWalletSuccess({ network: action.network });
+        } catch (error: unknown) {
+          const errorPayload = error as { code: number; message: string };
+          return AuthActions.addNetworkToWalletFailure({
+            message: errorPayload.message || 'An unexpected error occurred'
+          });
+        }
+      })
+    );
+  });
+
   networkChanges$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.networkChange),

@@ -17,6 +17,7 @@ export interface INetworkDetail {
     symbol: string;
     decimals: number;
   };
+  blockExplorerUrls: string;
 }
 
 export enum ModalStateType {
