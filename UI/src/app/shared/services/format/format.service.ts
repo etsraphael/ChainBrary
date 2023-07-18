@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class FormatService {
-  formatPublicAddress(address: string): string {
-    return `${address.slice(0, 15)}...${address.slice(-15)}`;
+  formatPublicAddress(address: string, range: number): string {
+    return `${address.slice(0, range)}...${address.slice(range * -1)}`;
   }
 
   timeStampToDate(timestamp: number): Date {

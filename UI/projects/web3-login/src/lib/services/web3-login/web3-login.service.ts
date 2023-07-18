@@ -1,9 +1,9 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Web3LoginComponent } from '../../containers/web3-login/web3-login.component';
-import { IModalState, INetworkDetail, NetworkChainId } from '../../interfaces';
-import { NetworkServiceWeb3Login } from '../network/network.service';
 import { Observable } from 'rxjs';
+import { Web3LoginComponent } from '../../containers/web3-login/web3-login.component';
+import { IModalState, INetworkDetail } from '../../interfaces';
+import { NetworkServiceWeb3Login } from '../network/network.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,10 +39,6 @@ export class Web3LoginService {
 
   closeLoginModal(): void {
     return this.dialog.closeAll();
-  }
-
-  getNetworkName(chainId: NetworkChainId): string {
-    return this.networkServiceWeb3Login.getNetworkName(chainId);
   }
 
   getNetworkDetailByChainId(chainId: string | null): INetworkDetail {

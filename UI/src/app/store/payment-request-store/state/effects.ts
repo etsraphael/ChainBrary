@@ -30,7 +30,7 @@ export class PaymentRequestEffects {
   generatePayment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequest),
-      map((action: { encodedRequest: string }) => {
+      map((action: ReturnType<typeof PaymentRequestActions.generatePaymentRequest>) => {
         const decodedPayment = Buffer.from(
           action.encodedRequest.replace('+', '-').replace('/', '_'),
           'base64'
@@ -60,14 +60,16 @@ export class PaymentRequestEffects {
   sendAmountTransactionsError$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.amountSentFailure),
-      map((action: { message: string }) => showErrorNotification({ message: action.message }))
+      map((action: ReturnType<typeof PaymentRequestActions.amountSentFailure>) =>
+        showErrorNotification({ message: action.message })
+      )
     );
   });
 
   sendAmountTransactionsSuccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.amountSentSuccess),
-      filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
+      filter((action: ReturnType<typeof PaymentRequestActions.amountSentSuccess>) => action.numberConfirmation == 1),
       map(() => showSuccessNotification({ message: 'Transaction is processing' }))
     );
   });
@@ -76,56 +78,58 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
-      switchMap((payload: [{ priceValue: string }, string | null, IPaymentRequest | null]) => {
-        const web3: Web3 = new Web3(window.ethereum);
-        const transactionContract = new TransactionBridgeContract(String(payload[2]?.chainId));
-        const contract: Contract = new web3.eth.Contract(
-          transactionContract.getAbi(),
-          transactionContract.getAddress()
-        );
-        return (
-          from(
-            contract.methods
-              .transferFund([payload[2]?.publicAddress])
-              .estimateGas({ from: payload[1], value: String(payload[0].priceValue) })
-          ) as Observable<number>
-        ).pipe(
-          switchMap((gas: number) => {
-            return (
-              from(
-                contract.methods
-                  .transferFund([payload[2]?.publicAddress])
-                  .send({ from: payload[1], value: String(payload[0].priceValue), gas: gas })
-              ) as Observable<IReceiptTransaction>
-            ).pipe(
-              map((receipt: IReceiptTransaction) =>
-                PaymentRequestActions.amountSent({
-                  hash: receipt.transactionHash,
-                  chainId: payload[2]?.chainId as NetworkChainId
-                })
-              ),
-              catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
-            );
-          }),
-          catchError(() => {
-            return (
-              from(
-                contract.methods
-                  .transferFund([payload[2]?.publicAddress])
-                  .send({ from: payload[1], value: String(payload[0].priceValue) })
-              ) as Observable<IReceiptTransaction>
-            ).pipe(
-              map((receipt: IReceiptTransaction) =>
-                PaymentRequestActions.amountSent({
-                  hash: receipt.transactionHash,
-                  chainId: payload[2]?.chainId as NetworkChainId
-                })
-              ),
-              catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
-            );
-          })
-        );
-      })
+      switchMap(
+        (payload: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null]) => {
+          const web3: Web3 = new Web3(window.ethereum);
+          const transactionContract = new TransactionBridgeContract(String(payload[2]?.chainId));
+          const contract: Contract = new web3.eth.Contract(
+            transactionContract.getAbi(),
+            transactionContract.getAddress()
+          );
+          return (
+            from(
+              contract.methods
+                .transferFund([payload[2]?.publicAddress])
+                .estimateGas({ from: payload[1], value: String(payload[0].priceValue) })
+            ) as Observable<number>
+          ).pipe(
+            switchMap((gas: number) => {
+              return (
+                from(
+                  contract.methods
+                    .transferFund([payload[2]?.publicAddress])
+                    .send({ from: payload[1], value: String(payload[0].priceValue), gas: gas })
+                ) as Observable<IReceiptTransaction>
+              ).pipe(
+                map((receipt: IReceiptTransaction) =>
+                  PaymentRequestActions.amountSent({
+                    hash: receipt.transactionHash,
+                    chainId: payload[2]?.chainId as NetworkChainId
+                  })
+                ),
+                catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+              );
+            }),
+            catchError(() => {
+              return (
+                from(
+                  contract.methods
+                    .transferFund([payload[2]?.publicAddress])
+                    .send({ from: payload[1], value: String(payload[0].priceValue) })
+                ) as Observable<IReceiptTransaction>
+              ).pipe(
+                map((receipt: IReceiptTransaction) =>
+                  PaymentRequestActions.amountSent({
+                    hash: receipt.transactionHash,
+                    chainId: payload[2]?.chainId as NetworkChainId
+                  })
+                ),
+                catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+              );
+            })
+          );
+        }
+      )
     );
   });
 }

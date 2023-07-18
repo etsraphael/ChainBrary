@@ -17,6 +17,8 @@ export interface INetworkDetail {
     symbol: string;
     decimals: number;
   };
+  blockExplorerUrls: string;
+  rpcUrls?: string[];
 }
 
 export enum ModalStateType {
@@ -54,4 +56,13 @@ export enum NetworkChainCode {
   FANTOM = '0xfa',
   CELO = '0xa4ec',
   UNKNOWN = '0'
+}
+
+export interface NetworkRpcUrlSupported {
+  chainId: NetworkChainId;
+  rpcUrl: string[];
+}
+
+export interface Web3LoginConfig {
+  networkSupported: NetworkRpcUrlSupported[];
 }
