@@ -1,6 +1,6 @@
 {
-  "name": "transaction-search",
-  "version": "0.0.1",
+  "name": "@chainbrary/transaction-search",
+  "version": "0.0.4",
   "peerDependencies": {
     "@angular/common": "^15.2.0",
     "@angular/core": "^15.2.0",
@@ -9,5 +9,10 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etsraphael/ChainBrary.git"
+  },
+  "homepage": "https://github.com/etsraphael/ChainBrary/tree/release/dev/UI/projects/transaction-search"
 }
