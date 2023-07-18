@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { EMPTY, Observable, defer, of } from 'rxjs';
 import Web3 from 'web3';
-import { INetworkDetail, NetworkChainCode, NetworkChainId } from '../../interfaces';
+import { INetworkDetail, NetworkChainCode, NetworkChainId, NetworkRpcUrlSupported, Web3LoginConfig } from '../../interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -13,7 +13,9 @@ export class NetworkServiceWeb3Login {
   web3: Web3;
   currentNetwork$: Observable<INetworkDetail | null> = EMPTY;
 
-  constructor() {
+  constructor(
+    @Inject('config') private config: Web3LoginConfig,
+  ) {
     setTimeout(() => {
       this.web3 = new Web3(window.ethereum);
       this.currentNetwork$ = defer(() => {
@@ -32,7 +34,10 @@ export class NetworkServiceWeb3Login {
         (network: INetworkDetail) => network.chainId === chainId
       );
       if (networkDetail) {
-        return networkDetail;
+        return {
+          ...networkDetail,
+          rpcUrls: this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === networkDetail.chainId)?.rpcUrl
+        };
       }
     }
     return {
@@ -45,7 +50,8 @@ export class NetworkServiceWeb3Login {
         symbol: 'UNK',
         decimals: 18
       },
-      blockExplorerUrls: ''
+      blockExplorerUrls: '',
+      rpcUrls: ['']
     };
   }
 
@@ -55,7 +61,10 @@ export class NetworkServiceWeb3Login {
       (network: INetworkDetail) => network.chainCode === chainCode
     );
     if (networkDetail) {
-      return networkDetail;
+      return {
+        ...networkDetail,
+        rpcUrls: this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === networkDetail.chainId)?.rpcUrl
+      };
     }
     return {
       chainId: NetworkChainId.UNKNOWN,
@@ -67,8 +76,14 @@ export class NetworkServiceWeb3Login {
         symbol: 'UNK',
         decimals: 18
       },
-      blockExplorerUrls: ''
+      blockExplorerUrls: '',
+      rpcUrls: ['']
     };
+  }
+
+  private getRpcUrl(chainId: NetworkChainId): string[] {
+    const urls = this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === chainId)?.rpcUrl;
+    return urls || [];
   }
 
   getNetworkDetailList(): INetworkDetail[] {
@@ -83,7 +98,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'ETH',
           decimals: 18
         },
-        blockExplorerUrls: 'https://etherscan.io'
+        blockExplorerUrls: 'https://etherscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.ETHEREUM)
       },
       {
         chainId: NetworkChainId.BNB,
@@ -95,7 +111,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'BNB',
           decimals: 18
         },
-        blockExplorerUrls: 'https://bscscan.com'
+        blockExplorerUrls: 'https://bscscan.com',
+        rpcUrls: this.getRpcUrl(NetworkChainId.BNB)
       },
       {
         chainId: NetworkChainId.SEPOLIA,
@@ -107,7 +124,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'SEP',
           decimals: 18
         },
-        blockExplorerUrls: 'https://sepolia.etherscan.io'
+        blockExplorerUrls: 'https://sepolia.etherscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.SEPOLIA)
       },
       {
         chainId: NetworkChainId.ARBITRUM,
@@ -119,7 +137,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'ETH',
           decimals: 18
         },
-        blockExplorerUrls: 'https://arbiscan.io'
+        blockExplorerUrls: 'https://arbiscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.ARBITRUM)
       },
       {
         chainId: NetworkChainId.POLYGON,
@@ -131,7 +150,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'MATIC',
           decimals: 18
         },
-        blockExplorerUrls: 'https://www.polygonscan.com'
+        blockExplorerUrls: 'https://www.polygonscan.com',
+        rpcUrls: this.getRpcUrl(NetworkChainId.POLYGON)
       },
       {
         chainId: NetworkChainId.OPTIMISM,
@@ -143,7 +163,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'ETH',
           decimals: 18
         },
-        blockExplorerUrls: 'https://optimistic.etherscan.io'
+        blockExplorerUrls: 'https://optimistic.etherscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.OPTIMISM)
       },
       {
         chainId: NetworkChainId.AVALANCHE,
@@ -155,7 +176,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'AVAX',
           decimals: 18
         },
-        blockExplorerUrls: 'https://snowtrace.io'
+        blockExplorerUrls: 'https://snowtrace.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.AVALANCHE)
       },
       {
         chainId: NetworkChainId.MOONBEAM,
@@ -167,7 +189,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'GLMR',
           decimals: 18
         },
-        blockExplorerUrls: 'https://moonbeam.moonscan.io'
+        blockExplorerUrls: 'https://moonbeam.moonscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.MOONBEAM)
       },
       {
         chainId: NetworkChainId.KAVA,
@@ -179,7 +202,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'KAVA',
           decimals: 18
         },
-        blockExplorerUrls: 'https://explorer.kava.io'
+        blockExplorerUrls: 'https://explorer.kava.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.KAVA)
       },
       {
         chainId: NetworkChainId.FANTOM,
@@ -191,7 +215,8 @@ export class NetworkServiceWeb3Login {
           symbol: 'FTM',
           decimals: 18
         },
-        blockExplorerUrls: 'https://ftmscan.com'
+        blockExplorerUrls: 'https://ftmscan.com',
+        rpcUrls: this.getRpcUrl(NetworkChainId.FANTOM)
       },
       {
         chainId: NetworkChainId.CELO,
@@ -203,22 +228,10 @@ export class NetworkServiceWeb3Login {
           symbol: 'CELO',
           decimals: 18
         },
-        blockExplorerUrls: 'https://celoscan.io'
+        blockExplorerUrls: 'https://celoscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.CELO)
       }
     ];
-  }
-
-  getNetworkName(chainId: NetworkChainId): string {
-    switch (chainId) {
-      case NetworkChainId.ETHEREUM:
-        return 'Mainnet';
-      case NetworkChainId.BNB:
-        return 'Binance Smart Chain';
-      case NetworkChainId.SEPOLIA:
-        return 'Sepolia';
-      default:
-        return 'Unknown';
-    }
   }
 
   getCurrentNetwork(): INetworkDetail {

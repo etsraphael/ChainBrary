@@ -99,7 +99,7 @@ export class AuthEffects {
               {
                 chainId: action.network.chainCode,
                 chainName: action.network.name,
-                rpcUrls: ['https://polygon-rpc.com'],
+                rpcUrls: action.network.rpcUrls,
                 nativeCurrency: action.network.nativeCurrency,
                 blockExplorerUrls: [action.network.blockExplorerUrls]
               }
