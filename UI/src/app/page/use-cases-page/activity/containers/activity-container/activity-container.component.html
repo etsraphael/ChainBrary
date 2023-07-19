@@ -1,0 +1,11 @@
+<div class="container py-3">
+  <app-transaction-activity-header></app-transaction-activity-header>
+  <div class="my-3">
+    <app-transaction-activity-table
+      [transactionsTable]="(transactions$ | async)!"
+      [currentNetwork]="currentNetwork$ | async"
+      [transactionsIsLoading]="(transactionsIsLoading$ | async)!"
+    >
+    </app-transaction-activity-table>
+  </div>
+</div>

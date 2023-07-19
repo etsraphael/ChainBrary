@@ -57,7 +57,7 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
     })
   ),
   on(
-    AuthActions.networkChanged,
+    AuthActions.networkChangeSuccess,
     (state, { network }): IAuthState => ({
       ...state,
       network: network

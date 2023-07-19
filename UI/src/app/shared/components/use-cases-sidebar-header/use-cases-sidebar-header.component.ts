@@ -6,7 +6,7 @@ import { AuthStatusCode } from '../../enum';
 import { IProfileAdded } from '../../interfaces';
 import { FormatService } from '../../services/format/format.service';
 import { environment } from './../../../../environments/environment';
-import { networkChanged, resetAuth, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
+import { networkChange, resetAuth, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectAuthStatus,
@@ -29,7 +29,11 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   networkList: INetworkDetail[] = [];
   modalSub: Subscription;
 
-  constructor(private store: Store, public formatService: FormatService, private web3LoginService: Web3LoginService) {}
+  constructor(
+    private store: Store,
+    public formatService: FormatService,
+    private web3LoginService: Web3LoginService
+  ) {}
 
   ngOnInit(): void {
     this.generateObs();
@@ -74,6 +78,6 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   changeNetwork(network: INetworkDetail): void {
-    return this.store.dispatch(networkChanged({ network }));
+    return this.store.dispatch(networkChange({ network }));
   }
 }
