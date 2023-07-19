@@ -1,9 +1,8 @@
 import { NgModule } from '@angular/core';
-import { TransactionSearchComponent } from './transaction-search.component';
 
 @NgModule({
-  declarations: [TransactionSearchComponent],
+  declarations: [],
   imports: [],
-  exports: [TransactionSearchComponent]
+  exports: []
 })
 export class TransactionSearchModule {}
