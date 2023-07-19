@@ -7,10 +7,7 @@ import { initGlobalValues } from './actions';
 
 @Injectable()
 export class GlobalEffects implements OnInitEffects {
-  constructor(
-    private actions$: Actions,
-    private web3EventsService: Web3EventsService
-  ) {}
+  constructor(private actions$: Actions, private web3EventsService: Web3EventsService) {}
 
   ngrxOnInitEffects() {
     return initGlobalValues();

@@ -15,7 +15,6 @@ import { UseCasesPageModule } from './page/use-cases-page/use-cases-page.module'
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
 
-
 const web3LoginConfig: Web3LoginConfig = {
   networkSupported: [
     {
@@ -39,7 +38,7 @@ const web3LoginConfig: Web3LoginConfig = {
       rpcUrl: ['https://api.avax.network/ext/bc/C/rpc']
     }
   ]
-}
+};
 
 @NgModule({
   declarations: [AppComponent],
