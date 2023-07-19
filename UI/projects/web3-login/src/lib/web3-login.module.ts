@@ -17,9 +17,7 @@ export class Web3LoginModule {
   static forRoot(config: Web3LoginConfig): ModuleWithProviders<Web3LoginModule> {
     return {
       ngModule: Web3LoginModule,
-      providers: [
-        { provide: 'config', useValue: config }
-      ]
+      providers: [{ provide: 'config', useValue: config }]
     };
   }
 }

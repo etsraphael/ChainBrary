@@ -29,11 +29,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   networkList: INetworkDetail[] = [];
   modalSub: Subscription;
 
-  constructor(
-    private store: Store,
-    public formatService: FormatService,
-    private web3LoginService: Web3LoginService
-  ) {}
+  constructor(private store: Store, public formatService: FormatService, private web3LoginService: Web3LoginService) {}
 
   ngOnInit(): void {
     this.generateObs();

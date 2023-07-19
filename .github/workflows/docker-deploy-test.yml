@@ -34,6 +34,9 @@ jobs:
           npm install
           npm ci
 
+      - name: Lint code
+        run: npm run lint
+
       # build and test the apps
       - name: build
         run: |

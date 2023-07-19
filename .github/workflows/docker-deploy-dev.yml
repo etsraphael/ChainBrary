@@ -34,10 +34,14 @@ jobs:
           npm install
           npm ci
 
+      - name: Lint code
+        run: npm run lint
+
       # build and test the apps
       - name: build
         run: |
           npm run build
+          
   push_to_Docker_Hub:
     environment: dev
     if: github.event.pull_request.merged == true
