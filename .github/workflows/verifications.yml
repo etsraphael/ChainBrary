@@ -40,6 +40,12 @@ jobs:
       - name: build
         run: |
           npm run build --prod
+
+      - name: Lint code
+        run: npm run lint
+    
+      - name: Prettier check
+        run: npm run prettier-check
   
   smart_contract_test:
     # The type of runner that the job will run on

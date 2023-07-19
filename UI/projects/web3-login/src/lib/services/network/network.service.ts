@@ -1,7 +1,13 @@
 import { Inject, Injectable } from '@angular/core';
 import { EMPTY, Observable, defer, of } from 'rxjs';
 import Web3 from 'web3';
-import { INetworkDetail, NetworkChainCode, NetworkChainId, NetworkRpcUrlSupported, Web3LoginConfig } from '../../interfaces';
+import {
+  INetworkDetail,
+  NetworkChainCode,
+  NetworkChainId,
+  NetworkRpcUrlSupported,
+  Web3LoginConfig
+} from '../../interfaces';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 declare let window: any;
@@ -13,9 +19,7 @@ export class NetworkServiceWeb3Login {
   web3: Web3;
   currentNetwork$: Observable<INetworkDetail | null> = EMPTY;
 
-  constructor(
-    @Inject('config') private config: Web3LoginConfig,
-  ) {
+  constructor(@Inject('config') private config: Web3LoginConfig) {
     setTimeout(() => {
       this.web3 = new Web3(window.ethereum);
       this.currentNetwork$ = defer(() => {
@@ -36,7 +40,9 @@ export class NetworkServiceWeb3Login {
       if (networkDetail) {
         return {
           ...networkDetail,
-          rpcUrls: this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === networkDetail.chainId)?.rpcUrl
+          rpcUrls: this.config.networkSupported.find(
+            (network: NetworkRpcUrlSupported) => network.chainId === networkDetail.chainId
+          )?.rpcUrl
         };
       }
     }
@@ -63,7 +69,9 @@ export class NetworkServiceWeb3Login {
     if (networkDetail) {
       return {
         ...networkDetail,
-        rpcUrls: this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === networkDetail.chainId)?.rpcUrl
+        rpcUrls: this.config.networkSupported.find(
+          (network: NetworkRpcUrlSupported) => network.chainId === networkDetail.chainId
+        )?.rpcUrl
       };
     }
     return {
@@ -82,7 +90,9 @@ export class NetworkServiceWeb3Login {
   }
 
   private getRpcUrl(chainId: NetworkChainId): string[] {
-    const urls = this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === chainId)?.rpcUrl;
+    const urls = this.config.networkSupported.find(
+      (network: NetworkRpcUrlSupported) => network.chainId === chainId
+    )?.rpcUrl;
     return urls || [];
   }
 

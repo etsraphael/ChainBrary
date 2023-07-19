@@ -15,10 +15,7 @@ export class AuthCheckingGuard {
   authStatusCode$: Observable<AuthStatusCode>;
   errorAccount$: Observable<string | null>;
 
-  constructor(
-    private store: Store,
-    private authService: AuthService
-  ) {
+  constructor(private store: Store, private authService: AuthService) {
     this.authStatusCode$ = this.store.select(selectAuthStatus);
     this.errorAccount$ = this.store.select(selectErrorAccount);
   }
