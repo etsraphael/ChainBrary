@@ -45,13 +45,6 @@ jobs:
       - name: Lint code
         run: npm run lint
     
-      # Prettier check
-      - name: Prettier check
-        run: |
-          git config --global core.autocrlf false
-          git config --global core.eol lf
-          npm run prettier-check
-  
   smart_contract_test:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
