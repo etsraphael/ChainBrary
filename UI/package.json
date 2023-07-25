@@ -8,7 +8,8 @@
     "build:test": "ng build --configuration test",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
+    "cy:run": "cypress run",
+    "test": "start-server-and-test start http://localhost:4200 cy:run",
     "lint": "ng lint",
     "prettier": "prettier --write .",
     "prettier-check": "prettier --check ."
@@ -71,6 +72,7 @@
     "karma-jasmine-html-reporter": "~2.1.0",
     "ng-packagr": "^15.1.0",
     "prettier": "^3.0.0",
+    "start-server-and-test": "^2.0.0",
     "typescript": "~4.9.4"
   }
 }
