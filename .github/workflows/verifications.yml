@@ -52,6 +52,8 @@ jobs:
       # run unit tests
       - name: Run unit tests
         run: npm run test-unit:ci
+        env:
+          URL: http://localhost:4200
     
   smart_contract_test:
     # The type of runner that the job will run on
