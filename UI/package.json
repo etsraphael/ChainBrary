@@ -8,11 +8,14 @@
     "build:test": "ng build --configuration test",
     "build:prod": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
-    "cy:run": "cypress run",
-    "test:ci": "start-server-and-test start http://localhost:4200 cy:run",
     "lint": "ng lint",
     "prettier": "prettier --write .",
-    "prettier-check": "prettier --check ."
+    "prettier-check": "prettier --check .",
+    "cy:run": "cypress run",
+    "test-e2e:local": "cypress open",
+    "test-e2e:ci": "start-server-and-test start http://localhost:4200 npm cypress run",
+    "test-unit:local": "ng test",
+    "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
