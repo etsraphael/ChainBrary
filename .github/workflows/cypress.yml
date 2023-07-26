@@ -6,10 +6,13 @@ on:
       - release/dev
       - release/test
       - release/prod
-      
+
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
+    defaults:
+        run:
+          working-directory: ./UI
     steps:
       - name: Checkout
         uses: actions/checkout@v3
