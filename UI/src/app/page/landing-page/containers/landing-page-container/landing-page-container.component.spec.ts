@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MaterialModule } from './../../../../module/material.module';
 import { LandingPageContainerComponent } from './landing-page-container.component';
 
 describe('LandingPageContainerComponent', () => {
@@ -8,6 +8,7 @@ describe('LandingPageContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [MaterialModule],
       declarations: [LandingPageContainerComponent]
     }).compileComponents();
 

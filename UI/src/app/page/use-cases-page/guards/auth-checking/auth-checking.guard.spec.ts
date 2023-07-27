@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { AuthCheckingGuard } from './auth-checking.guard';
 import { StoreModule } from '@ngrx/store';
 

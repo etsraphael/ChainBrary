@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { StoreModule } from '@ngrx/store';
+import { TransactionActivityHeaderComponent } from '../../components/transaction-activity-header/transaction-activity-header.component';
+import { TransactionActivityTableComponent } from '../../components/transaction-activity-table/transaction-activity-table.component';
 import { ActivityContainerComponent } from './activity-container.component';
 
 describe('ActivityContainerComponent', () => {
@@ -8,7 +10,8 @@ describe('ActivityContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ActivityContainerComponent]
+      imports: [StoreModule.forRoot({})],
+      declarations: [ActivityContainerComponent, TransactionActivityHeaderComponent, TransactionActivityTableComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(ActivityContainerComponent);
