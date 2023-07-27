@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { UseCasesSidebarComponent } from './use-cases-sidebar.component';
 
 describe('UseCasesSidebarComponent', () => {
@@ -8,7 +8,11 @@ describe('UseCasesSidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UseCasesSidebarComponent]
+      declarations: [UseCasesSidebarComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UseCasesSidebarComponent);
