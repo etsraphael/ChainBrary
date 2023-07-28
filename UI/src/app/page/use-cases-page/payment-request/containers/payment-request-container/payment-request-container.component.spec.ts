@@ -41,12 +41,22 @@ describe('PaymentRequestContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), MaterialModule, SharedComponentsModule, ReactiveFormsModule, BrowserAnimationsModule],
-      declarations: [PaymentRequestContainerComponent, PaymentRequestMakerComponent, PaymentRequestProfileSettingsComponent],
+      imports: [
+        StoreModule.forRoot({}),
+        MaterialModule,
+        SharedComponentsModule,
+        ReactiveFormsModule,
+        BrowserAnimationsModule
+      ],
+      declarations: [
+        PaymentRequestContainerComponent,
+        PaymentRequestMakerComponent,
+        PaymentRequestProfileSettingsComponent
+      ],
       providers: [
         { provide: 'config', useValue: web3LoginConfig },
         { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
       ]
     }).compileComponents();
 

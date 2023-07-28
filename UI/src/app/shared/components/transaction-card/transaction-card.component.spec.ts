@@ -13,8 +13,7 @@ describe('TransactionCardComponent', () => {
     hash: '0x1234567890',
     component: 'Component 1',
     chainId: NetworkChainId.SEPOLIA
-
-  }
+  };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({

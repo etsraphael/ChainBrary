@@ -39,7 +39,7 @@
   mat-table
   [dataSource]="transactionsTable"
   class="w-100 shadow-sm"
-  *ngIf="transactionsTable.length > 0 && !transactionsIsLoading"
+  *ngIf="!!transactionsTable && transactionsTable.length > 0 && !transactionsIsLoading"
 >
   <ng-container matColumnDef="action">
     <th mat-header-cell *matHeaderCellDef class="text-start">Action</th>
@@ -73,7 +73,7 @@
 <!-- Empty view -->
 <div
   class="d-flex flex-column align-items-center justify-content-center pt-5"
-  *ngIf="transactionsTable.length === 0 && !transactionsIsLoading"
+  *ngIf="transactionsTable?.length === 0 && !transactionsIsLoading"
 >
   <div class="d-flex flex-column align-items-center justify-content-center">
     <i class="bi bi-database-slash text-secondary"></i>

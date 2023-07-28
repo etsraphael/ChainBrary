@@ -42,7 +42,7 @@ describe('UseCasesSidebarHeaderComponent', () => {
       providers: [
         { provide: 'config', useValue: web3LoginConfig },
         { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
     }).compileComponents();
 
