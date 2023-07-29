@@ -61,8 +61,8 @@
   <ng-container matColumnDef="date">
     <th mat-header-cell *matHeaderCellDef class="text-end">Date</th>
     <td mat-cell *matCellDef="let element" class="text-end">
-      <span class="d-block d-lg-none">{{ element.submittedDate | date: 'short' }}</span>
-      <span class="d-none d-lg-block">{{ element.submittedDate | date: 'medium' }}</span>
+      <span class="d-block d-lg-none">{{ element.submittedDate | date : 'short' }}</span>
+      <span class="d-none d-lg-block">{{ element.submittedDate | date : 'medium' }}</span>
     </td>
   </ng-container>
 

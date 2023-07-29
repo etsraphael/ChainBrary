@@ -10,10 +10,7 @@ import { selectCurrentNetwork } from './../../../store/auth-store/state/selector
 export class WalletService {
   private networkOnStore$: Observable<INetworkDetail | null>;
 
-  constructor(
-    private web3LoginService: Web3LoginService,
-    private store: Store
-  ) {
+  constructor(private web3LoginService: Web3LoginService, private store: Store) {
     this.networkOnStore$ = this.store.select(selectCurrentNetwork);
   }
 

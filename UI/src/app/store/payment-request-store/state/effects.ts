@@ -15,11 +15,7 @@ import { selectPayment } from './selectors';
 
 @Injectable()
 export class PaymentRequestEffects {
-  constructor(
-    private actions$: Actions,
-    private web3LoginService: Web3LoginService,
-    private store: Store
-  ) {}
+  constructor(private actions$: Actions, private web3LoginService: Web3LoginService, private store: Store) {}
 
   isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
     return (

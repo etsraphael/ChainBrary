@@ -43,10 +43,7 @@ export class PriceFeedContract extends BaseContract {
     ]
   };
 
-  constructor(
-    public chainId: NetworkChainId,
-    public pair: TokenPair
-  ) {
+  constructor(public chainId: NetworkChainId, public pair: TokenPair) {
     super();
   }
 

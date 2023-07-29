@@ -90,8 +90,9 @@ export class NetworkServiceWeb3Login {
   }
 
   private getRpcUrl(chainId: NetworkChainId): string[] {
-    const urls = this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === chainId)
-      ?.rpcUrl;
+    const urls = this.config.networkSupported.find(
+      (network: NetworkRpcUrlSupported) => network.chainId === chainId
+    )?.rpcUrl;
     return urls || [];
   }
 
