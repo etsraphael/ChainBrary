@@ -4,6 +4,8 @@ import { StoreModule } from '@ngrx/store';
 import { PaymentRequestMakerComponent } from '../../components/payment-request-maker/payment-request-maker.component';
 import { PaymentRequestProfileSettingsComponent } from '../../components/payment-request-profile-settings/payment-request-profile-settings.component';
 import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
+import { initialState as authInitialState } from './../../../../../store/auth-store/state/init';
+import { initialState as paymentRequestInitialState } from './../../../../../store/payment-request-store/state/init';
 import { PaymentRequestContainerComponent } from './payment-request-container.component';
 
 describe('PaymentRequestContainerComponent', () => {
@@ -12,7 +14,13 @@ describe('PaymentRequestContainerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), SharedTestModule],
+      imports: [
+        StoreModule.forRoot({
+          auth: () => authInitialState,
+          paymentRequest: () => paymentRequestInitialState
+        }),
+        SharedTestModule
+      ],
       declarations: [
         PaymentRequestContainerComponent,
         PaymentRequestMakerComponent,

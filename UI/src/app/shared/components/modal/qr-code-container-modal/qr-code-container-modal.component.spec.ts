@@ -14,7 +14,12 @@ describe('QrCodeContainerModalComponent', () => {
       declarations: [QrCodeContainerModalComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} }
+        {
+          provide: MAT_DIALOG_DATA,
+          useValue: {
+            qrCodeValue: 'test'
+          }
+        }
       ]
     }).compileComponents();
 

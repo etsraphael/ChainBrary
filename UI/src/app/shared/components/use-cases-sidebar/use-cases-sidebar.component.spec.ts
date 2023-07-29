@@ -3,6 +3,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StoreModule } from '@ngrx/store';
 import { SharedTestModule } from '../shared-components.module';
 import { UseCasesSidebarHeaderComponent } from '../use-cases-sidebar-header/use-cases-sidebar-header.component';
+import { initialState as authInitialState } from './../../../store/auth-store/state/init';
 import { UseCasesSidebarComponent } from './use-cases-sidebar.component';
 
 describe('UseCasesSidebarComponent', () => {
@@ -11,7 +12,12 @@ describe('UseCasesSidebarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), SharedTestModule],
+      imports: [
+        StoreModule.forRoot({
+          auth: () => authInitialState
+        }),
+        SharedTestModule
+      ],
       declarations: [UseCasesSidebarComponent, UseCasesSidebarHeaderComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },

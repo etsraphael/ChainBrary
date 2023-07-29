@@ -5,6 +5,7 @@ import { StoreModule } from '@ngrx/store';
 import { Observable, of } from 'rxjs';
 import { PaymentRequestProfileSettingsComponent } from '../payment-request-profile-settings/payment-request-profile-settings.component';
 import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
+import { initialState as authInitialState } from './../../../../../store/auth-store/state/init';
 import { PaymentRequestMakerComponent } from './payment-request-maker.component';
 
 describe('PaymentRequestMakerComponent', () => {
@@ -16,7 +17,12 @@ describe('PaymentRequestMakerComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), SharedTestModule],
+      imports: [
+        StoreModule.forRoot({
+          auth: () => authInitialState
+        }),
+        SharedTestModule
+      ],
       declarations: [PaymentRequestMakerComponent, PaymentRequestProfileSettingsComponent],
       providers: [
         { provide: MatSnackBarRef, useValue: {} },
