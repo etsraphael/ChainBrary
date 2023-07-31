@@ -36,7 +36,7 @@
     "@sentry/angular-ivy": "^7.60.0",
     "angularx-qrcode": "^15.0.1",
     "apollo-angular": "^4.2.0",
-    "bootstrap": "^5.2.3",
+    "bootstrap": "^5.3.1",
     "bootstrap-icons": "^1.10.5",
     "graphql": "^16.6.0",
     "ngx-device-detector": "^5.0.1",
