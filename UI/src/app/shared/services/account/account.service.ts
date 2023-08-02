@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { ApolloQueryResult } from '@apollo/client/core';
 import { Apollo, gql } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import { IOrganization, IProfileAdded } from '../../interfaces';
+import { environment } from './../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'

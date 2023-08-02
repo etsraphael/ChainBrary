@@ -1,11 +1,11 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MatDialog } from '@angular/material/dialog';
 import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
+import { of } from 'rxjs';
 import { MaterialModule } from './../../../../../module/material.module';
+import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
 import { SharedComponentsModule } from './../../../../../shared/components/shared-components.module';
 import { PaymentRequestReviewComponent } from './payment-request-review.component';
-import { MatDialog } from '@angular/material/dialog';
-import { QrCodeContainerModalComponent } from 'src/app/shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
-import { of } from 'rxjs';
 
 describe('PaymentRequestReviewComponent', () => {
   let component: PaymentRequestReviewComponent;

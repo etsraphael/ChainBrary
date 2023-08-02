@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { LandingPageBodyComponent } from '../../components/landing-page-body/landing-page-body.component';
-import { MaterialModule } from './../../../../module/material.module';
-import { LandingPageContainerComponent } from './landing-page-container.component';
 import { LandingPageHeaderPageComponent } from '../../components/landing-page-header/landing-page-header.component';
+import { MaterialModule } from './../../../../module/material.module';
+import { SharedComponentsModule } from './../../../../shared/components/shared-components.module';
+import { LandingPageContainerComponent } from './landing-page-container.component';
 
 describe('LandingPageContainerComponent', () => {
   let component: LandingPageContainerComponent;
