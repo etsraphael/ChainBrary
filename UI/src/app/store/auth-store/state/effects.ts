@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
+import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, tap } from 'rxjs';
-import { AccountService } from '../../../shared/services/account/account.service';
+import { filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -11,7 +10,6 @@ import * as AuthActions from './actions';
 export class AuthEffects {
   constructor(
     private actions$: Actions,
-    private accountService: AccountService,
     private authService: AuthService,
     private web3LoginService: Web3LoginService
   ) {}
@@ -20,7 +18,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.setAuthPublicAddress),
-        tap((action: { publicAddress: string; network: INetworkDetail }) => {
+        tap((action: ReturnType<typeof AuthActions.setAuthPublicAddress>) => {
           this.authService.savePublicAddress(action.publicAddress);
           this.authService.savechainId(action.network.chainId);
         })
@@ -71,23 +69,82 @@ export class AuthEffects {
     );
   });
 
-  networkChanged$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(AuthActions.networkChanged),
-        tap((action: { network: INetworkDetail }) => {
-          this.authService.savechainId(action.network.chainId);
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  networkChangeSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.networkChangeSuccess),
+      tap((action: ReturnType<typeof AuthActions.networkChangeSuccess>) => {
+        this.authService.savechainId(action.network.chainId);
+      }),
+      map(() => showSuccessNotification({ message: 'Network is updated' }))
+    );
+  });
+
+  networkChangeError$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.networkChangeFailure),
+      map((action: ReturnType<typeof AuthActions.networkChangeFailure>) =>
+        showErrorNotification({ message: action.message })
+      )
+    );
+  });
+
+  addNetworkToWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.addNetworkToWallet),
+      switchMap(async (action: ReturnType<typeof AuthActions.addNetworkToWallet>) => {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [
+              {
+                chainId: action.network.chainCode,
+                chainName: action.network.name,
+                rpcUrls: action.network.rpcUrls,
+                nativeCurrency: action.network.nativeCurrency,
+                blockExplorerUrls: [action.network.blockExplorerUrls]
+              }
+            ]
+          });
+          return AuthActions.addNetworkToWalletSuccess({ network: action.network });
+        } catch (error: unknown) {
+          const errorPayload = error as { code: number; message: string };
+          return AuthActions.addNetworkToWalletFailure({
+            message: errorPayload.message || 'An unexpected error occurred'
+          });
+        }
+      })
+    );
+  });
+
+  networkChanges$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.networkChange),
+      switchMap(async (action: ReturnType<typeof AuthActions.networkChange>) => {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_switchEthereumChain',
+            params: [{ chainId: action.network.chainCode }]
+          });
+          return AuthActions.networkChangeSuccessOutside();
+        } catch (error: unknown) {
+          const errorPayload = error as { code: number; message: string };
+          if (errorPayload.code === 4902) {
+            return AuthActions.addNetworkToWallet({ network: action.network });
+          } else {
+            return AuthActions.networkChangeFailure({
+              message: errorPayload.message || 'An unexpected error occurred'
+            });
+          }
+        }
+      })
+    );
+  });
 
   accountChanged$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.accountChanged),
-        tap((action: { publicAddress: string | null }) => {
+        tap((action: ReturnType<typeof AuthActions.accountChanged>) => {
           if (action.publicAddress) {
             this.authService.savePublicAddress(action.publicAddress);
           } else {

@@ -1,6 +1,6 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import * as TransactionActions from './actions';
-import { initialState, transactionAdapter } from './init';
+import { historicalTransactionAdapter, initialState, transactionAdapter } from './init';
 import { ITransactionsState } from './interfaces';
 
 export const transactionReducer: ActionReducer<ITransactionsState, Action> = createReducer(
@@ -10,6 +10,39 @@ export const transactionReducer: ActionReducer<ITransactionsState, Action> = cre
     (state, { card }): ITransactionsState => ({
       ...state,
       recentTransactions: transactionAdapter.addOne(card, state.recentTransactions)
+    })
+  ),
+  on(
+    TransactionActions.loadTransactionsFromBridgeTransfer,
+    (state): ITransactionsState => ({
+      ...state,
+      historicalTransactions: {
+        data: historicalTransactionAdapter.removeAll(state.historicalTransactions.data),
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    TransactionActions.loadTransactionsFromBridgeTransferSuccess,
+    (state, { list }): ITransactionsState => ({
+      ...state,
+      historicalTransactions: {
+        loading: false,
+        error: null,
+        data: historicalTransactionAdapter.addMany(list, state.historicalTransactions.data)
+      }
+    })
+  ),
+  on(
+    TransactionActions.loadTransactionsFromBridgeTransferFailure,
+    (state, { error }): ITransactionsState => ({
+      ...state,
+      historicalTransactions: {
+        ...state.historicalTransactions,
+        loading: false,
+        error
+      }
     })
   )
 );

@@ -14,6 +14,6 @@ export class ChainbraryButtonComponent {
   @Output() callToAction = new EventEmitter();
 
   emit(): void {
-    this.callToAction.emit();
+    return this.callToAction.emit();
   }
 }

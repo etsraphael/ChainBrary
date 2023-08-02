@@ -2,7 +2,7 @@ import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/s
 import { IProfileAdded } from '../../../shared/interfaces';
 import { AuthStatusCode } from './../../../../app/shared/enum';
 import { AUTH_FEATURE_KEY, IAuthState } from './interfaces';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 
 export const selectAuth = createFeatureSelector<IAuthState>(AUTH_FEATURE_KEY);
 
@@ -16,6 +16,12 @@ export const selectCurrentNetwork: MemoizedSelector<
   INetworkDetail | null,
   (s1: IAuthState) => INetworkDetail | null
 > = createSelector(selectAuth, (s) => (s.network ? s.network : null));
+
+export const selectCurrentChainId: MemoizedSelector<
+  object,
+  NetworkChainId | null,
+  (s1: IAuthState) => NetworkChainId | null
+> = createSelector(selectAuth, (s) => (s.network ? s.network.chainId : null));
 
 export const selectNetworkSymbol: MemoizedSelector<object, string | null, (s1: IAuthState) => string | null> =
   createSelector(selectAuth, (s) => s.network?.nativeCurrency.symbol ?? null);
