@@ -36,4 +36,29 @@ describe('PaymentRequestProfileSettingsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have priceForm initialized correctly', () => {
+    expect(component.profileForm).toBeInstanceOf(FormGroup);
+  });
+
+  it('should not emit goToNextPage when form is invalid', () => {
+    const emitSpy = spyOn(component.goToNextPage, 'emit');
+    component.profileForm.controls.publicAddress.setErrors({ incorrect: true });
+    component.submitForm();
+    expect(emitSpy).not.toHaveBeenCalled();
+  });
+
+  it('should emit goToNextPage when form is valid', () => {
+    const emitSpy = spyOn(component.goToNextPage, 'emit');
+
+    component.profileForm.setValue({
+      publicAddress: 'MockedAddress',
+      avatarUrl: 'MockedAvatar',
+      username: 'Jane'
+    });
+
+    component.submitForm();
+
+    expect(emitSpy).toHaveBeenCalled();
+  });
 });
