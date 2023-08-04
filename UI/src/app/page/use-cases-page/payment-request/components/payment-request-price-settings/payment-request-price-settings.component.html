@@ -34,6 +34,7 @@
           matInput
           placeholder="Description"
           maxlength="150"
+          data-id="description-input"
         ></textarea>
       </mat-form-field>
     </div>
@@ -54,6 +55,7 @@
           [buttonClasses]="['btn-info-gradient', 'text-white']"
           [buttonText]="'Next'"
           (callToAction)="goToNextPage.emit()"
+          data-id="submit-button"
         />
       </div>
     </div>
