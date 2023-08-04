@@ -15,7 +15,10 @@ export class TransactionActivityTableComponent {
   displayedColumns: string[] = ['action', 'amount', 'date'];
   role = TransactionRole;
 
-  constructor(public formatService: FormatService, public web3LoginService: Web3LoginService) {}
+  constructor(
+    public formatService: FormatService,
+    public web3LoginService: Web3LoginService
+  ) {}
 
   get networkSymbol(): string {
     return this.currentNetwork?.nativeCurrency.symbol || '';

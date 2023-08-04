@@ -5,6 +5,13 @@ import { PriceFeedContract } from '../../contracts';
 import { TokenPair } from '../../enum';
 import { NetworkChainId } from '@chainbrary/web3-login';
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ethereum?: any;
+  }
+}
+
 @Injectable({
   providedIn: 'root'
 })

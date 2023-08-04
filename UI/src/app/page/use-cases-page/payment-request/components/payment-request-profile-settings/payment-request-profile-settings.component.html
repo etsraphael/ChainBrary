@@ -3,7 +3,14 @@
     <div class="col-10 col-lg-7">
       <mat-form-field class="w-100 example-full-width" appearance="outline">
         <mat-label>Payment address</mat-label>
-        <input formControlName="publicAddress" type="link" class="text-center" matInput placeholder="0x" />
+        <input
+          formControlName="publicAddress"
+          type="link"
+          class="text-center"
+          matInput
+          placeholder="0x"
+          data-id="address-input"
+        />
       </mat-form-field>
     </div>
   </div>
@@ -11,7 +18,14 @@
     <div class="col-10 col-lg-7">
       <mat-form-field class="w-100 example-full-width" appearance="outline">
         <mat-label>Url of your image</mat-label>
-        <input formControlName="avatarUrl" type="link" class="text-center" matInput placeholder="https://my-url" />
+        <input
+          formControlName="avatarUrl"
+          type="link"
+          class="text-center"
+          matInput
+          placeholder="https://my-url"
+          data-id="avatarUrl-input"
+        />
         <mat-error *ngIf="profileForm.get('avatarUrl')?.hasError('required')"> Field is required </mat-error>
         <mat-error *ngIf="profileForm.get('avatarUrl')!.hasError('invalidUrl')"> Invalid image url </mat-error>
       </mat-form-field>
@@ -21,7 +35,14 @@
     <div class="col-10 col-lg-7">
       <mat-form-field class="w-100 example-full-width" appearance="outline">
         <mat-label>Name</mat-label>
-        <input formControlName="username" type="name" class="text-center" matInput placeholder="Name" />
+        <input
+          formControlName="username"
+          type="name"
+          class="text-center"
+          matInput
+          placeholder="Name"
+          data-id="username-input"
+        />
         <mat-error *ngIf="profileForm.get('username')!.hasError('maxlength')">
           Name must be less than 20 characters
         </mat-error>
@@ -29,7 +50,7 @@
     </div>
   </div>
   <div class="row justify-content-center my-4">
-    <div class="col-8 col-lg-5" (click)="submitForm()">
+    <div class="col-8 col-lg-5" (click)="submitForm()" data-id="submit-button">
       <app-chainbrary-button
         [buttonClasses]="['btn-success-gradient', 'text-light']"
         [buttonText]="'Confirm'"
