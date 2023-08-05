@@ -1,8 +1,20 @@
 <form class="container" [formGroup]="priceForm">
+  <!-- Token choice -->
+  <div class="row justify-content-center">
+    <div class="col-10 col-lg-7">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Choose token</mat-label>
+        <mat-select formControlName="token">
+          <mat-option *ngFor="let t of tokenList" [value]="t.symbol">{{t.name}} ({{t.symbol}})</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- Amount -->
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
       <p [ngClass]="{ 'mb-0': !usdConversionRate }">
-        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+        <mat-form-field class="w-100 text-dark" appearance="outline">
           <mat-label> Amount</mat-label>
           <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
           <div matSuffix>
@@ -24,18 +36,10 @@
   <!-- Add a description textarea here -->
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+      <mat-form-field class="w-100 text-dark" appearance="outline">
         <mat-label> Description </mat-label>
-        <textarea
-          formControlName="description"
-          cdkTextareaAutosize
-          cdkAutosizeMinRows="1"
-          cdkAutosizeMaxRows="5"
-          matInput
-          placeholder="Description"
-          maxlength="150"
-          data-id="description-input"
-        ></textarea>
+        <textarea formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
+          matInput placeholder="Description" maxlength="150" data-id="description-input"></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -44,19 +48,12 @@
   <div class="col-10 col-lg-7">
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <app-chainbrary-button
-          [buttonClasses]="['btn-secondary-gradient', 'text-white']"
-          [buttonText]="'Back'"
-          (callToAction)="goToPreviousPage.emit()"
-        />
+        <app-chainbrary-button [buttonClasses]="['btn-secondary-gradient', 'text-white']" [buttonText]="'Back'"
+          (callToAction)="goToPreviousPage.emit()" />
       </div>
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <app-chainbrary-button
-          [buttonClasses]="['btn-info-gradient', 'text-white']"
-          [buttonText]="'Next'"
-          (callToAction)="goToNextPage.emit()"
-          data-id="submit-button"
-        />
+        <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-white']" [buttonText]="'Next'"
+          (callToAction)="goToNextPage.emit()" data-id="submit-button" />
       </div>
     </div>
   </div>

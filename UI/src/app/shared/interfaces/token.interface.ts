@@ -1,14 +1,14 @@
+import { NetworkChainId } from "@chainbrary/web3-login";
+
 export interface IToken {
-  address: string;
-  chainId: number;
   decimals: number;
-  logoURI: string;
   name: string;
   symbol: string;
+  networkSupport: IContract[];
 }
 
 export interface IContract {
-  chainId: string;
+  chainId: NetworkChainId;
   address: string;
 }
 

@@ -13,6 +13,7 @@ export interface IPaymentRequest {
 }
 
 export interface PriceSettingsForm {
+  token: FormControl<string | null>;
   description: FormControl<string | null>;
   amount: FormControl<number | null>;
   usdEnabled: FormControl<boolean | null>;

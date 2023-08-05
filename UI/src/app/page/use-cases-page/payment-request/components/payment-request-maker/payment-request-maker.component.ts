@@ -96,6 +96,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
+        token: new FormControl('ETH', []), // TODO: Select token native by default
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)]),
         usdEnabled: new FormControl(false, [])

@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { PriceSettingsForm } from './../../../../../shared/interfaces';
+import { tokenList } from './../../../../../shared/data/tokenList';
+import { IToken, PriceSettingsForm } from './../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-payment-request-price-settings[priceForm][networkSymbol]',
@@ -15,4 +16,5 @@ export class PaymentRequestPriceSettingsComponent {
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
   @Output() swapCurrency = new EventEmitter<void>();
+  tokenList: IToken[] = tokenList
 }
