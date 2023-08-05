@@ -72,6 +72,10 @@ a {
   .card {
     --bs-card-border-radius: 1.5rem;
   }
+
+  .mat-mdc-menu-panel {
+    --mat-menu-container-shape: 10px
+  }
 }
 
 .alert {
