@@ -96,7 +96,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
-        token: new FormControl('ETH', []), // TODO: Select token native by default
+        token: new FormControl('ETH', []),
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)]),
         usdEnabled: new FormControl(false, [])
@@ -108,8 +108,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       })
     });
     this.currentNetworkObs
-      .pipe(filter((network: INetworkDetail | null) => network !== null))
-      .subscribe((network: INetworkDetail | null) => {
+      .pipe(
+        filter((network: INetworkDetail | null) => network !== null),
+        map((network: INetworkDetail | null) => network as INetworkDetail),
+      )
+      .subscribe((network: INetworkDetail) => {
+        this.mainForm.get('price')?.get('token')?.setValue(network?.nativeCurrency?.symbol as string);
         this.setUpPriceCurrentPrice(1, network?.chainId as NetworkChainId);
       });
   }
