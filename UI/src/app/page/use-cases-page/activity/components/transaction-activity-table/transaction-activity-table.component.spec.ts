@@ -1,5 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MaterialModule } from './../../../../../module/material.module';
+import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
 import { TransactionActivityTableComponent } from './transaction-activity-table.component';
 
 describe('TransactionActivityTableComponent', () => {
@@ -8,7 +10,12 @@ describe('TransactionActivityTableComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [TransactionActivityTableComponent]
+      imports: [MaterialModule, SharedTestModule],
+      declarations: [TransactionActivityTableComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TransactionActivityTableComponent);

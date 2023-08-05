@@ -19,7 +19,10 @@ export class PaymentRequestReviewComponent {
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
   protocolFee = 0.001;
 
-  constructor(private snackbar: MatSnackBar, public dialog: MatDialog) {}
+  constructor(
+    private snackbar: MatSnackBar,
+    public dialog: MatDialog
+  ) {}
 
   get receivingAmount(): number {
     return this.amount - this.protocolFeeAmount;

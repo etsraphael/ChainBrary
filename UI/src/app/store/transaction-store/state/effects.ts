@@ -4,10 +4,10 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, concatMap, filter, from, map, of } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import Web3 from 'web3';
 import { selectCurrentChainId, selectPublicAddress } from '../../auth-store/state/selectors';
 import { amountSent } from '../../payment-request-store/state/actions';
+import { environment } from './../../../../environments/environment';
 import {
   loadTransactionsFromBridgeTransfer,
   loadTransactionsFromBridgeTransferFailure,
