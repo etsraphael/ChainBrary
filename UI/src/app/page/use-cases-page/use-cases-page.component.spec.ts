@@ -33,7 +33,7 @@ describe('UseCasesPageComponent', () => {
   });
 
   it('should have useCaseRoutes with title property', () => {
-    const titles = ['Payment Request', 'Activity', 'Proposal'];
+    const titles = ['Payment Request', 'Activity'];
 
     useCaseRoutes.forEach((route: SideBarRoute, index: number) => {
       expect(route.title).toBeDefined();

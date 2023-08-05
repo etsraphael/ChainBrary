@@ -12,12 +12,6 @@ const useCaseRoutes: SideBarRoute[] = [
     path: '/activity',
     icon: 'bi-clipboard-data-fill',
     enabled: true
-  },
-  {
-    title: 'Proposal',
-    path: '/NA',
-    icon: 'bi-inboxes-fill',
-    enabled: false
   }
 ];
 
