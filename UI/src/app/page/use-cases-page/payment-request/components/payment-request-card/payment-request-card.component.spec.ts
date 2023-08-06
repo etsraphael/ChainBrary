@@ -1,49 +1,15 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { StoreModule } from '@ngrx/store';
-import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
-import { initialState as authInitialState } from './../../../../../store/auth-store/state/init';
-import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
+import '@angular/compiler';
+import { describe, expect, it } from 'vitest';
 import { PaymentRequestCardComponent } from './payment-request-card.component';
+import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
+import { priceFeedServiceMock, walletServiceMock } from 'src/app/shared/tests/services/services.mock';
 
 describe('PaymentRequestCardComponent', () => {
-  let component: PaymentRequestCardComponent;
-  let fixture: ComponentFixture<PaymentRequestCardComponent>;
-
-  const paymentRequest: IPaymentRequestState = {
-    payment: {
-      data: null,
-      loading: false,
-      error: null
-    },
-    profile: {
-      publicAddress: null,
-      avatarUrl: null,
-      username: null
-    },
-    network: null
-  };
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          auth: () => authInitialState
-        }),
-        SharedTestModule
-      ],
-      declarations: [PaymentRequestCardComponent],
-      providers: [
-        { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
-      ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(PaymentRequestCardComponent);
-    component = fixture.componentInstance;
-    component.paymentRequest = paymentRequest;
-    fixture.detectChanges();
-  });
+  const component: PaymentRequestCardComponent = new PaymentRequestCardComponent(
+    snackbarMock,
+    walletServiceMock,
+    priceFeedServiceMock
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
