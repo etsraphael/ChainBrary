@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ITransactionLog } from '@chainbrary/transaction-search';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, distinctUntilChanged, filter, skip } from 'rxjs';
+import { Observable, Subject, distinctUntilChanged, filter, skip, takeUntil } from 'rxjs';
 import { selectCurrentNetwork } from './../../../../../store/auth-store/state/selectors';
 import { loadTransactionsFromBridgeTransfer } from './../../../../../store/transaction-store/state/actions';
 import {
@@ -15,13 +15,13 @@ import {
   templateUrl: './activity-container.component.html',
   styleUrls: ['./activity-container.component.scss']
 })
-export class ActivityContainerComponent implements OnInit, OnDestroy {
+export class ActivityContainerComponent implements OnInit {
+  private destroy$ = new Subject();
   transactions$: Observable<ITransactionLog[]>;
   transactionsIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
-  currentNetworkSub: Subscription;
 
-  constructor(private store: Store) {}
+  constructor(private store: Store) { }
 
   ngOnInit(): void {
     this.generateObs();
@@ -41,16 +41,13 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
 
   // call list of transactions after network changes
   generateSubs(): void {
-    this.currentNetworkSub = this.currentNetwork$
+    this.currentNetwork$
       .pipe(
         distinctUntilChanged(),
         filter((network) => network !== null),
-        skip(1)
+        skip(1),
+        takeUntil(this.destroy$)
       )
       .subscribe(() => this.callActions());
-  }
-
-  ngOnDestroy(): void {
-    this.currentNetworkSub?.unsubscribe();
   }
 }
