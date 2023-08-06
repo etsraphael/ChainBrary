@@ -1,29 +1,34 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MaterialModule } from './../../../../../module/material.module';
-import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
+import '@angular/compiler';
+import { describe, expect, it, vi } from 'vitest';
 import { TransactionActivityTableComponent } from './transaction-activity-table.component';
+import { formatServiceMock, web3LoginServiceMock } from 'src/app/shared/tests/services/services.mock';
+import { ITransactionLog, TransactionRole } from '@chainbrary/transaction-search';
+import { transactionLogMock } from 'src/app/shared/tests/variables/variables.mock';
 
 describe('TransactionActivityTableComponent', () => {
-  let component: TransactionActivityTableComponent;
-  let fixture: ComponentFixture<TransactionActivityTableComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MaterialModule, SharedTestModule],
-      declarations: [TransactionActivityTableComponent],
-      providers: [
-        { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} }
-      ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(TransactionActivityTableComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const component: TransactionActivityTableComponent = new TransactionActivityTableComponent(
+    formatServiceMock,
+    web3LoginServiceMock
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should get credited if i\'m the receiver', () => {
+    const itemMock: ITransactionLog = transactionLogMock;
+    const spyGetAmount = vi.spyOn(component, 'getAmount');
+    const result = component.getAmount(itemMock);
+
+    expect(spyGetAmount).toHaveBeenCalledWith(itemMock);
+    expect(result).toBe(`+${2500}`);
+  });
+
+  it('should get debited if i\'m the sender', () => {
+    const itemMock: ITransactionLog = transactionLogMock;
+    itemMock.role = TransactionRole.Sender;
+    const result = component.getAmount(itemMock);
+
+    expect(result).toBe(`-${2500}`);
   });
 });
