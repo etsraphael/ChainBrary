@@ -15,12 +15,17 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
   @Input() networkSymbol: string | null;
   @Input() usdConversionRate: number | null;
   @Input() tokenConversionRate: number | null;
+  @Input() tokenSelected: IToken | null;
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
   @Output() swapCurrency = new EventEmitter<void>();
   tokenList: IToken[] = tokenList;
 
   constructor(private web3LoginService: Web3LoginService) {}
+
+  get usdEnabled(): boolean {
+    return this.priceForm.get('usdEnabled')?.value || false;
+  }
 
   ngOnInit(): void {
     this.setUpTokenList();

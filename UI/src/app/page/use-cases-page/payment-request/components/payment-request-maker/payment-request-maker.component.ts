@@ -12,7 +12,13 @@ import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
-import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
+import {
+  IPaymentRequest,
+  IToken,
+  PaymentMakerForm,
+  PriceSettingsForm,
+  ProfileForm
+} from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 
@@ -24,6 +30,7 @@ import { WalletService } from './../../../../../shared/services/wallet/wallet.se
 export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
+  @Input() paymentTokenObs: Observable<IToken | null>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();

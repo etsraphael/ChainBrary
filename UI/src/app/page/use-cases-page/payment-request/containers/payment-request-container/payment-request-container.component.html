@@ -11,6 +11,7 @@
       <app-payment-request-maker
         [publicAddressObs]="publicAddress$"
         [currentNetworkObs]="currentNetwork$"
+        [paymentTokenObs]="paymentToken$"
         (setUpTokenChoice)="setUpTokenChoice($event)"
       >
       </app-payment-request-maker>

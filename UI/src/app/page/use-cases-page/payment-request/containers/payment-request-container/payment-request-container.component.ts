@@ -13,6 +13,7 @@ import {
   selectPublicAddress,
   selectUserAccountIsLoading
 } from './../../../../../store/auth-store/state/selectors';
+import { selectPaymentToken } from './../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-request-container',
@@ -26,6 +27,7 @@ export class PaymentRequestContainerComponent implements OnInit {
   publicAddress$: Observable<string | null>;
   userAccountIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
+  paymentToken$: Observable<IToken | null>;
 
   constructor(private store: Store) {}
 
@@ -35,14 +37,11 @@ export class PaymentRequestContainerComponent implements OnInit {
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.userAccountIsLoading$ = this.store.select(selectUserAccountIsLoading);
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
+    this.paymentToken$ = this.store.select(selectPaymentToken);
   }
 
   setUpTokenChoice(tokenId: string): void {
-    console.log('tokenId', tokenId);
     const tokenFound: IToken | null = tokenList.find((token) => token.tokenId === tokenId) || null;
-
-    console.log('tokenFound', tokenFound);
-
     return this.store.dispatch(selectToken({ token: tokenFound }));
   }
 }

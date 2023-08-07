@@ -23,6 +23,7 @@
         [tokenConversionRate]="tokenConversionRate"
         [priceForm]="priceForm"
         [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
+        [tokenSelected]="paymentTokenObs | async"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"
         (swapCurrency)="swapCurrency()"

@@ -18,14 +18,17 @@
           <mat-label> Amount</mat-label>
           <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
           <div matSuffix>
-            <h6 *ngIf="!priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">{{ networkSymbol }}</h6>
-            <h6 *ngIf="priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">$USD</h6>
+            <h6 class="mb-0 pe-3">
+              <ng-container *ngIf="!usdEnabled && !tokenSelected">{{ networkSymbol }}</ng-container>
+              <ng-container *ngIf="tokenSelected">{{ tokenSelected.symbol }}</ng-container>
+              <ng-container *ngIf="usdEnabled">$USD</ng-container>
+            </h6>
           </div>
-          <mat-hint *ngIf="!priceForm.get('usdEnabled')?.value && usdConversionRate && usdConversionRate > 0">
+          <mat-hint *ngIf="!usdEnabled && usdConversionRate && usdConversionRate > 0">
             ${{ usdConversionRate }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
-          <mat-hint *ngIf="priceForm.get('usdEnabled')?.value && tokenConversionRate && tokenConversionRate > 0">
+          <mat-hint *ngIf="usdEnabled && tokenConversionRate && tokenConversionRate > 0">
             {{ tokenConversionRate }} {{ networkSymbol }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
