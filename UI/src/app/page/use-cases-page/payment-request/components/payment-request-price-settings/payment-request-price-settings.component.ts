@@ -32,6 +32,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
       .filter(({ chainId }: INetworkDetail) => environment.contracts.bridgeTransfer.networkSupported.includes(chainId))
       .map((network: INetworkDetail) => {
         return {
+          tokenId: null,
           decimals: network.nativeCurrency.decimals,
           name: network.name,
           symbol: network.nativeCurrency.symbol,

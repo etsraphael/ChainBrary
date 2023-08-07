@@ -66,6 +66,13 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         error: null
       }
     })
+  ),
+  on(
+    PaymentActions.selectToken,
+    (state, { token }): IPaymentRequestState => ({
+      ...state,
+      token
+    })
   )
 );
 

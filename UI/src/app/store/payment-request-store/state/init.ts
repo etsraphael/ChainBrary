@@ -11,5 +11,6 @@ export const initialState: IPaymentRequestState = {
     error: null,
     data: null
   },
-  network: null
+  network: null,
+  token: null
 };

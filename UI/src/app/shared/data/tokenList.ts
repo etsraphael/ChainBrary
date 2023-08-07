@@ -3,6 +3,7 @@ import { IToken } from '../interfaces';
 
 export const tokenList: IToken[] = [
   {
+    tokenId: 'ethereum',
     name: 'Ethereum',
     symbol: 'ETH',
     decimals: 18,
@@ -18,6 +19,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'usdc',
     name: 'USD Coin',
     symbol: 'USDC',
     decimals: 6,
@@ -41,6 +43,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'dogecoin',
     name: 'Dogecoin',
     symbol: 'DOGE',
     decimals: 18,
@@ -52,6 +55,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'polkadot',
     name: 'Polkadot',
     symbol: 'DOT',
     decimals: 18,
@@ -63,6 +67,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'chainlink',
     name: 'Chainlink',
     symbol: 'LINK',
     decimals: 18,
@@ -82,10 +87,11 @@ export const tokenList: IToken[] = [
       {
         chainId: NetworkChainId.ETHEREUM,
         address: '0x514910771af9ca656af840dff83e8264ecf986ca'
-      },
+      }
     ]
   },
   {
+    tokenId: 'wbitcoin',
     name: 'Wrapped Bitcoin',
     symbol: 'WBTC',
     decimals: 18,
@@ -105,6 +111,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'the-graph',
     name: 'The Graph',
     symbol: 'GRT',
     decimals: 18,
@@ -120,6 +127,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'cardano',
     name: 'Cardano',
     symbol: 'ADA',
     decimals: 18,
@@ -131,6 +139,7 @@ export const tokenList: IToken[] = [
     ]
   },
   {
+    tokenId: 'cosmos',
     name: 'Cosmos',
     symbol: 'ATOM',
     decimals: 18,
