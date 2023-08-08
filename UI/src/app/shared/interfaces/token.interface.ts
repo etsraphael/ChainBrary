@@ -7,6 +7,7 @@ export interface IToken {
   name: string;
   symbol: string;
   networkSupport: ITokenContract[];
+  nativeToChainId?: NetworkChainId;
 }
 
 export interface ITokenContract {

@@ -15,6 +15,7 @@ import { PriceFeedService } from './../../../shared/services/price-feed/price-fe
 import * as PaymentRequestActions from './actions';
 import { selectToken } from './actions';
 import { selectPayment, selectPaymentToken } from './selectors';
+import { TokenPair } from './../../../shared/enum';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -67,11 +68,14 @@ export class PaymentRequestEffects {
           payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail]
         ) => {
           let price: number;
-          if (payload[1] === null) {
-            price = 0;
-          } else {
+
+
+          if(payload[1]?.nativeToChainId === payload[2].chainId) {
             price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
+          } else {
+            price = await this.priceFeedService.getCurrentPrice(TokenPair.LinkToUsd, payload[2].chainId);
           }
+
           return PaymentRequestActions.applyConversionTokenSuccess({
             usdAmount: price * payload[0].amount,
             tokenAmount: payload[0].amount

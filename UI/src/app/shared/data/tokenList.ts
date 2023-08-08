@@ -8,6 +8,7 @@ export const tokenList: IToken[] = [
     name: 'Ethereum',
     symbol: 'ETH',
     decimals: 18,
+    nativeToChainId: NetworkChainId.ETHEREUM,
     networkSupport: [
       {
         chainId: NetworkChainId.BNB,
