@@ -39,6 +39,10 @@ export class PriceFeedContract extends BaseContract {
       {
         pair: TokenPair.EthToUsd,
         address: '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419'
+      },
+      {
+        pair: TokenPair.LinkToUsd,
+        address: '0x2c1d072e956AFFC0D435Cb7AC38EF18d24d9127c'
       }
     ]
   };

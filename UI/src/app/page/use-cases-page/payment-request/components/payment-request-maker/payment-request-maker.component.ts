@@ -9,9 +9,10 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
+import { concatLatestFrom } from '@ngrx/effects';
 import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
-import { AuthStatusCode } from './../../../../../shared/enum';
+import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
 import {
   IPaymentRequest,
   IToken,
@@ -82,24 +83,35 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.listenToTokenChange();
   }
 
-  async setUpPriceCurrentPrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
+  async setUpCurrentNativePrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
     return this.priceFeedService
       .getCurrentPriceOfNativeToken(chainId)
-      .then((result: number) => {
-        if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
-          if (amount === null) {
-            this.usdConversionRate = result;
-          } else {
-            this.usdConversionRate = result * (amount as number);
-          }
-          this.usdAmount = this.usdConversionRate;
-        } else {
-          this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / result;
-        }
-      })
+      .then((result: number) => this.updateUsdConversion(amount, result))
       .catch(() => {
         this.usdConversionRate = 0;
       });
+  }
+
+  async setUpCurrenTokenPrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
+    return this.priceFeedService
+      .getCurrentPrice(TokenPair.LinkToUsd, chainId) // TODO: Make it dynamic here
+      .then((result: number) => this.updateUsdConversion(amount, result))
+      .catch(() => {
+        this.usdConversionRate = 0;
+      });
+  }
+
+  updateUsdConversion(amount: number | null, priceResult: number): void {
+    if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
+      if (amount === null) {
+        this.usdConversionRate = priceResult;
+      } else {
+        this.usdConversionRate = priceResult * (amount as number);
+      }
+      this.usdAmount = this.usdConversionRate;
+    } else {
+      this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / priceResult;
+    }
   }
 
   setUpForm(): void {
@@ -123,7 +135,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       )
       .subscribe((network: INetworkDetail) => {
         // this.mainForm.get('price')?.get('token')?.setValue(network?.nativeCurrency?.name.toLowerCase() as string);
-        this.setUpPriceCurrentPrice(1, network?.chainId as NetworkChainId);
+        this.setUpCurrentNativePrice(1, network?.chainId as NetworkChainId);
       });
   }
 
@@ -135,6 +147,15 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         map((token: string | null) => token as string)
       )
       .subscribe((token: string) => this.setUpTokenChoice.emit(token));
+
+    this.paymentTokenObs
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((token: IToken | null) => token !== null)
+      )
+      .subscribe((token: IToken | null) => {
+        // TODO: set token value with chainlink here
+      });
   }
 
   listenToAmountChange(): void {
@@ -150,21 +171,30 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
             filter(
               (currentNetwork: INetworkDetail | null) => currentNetwork !== null && currentNetwork?.chainId !== null
             ),
-            map((currentNetwork: INetworkDetail | null) => {
-              return { amount: amount, currentNetwork: currentNetwork };
-            })
+            map((currentNetwork: INetworkDetail | null) => ({ amount: amount, currentNetwork: currentNetwork }))
           );
         }),
+        concatLatestFrom(() => this.paymentTokenObs),
         takeUntil(this.destroyed$)
       )
-      .subscribe(({ amount, currentNetwork }) => {
-        this.setUpPriceCurrentPrice(amount, currentNetwork?.chainId as NetworkChainId);
-        if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
-          this.usdAmount = amount as number;
-        } else {
-          this.usdAmount = null;
+      .subscribe(
+        ([{ amount, currentNetwork }, token]: [
+          { amount: number | null; currentNetwork: INetworkDetail | null },
+          IToken | null
+        ]) => {
+          if (token) {
+            this.setUpCurrenTokenPrice(amount, currentNetwork?.chainId as NetworkChainId);
+          } else {
+            this.setUpCurrentNativePrice(amount, currentNetwork?.chainId as NetworkChainId);
+          }
+
+          if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
+            this.usdAmount = amount as number;
+          } else {
+            this.usdAmount = null;
+          }
         }
-      });
+      );
   }
 
   listenToAddressChange(): void {
