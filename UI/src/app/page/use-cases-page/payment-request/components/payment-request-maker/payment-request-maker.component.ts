@@ -14,11 +14,13 @@ import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
 import {
+  IConversionToken,
   IPaymentRequest,
   IToken,
   PaymentMakerForm,
   PriceSettingsForm,
-  ProfileForm
+  ProfileForm,
+  StoreState
 } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
@@ -32,7 +34,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Input() paymentTokenObs: Observable<IToken | null>;
+  @Input() paymentConversionObs: Observable<StoreState<IConversionToken>>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
+  @Output() applyConversionToken: EventEmitter<number> = new EventEmitter<number>();
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -159,6 +163,16 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   listenToAmountChange(): void {
+    this.priceForm
+      .get('amount')
+      ?.valueChanges.pipe(
+        startWith(this.priceForm.get('amount')?.value || 0),
+        debounceTime(1000),
+        filter((amount: number | null) => amount !== null && amount > 0),
+        map((amount: number | null) => amount as number)
+      )
+      .subscribe((amount: number) => this.applyConversionToken.emit(amount as number));
+
     this.priceForm
       .get('amount')
       ?.valueChanges.pipe(

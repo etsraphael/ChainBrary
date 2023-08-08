@@ -6,6 +6,21 @@ export const initPaymentRequestMaker = createAction('[Payment Request] Init Paym
 
 export const selectToken = createAction('[Payment Request] Select Token', props<{ token: IToken | null }>());
 
+export const applyConversionToken = createAction(
+  '[Payment Request] Apply Conversion Token',
+  props<{ amount: number }>()
+);
+
+export const applyConversionTokenSuccess = createAction(
+  '[Payment Request] Apply Conversion Token Success',
+  props<{ amount: number }>()
+);
+
+export const applyConversionTokenFailure = createAction(
+  '[Payment Request] Apply Conversion Token Failure',
+  props<{ errorMessage: string }>()
+);
+
 export const generatePaymentRequest = createAction(
   '[Payment Request] Generate Payment Request',
   props<{ encodedRequest: string }>()

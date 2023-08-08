@@ -12,7 +12,9 @@
         [publicAddressObs]="publicAddress$"
         [currentNetworkObs]="currentNetwork$"
         [paymentTokenObs]="paymentToken$"
+        [paymentConversionObs]="paymentConversion$"
         (setUpTokenChoice)="setUpTokenChoice($event)"
+        (applyConversionToken)="applyConversionToken($event)"
       >
       </app-payment-request-maker>
     </div>

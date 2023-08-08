@@ -1,10 +1,11 @@
 import { INetworkDetail } from '@chainbrary/web3-login';
-import { IPaymentRequest, IProfilePayment, IToken, StoreState } from '../../../shared/interfaces';
+import { IConversionToken, IPaymentRequest, IProfilePayment, IToken, StoreState } from '../../../shared/interfaces';
 
 export const PAYMENT_REQUEST_FEATURE_KEY = 'paymentRequest';
 
 export interface IPaymentRequestState {
   payment: StoreState<IPaymentRequest | null>;
+  conversion: StoreState<IConversionToken>;
   token: IToken | null;
   profile: IProfilePayment;
   network: INetworkDetail | null;

@@ -35,3 +35,10 @@ export interface IProfilePayment {
   avatarUrl: string | null;
   username: string | null;
 }
+
+export interface IConversionToken {
+  usdConversionRate: number;
+  tokenConversionRate: number;
+  usdAmount: number | null;
+  priceInUsdEnabled: boolean;
+}

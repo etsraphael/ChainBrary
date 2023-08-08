@@ -1,6 +1,6 @@
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { IPaymentRequest, IProfilePayment, IToken } from './../../../shared/interfaces';
+import { IConversionToken, IPaymentRequest, IProfilePayment, IToken, StoreState } from './../../../shared/interfaces';
 import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
@@ -32,6 +32,11 @@ export const selectPaymentNetwork: MemoizedSelector<object, INetworkDetail | nul
 export const selectPaymentToken: MemoizedSelector<object, IToken | null> = createSelector(
   selectPaymentRequest,
   (s) => s.token
+);
+
+export const selectPaymentConversion: MemoizedSelector<object, StoreState<IConversionToken>> = createSelector(
+  selectPaymentRequest,
+  (s) => s.conversion
 );
 
 export const selectProfilePayment: MemoizedSelector<

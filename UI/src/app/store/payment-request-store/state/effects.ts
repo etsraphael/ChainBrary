@@ -1,26 +1,28 @@
 import { Injectable } from '@angular/core';
-import { NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import { Observable, catchError, filter, from, map, of, switchMap } from 'rxjs';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
-import { selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
+import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionBridgeContract } from './../../../shared/contracts';
+import { tokenList } from './../../../shared/data/tokenList';
 import { IPaymentRequest, IReceiptTransaction, IToken } from './../../../shared/interfaces';
+import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import * as PaymentRequestActions from './actions';
-import { selectPayment } from './selectors';
-import { tokenList } from 'src/app/shared/data/tokenList';
 import { selectToken } from './actions';
+import { selectPayment, selectPaymentToken } from './selectors';
 
 @Injectable()
 export class PaymentRequestEffects {
   constructor(
     private actions$: Actions,
     private web3LoginService: Web3LoginService,
-    private store: Store
+    private store: Store,
+    private priceFeedService: PriceFeedService
   ) {}
 
   isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
@@ -34,9 +36,38 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.initPaymentRequestMaker),
       concatLatestFrom(() => [this.store.select(selectNetworkSymbol)]),
       map((payload: [ReturnType<typeof PaymentRequestActions.initPaymentRequestMaker>, string | null]) => {
-        const tokenFound: IToken | null = tokenList.find((token) => token.symbol === payload[1] ) || null;
+        const tokenFound: IToken | null = tokenList.find((token) => token.symbol === payload[1]) || null;
         return selectToken({ token: tokenFound });
       })
+    );
+  });
+
+  applyConversionToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.applyConversionToken),
+      concatLatestFrom(() => [this.store.select(selectPaymentToken), this.store.select(selectCurrentNetwork)]),
+      filter(
+        (
+          payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail | null]
+        ) => {
+          return payload[1] !== null && payload[2] !== null;
+        }
+      ),
+      map(
+        (
+          payload: [
+            ReturnType<typeof PaymentRequestActions.applyConversionToken>,
+            IToken | null,
+            INetworkDetail | null | null
+          ]
+        ) => payload as [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken, INetworkDetail]
+      ),
+      switchMap(
+        async (payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken, INetworkDetail]) => {
+          const price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
+          return PaymentRequestActions.applyConversionTokenSuccess({ amount: price * payload[0].amount });
+        }
+      )
     );
   });
 
