@@ -17,14 +17,14 @@
           <tr>
             <td class="align-middle">Payment</td>
             <td>
-              {{ amount }} {{ networkSymbol }} <br />
+              {{ amount }} {{ tokenSelected ? tokenSelected.symbol : networkSymbol }} <br />
               <span *ngIf="usdAmount" class="convertion-rate text-secondary">($USD {{ usdAmount }})</span>
             </td>
           </tr>
           <tr>
             <td class="align-middle">Protocol Fee (0.1%)</td>
             <td>
-              {{ protocolFeeAmount }} {{ networkSymbol }} <br />
+              {{ protocolFeeAmount }} {{ tokenSelected ? tokenSelected.symbol : networkSymbol }}<br />
               <span *ngIf="usdAmount" class="convertion-rate text-secondary">($USD {{ usdProtocolFeeAmount }})</span>
             </td>
           </tr>
@@ -32,7 +32,7 @@
             <td class="align-middle"><strong>Receiving Amount</strong></td>
             <td>
               <strong>
-                {{ receivingAmount }} {{ networkSymbol }}
+                {{ receivingAmount }} {{ tokenSelected ? tokenSelected.symbol : networkSymbol }}
                 <br />
                 <span *ngIf="usdAmount" class="convertion-rate text-secondary">(USD$ {{ usdReceivingAmount }})</span>
               </strong>
