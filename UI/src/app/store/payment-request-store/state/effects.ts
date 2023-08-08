@@ -60,12 +60,22 @@ export class PaymentRequestEffects {
             IToken | null,
             INetworkDetail | null | null
           ]
-        ) => payload as [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken, INetworkDetail]
+        ) => payload as [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail]
       ),
       switchMap(
-        async (payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken, INetworkDetail]) => {
-          const price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
-          return PaymentRequestActions.applyConversionTokenSuccess({ amount: price * payload[0].amount });
+        async (
+          payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail]
+        ) => {
+          let price: number;
+          if (payload[1] === null) {
+            price = 0;
+          } else {
+            price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
+          }
+          return PaymentRequestActions.applyConversionTokenSuccess({
+            usdAmount: price * payload[0].amount,
+            tokenAmount: payload[0].amount
+          });
         }
       )
     );

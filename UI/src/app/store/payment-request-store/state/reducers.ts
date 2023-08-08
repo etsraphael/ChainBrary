@@ -87,14 +87,15 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   ),
   on(
     PaymentActions.applyConversionTokenSuccess,
-    (state, { amount }): IPaymentRequestState => ({
+    (state, { usdAmount, tokenAmount }): IPaymentRequestState => ({
       ...state,
       conversion: {
         loading: false,
         error: null,
         data: {
           ...state.conversion.data,
-          usdAmount: amount
+          usdAmount,
+          tokenAmount
         }
       }
     })

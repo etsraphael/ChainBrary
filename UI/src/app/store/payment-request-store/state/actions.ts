@@ -13,7 +13,7 @@ export const applyConversionToken = createAction(
 
 export const applyConversionTokenSuccess = createAction(
   '[Payment Request] Apply Conversion Token Success',
-  props<{ amount: number }>()
+  props<{ usdAmount: number; tokenAmount: number }>()
 );
 
 export const applyConversionTokenFailure = createAction(

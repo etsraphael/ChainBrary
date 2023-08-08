@@ -20,6 +20,7 @@ export const initialState: IPaymentRequestState = {
       usdConversionRate: 0,
       tokenConversionRate: 0,
       usdAmount: null,
+      tokenAmount: null,
       priceInUsdEnabled: false
     }
   }

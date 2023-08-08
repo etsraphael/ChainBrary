@@ -25,7 +25,7 @@
             </h6>
           </div>
           <mat-hint *ngIf="!usdEnabled && usdConversionRate && usdConversionRate > 0">
-            ${{ usdConversionRate }}
+            ${{ paymentConversion.data.usdAmount }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
           <mat-hint *ngIf="usdEnabled && tokenConversionRate && tokenConversionRate > 0">

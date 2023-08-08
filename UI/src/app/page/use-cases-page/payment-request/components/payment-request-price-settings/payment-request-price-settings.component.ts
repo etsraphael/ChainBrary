@@ -3,11 +3,10 @@ import { FormGroup } from '@angular/forms';
 import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { environment } from './../../../../../../environments/environment';
 import { tokenList } from './../../../../../shared/data/tokenList';
-import { IConversionToken, IToken, PriceSettingsForm } from './../../../../../shared/interfaces';
-import { Observable } from 'rxjs';
+import { IConversionToken, IToken, PriceSettingsForm, StoreState } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-price-settings[priceForm][networkSymbol]',
+  selector: 'app-payment-request-price-settings[priceForm][networkSymbol][paymentConversion]',
   templateUrl: './payment-request-price-settings.component.html',
   styleUrls: ['./payment-request-price-settings.component.scss']
 })
@@ -17,7 +16,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
   @Input() usdConversionRate: number | null; // TODO: Remove this
   @Input() tokenConversionRate: number | null; // TODO: Remove this
   @Input() tokenSelected: IToken | null;
-  @Input() paymentConversionObs: Observable<IConversionToken>;
+  @Input() paymentConversion: StoreState<IConversionToken>;
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
   @Output() swapCurrency = new EventEmitter<void>();
