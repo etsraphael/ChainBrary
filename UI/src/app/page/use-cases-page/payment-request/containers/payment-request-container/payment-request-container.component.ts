@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectToken } from 'src/app/store/payment-request-store/state/actions';
 import { tokenList } from './../../../../../shared/data/tokenList';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IProfileAdded, IToken } from './../../../../../shared/interfaces';
@@ -13,6 +12,7 @@ import {
   selectPublicAddress,
   selectUserAccountIsLoading
 } from './../../../../../store/auth-store/state/selectors';
+import { initPaymentRequestMaker, selectToken } from './../../../../../store/payment-request-store/state/actions';
 import { selectPaymentToken } from './../../../../../store/payment-request-store/state/selectors';
 
 @Component({
@@ -32,6 +32,15 @@ export class PaymentRequestContainerComponent implements OnInit {
   constructor(private store: Store) {}
 
   ngOnInit(): void {
+    this.generateObs();
+    this.callActions();
+  }
+
+  callActions(): void {
+    this.store.dispatch(initPaymentRequestMaker());
+  }
+
+  generateObs(): void {
     this.authStatus$ = this.store.select(selectAuthStatus);
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);

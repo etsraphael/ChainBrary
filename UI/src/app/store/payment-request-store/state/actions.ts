@@ -2,6 +2,8 @@ import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { IPaymentRequest, IProfileAdded, IToken } from './../../../shared/interfaces';
 
+export const initPaymentRequestMaker = createAction('[Payment Request] Init Payment Request Maker');
+
 export const selectToken = createAction('[Payment Request] Select Token', props<{ token: IToken | null }>());
 
 export const generatePaymentRequest = createAction(

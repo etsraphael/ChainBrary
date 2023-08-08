@@ -6,12 +6,14 @@ import { Buffer } from 'buffer';
 import { Observable, catchError, filter, from, map, of, switchMap } from 'rxjs';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
-import { selectPublicAddress } from '../../auth-store/state/selectors';
+import { selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionBridgeContract } from './../../../shared/contracts';
-import { IPaymentRequest, IReceiptTransaction } from './../../../shared/interfaces';
+import { IPaymentRequest, IReceiptTransaction, IToken } from './../../../shared/interfaces';
 import * as PaymentRequestActions from './actions';
 import { selectPayment } from './selectors';
+import { tokenList } from 'src/app/shared/data/tokenList';
+import { selectToken } from './actions';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -26,6 +28,17 @@ export class PaymentRequestEffects {
       typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.amount === 'number'
     );
   }
+
+  initPaymentRequestMaker$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.initPaymentRequestMaker),
+      concatLatestFrom(() => [this.store.select(selectNetworkSymbol)]),
+      map((payload: [ReturnType<typeof PaymentRequestActions.initPaymentRequestMaker>, string | null]) => {
+        const tokenFound: IToken | null = tokenList.find((token) => token.symbol === payload[1] ) || null;
+        return selectToken({ token: tokenFound });
+      })
+    );
+  });
 
   generatePayment$ = createEffect(() => {
     return this.actions$.pipe(
