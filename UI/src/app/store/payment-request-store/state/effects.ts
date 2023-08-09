@@ -10,12 +10,12 @@ import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
-import { TokenPair } from './../../../shared/enum';
 import {
   IConversionToken,
   IPaymentRequest,
   IReceiptTransaction,
   IToken,
+  ITokenContract,
   StoreState
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
@@ -88,11 +88,24 @@ export class PaymentRequestEffects {
           ]
         ) => {
           let price: number;
+          const tokenFound: IToken = tokenList.find(
+            (token) => token.nativeToChainId === payload[1]?.nativeToChainId && token.tokenId === payload[1]?.tokenId
+          ) as IToken;
 
-          if (payload[1]?.nativeToChainId === payload[2].chainId) {
+          if (tokenFound?.nativeToChainId === payload[2].chainId) {
             price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
           } else {
-            price = await this.priceFeedService.getCurrentPrice(TokenPair.LinkToUsd, payload[2].chainId);
+            const priceFeed = tokenFound?.networkSupport.find(
+              (network: ITokenContract) => network.chainId === payload[2].chainId
+            )?.priceFeed[0];
+
+            if (!priceFeed) {
+              return PaymentRequestActions.applyConversionTokenSuccess({
+                usdAmount: 0,
+                tokenAmount: payload[0].amount
+              });
+            }
+            price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId);
           }
 
           if (payload[3]) {
