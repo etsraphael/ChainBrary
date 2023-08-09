@@ -40,7 +40,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     private walletService: WalletService,
     private priceFeedService: PriceFeedService
-  ) {}
+  ) { }
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;

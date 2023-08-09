@@ -21,13 +21,13 @@ export class PaymentRequestCardComponent implements OnInit {
   @Input() paymentNetwork: INetworkDetail | null;
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ priceValue: number }>();
-  tokenConversionRate: number;
+  tokenConversionRate: number | undefined;
 
   constructor(
     private snackbar: MatSnackBar,
     private walletService: WalletService,
     private priceFeedService: PriceFeedService
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.setUpCurrentPrice();
@@ -56,7 +56,7 @@ export class PaymentRequestCardComponent implements OnInit {
         });
         return;
       }
-      if (this.paymentRequest?.payment?.data?.usdEnabled) {
+      if (this.paymentRequest?.payment?.data?.usdEnabled && this.tokenConversionRate) {
         return this.submitPayment.emit({
           priceValue: this.tokenConversionRate * 1e18
         });
