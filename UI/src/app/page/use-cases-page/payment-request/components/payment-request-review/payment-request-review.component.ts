@@ -13,7 +13,6 @@ export class PaymentRequestReviewComponent {
   @Input() username: string;
   @Input() amount: number;
   @Input() usdAmount: number | null;
-  // @Input() tokenConversionRate: number | null;
   @Input() previewLink: string;
   @Input() networkSymbol: string | null;
   @Input() usdEnabled: boolean;

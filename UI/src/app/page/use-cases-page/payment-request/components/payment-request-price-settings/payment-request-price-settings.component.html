@@ -24,11 +24,19 @@
             </h6>
           </div>
           <mat-hint *ngIf="!usdEnabled && paymentConversion.data.usdAmount && paymentConversion.data.usdAmount > 0">
-            ${{ paymentConversion.data.usdAmount }}
+            <ng-container *ngIf="!paymentConversion.loading"> ${{ paymentConversion.data.usdAmount }} </ng-container>
+            <ng-container *ngIf="paymentConversion.loading">
+              <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
+            </ng-container>
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
           <mat-hint *ngIf="usdEnabled && paymentConversion.data.tokenAmount && paymentConversion.data.tokenAmount > 0">
-            {{ paymentConversion.data.tokenAmount }} {{ tokenSelected!.symbol }}
+            <ng-container *ngIf="!paymentConversion.loading">
+              {{ paymentConversion.data.tokenAmount }} {{ tokenSelected!.symbol }}
+            </ng-container>
+            <ng-container *ngIf="paymentConversion.loading">
+              <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
+            </ng-container>
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
         </mat-form-field>
