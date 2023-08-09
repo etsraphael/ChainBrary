@@ -12,7 +12,7 @@ import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { concatLatestFrom } from '@ngrx/effects';
 import { Buffer } from 'buffer';
 import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
-import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
+import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
   IPaymentRequest,
@@ -46,8 +46,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
-  usdConversionRate = 0; // TODO: Remove this
-  tokenConversionRate = 0;
+  tokenConversionRate = 0; // TODO: remove this
   usdAmount: number | null;
 
   constructor(
@@ -65,7 +64,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   get amount(): number {
-    if (this.priceForm?.get('usdEnabled')?.value as boolean) return this.tokenConversionRate;
+    if (this.priceForm?.get('usdEnabled')?.value as boolean) return this.tokenConversionRate; // TODO: fix this
     else return this.priceForm.get('amount')?.value as number;
   }
 
@@ -88,37 +87,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.listenToTokenChange();
   }
 
-  async setUpCurrentNativePrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
-    return this.priceFeedService
-      .getCurrentPriceOfNativeToken(chainId)
-      .then((result: number) => this.updateUsdConversion(amount, result))
-      .catch(() => {
-        this.usdConversionRate = 0;
-      });
-  }
-
-  async setUpCurrenTokenPrice(amount: number | null, chainId: NetworkChainId): Promise<void> {
-    return this.priceFeedService
-      .getCurrentPrice(TokenPair.LinkToUsd, chainId) // TODO: Make it dynamic here
-      .then((result: number) => this.updateUsdConversion(amount, result))
-      .catch(() => {
-        this.usdConversionRate = 0;
-      });
-  }
-
-  updateUsdConversion(amount: number | null, priceResult: number): void {
-    if (!this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
-      if (amount === null) {
-        this.usdConversionRate = priceResult;
-      } else {
-        this.usdConversionRate = priceResult * (amount as number);
-      }
-      this.usdAmount = this.usdConversionRate;
-    } else {
-      this.tokenConversionRate = (this.priceForm.get('amount')?.value as number) / priceResult;
-    }
-  }
-
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
@@ -133,15 +101,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
-    this.currentNetworkObs
-      .pipe(
-        filter((network: INetworkDetail | null) => network !== null),
-        map((network: INetworkDetail | null) => network as INetworkDetail)
-      )
-      .subscribe((network: INetworkDetail) => {
-        // this.mainForm.get('price')?.get('token')?.setValue(network?.nativeCurrency?.name.toLowerCase() as string);
-        this.setUpCurrentNativePrice(1, network?.chainId as NetworkChainId);
-      });
   }
 
   listenToTokenChange(): void {
@@ -153,13 +112,13 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       )
       .subscribe((token: string) => this.setUpTokenChoice.emit(token));
 
-    this.paymentTokenObs
+    this.currentNetworkObs
       .pipe(
-        takeUntil(this.destroyed$),
-        filter((token: IToken | null) => token !== null)
+        filter((network: INetworkDetail | null) => network !== null),
+        map((network: INetworkDetail | null) => network as INetworkDetail)
       )
-      .subscribe((token: IToken | null) => {
-        // TODO: set token value with chainlink here
+      .subscribe((network: INetworkDetail) => {
+        // refresh the transaction and the conversion rate
       });
   }
 
@@ -174,6 +133,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       )
       .subscribe((amount: number) => this.applyConversionToken.emit(amount as number));
 
+    // TODO: remove this
     this.priceForm
       .get('amount')
       ?.valueChanges.pipe(
@@ -197,12 +157,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           { amount: number | null; currentNetwork: INetworkDetail | null },
           IToken | null
         ]) => {
-          if (token) {
-            this.setUpCurrenTokenPrice(amount, currentNetwork?.chainId as NetworkChainId);
-          } else {
-            this.setUpCurrentNativePrice(amount, currentNetwork?.chainId as NetworkChainId);
-          }
-
           if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
             this.usdAmount = amount as number;
           } else {
@@ -308,30 +262,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   swapCurrency(): void {
     this.switchToUsd.emit(!this.priceForm?.get('usdEnabled')?.value as boolean);
 
-    // TODO: Remove this
-    if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
-      this.priceForm.patchValue({
-        amount: this.usdConversionRate,
-        usdEnabled: true
-      });
-    } else {
-      this.currentNetworkObs
-        .pipe(
-          filter((network: INetworkDetail | null) => network !== null),
-          map((network: INetworkDetail | null) => network?.chainId as NetworkChainId)
-        )
-        .subscribe((chainId: NetworkChainId) => {
-          this.priceFeedService
-            .getCurrentPriceOfNativeToken(chainId)
-            .then((result: number) => {
-              this.priceForm.patchValue({
-                amount: (this.priceForm.get('amount')?.value as number) / result,
-                usdEnabled: false
-              });
-            })
-            .catch(() => (this.usdConversionRate = 0));
+    this.paymentConversionObs.pipe(take(1)).subscribe((conversion: StoreState<IConversionToken>) => {
+      if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
+        this.priceForm.patchValue({
+          amount: conversion.data.usdAmount,
+          usdEnabled: true
         });
-    }
+      } else {
+        this.priceForm.patchValue({
+          amount: conversion.data.tokenAmount,
+          usdEnabled: false
+        });
+      }
+    })
+
   }
 
   ngOnDestroy(): void {

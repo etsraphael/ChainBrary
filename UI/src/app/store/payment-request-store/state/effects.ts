@@ -11,11 +11,22 @@ import { showErrorNotification, showSuccessNotification } from '../../notificati
 import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import { TokenPair } from './../../../shared/enum';
-import { IPaymentRequest, IReceiptTransaction, IToken } from './../../../shared/interfaces';
+import {
+  IConversionToken,
+  IPaymentRequest,
+  IReceiptTransaction,
+  IToken,
+  StoreState
+} from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import * as PaymentRequestActions from './actions';
 import { selectToken } from './actions';
-import { selectPayment, selectPaymentRequestInUsdIsEnabled, selectPaymentToken } from './selectors';
+import {
+  selectPayment,
+  selectPaymentConversion,
+  selectPaymentRequestInUsdIsEnabled,
+  selectPaymentToken
+} from './selectors';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -97,6 +108,25 @@ export class PaymentRequestEffects {
             });
         }
       )
+    );
+  });
+
+  selectToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.selectToken),
+      concatLatestFrom(() => [
+        this.store.select(selectPaymentConversion),
+        this.store.select(selectPaymentRequestInUsdIsEnabled)
+      ]),
+      map((payload: [ReturnType<typeof PaymentRequestActions.selectToken>, StoreState<IConversionToken>, boolean]) => {
+        if (payload[2]) {
+          return PaymentRequestActions.applyConversionToken({
+            amount: payload[1].data.usdAmount ? payload[1].data.usdAmount : 0
+          });
+        } else {
+          return PaymentRequestActions.applyConversionToken({ amount: payload[1].data.tokenAmount as number });
+        }
+      })
     );
   });
 

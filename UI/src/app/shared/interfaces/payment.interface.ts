@@ -37,8 +37,6 @@ export interface IProfilePayment {
 }
 
 export interface IConversionToken {
-  usdConversionRate: number;
-  tokenConversionRate: number;
   usdAmount: number | null;
   tokenAmount: number | null;
   priceInUsdEnabled: boolean;
