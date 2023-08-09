@@ -29,11 +29,10 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <app-payment-request-review
-        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
         [username]="mainForm.controls.profile.controls.username.value!"
         [amount]="(amount | async)!"
         [previewLink]="linkGenerated"
-        [tokenSelected]="paymentTokenObs | async"
+        [tokenSelected]="(paymentTokenObs | async)!"
         [usdAmount]="usdAmount | async"
         [usdEnabled]="priceForm.controls.usdEnabled.value!"
         (goToPreviousPageEvent)="goToPreviousPage()"

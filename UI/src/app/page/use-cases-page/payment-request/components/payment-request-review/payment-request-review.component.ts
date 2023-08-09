@@ -5,7 +5,7 @@ import { QrCodeContainerModalComponent } from './../../../../../shared/component
 import { IToken } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-review[username][amount][previewLink][networkSymbol][usdEnabled][tokenSelected]',
+  selector: 'app-payment-request-review[username][amount][previewLink][usdEnabled][tokenSelected]',
   templateUrl: './payment-request-review.component.html',
   styleUrls: ['./payment-request-review.component.scss']
 })
@@ -14,9 +14,8 @@ export class PaymentRequestReviewComponent {
   @Input() amount: number;
   @Input() usdAmount: number | null;
   @Input() previewLink: string;
-  @Input() networkSymbol: string | null;
   @Input() usdEnabled: boolean;
-  @Input() tokenSelected: IToken | null;
+  @Input() tokenSelected: IToken;
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
   protocolFee = 0.001;
 
