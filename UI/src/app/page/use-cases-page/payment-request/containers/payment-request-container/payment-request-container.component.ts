@@ -15,8 +15,8 @@ import {
 import {
   applyConversionToken,
   initPaymentRequestMaker,
-  selectToken,
-  switchToUsd
+  switchToUsd,
+  updatedToken
 } from './../../../../../store/payment-request-store/state/actions';
 import {
   selectPaymentConversion,
@@ -61,7 +61,7 @@ export class PaymentRequestContainerComponent implements OnInit {
 
   setUpTokenChoice(tokenId: string): void {
     const tokenFound: IToken | null = tokenList.find((token) => token.tokenId === tokenId) || null;
-    return this.store.dispatch(selectToken({ token: tokenFound }));
+    return this.store.dispatch(updatedToken({ token: tokenFound }));
   }
 
   applyConversionToken(amount: number): void {

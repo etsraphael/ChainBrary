@@ -69,6 +69,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   ),
   on(
     PaymentActions.selectToken,
+    PaymentActions.updatedToken,
     (state, { token }): IPaymentRequestState => ({
       ...state,
       token

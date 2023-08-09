@@ -9,9 +9,8 @@ import {
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
-import { concatLatestFrom } from '@ngrx/effects';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
@@ -112,14 +111,15 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       )
       .subscribe((token: string) => this.setUpTokenChoice.emit(token));
 
-    this.currentNetworkObs
-      .pipe(
-        filter((network: INetworkDetail | null) => network !== null),
-        map((network: INetworkDetail | null) => network as INetworkDetail)
-      )
-      .subscribe((network: INetworkDetail) => {
-        // refresh the transaction and the conversion rate
-      });
+    // TODO: put this
+    // this.currentNetworkObs
+    //   .pipe(
+    //     filter((network: INetworkDetail | null) => network !== null),
+    //     map((network: INetworkDetail | null) => network as INetworkDetail)
+    //   )
+    //   .subscribe((network: INetworkDetail) => {
+    //     // refresh the transaction and the conversion rate
+    //   });
   }
 
   listenToAmountChange(): void {
@@ -140,23 +140,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         startWith(this.priceForm.get('amount')?.value || 0),
         debounceTime(1000),
         filter((amount: number | null) => amount !== null && amount > 0),
-        switchMap((amount: number | null) => {
-          return this.currentNetworkObs.pipe(
-            take(1),
-            filter(
-              (currentNetwork: INetworkDetail | null) => currentNetwork !== null && currentNetwork?.chainId !== null
-            ),
-            map((currentNetwork: INetworkDetail | null) => ({ amount: amount, currentNetwork: currentNetwork }))
-          );
-        }),
-        concatLatestFrom(() => this.paymentTokenObs),
+        map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
       .subscribe(
-        ([{ amount, currentNetwork }, token]: [
-          { amount: number | null; currentNetwork: INetworkDetail | null },
-          IToken | null
-        ]) => {
+        (amount: number) => {
           if (this.mainForm.get('price')?.get('usdEnabled')?.value as boolean) {
             this.usdAmount = amount as number;
           } else {

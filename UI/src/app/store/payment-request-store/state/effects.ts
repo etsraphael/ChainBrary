@@ -20,7 +20,6 @@ import {
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import * as PaymentRequestActions from './actions';
-import { selectToken } from './actions';
 import {
   selectPayment,
   selectPaymentConversion,
@@ -49,7 +48,7 @@ export class PaymentRequestEffects {
       concatLatestFrom(() => [this.store.select(selectNetworkSymbol)]),
       map((payload: [ReturnType<typeof PaymentRequestActions.initPaymentRequestMaker>, string | null]) => {
         const tokenFound: IToken | null = tokenList.find((token) => token.symbol === payload[1]) || null;
-        return selectToken({ token: tokenFound });
+        return PaymentRequestActions.selectToken({ token: tokenFound });
       })
     );
   });
@@ -113,12 +112,12 @@ export class PaymentRequestEffects {
 
   selectToken$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(PaymentRequestActions.selectToken),
+      ofType(PaymentRequestActions.updatedToken),
       concatLatestFrom(() => [
         this.store.select(selectPaymentConversion),
         this.store.select(selectPaymentRequestInUsdIsEnabled)
       ]),
-      map((payload: [ReturnType<typeof PaymentRequestActions.selectToken>, StoreState<IConversionToken>, boolean]) => {
+      map((payload: [ReturnType<typeof PaymentRequestActions.updatedToken>, StoreState<IConversionToken>, boolean]) => {
         if (payload[2]) {
           return PaymentRequestActions.applyConversionToken({
             amount: payload[1].data.usdAmount ? payload[1].data.usdAmount : 0

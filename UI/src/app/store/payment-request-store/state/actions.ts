@@ -6,6 +6,8 @@ export const initPaymentRequestMaker = createAction('[Payment Request] Init Paym
 
 export const selectToken = createAction('[Payment Request] Select Token', props<{ token: IToken | null }>());
 
+export const updatedToken = createAction('[Payment Request] Updated Token', props<{ token: IToken | null }>());
+
 export const switchToUsd = createAction('[Payment Request] Switch To USD', props<{ priceInUsdEnabled: boolean }>());
 
 export const applyConversionToken = createAction(
