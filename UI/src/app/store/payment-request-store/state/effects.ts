@@ -10,12 +10,12 @@ import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
+import { TokenPair } from './../../../shared/enum';
 import { IPaymentRequest, IReceiptTransaction, IToken } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import * as PaymentRequestActions from './actions';
 import { selectToken } from './actions';
-import { selectPayment, selectPaymentToken } from './selectors';
-import { TokenPair } from './../../../shared/enum';
+import { selectPayment, selectPaymentRequestInUsdIsEnabled, selectPaymentToken } from './selectors';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -46,40 +46,55 @@ export class PaymentRequestEffects {
   applyConversionToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.applyConversionToken),
-      concatLatestFrom(() => [this.store.select(selectPaymentToken), this.store.select(selectCurrentNetwork)]),
-      filter(
-        (
-          payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail | null]
-        ) => {
-          return payload[1] !== null && payload[2] !== null;
-        }
-      ),
+      concatLatestFrom(() => [
+        this.store.select(selectPaymentToken),
+        this.store.select(selectCurrentNetwork),
+        this.store.select(selectPaymentRequestInUsdIsEnabled)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
       map(
         (
           payload: [
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
-            INetworkDetail | null | null
+            INetworkDetail | null | null,
+            boolean
           ]
-        ) => payload as [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail]
+        ) =>
+          payload as [
+            ReturnType<typeof PaymentRequestActions.applyConversionToken>,
+            IToken | null,
+            INetworkDetail,
+            boolean
+          ]
       ),
       switchMap(
         async (
-          payload: [ReturnType<typeof PaymentRequestActions.applyConversionToken>, IToken | null, INetworkDetail]
+          payload: [
+            ReturnType<typeof PaymentRequestActions.applyConversionToken>,
+            IToken | null,
+            INetworkDetail,
+            boolean
+          ]
         ) => {
           let price: number;
 
-
-          if(payload[1]?.nativeToChainId === payload[2].chainId) {
+          if (payload[1]?.nativeToChainId === payload[2].chainId) {
             price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
           } else {
             price = await this.priceFeedService.getCurrentPrice(TokenPair.LinkToUsd, payload[2].chainId);
           }
 
-          return PaymentRequestActions.applyConversionTokenSuccess({
-            usdAmount: price * payload[0].amount,
-            tokenAmount: payload[0].amount
-          });
+          if (payload[3]) {
+            return PaymentRequestActions.applyConversionTokenSuccess({
+              usdAmount: payload[0].amount,
+              tokenAmount: payload[0].amount / price
+            });
+          } else
+            return PaymentRequestActions.applyConversionTokenSuccess({
+              usdAmount: price * payload[0].amount,
+              tokenAmount: payload[0].amount
+            });
         }
       )
     );

@@ -15,7 +15,8 @@ import {
 import {
   applyConversionToken,
   initPaymentRequestMaker,
-  selectToken
+  selectToken,
+  switchToUsd
 } from './../../../../../store/payment-request-store/state/actions';
 import {
   selectPaymentConversion,
@@ -65,5 +66,9 @@ export class PaymentRequestContainerComponent implements OnInit {
 
   applyConversionToken(amount: number): void {
     return this.store.dispatch(applyConversionToken({ amount }));
+  }
+
+  switchToUsd(priceInUsdEnabled: boolean): void {
+    return this.store.dispatch(switchToUsd({ priceInUsdEnabled }));
   }
 }

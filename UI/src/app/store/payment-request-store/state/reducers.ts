@@ -101,6 +101,19 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
+    PaymentActions.switchToUsd,
+    (state, { priceInUsdEnabled }): IPaymentRequestState => ({
+      ...state,
+      conversion: {
+        ...state.conversion,
+        data: {
+          ...state.conversion.data,
+          priceInUsdEnabled
+        }
+      }
+    })
+  ),
+  on(
     PaymentActions.applyConversionTokenFailure,
     (state, { errorMessage }): IPaymentRequestState => ({
       ...state,

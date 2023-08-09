@@ -6,15 +6,12 @@ import { tokenList } from './../../../../../shared/data/tokenList';
 import { IConversionToken, IToken, PriceSettingsForm, StoreState } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-price-settings[priceForm][networkSymbol][paymentConversion]',
+  selector: 'app-payment-request-price-settings[priceForm][paymentConversion]',
   templateUrl: './payment-request-price-settings.component.html',
   styleUrls: ['./payment-request-price-settings.component.scss']
 })
 export class PaymentRequestPriceSettingsComponent implements OnInit {
   @Input() priceForm: FormGroup<PriceSettingsForm>;
-  @Input() networkSymbol: string | null;
-  @Input() usdConversionRate: number | null; // TODO: Remove this
-  @Input() tokenConversionRate: number | null; // TODO: Remove this
   @Input() tokenSelected: IToken | null;
   @Input() paymentConversion: StoreState<IConversionToken>;
   @Output() goToNextPage = new EventEmitter<void>();
@@ -25,7 +22,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
   constructor(private web3LoginService: Web3LoginService) {}
 
   get usdEnabled(): boolean {
-    return this.priceForm.get('usdEnabled')?.value || false;
+    return this.paymentConversion.data.priceInUsdEnabled;
   }
 
   ngOnInit(): void {

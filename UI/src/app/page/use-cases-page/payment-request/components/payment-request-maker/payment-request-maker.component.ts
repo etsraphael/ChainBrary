@@ -37,6 +37,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() paymentConversionObs: Observable<StoreState<IConversionToken>>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
   @Output() applyConversionToken: EventEmitter<number> = new EventEmitter<number>();
+  @Output() switchToUsd: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -45,7 +46,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
-  usdConversionRate = 0;
+  usdConversionRate = 0; // TODO: Remove this
   tokenConversionRate = 0;
   usdAmount: number | null;
 
@@ -305,6 +306,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   swapCurrency(): void {
+    this.switchToUsd.emit(!this.priceForm?.get('usdEnabled')?.value as boolean);
+
+    // TODO: Remove this
     if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
       this.priceForm.patchValue({
         amount: this.usdConversionRate,

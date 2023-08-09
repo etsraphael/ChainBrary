@@ -39,6 +39,11 @@ export const selectPaymentConversion: MemoizedSelector<object, StoreState<IConve
   (s) => s.conversion
 );
 
+export const selectPaymentRequestInUsdIsEnabled: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentConversion,
+  (s) => s.data.priceInUsdEnabled
+);
+
 export const selectProfilePayment: MemoizedSelector<
   object,
   IProfilePayment,

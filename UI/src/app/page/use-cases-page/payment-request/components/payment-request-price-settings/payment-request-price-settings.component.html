@@ -13,23 +13,22 @@
   <!-- Amount -->
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
-      <p [ngClass]="{ 'mb-0': !usdConversionRate }">
+      <p [ngClass]="{ 'mb-0': !paymentConversion.data.usdAmount }">
         <mat-form-field class="w-100 text-dark" appearance="outline">
           <mat-label> Amount</mat-label>
           <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
           <div matSuffix>
             <h6 class="mb-0 pe-3">
-              <ng-container *ngIf="!usdEnabled && !tokenSelected">{{ networkSymbol }}</ng-container>
-              <ng-container *ngIf="tokenSelected">{{ tokenSelected.symbol }}</ng-container>
+              <ng-container *ngIf="!usdEnabled && tokenSelected">{{ tokenSelected.symbol }}</ng-container>
               <ng-container *ngIf="usdEnabled">$USD</ng-container>
             </h6>
           </div>
-          <mat-hint *ngIf="!usdEnabled && usdConversionRate && usdConversionRate > 0">
+          <mat-hint *ngIf="!usdEnabled && paymentConversion.data.usdAmount && paymentConversion.data.usdAmount > 0">
             ${{ paymentConversion.data.usdAmount }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
-          <mat-hint *ngIf="usdEnabled && tokenConversionRate && tokenConversionRate > 0">
-            {{ tokenConversionRate }} {{ networkSymbol }}
+          <mat-hint *ngIf="usdEnabled && paymentConversion.data.tokenAmount && paymentConversion.data.tokenAmount > 0">
+            {{ paymentConversion.data.tokenAmount }} {{ tokenSelected!.symbol }}
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
         </mat-form-field>
