@@ -13,6 +13,7 @@ export interface INetworkDetail {
   name: string;
   shortName: string;
   nativeCurrency: {
+    id: TokenId;
     name: string;
     symbol: string;
     decimals: number;
@@ -41,6 +42,20 @@ export enum NetworkChainId {
   FANTOM = '250',
   CELO = '42220',
   UNKNOWN = '0'
+}
+
+export enum TokenId {
+  ETHEREUM = 'ethereum0',
+  BNB = 'binance-smart-chain0',
+  SEPOLIA = 'sepolia0',
+  ARBITRUM = 'arbitrum0',
+  MATIC = 'matic0',
+  AVALANCHE = 'avalanche0',
+  MOONBEAM = 'moonbeam0',
+  KAVA = 'kava0',
+  FANTOM = 'fantom0',
+  CELO = 'celo0',
+  UNKNOWN = 'unknown0'
 }
 
 export enum NetworkChainCode {

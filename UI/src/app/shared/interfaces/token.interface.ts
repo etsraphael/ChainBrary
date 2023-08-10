@@ -1,8 +1,8 @@
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { TokenPair } from '../enum';
 
 export interface IToken {
-  tokenId: string | null;
+  tokenId: TokenId | string;
   decimals: number;
   name: string;
   symbol: string;

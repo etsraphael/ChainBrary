@@ -54,6 +54,10 @@ a {
 
 // Modals
 
+.mat-mdc-select-panel {
+  border-radius: 10px !important;
+}
+
 .qr-code-container-modal {
   .mat-mdc-dialog-surface {
     background: transparent !important;

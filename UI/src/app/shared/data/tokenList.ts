@@ -1,10 +1,34 @@
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { IToken } from '../interfaces';
 import { TokenPair } from '../enum';
 
 export const tokenList: IToken[] = [
   {
-    tokenId: 'ethereum',
+    tokenId: TokenId.AVALANCHE,
+    name: 'Avalanche',
+    symbol: 'AVAX',
+    decimals: 18,
+    nativeToChainId: NetworkChainId.AVALANCHE,
+    networkSupport: []
+  },
+  {
+    tokenId: TokenId.BNB,
+    name: 'Binance Coin',
+    symbol: 'BNB',
+    decimals: 18,
+    nativeToChainId: NetworkChainId.BNB,
+    networkSupport: []
+  },
+  {
+    tokenId: TokenId.MATIC,
+    name: 'Matic',
+    symbol: 'MATIC',
+    decimals: 18,
+    nativeToChainId: NetworkChainId.POLYGON,
+    networkSupport: []
+  },
+  {
+    tokenId: TokenId.ETHEREUM,
     name: 'Ethereum',
     symbol: 'ETH',
     decimals: 18,
@@ -21,6 +45,14 @@ export const tokenList: IToken[] = [
         priceFeed: []
       }
     ]
+  },
+  {
+    tokenId: TokenId.SEPOLIA,
+    name: 'Sepolia',
+    symbol: 'SEP',
+    decimals: 18,
+    nativeToChainId: NetworkChainId.SEPOLIA,
+    networkSupport: []
   },
   {
     tokenId: 'usdc',

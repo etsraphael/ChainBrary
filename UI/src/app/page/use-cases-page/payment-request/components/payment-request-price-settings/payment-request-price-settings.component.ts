@@ -1,25 +1,32 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
-import { environment } from './../../../../../../environments/environment';
+import { INetworkDetail } from '@chainbrary/web3-login';
+import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../shared/data/tokenList';
-import { IConversionToken, IToken, PriceSettingsForm, StoreState } from './../../../../../shared/interfaces';
+import {
+  IConversionToken,
+  IToken,
+  ITokenContract,
+  PriceSettingsForm,
+  StoreState
+} from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-price-settings[priceForm][paymentConversion]',
+  selector: 'app-payment-request-price-settings[priceForm][paymentConversion][currentNetworkObs]',
   templateUrl: './payment-request-price-settings.component.html',
   styleUrls: ['./payment-request-price-settings.component.scss']
 })
-export class PaymentRequestPriceSettingsComponent implements OnInit {
+export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
   @Input() priceForm: FormGroup<PriceSettingsForm>;
   @Input() tokenSelected: IToken | null;
   @Input() paymentConversion: StoreState<IConversionToken>;
+  @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
   @Output() swapCurrency = new EventEmitter<void>();
-  tokenList: IToken[] = tokenList;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
-  constructor(private web3LoginService: Web3LoginService) {}
+  tokenList: IToken[] = [];
 
   get usdEnabled(): boolean {
     return this.paymentConversion.data.priceInUsdEnabled;
@@ -30,18 +37,23 @@ export class PaymentRequestPriceSettingsComponent implements OnInit {
   }
 
   setUpTokenList(): void {
-    const nativeToken: IToken[] = this.web3LoginService
-      .getNetworkDetailList()
-      .filter(({ chainId }: INetworkDetail) => environment.contracts.bridgeTransfer.networkSupported.includes(chainId))
-      .map((network: INetworkDetail) => {
-        return {
-          tokenId: null,
-          decimals: network.nativeCurrency.decimals,
-          name: network.name,
-          symbol: network.nativeCurrency.symbol,
-          networkSupport: []
-        };
+    this.currentNetworkObs
+      .pipe(
+        filter((x) => x !== null),
+        map((x) => x as INetworkDetail),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((currentNetwork: INetworkDetail) => {
+        this.tokenList = tokenList.filter(
+          (token: IToken) =>
+            token.networkSupport.some((network: ITokenContract) => network.chainId === currentNetwork.chainId) ||
+            token.nativeToChainId === currentNetwork.chainId
+        );
       });
-    this.tokenList = [...this.tokenList, ...nativeToken];
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 }

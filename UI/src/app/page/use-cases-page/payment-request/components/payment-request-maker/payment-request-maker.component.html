@@ -21,6 +21,7 @@
       <app-payment-request-price-settings
         [priceForm]="priceForm"
         [tokenSelected]="paymentTokenObs | async"
+        [currentNetworkObs]="currentNetworkObs"
         [paymentConversion]="(paymentConversionObs | async)!"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"

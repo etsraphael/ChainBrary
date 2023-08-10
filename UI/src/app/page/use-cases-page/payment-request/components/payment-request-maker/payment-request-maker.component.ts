@@ -10,7 +10,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, debounceTime, filter, map, of, skip, startWith, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
@@ -90,7 +90,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
-        token: new FormControl('ethereum', []),
+        token: new FormControl('', []),
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)]),
         usdEnabled: new FormControl(false, [])
@@ -107,21 +107,24 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.priceForm
       .get('token')
       ?.valueChanges.pipe(
+        skip(1), // Skip the first value because it is the default value
         filter((token: string | null) => token !== null),
         map((token: string | null) => token as string),
         takeUntil(this.destroyed$)
       )
-      .subscribe((token: string) => this.setUpTokenChoice.emit(token));
+      .subscribe((token: string) => this.setUpTokenChoice.emit(token)); //TODO: Switch to token amount if price is not available in USD
 
-    // TODO: put this
-    // this.currentNetworkObs
-    //   .pipe(
-    //     filter((network: INetworkDetail | null) => network !== null),
-    //     map((network: INetworkDetail | null) => network as INetworkDetail)
-    //   )
-    //   .subscribe((network: INetworkDetail) => {
-    //     // refresh the transaction and the conversion rate
-    //   });
+    this.currentNetworkObs
+      .pipe(
+        filter((network: INetworkDetail | null) => network !== null),
+        map((network: INetworkDetail | null) => network as INetworkDetail),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((network: INetworkDetail) => {
+        this.priceForm.patchValue({
+          token: network.nativeCurrency.id
+        });
+      });
   }
 
   listenToAmountChange(): void {
