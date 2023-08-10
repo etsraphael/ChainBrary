@@ -99,7 +99,7 @@ export class PaymentRequestEffects {
               (network: ITokenContract) => network.chainId === payload[2].chainId
             )?.priceFeed[0];
 
-            if (!priceFeed) {
+            if (priceFeed === undefined) {
               return PaymentRequestActions.applyConversionTokenSuccess({
                 usdAmount: 0,
                 tokenAmount: payload[0].amount

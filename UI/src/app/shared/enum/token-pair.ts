@@ -4,5 +4,12 @@ export enum TokenPair {
   BnbToUsd,
   AvaxToUsd,
   MaticToUsd,
-  LinkToUsd
+  LinkToUsd,
+  UsdcToUsd,
+  GrtToUsd,
+  AtomToUsd,
+  DogeToUsd,
+  DotToUsd,
+  AdaToUsd,
+  WbtcToUsd
 }
