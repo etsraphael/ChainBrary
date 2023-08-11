@@ -34,6 +34,7 @@ describe('PaymentRequestMakerComponent', () => {
   });
 
   it('should setup current price if amount change', () => {
+    // Mock setupForm
     const network$ = new Subject<INetworkDetail | null>();
     component.currentNetworkObs = network$.asObservable();
 
@@ -46,6 +47,7 @@ describe('PaymentRequestMakerComponent', () => {
 
     network$.next(ethereumNetworkMock);
 
+    // Mock listenToAmountChange
     component.listenToAmountChange();
     network$.next(polygonNetworkMock);
     expect(spyOnSetupPrice).toHaveBeenCalledTimes(2);
@@ -77,5 +79,48 @@ describe('PaymentRequestMakerComponent', () => {
     setTimeout(() => {
       expect(publicAddressValue).toBe('');
     }, 100);
+  });
+
+  it('should call getCurrentPriceOfNativeToken when swap currency & usd is enabled', () => {
+    // Mock setUpForm
+    const network$ = new Subject<INetworkDetail | null>();
+    component.currentNetworkObs = network$.asObservable();
+
+    vi.spyOn(component, 'setUpPriceCurrentPrice')
+      .mockImplementation(() => { return Promise.resolve() });
+
+    component.setUpForm();
+    network$.next(ethereumNetworkMock);
+
+    // Mock swapCurrency
+    component.mainForm.controls['price'].controls['usdEnabled'].setValue(true);
+    const spyOnCurrentPrice = vi.spyOn(priceFeedServiceMock, 'getCurrentPriceOfNativeToken')
+      .mockResolvedValue(100);
+
+    component.swapCurrency();
+    network$.next(polygonNetworkMock);
+
+    expect(spyOnCurrentPrice).toHaveBeenCalled();
+  });
+
+  it('should not call getCurrentPriceOfNativeToken when swap currency if usd disabled', () => {
+    // Mock setUpForm
+    const network$ = new Subject<INetworkDetail | null>();
+    component.currentNetworkObs = network$.asObservable();
+
+    vi.spyOn(component, 'setUpPriceCurrentPrice')
+      .mockImplementation(() => { return Promise.resolve() });
+
+    component.setUpForm();
+    network$.next(ethereumNetworkMock);
+
+    // Mock swapCurrency
+    component.mainForm.controls['price'].controls['usdEnabled'].setValue(false);
+    const spyOnCurrentPrice = vi.spyOn(priceFeedServiceMock, 'getCurrentPriceOfNativeToken');
+
+    component.swapCurrency();
+    network$.next(polygonNetworkMock);
+
+    expect(spyOnCurrentPrice).not.toHaveBeenCalled();
   });
 });
