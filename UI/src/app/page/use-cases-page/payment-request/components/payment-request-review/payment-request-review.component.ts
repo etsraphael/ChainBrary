@@ -22,7 +22,7 @@ export class PaymentRequestReviewComponent {
   constructor(
     private snackbar: MatSnackBar,
     public dialog: MatDialog
-  ) {}
+  ) { }
 
   get receivingAmount(): number {
     return this.amount - this.protocolFeeAmount;

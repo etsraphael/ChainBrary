@@ -1,64 +1,47 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './../../../../../module/material.module';
-import { SharedComponentsModule } from './../../../../../shared/components/shared-components.module';
-import { ProfileForm } from './../../../../../shared/interfaces';
+import '@angular/compiler';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestProfileSettingsComponent } from './payment-request-profile-settings.component';
+import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
+import { FormControl, FormGroup } from '@angular/forms';
+import { ProfileForm } from 'src/app/shared/interfaces';
 
 describe('PaymentRequestProfileSettingsComponent', () => {
-  let component: PaymentRequestProfileSettingsComponent;
-  let fixture: ComponentFixture<PaymentRequestProfileSettingsComponent>;
+  const component: PaymentRequestProfileSettingsComponent = new PaymentRequestProfileSettingsComponent(
+    snackbarMock
+  );
 
-  const profileForm: FormGroup<ProfileForm> = new FormGroup<ProfileForm>({
-    publicAddress: new FormControl('', [Validators.required]),
-    avatarUrl: new FormControl('', []),
-    username: new FormControl('', [Validators.required, Validators.maxLength(20)])
-  });
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MaterialModule, SharedComponentsModule, ReactiveFormsModule, BrowserAnimationsModule],
-      declarations: [PaymentRequestProfileSettingsComponent],
-      providers: [
-        { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
-      ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(PaymentRequestProfileSettingsComponent);
-    component = fixture.componentInstance;
-    component.profileForm = profileForm;
-    fixture.detectChanges();
-  });
+  beforeEach(() => {
+    component.profileForm = new FormGroup<ProfileForm>({
+      publicAddress: new FormControl('', []),
+      avatarUrl: new FormControl('', []),
+      username: new FormControl('', [])
+    });
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have priceForm initialized correctly', () => {
-    expect(component.profileForm).toBeInstanceOf(FormGroup);
-  });
-
   it('should not emit goToNextPage when form is invalid', () => {
-    const emitSpy = spyOn(component.goToNextPage, 'emit');
-    component.profileForm.controls.publicAddress.setErrors({ incorrect: true });
+    const spyOnEmit = vi.spyOn(component.goToNextPage, 'emit');
+    component.profileForm.controls['publicAddress'].setErrors({ incorrect: true });
+
     component.submitForm();
-    expect(emitSpy).not.toHaveBeenCalled();
+
+    expect(spyOnEmit).not.toHaveBeenCalled();
   });
 
   it('should emit goToNextPage when form is valid', () => {
-    const emitSpy = spyOn(component.goToNextPage, 'emit');
+    const spyOnEmit = vi.spyOn(component.goToNextPage, 'emit');
 
     component.profileForm.setValue({
-      publicAddress: 'MockedAddress',
-      avatarUrl: 'MockedAvatar',
-      username: 'Jane'
+      publicAddress: '0xAb5801a7D398351b8bE11C439e05C5B3259aeC9B',
+      avatarUrl: 'https://example.com/fake-avatar.jpg',
+      username: 'John'
     });
 
     component.submitForm();
 
-    expect(emitSpy).toHaveBeenCalled();
+    expect(spyOnEmit).toHaveBeenCalled();
   });
 });
