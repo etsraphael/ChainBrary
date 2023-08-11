@@ -92,6 +92,7 @@ export class PaymentRequestEffects {
             (token) => token.nativeToChainId === payload[1]?.nativeToChainId && token.tokenId === payload[1]?.tokenId
           ) as IToken;
 
+          // If the token is the native token of the network, we get the price of the native token
           if (tokenFound?.nativeToChainId === payload[2].chainId) {
             price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
           } else {
@@ -99,21 +100,26 @@ export class PaymentRequestEffects {
               (network: ITokenContract) => network.chainId === payload[2].chainId
             )?.priceFeed[0];
 
+            // If the token is not supported by the network, we return 0
             if (priceFeed === undefined) {
               return PaymentRequestActions.applyConversionTokenSuccess({
                 usdAmount: 0,
                 tokenAmount: payload[0].amount
               });
             }
+            // If the token is supported by the network, we get the price of the token
             price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId);
           }
 
+          // Set up the price based on USD
           if (payload[3]) {
             return PaymentRequestActions.applyConversionTokenSuccess({
               usdAmount: payload[0].amount,
               tokenAmount: payload[0].amount / price
             });
-          } else
+          }
+          // Set up the price based on the token
+          else
             return PaymentRequestActions.applyConversionTokenSuccess({
               usdAmount: price * payload[0].amount,
               tokenAmount: payload[0].amount

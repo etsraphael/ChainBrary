@@ -112,7 +112,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         map((token: string | null) => token as string),
         takeUntil(this.destroyed$)
       )
-      .subscribe((token: string) => this.setUpTokenChoice.emit(token)); //TODO: Switch to token amount if price is not available in USD
+      .subscribe((token: string) => {
+        this.setUpTokenChoice.emit(token);
+        const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
+        if (usdEnabled) this.swapCurrency();
+      });
 
     this.currentNetworkObs
       .pipe(
