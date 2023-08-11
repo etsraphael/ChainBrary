@@ -10,7 +10,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subject, combineLatest, debounceTime, filter, fromEvent, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
@@ -35,6 +35,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   usdConversionRate = 0;
   tokenConversionRate = 0;
   usdAmount: number | null;
+  avatarUrl: HTMLImageElement;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -216,23 +217,23 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       if (!control.value) return of(null);
       this.isAvatarUrlValid = false;
 
-      const src: string = control.value;
-      const img: HTMLImageElement = new Image();
-      img.src = src;
+      this.avatarUrl = new Image();
+      this.avatarUrl.src = control.value;
 
-      return new Observable((observer) => {
-        img.onload = () => {
-          this.isAvatarUrlValid = true;
-          observer.next(null);
-          observer.complete();
-        };
+      const imgState$ = new Subject<null | { invalidUrl: boolean }>();
+      this.avatarUrl.onload = () => {
+        this.isAvatarUrlValid = true;
+        imgState$.next(null);
+        imgState$.complete();
+      }
 
-        img.onerror = () => {
-          this.isAvatarUrlValid = false;
-          observer.next({ invalidUrl: true });
-          observer.complete();
-        };
-      });
+      this.avatarUrl.onerror = () => {
+        this.isAvatarUrlValid = false;
+        imgState$.next({ invalidUrl: true });
+        imgState$.complete();
+      }
+
+      return imgState$;
     };
   }
 
