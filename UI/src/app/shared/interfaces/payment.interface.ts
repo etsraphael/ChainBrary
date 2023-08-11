@@ -1,9 +1,9 @@
 import { FormControl, FormGroup } from '@angular/forms';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 
 export interface IPaymentRequest {
   chainId: NetworkChainId;
-  tokenId: string;
+  tokenId: TokenId | string;
   publicAddress: string;
   username: string;
   amount: number;

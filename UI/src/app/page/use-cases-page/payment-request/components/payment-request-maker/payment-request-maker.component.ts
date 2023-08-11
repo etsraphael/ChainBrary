@@ -8,9 +8,22 @@ import {
   Validators
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
+import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, debounceTime, filter, map, of, skip, startWith, take, takeUntil } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  Subscription,
+  combineLatest,
+  debounceTime,
+  filter,
+  map,
+  of,
+  skip,
+  startWith,
+  take,
+  takeUntil
+} from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
@@ -187,29 +200,35 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return;
   }
 
-  generatePaymentRequest(): void {
+  generatePaymentRequest(): Subscription {
     const { username, publicAddress, avatarUrl } = this.profileControls;
     const { amount, description, usdEnabled } = this.priceControls;
 
-    this.currentNetworkObs.pipe(take(1)).subscribe((network: INetworkDetail | null) => {
-      const paymentRequest: IPaymentRequest = {
-        chainId: network?.chainId as NetworkChainId,
-        tokenId: '0',
-        username: username.value as string,
-        publicAddress: publicAddress.value as string,
-        amount: amount.value as number,
-        description: description.value as string,
-        avatarUrl: avatarUrl.value as string,
-        usdEnabled: usdEnabled.value as boolean
-      };
-      const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
-        .toString('base64')
-        .replace('+', '-')
-        .replace('/', '_');
-      const url: URL = new URL(window.location.href);
-      const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-      this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-    });
+    return combineLatest([this.currentNetworkObs, this.paymentTokenObs])
+      .pipe(
+        take(1),
+        filter((payload: [INetworkDetail | null, IToken | null]) => payload[0] !== null && payload[1] !== null),
+        map((payload: [INetworkDetail | null, IToken | null]) => payload as [INetworkDetail, IToken])
+      )
+      .subscribe(([network, token]) => {
+        const paymentRequest: IPaymentRequest = {
+          chainId: network.chainId,
+          tokenId: token.tokenId,
+          username: username.value as string,
+          publicAddress: publicAddress.value as string,
+          amount: amount.value as number,
+          description: description.value as string,
+          avatarUrl: avatarUrl.value as string,
+          usdEnabled: usdEnabled.value as boolean
+        };
+        const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
+          .toString('base64')
+          .replace('+', '-')
+          .replace('/', '_');
+        const url: URL = new URL(window.location.href);
+        const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
+        this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
+      });
   }
 
   urlValidator(): AsyncValidatorFn {
