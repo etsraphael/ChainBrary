@@ -60,7 +60,7 @@
             </div>
           </div>
           <app-payment-request-card
-            [currentNetwork]="currentNetwork$ | async"
+            [currentNetworkObs]="currentNetwork$"
             [paymentNetwork]="paymentNetwork$ | async"
             [authStatus]="(authStatus$ | async)!"
             [publicAddress]="publicAddress$ | async"

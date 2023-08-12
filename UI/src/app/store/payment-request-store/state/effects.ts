@@ -160,6 +160,7 @@ export class PaymentRequestEffects {
         if (this.isIPaymentRequest(decodedPaymentRequest)) {
           return PaymentRequestActions.generatePaymentRequestSuccess({
             paymentRequest: decodedPaymentRequest,
+            token: tokenList.find((token) => token.tokenId === decodedPaymentRequest.tokenId) as IToken,
             network: this.web3LoginService.getNetworkDetailByChainId(decodedPaymentRequest.chainId)
           });
         } else {

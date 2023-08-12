@@ -31,7 +31,7 @@ export const generatePaymentRequest = createAction(
 );
 export const generatePaymentRequestSuccess = createAction(
   '[Payment Request] Generate Payment Request Success',
-  props<{ paymentRequest: IPaymentRequest; network: INetworkDetail }>()
+  props<{ paymentRequest: IPaymentRequest; network: INetworkDetail; token: IToken }>()
 );
 export const generatePaymentRequestFailure = createAction(
   '[Payment Request] Generate Payment Request Failure',

@@ -18,7 +18,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   ),
   on(
     PaymentActions.generatePaymentRequestSuccess,
-    (state, { paymentRequest, network }): IPaymentRequestState => ({
+    (state, { paymentRequest, network, token }): IPaymentRequestState => ({
       ...state,
       payment: {
         error: null,
@@ -30,7 +30,8 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         avatarUrl: paymentRequest.avatarUrl ? paymentRequest.avatarUrl : null,
         username: paymentRequest.username
       },
-      network
+      network,
+      token
     })
   ),
   on(
