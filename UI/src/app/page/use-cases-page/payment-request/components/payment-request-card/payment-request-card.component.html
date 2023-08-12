@@ -55,8 +55,16 @@
                 (callToAction)="openLoginModal.emit()"
               />
             </div>
+            <div class="col-12 col-md-6 my-2 my-md-0" *ngIf="AuthStatusCodeTypes.NotVerifiedAndConnected === authStatus && !tokenIsNative">
+              <app-chainbrary-button
+                [buttonClasses]="['btn-primary-gradient', 'text-light']"
+                [buttonText]="'Enable ' + paymentToken.symbol"
+                (callToAction)="openLoginModal.emit()"
+              />
+            </div>
             <div class="col-12 col-md-6 my-2 my-md-0">
               <app-chainbrary-button
+                [isDisabled]="conversionRateHasError"
                 [buttonClasses]="['btn-success-gradient', 'text-light']"
                 [buttonText]="'Confirm'"
                 [buttonType]="'submit'"

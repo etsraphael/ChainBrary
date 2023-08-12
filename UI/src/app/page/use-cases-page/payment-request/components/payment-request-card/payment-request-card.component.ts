@@ -39,8 +39,16 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
     return this.paymentRequest.token as IToken;
   }
 
+  get conversionRateHasError(): boolean {
+    return (!this.usdIsEnabled && this.tokenConversionRate === 0) || (this.usdIsEnabled && !this.tokenConversionRate);
+  }
+
+  get tokenIsNative(): boolean {
+    return this.paymentToken.nativeToChainId === this.paymentNetwork?.chainId;
+  }
+
   ngOnInit(): void {
-    this.listenToNetworkChange();
+    if (this.usdIsEnabled) this.listenToNetworkChange();
   }
 
   listenToNetworkChange(): void {
