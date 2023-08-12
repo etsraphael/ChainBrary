@@ -7,9 +7,9 @@ export interface IPaymentRequest {
   publicAddress: string;
   username: string;
   amount: number;
-  description: string | null;
-  avatarUrl: string;
   usdEnabled: boolean;
+  description?: string | null;
+  avatarUrl?: string;
 }
 
 export interface PriceSettingsForm {

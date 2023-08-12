@@ -25,4 +25,14 @@ export class FormatService {
 
     return fixedNumber;
   }
+
+  removeEmptyStringProperties<T>(obj: T): T {
+    const result = { ...obj };
+    for (const key in result) {
+      if (typeof result[key] === 'string' && result[key] === "") {
+        delete result[key];
+      }
+    }
+    return result;
+  }
 }

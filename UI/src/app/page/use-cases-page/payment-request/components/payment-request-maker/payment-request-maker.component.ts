@@ -24,6 +24,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
+import { FormatService } from 'src/app/shared/services/format/format.service';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
@@ -60,7 +61,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   constructor(
     private snackbar: MatSnackBar,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private formatService: FormatService
   ) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
@@ -221,7 +223,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           avatarUrl: avatarUrl.value as string,
           usdEnabled: usdEnabled.value as boolean
         };
-        const paymentRequestBase64: string = Buffer.from(JSON.stringify(paymentRequest), 'utf-8')
+        const paymentRequestBase64: string = Buffer.from(
+          JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
+          'utf-8'
+        )
           .toString('base64')
           .replace('+', '-')
           .replace('/', '_');

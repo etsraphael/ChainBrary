@@ -27,7 +27,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       },
       profile: {
         publicAddress: paymentRequest.publicAddress,
-        avatarUrl: paymentRequest.avatarUrl,
+        avatarUrl: paymentRequest.avatarUrl ? paymentRequest.avatarUrl : null,
         username: paymentRequest.username
       },
       network
