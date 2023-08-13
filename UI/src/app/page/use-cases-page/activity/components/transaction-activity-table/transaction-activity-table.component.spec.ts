@@ -3,7 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { TransactionActivityTableComponent } from './transaction-activity-table.component';
 import { formatServiceMock, web3LoginServiceMock } from 'src/app/shared/tests/services/services.mock';
 import { ITransactionLog, TransactionRole } from '@chainbrary/transaction-search';
-import { transactionLogMock } from 'src/app/shared/tests/variables/transaction-activity-table';
+import { transactionLogMock } from 'src/app/shared/tests/variables/transactions';
 
 describe('TransactionActivityTableComponent', () => {
   const component: TransactionActivityTableComponent = new TransactionActivityTableComponent(

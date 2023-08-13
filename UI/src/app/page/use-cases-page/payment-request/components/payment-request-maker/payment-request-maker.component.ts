@@ -10,7 +10,7 @@ import {
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
-import { Observable, ReplaySubject, Subject, combineLatest, debounceTime, filter, fromEvent, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subject, debounceTime, filter, map, of, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IPaymentRequest, PaymentMakerForm, PriceSettingsForm, ProfileForm } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
@@ -25,7 +25,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
 
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+  private destroy$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   paymentMakePageTypes = PaymentMakePage;
   page: PaymentMakePage = PaymentMakePage.settingProfile;
@@ -132,7 +132,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
             })
           );
         }),
-        takeUntil(this.destroyed$)
+        takeUntil(this.destroy$)
       )
       .subscribe(({ amount, currentNetwork }) => {
         this.setUpPriceCurrentPrice(amount, currentNetwork?.chainId as NetworkChainId);
@@ -145,7 +145,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   listenToAddressChange(): void {
-    this.publicAddressObs.pipe(takeUntil(this.destroyed$)).subscribe((publicAddress: string | null) => {
+    this.publicAddressObs.pipe(takeUntil(this.destroy$)).subscribe((publicAddress: string | null) => {
       if (publicAddress) this.profileForm.get('publicAddress')?.setValue(publicAddress);
       else this.profileForm.get('publicAddress')?.setValue('');
     });
@@ -264,8 +264,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroyed$.next(true);
-    this.destroyed$.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }
 

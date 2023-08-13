@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, combineLatest, filter, map, take } from 'rxjs';
+import { Observable, Subject, Subscription, combineLatest, filter, map, take, takeUntil } from 'rxjs';
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
@@ -28,6 +28,7 @@ import { selectRecentTransactionsByComponent } from './../../../../../store/tran
   styleUrls: ['./payment-page.component.scss']
 })
 export class PaymentPageComponent implements OnInit, OnDestroy {
+  private destroy$: Subject<boolean> = new Subject();
   AuthStatusCodeTypes = AuthStatusCode;
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
   paymentIsLoading$: Observable<boolean>;
@@ -72,6 +73,8 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    console.log("GOOD");
+
     this.generateObs();
     this.setUpMessage();
   }
@@ -101,19 +104,20 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): void {
-    this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: IModalState) => {
-      switch (state.type) {
-        case ModalStateType.SUCCESS:
-          this.store.dispatch(
-            setAuthPublicAddress({
-              publicAddress: state.data?.publicAddress as string,
-              network: state.data?.network as INetworkDetail
-            })
-          );
-          this.web3LoginService.closeLoginModal();
-          break;
-      }
-    });
+    this.web3LoginService.openLoginModal().pipe(takeUntil(this.destroy$))
+      .subscribe((state: IModalState) => {
+        switch (state.type) {
+          case ModalStateType.SUCCESS:
+            this.store.dispatch(
+              setAuthPublicAddress({
+                publicAddress: state.data?.publicAddress as string,
+                network: state.data?.network as INetworkDetail
+              })
+            );
+            this.web3LoginService.closeLoginModal();
+            break;
+        }
+      });
   }
 
   submitPayment(payload: { priceValue: number }): Subscription | void {
@@ -136,6 +140,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.modalSub?.unsubscribe();
+    this.destroy$.next(true);
+    this.destroy$.unsubscribe();
   }
 }

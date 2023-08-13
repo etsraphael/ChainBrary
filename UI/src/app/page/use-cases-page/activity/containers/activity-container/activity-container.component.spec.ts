@@ -5,7 +5,7 @@ import { storeMock } from 'src/app/shared/tests/modules/modules.mock';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { BehaviorSubject } from 'rxjs';
 import * as actions from '../../../../../store/transaction-store/state/actions';
-import { ethereumNetworkMock, polygonNetworkMock, sepoliaNetworkMock } from 'src/app/shared/tests/variables/activity-container';
+import { ethereumNetworkMock, polygonNetworkMock, sepoliaNetworkMock } from 'src/app/shared/tests/variables/network-detail';
 
 describe('ActivityContainerComponent', () => {
   const component: ActivityContainerComponent = new ActivityContainerComponent(

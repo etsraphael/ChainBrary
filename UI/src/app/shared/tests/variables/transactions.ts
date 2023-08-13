@@ -1,4 +1,6 @@
 import { ITransactionLog, TransactionRole } from "@chainbrary/transaction-search";
+import { ITransactionCard } from "../../interfaces";
+import { NetworkChainId } from "@chainbrary/web3-login";
 
 export const transactionLogMock: ITransactionLog = {
   role: TransactionRole.Receiver,
@@ -39,4 +41,12 @@ export const transactionLogMock: ITransactionLog = {
   },
   submittedDate: new Date(),
   amount: 2500
+}
+
+export const transactionCardMock: ITransactionCard = {
+  title: "Transaction",
+  type: 'success',
+  hash: "0x1a2b3c4d5e6f7g8h9",
+  component: "TransactionComponent",
+  chainId: NetworkChainId.ETHEREUM,
 }

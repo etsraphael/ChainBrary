@@ -1,35 +1,42 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StoreModule } from '@ngrx/store';
-import { SharedTestModule } from '../shared-components.module';
-import { initialState as authInitialState } from './../../../store/auth-store/state/init';
+import '@angular/compiler';
+import { describe, expect, it, vi } from 'vitest';
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header.component';
+import { formatServiceMock, web3LoginServiceMock } from '../../tests/services/services.mock';
+import { storeMock } from '../../tests/modules/modules.mock';
+import { ethereumNetworkMock } from '../../tests/variables/network-detail';
+import * as authActions from '../../../store/auth-store/state/actions';
 
 describe('UseCasesSidebarHeaderComponent', () => {
-  let component: UseCasesSidebarHeaderComponent;
-  let fixture: ComponentFixture<UseCasesSidebarHeaderComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [
-        StoreModule.forRoot({
-          auth: () => authInitialState
-        }),
-        SharedTestModule
-      ],
-      declarations: [UseCasesSidebarHeaderComponent],
-      providers: [
-        { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} }
-      ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(UseCasesSidebarHeaderComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const component: UseCasesSidebarHeaderComponent = new UseCasesSidebarHeaderComponent(
+    storeMock,
+    formatServiceMock,
+    web3LoginServiceMock
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call getNetworkDetailList when setup network', () => {
+    const spyOnNetworkDetail = vi.spyOn(web3LoginServiceMock, 'getNetworkDetailList')
+      .mockReturnValue([ethereumNetworkMock]);
+
+    component.networkSetUp();
+
+    expect(spyOnNetworkDetail).toHaveBeenCalled();
+  });
+
+  it('should call resetAuth when user logout', () => {
+    const spyOnResetAuth = vi.spyOn(authActions, 'resetAuth');
+    component.logOut();
+
+    expect(spyOnResetAuth).toHaveBeenCalled();
+  });
+
+  it('should call networkChange when user change network', () => {
+    const spyOnNetworkChange = vi.spyOn(authActions, 'networkChange');
+    component.changeNetwork(ethereumNetworkMock);
+
+    expect(spyOnNetworkChange).toHaveBeenCalled();
   });
 });
