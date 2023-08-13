@@ -35,6 +35,15 @@ export const environment = {
         }
       ]
     },
+    bridgeTokenTransfer: {
+      networkSupported: [NetworkChainId.SEPOLIA],
+      contracts: [
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0xF9647bbb9699849506D722e3Dc090a18d3a319A0'
+        }
+      ]
+    },
     priceFeed: {
       networkSupported: [
         NetworkChainId.SEPOLIA,

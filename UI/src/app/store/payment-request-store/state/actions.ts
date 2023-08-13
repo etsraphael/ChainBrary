@@ -64,3 +64,15 @@ export const amountSentSuccess = createAction(
   props<{ hash: string; numberConfirmation: number }>()
 );
 export const amountSentFailure = createAction('[Payment Request] Amount Sent Failure', props<{ message: string }>());
+
+export const checkTokenAllowance = createAction('[Payment Request] Check Token Allowance');
+
+export const checkTokenAllowanceSuccess = createAction(
+  '[Payment Request] Check Token Allowance Success',
+  props<{ isAllowed: boolean }>()
+);
+
+export const checkTokenAllowanceFailure = createAction(
+  '[Payment Request] Check Token Allowance Failure',
+  props<{ errorMessage: string }>()
+);

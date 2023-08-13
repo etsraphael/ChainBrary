@@ -212,5 +212,18 @@ export const tokenList: IToken[] = [
         priceFeed: []
       }
     ]
+  },
+  {
+    tokenId: 'chainBrary',
+    name: 'ChainBrary',
+    symbol: 'CB',
+    decimals: 18,
+    networkSupport: [
+      {
+        chainId: NetworkChainId.SEPOLIA,
+        address: '0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d',
+        priceFeed: []
+      }
+    ]
   }
 ];
