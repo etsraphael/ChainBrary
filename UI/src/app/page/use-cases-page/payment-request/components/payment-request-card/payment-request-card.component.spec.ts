@@ -3,7 +3,7 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestCardComponent } from './payment-request-card.component';
 import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
 import { priceFeedServiceMock, walletServiceMock } from 'src/app/shared/tests/services/services.mock';
-import { paymentRequestMock } from 'src/app/shared/tests/variables/payment-request-card';
+import { paymentRequestMock } from 'src/app/shared/tests/variables/payment-request';
 import { AuthStatusCode } from 'src/app/shared/enum';
 
 describe('PaymentRequestCardComponent', () => {

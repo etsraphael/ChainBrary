@@ -1,20 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { describe, expect, it } from 'vitest';
 import { NavBarMobileComponent } from './nav-bar-mobile.component';
 
 describe('NavBarMobileComponent', () => {
-  let component: NavBarMobileComponent;
-  let fixture: ComponentFixture<NavBarMobileComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [NavBarMobileComponent]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(NavBarMobileComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const component: NavBarMobileComponent = new NavBarMobileComponent();
 
   it('should create', () => {
     expect(component).toBeTruthy();

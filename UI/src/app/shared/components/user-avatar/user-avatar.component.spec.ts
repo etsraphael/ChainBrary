@@ -1,20 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { describe, expect, it } from 'vitest';
 import { UserAvatarComponent } from './user-avatar.component';
 
 describe('UserAvatarComponent', () => {
-  let component: UserAvatarComponent;
-  let fixture: ComponentFixture<UserAvatarComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [UserAvatarComponent]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(UserAvatarComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const component: UserAvatarComponent = new UserAvatarComponent();
 
   it('should create', () => {
     expect(component).toBeTruthy();

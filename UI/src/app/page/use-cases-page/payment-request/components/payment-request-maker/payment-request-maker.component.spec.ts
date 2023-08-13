@@ -5,7 +5,7 @@ import { priceFeedServiceMock, walletServiceMock } from 'src/app/shared/tests/se
 import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Subject, of } from 'rxjs';
-import { ethereumNetworkMock, polygonNetworkMock } from 'src/app/shared/tests/variables/activity-container';
+import { ethereumNetworkMock, polygonNetworkMock } from 'src/app/shared/tests/variables/network-detail';
 
 describe('PaymentRequestMakerComponent', () => {
   const component: PaymentRequestMakerComponent = new PaymentRequestMakerComponent(

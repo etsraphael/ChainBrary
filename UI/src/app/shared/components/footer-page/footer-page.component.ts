@@ -9,8 +9,6 @@ import { Router } from '@angular/router';
 export class FooterPageComponent implements OnInit {
   footerBtns: IFooterBtn[] = [];
 
-  constructor(private router: Router) {}
-
   ngOnInit(): void {
     this.footerBtns = [
       {

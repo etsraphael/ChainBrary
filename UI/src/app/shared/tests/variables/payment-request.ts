@@ -1,6 +1,6 @@
 import { NetworkChainId } from "@chainbrary/web3-login";
 import { IPaymentRequestState } from "src/app/store/payment-request-store/state/interfaces";
-import { ethereumNetworkMock } from "./activity-container";
+import { ethereumNetworkMock } from "./network-detail";
 
 export const paymentRequestMock: IPaymentRequestState = {
   payment: {
