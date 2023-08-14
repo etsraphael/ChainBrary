@@ -28,7 +28,7 @@
     "@angular/material": "^16.1.7",
     "@angular/platform-browser": "^16.1.8",
     "@angular/platform-browser-dynamic": "^16.1.8",
-    "@angular/router": "^16.1.8",
+    "@angular/router": "^16.2.0",
     "@apollo/client": "^3.7.17",
     "@chainbrary/transaction-search": "^16.0.1",
     "@chainbrary/web3-login": "^16.0.2",
