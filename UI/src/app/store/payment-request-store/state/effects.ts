@@ -73,11 +73,20 @@ export class PaymentRequestEffects {
           const tokenAddress: string = tokenDetail.networkSupport.find(
             (support) => support.chainId === action[0].paymentRequest.chainId
           )?.address as string;
-          return this.tokensService
-            .getAllowance(tokenAddress, action[0].paymentRequest.chainId, action[1])
+
+          // TODO: to remove after library creation
+          // return this.tokensService
+          //   .getAllowance(tokenAddress, action[0].paymentRequest.chainId, action[1])
+          //   .then((result: number) => {
+          //     console.log('result', result);
+          //   });
+
+          return this.tokensService.getBalanceOfAddress(tokenAddress, action[0].paymentRequest.chainId, action[1])
             .then((result: number) => {
-              console.log('result', result);
+              console.log('result2', result);
             });
+
+
         })
       );
     },

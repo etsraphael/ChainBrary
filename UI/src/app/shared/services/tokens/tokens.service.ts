@@ -23,6 +23,20 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
+  async getBalanceOfAddress(
+    tokenAddress: string,
+    chainId: NetworkChainId,
+    userAccountAddress: string
+  ): Promise<number> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    return contract.methods
+      .balanceOf(userAccountAddress)
+      .call()
+      .catch(() => Promise.reject('Network not supported'));
+  }
+
   // TODO: To remove
   async getContractAllowance(tokenAddress: string, amount: number, chainId: NetworkChainId): Promise<boolean> {
     const web3: Web3 = new Web3(window.ethereum);
@@ -41,8 +55,6 @@ export class TokensService {
   }
 
   // TODO: Use increaseAllowance from a ERC20FixedSupply contract
-
-  // TODO: Use "balanceOf" from a ERC20FixedSupply contract
 
   // TODO: Use "transfer" from a ERC20FixedSupply contract
 
