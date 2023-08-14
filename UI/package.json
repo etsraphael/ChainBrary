@@ -36,7 +36,7 @@
     "@ngrx/effects": "^16.1.0",
     "@ngrx/entity": "^16.1.0",
     "@ngrx/store": "^16.1.0",
-    "@ngrx/store-devtools": "^16.1.0",
+    "@ngrx/store-devtools": "^16.2.0",
     "@sentry/angular-ivy": "^7.61.1",
     "angularx-qrcode": "^16.0.1",
     "apollo-angular": "^5.0.0",
