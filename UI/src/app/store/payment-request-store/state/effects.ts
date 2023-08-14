@@ -19,6 +19,7 @@ import {
   StoreState
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
+import { TokensService } from './../../../shared/services/tokens/tokens.service';
 import * as PaymentRequestActions from './actions';
 import {
   selectPayment,
@@ -33,7 +34,8 @@ export class PaymentRequestEffects {
     private actions$: Actions,
     private web3LoginService: Web3LoginService,
     private store: Store,
-    private priceFeedService: PriceFeedService
+    private priceFeedService: PriceFeedService,
+    private tokensService: TokensService
   ) {}
 
   isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
@@ -52,6 +54,21 @@ export class PaymentRequestEffects {
       })
     );
   });
+
+  checkTokenAllowance$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.generatePaymentRequestSuccess),
+      map((action: ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>) => {
+        // return this.tokensService.getContractAllowance('0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d', 1000, action.paymentRequest.chainId).then((result: boolean) => {
+        //   console.log('result', result)
+        // });
+        return this.tokensService.getAllowance('0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d', action.paymentRequest.chainId).then((result: number) => {
+          console.log('result', result)
+        });
+
+      })
+    );
+  }, { dispatch: false});
 
   applyConversionToken$ = createEffect(() => {
     return this.actions$.pipe(
