@@ -1,5 +1,7 @@
-import { BaseContract } from './baseContract';
 import { AbiItem } from 'web3-utils';
+import { BaseContract } from './baseContract';
+import { IContract } from '../interfaces';
+import { environment } from 'src/environments/environment';
 
 export class ERC20TokenContract extends BaseContract {
   constructor(
@@ -11,6 +13,13 @@ export class ERC20TokenContract extends BaseContract {
 
   getAddress(): string {
     return this.address;
+  }
+
+  getBridgeAddress(): string {
+    const contractLink: IContract = environment.contracts.bridgeTokenTransfer.contracts.find(
+      (contract: IContract) => this.chainId === contract.chainId
+    ) as IContract;
+    return contractLink.address;
   }
 
   getAbi(): AbiItem[] {

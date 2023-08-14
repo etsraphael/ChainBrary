@@ -67,8 +67,7 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
       this.priceFeedService
         .getCurrentPriceOfNativeToken(currentNetwork.chainId as NetworkChainId)
         .then(
-          (result: number) =>
-            (this.tokenConversionRate = (this.paymentRequest.payment.data?.amount as number) / result)
+          (result: number) => (this.tokenConversionRate = (this.paymentRequest.payment.data?.amount as number) / result)
         )
         .catch(() => this.resetConversion());
     }

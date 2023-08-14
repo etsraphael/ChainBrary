@@ -9,9 +9,18 @@ import { ERC20TokenContract, TransactionTokenBridgeContract } from '../../contra
   providedIn: 'root'
 })
 export class TokensService {
-
   getTokensListed(): IToken[] {
     return tokenList;
+  }
+
+  async getAllowance(tokenAddress: string, chainId: NetworkChainId, userAccountAddress: string): Promise<number> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    return contract.methods
+      .allowance(userAccountAddress, transactionContract.getBridgeAddress())
+      .call()
+      .catch(() => Promise.reject('Network not supported'));
   }
 
   // TODO: To remove
@@ -26,20 +35,9 @@ export class TokensService {
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
     return contract.methods
-    .canTransfer(transactionContract.getAddress(), String(amount), tokenAddress).call()
-    .catch(() => Promise.reject('Network not supported'));
-
-  }
-
-  // TODO: Use "allowance" from a ERC20FixedSupply contract
-  async getAllowance(tokenAddress: string, chainId: NetworkChainId): Promise<number> {
-    const web3: Web3 = new Web3(window.ethereum);
-    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
-    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
-
-    return contract.methods
-    .allowance('0xbA3Fc0648186a79baEF8DCeE9e055873F432a351', '0xF9647bbb9699849506D722e3Dc090a18d3a319A0').call()
-    .catch(() => Promise.reject('Network not supported'));
+      .canTransfer(transactionContract.getAddress(), String(amount), tokenAddress)
+      .call()
+      .catch(() => Promise.reject('Network not supported'));
   }
 
   // TODO: Use increaseAllowance from a ERC20FixedSupply contract
@@ -49,5 +47,4 @@ export class TokensService {
   // TODO: Use "transfer" from a ERC20FixedSupply contract
 
   // TODO: Use "approve" from a ERC20FixedSupply contract
-
 }

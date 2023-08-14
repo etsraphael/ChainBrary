@@ -55,20 +55,34 @@ export class PaymentRequestEffects {
     );
   });
 
-  checkTokenAllowance$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-      map((action: ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>) => {
-        // return this.tokensService.getContractAllowance('0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d', 1000, action.paymentRequest.chainId).then((result: boolean) => {
-        //   console.log('result', result)
-        // });
-        return this.tokensService.getAllowance('0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d', action.paymentRequest.chainId).then((result: number) => {
-          console.log('result', result)
-        });
-
-      })
-    );
-  }, { dispatch: false});
+  // TODO: to remove after library creation
+  checkTokenAllowance$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(PaymentRequestActions.generatePaymentRequestSuccess),
+        concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
+        filter((payload) => payload[1] !== null),
+        map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]),
+        map((action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]) => {
+          // return this.tokensService.getContractAllowance('0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d', 1000, action.paymentRequest.chainId).then((result: boolean) => {
+          //   console.log('result', result)
+          // });
+          const tokenDetail: IToken = tokenList.find(
+            (token) => token.tokenId === action[0].paymentRequest.tokenId
+          ) as IToken;
+          const tokenAddress: string = tokenDetail.networkSupport.find(
+            (support) => support.chainId === action[0].paymentRequest.chainId
+          )?.address as string;
+          return this.tokensService
+            .getAllowance(tokenAddress, action[0].paymentRequest.chainId, action[1])
+            .then((result: number) => {
+              console.log('result', result);
+            });
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
   applyConversionToken$ = createEffect(() => {
     return this.actions$.pipe(
