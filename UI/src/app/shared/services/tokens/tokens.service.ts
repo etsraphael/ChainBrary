@@ -37,6 +37,27 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
+  async increaseAllowance(
+    tokenAddress: string,
+    amount: number,
+    chainId: NetworkChainId,
+    userAccountAddress: string
+  ): Promise<boolean> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+
+    return contract.methods
+      .increaseAllowance(transactionContract.getBridgeAddress(), String(amount))
+      .estimateGas({ from: userAccountAddress })
+      .then((gas: number) =>
+        contract.methods
+          .increaseAllowance(transactionContract.getBridgeAddress(), String(amount))
+          .send({ from: userAccountAddress, gas })
+      )
+      .catch(() => Promise.reject('Network not supported'));
+  }
+
   // TODO: To remove
   async getContractAllowance(tokenAddress: string, amount: number, chainId: NetworkChainId): Promise<boolean> {
     const web3: Web3 = new Web3(window.ethereum);
@@ -53,8 +74,6 @@ export class TokensService {
       .call()
       .catch(() => Promise.reject('Network not supported'));
   }
-
-  // TODO: Use increaseAllowance from a ERC20FixedSupply contract
 
   // TODO: Use "transfer" from a ERC20FixedSupply contract
 
