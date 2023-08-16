@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
+import { NetworkChainId } from '@chainbrary/web3-login';
+import Web3 from 'web3';
+import { ERC20TokenContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import { IToken } from '../../interfaces';
-import Web3 from 'web3';
-import { NetworkChainId } from '@chainbrary/web3-login';
-import { ERC20TokenContract, TransactionTokenBridgeContract } from '../../contracts';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,16 @@ import { ERC20TokenContract, TransactionTokenBridgeContract } from '../../contra
 export class TokensService {
   getTokensListed(): IToken[] {
     return tokenList;
+  }
+
+  async getBalance(tokenAddress: string, chainId: NetworkChainId, userAccountAddress: string): Promise<number> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    return contract.methods
+      .balanceOf(userAccountAddress)
+      .call()
+      .catch(() => Promise.reject('Network not supported'));
   }
 
   async getAllowance(tokenAddress: string, chainId: NetworkChainId, userAccountAddress: string): Promise<number> {
@@ -80,14 +90,33 @@ export class TokensService {
   }
 
   // TODO: Use "transfer" from a ERC20FixedSupply contract
+  async transfer(
+    tokenAddress: string,
+    chainId: NetworkChainId,
+    userAccountAddress: string,
+    amount: number
+  ): Promise<boolean> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+
+    return contract.methods
+      .transfer('0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', String(amount))
+      .estimateGas({ from: userAccountAddress })
+      .then(
+        (gas: number) =>
+        contract.methods
+          .transfer('0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', String(amount))
+          .send({ from: userAccountAddress, gas })
+      )
+      .catch((error: any) => {
+        console.log('error', error)
+        return Promise.reject('Network not supported')
+        // manage code 3: ERC20: transfer amount exceeds balance
+      });
+  }
 
   // TODO: Use "approve" from a ERC20FixedSupply contract
-
-
-
-
-
-
 
   // TODO: To remove
   // async getContractAllowance(tokenAddress: string, amount: number, chainId: NetworkChainId): Promise<boolean> {
