@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, take, takeUntil } from 'rxjs';
-import { IToken } from 'src/app/shared/interfaces';
+import { IToken } from './../../../../../shared/interfaces';
 import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';

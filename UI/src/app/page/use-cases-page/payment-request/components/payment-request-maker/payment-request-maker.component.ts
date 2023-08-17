@@ -24,7 +24,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
-import { FormatService } from 'src/app/shared/services/format/format.service';
+import { FormatService } from './../../../../../shared/services/format/format.service';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,

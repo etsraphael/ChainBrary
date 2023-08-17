@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { InMemoryCache } from '@apollo/client/core';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
 import { HttpLink, HttpLinkHandler } from 'apollo-angular/http';
-import { environment } from 'src/environments/environment';
+import { environment } from './../../environments/environment';
 
 export function createApollo(httpLink: HttpLink): {
   link: HttpLinkHandler;
