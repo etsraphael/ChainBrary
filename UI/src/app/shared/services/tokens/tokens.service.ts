@@ -89,31 +89,25 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
-  // TODO: Use "transfer" from a ERC20FixedSupply contract
   async transfer(
     tokenAddress: string,
     chainId: NetworkChainId,
     userAccountAddress: string,
+    transfertToAddress: string,
     amount: number
   ): Promise<boolean> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const amountToSend: string = web3.utils.toWei(String(amount), 'ether');
 
     return contract.methods
-      .transfer('0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', String(amount))
+      .transfer(transfertToAddress, amountToSend)
       .estimateGas({ from: userAccountAddress })
-      .then(
-        (gas: number) =>
-        contract.methods
-          .transfer('0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', String(amount))
-          .send({ from: userAccountAddress, gas })
+      .then((gas: number) =>
+        contract.methods.transfer(transfertToAddress, amountToSend).send({ from: userAccountAddress, gas })
       )
-      .catch((error: any) => {
-        console.log('error', error)
-        return Promise.reject('Network not supported')
-        // manage code 3: ERC20: transfer amount exceeds balance
-      });
+      .catch(() => Promise.reject('Network not supported'));
   }
 
   // TODO: Use "approve" from a ERC20FixedSupply contract

@@ -221,7 +221,7 @@ export const tokenList: IToken[] = [
     networkSupport: [
       {
         chainId: NetworkChainId.SEPOLIA,
-        address: '0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d',
+        address: '0x75eC33387b1b309359598bf1Cc75E4823807F281',
         priceFeed: []
       }
     ]
