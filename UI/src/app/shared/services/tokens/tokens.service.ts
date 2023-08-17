@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import Web3 from 'web3';
-import { ERC20TokenContract } from '../../contracts';
+import { ERC20TokenContract, TransactionTokenBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import { IToken } from '../../interfaces';
 
@@ -134,20 +134,24 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
-  // TODO: To remove
-  // async getContractAllowance(tokenAddress: string, amount: number, chainId: NetworkChainId): Promise<boolean> {
-  //   const web3: Web3 = new Web3(window.ethereum);
-  //   const transactionContract = new TransactionTokenBridgeContract(chainId);
+  async getTransferAvailable(
+    ownerAdress: string,
+    tokenAddress: string,
+    amount: number,
+    chainId: NetworkChainId
+  ): Promise<boolean> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new TransactionTokenBridgeContract(chainId);
 
-  //   if (!transactionContract.getAddress()) {
-  //     return Promise.reject('Network not supported');
-  //   }
+    if (!transactionContract.getAddress()) {
+      return Promise.reject('Network not supported');
+    }
 
-  //   const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
-  //   return contract.methods
-  //     .canTransfer(transactionContract.getAddress(), String(amount), tokenAddress)
-  //     .call()
-  //     .catch(() => Promise.reject('Network not supported'));
-  // }
+    return contract.methods
+      .canTransfer(ownerAdress, String(amount), tokenAddress)
+      .call()
+      .catch(() => Promise.reject('Network not supported'));
+  }
 }
