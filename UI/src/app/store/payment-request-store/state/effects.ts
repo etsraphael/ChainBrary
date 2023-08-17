@@ -64,9 +64,6 @@ export class PaymentRequestEffects {
         filter((payload) => payload[1] !== null),
         map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]),
         map((action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]) => {
-          // return this.tokensService.getContractAllowance('0x346E49e1ad08Ee850a855A4Dd851DEa8dF82589d', 1000, action.paymentRequest.chainId).then((result: boolean) => {
-          //   console.log('result', result)
-          // });
           const tokenDetail: IToken = tokenList.find(
             (token) => token.tokenId === action[0].paymentRequest.tokenId
           ) as IToken;
@@ -86,6 +83,26 @@ export class PaymentRequestEffects {
           //     console.log('result2', result);
           //   });
 
+          // return this.tokensService.decreaseAllowance(tokenAddress, 20, action[0].paymentRequest.chainId, '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac')
+          //   .then((result: boolean) => {
+          //     console.log('result2', result);
+          //   });
+
+          // return this.tokensService.transfer(tokenAddress, action[0].paymentRequest.chainId, action[1], '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', 100)
+          //   .then((result: boolean) => {
+          //     console.log('result2', result);
+          //   });
+
+          // return this.tokensService
+          //   .approve(
+          //     tokenAddress,
+          //     action[0].paymentRequest.chainId,
+          //     action[1],
+          //     50
+          //   )
+          //   .then((result: boolean) => {
+          //     console.log('result2', result);
+          //   });
         })
       );
     },

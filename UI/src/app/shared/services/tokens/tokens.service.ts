@@ -23,12 +23,12 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
-  async getAllowance(tokenAddress: string, chainId: NetworkChainId, userAccountAddress: string): Promise<number> {
+  async getAllowance(tokenAddress: string, chainId: NetworkChainId, spenderAddress: string): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
     return contract.methods
-      .allowance(userAccountAddress, transactionContract.getBridgeAddress())
+      .allowance(spenderAddress, transactionContract.getBridgeAddress())
       .call()
       .catch(() => Promise.reject('Network not supported'));
   }
@@ -56,13 +56,14 @@ export class TokensService {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const amountToSend: string = web3.utils.toWei(String(amount), 'ether');
 
     return contract.methods
-      .increaseAllowance(transactionContract.getBridgeAddress(), String(amount))
+      .increaseAllowance(transactionContract.getBridgeAddress(), amountToSend)
       .estimateGas({ from: userAccountAddress })
       .then((gas: number) =>
         contract.methods
-          .increaseAllowance(transactionContract.getBridgeAddress(), String(amount))
+          .increaseAllowance(transactionContract.getBridgeAddress(), amountToSend)
           .send({ from: userAccountAddress, gas })
       )
       .catch(() => Promise.reject('Network not supported'));
@@ -77,13 +78,14 @@ export class TokensService {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const amountToSend: string = web3.utils.toWei(String(amount), 'ether');
 
     return contract.methods
-      .decreaseAllowance(transactionContract.getBridgeAddress(), String(amount))
+      .decreaseAllowance(transactionContract.getBridgeAddress(), amountToSend)
       .estimateGas({ from: userAccountAddress })
       .then((gas: number) =>
         contract.methods
-          .decreaseAllowance(transactionContract.getBridgeAddress(), String(amount))
+          .decreaseAllowance(transactionContract.getBridgeAddress(), amountToSend)
           .send({ from: userAccountAddress, gas })
       )
       .catch(() => Promise.reject('Network not supported'));
@@ -110,7 +112,27 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
-  // TODO: Use "approve" from a ERC20FixedSupply contract
+  async approve(
+    tokenAddress: string,
+    chainId: NetworkChainId,
+    userAccountAddress: string,
+    amount: number
+  ): Promise<boolean> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const amountToSend: string = web3.utils.toWei(String(amount), 'ether');
+
+    return contract.methods
+      .approve(transactionContract.getBridgeAddress(), amountToSend)
+      .estimateGas({ from: userAccountAddress })
+      .then((gas: number) =>
+        contract.methods
+          .approve(transactionContract.getBridgeAddress(), amountToSend)
+          .send({ from: userAccountAddress, gas })
+      )
+      .catch(() => Promise.reject('Network not supported'));
+  }
 
   // TODO: To remove
   // async getContractAllowance(tokenAddress: string, amount: number, chainId: NetworkChainId): Promise<boolean> {
