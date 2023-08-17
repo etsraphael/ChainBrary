@@ -103,6 +103,17 @@ export class PaymentRequestEffects {
           //   .then((result: boolean) => {
           //     console.log('result2', result);
           //   });
+
+          // return this.tokensService
+          //   .getTransferAvailable(
+          //     '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac',
+          //     '0x75eC33387b1b309359598bf1Cc75E4823807F281',
+          //     20,
+          //     action[0].paymentRequest.chainId
+          //   )
+          //   .then((result: boolean) => {
+          //     console.log('result2', result);
+          //   });
         })
       );
     },

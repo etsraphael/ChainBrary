@@ -13,6 +13,8 @@ export class TokensService {
     return tokenList;
   }
 
+  // TODO: transfer everything to a library
+
   async getBalance(tokenAddress: string, chainId: NetworkChainId, userAccountAddress: string): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
