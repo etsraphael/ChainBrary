@@ -3,6 +3,4 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root'
 })
-export class TokenBridgeService {
-  constructor() {}
-}
+export class TokenBridgeService {}

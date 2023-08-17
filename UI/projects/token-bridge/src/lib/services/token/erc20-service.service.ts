@@ -12,14 +12,11 @@ declare global {
 @Injectable({
   providedIn: 'root'
 })
-export class Erc20ServiceService {
-
+export class Erc20Service {
   async getBalance(tokenAddress: string, chainId: string, userAccountAddress: string): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
-    return contract.methods
-      .balanceOf(userAccountAddress)
-      .call()
+    return contract.methods.balanceOf(userAccountAddress).call();
   }
 }

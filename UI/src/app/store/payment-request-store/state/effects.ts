@@ -78,7 +78,8 @@ export class PaymentRequestEffects {
           //     console.log('result', result);
           //   });
 
-          // return this.tokensService.getBalanceOfAddress(tokenAddress, action[0].paymentRequest.chainId, action[1])
+          // return this.tokensService
+          //   .getBalanceOfAddress(tokenAddress, action[0].paymentRequest.chainId, action[1])
           //   .then((result: number) => {
           //     console.log('result2', result);
           //   });
