@@ -11,6 +11,7 @@ import { showErrorNotification, showSuccessNotification } from '../../notificati
 import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
+  IContract,
   IConversionToken,
   IPaymentRequest,
   IReceiptTransaction,
@@ -27,6 +28,8 @@ import {
   selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
+import { IAllowancePayload, IBalancePayload } from '@chainbrary/token-bridge';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -72,22 +75,6 @@ export class PaymentRequestEffects {
           )?.address as string;
 
           // TODO: to remove after library creation
-          // return this.tokensService
-          //   .getAllowance(tokenAddress, action[0].paymentRequest.chainId, action[1])
-          //   .then((result: number) => {
-          //     console.log('result', result);
-          //   });
-
-          // return this.tokensService
-          //   .getBalanceOfAddress(tokenAddress, action[0].paymentRequest.chainId, action[1])
-          //   .then((result: number) => {
-          //     console.log('result2', result);
-          //   });
-
-          // return this.tokensService.decreaseAllowance(tokenAddress, 20, action[0].paymentRequest.chainId, '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac')
-          //   .then((result: boolean) => {
-          //     console.log('result2', result);
-          //   });
 
           // return this.tokensService.transfer(tokenAddress, action[0].paymentRequest.chainId, action[1], '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', 100)
           //   .then((result: boolean) => {
@@ -115,6 +102,37 @@ export class PaymentRequestEffects {
           //   .then((result: boolean) => {
           //     console.log('result2', result);
           //   });
+
+          // ------------------------
+
+          // TODO: Remove when everything is working
+          // const payload: IBalancePayload = {
+          //   tokenAddress: tokenAddress,
+          //   chainId: action[0].paymentRequest.chainId,
+          //   owner: action[1]
+          // };
+
+          // return this.tokensService.getBalanceOfAddress(payload).then((result: number) => {
+          //   console.log('result2', result);
+          // });
+
+          // -----------------
+
+          // const contractLink: IContract = environment.contracts.bridgeTokenTransfer.contracts.find(
+          //   (contract: IContract) => action[0].paymentRequest.chainId === contract.chainId
+          // ) as IContract;
+
+          // const payload: IAllowancePayload = {
+          //   tokenAddress: tokenAddress,
+          //   chainId: action[0].paymentRequest.chainId,
+          //   owner: action[1],
+          //   spender: contractLink.address
+          // };
+
+          // return this.tokensService.getAllowance(payload).then((result: number) => {
+          //   console.log('getAllowance', result);
+          // });
+
         })
       );
     },
