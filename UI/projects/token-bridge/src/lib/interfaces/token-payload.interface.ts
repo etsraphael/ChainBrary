@@ -14,3 +14,11 @@ export interface IAllowancePayload {
 export interface IEditAllowancePayload extends IAllowancePayload {
   amount: number;
 }
+
+export interface ITransferPayload {
+  tokenAddress: string;
+  chainId: string;
+  amount: number;
+  from: string;
+  to: string;
+}

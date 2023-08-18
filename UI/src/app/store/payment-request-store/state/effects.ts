@@ -28,7 +28,7 @@ import {
   selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
-import { IAllowancePayload, IBalancePayload } from '@chainbrary/token-bridge';
+import { IAllowancePayload, IBalancePayload, ITransferPayload } from '@chainbrary/token-bridge';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
@@ -75,11 +75,6 @@ export class PaymentRequestEffects {
           )?.address as string;
 
           // TODO: to remove after library creation
-
-          // return this.tokensService.transfer(tokenAddress, action[0].paymentRequest.chainId, action[1], '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac', 100)
-          //   .then((result: boolean) => {
-          //     console.log('result2', result);
-          //   });
 
           // return this.tokensService
           //   .approve(
@@ -133,6 +128,20 @@ export class PaymentRequestEffects {
           //   console.log('getAllowance', result);
           // });
 
+          // ------------------------
+
+          // const payload: ITransferPayload = {
+          //   tokenAddress: tokenAddress,
+          //   chainId: action[0].paymentRequest.chainId,
+          //   amount: 100,
+          //   from: action[1],
+          //   to: '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac'
+          // }
+
+          // return this.tokensService.transfer(payload)
+          // .then((result: boolean) => {
+          //   console.log('result2', result);
+          // });
         })
       );
     },
