@@ -42,27 +42,8 @@ export class TokensService {
     return this.erc20Service.transfer(payload);
   }
 
-  // TODO: transfer everything to a library
-  async approve(
-    tokenAddress: string,
-    chainId: NetworkChainId,
-    userAccountAddress: string,
-    amount: number
-  ): Promise<boolean> {
-    const web3: Web3 = new Web3(window.ethereum);
-    const transactionContract = new ERC20TokenContract(chainId, tokenAddress);
-    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
-    const amountToSend: string = web3.utils.toWei(String(amount), 'ether');
-
-    return contract.methods
-      .approve(transactionContract.getBridgeAddress(), amountToSend)
-      .estimateGas({ from: userAccountAddress })
-      .then((gas: number) =>
-        contract.methods
-          .approve(transactionContract.getBridgeAddress(), amountToSend)
-          .send({ from: userAccountAddress, gas })
-      )
-      .catch(() => Promise.reject('Network not supported'));
+  approve(payload: IEditAllowancePayload): Promise<boolean> {
+    return this.erc20Service.approve(payload);
   }
 
   async getTransferAvailable(

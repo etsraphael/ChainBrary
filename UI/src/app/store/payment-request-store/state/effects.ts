@@ -28,7 +28,7 @@ import {
   selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
-import { IAllowancePayload, IBalancePayload, ITransferPayload } from '@chainbrary/token-bridge';
+import { IAllowancePayload, IBalancePayload, IEditAllowancePayload, ITransferPayload } from '@chainbrary/token-bridge';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
@@ -67,26 +67,25 @@ export class PaymentRequestEffects {
         filter((payload) => payload[1] !== null),
         map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]),
         map((action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]) => {
-          const tokenDetail: IToken = tokenList.find(
-            (token) => token.tokenId === action[0].paymentRequest.tokenId
-          ) as IToken;
-          const tokenAddress: string = tokenDetail.networkSupport.find(
-            (support) => support.chainId === action[0].paymentRequest.chainId
-          )?.address as string;
-
+          // const tokenDetail: IToken = tokenList.find(
+          //   (token) => token.tokenId === action[0].paymentRequest.tokenId
+          // ) as IToken;
+          // const tokenAddress: string = tokenDetail.networkSupport.find(
+          //   (support) => support.chainId === action[0].paymentRequest.chainId
+          // )?.address as string;
           // TODO: to remove after library creation
-
+          // const payload: IEditAllowancePayload = {
+          //   tokenAddress: tokenAddress,
+          //   chainId: action[0].paymentRequest.chainId,
+          //   owner: action[1],
+          //   spender: '0xF9647bbb9699849506D722e3Dc090a18d3a319A0',
+          //   amount: 75
+          // };
           // return this.tokensService
-          //   .approve(
-          //     tokenAddress,
-          //     action[0].paymentRequest.chainId,
-          //     action[1],
-          //     50
-          //   )
+          //   .approve(payload)
           //   .then((result: boolean) => {
           //     console.log('result2', result);
           //   });
-
           // return this.tokensService
           //   .getTransferAvailable(
           //     '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac',
@@ -97,39 +96,30 @@ export class PaymentRequestEffects {
           //   .then((result: boolean) => {
           //     console.log('result2', result);
           //   });
-
           // ------------------------
-
           // TODO: Remove when everything is working
           // const payload: IBalancePayload = {
           //   tokenAddress: tokenAddress,
           //   chainId: action[0].paymentRequest.chainId,
           //   owner: action[1]
           // };
-
           // return this.tokensService.getBalanceOfAddress(payload).then((result: number) => {
           //   console.log('result2', result);
           // });
-
           // -----------------
-
           // const contractLink: IContract = environment.contracts.bridgeTokenTransfer.contracts.find(
           //   (contract: IContract) => action[0].paymentRequest.chainId === contract.chainId
           // ) as IContract;
-
           // const payload: IAllowancePayload = {
           //   tokenAddress: tokenAddress,
           //   chainId: action[0].paymentRequest.chainId,
           //   owner: action[1],
           //   spender: contractLink.address
           // };
-
           // return this.tokensService.getAllowance(payload).then((result: number) => {
           //   console.log('getAllowance', result);
           // });
-
           // ------------------------
-
           // const payload: ITransferPayload = {
           //   tokenAddress: tokenAddress,
           //   chainId: action[0].paymentRequest.chainId,
@@ -137,7 +127,6 @@ export class PaymentRequestEffects {
           //   from: action[1],
           //   to: '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac'
           // }
-
           // return this.tokensService.transfer(payload)
           // .then((result: boolean) => {
           //   console.log('result2', result);
