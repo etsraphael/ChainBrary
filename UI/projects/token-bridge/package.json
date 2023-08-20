@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/token-bridge",
-  "version": "16.0.1",
+  "version": "16.0.2",
   "peerDependencies": {
     "@angular/common": "^16.1.0",
     "@angular/core": "^16.1.0",
@@ -9,5 +9,18 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/etsraphael/ChainBrary.git"
+  },
+  "homepage": "https://github.com/etsraphael/ChainBrary.git",
+  "keywords": [
+    "ng",
+    "angular",
+    "web3",
+    "eth",
+    "login"
+  ],
+  "license": "MIT"
 }
