@@ -8,7 +8,7 @@ import {
 } from '@chainbrary/token-bridge';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import Web3 from 'web3';
-import { ERC20TokenContract, TransactionTokenBridgeContract } from '../../contracts';
+import { TransactionTokenBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import { IToken } from '../../interfaces';
 
