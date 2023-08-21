@@ -21,5 +21,6 @@ export const initialState: IPaymentRequestState = {
       tokenAmount: null,
       priceInUsdEnabled: false
     }
-  }
+  },
+  smartContractCanTransfer: false
 };

@@ -125,6 +125,13 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         error: errorMessage
       }
     })
+  ),
+  on(
+    PaymentActions.smartContractIsTransferable,
+    (state, { isTransferable }): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: isTransferable
+    })
   )
 );
 

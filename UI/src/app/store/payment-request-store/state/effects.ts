@@ -58,6 +58,28 @@ export class PaymentRequestEffects {
     );
   });
 
+  checkIfTransferIsPossible$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.generatePaymentRequestSuccess),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] !== null),
+      map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]),
+      switchMap(async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]) => {
+        return this.tokensService
+          .getTransferAvailable(
+            action[1],
+            '0x75eC33387b1b309359598bf1Cc75E4823807F281',
+            20,
+            action[0].paymentRequest.chainId
+          )
+          .then((result: boolean) => {
+            console.log('result2', result);
+            return PaymentRequestActions.smartContractIsTransferable({ isTransferable: result });
+          });
+      })
+    );
+  });
+
   // TODO: to remove after library creation
   checkTokenAllowance$ = createEffect(
     () => {

@@ -9,6 +9,7 @@ export interface IPaymentRequestState {
   token: IToken | null;
   profile: IProfilePayment;
   network: INetworkDetail | null;
+  smartContractCanTransfer: boolean;
 }
 
 export interface PaymentRequestState {

@@ -76,3 +76,8 @@ export const checkTokenAllowanceFailure = createAction(
   '[Payment Request] Check Token Allowance Failure',
   props<{ errorMessage: string }>()
 );
+
+export const smartContractIsTransferable = createAction(
+  '[Payment Request] Smart Contract Is Transferable',
+  props<{ isTransferable: boolean }>()
+);
