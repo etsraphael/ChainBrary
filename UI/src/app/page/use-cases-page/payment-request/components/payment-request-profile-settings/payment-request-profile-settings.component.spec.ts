@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestProfileSettingsComponent } from './payment-request-profile-settings.component';
-import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
+import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ProfileForm } from 'src/app/shared/interfaces';
+import { ProfileForm } from '../../../../../shared/interfaces';
 
 describe('PaymentRequestProfileSettingsComponent', () => {
   const component: PaymentRequestProfileSettingsComponent = new PaymentRequestProfileSettingsComponent(

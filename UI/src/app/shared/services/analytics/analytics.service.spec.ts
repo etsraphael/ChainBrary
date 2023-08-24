@@ -1,16 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-
+import '@angular/compiler';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { AnalyticsService } from './analytics.service';
 
 describe('AnalyticsService', () => {
-  let service: AnalyticsService;
+  let analyticsService: AnalyticsService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(AnalyticsService);
+    analyticsService = new AnalyticsService();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(analyticsService).toBeTruthy();
   });
 });

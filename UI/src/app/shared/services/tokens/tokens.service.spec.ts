@@ -1,16 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-
+import { describe, expect, it, beforeEach } from 'vitest';
 import { TokensService } from './tokens.service';
 
 describe('TokensService', () => {
-  let service: TokensService;
+  let tokensService: TokensService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(TokensService);
+    tokensService = new TokensService();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(tokensService).toBeTruthy();
   });
 });

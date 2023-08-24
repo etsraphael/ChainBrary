@@ -2,7 +2,7 @@ import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
-import { dialogMock, snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
+import { dialogMock, snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
 import { PaymentRequestReviewComponent } from './payment-request-review.component';
 import { MatDialogRef } from '@angular/material/dialog';
 
@@ -25,7 +25,7 @@ describe('PaymentRequestReviewComponent', () => {
 
   it('should open a snackbar when clickCopyLinkEvent() is called', () => {
     const spyOnOpen = vi.spyOn(snackbarMock, 'open')
-      .mockResolvedValue({} as MatSnackBarRef<TextOnlySnackBar>);
+      .mockReturnValue({} as MatSnackBarRef<TextOnlySnackBar>);
     component.clickCopyLinkEvent();
 
     expect(spyOnOpen).toHaveBeenCalledWith('Link copied to clipboard', '', { duration: 3000 });
@@ -33,7 +33,7 @@ describe('PaymentRequestReviewComponent', () => {
 
   it('should open a dialog when showQRCode() is called', () => {
     const spyOnOpen = vi.spyOn(dialogMock, 'open')
-      .mockResolvedValue({} as MatDialogRef<QrCodeContainerModalComponent>);
+      .mockReturnValue({} as MatDialogRef<QrCodeContainerModalComponent>);
     component.showQRCode();
 
     expect(spyOnOpen).toHaveBeenCalled();

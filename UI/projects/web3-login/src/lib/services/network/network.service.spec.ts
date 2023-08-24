@@ -1,19 +1,18 @@
-import { TestBed } from '@angular/core/testing';
+import '@angular/compiler';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { NetworkServiceWeb3Login } from './network.service';
-import { SharedTestModule } from './../../../../../../src/app/shared/components/shared-components.module';
+import { Web3LoginConfig } from '@chainbrary/web3-login';
 
 describe('NetworkServiceWeb3Login', () => {
-  let service: NetworkServiceWeb3Login;
+  let networkServiceWeb3Login: NetworkServiceWeb3Login;
+  let config: Web3LoginConfig;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [SharedTestModule],
-      providers: [NetworkServiceWeb3Login]
-    });
-    service = TestBed.inject(NetworkServiceWeb3Login);
+    config = {} as Web3LoginConfig;
+    networkServiceWeb3Login = new NetworkServiceWeb3Login(config);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(networkServiceWeb3Login).toBeTruthy();
   });
 });

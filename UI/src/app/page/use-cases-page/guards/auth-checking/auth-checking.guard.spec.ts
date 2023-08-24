@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { AuthCheckingGuard } from './auth-checking.guard';
-import { storeMock } from 'src/app/shared/tests/modules/modules.mock';
-import { authServiceMock } from 'src/app/shared/tests/services/services.mock';
-import { AuthStatusCode } from 'src/app/shared/enum';
+import { storeMock } from '../../../../shared/tests/modules/modules.mock';
+import { authServiceMock } from '../../../../shared/tests/services/services.mock';
+import { AuthStatusCode } from '../../../../shared/enum';
 import { Subject } from 'rxjs';
 import * as actions from '../../../../store/auth-store/state/actions';
 
@@ -18,41 +18,41 @@ describe('AuthCheckingGuard', () => {
   });
 
   it('should load user if authentication status is "NotConnected"', () => {
-    const code$ = new Subject<AuthStatusCode>();
-    const error$ = new Subject<string | null>();
-    component.authStatusCode$ = code$.asObservable();
-    component.errorAccount$ = error$.asObservable();
-    const spyLoadAuth = vi.spyOn(actions, 'loadAuth');
+    const codeSub$ = new Subject<AuthStatusCode>();
+    const errorSub$ = new Subject<string | null>();
+    component.authStatusCode$ = codeSub$.asObservable();
+    component.errorAccount$ = errorSub$.asObservable();
+    const spyOnLoadAuth = vi.spyOn(actions, 'loadAuth');
 
     component.logUser();
 
-    code$.next(AuthStatusCode.NotConnected);
+    codeSub$.next(AuthStatusCode.NotConnected);
     /* If the status code is 'NotVerifiedAndConnected', we end up in the
     'profileChecking' method which also calls 'loadAuth'. To avoid ending
     up in this situation, we populate the 'errorAccount$' variable */
-    error$.next('An error occured');
-    expect(spyLoadAuth).toHaveBeenCalledTimes(1);
+    errorSub$.next('An error occured');
+    expect(spyOnLoadAuth).toHaveBeenCalledTimes(1);
   });
 
   it('should check profile if authentication status is "NotVerifiedAndConnected"', () => {
-    const code$ = new Subject<AuthStatusCode>();
-    component.authStatusCode$ = code$.asObservable();
-    const spyProfileChecking = vi.spyOn(component, 'profileChecking');
+    const codeSub$ = new Subject<AuthStatusCode>();
+    component.authStatusCode$ = codeSub$.asObservable();
+    const spyOnProfileChecking = vi.spyOn(component, 'profileChecking');
 
     component.logUser();
-    code$.next(AuthStatusCode.NotVerifiedAndConnected);
+    codeSub$.next(AuthStatusCode.NotVerifiedAndConnected);
 
-    expect(spyProfileChecking).toHaveBeenCalledTimes(1);
+    expect(spyOnProfileChecking).toHaveBeenCalledTimes(1);
   });
 
   it('should not called loadAuth if errorAccount detected', () => {
-    const error$ = new Subject<string | null>();
-    component.errorAccount$ = error$.asObservable();
-    const spyLoadAuth = vi.spyOn(actions, 'loadAuth');
+    const errorSub$ = new Subject<string | null>();
+    component.errorAccount$ = errorSub$.asObservable();
+    const spyOnLoadAuth = vi.spyOn(actions, 'loadAuth');
 
     component.profileChecking();
-    error$.next('An error has occured');
+    errorSub$.next('An error has occured');
 
-    expect(spyLoadAuth).not.toHaveBeenCalled();
+    expect(spyOnLoadAuth).not.toHaveBeenCalled();
   });
 });
