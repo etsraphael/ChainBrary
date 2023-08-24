@@ -1,11 +1,11 @@
 import '@angular/compiler';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestMakerComponent } from './payment-request-maker.component';
-import { priceFeedServiceMock, walletServiceMock } from 'src/app/shared/tests/services/services.mock';
-import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
+import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
+import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Subject, of } from 'rxjs';
-import { ethereumNetworkMock, polygonNetworkMock } from 'src/app/shared/tests/variables/network-detail';
+import { ethereumNetworkMock, polygonNetworkMock } from '../../../../../shared/tests/variables/network-detail';
 
 describe('PaymentRequestMakerComponent', () => {
   const component: PaymentRequestMakerComponent = new PaymentRequestMakerComponent(
@@ -35,33 +35,32 @@ describe('PaymentRequestMakerComponent', () => {
 
   it('should setup current price if amount change', () => {
     // Mock setupForm
-    const network$ = new Subject<INetworkDetail | null>();
-    component.currentNetworkObs = network$.asObservable();
+    const networkSub$ = new Subject<INetworkDetail | null>();
+    component.currentNetworkObs = networkSub$.asObservable();
 
-    const spyOnSetupPrice = vi.spyOn(component, 'setUpPriceCurrentPrice')
-      .mockImplementation(() => { return Promise.resolve() });
+    const spyOnSetupPrice = vi.spyOn(component, 'setUpPriceCurrentPrice').mockResolvedValue();
 
     component.setUpForm();
     component.mainForm.controls['price'].controls['amount'].setValue(100);
     component.mainForm.controls['price'].controls['usdEnabled'].setValue(true);
 
-    network$.next(ethereumNetworkMock);
+    networkSub$.next(ethereumNetworkMock);
 
     // Mock listenToAmountChange
     component.listenToAmountChange();
-    network$.next(polygonNetworkMock);
+    networkSub$.next(polygonNetworkMock);
     expect(spyOnSetupPrice).toHaveBeenCalledTimes(2);
   });
 
   it('should get public address if exist', () => {
     const publicAddressHash = '0x1234567890abcdef';
     const publicAddressValue = component.mainForm.controls['profile'].controls['publicAddress'].value;
-    const publicAddress$ = new Subject<string | null>();
-    component.publicAddressObs = publicAddress$.asObservable();
+    const publicAddressSub$ = new Subject<string | null>();
+    component.publicAddressObs = publicAddressSub$.asObservable();
 
     component.listenToAddressChange();
 
-    publicAddress$.next(publicAddressHash);
+    publicAddressSub$.next(publicAddressHash);
     setTimeout(() => {
       expect(publicAddressValue).toBe(publicAddressHash);
     }, 100);
@@ -70,12 +69,12 @@ describe('PaymentRequestMakerComponent', () => {
   it('should set an empty public address if not exist', () => {
     const publicAddressHash = null;
     const publicAddressValue = component.mainForm.controls['profile'].controls['publicAddress'].value;
-    const publicAddress$ = new Subject<string | null>();
-    component.publicAddressObs = publicAddress$.asObservable();
+    const publicAddressSub$ = new Subject<string | null>();
+    component.publicAddressObs = publicAddressSub$.asObservable();
 
     component.listenToAddressChange();
 
-    publicAddress$.next(publicAddressHash);
+    publicAddressSub$.next(publicAddressHash);
     setTimeout(() => {
       expect(publicAddressValue).toBe('');
     }, 100);
@@ -83,14 +82,13 @@ describe('PaymentRequestMakerComponent', () => {
 
   it('should call getCurrentPriceOfNativeToken when swap currency & usd is enabled', () => {
     // Mock setUpForm
-    const network$ = new Subject<INetworkDetail | null>();
-    component.currentNetworkObs = network$.asObservable();
+    const networkSub$ = new Subject<INetworkDetail | null>();
+    component.currentNetworkObs = networkSub$.asObservable();
 
-    vi.spyOn(component, 'setUpPriceCurrentPrice')
-      .mockImplementation(() => { return Promise.resolve() });
+    vi.spyOn(component, 'setUpPriceCurrentPrice').mockResolvedValue();
 
     component.setUpForm();
-    network$.next(ethereumNetworkMock);
+    networkSub$.next(ethereumNetworkMock);
 
     // Mock swapCurrency
     component.mainForm.controls['price'].controls['usdEnabled'].setValue(true);
@@ -98,28 +96,27 @@ describe('PaymentRequestMakerComponent', () => {
       .mockResolvedValue(100);
 
     component.swapCurrency();
-    network$.next(polygonNetworkMock);
+    networkSub$.next(polygonNetworkMock);
 
     expect(spyOnCurrentPrice).toHaveBeenCalled();
   });
 
   it('should not call getCurrentPriceOfNativeToken when swap currency if usd disabled', () => {
     // Mock setUpForm
-    const network$ = new Subject<INetworkDetail | null>();
-    component.currentNetworkObs = network$.asObservable();
+    const networkSub$ = new Subject<INetworkDetail | null>();
+    component.currentNetworkObs = networkSub$.asObservable();
 
-    vi.spyOn(component, 'setUpPriceCurrentPrice')
-      .mockImplementation(() => { return Promise.resolve() });
+    vi.spyOn(component, 'setUpPriceCurrentPrice').mockResolvedValue();
 
     component.setUpForm();
-    network$.next(ethereumNetworkMock);
+    networkSub$.next(ethereumNetworkMock);
 
     // Mock swapCurrency
     component.mainForm.controls['price'].controls['usdEnabled'].setValue(false);
     const spyOnCurrentPrice = vi.spyOn(priceFeedServiceMock, 'getCurrentPriceOfNativeToken');
 
     component.swapCurrency();
-    network$.next(polygonNetworkMock);
+    networkSub$.next(polygonNetworkMock);
 
     expect(spyOnCurrentPrice).not.toHaveBeenCalled();
   });

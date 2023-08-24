@@ -1,16 +1,14 @@
-import { TestBed } from '@angular/core/testing';
-
+import { describe, expect, it, beforeEach } from 'vitest';
 import { FormatService } from './format.service';
 
 describe('FormatService', () => {
-  let service: FormatService;
+  let formatService: FormatService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(FormatService);
+    formatService = new FormatService();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(formatService).toBeTruthy();
   });
 });

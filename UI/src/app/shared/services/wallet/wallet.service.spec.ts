@@ -1,24 +1,17 @@
-import { TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StoreModule } from '@ngrx/store';
-import { SharedTestModule } from '../../components/shared-components.module';
+import '@angular/compiler';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { WalletService } from './wallet.service';
+import { web3LoginServiceMock } from '../../tests/services/services.mock';
+import { storeMock } from '../../tests/modules/modules.mock';
 
 describe('WalletService', () => {
-  let service: WalletService;
+  let walletService: WalletService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [StoreModule.forRoot({}), SharedTestModule],
-      providers: [
-        { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} }
-      ]
-    });
-    service = TestBed.inject(WalletService);
+    walletService = new WalletService(web3LoginServiceMock, storeMock);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(walletService).toBeTruthy();
   });
 });

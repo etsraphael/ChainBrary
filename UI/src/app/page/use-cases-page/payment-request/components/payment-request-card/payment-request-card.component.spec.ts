@@ -1,10 +1,10 @@
 import '@angular/compiler';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestCardComponent } from './payment-request-card.component';
-import { snackbarMock } from 'src/app/shared/tests/modules/modules.mock';
-import { priceFeedServiceMock, walletServiceMock } from 'src/app/shared/tests/services/services.mock';
-import { paymentRequestMock } from 'src/app/shared/tests/variables/payment-request';
-import { AuthStatusCode } from 'src/app/shared/enum';
+import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
+import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
+import { paymentRequestMock } from '../../../../../shared/tests/variables/payment-request';
+import { AuthStatusCode } from '../../../../../shared/enum';
 
 describe('PaymentRequestCardComponent', () => {
   const component: PaymentRequestCardComponent = new PaymentRequestCardComponent(
@@ -45,16 +45,5 @@ describe('PaymentRequestCardComponent', () => {
     setTimeout(() => {
       expect(component.tokenConversionRate).toBeUndefined();
     }, 100);
-  });
-
-  it.skip('should submit amount successfully', () => {
-    component.authStatus = AuthStatusCode.VerifiedAndConnected;
-    const spySubmitPayment = vi.spyOn(component.submitPayment, 'emit');
-    // Mock this.web3LoginService.currentNetwork$
-    // walletServiceMock.setNetworkOnStoreForTest(ethereumNetworkMock);
-
-    component.submitAmount()
-
-    expect(spySubmitPayment).toHaveBeenCalled();
   });
 });

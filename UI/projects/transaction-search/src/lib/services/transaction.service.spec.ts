@@ -1,16 +1,26 @@
-import { TestBed } from '@angular/core/testing';
-
+import '@angular/compiler';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { TransactionService } from './transaction.service';
+import { transactionLogMock, transactionOptionsMock } from '../../../../../src/app/shared/tests/variables/transactions';
 
 describe('TransactionService', () => {
-  let service: TransactionService;
+  let transactionService: TransactionService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(TransactionService);
+    transactionService = new TransactionService();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(transactionService).toBeTruthy();
+  });
+
+  it('should call getTransactionLogs 2 times for sender and receiver when get transactions', async () => {
+    const options = transactionOptionsMock;
+    const spyOnTransactionLogs = vi.spyOn(transactionService, 'getTransactionLogs')
+      .mockResolvedValue([transactionLogMock]);
+
+    await transactionService.getTransactions(options);
+
+    expect(spyOnTransactionLogs).toHaveBeenCalledTimes(2);
   });
 });

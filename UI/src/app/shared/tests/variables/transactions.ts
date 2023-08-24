@@ -1,6 +1,7 @@
-import { ITransactionLog, TransactionRole } from "@chainbrary/transaction-search";
+import { ITransactionLog, TransactionOptions, TransactionRole } from "@chainbrary/transaction-search";
 import { ITransactionCard } from "../../interfaces";
 import { NetworkChainId } from "@chainbrary/web3-login";
+import Web3 from "web3";
 
 export const transactionLogMock: ITransactionLog = {
   role: TransactionRole.Receiver,
@@ -49,4 +50,28 @@ export const transactionCardMock: ITransactionCard = {
   hash: "0x1a2b3c4d5e6f7g8h9",
   component: "TransactionComponent",
   chainId: NetworkChainId.ETHEREUM,
+}
+
+export const transactionOptionsMock: TransactionOptions = {
+  web3: {
+    eth: {
+      getBlockNumber: () => Promise.resolve(1000)
+    },
+    utils: {
+      sha3: (value: string) => value,
+      padLeft: (value: string | number, characterAmount: number, sign?: string) => {
+        const stringValue = String(value);
+        const paddedValue = sign ? sign + stringValue.padStart(characterAmount - 1, '0') : stringValue.padStart(characterAmount, '0');
+        return paddedValue;
+      },
+    },
+  } as Web3,
+  pagination: {
+    page: 1,
+    limit: 10,
+  },
+  address: {
+    smartContractAddress: '0x1234567890abcdef',
+    accountAddress: '0xabcdef1234567890',
+  }
 }

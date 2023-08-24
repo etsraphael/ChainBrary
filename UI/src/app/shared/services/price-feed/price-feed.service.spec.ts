@@ -1,16 +1,15 @@
-import { TestBed } from '@angular/core/testing';
-
+import '@angular/compiler';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { PriceFeedService } from './price-feed.service';
 
 describe('PriceFeedService', () => {
-  let service: PriceFeedService;
+  let priceFeedService: PriceFeedService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PriceFeedService);
+    priceFeedService = new PriceFeedService();
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(priceFeedService).toBeTruthy();
   });
 });

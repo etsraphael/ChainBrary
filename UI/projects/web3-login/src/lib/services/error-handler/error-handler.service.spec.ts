@@ -1,23 +1,16 @@
-import { TestBed } from '@angular/core/testing';
+import '@angular/compiler';
+import { describe, expect, it, beforeEach } from 'vitest';
 import { ErrorHandlerService } from './error-handler.service';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { MaterialModule } from './../../../../../../src/app/module/material.module';
+import { snackbarMock } from '../../../../../../src/app/shared/tests/modules/modules.mock';
 
-describe('ErrorHandlerService', () => {
-  let service: ErrorHandlerService;
+describe('PriceFeedService', () => {
+  let errorHandlerService: ErrorHandlerService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [MaterialModule],
-      providers: [
-        { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
-      ]
-    });
-    service = TestBed.inject(ErrorHandlerService);
+    errorHandlerService = new ErrorHandlerService(snackbarMock);
   });
 
   it('should be created', () => {
-    expect(service).toBeTruthy();
+    expect(errorHandlerService).toBeTruthy();
   });
 });

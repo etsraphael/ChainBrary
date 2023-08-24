@@ -1,20 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { describe, expect, it } from 'vitest';
 import { BodyComponent } from './body.component';
 
 describe('BodyComponent', () => {
-  let component: BodyComponent;
-  let fixture: ComponentFixture<BodyComponent>;
-
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      declarations: [BodyComponent]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(BodyComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const component: BodyComponent = new BodyComponent();
 
   it('should create', () => {
     expect(component).toBeTruthy();

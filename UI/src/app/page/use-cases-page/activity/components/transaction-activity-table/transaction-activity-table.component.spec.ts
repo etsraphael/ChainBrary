@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { TransactionActivityTableComponent } from './transaction-activity-table.component';
-import { formatServiceMock, web3LoginServiceMock } from 'src/app/shared/tests/services/services.mock';
+import { formatServiceMock, web3LoginServiceMock } from '../../../../../shared/tests/services/services.mock';
 import { ITransactionLog, TransactionRole } from '@chainbrary/transaction-search';
-import { transactionLogMock } from 'src/app/shared/tests/variables/transactions';
+import { transactionLogMock } from '../../../../../shared/tests/variables/transactions';
 
 describe('TransactionActivityTableComponent', () => {
   const component: TransactionActivityTableComponent = new TransactionActivityTableComponent(
@@ -17,11 +17,11 @@ describe('TransactionActivityTableComponent', () => {
 
   it('should get credited if i\'m the receiver', () => {
     const item: ITransactionLog = transactionLogMock;
-    const spyGetAmount = vi.spyOn(component, 'getAmount');
+    const spyOnGetAmount = vi.spyOn(component, 'getAmount');
 
     const result = component.getAmount(item);
 
-    expect(spyGetAmount).toHaveBeenCalledWith(item);
+    expect(spyOnGetAmount).toHaveBeenCalledWith(item);
     expect(result).toBe(`+${2500}`);
   });
 

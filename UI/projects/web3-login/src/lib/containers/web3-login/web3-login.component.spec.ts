@@ -1,39 +1,44 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
-import { DeviceDetectorService } from 'ngx-device-detector';
-import { SharedTestModule } from './../../../../../../src/app/shared/components/shared-components.module';
-import { BodyComponent } from '../../components/body/body.component';
-import { HeaderPageComponent } from '../../components/header/header.component';
+import '@angular/compiler';
+import { describe, expect, it, vi } from 'vitest';
+import { Web3LoginComponent } from './web3-login.component';
+import { dialogRefMock, routerMock, snackbarMock } from '../../../../../../src/app/shared/tests/modules/modules.mock';
+import { deviceServiceMock } from '../../../../../../src/app/shared/tests/services/services.mock';
 import { ErrorHandlerService } from '../../services/error-handler/error-handler.service';
 import { NetworkServiceWeb3Login } from '../../services/network/network.service';
-import { Web3LoginComponent } from './web3-login.component';
+import { Web3LoginConfig } from '@chainbrary/web3-login';
 
 describe('Web3LoginComponent', () => {
-  let component: Web3LoginComponent;
-  let fixture: ComponentFixture<Web3LoginComponent>;
+  const config = {} as Web3LoginConfig;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [SharedTestModule],
-      declarations: [Web3LoginComponent, HeaderPageComponent, BodyComponent],
-      providers: [
-        { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
-        ErrorHandlerService,
-        NetworkServiceWeb3Login,
-        DeviceDetectorService
-      ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(Web3LoginComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+  const component: Web3LoginComponent = new Web3LoginComponent(
+    dialogRefMock,
+    new ErrorHandlerService(snackbarMock),
+    new NetworkServiceWeb3Login(config),
+    deviceServiceMock,
+    routerMock
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should call logInWithMetamask when user open metamask wallet', () => {
+    const providerKey = 'metamask';
+    const spyOnLogInWithMetamask = vi.spyOn(component, 'logInWithMetamask')
+      .mockReturnValue(undefined);
+
+    component.openWalletProvider(providerKey);
+
+    expect(spyOnLogInWithMetamask).toHaveBeenCalled();
+  });
+
+  it('should not call logInWithMetamask when user open with other wallet that metamask', () => {
+    const providerKey = 'trustwallet';
+    const spyOnLogInWithMetamask = vi.spyOn(component, 'logInWithMetamask')
+      .mockReturnValue(undefined);
+
+    component.openWalletProvider(providerKey);
+
+    expect(spyOnLogInWithMetamask).not.toHaveBeenCalled();
   });
 });
