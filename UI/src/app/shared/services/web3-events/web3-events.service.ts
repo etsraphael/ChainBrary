@@ -7,7 +7,10 @@ import { accountChanged, networkChangeSuccess } from './../../../store/auth-stor
   providedIn: 'root'
 })
 export class Web3EventsService {
-  constructor(private web3LoginService: Web3LoginService, private store: Store) {}
+  constructor(
+    private web3LoginService: Web3LoginService,
+    private store: Store
+  ) {}
 
   init(): void {
     this.web3LoginService.onAccountChangedEvent$.subscribe((account: string | undefined) => {

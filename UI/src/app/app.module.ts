@@ -3,7 +3,7 @@ import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
-import { Web3LoginModule, Web3LoginConfig, NetworkChainId } from '@chainbrary/web3-login';
+import { Web3LoginModule } from '@chainbrary/web3-login';
 import * as Sentry from '@sentry/angular-ivy';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AppComponent } from './app.component';
@@ -14,31 +14,7 @@ import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { UseCasesPageModule } from './page/use-cases-page/use-cases-page.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
-
-const web3LoginConfig: Web3LoginConfig = {
-  networkSupported: [
-    {
-      chainId: NetworkChainId.ETHEREUM,
-      rpcUrl: ['https://ethereum.publicnode.com']
-    },
-    {
-      chainId: NetworkChainId.SEPOLIA,
-      rpcUrl: ['https://rpc.sepolia.org']
-    },
-    {
-      chainId: NetworkChainId.POLYGON,
-      rpcUrl: ['https://polygon-rpc.com']
-    },
-    {
-      chainId: NetworkChainId.BNB,
-      rpcUrl: ['https://bsc-dataseed.binance.org']
-    },
-    {
-      chainId: NetworkChainId.AVALANCHE,
-      rpcUrl: ['https://api.avax.network/ext/bc/C/rpc']
-    }
-  ]
-};
+import { web3LoginConfig } from './data/web3LoginConfig.data';
 
 @NgModule({
   declarations: [AppComponent],

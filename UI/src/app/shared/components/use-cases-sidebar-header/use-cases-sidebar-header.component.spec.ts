@@ -1,5 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { StoreModule } from '@ngrx/store';
+import { SharedTestModule } from '../shared-components.module';
+import { initialState as authInitialState } from './../../../store/auth-store/state/init';
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header.component';
 
 describe('UseCasesSidebarHeaderComponent', () => {
@@ -8,7 +11,17 @@ describe('UseCasesSidebarHeaderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [UseCasesSidebarHeaderComponent]
+      imports: [
+        StoreModule.forRoot({
+          auth: () => authInitialState
+        }),
+        SharedTestModule
+      ],
+      declarations: [UseCasesSidebarHeaderComponent],
+      providers: [
+        { provide: MatDialogRef, useValue: {} },
+        { provide: MAT_DIALOG_DATA, useValue: {} }
+      ]
     }).compileComponents();
 
     fixture = TestBed.createComponent(UseCasesSidebarHeaderComponent);

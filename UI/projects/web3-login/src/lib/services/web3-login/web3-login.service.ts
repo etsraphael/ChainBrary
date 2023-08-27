@@ -9,7 +9,10 @@ import { NetworkServiceWeb3Login } from '../network/network.service';
   providedIn: 'root'
 })
 export class Web3LoginService {
-  constructor(public dialog: MatDialog, private networkServiceWeb3Login: NetworkServiceWeb3Login) {}
+  constructor(
+    public dialog: MatDialog,
+    private networkServiceWeb3Login: NetworkServiceWeb3Login
+  ) {}
 
   get onAccountChangedEvent$(): Observable<string | undefined> {
     return this.networkServiceWeb3Login.onAccountChangedEvent();
