@@ -2,7 +2,7 @@
   "name": "chainbrary-smart-contacts",
   "version": "0.0.0",
   "scripts": {
-    "prettier": "prettier --write 'contracts/*.sol'",
+    "prettier": "prettier --write 'contracts/*.sol' --plugin=prettier-plugin-solidity",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.ts",
