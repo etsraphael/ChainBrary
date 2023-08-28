@@ -44,6 +44,11 @@ export const selectPaymentRequestInUsdIsEnabled: MemoizedSelector<object, boolea
   (s) => s.data.priceInUsdEnabled
 );
 
+export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentRequest,
+  (s) => s.payment.data?.tokenId !== s.network?.nativeCurrency.id
+);
+
 export const selectProfilePayment: MemoizedSelector<
   object,
   IProfilePayment,

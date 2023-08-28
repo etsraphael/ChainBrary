@@ -23,6 +23,7 @@ import { PriceFeedService } from './../../../shared/services/price-feed/price-fe
 import { TokensService } from './../../../shared/services/tokens/tokens.service';
 import * as PaymentRequestActions from './actions';
 import {
+  selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
   selectPaymentRequestInUsdIsEnabled,
@@ -61,21 +62,26 @@ export class PaymentRequestEffects {
   checkIfTransferIsPossible$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
-      filter((payload) => payload[1] !== null),
-      map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]),
-      switchMap(async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]) => {
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectIsNonNativeToken)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2]),
+      map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]),
+      switchMap(async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]) => {
+        const tokenAddress: string =  tokenList.find(
+          (token) => token.tokenId === action[0].paymentRequest.tokenId
+        )?.networkSupport.find(
+          (support) => support.chainId === action[0].paymentRequest.chainId
+        )?.address as string;
         return this.tokensService
           .getTransferAvailable(
             action[1],
-            '0x75eC33387b1b309359598bf1Cc75E4823807F281',
-            20,
+            tokenAddress,
+            action[0].paymentRequest.amount,
             action[0].paymentRequest.chainId
           )
-          .then((result: boolean) => {
-            console.log('result2', result);
-            return PaymentRequestActions.smartContractIsTransferable({ isTransferable: result });
-          });
+          .then((isTransferable: boolean) => PaymentRequestActions.smartContractIsTransferable({ isTransferable }));
       })
     );
   });
