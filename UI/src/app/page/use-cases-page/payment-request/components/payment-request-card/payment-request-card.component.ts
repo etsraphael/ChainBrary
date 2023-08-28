@@ -2,8 +2,8 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, take, takeUntil } from 'rxjs';
-import { IToken } from './../../../../../shared/interfaces';
 import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
+import { IToken } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
@@ -23,6 +23,7 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
   @Input() canTransfer: boolean;
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ priceValue: number }>();
+  @Output() approveSmartContract = new EventEmitter<void>();
   tokenConversionRate: number;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 

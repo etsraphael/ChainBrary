@@ -68,6 +68,7 @@
             [paymentRequest]="(selectPaymentRequestState$ | async)!"
             (openLoginModal)="openLoginModal()"
             (submitPayment)="submitPayment($event)"
+            (approveSmartContract)="approveSmartContract()"
           ></app-payment-request-card>
         </div>
       </ng-template>
