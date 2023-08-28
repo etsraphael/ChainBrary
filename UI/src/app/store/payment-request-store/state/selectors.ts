@@ -49,6 +49,11 @@ export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createS
   (s) => s.payment.data?.tokenId !== s.network?.nativeCurrency.id
 );
 
+export const selectSmartContractCanTransfer: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentRequest,
+  (s) => s.smartContractCanTransfer
+);
+
 export const selectProfilePayment: MemoizedSelector<
   object,
   IProfilePayment,

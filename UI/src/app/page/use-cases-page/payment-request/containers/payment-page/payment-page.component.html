@@ -60,6 +60,7 @@
             </div>
           </div>
           <app-payment-request-card
+            [canTransfer]="(smartContractCanTransfer$|async)!"
             [currentNetworkObs]="currentNetwork$"
             [paymentNetwork]="paymentNetwork$ | async"
             [authStatus]="(authStatus$ | async)!"

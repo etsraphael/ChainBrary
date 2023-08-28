@@ -18,7 +18,8 @@ import { IPaymentRequestState } from './../../../../../store/payment-request-sto
 import {
   selectCardIsLoading,
   selectPaymentNetwork,
-  selectPaymentRequest
+  selectPaymentRequest,
+  selectSmartContractCanTransfer
 } from './../../../../../store/payment-request-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
 
@@ -37,6 +38,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentNetwork$: Observable<INetworkDetail | null>;
+  smartContractCanTransfer$: Observable<boolean>;
   nativeTokenInfo: INativeToken;
 
   constructor(
@@ -84,6 +86,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
     this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
+    this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer)
   }
 
   setUpMessage(): void {
