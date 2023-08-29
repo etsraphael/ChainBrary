@@ -8,7 +8,7 @@ import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
-import { TransactionBridgeContract } from './../../../shared/contracts';
+import { TransactionBridgeContract, TransactionTokenBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IContract,
@@ -26,6 +26,7 @@ import {
   selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
+  selectPaymentRequest,
   selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
@@ -62,27 +63,63 @@ export class PaymentRequestEffects {
   checkIfTransferIsPossible$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-      concatLatestFrom(() => [
-        this.store.select(selectPublicAddress),
-        this.store.select(selectIsNonNativeToken)
-      ]),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]),
       filter((payload) => payload[1] !== null && payload[2]),
-      map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]),
-      switchMap(async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]) => {
-        const tokenAddress: string =  tokenList.find(
-          (token) => token.tokenId === action[0].paymentRequest.tokenId
-        )?.networkSupport.find(
-          (support) => support.chainId === action[0].paymentRequest.chainId
-        )?.address as string;
-        return this.tokensService
-          .getTransferAvailable(
-            action[1],
-            tokenAddress,
-            action[0].paymentRequest.amount,
-            action[0].paymentRequest.chainId
-          )
-          .then((isTransferable: boolean) => PaymentRequestActions.smartContractIsTransferable({ isTransferable }));
-      })
+      map(
+        (payload) =>
+          payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]
+      ),
+      switchMap(
+        async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId)?.address as string;
+          return this.tokensService
+            .getTransferAvailable(
+              action[1],
+              tokenAddress,
+              action[0].paymentRequest.amount,
+              action[0].paymentRequest.chainId
+            )
+            .then((isTransferable: boolean) => PaymentRequestActions.smartContractIsTransferable({ isTransferable }));
+        }
+      )
+    );
+  });
+
+  approveTokenAllowance$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.approveTokenAllowance),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
+      map(
+        (payload) =>
+          payload as [ReturnType<typeof PaymentRequestActions.approveTokenAllowance>, string, IPaymentRequest]
+      ),
+      switchMap(
+        async (action: [ReturnType<typeof PaymentRequestActions.approveTokenAllowance>, string, IPaymentRequest]) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[2].tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+
+          const payload: IEditAllowancePayload = {
+            tokenAddress: tokenAddress,
+            chainId: action[2].chainId,
+            owner: action[1],
+            spender: new TransactionTokenBridgeContract(action[2].chainId).getAddress(),
+            amount: action[2].amount
+          };
+          return this.tokensService
+            .approve(payload)
+            .then((result: boolean) =>
+              result
+                ? PaymentRequestActions.approveTokenAllowanceSuccess()
+                : PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: 'Error approving token' })
+            );
+        }
+      ),
+      catchError((error: Error) =>
+        of(PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: error.message }))
+      )
     );
   });
 

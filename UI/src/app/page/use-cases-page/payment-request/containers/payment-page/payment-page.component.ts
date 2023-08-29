@@ -13,7 +13,7 @@ import {
   selectCurrentNetwork,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
-import { generatePaymentRequest, sendAmount } from './../../../../../store/payment-request-store/state/actions';
+import { approveTokenAllowance, generatePaymentRequest, sendAmount } from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
@@ -140,5 +140,9 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.modalSub?.unsubscribe();
+  }
+
+  approveSmartContract(): void {
+    return this.store.dispatch(approveTokenAllowance())
   }
 }
