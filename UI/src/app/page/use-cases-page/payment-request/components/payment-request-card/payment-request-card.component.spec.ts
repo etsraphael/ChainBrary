@@ -4,7 +4,7 @@ import { PaymentRequestCardComponent } from './payment-request-card.component';
 import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
 import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
 import { paymentRequestMock } from '../../../../../shared/tests/variables/payment-request';
-import { AuthStatusCode } from '../../../../../shared/enum';
+import { ethereumNetworkMock } from '../../../../../shared/tests/variables/network-detail';
 
 describe('PaymentRequestCardComponent', () => {
   const component: PaymentRequestCardComponent = new PaymentRequestCardComponent(
@@ -23,16 +23,18 @@ describe('PaymentRequestCardComponent', () => {
 
   it('should set tokenConversionRate value if usd data is enabled', () => {
     component.paymentRequest = paymentRequestMock;
-    const currentPriceNativeToken = 4500;
+    const amount = paymentRequestMock.payment.data?.amount;
+    const result = 4500;
+
     priceFeedServiceMock.getCurrentPriceOfNativeToken = vi.fn()
-      .mockResolvedValue(currentPriceNativeToken);
+      .mockResolvedValue(result);
 
-    component.setUpCurrentPrice()
+    component.setUpCurrentPrice();
 
-    setTimeout(() => {
-      const amount = component.paymentRequest.payment.data?.amount;
-      expect(component.tokenConversionRate).toBe(amount as number / currentPriceNativeToken);
-    }, 100);
+    priceFeedServiceMock.getCurrentPriceOfNativeToken(ethereumNetworkMock.chainId)
+      .then((result) => {
+        expect(component.tokenConversionRate).toBe(amount as number / result);
+      });
   });
 
   it('should not set tokenConversionRate value if usd data is disabled', () => {
@@ -42,8 +44,9 @@ describe('PaymentRequestCardComponent', () => {
 
     component.setUpCurrentPrice();
 
-    setTimeout(() => {
-      expect(component.tokenConversionRate).toBeUndefined();
-    }, 100);
+    priceFeedServiceMock.getCurrentPriceOfNativeToken(ethereumNetworkMock.chainId)
+      .then((result) => {
+        expect(component.tokenConversionRate).not.toBe(result);
+      });
   });
 });

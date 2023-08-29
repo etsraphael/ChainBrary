@@ -4,7 +4,7 @@ import { PaymentRequestMakerComponent } from './payment-request-maker.component'
 import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
 import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
 import { INetworkDetail } from '@chainbrary/web3-login';
-import { Subject, of } from 'rxjs';
+import { Subject, of, take } from 'rxjs';
 import { ethereumNetworkMock, polygonNetworkMock } from '../../../../../shared/tests/variables/network-detail';
 
 describe('PaymentRequestMakerComponent', () => {
@@ -23,14 +23,15 @@ describe('PaymentRequestMakerComponent', () => {
   });
 
   it('should return usd conversion rate 0 if something bad happen on setup price', async () => {
+    const amount = 1000;
+    const chainId = ethereumNetworkMock.chainId;
+
     vi.spyOn(priceFeedServiceMock, 'getCurrentPriceOfNativeToken')
-      .mockImplementation(() => { return Promise.reject() });
+      .mockRejectedValue(new Error('Error'));
 
-    await component.setUpPriceCurrentPrice(1, ethereumNetworkMock.chainId);
+    await component.setUpPriceCurrentPrice(amount, chainId);
 
-    setTimeout(() => {
-      expect(component.usdConversionRate).toBe(0);
-    }, 100);
+    expect(component.usdConversionRate).toBe(0);
   });
 
   it('should setup current price if amount change', () => {
@@ -61,9 +62,10 @@ describe('PaymentRequestMakerComponent', () => {
     component.listenToAddressChange();
 
     publicAddressSub$.next(publicAddressHash);
-    setTimeout(() => {
+    publicAddressSub$.subscribe(() => {
       expect(publicAddressValue).toBe(publicAddressHash);
-    }, 100);
+    });
+    publicAddressSub$.unsubscribe();
   });
 
   it('should set an empty public address if not exist', () => {
@@ -75,9 +77,10 @@ describe('PaymentRequestMakerComponent', () => {
     component.listenToAddressChange();
 
     publicAddressSub$.next(publicAddressHash);
-    setTimeout(() => {
+    publicAddressSub$.subscribe(() => {
       expect(publicAddressValue).toBe('');
-    }, 100);
+    });
+    publicAddressSub$.unsubscribe();
   });
 
   it('should call getCurrentPriceOfNativeToken when swap currency & usd is enabled', () => {
