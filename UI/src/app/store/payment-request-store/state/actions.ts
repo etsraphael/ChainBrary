@@ -14,12 +14,10 @@ export const applyConversionToken = createAction(
   '[Payment Request] Apply Conversion Token',
   props<{ amount: number }>()
 );
-
 export const applyConversionTokenSuccess = createAction(
   '[Payment Request] Apply Conversion Token Success',
   props<{ usdAmount: number; tokenAmount: number }>()
 );
-
 export const applyConversionTokenFailure = createAction(
   '[Payment Request] Apply Conversion Token Failure',
   props<{ errorMessage: string }>()
@@ -37,6 +35,7 @@ export const generatePaymentRequestFailure = createAction(
   '[Payment Request] Generate Payment Request Failure',
   props<{ errorMessage: string }>()
 );
+
 export const loadVerifiedAccount = createAction(
   '[Payment Request] Load Verified Account',
   props<{ address: string }>()
@@ -51,14 +50,10 @@ export const loadVerifiedAccountFailure = createAction(
 );
 
 export const sendAmount = createAction('[Payment Request] Send Amount Transactions', props<{ priceValue: string }>());
-
-export const sendAmountCompleted = createAction('[Payment Request] Send Amount Transactions Completed');
-
 export const amountSent = createAction(
   '[Payment Request] Amount Sent',
   props<{ hash: string; chainId: NetworkChainId }>()
 );
-
 export const amountSentSuccess = createAction(
   '[Payment Request] Amount Sent Success',
   props<{ hash: string; numberConfirmation: number }>()
@@ -66,7 +61,6 @@ export const amountSentSuccess = createAction(
 export const amountSentFailure = createAction('[Payment Request] Amount Sent Failure', props<{ message: string }>());
 
 export const checkTokenAllowance = createAction('[Payment Request] Check Token Allowance');
-
 export const checkTokenAllowanceSuccess = createAction(
   '[Payment Request] Check Token Allowance Success',
   props<{ isAllowed: boolean }>()
@@ -84,5 +78,14 @@ export const approveTokenAllowance = createAction('[Payment Request] Approve Tok
 export const approveTokenAllowanceSuccess = createAction('[Payment Request] Approve Token Allowance Success');
 export const approveTokenAllowanceFailure = createAction(
   '[Payment Request] Approve Token Allowance Failure',
+  props<{ errorMessage: string }>()
+);
+
+export const signTransactionTokenPayment = createAction('[Payment Request] Sign Transaction Token Payment');
+export const signTransactionTokenPaymentSuccess = createAction(
+  '[Payment Request] Sign Transaction Token Payment Success'
+);
+export const signTransactionTokenPaymentFailure = createAction(
+  '[Payment Request] Sign Transaction Token Payment Failure',
   props<{ errorMessage: string }>()
 );

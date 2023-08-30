@@ -9,7 +9,8 @@ import { WalletService } from './../../../../../shared/services/wallet/wallet.se
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 
 @Component({
-  selector: 'app-payment-request-card[paymentRequest][authStatus][paymentRequest][currentNetworkObs][paymentNetwork][canTransfer]',
+  selector:
+    'app-payment-request-card[paymentRequest][authStatus][paymentRequest][currentNetworkObs][paymentNetwork][canTransfer]',
   templateUrl: './payment-request-card.component.html',
   styleUrls: ['./payment-request-card.component.scss']
 })

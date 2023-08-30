@@ -13,7 +13,11 @@ import {
   selectCurrentNetwork,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
-import { approveTokenAllowance, generatePaymentRequest, sendAmount } from './../../../../../store/payment-request-store/state/actions';
+import {
+  approveTokenAllowance,
+  generatePaymentRequest,
+  sendAmount
+} from './../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
@@ -86,7 +90,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
     this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
-    this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer)
+    this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer);
   }
 
   setUpMessage(): void {
@@ -143,6 +147,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   approveSmartContract(): void {
-    return this.store.dispatch(approveTokenAllowance())
+    return this.store.dispatch(approveTokenAllowance());
   }
 }
