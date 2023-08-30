@@ -105,22 +105,18 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
 
     this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid: boolean) => {
       if (!networkIsValid) {
-        this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
-          duration: 3000
-        });
+        this.snackbar.open('Network mismatch with wallet', 'Close', { duration: 3000 });
         return;
       }
-      if (this.paymentRequest?.payment?.data?.usdEnabled) {
-        return this.submitPayment.emit({
-          priceValue: this.tokenConversionRate * 1e18
-        });
-      } else {
-        return this.submitPayment.emit({
-          priceValue: (this.paymentRequest.payment.data?.amount as number) * 1e18
-        });
-      }
+
+      const amount: number = this.paymentRequest?.payment?.data?.usdEnabled
+        ? this.tokenConversionRate
+        : (this.paymentRequest.payment.data?.amount as number);
+
+      this.submitPayment.emit({ priceValue: amount * 1e18 });
     });
   }
+
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);

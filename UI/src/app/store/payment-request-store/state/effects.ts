@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -11,12 +12,12 @@ import { showErrorNotification, showSuccessNotification } from '../../notificati
 import { TransactionBridgeContract, TransactionTokenBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
-  IContract,
   IConversionToken,
   IPaymentRequest,
   IReceiptTransaction,
   IToken,
   ITokenContract,
+  SendTransactionTokenBridgePayload,
   StoreState
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
@@ -26,12 +27,9 @@ import {
   selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
-  selectPaymentRequest,
   selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
-import { IAllowancePayload, IBalancePayload, IEditAllowancePayload, ITransferPayload } from '@chainbrary/token-bridge';
-import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -123,84 +121,45 @@ export class PaymentRequestEffects {
     );
   });
 
-  // TODO: to remove after library creation
-  checkTokenAllowance$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-        concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
-        filter((payload) => payload[1] !== null),
-        map((payload) => payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]),
-        map((action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string]) => {
-          // const tokenDetail: IToken = tokenList.find(
-          //   (token) => token.tokenId === action[0].paymentRequest.tokenId
-          // ) as IToken;
-          // const tokenAddress: string = tokenDetail.networkSupport.find(
-          //   (support) => support.chainId === action[0].paymentRequest.chainId
-          // )?.address as string;
-          // TODO: to remove after library creation
-          // const payload: IEditAllowancePayload = {
-          //   tokenAddress: tokenAddress,
-          //   chainId: action[0].paymentRequest.chainId,
-          //   owner: action[1],
-          //   spender: '0xF9647bbb9699849506D722e3Dc090a18d3a319A0',
-          //   amount: 75
-          // };
-          // return this.tokensService
-          //   .approve(payload)
-          //   .then((result: boolean) => {
-          //     console.log('result2', result);
-          //   });
-          // return this.tokensService
-          //   .getTransferAvailable(
-          //     '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac',
-          //     '0x75eC33387b1b309359598bf1Cc75E4823807F281',
-          //     20,
-          //     action[0].paymentRequest.chainId
-          //   )
-          //   .then((result: boolean) => {
-          //     console.log('result2', result);
-          //   });
-          // ------------------------
-          // TODO: Remove when everything is working
-          // const payload: IBalancePayload = {
-          //   tokenAddress: tokenAddress,
-          //   chainId: action[0].paymentRequest.chainId,
-          //   owner: action[1]
-          // };
-          // return this.tokensService.getBalanceOfAddress(payload).then((result: number) => {
-          //   console.log('result2', result);
-          // });
-          // -----------------
-          // const contractLink: IContract = environment.contracts.bridgeTokenTransfer.contracts.find(
-          //   (contract: IContract) => action[0].paymentRequest.chainId === contract.chainId
-          // ) as IContract;
-          // const payload: IAllowancePayload = {
-          //   tokenAddress: tokenAddress,
-          //   chainId: action[0].paymentRequest.chainId,
-          //   owner: action[1],
-          //   spender: contractLink.address
-          // };
-          // return this.tokensService.getAllowance(payload).then((result: number) => {
-          //   console.log('getAllowance', result);
-          // });
-          // ------------------------
-          // const payload: ITransferPayload = {
-          //   tokenAddress: tokenAddress,
-          //   chainId: action[0].paymentRequest.chainId,
-          //   amount: 100,
-          //   from: action[1],
-          //   to: '0xA9ad87470Db27ed18a9a8650f057A7cAab7703Ac'
-          // }
-          // return this.tokensService.transfer(payload)
-          // .then((result: boolean) => {
-          //   console.log('result2', result);
-          // });
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  // TODO: to be fix number 2
+  signTransactionTokenPayment$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.sendAmount),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment), this.store.select(selectIsNonNativeToken)]),
+      filter((payload) => payload[1] !== null && payload[3]),
+      map(
+        (payload) =>
+          payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+      ),
+      switchMap(
+        async (
+          action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+        ) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[2].tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+
+          const payload: SendTransactionTokenBridgePayload = {
+            tokenAddress: tokenAddress,
+            chainId: action[2].chainId,
+            amount: action[2].amount,
+            ownerAdress: action[1],
+            destinationAddress: action[2].publicAddress
+          };
+
+          return this.tokensService.transferToken(payload).then((result: boolean) => {
+            if (result) {
+              return PaymentRequestActions.signTransactionTokenPaymentSuccess();
+            } else {
+              return PaymentRequestActions.signTransactionTokenPaymentFailure({
+                errorMessage: 'Error signing transaction'
+              });
+            }
+          });
+        }
+      )
+    );
+  });
 
   applyConversionToken$ = createEffect(() => {
     return this.actions$.pipe(
@@ -345,12 +304,13 @@ export class PaymentRequestEffects {
     );
   });
 
-  transferFunds$ = createEffect(() => {
+  sendAmountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment), this.store.select(selectIsNonNativeToken)]),
+      filter((payload) => !payload[3]),
       switchMap(
-        (payload: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null]) => {
+        (payload: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]) => {
           const web3: Web3 = new Web3(window.ethereum);
           const transactionContract = new TransactionBridgeContract(String(payload[2]?.chainId));
           const contract: Contract = new web3.eth.Contract(

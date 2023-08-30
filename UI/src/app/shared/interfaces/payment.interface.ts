@@ -41,3 +41,14 @@ export interface IConversionToken {
   tokenAmount: number | null;
   priceInUsdEnabled: boolean;
 }
+
+export interface TransactionTokenBridgePayload {
+  ownerAdress: string;
+  tokenAddress: string;
+  amount: number;
+  chainId: NetworkChainId;
+}
+
+export interface SendTransactionTokenBridgePayload extends TransactionTokenBridgePayload {
+  destinationAddress: string;
+}
