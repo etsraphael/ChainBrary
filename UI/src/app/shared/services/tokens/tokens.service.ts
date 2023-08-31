@@ -10,7 +10,7 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 import Web3 from 'web3';
 import { TransactionTokenBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
-import { IToken, SendTransactionTokenBridgePayload } from '../../interfaces';
+import { IReceiptTransaction, IToken, SendTransactionTokenBridgePayload } from '../../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +68,7 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
-  async transferToken(payload: SendTransactionTokenBridgePayload): Promise<boolean> {
+  async transferToken(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
 
@@ -78,9 +78,18 @@ export class TokensService {
 
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
-    return contract.methods
-      .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
-      .send({ from: payload.ownerAdress })
-      .catch(() => Promise.reject('Network not supported'));
+    try {
+      const gas = await contract.methods
+        .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
+        .estimateGas({ from: payload.ownerAdress });
+
+      return contract.methods
+        .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
+        .send({ from: payload.ownerAdress, gas: gas });
+
+    } catch (error: any) {
+      return Promise.reject(error.message);
+    }
+
   }
 }

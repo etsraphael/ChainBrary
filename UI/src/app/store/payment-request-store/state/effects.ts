@@ -121,7 +121,6 @@ export class PaymentRequestEffects {
     );
   });
 
-  // TODO: to be fix number 2
   signTransactionTokenPayment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
@@ -138,7 +137,6 @@ export class PaymentRequestEffects {
           const tokenAddress: string = tokenList
             .find((token) => token.tokenId === action[2].tokenId)
             ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
-
           const payload: SendTransactionTokenBridgePayload = {
             tokenAddress: tokenAddress,
             chainId: action[2].chainId,
@@ -146,18 +144,15 @@ export class PaymentRequestEffects {
             ownerAdress: action[1],
             destinationAddress: action[2].publicAddress
           };
-
-          return this.tokensService.transferToken(payload).then((result: boolean) => {
-            if (result) {
-              return PaymentRequestActions.signTransactionTokenPaymentSuccess();
-            } else {
-              return PaymentRequestActions.signTransactionTokenPaymentFailure({
-                errorMessage: 'Error signing transaction'
-              });
-            }
+          return this.tokensService.transferToken(payload).then((receipt: IReceiptTransaction) => {
+            return PaymentRequestActions.amountSent({
+              hash: receipt.transactionHash,
+              chainId: action[2].chainId as NetworkChainId
+            })
           });
         }
-      )
+      ),
+      catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
     );
   });
 
