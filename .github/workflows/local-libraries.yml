@@ -31,7 +31,7 @@ jobs:
 
       - name: Build Libraries
         run: |
-          for LIB in token-bridge transaction-search web3-login; do
+          for LIB in transaction-search web3-login; do
             npx ng build $LIB
             if [ $? -ne 0 ]; then
               echo "Error building $LIB!"
