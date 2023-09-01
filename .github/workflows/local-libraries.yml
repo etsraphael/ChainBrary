@@ -1,0 +1,48 @@
+name: Local library build
+
+on:
+  pull_request:
+    branches: 
+      - release/dev
+      - release/test
+      - release/prod
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./UI
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm ci
+
+      - name: Lint code
+        run: npm run lint
+
+      - name: Build Libraries
+        run: |
+          for LIB in token-bridge transaction-search web3-login; do
+            ng build $LIB
+            if [ $? -ne 0 ]; then
+              echo "Error building $LIB!"
+              exit 1
+            fi
+            echo "$LIB built successfully!"
+          done
+          
+      - name: build main project
+        run: npm run build
+      
