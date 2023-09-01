@@ -15,7 +15,8 @@
     "test-e2e:local": "cypress open",
     "test-e2e:ci": "start-server-and-test start $URL cy:run",
     "test-unit:local": "ng test",
-    "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless"
+    "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "build:libs": "./scripts/build_libraries.sh"
   },
   "private": true,
   "dependencies": {
