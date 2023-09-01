@@ -279,7 +279,7 @@ export class PaymentRequestEffects {
         (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
       ),
       switchMap(
-        async (action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
+        (action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
           const tokenAddress: string = tokenList
             .find((token) => token.tokenId === action[2].tokenId)
             ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
@@ -290,15 +290,17 @@ export class PaymentRequestEffects {
             ownerAdress: action[1],
             destinationAddress: action[2].publicAddress
           };
-          return this.tokensService.transferToken(payload).then((receipt: IReceiptTransaction) =>
-            PaymentRequestActions.amountSent({
-              hash: receipt.transactionHash,
-              chainId: action[2].chainId as NetworkChainId
-            })
+          return from(this.tokensService.transferToken(payload)).pipe(
+            map((receipt: IReceiptTransaction) =>
+              PaymentRequestActions.amountSent({
+                hash: receipt.transactionHash,
+                chainId: action[2].chainId as NetworkChainId
+              })
+            ),
+            catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
           );
         }
-      ),
-      catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+      )
     );
   });
 
