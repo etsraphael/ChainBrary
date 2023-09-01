@@ -80,12 +80,3 @@ export const approveTokenAllowanceFailure = createAction(
   '[Payment Request] Approve Token Allowance Failure',
   props<{ errorMessage: string }>()
 );
-
-export const signTransactionTokenPayment = createAction('[Payment Request] Sign Transaction Token Payment');
-export const signTransactionTokenPaymentSuccess = createAction(
-  '[Payment Request] Sign Transaction Token Payment Success'
-);
-export const signTransactionTokenPaymentFailure = createAction(
-  '[Payment Request] Sign Transaction Token Payment Failure',
-  props<{ errorMessage: string }>()
-);

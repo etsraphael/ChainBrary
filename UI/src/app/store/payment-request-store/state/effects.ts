@@ -123,42 +123,6 @@ export class PaymentRequestEffects {
     );
   });
 
-  signTransactionTokenPayment$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(PaymentRequestActions.sendAmount),
-      concatLatestFrom(() => [
-        this.store.select(selectPublicAddress),
-        this.store.select(selectPayment),
-        this.store.select(selectIsNonNativeToken)
-      ]),
-      filter((payload) => payload[1] !== null && payload[3]),
-      map(
-        (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
-      ),
-      switchMap(
-        async (action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
-          const tokenAddress: string = tokenList
-            .find((token) => token.tokenId === action[2].tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
-          const payload: SendTransactionTokenBridgePayload = {
-            tokenAddress: tokenAddress,
-            chainId: action[2].chainId,
-            amount: action[2].amount,
-            ownerAdress: action[1],
-            destinationAddress: action[2].publicAddress
-          };
-          return this.tokensService.transferToken(payload).then((receipt: IReceiptTransaction) => {
-            return PaymentRequestActions.amountSent({
-              hash: receipt.transactionHash,
-              chainId: action[2].chainId as NetworkChainId
-            });
-          });
-        }
-      ),
-      catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
-    );
-  });
-
   applyConversionToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.applyConversionToken),
@@ -302,7 +266,43 @@ export class PaymentRequestEffects {
     );
   });
 
-  sendAmountTransactions$ = createEffect(() => {
+  sendNonNativeToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.sendAmount),
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectPayment),
+        this.store.select(selectIsNonNativeToken)
+      ]),
+      filter((payload) => payload[1] !== null && payload[3]),
+      map(
+        (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+      ),
+      switchMap(
+        async (action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[2].tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+          const payload: SendTransactionTokenBridgePayload = {
+            tokenAddress: tokenAddress,
+            chainId: action[2].chainId,
+            amount: action[2].amount,
+            ownerAdress: action[1],
+            destinationAddress: action[2].publicAddress
+          };
+          return this.tokensService.transferToken(payload).then((receipt: IReceiptTransaction) =>
+            PaymentRequestActions.amountSent({
+              hash: receipt.transactionHash,
+              chainId: action[2].chainId as NetworkChainId
+            })
+          );
+        }
+      ),
+      catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+    );
+  });
+
+  sendNativeToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
