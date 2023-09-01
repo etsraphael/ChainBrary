@@ -4,12 +4,10 @@ import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/we
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
-import { Observable, catchError, filter, from, map, of, switchMap } from 'rxjs';
-import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
+import { catchError, filter, from, map, of, switchMap } from 'rxjs';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
-import { TransactionBridgeContract, TransactionTokenBridgeContract } from './../../../shared/contracts';
+import { TransactionTokenBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IConversionToken,
@@ -17,6 +15,7 @@ import {
   IReceiptTransaction,
   IToken,
   ITokenContract,
+  SendNativeTokenToMultiSigPayload,
   SendTransactionTokenBridgePayload,
   StoreState,
   TransactionTokenBridgePayload
@@ -278,29 +277,27 @@ export class PaymentRequestEffects {
       map(
         (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
       ),
-      switchMap(
-        (action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
-          const tokenAddress: string = tokenList
-            .find((token) => token.tokenId === action[2].tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
-          const payload: SendTransactionTokenBridgePayload = {
-            tokenAddress: tokenAddress,
-            chainId: action[2].chainId,
-            amount: action[2].amount,
-            ownerAdress: action[1],
-            destinationAddress: action[2].publicAddress
-          };
-          return from(this.tokensService.transferToken(payload)).pipe(
-            map((receipt: IReceiptTransaction) =>
-              PaymentRequestActions.amountSent({
-                hash: receipt.transactionHash,
-                chainId: action[2].chainId as NetworkChainId
-              })
-            ),
-            catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
-          );
-        }
-      )
+      switchMap((action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
+        const tokenAddress: string = tokenList
+          .find((token) => token.tokenId === action[2].tokenId)
+          ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+        const payload: SendTransactionTokenBridgePayload = {
+          tokenAddress: tokenAddress,
+          chainId: action[2].chainId,
+          amount: action[2].amount,
+          ownerAdress: action[1],
+          destinationAddress: action[2].publicAddress
+        };
+        return from(this.tokensService.transferNonNativeToken(payload)).pipe(
+          map((receipt: IReceiptTransaction) =>
+            PaymentRequestActions.amountSent({
+              hash: receipt.transactionHash,
+              chainId: action[2].chainId as NetworkChainId
+            })
+          ),
+          catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+        );
+      })
     );
   });
 
@@ -315,55 +312,22 @@ export class PaymentRequestEffects {
       filter((payload) => !payload[3]),
       switchMap(
         (
-          payload: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
+          action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
         ) => {
-          const web3: Web3 = new Web3(window.ethereum);
-          const transactionContract = new TransactionBridgeContract(String(payload[2]?.chainId));
-          const contract: Contract = new web3.eth.Contract(
-            transactionContract.getAbi(),
-            transactionContract.getAddress()
-          );
-          return (
-            from(
-              contract.methods
-                .transferFund([payload[2]?.publicAddress])
-                .estimateGas({ from: payload[1], value: String(payload[0].priceValue) })
-            ) as Observable<number>
-          ).pipe(
-            switchMap((gas: number) => {
-              return (
-                from(
-                  contract.methods
-                    .transferFund([payload[2]?.publicAddress])
-                    .send({ from: payload[1], value: String(payload[0].priceValue), gas: gas })
-                ) as Observable<IReceiptTransaction>
-              ).pipe(
-                map((receipt: IReceiptTransaction) =>
-                  PaymentRequestActions.amountSent({
-                    hash: receipt.transactionHash,
-                    chainId: payload[2]?.chainId as NetworkChainId
-                  })
-                ),
-                catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
-              );
-            }),
-            catchError(() => {
-              return (
-                from(
-                  contract.methods
-                    .transferFund([payload[2]?.publicAddress])
-                    .send({ from: payload[1], value: String(payload[0].priceValue) })
-                ) as Observable<IReceiptTransaction>
-              ).pipe(
-                map((receipt: IReceiptTransaction) =>
-                  PaymentRequestActions.amountSent({
-                    hash: receipt.transactionHash,
-                    chainId: payload[2]?.chainId as NetworkChainId
-                  })
-                ),
-                catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
-              );
-            })
+          const payload: SendNativeTokenToMultiSigPayload = {
+            addresses: [action[2]?.publicAddress as string],
+            amount: Number(action[0].priceValue),
+            chainId: action[2]?.chainId as NetworkChainId,
+            from: action[1] as string
+          };
+          return from(this.tokensService.transferNativeToken(payload)).pipe(
+            map((receipt: IReceiptTransaction) =>
+              PaymentRequestActions.amountSent({
+                hash: receipt.transactionHash,
+                chainId: action[2]?.chainId as NetworkChainId
+              })
+            ),
+            catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
           );
         }
       )

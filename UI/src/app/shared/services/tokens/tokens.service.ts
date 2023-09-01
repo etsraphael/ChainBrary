@@ -7,11 +7,13 @@ import {
   ITransferPayload
 } from '@chainbrary/token-bridge';
 import Web3 from 'web3';
-import { TransactionTokenBridgeContract } from '../../contracts';
+import { Contract } from 'web3-eth-contract';
+import { TransactionBridgeContract, TransactionTokenBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import {
   IReceiptTransaction,
   IToken,
+  SendNativeTokenToMultiSigPayload,
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
 } from '../../interfaces';
@@ -66,7 +68,7 @@ export class TokensService {
       .catch(() => Promise.reject('Network not supported'));
   }
 
-  async transferToken(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
+  async transferNonNativeToken(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
 
@@ -84,8 +86,26 @@ export class TokensService {
       return contract.methods
         .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
         .send({ from: payload.ownerAdress, gas: gas });
-    } catch (error: any) {
-      return Promise.reject(error.message);
+    } catch (error) {
+      return Promise.reject((error as Error)?.message || error);
+    }
+  }
+
+  async transferNativeToken(payload: SendNativeTokenToMultiSigPayload): Promise<IReceiptTransaction> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new TransactionBridgeContract(String(payload.chainId));
+    const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+
+    try {
+      const gas = await contract.methods
+        .transferFund(payload.addresses)
+        .estimateGas({ from: payload.from, value: String(payload.amount) });
+
+      return contract.methods
+        .transferFund(payload.addresses)
+        .send({ from: payload.from, value: String(payload.amount), gas: gas });
+    } catch (error) {
+      return Promise.reject((error as Error)?.message || error);
     }
   }
 }

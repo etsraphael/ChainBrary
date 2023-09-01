@@ -52,3 +52,10 @@ export interface TransactionTokenBridgePayload {
 export interface SendTransactionTokenBridgePayload extends TransactionTokenBridgePayload {
   destinationAddress: string;
 }
+
+export interface SendNativeTokenToMultiSigPayload {
+  from: string;
+  amount: number;
+  chainId: NetworkChainId;
+  addresses: string[];
+}
