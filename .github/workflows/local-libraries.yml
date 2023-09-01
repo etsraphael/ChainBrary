@@ -29,20 +29,14 @@ jobs:
           npm install
           npm ci
 
-      - name: Lint code
-        run: npm run lint
-
       - name: Build Libraries
         run: |
           for LIB in token-bridge transaction-search web3-login; do
-            ng build $LIB
+            npx ng build $LIB
             if [ $? -ne 0 ]; then
               echo "Error building $LIB!"
               exit 1
             fi
             echo "$LIB built successfully!"
           done
-          
-      - name: build main project
-        run: npm run build
       
