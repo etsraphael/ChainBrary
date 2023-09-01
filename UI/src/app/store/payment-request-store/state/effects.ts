@@ -18,7 +18,8 @@ import {
   IToken,
   ITokenContract,
   SendTransactionTokenBridgePayload,
-  StoreState
+  StoreState,
+  TransactionTokenBridgePayload
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import { TokensService } from './../../../shared/services/tokens/tokens.service';
@@ -72,13 +73,14 @@ export class PaymentRequestEffects {
           const tokenAddress: string = tokenList
             .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
             ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId)?.address as string;
+          const payload: TransactionTokenBridgePayload = {
+            ownerAdress: action[1],
+            tokenAddress: tokenAddress,
+            chainId: action[0].paymentRequest.chainId,
+            amount: action[0].paymentRequest.amount
+          };
           return this.tokensService
-            .getTransferAvailable(
-              action[1],
-              tokenAddress,
-              action[0].paymentRequest.amount,
-              action[0].paymentRequest.chainId
-            )
+            .getTransferAvailable(payload)
             .then((isTransferable: boolean) => PaymentRequestActions.smartContractIsTransferable({ isTransferable }));
         }
       )
@@ -124,16 +126,17 @@ export class PaymentRequestEffects {
   signTransactionTokenPayment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment), this.store.select(selectIsNonNativeToken)]),
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectPayment),
+        this.store.select(selectIsNonNativeToken)
+      ]),
       filter((payload) => payload[1] !== null && payload[3]),
       map(
-        (payload) =>
-          payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+        (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
       ),
       switchMap(
-        async (
-          action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
-        ) => {
+        async (action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
           const tokenAddress: string = tokenList
             .find((token) => token.tokenId === action[2].tokenId)
             ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
@@ -148,7 +151,7 @@ export class PaymentRequestEffects {
             return PaymentRequestActions.amountSent({
               hash: receipt.transactionHash,
               chainId: action[2].chainId as NetworkChainId
-            })
+            });
           });
         }
       ),
@@ -302,10 +305,16 @@ export class PaymentRequestEffects {
   sendAmountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment), this.store.select(selectIsNonNativeToken)]),
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectPayment),
+        this.store.select(selectIsNonNativeToken)
+      ]),
       filter((payload) => !payload[3]),
       switchMap(
-        (payload: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]) => {
+        (
+          payload: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
+        ) => {
           const web3: Web3 = new Web3(window.ethereum);
           const transactionContract = new TransactionBridgeContract(String(payload[2]?.chainId));
           const contract: Contract = new web3.eth.Contract(

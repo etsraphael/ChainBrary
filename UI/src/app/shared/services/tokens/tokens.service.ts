@@ -6,11 +6,15 @@ import {
   IEditAllowancePayload,
   ITransferPayload
 } from '@chainbrary/token-bridge';
-import { NetworkChainId } from '@chainbrary/web3-login';
 import Web3 from 'web3';
 import { TransactionTokenBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
-import { IReceiptTransaction, IToken, SendTransactionTokenBridgePayload } from '../../interfaces';
+import {
+  IReceiptTransaction,
+  IToken,
+  SendTransactionTokenBridgePayload,
+  TransactionTokenBridgePayload
+} from '../../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -46,15 +50,9 @@ export class TokensService {
     return this.erc20Service.approve(payload);
   }
 
-  // TODO: convert the arguments to an object
-  async getTransferAvailable(
-    ownerAdress: string,
-    tokenAddress: string,
-    amount: number,
-    chainId: NetworkChainId
-  ): Promise<boolean> {
+  async getTransferAvailable(payload: TransactionTokenBridgePayload): Promise<boolean> {
     const web3: Web3 = new Web3(window.ethereum);
-    const transactionContract = new TransactionTokenBridgeContract(chainId);
+    const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
 
     if (!transactionContract.getAddress()) {
       return Promise.reject('Network not supported');
@@ -63,7 +61,7 @@ export class TokensService {
     const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
     return contract.methods
-      .canTransfer(ownerAdress, web3.utils.toWei(String(amount), 'ether'), tokenAddress)
+      .canTransfer(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
       .call()
       .catch(() => Promise.reject('Network not supported'));
   }
@@ -86,10 +84,8 @@ export class TokensService {
       return contract.methods
         .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
         .send({ from: payload.ownerAdress, gas: gas });
-
     } catch (error: any) {
       return Promise.reject(error.message);
     }
-
   }
 }
