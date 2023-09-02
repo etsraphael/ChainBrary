@@ -1,0 +1,46 @@
+name: Local library build
+
+on:
+  pull_request:
+    branches: 
+      - release/dev
+      - release/test
+      - release/prod
+jobs:
+  build_test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./UI
+    strategy:
+      matrix:
+        node-version: [16.x]
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: setup node
+        uses: actions/setup-node@master
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install dependencies
+        run: |
+          npm install
+          npm ci
+
+      - name: Build Libraries
+        run: |
+          for LIB_DIR in projects/*; do
+            if [[ -d $LIB_DIR ]]; then
+              LIB_NAME=$(basename $LIB_DIR)
+              echo "Building $LIB_NAME..."
+              npx ng build $LIB_NAME
+              if [ $? -ne 0 ]; then
+                echo "Error building $LIB_NAME!"
+                exit 1
+              fi
+              echo "$LIB_NAME built successfully!"
+            fi
+          done
+      
