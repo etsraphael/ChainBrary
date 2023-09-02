@@ -60,7 +60,10 @@ export class PaymentRequestEffects {
 
   checkIfTransferIsPossible$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(PaymentRequestActions.generatePaymentRequestSuccess),
+      ofType(
+        PaymentRequestActions.generatePaymentRequestSuccess,
+        PaymentRequestActions.approveTokenAllowanceSuccess,
+      ),
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]),
       filter((payload) => payload[1] !== null && payload[2]),
       map(
@@ -80,7 +83,7 @@ export class PaymentRequestEffects {
           };
           return this.tokensService
             .getTransferAvailable(payload)
-            .then((isTransferable: boolean) => PaymentRequestActions.smartContractIsTransferable({ isTransferable }));
+            .then((isTransferable: boolean) => PaymentRequestActions.smartContractCanTransferResponse({ isTransferable }));
         }
       )
     );

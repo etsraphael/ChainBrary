@@ -130,7 +130,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
-    PaymentActions.smartContractIsTransferable,
+    PaymentActions.smartContractCanTransferResponse,
     (state, { isTransferable }): IPaymentRequestState => ({
       ...state,
       smartContractCanTransfer: isTransferable
