@@ -46,6 +46,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
+    PaymentActions.approveTokenAllowance,
     PaymentActions.sendAmount,
     (state): IPaymentRequestState => ({
       ...state,
@@ -59,6 +60,8 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   on(
     PaymentActions.amountSent,
     PaymentActions.amountSentFailure,
+    PaymentActions.approveTokenAllowanceFailure,
+    PaymentActions.approveTokenAllowanceSuccess,
     (state): IPaymentRequestState => ({
       ...state,
       payment: {

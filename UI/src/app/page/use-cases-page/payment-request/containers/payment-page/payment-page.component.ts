@@ -3,7 +3,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, combineLatest, filter, map, take } from 'rxjs';
+import { EMPTY, Observable, Subscription, combineLatest, filter, map, switchMap, take } from 'rxjs';
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
@@ -56,12 +56,9 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
 
   get paymentSelectedInvalid$(): Observable<boolean> {
     return combineLatest([this.currentNetwork$, this.paymentNetwork$]).pipe(
-      map(([currentNetwork, paymentNetwork]) => {
-        if (!currentNetwork || !paymentNetwork) {
-          return false;
-        }
-        return currentNetwork.chainId !== paymentNetwork.chainId;
-      })
+      map(([currentNetwork, paymentNetwork]) =>
+        currentNetwork && paymentNetwork ? currentNetwork.chainId !== paymentNetwork.chainId : false
+      )
     );
   }
 
@@ -123,30 +120,38 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  submitPayment(payload: { priceValue: number }): Subscription | void {
-    return this.web3LoginService.currentNetwork$
+  handleNetwork(isSupportedAction: () => void): Subscription {
+    return this.paymentSelectedInvalid$
       .pipe(
         take(1),
+        switchMap((isInvalid: boolean) => {
+          if (isInvalid) {
+            this._snackBar.open('Network not matching', 'Close', { duration: 2000 });
+            return EMPTY;
+          }
+          return this.web3LoginService.currentNetwork$;
+        }),
         filter((network: INetworkDetail | null) => !!network),
         map((network: INetworkDetail | null) => network as INetworkDetail)
       )
       .subscribe((network: INetworkDetail) => {
         if (!environment.contracts.bridgeTransfer.networkSupported.includes(network.chainId)) {
-          this._snackBar.open('Network not supported', 'Close', {
-            duration: 2000
-          });
+          this._snackBar.open('Network not supported', 'Close', { duration: 2000 });
           return;
         }
-
-        return this.store.dispatch(sendAmount({ priceValue: String(payload.priceValue) }));
+        isSupportedAction();
       });
+  }
+
+  submitPayment(payload: { priceValue: number }): Subscription {
+    return this.handleNetwork(() => this.store.dispatch(sendAmount({ priceValue: String(payload.priceValue) })));
+  }
+
+  approveSmartContract(): Subscription {
+    return this.handleNetwork(() => this.store.dispatch(approveTokenAllowance()));
   }
 
   ngOnDestroy(): void {
     this.modalSub?.unsubscribe();
-  }
-
-  approveSmartContract(): void {
-    return this.store.dispatch(approveTokenAllowance());
   }
 }

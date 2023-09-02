@@ -4,7 +4,7 @@ import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/we
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
-import { catchError, filter, from, map, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionTokenBridgeContract } from './../../../shared/contracts';
@@ -94,31 +94,30 @@ export class PaymentRequestEffects {
         (payload) =>
           payload as [ReturnType<typeof PaymentRequestActions.approveTokenAllowance>, string, IPaymentRequest]
       ),
-      switchMap(
-        async (action: [ReturnType<typeof PaymentRequestActions.approveTokenAllowance>, string, IPaymentRequest]) => {
-          const tokenAddress: string = tokenList
-            .find((token) => token.tokenId === action[2].tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+      mergeMap(([, publicAddress, payment]) => {
+        const tokenAddress: string = tokenList
+          .find((token) => token.tokenId === payment.tokenId)
+          ?.networkSupport.find((support) => support.chainId === payment.chainId)?.address as string;
 
-          const payload: IEditAllowancePayload = {
-            tokenAddress: tokenAddress,
-            chainId: action[2].chainId,
-            owner: action[1],
-            spender: new TransactionTokenBridgeContract(action[2].chainId).getAddress(),
-            amount: action[2].amount
-          };
-          return this.tokensService
-            .approve(payload)
-            .then((result: boolean) =>
-              result
-                ? PaymentRequestActions.approveTokenAllowanceSuccess()
-                : PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: 'Error approving token' })
-            );
-        }
-      ),
-      catchError((error: Error) =>
-        of(PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: error.message }))
-      )
+        const payload: IEditAllowancePayload = {
+          tokenAddress: tokenAddress,
+          chainId: payment.chainId,
+          owner: publicAddress,
+          spender: new TransactionTokenBridgeContract(payment.chainId).getAddress(),
+          amount: payment.amount
+        };
+
+        return from(this.tokensService.approve(payload)).pipe(
+          map((result: boolean) =>
+            result
+              ? PaymentRequestActions.approveTokenAllowanceSuccess()
+              : PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: 'Error approving token' })
+          ),
+          catchError((error: Error) =>
+            of(PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: error.message }))
+          )
+        );
+      })
     );
   });
 
