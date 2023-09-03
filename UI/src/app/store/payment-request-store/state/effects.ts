@@ -60,12 +60,9 @@ export class PaymentRequestEffects {
 
   checkIfTransferIsPossible$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(
-        PaymentRequestActions.generatePaymentRequestSuccess,
-        PaymentRequestActions.approveTokenAllowanceSuccess,
-      ),
+      ofType(PaymentRequestActions.generatePaymentRequestSuccess),
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]),
-      filter((payload) => payload[1] !== null && payload[2]),
+      filter((payload: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string|null, boolean]) => payload[1] !== null && payload[2]),
       map(
         (payload) =>
           payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]
@@ -80,6 +77,36 @@ export class PaymentRequestEffects {
             tokenAddress: tokenAddress,
             chainId: action[0].paymentRequest.chainId,
             amount: action[0].paymentRequest.amount
+          };
+          return this.tokensService
+            .getTransferAvailable(payload)
+            .then((isTransferable: boolean) => PaymentRequestActions.smartContractCanTransferResponse({ isTransferable }));
+        }
+      )
+    );
+  });
+
+  checkIfTransferIsPossibleAfterAllowance$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(
+        PaymentRequestActions.approveTokenAllowanceSuccess
+      ),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
+      filter((payload: [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string|null, IPaymentRequest | null]) => payload[1] !== null && payload[2] !== null),
+      map(
+        (payload) =>
+          payload as [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]
+      ),
+      switchMap(
+        async (action: [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[2].tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+          const payload: TransactionTokenBridgePayload = {
+            ownerAdress: action[1],
+            tokenAddress: tokenAddress,
+            chainId: action[2].chainId,
+            amount: action[2].amount
           };
           return this.tokensService
             .getTransferAvailable(payload)
