@@ -2,12 +2,24 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { EMPTY, Observable, Subscription, combineLatest, filter, map, switchMap, take } from 'rxjs';
+import {
+  EMPTY,
+  Observable,
+  ReplaySubject,
+  Subscription,
+  combineLatest,
+  filter,
+  map,
+  switchMap,
+  take,
+  takeUntil
+} from 'rxjs';
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
-import { setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
+import { accountChanged, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
   selectCurrentNetwork,
@@ -36,7 +48,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   AuthStatusCodeTypes = AuthStatusCode;
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
   paymentIsLoading$: Observable<boolean>;
-  modalSub: Subscription;
   authStatus$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
   transactionCards$: Observable<ITransactionCard[]>;
@@ -44,12 +55,14 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   paymentNetwork$: Observable<INetworkDetail | null>;
   smartContractCanTransfer$: Observable<boolean>;
   nativeTokenInfo: INativeToken;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     private route: ActivatedRoute,
     private store: Store,
     private web3LoginService: Web3LoginService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private actions$: Actions
   ) {
     this.setUpId();
   }
@@ -77,6 +90,11 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.generateObs();
     this.setUpMessage();
+    this.generateSubscription();
+  }
+
+  generateSubscription(): void {
+    this.actions$.pipe(ofType(accountChanged), takeUntil(this.destroyed$)).subscribe(() => this.setUpId());
   }
 
   generateObs(): void {
@@ -104,20 +122,23 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
       );
   }
 
-  openLoginModal(): void {
-    this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: IModalState) => {
-      switch (state.type) {
-        case ModalStateType.SUCCESS:
-          this.store.dispatch(
-            setAuthPublicAddress({
-              publicAddress: state.data?.publicAddress as string,
-              network: state.data?.network as INetworkDetail
-            })
-          );
-          this.web3LoginService.closeLoginModal();
-          break;
-      }
-    });
+  openLoginModal(): Subscription {
+    return this.web3LoginService
+      .openLoginModal()
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((state: IModalState) => {
+        switch (state.type) {
+          case ModalStateType.SUCCESS:
+            this.store.dispatch(
+              setAuthPublicAddress({
+                publicAddress: state.data?.publicAddress as string,
+                network: state.data?.network as INetworkDetail
+              })
+            );
+            this.web3LoginService.closeLoginModal();
+            break;
+        }
+      });
   }
 
   handleNetwork(isSupportedAction: () => void): Subscription {
@@ -152,6 +173,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.modalSub?.unsubscribe();
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
   }
 }

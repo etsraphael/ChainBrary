@@ -62,7 +62,10 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequestSuccess),
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]),
-      filter((payload: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string|null, boolean]) => payload[1] !== null && payload[2]),
+      filter(
+        (payload: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string | null, boolean]) =>
+          payload[1] !== null && payload[2]
+      ),
       map(
         (payload) =>
           payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]
@@ -80,7 +83,9 @@ export class PaymentRequestEffects {
           };
           return this.tokensService
             .getTransferAvailable(payload)
-            .then((isTransferable: boolean) => PaymentRequestActions.smartContractCanTransferResponse({ isTransferable }));
+            .then((isTransferable: boolean) =>
+              PaymentRequestActions.smartContractCanTransferResponse({ isTransferable })
+            );
         }
       )
     );
@@ -88,17 +93,25 @@ export class PaymentRequestEffects {
 
   checkIfTransferIsPossibleAfterAllowance$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(
-        PaymentRequestActions.approveTokenAllowanceSuccess
-      ),
+      ofType(PaymentRequestActions.approveTokenAllowanceSuccess),
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
-      filter((payload: [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string|null, IPaymentRequest | null]) => payload[1] !== null && payload[2] !== null),
+      filter(
+        (
+          payload: [
+            ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>,
+            string | null,
+            IPaymentRequest | null
+          ]
+        ) => payload[1] !== null && payload[2] !== null
+      ),
       map(
         (payload) =>
           payload as [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]
       ),
       switchMap(
-        async (action: [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]) => {
+        async (
+          action: [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]
+        ) => {
           const tokenAddress: string = tokenList
             .find((token) => token.tokenId === action[2].tokenId)
             ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
@@ -110,7 +123,9 @@ export class PaymentRequestEffects {
           };
           return this.tokensService
             .getTransferAvailable(payload)
-            .then((isTransferable: boolean) => PaymentRequestActions.smartContractCanTransferResponse({ isTransferable }));
+            .then((isTransferable: boolean) =>
+              PaymentRequestActions.smartContractCanTransferResponse({ isTransferable })
+            );
         }
       )
     );
