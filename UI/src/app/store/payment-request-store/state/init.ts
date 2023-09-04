@@ -22,5 +22,9 @@ export const initialState: IPaymentRequestState = {
       priceInUsdEnabled: false
     }
   },
-  smartContractCanTransfer: false
+  smartContractCanTransfer: {
+    loading: false,
+    error: null,
+    data: false
+  }
 };

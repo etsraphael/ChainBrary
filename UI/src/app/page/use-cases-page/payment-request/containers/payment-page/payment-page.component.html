@@ -59,17 +59,26 @@
               </p>
             </div>
           </div>
-          <app-payment-request-card
-            [canTransfer]="(smartContractCanTransfer$ | async)!"
-            [currentNetworkObs]="currentNetwork$"
-            [paymentNetwork]="paymentNetwork$ | async"
-            [authStatus]="(authStatus$ | async)!"
-            [publicAddress]="publicAddress$ | async"
-            [paymentRequest]="(selectPaymentRequestState$ | async)!"
-            (openLoginModal)="openLoginModal()"
-            (submitPayment)="submitPayment($event)"
-            (approveSmartContract)="approveSmartContract()"
-          ></app-payment-request-card>
+          <ng-container *ngIf="canTransferError$ | async as canTransferError; else showPaymentRequest">
+            <div class="alert alert-danger border-0 shadow-sm mt-3" role="alert">
+              <h4 class="alert-heading">Error</h4>
+              <p>{{ canTransferError }}</p>
+            </div>
+          </ng-container>
+          <ng-template #showPaymentRequest>
+            <app-payment-request-card
+              [canTransfer]="(smartContractCanTransfer$ | async)!"
+              [currentNetworkObs]="currentNetwork$"
+              [paymentNetwork]="paymentNetwork$ | async"
+              [authStatus]="(authStatus$ | async)!"
+              [publicAddress]="publicAddress$ | async"
+              [paymentRequest]="(selectPaymentRequestState$ | async)!"
+              (openLoginModal)="openLoginModal()"
+              (submitPayment)="submitPayment($event)"
+              (approveSmartContract)="approveSmartContract()"
+            >
+            </app-payment-request-card>
+          </ng-template>
         </div>
       </ng-template>
     </div>

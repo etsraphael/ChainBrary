@@ -52,7 +52,17 @@ export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createS
 export const selectSmartContractCanTransfer: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   selectIsNonNativeToken,
-  (s, isNonNative) => s.smartContractCanTransfer || !isNonNative
+  (s, isNonNative) => s.smartContractCanTransfer.data || !isNonNative
+);
+
+export const selectSmartContractCanTransferIsLoading: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentRequest,
+  (s) => s.smartContractCanTransfer.loading
+);
+
+export const selectSmartContractCanTransferError: MemoizedSelector<object, string | null> = createSelector(
+  selectPaymentRequest,
+  (s) => s.smartContractCanTransfer.error
 );
 
 export const selectProfilePayment: MemoizedSelector<

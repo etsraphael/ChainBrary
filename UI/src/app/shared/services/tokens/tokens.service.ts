@@ -53,19 +53,23 @@ export class TokensService {
   }
 
   async getTransferAvailable(payload: TransactionTokenBridgePayload): Promise<boolean> {
-    const web3: Web3 = new Web3(window.ethereum);
-    const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
+    try {
+      const web3: Web3 = new Web3(window.ethereum);
+      const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
 
-    if (!transactionContract.getAddress()) {
-      return Promise.reject('Network not supported');
+      const address = transactionContract.getAddress();
+      if (!address) {
+        throw new Error('Network not supported');
+      }
+
+      const contract = new web3.eth.Contract(transactionContract.getAbi(), address);
+
+      return await contract.methods
+        .canTransfer(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
+        .call();
+    } catch (error) {
+      return Promise.reject('Network not supported yet');
     }
-
-    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
-
-    return contract.methods
-      .canTransfer(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
-      .call()
-      .catch(() => Promise.reject('Network not supported'));
   }
 
   async transferNonNativeToken(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {

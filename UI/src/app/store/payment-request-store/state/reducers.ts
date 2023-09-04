@@ -72,6 +72,17 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
+    PaymentActions.checkTokenAllowanceFailure,
+    (state, { message }): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        ...state.smartContractCanTransfer,
+        loading: false,
+        error: message
+      }
+    })
+  ),
+  on(
     PaymentActions.selectToken,
     PaymentActions.updatedToken,
     (state, { token }): IPaymentRequestState => ({
@@ -130,10 +141,36 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
-    PaymentActions.smartContractCanTransferResponse,
+    PaymentActions.smartContractCanTransfer,
+    (state): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        ...state.smartContractCanTransfer,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.smartContractCanTransferSuccess,
     (state, { isTransferable }): IPaymentRequestState => ({
       ...state,
-      smartContractCanTransfer: isTransferable
+      smartContractCanTransfer: {
+        loading: false,
+        error: null,
+        data: isTransferable
+      }
+    })
+  ),
+  on(
+    PaymentActions.smartContractCanTransferFailure,
+    (state, { message }): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        loading: false,
+        error: message,
+        data: false
+      }
     })
   )
 );

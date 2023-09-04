@@ -35,7 +35,8 @@ import {
   selectCardIsLoading,
   selectPaymentNetwork,
   selectPaymentRequest,
-  selectSmartContractCanTransfer
+  selectSmartContractCanTransfer,
+  selectSmartContractCanTransferError
 } from './../../../../../store/payment-request-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
 
@@ -48,6 +49,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   AuthStatusCodeTypes = AuthStatusCode;
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
   paymentIsLoading$: Observable<boolean>;
+  canTransferError$: Observable<string | null>;
   authStatus$: Observable<AuthStatusCode>;
   publicAddress$: Observable<string | null>;
   transactionCards$: Observable<ITransactionCard[]>;
@@ -106,6 +108,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
     this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
     this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer);
+    this.canTransferError$ = this.store.select(selectSmartContractCanTransferError);
   }
 
   setUpMessage(): void {

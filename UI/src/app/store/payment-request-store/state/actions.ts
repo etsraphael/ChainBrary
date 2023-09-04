@@ -67,12 +67,17 @@ export const checkTokenAllowanceSuccess = createAction(
 );
 export const checkTokenAllowanceFailure = createAction(
   '[Payment Request] Check Token Allowance Failure',
-  props<{ errorMessage: string }>()
+  props<{ message: string }>()
 );
 
-export const smartContractCanTransferResponse = createAction(
+export const smartContractCanTransfer = createAction('[Payment Request] Smart Contract Can Transfer');
+export const smartContractCanTransferSuccess = createAction(
   '[Payment Request] Smart Contract Is Transferable',
   props<{ isTransferable: boolean }>()
+);
+export const smartContractCanTransferFailure = createAction(
+  '[Payment Request] Smart Contract Is Not Transferable',
+  props<{ message: string }>()
 );
 
 export const approveTokenAllowance = createAction('[Payment Request] Approve Token Allowance');

@@ -61,7 +61,7 @@ export class PaymentRequestEffects {
   checkIfTransferIsPossible$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]), // TODO: check if it's the same chainId
       filter(
         (payload: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string | null, boolean]) =>
           payload[1] !== null && payload[2]
@@ -72,22 +72,31 @@ export class PaymentRequestEffects {
       ),
       switchMap(
         async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]) => {
-          const tokenAddress: string = tokenList
+          const tokenAddress: ITokenContract | undefined = tokenList
             .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId)?.address as string;
+            ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);
+
+          if (!tokenAddress) {
+            return PaymentRequestActions.checkTokenAllowanceFailure({ message: 'Token address not found!' });
+          }
+
           const payload: TransactionTokenBridgePayload = {
             ownerAdress: action[1],
-            tokenAddress: tokenAddress,
+            tokenAddress: tokenAddress.address,
             chainId: action[0].paymentRequest.chainId,
             amount: action[0].paymentRequest.amount
           };
+
           return this.tokensService
             .getTransferAvailable(payload)
             .then((isTransferable: boolean) =>
-              PaymentRequestActions.smartContractCanTransferResponse({ isTransferable })
+              PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable })
             );
         }
-      )
+      ),
+      catchError((error: string) => {
+        return of(PaymentRequestActions.checkTokenAllowanceFailure({ message: error }));
+      })
     );
   });
 
@@ -124,7 +133,7 @@ export class PaymentRequestEffects {
           return this.tokensService
             .getTransferAvailable(payload)
             .then((isTransferable: boolean) =>
-              PaymentRequestActions.smartContractCanTransferResponse({ isTransferable })
+              PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable })
             );
         }
       )
@@ -294,9 +303,13 @@ export class PaymentRequestEffects {
 
   sendAmountTransactionsError$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(PaymentRequestActions.amountSentFailure),
-      map((action: ReturnType<typeof PaymentRequestActions.amountSentFailure>) =>
-        showErrorNotification({ message: action.message })
+      ofType(PaymentRequestActions.amountSentFailure, PaymentRequestActions.checkTokenAllowanceFailure),
+      map(
+        (
+          action: ReturnType<
+            typeof PaymentRequestActions.amountSentFailure | typeof PaymentRequestActions.checkTokenAllowanceFailure
+          >
+        ) => showErrorNotification({ message: action.message })
       )
     );
   });
