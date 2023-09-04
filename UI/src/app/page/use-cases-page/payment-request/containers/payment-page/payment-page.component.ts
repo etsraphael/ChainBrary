@@ -19,7 +19,11 @@ import {
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
-import { accountChanged, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
+import {
+  accountChanged,
+  networkChangeSuccess,
+  setAuthPublicAddress
+} from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
   selectCurrentNetwork,
@@ -33,6 +37,7 @@ import {
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
+  selectIsNonNativeToken,
   selectPaymentNetwork,
   selectPaymentRequest,
   selectSmartContractCanTransfer,
@@ -51,6 +56,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   paymentIsLoading$: Observable<boolean>;
   canTransferError$: Observable<string | null>;
   authStatus$: Observable<AuthStatusCode>;
+  isNonNativeToken$: Observable<boolean>;
   publicAddress$: Observable<string | null>;
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
@@ -96,7 +102,9 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   generateSubscription(): void {
-    this.actions$.pipe(ofType(accountChanged), takeUntil(this.destroyed$)).subscribe(() => this.setUpId());
+    this.actions$
+      .pipe(ofType(accountChanged, networkChangeSuccess), takeUntil(this.destroyed$))
+      .subscribe(() => this.setUpId());
   }
 
   generateObs(): void {
@@ -109,6 +117,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
     this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer);
     this.canTransferError$ = this.store.select(selectSmartContractCanTransferError);
+    this.isNonNativeToken$ = this.store.select(selectIsNonNativeToken);
   }
 
   setUpMessage(): void {

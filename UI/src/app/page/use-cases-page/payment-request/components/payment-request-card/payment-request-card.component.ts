@@ -22,6 +22,7 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Input() paymentNetwork: INetworkDetail | null;
   @Input() canTransfer: boolean;
+  @Input() canTransferError: string | null;
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ priceValue: number }>();
   @Output() approveSmartContract = new EventEmitter<void>();

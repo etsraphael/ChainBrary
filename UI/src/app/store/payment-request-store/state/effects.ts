@@ -27,6 +27,7 @@ import {
   selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
+  selectPaymentNetworkIsMathing,
   selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
@@ -61,17 +62,29 @@ export class PaymentRequestEffects {
   checkIfTransferIsPossible$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectIsNonNativeToken)]), // TODO: check if it's the same chainId
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectIsNonNativeToken),
+        this.store.select(selectPaymentNetworkIsMathing)
+      ]),
       filter(
-        (payload: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string | null, boolean]) =>
-          payload[1] !== null && payload[2]
+        (
+          payload: [
+            ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>,
+            string | null,
+            boolean,
+            boolean
+          ]
+        ) => payload[1] !== null && payload[2] && payload[3]
       ),
       map(
         (payload) =>
-          payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]
+          payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
       ),
       switchMap(
-        async (action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean]) => {
+        async (
+          action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
+        ) => {
           const tokenAddress: ITokenContract | undefined = tokenList
             .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
             ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);

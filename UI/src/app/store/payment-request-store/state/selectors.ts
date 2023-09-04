@@ -2,6 +2,7 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { IConversionToken, IPaymentRequest, IProfilePayment, IToken, StoreState } from './../../../shared/interfaces';
 import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
+import { selectCurrentNetwork } from '../../auth-store/state/selectors';
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
 
@@ -63,6 +64,12 @@ export const selectSmartContractCanTransferIsLoading: MemoizedSelector<object, b
 export const selectSmartContractCanTransferError: MemoizedSelector<object, string | null> = createSelector(
   selectPaymentRequest,
   (s) => s.smartContractCanTransfer.error
+);
+
+export const selectPaymentNetworkIsMathing: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentRequest,
+  selectCurrentNetwork,
+  (s, network) => s.network?.chainCode === network?.chainCode
 );
 
 export const selectProfilePayment: MemoizedSelector<

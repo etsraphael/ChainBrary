@@ -68,6 +68,7 @@
           <ng-template #showPaymentRequest>
             <app-payment-request-card
               [canTransfer]="(smartContractCanTransfer$ | async)!"
+              [canTransferError]="canTransferError$ | async"
               [currentNetworkObs]="currentNetwork$"
               [paymentNetwork]="paymentNetwork$ | async"
               [authStatus]="(authStatus$ | async)!"

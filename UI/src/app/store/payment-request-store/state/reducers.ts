@@ -31,7 +31,8 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         username: paymentRequest.username
       },
       network,
-      token
+      token,
+      smartContractCanTransfer: initialState.smartContractCanTransfer
     })
   ),
   on(
