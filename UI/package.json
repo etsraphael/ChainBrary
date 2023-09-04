@@ -33,7 +33,7 @@
     "@chainbrary/transaction-search": "^16.0.1",
     "@chainbrary/web3-login": "^16.0.2",
     "@eslint-community/regexpp": "^4.5.1",
-    "@ngrx/effects": "^16.1.0",
+    "@ngrx/effects": "^16.2.0",
     "@ngrx/entity": "^16.1.0",
     "@ngrx/store": "^16.1.0",
     "@ngrx/store-devtools": "^16.1.0",
