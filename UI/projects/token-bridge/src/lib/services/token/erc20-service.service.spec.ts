@@ -1,13 +1,12 @@
 import { TestBed } from '@angular/core/testing';
+import { Erc20Service } from './erc20-service.service';
 
-import { Erc20ServiceService } from './erc20-service.service';
-
-describe('Erc20ServiceService', () => {
-  let service: Erc20ServiceService;
+describe('Erc20Service', () => {
+  let service: Erc20Service;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(Erc20ServiceService);
+    service = TestBed.inject(Erc20Service);
   });
 
   it('should be created', () => {

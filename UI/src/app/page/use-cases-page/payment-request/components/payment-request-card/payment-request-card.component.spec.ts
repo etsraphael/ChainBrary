@@ -5,24 +5,13 @@ import { SharedTestModule } from './../../../../../shared/components/shared-comp
 import { initialState as authInitialState } from './../../../../../store/auth-store/state/init';
 import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
 import { PaymentRequestCardComponent } from './payment-request-card.component';
+import { initialState } from 'src/app/store/payment-request-store/state/init';
 
 describe('PaymentRequestCardComponent', () => {
   let component: PaymentRequestCardComponent;
   let fixture: ComponentFixture<PaymentRequestCardComponent>;
 
-  const paymentRequest: IPaymentRequestState = {
-    payment: {
-      data: null,
-      loading: false,
-      error: null
-    },
-    profile: {
-      publicAddress: null,
-      avatarUrl: null,
-      username: null
-    },
-    network: null
-  };
+  const paymentRequest: IPaymentRequestState = initialState;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
