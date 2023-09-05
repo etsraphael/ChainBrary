@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/token-bridge",
-  "version": "16.0.2",
+  "version": "16.0.7",
   "peerDependencies": {
     "@angular/common": "^16.1.0",
     "@angular/core": "^16.1.0",

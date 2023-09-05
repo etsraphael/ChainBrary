@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/transaction-search",
-  "version": "16.0.1",
+  "version": "16.0.5",
   "peerDependencies": {
     "@angular/common": "^16.1.8",
     "@angular/core": "^16.1.8",
@@ -14,5 +14,6 @@
     "type": "git",
     "url": "https://github.com/etsraphael/ChainBrary.git"
   },
-  "homepage": "https://github.com/etsraphael/ChainBrary/tree/release/dev/UI/projects/transaction-search"
+  "homepage": "https://github.com/etsraphael/ChainBrary/tree/release/dev/UI/projects/transaction-search",
+  "license": "MIT"
 }

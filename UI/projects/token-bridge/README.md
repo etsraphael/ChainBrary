@@ -160,4 +160,4 @@ For any questions, feedback, or concerns, please feel free to contact us through
 
 The `@chainbrary/token-bridge` package is released under the MIT License.
 
-Let me know if you need any additional information or if you have any questions.
+Let me know if you need any additional information or if you have any questions. I'm happy to help!

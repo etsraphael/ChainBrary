@@ -1,6 +1,5 @@
 #!/bin/bash
 
-# Change to the directory where this script is located
 cd "$(dirname "$0")"
 
 for LIB_DIR in ./../projects/*; do
