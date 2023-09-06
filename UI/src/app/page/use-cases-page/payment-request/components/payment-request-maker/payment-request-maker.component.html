@@ -19,10 +19,10 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.settingPrice">
       <app-payment-request-price-settings
-        [usdConversionRate]="usdConversionRate"
-        [tokenConversionRate]="tokenConversionRate"
         [priceForm]="priceForm"
-        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
+        [tokenSelected]="paymentTokenObs | async"
+        [currentNetworkObs]="currentNetworkObs"
+        [paymentConversion]="(paymentConversionObs | async)!"
         (goToNextPage)="goToNextPage()"
         (goToPreviousPage)="goToPreviousPage()"
         (swapCurrency)="swapCurrency()"
@@ -30,13 +30,12 @@
     </div>
     <div *ngSwitchCase="paymentMakePageTypes.review">
       <app-payment-request-review
-        [networkSymbol]="((currentNetworkObs | async)?.nativeCurrency)!.symbol"
         [username]="mainForm.controls.profile.controls.username.value!"
-        [amount]="amount"
+        [amount]="(amount | async)!"
         [previewLink]="linkGenerated"
-        [usdAmount]="usdAmount"
+        [tokenSelected]="(paymentTokenObs | async)!"
+        [usdAmount]="usdAmount | async"
         [usdEnabled]="priceForm.controls.usdEnabled.value!"
-        [tokenConversionRate]="tokenConversionRate"
         (goToPreviousPageEvent)="goToPreviousPage()"
       >
       </app-payment-request-review>

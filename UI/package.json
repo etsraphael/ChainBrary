@@ -15,7 +15,9 @@
     "test-e2e:local": "cypress open",
     "test-e2e:ci": "start-server-and-test start $URL cy:run",
     "test-unit:local": "ng test",
-    "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless"
+    "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless",
+    "build:libs": "./scripts/build_libraries.sh",
+    "publish:libs": "./scripts/publish_libraries.sh"
   },
   "private": true,
   "dependencies": {
@@ -30,8 +32,9 @@
     "@angular/platform-browser-dynamic": "^16.1.8",
     "@angular/router": "^16.1.8",
     "@apollo/client": "^3.8.1",
-    "@chainbrary/transaction-search": "^16.0.1",
-    "@chainbrary/web3-login": "^16.0.2",
+    "@chainbrary/token-bridge": "^16.0.7",
+    "@chainbrary/transaction-search": "^16.0.5",
+    "@chainbrary/web3-login": "^16.0.6",
     "@eslint-community/regexpp": "^4.5.1",
     "@ngrx/effects": "^16.1.0",
     "@ngrx/entity": "^16.1.0",

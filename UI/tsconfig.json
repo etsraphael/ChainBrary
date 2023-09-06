@@ -24,7 +24,8 @@
     "resolveJsonModule": true,
     "paths": {
       "@chainbrary/web3-login": ["dist/web3-login"],
-      "@chainbrary/transaction-search": ["dist/transaction-search"]
+      "@chainbrary/transaction-search": ["dist/transaction-search"],
+      "@chainbrary/token-bridge": ["dist/token-bridge"]
     }
   },
   "angularCompilerOptions": {

@@ -11,5 +11,20 @@ export const initialState: IPaymentRequestState = {
     error: null,
     data: null
   },
-  network: null
+  network: null,
+  token: null,
+  conversion: {
+    loading: false,
+    error: null,
+    data: {
+      usdAmount: null,
+      tokenAmount: null,
+      priceInUsdEnabled: false
+    }
+  },
+  smartContractCanTransfer: {
+    loading: false,
+    error: null,
+    data: false
+  }
 };
