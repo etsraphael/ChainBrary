@@ -9,7 +9,7 @@ const routes: Routes = [
   {
     path: '',
     component: UseCasesPageComponent,
-    canActivateChild: [AuthCheckingGuard],
+    canActivate: [AuthCheckingGuard],
     children: [
       {
         path: 'payment-request',

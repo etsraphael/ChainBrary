@@ -1,20 +1,42 @@
 <form class="container" [formGroup]="priceForm">
+  <!-- Token choice -->
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
-      <p [ngClass]="{ 'mb-0': !usdConversionRate }">
-        <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Choose token</mat-label>
+        <mat-select formControlName="token">
+          <mat-option *ngFor="let t of tokenList" [value]="t.tokenId">{{ t.name }} ({{ t.symbol }})</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- Amount -->
+  <div class="row justify-content-center">
+    <div class="col-10 col-lg-7">
+      <p [ngClass]="{ 'mb-0': !paymentConversion.data.usdAmount }">
+        <mat-form-field class="w-100 text-dark" appearance="outline">
           <mat-label> Amount</mat-label>
           <input formControlName="amount" type="number" class="ps-4" matInput placeholder="Amount" />
           <div matSuffix>
-            <h6 *ngIf="!priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">{{ networkSymbol }}</h6>
-            <h6 *ngIf="priceForm.get('usdEnabled')?.value" class="mb-0 pe-3">$USD</h6>
+            <h6 class="mb-0 pe-3">
+              <ng-container *ngIf="!usdEnabled && tokenSelected">{{ tokenSelected.symbol }}</ng-container>
+              <ng-container *ngIf="usdEnabled">$USD</ng-container>
+            </h6>
           </div>
-          <mat-hint *ngIf="!priceForm.get('usdEnabled')?.value && usdConversionRate && usdConversionRate > 0">
-            ${{ usdConversionRate }}
+          <mat-hint *ngIf="!usdEnabled && paymentConversion.data.usdAmount && paymentConversion.data.usdAmount > 0">
+            <ng-container *ngIf="!paymentConversion.loading"> ${{ paymentConversion.data.usdAmount }} </ng-container>
+            <ng-container *ngIf="paymentConversion.loading">
+              <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
+            </ng-container>
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
-          <mat-hint *ngIf="priceForm.get('usdEnabled')?.value && tokenConversionRate && tokenConversionRate > 0">
-            {{ tokenConversionRate }} {{ networkSymbol }}
+          <mat-hint *ngIf="usdEnabled && paymentConversion.data.tokenAmount && paymentConversion.data.tokenAmount > 0">
+            <ng-container *ngIf="!paymentConversion.loading">
+              {{ paymentConversion.data.tokenAmount }} {{ tokenSelected!.symbol }}
+            </ng-container>
+            <ng-container *ngIf="paymentConversion.loading">
+              <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
+            </ng-container>
             <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
           </mat-hint>
         </mat-form-field>
@@ -24,7 +46,7 @@
   <!-- Add a description textarea here -->
   <div class="row justify-content-center">
     <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width text-dark" appearance="outline">
+      <mat-form-field class="w-100 text-dark" appearance="outline">
         <mat-label> Description </mat-label>
         <textarea
           formControlName="description"

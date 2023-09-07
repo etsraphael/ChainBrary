@@ -2,6 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MatDialog } from '@angular/material/dialog';
 import { MAT_SNACK_BAR_DATA, MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { of } from 'rxjs';
+import { tokenSample } from './../../../../../../../tests/samples/network';
 import { MaterialModule } from './../../../../../module/material.module';
 import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
 import { SharedComponentsModule } from './../../../../../shared/components/shared-components.module';
@@ -25,6 +26,7 @@ describe('PaymentRequestReviewComponent', () => {
 
     fixture = TestBed.createComponent(PaymentRequestReviewComponent);
     component = fixture.componentInstance;
+    component.tokenSelected = tokenSample;
     fixture.detectChanges();
 
     snackbar = TestBed.inject(MatSnackBar);
@@ -38,29 +40,19 @@ describe('PaymentRequestReviewComponent', () => {
   it('should have the correct value for username', () => {
     const username = 'JohnDoe';
     component.username = username;
-
     expect(component.username).toEqual(username);
   });
 
   it('should have the correct value for amount', () => {
     const amount = 100;
     component.amount = amount;
-
     expect(component.amount).toEqual(amount);
   });
 
   it('should have the correct value for usdAmount', () => {
     const usdAmount = 50;
     component.usdAmount = usdAmount;
-
     expect(component.usdAmount).toEqual(usdAmount);
-  });
-
-  it('should have the correct value for tokenConversionRate', () => {
-    const tokenConversionRate = 0.5;
-    component.tokenConversionRate = tokenConversionRate;
-
-    expect(component.tokenConversionRate).toEqual(tokenConversionRate);
   });
 
   it('should have the correct value for previewLink', () => {
@@ -71,23 +63,19 @@ describe('PaymentRequestReviewComponent', () => {
   });
 
   it('should have the correct value for networkSymbol', () => {
-    const networkSymbol = 'ETH';
-    component.networkSymbol = networkSymbol;
-
-    expect(component.networkSymbol).toEqual(networkSymbol);
+    component.tokenSelected = tokenSample;
+    expect(component.tokenSelected.tokenId).toEqual(tokenSample.tokenId);
   });
 
   it('should have the correct value for usdEnabled', () => {
     const usdEnabled = true;
     component.usdEnabled = usdEnabled;
-
     expect(component.usdEnabled).toEqual(usdEnabled);
   });
 
   it('should emit goToPreviousPageEvent when goToPreviousPage() is called', () => {
     const emitSpy = spyOn(component.goToPreviousPageEvent, 'emit');
     component.goToPreviousPageEvent.emit();
-
     expect(emitSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -95,7 +83,6 @@ describe('PaymentRequestReviewComponent', () => {
     component.amount = 100;
     component.protocolFee = 0.1;
     const expectedReceivingAmount = component.amount - component.amount * component.protocolFee;
-
     expect(component.receivingAmount).toBe(expectedReceivingAmount);
   });
 
@@ -103,7 +90,6 @@ describe('PaymentRequestReviewComponent', () => {
     component.amount = 100;
     component.protocolFee = 0.1;
     const expectedProtocolFeeAmount = component.amount * component.protocolFee;
-
     expect(component.protocolFeeAmount).toBe(expectedProtocolFeeAmount);
   });
 
@@ -111,7 +97,6 @@ describe('PaymentRequestReviewComponent', () => {
     component.amount = 100;
     component.protocolFee = 0.1;
     const expectedReceivingAmount = component.amount - component.amount * component.protocolFee;
-
     expect(component.receivingAmount).toBe(expectedReceivingAmount);
   });
 
@@ -119,7 +104,6 @@ describe('PaymentRequestReviewComponent', () => {
     component.usdAmount = 50;
     component.protocolFee = 0.1;
     const expectedUSDProtocolFeeAmount = component.usdAmount * component.protocolFee;
-
     expect(component.usdProtocolFeeAmount).toBe(expectedUSDProtocolFeeAmount);
   });
 
@@ -135,7 +119,6 @@ describe('PaymentRequestReviewComponent', () => {
   it('should open a snackbar when clickCopyLinkEvent() is called', () => {
     const openSpy = spyOn(snackbar, 'open').and.returnValue({} as MatSnackBarRef<TextOnlySnackBar>);
     const result = component.clickCopyLinkEvent();
-
     expect(openSpy).toHaveBeenCalledWith('Link copied to clipboard', '', { duration: 3000 });
     expect(result).toEqual({} as MatSnackBarRef<TextOnlySnackBar>);
   });

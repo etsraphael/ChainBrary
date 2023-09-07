@@ -102,6 +102,17 @@ To customize the appearance of the login modal, modify the following CSS classes
 .web3-login-footer: The modal footer
 ```
 
+## Feedback and Improvements
+
+We value your feedback and are committed to continuously improving the Chainbrary library. Your suggestions, comments, and ideas will help shape the future of this project. Please don't hesitate to share your thoughts with us through the contact channels listed above. We will strive to incorporate your feedback into future updates to enhance the library for all users.
+
+## Contact Us
+
+For any questions, feedback, or concerns, please feel free to contact us through the following channels:
+
+- **Discord:** Join our [Chainbrary Discord server](https://discord.gg/6gjntSegP5)
+- **Instagram:** Follow me on [Instagram](https://www.instagram.com/rafael.salei/)
+
 ### License
 
 The `@chainbrary/web3-login` package is released under the MIT License.
