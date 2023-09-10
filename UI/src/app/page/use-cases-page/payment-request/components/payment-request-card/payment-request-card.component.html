@@ -60,7 +60,7 @@
               *ngIf="AuthStatusCodeTypes.NotVerifiedAndConnected === authStatus && !tokenIsNative && !canTransfer"
             >
               <app-chainbrary-button
-                [isDisabled]="!canTransferError"
+                [isDisabled]="!!canTransferError"
                 [buttonClasses]="['btn-primary-gradient', 'text-light']"
                 [buttonText]="'Enable ' + paymentToken.symbol"
                 (callToAction)="approveSmartContract.emit()"
