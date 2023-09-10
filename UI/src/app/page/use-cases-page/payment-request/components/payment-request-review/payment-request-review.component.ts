@@ -2,9 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
+import { IToken } from './../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-payment-request-review[username][amount][previewLink][networkSymbol][usdEnabled]',
+  selector: 'app-payment-request-review[username][amount][previewLink][usdEnabled][tokenSelected]',
   templateUrl: './payment-request-review.component.html',
   styleUrls: ['./payment-request-review.component.scss']
 })
@@ -12,10 +13,9 @@ export class PaymentRequestReviewComponent {
   @Input() username: string;
   @Input() amount: number;
   @Input() usdAmount: number | null;
-  @Input() tokenConversionRate: number | null;
   @Input() previewLink: string;
-  @Input() networkSymbol: string | null;
   @Input() usdEnabled: boolean;
+  @Input() tokenSelected: IToken;
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
   protocolFee = 0.001;
 

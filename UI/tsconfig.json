@@ -32,6 +32,9 @@
       ],
       "@chainbrary/transaction-search": [
         "dist/transaction-search"
+      ],
+      "@chainbrary/token-bridge": [
+        "dist/token-bridge"
       ]
     }
   },

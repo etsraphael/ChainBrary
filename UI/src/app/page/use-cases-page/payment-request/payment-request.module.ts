@@ -11,6 +11,7 @@ import { PaymentPageComponent } from './containers/payment-page/payment-page.com
 import { PaymentRequestContainerComponent } from './containers/payment-request-container/payment-request-container.component';
 import { PaymentRequestPriceSettingsComponent } from './components/payment-request-price-settings/payment-request-price-settings.component';
 import { PaymentRequestProfileSettingsComponent } from './components/payment-request-profile-settings/payment-request-profile-settings.component';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,13 @@ import { PaymentRequestProfileSettingsComponent } from './components/payment-req
     PaymentRequestPriceSettingsComponent,
     PaymentRequestProfileSettingsComponent
   ],
-  imports: [CommonModule, SharedComponentsModule, RouterModule, MaterialModule, ReactiveFormsModule]
+  imports: [
+    CommonModule,
+    SharedComponentsModule,
+    RouterModule,
+    MaterialModule,
+    ReactiveFormsModule,
+    NgxSkeletonLoaderModule
+  ]
 })
 export class PaymentRequestModule {}

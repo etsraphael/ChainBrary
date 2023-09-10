@@ -18,7 +18,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   ),
   on(
     PaymentActions.generatePaymentRequestSuccess,
-    (state, { paymentRequest, network }): IPaymentRequestState => ({
+    (state, { paymentRequest, network, token }): IPaymentRequestState => ({
       ...state,
       payment: {
         error: null,
@@ -27,10 +27,12 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       },
       profile: {
         publicAddress: paymentRequest.publicAddress,
-        avatarUrl: paymentRequest.avatarUrl,
+        avatarUrl: paymentRequest.avatarUrl ? paymentRequest.avatarUrl : null,
         username: paymentRequest.username
       },
-      network
+      network,
+      token,
+      smartContractCanTransfer: initialState.smartContractCanTransfer
     })
   ),
   on(
@@ -45,6 +47,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
+    PaymentActions.approveTokenAllowance,
     PaymentActions.sendAmount,
     (state): IPaymentRequestState => ({
       ...state,
@@ -58,12 +61,116 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   on(
     PaymentActions.amountSent,
     PaymentActions.amountSentFailure,
+    PaymentActions.approveTokenAllowanceFailure,
+    PaymentActions.approveTokenAllowanceSuccess,
     (state): IPaymentRequestState => ({
       ...state,
       payment: {
         ...state.payment,
         loading: false,
         error: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.checkTokenAllowanceFailure,
+    (state, { message }): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        ...state.smartContractCanTransfer,
+        loading: false,
+        error: message
+      }
+    })
+  ),
+  on(
+    PaymentActions.selectToken,
+    PaymentActions.updatedToken,
+    (state, { token }): IPaymentRequestState => ({
+      ...state,
+      token
+    })
+  ),
+  on(
+    PaymentActions.applyConversionToken,
+    (state): IPaymentRequestState => ({
+      ...state,
+      conversion: {
+        ...state.conversion,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.applyConversionTokenSuccess,
+    (state, { usdAmount, tokenAmount }): IPaymentRequestState => ({
+      ...state,
+      conversion: {
+        loading: false,
+        error: null,
+        data: {
+          ...state.conversion.data,
+          usdAmount,
+          tokenAmount
+        }
+      }
+    })
+  ),
+  on(
+    PaymentActions.switchToUsd,
+    (state, { priceInUsdEnabled }): IPaymentRequestState => ({
+      ...state,
+      conversion: {
+        ...state.conversion,
+        data: {
+          ...state.conversion.data,
+          priceInUsdEnabled
+        }
+      }
+    })
+  ),
+  on(
+    PaymentActions.applyConversionTokenFailure,
+    (state, { errorMessage }): IPaymentRequestState => ({
+      ...state,
+      conversion: {
+        ...state.conversion,
+        loading: false,
+        error: errorMessage
+      }
+    })
+  ),
+  on(
+    PaymentActions.smartContractCanTransfer,
+    (state): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        ...state.smartContractCanTransfer,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.smartContractCanTransferSuccess,
+    (state, { isTransferable }): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        loading: false,
+        error: null,
+        data: isTransferable
+      }
+    })
+  ),
+  on(
+    PaymentActions.smartContractCanTransferFailure,
+    (state, { message }): IPaymentRequestState => ({
+      ...state,
+      smartContractCanTransfer: {
+        loading: false,
+        error: message,
+        data: false
       }
     })
   )

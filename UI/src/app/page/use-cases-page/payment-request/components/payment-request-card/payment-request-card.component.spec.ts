@@ -3,8 +3,10 @@ import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestCardComponent } from './payment-request-card.component';
 import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
 import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
-import { paymentRequestMock } from '../../../../../shared/tests/variables/payment-request';
+import { Subject } from 'rxjs';
+import { INetworkDetail } from '@chainbrary/web3-login';
 import { ethereumNetworkMock } from '../../../../../shared/tests/variables/network-detail';
+import { AuthStatusCode } from '../../../../../shared/enum';
 
 describe('PaymentRequestCardComponent', () => {
   const component: PaymentRequestCardComponent = new PaymentRequestCardComponent(
@@ -14,39 +16,39 @@ describe('PaymentRequestCardComponent', () => {
   );
 
   beforeEach(() => {
-    component.tokenConversionRate = undefined;
+    component.tokenConversionRate = 0;
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should set tokenConversionRate value if usd data is enabled', () => {
-    component.paymentRequest = paymentRequestMock;
-    const amount = paymentRequestMock.payment.data?.amount;
-    const result = 4500;
+  it('should listenToNetworkChange call setUpConversion', () => {
+    const networkSub$ = new Subject<INetworkDetail | null>();
+    component.currentNetworkObs = networkSub$.asObservable();
 
-    priceFeedServiceMock.getCurrentPriceOfNativeToken = vi.fn()
-      .mockResolvedValue(result);
+    const spyOnSetUpConversion = vi.spyOn(component, 'setUpConversion')
+      .mockResolvedValue();
 
-    component.setUpCurrentPrice();
+    component.listenToNetworkChange();
+    networkSub$.next(ethereumNetworkMock);
 
-    priceFeedServiceMock.getCurrentPriceOfNativeToken(ethereumNetworkMock.chainId)
-      .then((result) => {
-        expect(component.tokenConversionRate).toBe(amount as number / result);
-      });
+    expect(spyOnSetUpConversion).toHaveBeenCalled();
   });
 
-  it('should not set tokenConversionRate value if usd data is disabled', () => {
-    component.paymentRequest = paymentRequestMock;
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    component.paymentRequest.payment.data!.usdEnabled = false;
+  it('should reset conversion return tokenConversionRate = 0', () => {
+    component.tokenConversionRate = 100;
+    component.resetConversion();
 
-    component.setUpCurrentPrice();
+    expect(component.tokenConversionRate).toBe(0);
+  });
 
-    priceFeedServiceMock.getCurrentPriceOfNativeToken(ethereumNetworkMock.chainId)
-      .then((result) => {
-        expect(component.tokenConversionRate).not.toBe(result);
-      });
+  it('should return if not connected when submit amont', () => {
+    component.authStatus = AuthStatusCode.NotConnected;
+    const spyOnSnackbar = vi.spyOn(snackbarMock, 'open');
+
+    component.submitAmount();
+
+    expect(spyOnSnackbar).toBeCalledWith('Please connect your wallet', '', { duration: 3000 });
   });
 });

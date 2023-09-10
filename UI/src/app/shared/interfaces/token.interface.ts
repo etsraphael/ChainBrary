@@ -1,14 +1,23 @@
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { TokenPair } from '../enum';
+
 export interface IToken {
-  address: string;
-  chainId: number;
+  tokenId: TokenId | string;
   decimals: number;
-  logoURI: string;
   name: string;
   symbol: string;
+  networkSupport: ITokenContract[];
+  nativeToChainId?: NetworkChainId;
+}
+
+export interface ITokenContract {
+  chainId: NetworkChainId;
+  address: string;
+  priceFeed: TokenPair[];
 }
 
 export interface IContract {
-  chainId: string;
+  chainId: NetworkChainId;
   address: string;
 }
 

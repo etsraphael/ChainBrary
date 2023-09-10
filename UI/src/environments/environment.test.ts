@@ -35,6 +35,27 @@ export const environment = {
         }
       ]
     },
+    bridgeTokenTransfer: {
+      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.ETHEREUM, NetworkChainId.AVALANCHE, NetworkChainId.BNB],
+      contracts: [
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x34B84Db9fE97d2831d1a83DDa4Fcc3F8d73c6Fe4'
+        },
+        {
+          chainId: NetworkChainId.ETHEREUM,
+          address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
+        },
+        {
+          chainId: NetworkChainId.AVALANCHE,
+          address: '0x81ae6e4B9a49A24B668975b2a679aa08a4408495'
+        },
+        {
+          chainId: NetworkChainId.BNB,
+          address: '0x3e662a32EAD3583ca4A0Ea8aB127AdC6291d27279'
+        }
+      ]
+    },
     priceFeed: {
       networkSupported: [
         NetworkChainId.SEPOLIA,
