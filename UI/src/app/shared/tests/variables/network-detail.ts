@@ -1,4 +1,4 @@
-import { INetworkDetail, NetworkChainCode, NetworkChainId } from "@chainbrary/web3-login";
+import { INetworkDetail, NetworkChainCode, NetworkChainId, TokenId } from "@chainbrary/web3-login";
 
 export const ethereumNetworkMock: INetworkDetail = {
   chainId: NetworkChainId.ETHEREUM,
@@ -6,6 +6,7 @@ export const ethereumNetworkMock: INetworkDetail = {
   name: 'Ethereum Mainnet',
   shortName: 'Mainnet',
   nativeCurrency: {
+    id: TokenId.ETHEREUM,
     name: 'Ether',
     symbol: 'ETH',
     decimals: 18,
@@ -20,6 +21,7 @@ export const polygonNetworkMock: INetworkDetail = {
   name: 'Polygon Mainnet',
   shortName: 'Polygon',
   nativeCurrency: {
+    id: TokenId.MATIC,
     name: 'MATIC',
     symbol: 'MATIC',
     decimals: 18,
@@ -34,6 +36,7 @@ export const sepoliaNetworkMock: INetworkDetail = {
   name: 'Sepolia Network',
   shortName: 'Sepolia',
   nativeCurrency: {
+    id: TokenId.SEPOLIA,
     name: 'SPO',
     symbol: 'SPO',
     decimals: 18,

@@ -1,6 +1,7 @@
 import { NetworkChainId } from "@chainbrary/web3-login";
 import { IPaymentRequestState } from "src/app/store/payment-request-store/state/interfaces";
 import { ethereumNetworkMock } from "./network-detail";
+import { ethereumTokenMock } from "./token";
 
 export const paymentRequestMock: IPaymentRequestState = {
   payment: {
@@ -22,5 +23,20 @@ export const paymentRequestMock: IPaymentRequestState = {
     avatarUrl: "https://example.com/avatar.png",
     username: "JohnDoe",
   },
-  network: ethereumNetworkMock
+  network: ethereumNetworkMock,
+  conversion: {
+    data: {
+      usdAmount: 1000,
+      tokenAmount: 1000,
+      priceInUsdEnabled: true,
+    },
+    loading: false,
+    error: null
+  },
+  smartContractCanTransfer: {
+    data: false,
+    loading: false,
+    error: null
+  },
+  token: ethereumTokenMock
 }

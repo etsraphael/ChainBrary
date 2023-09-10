@@ -8,7 +8,6 @@ import {
   EMPTY,
   Observable,
   ReplaySubject,
-  Subject,
   Subscription,
   combineLatest,
   filter,
@@ -52,7 +51,7 @@ import { selectRecentTransactionsByComponent } from './../../../../../store/tran
   styleUrls: ['./payment-page.component.scss']
 })
 export class PaymentPageComponent implements OnInit, OnDestroy {
-  private destroy$: Subject<boolean> = new Subject();
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   selectPaymentRequestState$: Observable<IPaymentRequestState>;
   paymentIsLoading$: Observable<boolean>;
@@ -65,7 +64,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   paymentNetwork$: Observable<INetworkDetail | null>;
   smartContractCanTransfer$: Observable<boolean>;
   nativeTokenInfo: INativeToken;
-  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     private route: ActivatedRoute,
