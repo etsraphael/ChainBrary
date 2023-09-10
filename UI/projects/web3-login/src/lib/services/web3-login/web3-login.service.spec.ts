@@ -6,7 +6,7 @@ import { NetworkServiceWeb3Login } from '../network/network.service';
 import { Web3LoginConfig } from '@chainbrary/web3-login';
 import { ethereumNetworkMock } from '../../../../../../src/app/shared/tests/variables/network-detail';
 
-describe('v', () => {
+describe('Web3LoginService', () => {
   let web3LoginService: Web3LoginService;
   let networkServiceWeb3Login: NetworkServiceWeb3Login;
   let config: Web3LoginConfig;
