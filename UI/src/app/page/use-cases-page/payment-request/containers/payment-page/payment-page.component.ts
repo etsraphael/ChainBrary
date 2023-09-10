@@ -38,6 +38,7 @@ import { IPaymentRequestState } from './../../../../../store/payment-request-sto
 import {
   selectCardIsLoading,
   selectIsNonNativeToken,
+  selectIsPaymentMaker,
   selectPaymentNetwork,
   selectPaymentRequest,
   selectSmartContractCanTransfer,
@@ -62,6 +63,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentNetwork$: Observable<INetworkDetail | null>;
   smartContractCanTransfer$: Observable<boolean>;
+  isPaymentMaker: Observable<boolean>;
   nativeTokenInfo: INativeToken;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
@@ -118,6 +120,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer);
     this.canTransferError$ = this.store.select(selectSmartContractCanTransferError);
     this.isNonNativeToken$ = this.store.select(selectIsNonNativeToken);
+    this.isPaymentMaker = this.store.select(selectIsPaymentMaker);
   }
 
   setUpMessage(): void {
