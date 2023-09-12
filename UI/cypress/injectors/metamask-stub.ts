@@ -32,9 +32,9 @@ export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: strin
     win.ethereum = {
       isMetaMask: true,
       chainId: '0x1',
-      request: async (request: EthereumRequest) => {
-        return determineStubResponse(request);
-      },
+      networkVersion: '1',
+
+      request: async (request: EthereumRequest) => determineStubResponse(request),
       on: (event, callback) => {
         if (!eventListeners[event]) {
           eventListeners[event] = [];
