@@ -19,7 +19,10 @@ export class WalletService {
 
   get networkIsMatching$(): Observable<boolean> {
     return combineLatest([this.web3LoginService.currentNetwork$, this.networkOnStore$]).pipe(
-      map(([currentNetwork, networkOnStore]) => networkOnStore !== null && currentNetwork?.chainId === networkOnStore?.chainId)
+      map(
+        ([currentNetwork, networkOnStore]) =>
+          networkOnStore !== null && currentNetwork?.chainId === networkOnStore?.chainId
+      )
     );
   }
 

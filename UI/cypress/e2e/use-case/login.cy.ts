@@ -4,7 +4,7 @@ import '@angular/compiler';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { injectMetaMaskStub } from '../../injectors/metamask-stub';
 
-describe('Log an User', () => {
+describe('Log an user without Metamask', () => {
   it('Start login without Metamask', () => {
     // Go to explore solutions page
     cy.visit(`${Cypress.env('baseUrl')}/`);
@@ -22,7 +22,7 @@ describe('Log an User', () => {
   });
 });
 
-describe('Log an User With MetaMask', () => {
+describe('Log an user with MetaMask', () => {
   it('Log an User With MetaMask Started', () => {
     const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
     const SIGNED_MESSAGE = '...';
