@@ -1,6 +1,6 @@
 <!-- Error -->
 <div
-  *ngIf="(walletService.networkIsMatching$ | async) === false"
+  *ngIf="(walletService.networkIsMatching$ | async) === false && (networkOnStore$ | async)"
   class="alert alert-warning border-0 shadow-sm"
   role="alert"
 >
