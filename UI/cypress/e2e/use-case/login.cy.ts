@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import '@angular/compiler';
+import { NetworkChainId } from '@chainbrary/web3-login';
 import { injectMetaMaskStub } from '../../injectors/metamask-stub';
 
 describe('Log an User', () => {
@@ -26,7 +28,7 @@ describe('Log an User With MetaMask', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE);
+    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
 
     // Go to explore solutions page
     cy.visit(`${Cypress.env('baseUrl')}/`);
