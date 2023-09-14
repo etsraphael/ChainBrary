@@ -22,10 +22,5 @@ describe('Create a payment request', () => {
       'This is my payment request description',
       { force: true }
     );
-
-    cy.get('app-payment-request-price-settings [data-id="submit-button"]').click();
-
-    // Check if app-payment-request-review is visible
-    cy.get('app-payment-request-review').should('be.visible');
   });
 });

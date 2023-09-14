@@ -38,8 +38,8 @@ export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: strin
   cy.on('window:before:load', (win: Window & typeof globalThis & { ethereum?: EthereumStub }) => {
     win.ethereum = {
       isMetaMask: true,
-      chainId: networkFound.chainCode,
-      networkVersion: networkFound.chainId,
+      chainId: networkFound.chainId,
+      networkVersion: networkFound.chainCode,
 
       request: async (request: EthereumRequest) => determineStubResponse(request),
       on: (event, callback) => {
