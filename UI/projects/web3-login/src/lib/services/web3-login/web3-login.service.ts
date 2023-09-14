@@ -18,7 +18,7 @@ export class Web3LoginService {
     return this.networkServiceWeb3Login.onAccountChangedEvent();
   }
 
-  get onChainChangedEvent$(): Observable<INetworkDetail> {
+  get onChainChangedEvent$(): Observable<INetworkDetail | null> {
     return this.networkServiceWeb3Login.onChainChangedEvent();
   }
 

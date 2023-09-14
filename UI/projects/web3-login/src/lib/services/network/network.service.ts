@@ -283,12 +283,9 @@ export class NetworkServiceWeb3Login {
     });
   }
 
-  onChainChangedEvent(): Observable<INetworkDetail> {
+  onChainChangedEvent(): Observable<INetworkDetail | null> {
     return defer(() => {
-      if (typeof window?.ethereum === 'undefined') {
-        return of(this.getCurrentNetwork());
-      }
-
+      if (typeof window?.ethereum === 'undefined') return of(null);
       return new Observable<INetworkDetail>((subscriber) => {
         window.ethereum.on('chainChanged', (chainCode: string) => {
           subscriber.next(this.getNetworkDetailByChainCode(chainCode));
