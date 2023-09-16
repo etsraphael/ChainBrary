@@ -15,7 +15,7 @@
     <div class="card-body mt-5">
       <div class="row text-center">
         <div class="col-12">
-          <h4 class="card-title text-primary">{{ paymentRequest.profile.username }}</h4>
+          <h4 class="card-title text-primary" data-id="recipient-username-id">{{ paymentRequest.profile.username }}</h4>
         </div>
       </div>
       <div class="row justify-content-center">
@@ -40,7 +40,11 @@
               To retrieve the current conversion rate, ensure the appropriate network is selected in your wallet
             </h6>
           </h4>
-          <p class="text-muted px-2 px-md-5 text-start" *ngIf="paymentRequest.payment.data.description">
+          <p
+            class="text-muted px-2 px-md-5 text-start"
+            data-id="recipient-description-id"
+            *ngIf="paymentRequest.payment.data.description"
+          >
             {{ paymentRequest.payment.data.description }}
           </p>
         </div>
@@ -48,7 +52,11 @@
       <div class="d-flex justify-content-center my-2">
         <div class="col-10">
           <div class="row justify-content-center">
-            <div class="col-12 col-md-6 my-2 my-md-0" *ngIf="AuthStatusCodeTypes.NotConnected === authStatus">
+            <div
+              class="col-12 col-md-6 my-2 my-md-0"
+              data-id="login-btn"
+              *ngIf="AuthStatusCodeTypes.NotConnected === authStatus"
+            >
               <app-chainbrary-button
                 [buttonClasses]="['btn-info-gradient', 'text-light']"
                 [buttonText]="'Web3 login'"
@@ -66,7 +74,7 @@
                 (callToAction)="approveSmartContract.emit()"
               />
             </div>
-            <div class="col-12 col-md-6 my-2 my-md-0">
+            <div class="col-12 col-md-6 my-2 my-md-0" data-id="btn-confirm-transaction">
               <app-chainbrary-button
                 [isDisabled]="conversionRateHasError || !canTransfer"
                 [buttonClasses]="['btn-success-gradient', 'text-light']"
