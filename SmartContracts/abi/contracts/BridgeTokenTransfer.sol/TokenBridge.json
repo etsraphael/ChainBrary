@@ -1,16 +1,5 @@
 [
   {
-    "inputs": [
-      {
-        "internalType": "uint256",
-        "name": "_feeRateBasisPoints",
-        "type": "uint256"
-      }
-    ],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  },
-  {
     "anonymous": false,
     "inputs": [
       {
@@ -91,7 +80,7 @@
   },
   {
     "inputs": [],
-    "name": "feeRateBasisPoints",
+    "name": "feeRate",
     "outputs": [
       {
         "internalType": "uint256",
