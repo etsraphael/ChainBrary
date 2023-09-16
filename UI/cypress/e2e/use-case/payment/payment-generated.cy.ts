@@ -2,6 +2,7 @@
 
 import '@angular/compiler';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { injectMetaMaskStub } from '../../../injectors/metamask-stub';
 import { IPaymentRequest } from './../../../../src/app/shared/interfaces';
 
 class MockPaymentService {
@@ -38,13 +39,57 @@ describe('Check native payment generated', () => {
     .replace('+', '-')
     .replace('/', '_');
 
-  beforeEach(() => {
+  it('Generate payment without wallet', () => {
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-  });
-
-  it('Generate payment without wallet without MetaMask', () => {
     cy.get('[data-id=recipient-username-id]').should('have.text', paymentRequest.username);
     cy.get('[data-id=recipient-description-id]').contains(paymentRequest.description);
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible');
+  });
+
+  it('Generate payment with wallet and wrong network', () => {
+    const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
+    const SIGNED_MESSAGE = '...';
+
+    // Inject MetaMask
+    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
+    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
+
+    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
+    cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+    cy.get('app-payment-page [data-id="wrong-network-alert"]').should('be.visible').contains('Wrong network');
+  });
+
+  it('Generate payment with wallet and right network', () => {
+    const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
+    const SIGNED_MESSAGE = '...';
+
+    // Inject MetaMask
+    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
+    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
+
+    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
+    cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+    cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
+
+    cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');
+
+    cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]')
+      .find('button[type="submit"]')
+      .should('not.have.attr', 'disabled');
+  });
+
+  it('Generate payment receiver of the transaction', () => {
+    const WALLET_ADDRESS = paymentRequest.publicAddress;
+    const SIGNED_MESSAGE = '...';
+
+    // Inject MetaMask
+    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
+    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
+    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
+    cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+
+    cy.get('app-payment-page [data-id="warning-banner"]')
+      .should('be.visible')
+      .contains('Attention: This is a preview of your request. Avoid the mistake of self-payment.');
   });
 });

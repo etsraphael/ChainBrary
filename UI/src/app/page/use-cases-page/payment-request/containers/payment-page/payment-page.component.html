@@ -1,4 +1,4 @@
-<div *ngIf="isPaymentMaker | async" class="row text-light px-4 py-3 bg-banner mx-0">
+<div *ngIf="isPaymentMaker | async" class="row text-light px-4 py-3 bg-banner mx-0" data-id="warning-banner">
   <div class="w-100">
     <h6 class="mb-0">
       <i class="bi bi-exclamation-triangle me-3"></i>
@@ -26,7 +26,7 @@
   <div class="mt-5" *ngIf="(transactionCards$ | async)?.length! === 0">
     <div *ngIf="paymentSelectedInvalid$ | async" class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-        <div class="alert alert-danger border-0 shadow-sm" role="alert">
+        <div class="alert alert-danger border-0 shadow-sm" data-id="wrong-network-alert" role="alert">
           <h4 class="alert-heading">Wrong network</h4>
           <p>Please be connected on the {{ (paymentNetwork$ | async)?.name }} network to use this feature.</p>
         </div>
