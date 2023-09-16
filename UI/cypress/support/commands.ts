@@ -1,4 +1,9 @@
 /// <reference types="cypress" />
+
+import '@angular/compiler';
+import { NetworkChainId } from '@chainbrary/web3-login';
+import { injectMetaMaskStub } from '../injectors/metamask-stub';
+
 // ***********************************************
 // This example commands.ts shows you how to
 // create various custom commands and overwrite
@@ -25,13 +30,24 @@
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
 //
-// declare global {
-//   namespace Cypress {
-//     interface Chainable {
-//       login(email: string, password: string): Chainable<void>
-//       drag(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       dismiss(subject: string, options?: Partial<TypeOptions>): Chainable<Element>
-//       visit(originalFn: CommandOriginalFn, url: string, options: Partial<VisitOptions>): Chainable<Element>
-//     }
-//   }
-// }
+
+Cypress.Commands.add('login', (walletAddress: string, signedMessage: string, networkId: NetworkChainId) => {
+  // Inject MetaMask
+  injectMetaMaskStub(walletAddress, signedMessage, networkId);
+
+  cy.visit(`${Cypress.env('baseUrl')}/`);
+  cy.get('[data-id="explore-solutions"]').click();
+
+  // Click on login button
+  cy.get('app-use-cases-sidebar-header [data-id="login-btn"]').click();
+  cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+});
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Cypress {
+    interface Chainable {
+      login(email: string, password: string, networkId: NetworkChainId): Chainable<void>;
+    }
+  }
+}

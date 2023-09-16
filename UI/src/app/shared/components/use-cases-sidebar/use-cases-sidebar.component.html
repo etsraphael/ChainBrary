@@ -1,6 +1,6 @@
 <!-- Error -->
 <div
-  *ngIf="(walletService.networkIsMatching$ | async) === false"
+  *ngIf="(walletService.networkIsMatching$ | async) === false && (networkOnStore$ | async)"
   class="alert alert-warning border-0 shadow-sm"
   role="alert"
 >
@@ -16,7 +16,11 @@
 <!-- Body -->
 <div class="d-none d-md-block my-3 card shadow-sm border-0 cb-card">
   <div class="card-body">
-    <a *ngFor="let item of useCaseRoutes" [routerLink]="'/use-cases' + item.path">
+    <a
+      *ngFor="let item of useCaseRoutes"
+      [routerLink]="'/use-cases' + item.path"
+      data-id="btn-use-case-{{ item.icon }}"
+    >
       <button class="btn w-100 py-2 w-100 btn-light my-2 border-0" routerLinkActive="active" [disabled]="!item.enabled">
         <div class="row py-1 px-3">
           <div class="col-2">

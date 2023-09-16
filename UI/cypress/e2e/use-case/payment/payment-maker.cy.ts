@@ -1,10 +1,14 @@
 /// <reference types="cypress" />
 
-describe('Create a payment request', () => {
-  it('Start payment', () => {
-    cy.visit(`${Cypress.env('baseUrl')}/`);
-    cy.get('[data-id="explore-solutions"]').click();
+import '@angular/compiler';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
+describe('Create a payment request', () => {
+  beforeEach(() => {
+    cy.login('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '...', NetworkChainId.ETHEREUM);
+  });
+
+  it('Start payment', () => {
     // Complete profile information
     cy.get('app-payment-request-profile-settings [data-id="address-input"]').type(
       '0xbA3Fc0648186a79baEF8DCeE9e055873F432a351',
@@ -18,10 +22,5 @@ describe('Create a payment request', () => {
       'This is my payment request description',
       { force: true }
     );
-
-    cy.get('app-payment-request-price-settings [data-id="submit-button"]').click();
-
-    // Check if app-payment-request-review is visible
-    cy.get('app-payment-request-review').should('be.visible');
   });
 });

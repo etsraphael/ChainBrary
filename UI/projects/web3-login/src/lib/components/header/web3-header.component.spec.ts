@@ -1,17 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { HeaderPageComponent } from './header.component';
+import { Web3HeaderPageComponent } from './web3-header.component';
 
 describe('HeaderPageComponent', () => {
-  let component: HeaderPageComponent;
-  let fixture: ComponentFixture<HeaderPageComponent>;
+  let component: Web3HeaderPageComponent;
+  let fixture: ComponentFixture<Web3HeaderPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [HeaderPageComponent]
+      declarations: [Web3HeaderPageComponent]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(HeaderPageComponent);
+    fixture = TestBed.createComponent(Web3HeaderPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
