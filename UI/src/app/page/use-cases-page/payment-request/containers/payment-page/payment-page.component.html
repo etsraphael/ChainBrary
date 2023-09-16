@@ -59,7 +59,7 @@
             class="card shadow-sm border-0 mt-2"
           >
             <div class="card-body">
-              <p class="text-dark mb-0 px-2">
+              <p class="text-dark mb-0 px-2" data-id="mathing-amount-message">
                 <strong>{{ (selectPaymentRequestState$ | async)?.profile?.username }}</strong> is requesting a sum
                 equivalent to <strong>${{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>.
                 <br />

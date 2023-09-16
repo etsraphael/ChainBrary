@@ -52,7 +52,11 @@
       <div class="d-flex justify-content-center my-2">
         <div class="col-10">
           <div class="row justify-content-center">
-            <div class="col-12 col-md-6 my-2 my-md-0" data-id="login-btn" *ngIf="AuthStatusCodeTypes.NotConnected === authStatus">
+            <div
+              class="col-12 col-md-6 my-2 my-md-0"
+              data-id="login-btn"
+              *ngIf="AuthStatusCodeTypes.NotConnected === authStatus"
+            >
               <app-chainbrary-button
                 [buttonClasses]="['btn-info-gradient', 'text-light']"
                 [buttonText]="'Web3 login'"
