@@ -3,5 +3,13 @@ export enum TokenPair {
   BtcToUsd,
   BnbToUsd,
   AvaxToUsd,
-  MaticToUsd
+  MaticToUsd,
+  LinkToUsd,
+  UsdcToUsd,
+  GrtToUsd,
+  AtomToUsd,
+  DogeToUsd,
+  DotToUsd,
+  AdaToUsd,
+  WbtcToUsd
 }

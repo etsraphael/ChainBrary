@@ -1,4 +1,13 @@
-<div class="container bg-light">
+<div *ngIf="isPaymentMaker | async" class="row text-light px-4 py-3 bg-banner mx-0" data-id="warning-banner">
+  <div class="w-100">
+    <h6 class="mb-0">
+      <i class="bi bi-exclamation-triangle me-3"></i>
+      <span>Attention: This is a preview of your request. Avoid the mistake of self-payment.</span>
+    </h6>
+  </div>
+</div>
+
+<div class="container bg-light pb-5">
   <div *ngIf="(transactionCards$ | async)?.length! > 0">
     <div class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-5">
@@ -17,7 +26,7 @@
   <div class="mt-5" *ngIf="(transactionCards$ | async)?.length! === 0">
     <div *ngIf="paymentSelectedInvalid$ | async" class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-        <div class="alert alert-danger border-0 shadow-sm" role="alert">
+        <div class="alert alert-danger border-0 shadow-sm" data-id="wrong-network-alert" role="alert">
           <h4 class="alert-heading">Wrong network</h4>
           <p>Please be connected on the {{ (paymentNetwork$ | async)?.name }} network to use this feature.</p>
         </div>
@@ -50,7 +59,7 @@
             class="card shadow-sm border-0 mt-2"
           >
             <div class="card-body">
-              <p class="text-dark mb-0 px-2">
+              <p class="text-dark mb-0 px-2" data-id="mathing-amount-message">
                 <strong>{{ (selectPaymentRequestState$ | async)?.profile?.username }}</strong> is requesting a sum
                 equivalent to <strong>${{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>.
                 <br />
@@ -59,15 +68,27 @@
               </p>
             </div>
           </div>
-          <app-payment-request-card
-            [currentNetwork]="currentNetwork$ | async"
-            [paymentNetwork]="paymentNetwork$ | async"
-            [authStatus]="(authStatus$ | async)!"
-            [publicAddress]="publicAddress$ | async"
-            [paymentRequest]="(selectPaymentRequestState$ | async)!"
-            (openLoginModal)="openLoginModal()"
-            (submitPayment)="submitPayment($event)"
-          ></app-payment-request-card>
+          <ng-container *ngIf="canTransferError$ | async as canTransferError; else showPaymentRequest">
+            <div class="alert alert-danger border-0 shadow-sm mt-3" role="alert">
+              <h4 class="alert-heading">Error</h4>
+              <p>{{ canTransferError }}</p>
+            </div>
+          </ng-container>
+          <ng-template #showPaymentRequest>
+            <app-payment-request-card
+              [canTransfer]="(smartContractCanTransfer$ | async)!"
+              [canTransferError]="canTransferError$ | async"
+              [currentNetworkObs]="currentNetwork$"
+              [paymentNetwork]="paymentNetwork$ | async"
+              [authStatus]="(authStatus$ | async)!"
+              [publicAddress]="publicAddress$ | async"
+              [paymentRequest]="(selectPaymentRequestState$ | async)!"
+              (openLoginModal)="openLoginModal()"
+              (submitPayment)="submitPayment($event)"
+              (approveSmartContract)="approveSmartContract()"
+            >
+            </app-payment-request-card>
+          </ng-template>
         </div>
       </ng-template>
     </div>

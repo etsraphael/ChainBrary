@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/web3-login",
-  "version": "16.0.2",
+  "version": "16.0.8",
   "peerDependencies": {
     "@angular/common": "^16.1.8",
     "@angular/core": "^16.1.8",
@@ -9,7 +9,7 @@
     "web3": "^1.10.0"
   },
   "dependencies": {
-    "tslib": "^2.6.1"
+    "tslib": "^2.6.2"
   },
   "repository": {
     "type": "git",

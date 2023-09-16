@@ -23,7 +23,7 @@ export class AuthCheckingGuard {
     this.errorAccount$ = this.store.select(selectErrorAccount);
   }
 
-  canActivateChild(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
+  canActivate(): boolean | UrlTree | Observable<boolean | UrlTree> | Promise<boolean | UrlTree> {
     const publicAddressSaved: string | null = this.authService.getPublicAddress();
     if (publicAddressSaved) this.logUser();
     return true;

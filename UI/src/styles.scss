@@ -54,6 +54,10 @@ a {
 
 // Modals
 
+.mat-mdc-select-panel {
+  border-radius: 10px !important;
+}
+
 .qr-code-container-modal {
   .mat-mdc-dialog-surface {
     background: transparent !important;
@@ -71,6 +75,10 @@ a {
 
   .card {
     --bs-card-border-radius: 1.5rem;
+  }
+
+  .mat-mdc-menu-panel {
+    --mat-menu-container-shape: 10px;
   }
 }
 

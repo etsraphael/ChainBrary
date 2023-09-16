@@ -1,6 +1,13 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NetworkChainId } from '@chainbrary/web3-login';
+import { of } from 'rxjs';
+import {
+  currentNetworkSample,
+  paymentConversionStoreSample,
+  tokenSample
+} from './../../../../../../../tests/samples/network';
 import { MaterialModule } from './../../../../../module/material.module';
 import { SharedComponentsModule } from './../../../../../shared/components/shared-components.module';
 import { PriceSettingsForm } from './../../../../../shared/interfaces';
@@ -11,6 +18,7 @@ describe('PaymentRequestPriceSettingsComponent', () => {
   let fixture: ComponentFixture<PaymentRequestPriceSettingsComponent>;
 
   const priceForm: FormGroup<PriceSettingsForm> = new FormGroup<PriceSettingsForm>({
+    token: new FormControl(null, [Validators.required]),
     description: new FormControl('', []),
     amount: new FormControl(1, [Validators.required, Validators.min(0)]),
     usdEnabled: new FormControl(false, [])
@@ -25,6 +33,9 @@ describe('PaymentRequestPriceSettingsComponent', () => {
     fixture = TestBed.createComponent(PaymentRequestPriceSettingsComponent);
     component = fixture.componentInstance;
     component.priceForm = priceForm;
+    component.currentNetworkObs = of(currentNetworkSample);
+    component.tokenSelected = tokenSample;
+    component.paymentConversion = paymentConversionStoreSample;
     fixture.detectChanges();
   });
 
@@ -36,19 +47,24 @@ describe('PaymentRequestPriceSettingsComponent', () => {
     expect(component.priceForm).toBeInstanceOf(FormGroup);
   });
 
-  it('should have networkSymbol initialized correctly', () => {
-    component.networkSymbol = 'MockedSymbol';
-    expect(typeof component.networkSymbol).toEqual('string');
+  it('should have chainId initialized correctly', (done) => {
+    component.currentNetworkObs = of(currentNetworkSample);
+    component.currentNetworkObs.subscribe((networkDetail) => {
+      if (networkDetail) {
+        expect(Object.values(NetworkChainId)).toContain(networkDetail.chainId);
+        done();
+      }
+    });
   });
 
-  it('should have usdConversionRate initialized correctly', () => {
-    component.usdConversionRate = 10;
-    expect(typeof component.usdConversionRate).toBe('number');
+  it('should have tokenAmount initialized correctly', () => {
+    component.paymentConversion = paymentConversionStoreSample;
+    expect(typeof component.paymentConversion.data.tokenAmount).toBe('number');
   });
 
-  it('should have tokenConversionRate initialized correctly', () => {
-    component.tokenConversionRate = 15;
-    expect(typeof component.tokenConversionRate).toBe('number');
+  it('should have usdAmount initialized correctly', () => {
+    component.paymentConversion = paymentConversionStoreSample;
+    expect(typeof component.paymentConversion.data.usdAmount).toBe('number');
   });
 
   it('should emit goToNextPage event', () => {

@@ -211,6 +211,42 @@
           }
         }
       }
+    },
+    "token-bridge": {
+      "projectType": "library",
+      "root": "projects/token-bridge",
+      "sourceRoot": "projects/token-bridge/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/token-bridge/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/token-bridge/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/token-bridge/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/token-bridge/tsconfig.spec.json",
+            "polyfills": ["zone.js", "zone.js/testing"]
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": ["projects/token-bridge/**/*.ts", "projects/token-bridge/**/*.html"]
+          }
+        }
+      }
     }
   },
   "cli": {

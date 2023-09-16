@@ -6,6 +6,7 @@ import {
   NetworkChainCode,
   NetworkChainId,
   NetworkRpcUrlSupported,
+  TokenId,
   Web3LoginConfig
 } from '../../interfaces';
 
@@ -52,6 +53,7 @@ export class NetworkServiceWeb3Login {
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
+        id: TokenId.UNKNOWN,
         name: 'Unknown',
         symbol: 'UNK',
         decimals: 18
@@ -80,6 +82,7 @@ export class NetworkServiceWeb3Login {
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
+        id: TokenId.UNKNOWN,
         name: 'Unknown',
         symbol: 'UNK',
         decimals: 18
@@ -103,6 +106,7 @@ export class NetworkServiceWeb3Login {
         name: 'Ethereum Mainnet',
         shortName: 'Ethereum',
         nativeCurrency: {
+          id: TokenId.ETHEREUM,
           name: 'Ether',
           symbol: 'ETH',
           decimals: 18
@@ -116,6 +120,7 @@ export class NetworkServiceWeb3Login {
         name: 'Binance Smart Chain Mainnet',
         shortName: 'BNB Chain',
         nativeCurrency: {
+          id: TokenId.BNB,
           name: 'Binance Chain Native Token',
           symbol: 'BNB',
           decimals: 18
@@ -129,6 +134,7 @@ export class NetworkServiceWeb3Login {
         name: 'Sepolia',
         shortName: 'Sepolia',
         nativeCurrency: {
+          id: TokenId.SEPOLIA,
           name: 'Sepolia',
           symbol: 'SEP',
           decimals: 18
@@ -142,6 +148,7 @@ export class NetworkServiceWeb3Login {
         name: 'Arbitrum One',
         shortName: 'Arbitrum',
         nativeCurrency: {
+          id: TokenId.ARBITRUM,
           name: 'Ether',
           symbol: 'ETH',
           decimals: 18
@@ -155,6 +162,7 @@ export class NetworkServiceWeb3Login {
         name: 'Polygon',
         shortName: 'Polygon',
         nativeCurrency: {
+          id: TokenId.MATIC,
           name: 'Matic',
           symbol: 'MATIC',
           decimals: 18
@@ -168,6 +176,7 @@ export class NetworkServiceWeb3Login {
         name: 'Optimism',
         shortName: 'Optimism',
         nativeCurrency: {
+          id: TokenId.ETHEREUM,
           name: 'Ether',
           symbol: 'ETH',
           decimals: 18
@@ -181,6 +190,7 @@ export class NetworkServiceWeb3Login {
         name: 'Avalanche',
         shortName: 'Avalanche',
         nativeCurrency: {
+          id: TokenId.AVALANCHE,
           name: 'Avalanche',
           symbol: 'AVAX',
           decimals: 18
@@ -194,6 +204,7 @@ export class NetworkServiceWeb3Login {
         name: 'Moonbeam',
         shortName: 'Moonbeam',
         nativeCurrency: {
+          id: TokenId.MOONBEAM,
           name: 'Moonbeam',
           symbol: 'GLMR',
           decimals: 18
@@ -207,6 +218,7 @@ export class NetworkServiceWeb3Login {
         name: 'KAVA',
         shortName: 'KAVA',
         nativeCurrency: {
+          id: TokenId.KAVA,
           name: 'KAVA',
           symbol: 'KAVA',
           decimals: 18
@@ -220,6 +232,7 @@ export class NetworkServiceWeb3Login {
         name: 'Fantom',
         shortName: 'Fantom',
         nativeCurrency: {
+          id: TokenId.FANTOM,
           name: 'Fantom',
           symbol: 'FTM',
           decimals: 18
@@ -233,6 +246,7 @@ export class NetworkServiceWeb3Login {
         name: 'Celo',
         shortName: 'Celo',
         nativeCurrency: {
+          id: TokenId.CELO,
           name: 'Celo',
           symbol: 'CELO',
           decimals: 18
@@ -269,12 +283,9 @@ export class NetworkServiceWeb3Login {
     });
   }
 
-  onChainChangedEvent(): Observable<INetworkDetail> {
+  onChainChangedEvent(): Observable<INetworkDetail | null> {
     return defer(() => {
-      if (typeof window?.ethereum === 'undefined') {
-        return of(this.getCurrentNetwork());
-      }
-
+      if (typeof window?.ethereum === 'undefined') return of(null);
       return new Observable<INetworkDetail>((subscriber) => {
         window.ethereum.on('chainChanged', (chainCode: string) => {
           subscriber.next(this.getNetworkDetailByChainCode(chainCode));
