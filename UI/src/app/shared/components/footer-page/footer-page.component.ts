@@ -24,6 +24,10 @@ export class FooterPageComponent implements OnInit {
       {
         text: 'Discord',
         url: 'https://discord.gg/Y3pTujEsMe'
+      },
+      {
+        text: 'Medium',
+        url: 'https://iamraphaelsalei.medium.com'
       }
     ];
   }
