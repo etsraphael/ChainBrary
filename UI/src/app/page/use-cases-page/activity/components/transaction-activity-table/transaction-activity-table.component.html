@@ -73,10 +73,18 @@
 <!-- Empty view -->
 <div
   class="d-flex flex-column align-items-center justify-content-center pt-5"
-  *ngIf="transactionsTable?.length === 0 && !transactionsIsLoading"
+  *ngIf="transactionsTable?.length === 0 && !transactionsIsLoading && !historicalTransactionsError"
 >
   <div class="d-flex flex-column align-items-center justify-content-center">
     <i class="bi bi-database-slash text-secondary"></i>
     <p class="text-center mt-3">No transactions found.</p>
+  </div>
+</div>
+
+<!-- Error view -->
+<div class="d-flex flex-column align-items-center justify-content-center pt-5" *ngIf="historicalTransactionsError">
+  <div class="d-flex flex-column align-items-center justify-content-center">
+    <i class="bi bi-database-slash text-secondary"></i>
+    <p class="text-center mt-3">{{ historicalTransactionsError }}</p>
   </div>
 </div>

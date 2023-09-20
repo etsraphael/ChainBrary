@@ -40,6 +40,21 @@ export class TransactionEffects {
     );
   });
 
+  loadTransactionsFromBridgeTransferWithoutChainId$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(loadTransactionsFromBridgeTransfer),
+      concatLatestFrom(() => [this.store.select(selectCurrentChainId)]),
+      filter(
+        (action: [ReturnType<typeof loadTransactionsFromBridgeTransfer>, NetworkChainId | null]) => action[1] === null
+      ),
+      map(() =>
+        loadTransactionsFromBridgeTransferFailure({
+          error: 'Wallet is not connected'
+        })
+      )
+    );
+  });
+
   loadTransactionsFromBridgeTransfer$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(loadTransactionsFromBridgeTransfer),
