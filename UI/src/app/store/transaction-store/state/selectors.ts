@@ -28,6 +28,11 @@ export const selectHistoricalTransactionsIsLoading: MemoizedSelector<object, boo
   (state: ITransactionsState) => state.historicalTransactions.loading
 );
 
+export const selectHistoricalTransactionsError: MemoizedSelector<object, string | null> = createSelector(
+  selectTransactions,
+  (state: ITransactionsState) => state.historicalTransactions.error
+);
+
 export const selectRecentTransactionsByComponent = (component: string) => {
   return createSelector(selectTransactions, (state: ITransactionsState) =>
     transactionAdapter
