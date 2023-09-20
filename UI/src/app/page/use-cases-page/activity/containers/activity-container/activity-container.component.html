@@ -5,6 +5,7 @@
       [transactionsTable]="(transactions$ | async)!"
       [currentNetwork]="currentNetwork$ | async"
       [transactionsIsLoading]="(transactionsIsLoading$ | async)!"
+      [historicalTransactionsError]="historicalTransactionsError$ | async"
     >
     </app-transaction-activity-table>
   </div>

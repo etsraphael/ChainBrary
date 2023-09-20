@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ITransactionLog } from '@chainbrary/transaction-search';
 import { INetworkDetail } from '@chainbrary/web3-login';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription, distinctUntilChanged, filter, skip } from 'rxjs';
+import { Observable, ReplaySubject, distinctUntilChanged, filter, skip, takeUntil } from 'rxjs';
+import { setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import { selectCurrentNetwork } from './../../../../../store/auth-store/state/selectors';
 import { loadTransactionsFromBridgeTransfer } from './../../../../../store/transaction-store/state/actions';
 import {
   selectHistoricalTransactions,
+  selectHistoricalTransactionsError,
   selectHistoricalTransactionsIsLoading
 } from './../../../../../store/transaction-store/state/selectors';
 
@@ -19,20 +22,30 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
   transactions$: Observable<ITransactionLog[]>;
   transactionsIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
-  currentNetworkSub: Subscription;
+  historicalTransactionsError$: Observable<string | null>;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
-  constructor(private store: Store) {}
+  constructor(
+    private store: Store,
+    private actions$: Actions
+  ) {}
 
   ngOnInit(): void {
     this.generateObs();
     this.callActions();
     this.generateSubs();
+    this.loginListener();
+  }
+
+  loginListener(): void {
+    this.actions$.pipe(ofType(setAuthPublicAddress), takeUntil(this.destroyed$)).subscribe(() => this.callActions());
   }
 
   generateObs(): void {
     this.transactions$ = this.store.select(selectHistoricalTransactions);
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
     this.transactionsIsLoading$ = this.store.select(selectHistoricalTransactionsIsLoading);
+    this.historicalTransactionsError$ = this.store.select(selectHistoricalTransactionsError);
   }
 
   callActions(): void {
@@ -41,16 +54,18 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
 
   // call list of transactions after network changes
   generateSubs(): void {
-    this.currentNetworkSub = this.currentNetwork$
+    this.currentNetwork$
       .pipe(
         distinctUntilChanged(),
         filter((network) => network !== null),
-        skip(1)
+        skip(1),
+        takeUntil(this.destroyed$)
       )
       .subscribe(() => this.callActions());
   }
 
   ngOnDestroy(): void {
-    this.currentNetworkSub?.unsubscribe();
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
   }
 }
