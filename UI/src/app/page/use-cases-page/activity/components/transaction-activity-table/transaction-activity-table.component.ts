@@ -12,6 +12,7 @@ export class TransactionActivityTableComponent {
   @Input() transactionsTable: ITransactionLog[] = [];
   @Input() currentNetwork: INetworkDetail | null;
   @Input() transactionsIsLoading: boolean;
+  @Input() historicalTransactionsError: string | null;
   displayedColumns: string[] = ['action', 'amount', 'date'];
   role = TransactionRole;
 
