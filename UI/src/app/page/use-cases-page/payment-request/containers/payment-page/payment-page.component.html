@@ -27,8 +27,17 @@
     <div *ngIf="paymentSelectedInvalid$ | async" class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
         <div class="alert alert-danger border-0 shadow-sm" data-id="wrong-network-alert" role="alert">
-          <h4 class="alert-heading">Wrong network</h4>
-          <p>Please be connected on the {{ (paymentNetwork$ | async)?.name }} network to use this feature.</p>
+          <div class="d-flex justify-content-between pb-2">
+            <h4 class="alert-heading my-auto">Wrong network</h4>
+            <app-chainbrary-button
+              [buttonClasses]="['btn-primary', 'text-light']"
+              buttonText="Switch network"
+              (callToAction)="changeNetwork()"
+            />
+          </div>
+          <p class="mb-md-0">
+            Please be connected on the {{ (paymentNetwork$ | async)?.name }} network to use this feature.
+          </p>
         </div>
       </div>
     </div>
