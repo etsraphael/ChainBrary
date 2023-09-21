@@ -5,6 +5,7 @@ import {
   FormControl,
   FormGroup,
   ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -111,7 +112,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         usdEnabled: new FormControl(false, [])
       }),
       profile: new FormGroup({
-        publicAddress: new FormControl('', [Validators.required]),
+        publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
         avatarUrl: new FormControl('', [], [this.urlValidator()]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
@@ -234,6 +235,17 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
         this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
       });
+  }
+
+  ethAddressValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string;
+
+      if (!value) return null;
+
+      const isHex = /^0x[a-fA-F0-9]{40}$/.test(value);
+      return isHex ? null : { invalidAddress: true };
+    };
   }
 
   urlValidator(): AsyncValidatorFn {
