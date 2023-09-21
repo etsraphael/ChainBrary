@@ -21,6 +21,7 @@ import { AuthStatusCode } from './../../../../../shared/enum';
 import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
 import {
   accountChanged,
+  networkChange,
   networkChangeSuccess,
   setAuthPublicAddress
 } from './../../../../../store/auth-store/state/actions';
@@ -185,6 +186,16 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
 
   approveSmartContract(): Subscription {
     return this.handleNetwork(() => this.store.dispatch(approveTokenAllowance()));
+  }
+
+  changeNetwork(): Subscription {
+    return this.paymentNetwork$
+      .pipe(
+        take(1),
+        filter((network: INetworkDetail | null) => !!network),
+        map((network: INetworkDetail | null) => network as INetworkDetail)
+      )
+      .subscribe((network: INetworkDetail) => this.store.dispatch(networkChange({ network })));
   }
 
   ngOnDestroy(): void {
