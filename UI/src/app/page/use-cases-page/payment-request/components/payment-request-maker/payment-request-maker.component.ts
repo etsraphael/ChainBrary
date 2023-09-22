@@ -8,7 +8,6 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import {
@@ -25,7 +24,6 @@ import {
   take,
   takeUntil
 } from 'rxjs';
-import { FormatService } from './../../../../../shared/services/format/format.service';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
@@ -34,9 +32,10 @@ import {
   PaymentMakerForm,
   PriceSettingsForm,
   ProfileForm,
-  StoreState
+  StoreState,
+  TokenChoiceMaker
 } from './../../../../../shared/interfaces';
-import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
+import { FormatService } from './../../../../../shared/services/format/format.service';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
@@ -54,17 +53,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
-  paymentMakePageTypes = PaymentMakePage;
-  page: PaymentMakePage = PaymentMakePage.settingProfile;
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(
-    private snackbar: MatSnackBar,
-    private walletService: WalletService,
-    private formatService: FormatService
-  ) {}
+  constructor(private formatService: FormatService) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -106,7 +99,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
-        token: new FormControl('', []),
+        token: new FormGroup({
+          tokenId: new FormControl('', [Validators.required]),
+          chainId: new FormControl('', [Validators.required])
+        }),
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)]),
         usdEnabled: new FormControl(false, [])
@@ -121,18 +117,18 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   listenToTokenChange(): void {
     this.priceForm
-      .get('token')
+      .get('price.token.tokenId')
       ?.valueChanges.pipe(
-        skip(1), // Skip the first value because it is the default value
-        filter((token: string | null) => token !== null),
-        map((token: string | null) => token as string),
+        filter((tokenId: string | null) => tokenId !== null),
+        map((tokenId: string | null) => tokenId as string),
         takeUntil(this.destroyed$)
       )
-      .subscribe((token: string) => {
-        this.setUpTokenChoice.emit(token);
+      .subscribe((tokenId: string) => {
+        this.setUpTokenChoice.emit(tokenId);
         const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
         if (usdEnabled) this.swapCurrency();
       });
+
 
     this.currentNetworkObs
       .pipe(
@@ -141,9 +137,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe((network: INetworkDetail) => {
-        this.priceForm.patchValue({
-          token: network.nativeCurrency.id
-        });
+        // this.priceForm.patchValue({
+        //   token: network.nativeCurrency.id
+        // });
+
+        // TODO: Make sure this is working and make this better
+        this.priceForm
+          .get('token')
+          ?.get('chainId')
+          ?.setValue(network.chainId);
+
+        this.priceForm
+          .get('token')
+          ?.get('tokenId')
+          ?.setValue(network.nativeCurrency.id);
       });
   }
 
@@ -167,46 +174,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToPreviousPage(): void {
-    --this.page;
-    return;
-  }
-
-  goToNextPage(): void {
-    if (this.mainForm.invalid) {
-      this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
-      return;
-    }
-
-    if (this.page === PaymentMakePage.settingPrice) {
-      const { amount } = this.priceControls;
-      if ((amount.value as number) <= 0) {
-        this.snackbar.open('Amount must be greater than 0', 'Close', { duration: 3000 });
-        return;
-      }
-
-      this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid) => {
-        if (!networkIsValid) {
-          this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
-            duration: 3000
-          });
-          return;
-        }
-
-        this.generatePaymentRequest();
-
-        ++this.page;
-      });
-    } else {
-      ++this.page;
-    }
-    return;
-  }
-
   generatePaymentRequest(): Subscription {
     const { username, publicAddress, avatarUrl } = this.profileControls;
     const { amount, description, usdEnabled } = this.priceControls;
 
+    // TODO: DO NOT user currentNetworkObs anymore, use just the chainId inside of the form
     return combineLatest([this.currentNetworkObs, this.paymentTokenObs])
       .pipe(
         take(1),
@@ -295,10 +267,4 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
   }
-}
-
-enum PaymentMakePage {
-  settingProfile = 0,
-  settingPrice = 1,
-  review = 2
 }

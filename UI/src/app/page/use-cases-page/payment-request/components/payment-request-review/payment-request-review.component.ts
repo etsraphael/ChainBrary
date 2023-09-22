@@ -15,7 +15,7 @@ export class PaymentRequestReviewComponent {
   @Input() usdAmount: number | null;
   @Input() previewLink: string;
   @Input() usdEnabled: boolean;
-  @Input() tokenSelected: IToken;
+  @Input() tokenSelected: IToken | null;
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
   protocolFee = 0.001;
 

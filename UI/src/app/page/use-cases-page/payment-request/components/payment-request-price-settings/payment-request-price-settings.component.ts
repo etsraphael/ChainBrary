@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../shared/data/tokenList';
 import {
@@ -8,7 +8,8 @@ import {
   IToken,
   ITokenContract,
   PriceSettingsForm,
-  StoreState
+  StoreState,
+  TokenChoiceMakerForm
 } from './../../../../../shared/interfaces';
 
 @Component({
@@ -27,10 +28,17 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   tokenList: IToken[] = [];
+  tokenGroup: IToken[] = tokenList.filter((token: IToken) => token.nativeToChainId !== undefined);
 
   get usdEnabled(): boolean {
     return this.paymentConversion.data.priceInUsdEnabled;
   }
+
+  get tokenChoiceForm(): FormGroup<TokenChoiceMakerForm> {
+    return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;
+  }
+
+  // TODO: Listen this.priceForm.get('token') changes and update chainId
 
   ngOnInit(): void {
     this.setUpTokenList();
@@ -50,6 +58,14 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
             token.nativeToChainId === currentNetwork.chainId
         );
       });
+  }
+
+  getTokenByChainId(chainId: NetworkChainId): IToken[] {
+    return tokenList.filter(
+      (token: IToken) =>
+        token.nativeToChainId === chainId ||
+        token.networkSupport.some((network: ITokenContract) => network.chainId === chainId)
+    );
   }
 
   ngOnDestroy(): void {

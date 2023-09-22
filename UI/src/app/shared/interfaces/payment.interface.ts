@@ -13,7 +13,7 @@ export interface IPaymentRequest {
 }
 
 export interface PriceSettingsForm {
-  token: FormControl<string | null>;
+  token: FormGroup<TokenChoiceMakerForm>;
   description: FormControl<string | null>;
   amount: FormControl<number | null>;
   usdEnabled: FormControl<boolean | null>;
@@ -28,6 +28,16 @@ export interface ProfileForm {
 export interface PaymentMakerForm {
   price: FormGroup<PriceSettingsForm>;
   profile: FormGroup<ProfileForm>;
+}
+
+export interface TokenChoiceMakerForm {
+  tokenId: FormControl<string | null>;
+  chainId: FormControl<string |null>;
+}
+
+export interface TokenChoiceMaker {
+  tokenId: TokenId | string;
+  chainId: NetworkChainId;
 }
 
 export interface IProfilePayment {
