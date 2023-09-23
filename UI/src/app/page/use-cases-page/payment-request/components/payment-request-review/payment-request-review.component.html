@@ -1,9 +1,8 @@
 <div class="container pt-2" *ngIf="tokenSelected">
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 col-lg-9">
-      <p *ngIf="usdEnabled" class="px-2 text-dark">
-        You're requesting <strong>$USD {{ usdAmount }}</strong
-        >.
+      <p *ngIf="usdEnabled" class="px-2 text-dark header-message">
+        You're requesting <strong>$USD {{ usdAmount }}</strong>.
         <br />
         Rest assured, the transaction will be initiated to precisely match this amount, irrespective of any token
         volatility.
@@ -11,7 +10,7 @@
       <table class="table text-dark">
         <tbody>
           <tr>
-            <td class="align-middle">Account</td>
+            <td class="align-middle">Receiver Name</td>
             <td>{{ username }}</td>
           </tr>
           <tr>
@@ -46,18 +45,12 @@
     <div class="col-12">
       <div class="row">
         <div class="col-12 col-lg-6 py-2 py-lg-0">
-          <app-chainbrary-button
-            [buttonClasses]="['btn-secondary-gradient', 'text-white']"
-            [buttonText]="'Back'"
-            (callToAction)="goToPreviousPageEvent.emit()"
-          />
+          <app-chainbrary-button [buttonClasses]="['btn-secondary-gradient', 'text-white']" [buttonText]="'Back'"
+            (callToAction)="goToPreviousPageEvent.emit()" />
         </div>
         <div class="col-12 col-lg-6 py-2 py-lg-0">
-          <app-chainbrary-button
-            [buttonClasses]="['btn-warning-gradient', 'text-white']"
-            [buttonText]="'Preview'"
-            (callToAction)="goToPaymentPage()"
-          />
+          <app-chainbrary-button [buttonClasses]="['btn-warning-gradient', 'text-white']" [buttonText]="'Preview'"
+            (callToAction)="goToPaymentPage()" />
         </div>
       </div>
     </div>
@@ -70,12 +63,8 @@
         <div class="input-group">
           <input type="text" class="form-control" [value]="previewLink" readonly />
           <div class="input-group-append">
-            <app-chainbrary-button
-              [buttonClasses]="['btn-outline-secondary']"
-              (callToAction)="clickCopyLinkEvent()"
-              matTooltip="Copy to clipboard"
-              [cdkCopyToClipboard]="previewLink"
-            >
+            <app-chainbrary-button [buttonClasses]="['btn-outline-secondary']" (callToAction)="clickCopyLinkEvent()"
+              matTooltip="Copy to clipboard" [cdkCopyToClipboard]="previewLink">
               <i class="bi bi-files"></i>
             </app-chainbrary-button>
           </div>

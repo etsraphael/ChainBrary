@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-12 col-lg-7">
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Payment address</mat-label>
+        <mat-label>Wallet Address</mat-label>
         <input
           formControlName="publicAddress"
           type="link"
@@ -12,7 +12,7 @@
           data-id="address-input"
         />
         <mat-error *ngIf="profileForm.get('publicAddress')?.hasError('invalidAddress')">
-          Invalid Ethereum Address
+          A wallet address must start with 0x
         </mat-error>
       </mat-form-field>
     </div>
@@ -52,6 +52,17 @@
       </mat-form-field>
     </div>
   </div>
+
+  <div class="row justify-content-center" *ngIf="profileForm.get('publicAddress')?.invalid">
+    <div class="col-12 col-lg-7 text-center mb-2">
+      <mat-error *ngIf="profileForm.get('publicAddress')?.touched">
+        Enter your wallet address to receive funds
+      </mat-error>
+    </div>
+
+
+  </div>
+
   <div class="row justify-content-center">
     <div class="col-12 col-lg-7" (click)="submitForm()" data-id="submit-button">
       <app-chainbrary-button
