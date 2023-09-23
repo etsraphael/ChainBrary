@@ -8,18 +8,16 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import {
   Observable,
   ReplaySubject,
-  Subscription,
-  combineLatest,
   debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   of,
-  skip,
   startWith,
   take,
   takeUntil
@@ -33,7 +31,7 @@ import {
   PriceSettingsForm,
   ProfileForm,
   StoreState,
-  TokenChoiceMaker
+  TokenChoiceMakerForm
 } from './../../../../../shared/interfaces';
 import { FormatService } from './../../../../../shared/services/format/format.service';
 
@@ -89,6 +87,14 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.mainForm.controls.price.controls;
   }
 
+  get tokenChoiceControls(): TokenChoiceMakerForm {
+    return this.priceForm.controls.token.controls;
+  }
+
+  get tokenChoiceForm(): FormGroup<TokenChoiceMakerForm> {
+    return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;
+  }
+
   ngOnInit(): void {
     this.setUpForm();
     this.listenToAddressChange();
@@ -113,11 +119,30 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
+
+    this.currentNetworkObs.pipe(
+      distinctUntilChanged(),
+      takeUntil(this.destroyed$)
+    )
+    .subscribe((currentNetwork: INetworkDetail | null) => {
+      if(currentNetwork) {
+        this.tokenChoiceForm.patchValue({
+          chainId: currentNetwork.chainId,
+          tokenId: currentNetwork.nativeCurrency.id
+        })
+      } else {
+        this.tokenChoiceForm.patchValue({
+          chainId: NetworkChainId.ETHEREUM,
+          tokenId: TokenId.ETHEREUM
+        })
+      }
+      this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
+    });
   }
 
   listenToTokenChange(): void {
     this.priceForm
-      .get('price.token.tokenId')
+      .get('token.tokenId')
       ?.valueChanges.pipe(
         filter((tokenId: string | null) => tokenId !== null),
         map((tokenId: string | null) => tokenId as string),
@@ -127,30 +152,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         this.setUpTokenChoice.emit(tokenId);
         const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
         if (usdEnabled) this.swapCurrency();
-      });
-
-
-    this.currentNetworkObs
-      .pipe(
-        filter((network: INetworkDetail | null) => network !== null),
-        map((network: INetworkDetail | null) => network as INetworkDetail),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((network: INetworkDetail) => {
-        // this.priceForm.patchValue({
-        //   token: network.nativeCurrency.id
-        // });
-
-        // TODO: Make sure this is working and make this better
-        this.priceForm
-          .get('token')
-          ?.get('chainId')
-          ?.setValue(network.chainId);
-
-        this.priceForm
-          .get('token')
-          ?.get('tokenId')
-          ?.setValue(network.nativeCurrency.id);
       });
   }
 
@@ -174,39 +175,32 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
   }
 
-  generatePaymentRequest(): Subscription {
+  generatePaymentRequest(): void {
     const { username, publicAddress, avatarUrl } = this.profileControls;
     const { amount, description, usdEnabled } = this.priceControls;
+    const { tokenId, chainId } = this.tokenChoiceControls;
 
-    // TODO: DO NOT user currentNetworkObs anymore, use just the chainId inside of the form
-    return combineLatest([this.currentNetworkObs, this.paymentTokenObs])
-      .pipe(
-        take(1),
-        filter((payload: [INetworkDetail | null, IToken | null]) => payload[0] !== null && payload[1] !== null),
-        map((payload: [INetworkDetail | null, IToken | null]) => payload as [INetworkDetail, IToken])
-      )
-      .subscribe(([network, token]) => {
-        const paymentRequest: IPaymentRequest = {
-          chainId: network.chainId,
-          tokenId: token.tokenId,
-          username: username.value as string,
-          publicAddress: publicAddress.value as string,
-          amount: amount.value as number,
-          description: description.value as string,
-          avatarUrl: avatarUrl.value as string,
-          usdEnabled: usdEnabled.value as boolean
-        };
-        const paymentRequestBase64: string = Buffer.from(
-          JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
-          'utf-8'
-        )
-          .toString('base64')
-          .replace('+', '-')
-          .replace('/', '_');
-        const url: URL = new URL(window.location.href);
-        const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-        this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-      });
+    const paymentRequest: IPaymentRequest = {
+      chainId: chainId.value as NetworkChainId,
+      tokenId: tokenId.value as string,
+      username: username.value as string,
+      publicAddress: publicAddress.value as string,
+      amount: amount.value as number,
+      description: description.value as string,
+      avatarUrl: avatarUrl.value as string,
+      usdEnabled: usdEnabled.value as boolean
+    };
+
+    const paymentRequestBase64: string = Buffer.from(
+      JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
+      'utf-8'
+    )
+      .toString('base64')
+      .replace('+', '-')
+      .replace('/', '_');
+    const url: URL = new URL(window.location.href);
+    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
+    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
   }
 
   ethAddressValidator(): ValidatorFn {

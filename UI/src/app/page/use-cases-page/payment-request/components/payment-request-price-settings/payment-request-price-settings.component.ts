@@ -38,10 +38,12 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
     return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;
   }
 
-  // TODO: Listen this.priceForm.get('token') changes and update chainId
-
   ngOnInit(): void {
     this.setUpTokenList();
+  }
+
+  saveGroup(chainId: NetworkChainId): void {
+    return this.tokenChoiceForm.get('chainId')?.setValue(chainId);
   }
 
   setUpTokenList(): void {

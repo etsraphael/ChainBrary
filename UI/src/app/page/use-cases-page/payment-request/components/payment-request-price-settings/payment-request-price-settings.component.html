@@ -10,8 +10,8 @@
             <mat-option *ngFor="let t of tokenList" [value]="t.tokenId">{{ t.name }} ({{ t.symbol }})</mat-option>
           </ng-container>
           <ng-container *ngIf="(currentNetworkObs | async) === null">
-            <mat-optgroup *ngFor="let group of tokenGroup" [label]="group.name">
-              <mat-option *ngFor="let t of getTokenByChainId(group.nativeToChainId!)" [value]="t.tokenId">{{ t.name }} ({{ t.symbol }})</mat-option>
+            <mat-optgroup *ngFor="let group of tokenGroup" [label]="group.name + ' (NETWORK)'">
+              <mat-option (click)="saveGroup(group.nativeToChainId!)" *ngFor="let t of getTokenByChainId(group.nativeToChainId!)" [value]="t.tokenId">{{ t.name }} ({{ t.symbol }})</mat-option>
             </mat-optgroup>
           </ng-container>
         </mat-select>
