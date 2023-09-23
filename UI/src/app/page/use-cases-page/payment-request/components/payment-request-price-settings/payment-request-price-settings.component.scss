@@ -2,3 +2,7 @@ ngx-skeleton-loader {
   position: relative;
   top: 6px;
 }
+
+::ng-deep .mat-mdc-optgroup-label {
+  font-weight: bold;
+}

@@ -1,30 +1,27 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
   FormControl,
   FormGroup,
   ValidationErrors,
+  ValidatorFn,
   Validators
 } from '@angular/forms';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Buffer } from 'buffer';
 import {
   Observable,
   ReplaySubject,
-  Subscription,
-  combineLatest,
   debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   of,
-  skip,
   startWith,
   take,
   takeUntil
 } from 'rxjs';
-import { FormatService } from './../../../../../shared/services/format/format.service';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import {
   IConversionToken,
@@ -33,9 +30,12 @@ import {
   PaymentMakerForm,
   PriceSettingsForm,
   ProfileForm,
-  StoreState
+  StoreState,
+  TokenChoiceMakerForm
 } from './../../../../../shared/interfaces';
-import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
+import { FormatService } from './../../../../../shared/services/format/format.service';
+import { Action } from '@ngrx/store';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
@@ -47,23 +47,19 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Input() paymentTokenObs: Observable<IToken | null>;
   @Input() paymentConversionObs: Observable<StoreState<IConversionToken>>;
+  @Input() resetTransactionObs: Observable<Action>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
   @Output() applyConversionToken: EventEmitter<number> = new EventEmitter<number>();
   @Output() switchToUsd: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('stepper') stepper: MatStepper;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
-  paymentMakePageTypes = PaymentMakePage;
-  page: PaymentMakePage = PaymentMakePage.settingProfile;
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(
-    private snackbar: MatSnackBar,
-    private walletService: WalletService,
-    private formatService: FormatService
-  ) {}
+  constructor(private formatService: FormatService) {}
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -74,9 +70,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   get amount(): Observable<number> {
-    if (this.priceForm?.get('usdEnabled')?.value as boolean)
-      return this.paymentConversionObs.pipe(map((x) => x.data.usdAmount as number));
-    else return of(this.priceForm.get('amount')?.value as number);
+    if (this.priceForm?.get('usdEnabled')?.value as boolean) {
+      return this.paymentConversionObs.pipe(map((x) => x.data.tokenAmount as number));
+    } else {
+      return of(this.priceForm.get('amount')?.value as number);
+    }
   }
 
   get usdAmount(): Observable<number | null> {
@@ -95,54 +93,103 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.mainForm.controls.price.controls;
   }
 
+  get tokenChoiceControls(): TokenChoiceMakerForm {
+    return this.priceForm.controls.token.controls;
+  }
+
+  get tokenChoiceForm(): FormGroup<TokenChoiceMakerForm> {
+    return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;
+  }
+
   ngOnInit(): void {
     this.setUpForm();
     this.listenToAddressChange();
     this.listenToAmountChange();
     this.listenToTokenChange();
+    this.listenToResetTransaction();
+  }
+
+  listenToResetTransaction(): void {
+    this.resetTransactionObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.stepper.selectedIndex = 0;
+      this.priceForm.reset();
+      this.setDefaultTokenSelection();
+    });
   }
 
   setUpForm(): void {
     this.mainForm = new FormGroup({
       price: new FormGroup({
-        token: new FormControl('', []),
+        token: new FormGroup({
+          tokenId: new FormControl('', [Validators.required]),
+          chainId: new FormControl('', [Validators.required])
+        }),
         description: new FormControl('', []),
         amount: new FormControl(1, [Validators.required, Validators.min(0)]),
         usdEnabled: new FormControl(false, [])
       }),
       profile: new FormGroup({
-        publicAddress: new FormControl('', [Validators.required]),
+        publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
         avatarUrl: new FormControl('', [], [this.urlValidator()]),
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
+    });
+
+    this.currentNetworkObs
+      .pipe(distinctUntilChanged(), takeUntil(this.destroyed$))
+      .subscribe((currentNetwork: INetworkDetail | null) => {
+        if (currentNetwork) {
+          this.tokenChoiceForm.patchValue({
+            chainId: currentNetwork.chainId,
+            tokenId: currentNetwork.nativeCurrency.id
+          });
+        } else {
+          this.tokenChoiceForm.patchValue({
+            chainId: NetworkChainId.ETHEREUM,
+            tokenId: TokenId.ETHEREUM
+          });
+        }
+        this.priceForm.patchValue({
+          amount: 1,
+          usdEnabled: false
+        });
+        this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
+      });
+  }
+
+  setDefaultTokenSelection(): void {
+    this.currentNetworkObs.pipe(take(1)).subscribe((currentNetwork: INetworkDetail | null) => {
+      if (currentNetwork) {
+        this.tokenChoiceForm.patchValue({
+          chainId: currentNetwork.chainId,
+          tokenId: currentNetwork.nativeCurrency.id
+        });
+      } else {
+        this.tokenChoiceForm.patchValue({
+          chainId: NetworkChainId.ETHEREUM,
+          tokenId: TokenId.ETHEREUM
+        });
+      }
+      this.priceForm.patchValue({
+        amount: 1,
+        usdEnabled: false
+      });
+      this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
     });
   }
 
   listenToTokenChange(): void {
     this.priceForm
-      .get('token')
+      .get('token.tokenId')
       ?.valueChanges.pipe(
-        skip(1), // Skip the first value because it is the default value
-        filter((token: string | null) => token !== null),
-        map((token: string | null) => token as string),
+        filter((tokenId: string | null) => tokenId !== null),
+        map((tokenId: string | null) => tokenId as string),
         takeUntil(this.destroyed$)
       )
-      .subscribe((token: string) => {
-        this.setUpTokenChoice.emit(token);
+      .subscribe((tokenId: string) => {
+        this.setUpTokenChoice.emit(tokenId);
         const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
         if (usdEnabled) this.swapCurrency();
-      });
-
-    this.currentNetworkObs
-      .pipe(
-        filter((network: INetworkDetail | null) => network !== null),
-        map((network: INetworkDetail | null) => network as INetworkDetail),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((network: INetworkDetail) => {
-        this.priceForm.patchValue({
-          token: network.nativeCurrency.id
-        });
       });
   }
 
@@ -166,74 +213,43 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
   }
 
-  goToPreviousPage(): void {
-    --this.page;
-    return;
-  }
-
-  goToNextPage(): void {
-    if (this.mainForm.invalid) {
-      this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
-      return;
-    }
-
-    if (this.page === PaymentMakePage.settingPrice) {
-      const { amount } = this.priceControls;
-      if ((amount.value as number) <= 0) {
-        this.snackbar.open('Amount must be greater than 0', 'Close', { duration: 3000 });
-        return;
-      }
-
-      this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid) => {
-        if (!networkIsValid) {
-          this.snackbar.open('Your current network selected is not matching with your wallet', 'Close', {
-            duration: 3000
-          });
-          return;
-        }
-
-        this.generatePaymentRequest();
-
-        ++this.page;
-      });
-    } else {
-      ++this.page;
-    }
-    return;
-  }
-
-  generatePaymentRequest(): Subscription {
+  generatePaymentRequest(): void {
     const { username, publicAddress, avatarUrl } = this.profileControls;
     const { amount, description, usdEnabled } = this.priceControls;
+    const { tokenId, chainId } = this.tokenChoiceControls;
 
-    return combineLatest([this.currentNetworkObs, this.paymentTokenObs])
-      .pipe(
-        take(1),
-        filter((payload: [INetworkDetail | null, IToken | null]) => payload[0] !== null && payload[1] !== null),
-        map((payload: [INetworkDetail | null, IToken | null]) => payload as [INetworkDetail, IToken])
-      )
-      .subscribe(([network, token]) => {
-        const paymentRequest: IPaymentRequest = {
-          chainId: network.chainId,
-          tokenId: token.tokenId,
-          username: username.value as string,
-          publicAddress: publicAddress.value as string,
-          amount: amount.value as number,
-          description: description.value as string,
-          avatarUrl: avatarUrl.value as string,
-          usdEnabled: usdEnabled.value as boolean
-        };
-        const paymentRequestBase64: string = Buffer.from(
-          JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
-          'utf-8'
-        )
-          .toString('base64')
-          .replace('+', '-')
-          .replace('/', '_');
-        const url: URL = new URL(window.location.href);
-        const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-        this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-      });
+    const paymentRequest: IPaymentRequest = {
+      chainId: chainId.value as NetworkChainId,
+      tokenId: tokenId.value as string,
+      username: username.value as string,
+      publicAddress: publicAddress.value as string,
+      amount: amount.value as number,
+      description: description.value as string,
+      avatarUrl: avatarUrl.value as string,
+      usdEnabled: usdEnabled.value as boolean
+    };
+
+    const paymentRequestBase64: string = Buffer.from(
+      JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
+      'utf-8'
+    )
+      .toString('base64')
+      .replace('+', '-')
+      .replace('/', '_');
+    const url: URL = new URL(window.location.href);
+    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
+    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
+  }
+
+  ethAddressValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string;
+
+      if (!value) return null;
+
+      const isHex = /^0x[a-fA-F0-9]{40}$/.test(value);
+      return isHex ? null : { invalidAddress: true };
+    };
   }
 
   urlValidator(): AsyncValidatorFn {
@@ -283,10 +299,4 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
   }
-}
-
-enum PaymentMakePage {
-  settingProfile = 0,
-  settingPrice = 1,
-  review = 2
 }

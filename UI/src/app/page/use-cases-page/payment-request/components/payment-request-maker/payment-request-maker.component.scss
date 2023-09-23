@@ -3,3 +3,9 @@
 .card-header-custom {
   top: -3rem;
 }
+
+:host ::ng-deep .payment-maker-card-container {
+  .mat-step:last-child .mat-vertical-content-container {
+    margin: 0 !important;
+  }
+}
