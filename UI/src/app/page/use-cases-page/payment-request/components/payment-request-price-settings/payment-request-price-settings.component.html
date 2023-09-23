@@ -38,7 +38,9 @@
             </h6>
           </div>
           <mat-hint *ngIf="!usdEnabled && paymentConversion.data.usdAmount && paymentConversion.data.usdAmount > 0">
-            <ng-container *ngIf="!paymentConversion.loading"> $USD {{ paymentConversion.data.usdAmount }} </ng-container>
+            <ng-container *ngIf="!paymentConversion.loading">
+              $USD {{ paymentConversion.data.usdAmount }}
+            </ng-container>
             <ng-container *ngIf="paymentConversion.loading">
               <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
             </ng-container>

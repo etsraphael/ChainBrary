@@ -72,8 +72,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   get amount(): Observable<number> {
     if (this.priceForm?.get('usdEnabled')?.value as boolean) {
       return this.paymentConversionObs.pipe(map((x) => x.data.tokenAmount as number));
-    }
-    else {
+    } else {
       return of(this.priceForm.get('amount')?.value as number);
     }
   }
@@ -137,10 +136,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
 
     this.currentNetworkObs
-      .pipe(
-        distinctUntilChanged(),
-        takeUntil(this.destroyed$)
-      )
+      .pipe(distinctUntilChanged(), takeUntil(this.destroyed$))
       .subscribe((currentNetwork: INetworkDetail | null) => {
         if (currentNetwork) {
           this.tokenChoiceForm.patchValue({
@@ -162,9 +158,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   setDefaultTokenSelection(): void {
-    this.currentNetworkObs
-    .pipe(take(1))
-    .subscribe((currentNetwork: INetworkDetail | null) => {
+    this.currentNetworkObs.pipe(take(1)).subscribe((currentNetwork: INetworkDetail | null) => {
       if (currentNetwork) {
         this.tokenChoiceForm.patchValue({
           chainId: currentNetwork.chainId,
