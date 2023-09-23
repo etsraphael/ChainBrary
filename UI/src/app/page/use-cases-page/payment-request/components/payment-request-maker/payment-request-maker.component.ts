@@ -112,8 +112,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       takeUntil(this.destroyed$)
     ).subscribe(
       () => {
-        this.stepper.reset();
-        this.mainForm.reset();
+        this.stepper.selectedIndex = 0;
+        this.priceForm.reset();
       }
     );
   }

@@ -3,10 +3,10 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable, ReplaySubject, takeUntil } from 'rxjs';
-import { accountChanged, networkChangeSuccess, resetAuth } from 'src/app/store/auth-store/state/actions';
 import { tokenList } from './../../../../../shared/data/tokenList';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../shared/interfaces';
+import { accountChanged, networkChangeSuccess, resetAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectAuthStatus,
@@ -65,13 +65,13 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     this.paymentToken$ = this.store.select(selectPaymentToken);
     this.paymentConversion$ = this.store.select(selectPaymentConversion);
     this.resetTransaction$ = this.actions$.pipe(
-      ofType(resetAuth, accountChanged, networkChangeSuccess),
+      ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
       takeUntil(this.destroyed$)
     );
   }
 
   setUpTokenChoice(tokenId: string): void {
-    const tokenFound: IToken | null = tokenList.find((token) => token.tokenId === tokenId) || null;
+    const tokenFound: IToken = tokenList.find((token) => token.tokenId === tokenId) as IToken;
     return this.store.dispatch(updatedToken({ token: tokenFound }));
   }
 
