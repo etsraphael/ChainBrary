@@ -15,6 +15,8 @@ export class PaymentRequestProfileSettingsComponent {
   constructor(private snackbar: MatSnackBar) {}
 
   submitForm(): void {
+    this.profileForm.markAllAsTouched();
+
     if (this.profileForm.invalid) {
       this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
       return;

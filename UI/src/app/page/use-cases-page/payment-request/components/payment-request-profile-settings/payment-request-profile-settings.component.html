@@ -1,8 +1,8 @@
-<form [formGroup]="profileForm">
+<form [formGroup]="profileForm" class="pt-2">
   <div class="row justify-content-center">
-    <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width" appearance="outline">
-        <mat-label>Payment address</mat-label>
+    <div class="col-12 col-lg-7">
+      <mat-form-field class="w-100" appearance="outline">
+        <mat-label>Wallet Address</mat-label>
         <input
           formControlName="publicAddress"
           type="link"
@@ -11,12 +11,15 @@
           placeholder="0x"
           data-id="address-input"
         />
+        <mat-error *ngIf="profileForm.get('publicAddress')?.hasError('invalidAddress')">
+          A wallet address must start with 0x
+        </mat-error>
       </mat-form-field>
     </div>
   </div>
   <div class="row justify-content-center">
-    <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width" appearance="outline">
+    <div class="col-12 col-lg-7">
+      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Url of your image</mat-label>
         <input
           formControlName="avatarUrl"
@@ -32,8 +35,8 @@
     </div>
   </div>
   <div class="row justify-content-center">
-    <div class="col-10 col-lg-7">
-      <mat-form-field class="w-100 example-full-width" appearance="outline">
+    <div class="col-12 col-lg-7">
+      <mat-form-field class="w-100" appearance="outline">
         <mat-label>Name</mat-label>
         <input
           formControlName="username"
@@ -49,12 +52,21 @@
       </mat-form-field>
     </div>
   </div>
-  <div class="row justify-content-center my-4">
-    <div class="col-8 col-lg-5" (click)="submitForm()" data-id="submit-button">
+
+  <div class="row justify-content-center" *ngIf="profileForm.get('publicAddress')?.invalid">
+    <div class="col-12 col-lg-7 text-center mb-2">
+      <mat-error *ngIf="profileForm.get('publicAddress')?.touched">
+        Enter your wallet address to receive funds
+      </mat-error>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12 col-lg-7" (click)="submitForm()" data-id="submit-button">
       <app-chainbrary-button
         [buttonClasses]="['btn-success-gradient', 'text-light']"
-        [buttonText]="'Confirm'"
-        [buttonType]="'submit'"
+        buttonText="Next"
+        buttonType="submit"
       />
     </div>
   </div>

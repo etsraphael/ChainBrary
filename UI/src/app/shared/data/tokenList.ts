@@ -4,6 +4,25 @@ import { TokenPair } from '../enum';
 
 export const tokenList: IToken[] = [
   {
+    tokenId: TokenId.ETHEREUM,
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    nativeToChainId: NetworkChainId.ETHEREUM,
+    networkSupport: [
+      {
+        chainId: NetworkChainId.BNB,
+        address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
+        priceFeed: [TokenPair.EthToUsd]
+      },
+      {
+        chainId: NetworkChainId.AVALANCHE,
+        address: '0xf20d962a6c8f70c731bd838a3a388d7d48fa6e15',
+        priceFeed: [TokenPair.EthToUsd]
+      }
+    ]
+  },
+  {
     tokenId: TokenId.AVALANCHE,
     name: 'Avalanche',
     symbol: 'AVAX',
@@ -26,25 +45,6 @@ export const tokenList: IToken[] = [
     decimals: 18,
     nativeToChainId: NetworkChainId.POLYGON,
     networkSupport: []
-  },
-  {
-    tokenId: TokenId.ETHEREUM,
-    name: 'Ethereum',
-    symbol: 'ETH',
-    decimals: 18,
-    nativeToChainId: NetworkChainId.ETHEREUM,
-    networkSupport: [
-      {
-        chainId: NetworkChainId.BNB,
-        address: '0x2170ed0880ac9a755fd29b2688956bd959f933f8',
-        priceFeed: [TokenPair.EthToUsd]
-      },
-      {
-        chainId: NetworkChainId.AVALANCHE,
-        address: '0xf20d962a6c8f70c731bd838a3a388d7d48fa6e15',
-        priceFeed: [TokenPair.EthToUsd]
-      }
-    ]
   },
   {
     tokenId: TokenId.SEPOLIA,
