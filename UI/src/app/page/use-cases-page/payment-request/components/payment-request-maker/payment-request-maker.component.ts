@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import {
   AbstractControl,
   AsyncValidatorFn,
@@ -34,6 +34,8 @@ import {
   TokenChoiceMakerForm
 } from './../../../../../shared/interfaces';
 import { FormatService } from './../../../../../shared/services/format/format.service';
+import { Action } from '@ngrx/store';
+import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
@@ -45,9 +47,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Input() paymentTokenObs: Observable<IToken | null>;
   @Input() paymentConversionObs: Observable<StoreState<IConversionToken>>;
+  @Input() resetTransactionObs: Observable<Action>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
   @Output() applyConversionToken: EventEmitter<number> = new EventEmitter<number>();
   @Output() switchToUsd: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @ViewChild('stepper') stepper: MatStepper;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
@@ -100,6 +104,18 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.listenToAddressChange();
     this.listenToAmountChange();
     this.listenToTokenChange();
+    this.listenToResetTransaction();
+  }
+
+  listenToResetTransaction(): void {
+    this.resetTransactionObs.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe(
+      () => {
+        this.stepper.reset();
+        this.mainForm.reset();
+      }
+    );
   }
 
   setUpForm(): void {
