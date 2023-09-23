@@ -6,7 +6,12 @@ import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../shared/data/tokenList';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../shared/interfaces';
-import { accountChanged, networkChangeSuccess, resetAuth, setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
+import {
+  accountChanged,
+  networkChangeSuccess,
+  resetAuth,
+  setAuthPublicAddress
+} from './../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectAuthStatus,
@@ -87,5 +92,4 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
   }
-
 }

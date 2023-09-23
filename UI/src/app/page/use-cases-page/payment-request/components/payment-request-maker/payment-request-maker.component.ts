@@ -108,14 +108,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   listenToResetTransaction(): void {
-    this.resetTransactionObs.pipe(
-      takeUntil(this.destroyed$)
-    ).subscribe(
-      () => {
-        this.stepper.selectedIndex = 0;
-        this.priceForm.reset();
-      }
-    );
+    this.resetTransactionObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.stepper.selectedIndex = 0;
+      this.priceForm.reset();
+    });
   }
 
   setUpForm(): void {

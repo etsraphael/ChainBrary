@@ -15,7 +15,6 @@ export class PaymentRequestProfileSettingsComponent {
   constructor(private snackbar: MatSnackBar) {}
 
   submitForm(): void {
-
     this.profileForm.markAllAsTouched();
 
     if (this.profileForm.invalid) {
