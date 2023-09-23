@@ -70,9 +70,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   get amount(): Observable<number> {
-    if (this.priceForm?.get('usdEnabled')?.value as boolean)
-      return this.paymentConversionObs.pipe(map((x) => x.data.usdAmount as number));
-    else return of(this.priceForm.get('amount')?.value as number);
+    if (this.priceForm?.get('usdEnabled')?.value as boolean) {
+      return this.paymentConversionObs.pipe(map((x) => x.data.tokenAmount as number));
+    }
+    else {
+      return of(this.priceForm.get('amount')?.value as number);
+    }
   }
 
   get usdAmount(): Observable<number | null> {
@@ -111,6 +114,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.resetTransactionObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.stepper.selectedIndex = 0;
       this.priceForm.reset();
+      this.setDefaultTokenSelection();
     });
   }
 
@@ -133,7 +137,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
 
     this.currentNetworkObs
-      .pipe(distinctUntilChanged(), takeUntil(this.destroyed$))
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.destroyed$)
+      )
       .subscribe((currentNetwork: INetworkDetail | null) => {
         if (currentNetwork) {
           this.tokenChoiceForm.patchValue({
@@ -146,8 +153,35 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
             tokenId: TokenId.ETHEREUM
           });
         }
+        this.priceForm.patchValue({
+          amount: 1,
+          usdEnabled: false
+        });
         this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
       });
+  }
+
+  setDefaultTokenSelection(): void {
+    this.currentNetworkObs
+    .pipe(take(1))
+    .subscribe((currentNetwork: INetworkDetail | null) => {
+      if (currentNetwork) {
+        this.tokenChoiceForm.patchValue({
+          chainId: currentNetwork.chainId,
+          tokenId: currentNetwork.nativeCurrency.id
+        });
+      } else {
+        this.tokenChoiceForm.patchValue({
+          chainId: NetworkChainId.ETHEREUM,
+          tokenId: TokenId.ETHEREUM
+        });
+      }
+      this.priceForm.patchValue({
+        amount: 1,
+        usdEnabled: false
+      });
+      this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
+    });
   }
 
   listenToTokenChange(): void {
