@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header.component';
-import { formatServiceMock, web3LoginServiceMock } from '../../tests/services/services.mock';
-import { storeMock } from '../../tests/modules/modules.mock';
-import { ethereumNetworkMock } from '../../tests/variables/network-detail';
+import { formatServiceMock, web3LoginServiceMock } from '../../tests';
+import { storeMock } from '../../tests';
+import { ethereumNetworkMock } from '../../tests';
 import * as authActions from '../../../store/auth-store/state/actions';
 
 describe('UseCasesSidebarHeaderComponent', () => {

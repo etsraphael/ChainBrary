@@ -1,8 +1,8 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { AuthCheckingGuard } from './auth-checking.guard';
-import { storeMock } from '../../../../shared/tests/modules/modules.mock';
-import { authServiceMock } from '../../../../shared/tests/services/services.mock';
+import { storeMock } from '../../../../shared/tests';
+import { authServiceMock } from '../../../../shared/tests';
 import { AuthStatusCode } from '../../../../shared/enum';
 import { Subject } from 'rxjs';
 import * as actions from '../../../../store/auth-store/state/actions';

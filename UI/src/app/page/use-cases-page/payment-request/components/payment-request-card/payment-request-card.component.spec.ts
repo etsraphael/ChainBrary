@@ -2,10 +2,10 @@ import '@angular/compiler';
 import { describe, expect, it, vi, beforeEach } from 'vitest';
 import { PaymentRequestCardComponent } from './payment-request-card.component';
 import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
-import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
+import { priceFeedServiceMock, walletServiceMock } from '../../../../../shared/tests';
 import { Subject } from 'rxjs';
 import { INetworkDetail } from '@chainbrary/web3-login';
-import { ethereumNetworkMock } from '../../../../../shared/tests/variables/network-detail';
+import { ethereumNetworkMock } from '../../../../../shared/tests';
 import { AuthStatusCode } from '../../../../../shared/enum';
 
 describe('PaymentRequestCardComponent', () => {

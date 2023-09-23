@@ -47,14 +47,11 @@ export class Web3LoginComponent {
 
     // mobile app
     if (this.deviceService.isMobile() && !window?.ethereum?.isMetaMask) {
-      console.log("1");
-
       const originLink = window.location.origin.replace(/(^\w+:|^)\/\//, '');
       const url = `https://metamask.app.link/dapp/${originLink}${this.router.url}`;
       window.open(url);
       return;
     } else if (this.deviceService.isMobile() && window?.ethereum?.isMetaMask) {
-      console.log("2");
       this.requestEthAccount();
       return;
     }

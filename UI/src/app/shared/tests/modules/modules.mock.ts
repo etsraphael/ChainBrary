@@ -5,6 +5,9 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions } from '@ngrx/effects';
 
+// These values are the mocks for the various modules used in our components.
+// These mocks make it possible to use the modules without having to mock the prerequisites.
+
 export const storeMock = mock(Store) as Store<object>;
 export const snackbarMock = mock(MatSnackBar);
 export const dialogMock = mock(MatDialog);

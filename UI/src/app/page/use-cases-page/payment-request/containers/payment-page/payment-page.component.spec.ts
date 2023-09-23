@@ -1,12 +1,12 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { PaymentPageComponent } from './payment-page.component';
-import { actionMock, routeMock, snackbarMock, storeMock } from '../../../../../shared/tests/modules/modules.mock';
-import { web3LoginServiceMock } from '../../../../../shared/tests/services/services.mock';
+import { actionMock, routeMock, snackbarMock, storeMock } from '../../../../../shared/tests';
+import { web3LoginServiceMock } from '../../../../../shared/tests';
 import { Subject, of } from 'rxjs';
-import { ethereumNetworkMock } from '../../../../../shared/tests/variables/network-detail';
+import { ethereumNetworkMock } from '../../../../../shared/tests';
 import { IPaymentRequestState } from 'src/app/store/payment-request-store/state/interfaces';
-import { paymentRequestMock } from '../../../../../shared/tests/variables/payment-request';
+import { paymentRequestMock } from '../../../../../shared/tests';
 
 describe('PaymentPageComponent', () => {
   const paramsObs$ = of({ id: 'mockedId' });

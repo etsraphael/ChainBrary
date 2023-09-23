@@ -1,8 +1,8 @@
 import '@angular/compiler';
 import { describe, expect, it, beforeEach } from 'vitest';
 import { PaymentRequestMakerComponent } from './payment-request-maker.component';
-import { formatServiceMock, walletServiceMock } from '../../../../../shared/tests/services/services.mock';
-import { snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
+import { formatServiceMock, walletServiceMock } from '../../../../../shared/tests';
+import { snackbarMock } from '../../../../../shared/tests';
 import { Subject, of } from 'rxjs';
 
 describe('PaymentRequestMakerComponent', () => {

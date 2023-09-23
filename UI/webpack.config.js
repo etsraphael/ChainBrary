@@ -1,4 +1,5 @@
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
+const nodeExternals = require('webpack-node-externals'); // Importez le plugin webpack-node-externals
 
 module.exports = {
   devtool: 'source-map',
@@ -10,5 +11,6 @@ module.exports = {
       include: './dist/chain-brary',
       release: '0.0.3'
     })
-  ]
+  ],
+  externals: [nodeExternals()], // Exclure les dépendances Node.js
 };

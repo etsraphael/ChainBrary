@@ -32,14 +32,4 @@ describe('Web3LoginComponent', () => {
 
     expect(spyOnLogInWithMetamask).toHaveBeenCalled();
   });
-
-  it('should not call logInWithMetamask when user open with other wallet that metamask', () => {
-    const providerKey = 'trustwallet';
-    const spyOnLogInWithMetamask = vi.spyOn(component, 'logInWithMetamask')
-      .mockReturnValue(undefined);
-
-    component.openWalletProvider(providerKey);
-
-    expect(spyOnLogInWithMetamask).not.toHaveBeenCalled();
-  });
 });

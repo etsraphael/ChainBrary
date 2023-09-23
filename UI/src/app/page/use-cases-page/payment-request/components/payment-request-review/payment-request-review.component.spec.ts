@@ -2,7 +2,7 @@ import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
-import { dialogMock, snackbarMock } from '../../../../../shared/tests/modules/modules.mock';
+import { dialogMock, snackbarMock } from '../../../../../shared/tests';
 import { PaymentRequestReviewComponent } from './payment-request-review.component';
 import { MatDialogRef } from '@angular/material/dialog';
 

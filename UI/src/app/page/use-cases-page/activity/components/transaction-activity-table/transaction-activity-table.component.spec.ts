@@ -1,9 +1,9 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { TransactionActivityTableComponent } from './transaction-activity-table.component';
-import { formatServiceMock, web3LoginServiceMock } from '../../../../../shared/tests/services/services.mock';
+import { formatServiceMock, web3LoginServiceMock } from '../../../../../shared/tests';
 import { ITransactionLog, TransactionRole } from '@chainbrary/transaction-search';
-import { transactionLogMock } from '../../../../../shared/tests/variables/transactions';
+import { transactionLogMock } from '../../../../../shared/tests';
 
 describe('TransactionActivityTableComponent', () => {
   const component: TransactionActivityTableComponent = new TransactionActivityTableComponent(

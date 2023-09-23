@@ -2,7 +2,7 @@ import '@angular/compiler';
 import { describe, expect, it } from 'vitest';
 import { TransactionCardComponent } from './transaction-card.component';
 import { NetworkChainId } from '@chainbrary/web3-login';
-import { transactionCardMock } from '../../tests/variables/transactions';
+import { transactionCardMock } from '../../tests';
 
 describe('TransactionCardComponent', () => {
   const component: TransactionCardComponent = new TransactionCardComponent();

@@ -96,8 +96,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log("GOOD");
-
     this.generateObs();
     this.setUpMessage();
     this.generateSubscription();

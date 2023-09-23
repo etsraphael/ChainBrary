@@ -59,8 +59,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   mainForm: FormGroup<PaymentMakerForm>;
   linkGenerated: string;
   isAvatarUrlValid: boolean;
-  usdConversionRate = 0;
-  tokenConversionRate = 0;
   avatarUrl: HTMLImageElement;
 
   constructor(

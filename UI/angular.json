@@ -17,13 +17,20 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
-            "allowedCommonJsDependencies": ["web3", "buffer", "qrcode"],
+            "allowedCommonJsDependencies": [
+              "web3",
+              "buffer",
+              "qrcode"
+            ],
             "outputPath": "dist/chain-brary",
             "index": "src/index.html",
             "main": "src/main.ts",
-            "polyfills": ["zone.js"],
+            "polyfills": [
+              "zone.js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "aot": true,
             "assets": [
               "src/favicon.ico",
               "src/assets",
@@ -39,7 +46,9 @@
               "node_modules/bootstrap-icons/font/bootstrap-icons.css",
               "src/assets/themes/light.scss"
             ],
-            "scripts": ["node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"],
+            "scripts": [
+              "node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+            ],
             "customWebpackConfig": {
               "path": "./webpack.config.js"
             }
@@ -124,18 +133,29 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": ["zone.js", "zone.js/testing"],
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
-            "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/styles.scss"],
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.scss"
+            ],
             "scripts": []
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
+            "lintFilePatterns": [
+              "src/**/*.ts",
+              "src/**/*.html"
+            ]
           }
         }
       }
@@ -165,13 +185,19 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/web3-login/tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/web3-login/src/**/*.ts", "projects/web3-login/src/**/*.html"]
+            "lintFilePatterns": [
+              "projects/web3-login/src/**/*.ts",
+              "projects/web3-login/src/**/*.html"
+            ]
           }
         }
       }
@@ -201,13 +227,19 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/transaction-search/tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/transaction-search/**/*.ts", "projects/transaction-search/**/*.html"]
+            "lintFilePatterns": [
+              "projects/transaction-search/**/*.ts",
+              "projects/transaction-search/**/*.html"
+            ]
           }
         }
       }
@@ -237,13 +269,19 @@
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
             "tsConfig": "projects/token-bridge/tsconfig.spec.json",
-            "polyfills": ["zone.js", "zone.js/testing"]
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
           }
         },
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": ["projects/token-bridge/**/*.ts", "projects/token-bridge/**/*.html"]
+            "lintFilePatterns": [
+              "projects/token-bridge/**/*.ts",
+              "projects/token-bridge/**/*.html"
+            ]
           }
         }
       }
@@ -251,6 +289,8 @@
   },
   "cli": {
     "analytics": "fcc7e1cd-2da6-45a6-8b28-ea01a1317ebd",
-    "schematicCollections": ["@angular-eslint/schematics"]
+    "schematicCollections": [
+      "@angular-eslint/schematics"
+    ]
   }
 }

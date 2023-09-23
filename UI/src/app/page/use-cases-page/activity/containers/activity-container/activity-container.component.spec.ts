@@ -1,11 +1,11 @@
 import '@angular/compiler';
 import { describe, expect, it, vi } from 'vitest';
 import { ActivityContainerComponent } from './activity-container.component';
-import { storeMock } from '../../../../../shared/tests/modules/modules.mock';
+import { storeMock } from '../../../../../shared/tests';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { BehaviorSubject } from 'rxjs';
 import * as actions from '../../../../../store/transaction-store/state/actions';
-import { ethereumNetworkMock, polygonNetworkMock, sepoliaNetworkMock } from '../../../../../shared/tests/variables/network-detail';
+import { ethereumNetworkMock, polygonNetworkMock, sepoliaNetworkMock } from '../../../../../shared/tests';
 
 describe('ActivityContainerComponent', () => {
   const component: ActivityContainerComponent = new ActivityContainerComponent(
