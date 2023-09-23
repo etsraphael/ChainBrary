@@ -36,7 +36,7 @@
         [username]="mainForm.controls.profile.controls.username.value!"
         [amount]="(amount | async)!"
         [previewLink]="linkGenerated"
-        [tokenSelected]="(paymentTokenObs | async)"
+        [tokenSelected]="paymentTokenObs | async"
         [usdAmount]="usdAmount | async"
         [usdEnabled]="priceForm.controls.usdEnabled.value!"
         (goToPreviousPageEvent)="stepper.previous()"

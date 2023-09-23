@@ -120,24 +120,22 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       })
     });
 
-    this.currentNetworkObs.pipe(
-      distinctUntilChanged(),
-      takeUntil(this.destroyed$)
-    )
-    .subscribe((currentNetwork: INetworkDetail | null) => {
-      if(currentNetwork) {
-        this.tokenChoiceForm.patchValue({
-          chainId: currentNetwork.chainId,
-          tokenId: currentNetwork.nativeCurrency.id
-        })
-      } else {
-        this.tokenChoiceForm.patchValue({
-          chainId: NetworkChainId.ETHEREUM,
-          tokenId: TokenId.ETHEREUM
-        })
-      }
-      this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
-    });
+    this.currentNetworkObs
+      .pipe(distinctUntilChanged(), takeUntil(this.destroyed$))
+      .subscribe((currentNetwork: INetworkDetail | null) => {
+        if (currentNetwork) {
+          this.tokenChoiceForm.patchValue({
+            chainId: currentNetwork.chainId,
+            tokenId: currentNetwork.nativeCurrency.id
+          });
+        } else {
+          this.tokenChoiceForm.patchValue({
+            chainId: NetworkChainId.ETHEREUM,
+            tokenId: TokenId.ETHEREUM
+          });
+        }
+        this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
+      });
   }
 
   listenToTokenChange(): void {

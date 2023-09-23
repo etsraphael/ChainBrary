@@ -32,7 +32,7 @@ export interface PaymentMakerForm {
 
 export interface TokenChoiceMakerForm {
   tokenId: FormControl<string | null>;
-  chainId: FormControl<string |null>;
+  chainId: FormControl<string | null>;
 }
 
 export interface TokenChoiceMaker {
