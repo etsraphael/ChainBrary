@@ -1,7 +1,7 @@
-<div class="container">
+<div class="container pt-2" *ngIf="tokenSelected">
   <div class="row justify-content-center">
-    <div class="col-9 col-md-11 col-lg-9">
-      <p *ngIf="usdEnabled" class="px-2 text-dark">
+    <div class="col-12 col-md-11 col-lg-9">
+      <p *ngIf="usdEnabled" class="px-2 text-dark header-message">
         You're requesting <strong>$USD {{ usdAmount }}</strong
         >.
         <br />
@@ -11,20 +11,20 @@
       <table class="table text-dark">
         <tbody>
           <tr>
-            <td class="align-middle">Account</td>
+            <td class="align-middle">Receiver Name</td>
             <td>{{ username }}</td>
           </tr>
           <tr>
             <td class="align-middle">Payment</td>
             <td>
-              {{ amount }} {{ tokenSelected!.symbol }} <br />
+              {{ amount }} {{ tokenSelected.symbol }} <br />
               <span *ngIf="usdAmount" class="convertion-rate text-secondary">($USD {{ usdAmount }})</span>
             </td>
           </tr>
           <tr>
             <td class="align-middle">Protocol Fee (0.1%)</td>
             <td>
-              {{ protocolFeeAmount }} {{ tokenSelected!.symbol }}<br />
+              {{ protocolFeeAmount }} {{ tokenSelected.symbol }}<br />
               <span *ngIf="usdAmount" class="convertion-rate text-secondary">($USD {{ usdProtocolFeeAmount }})</span>
             </td>
           </tr>
@@ -32,7 +32,7 @@
             <td class="align-middle"><strong>Receiving Amount</strong></td>
             <td>
               <strong>
-                {{ receivingAmount }} {{ tokenSelected!.symbol }}
+                {{ receivingAmount }} {{ tokenSelected.symbol }}
                 <br />
                 <span *ngIf="usdAmount" class="convertion-rate text-secondary">(USD$ {{ usdReceivingAmount }})</span>
               </strong>
@@ -43,7 +43,7 @@
     </div>
   </div>
   <div class="row justify-content-center my-3">
-    <div class="col-9">
+    <div class="col-12">
       <div class="row">
         <div class="col-12 col-lg-6 py-2 py-lg-0">
           <app-chainbrary-button
@@ -64,7 +64,7 @@
   </div>
   <!-- Link generated -->
   <div class="row justify-content-center mb-4">
-    <div class="col-9">
+    <div class="col-12">
       <div class="row">
         <h6 class="text-muted">Link generated</h6>
         <div class="input-group">
