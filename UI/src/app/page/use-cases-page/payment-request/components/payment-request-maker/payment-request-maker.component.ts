@@ -1,3 +1,4 @@
+import { StepperSelectionEvent } from '@angular/cdk/stepper';
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import {
   AbstractControl,
@@ -8,7 +9,9 @@ import {
   ValidatorFn,
   Validators
 } from '@angular/forms';
+import { MatStepper } from '@angular/material/stepper';
 import { INetworkDetail, NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { Action } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import {
   Observable,
@@ -34,8 +37,6 @@ import {
   TokenChoiceMakerForm
 } from './../../../../../shared/interfaces';
 import { FormatService } from './../../../../../shared/services/format/format.service';
-import { Action } from '@ngrx/store';
-import { MatStepper } from '@angular/material/stepper';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
@@ -211,6 +212,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       if (publicAddress) this.profileForm.get('publicAddress')?.setValue(publicAddress);
       else this.profileForm.get('publicAddress')?.setValue('');
     });
+  }
+
+  onStepChange(event: StepperSelectionEvent): void {
+    if (event.selectedIndex === 2) {
+      this.generatePaymentRequest();
+    }
   }
 
   generatePaymentRequest(): void {
