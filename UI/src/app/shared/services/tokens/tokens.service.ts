@@ -109,7 +109,7 @@ export class TokensService {
         .transferFund(payload.addresses)
         .send({ from: payload.from, value: String(payload.amount), gas: gas });
     } catch (error) {
-      return Promise.reject((error as Error)?.message || error);
+      return Promise.reject((error as { message: string; code: number }) || error);
     }
   }
 }

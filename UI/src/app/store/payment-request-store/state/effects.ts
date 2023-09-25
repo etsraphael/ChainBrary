@@ -22,6 +22,7 @@ import {
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import { TokensService } from './../../../shared/services/tokens/tokens.service';
+import { WalletService } from './../../../shared/services/wallet/wallet.service';
 import * as PaymentRequestActions from './actions';
 import {
   selectIsNonNativeToken,
@@ -39,6 +40,7 @@ export class PaymentRequestEffects {
     private web3LoginService: Web3LoginService,
     private store: Store,
     private priceFeedService: PriceFeedService,
+    private walletService: WalletService,
     private tokensService: TokensService
   ) {}
 
@@ -365,7 +367,13 @@ export class PaymentRequestEffects {
               chainId: action[2].chainId as NetworkChainId
             })
           ),
-          catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+          catchError((error: { message: string; code: number }) =>
+            of(
+              PaymentRequestActions.amountSentFailure({
+                message: this.walletService.formatErrorMessage((error as { code: number }).code)
+              })
+            )
+          )
         );
       })
     );
@@ -397,7 +405,13 @@ export class PaymentRequestEffects {
                 chainId: action[2]?.chainId as NetworkChainId
               })
             ),
-            catchError((error: Error) => of(PaymentRequestActions.amountSentFailure({ message: error.message })))
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.amountSentFailure({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
+            )
           );
         }
       )
