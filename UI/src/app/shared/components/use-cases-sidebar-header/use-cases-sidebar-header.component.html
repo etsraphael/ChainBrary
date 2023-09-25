@@ -4,7 +4,7 @@
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotConnected">
         <app-chainbrary-button
           [buttonClasses]="['btn-primary-gradient', 'border-0', 'text-white']"
-          [buttonText]="'Login'"
+          buttonText="Connect Wallet"
           (callToAction)="openLoginModal()"
           data-id="login-btn"
         />
