@@ -154,7 +154,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           amount: 1,
           usdEnabled: false
         });
-        this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
       });
   }
 
@@ -175,7 +174,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         amount: 1,
         usdEnabled: false
       });
-      this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
     });
   }
 
@@ -185,6 +183,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       ?.valueChanges.pipe(
         filter((tokenId: string | null) => tokenId !== null),
         map((tokenId: string | null) => tokenId as string),
+        debounceTime(400),
         takeUntil(this.destroyed$)
       )
       .subscribe((tokenId: string) => {

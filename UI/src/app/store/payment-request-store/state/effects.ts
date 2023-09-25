@@ -266,13 +266,14 @@ export class PaymentRequestEffects {
     );
   });
 
-  selectToken$ = createEffect(() => {
+  tokenChoiceUpdated$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.updatedToken),
       concatLatestFrom(() => [
         this.store.select(selectPaymentConversion),
         this.store.select(selectPaymentRequestInUsdIsEnabled)
       ]),
+      filter((payload) => payload[1].data.tokenAmount !== null && payload[1].data.usdAmount !== null),
       map((payload: [ReturnType<typeof PaymentRequestActions.updatedToken>, StoreState<IConversionToken>, boolean]) => {
         if (payload[2]) {
           return PaymentRequestActions.applyConversionToken({
