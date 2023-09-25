@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, filter, take, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../shared/data/tokenList';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../shared/interfaces';
@@ -80,8 +80,13 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     return this.store.dispatch(updatedToken({ token: tokenFound }));
   }
 
-  applyConversionToken(amount: number): void {
-    return this.store.dispatch(applyConversionToken({ amount }));
+  applyConversionToken(amount: number): Subscription {
+    return this.currentNetwork$
+      .pipe(
+        take(1),
+        filter((network) => !!network)
+      )
+      .subscribe(() => this.store.dispatch(applyConversionToken({ amount })));
   }
 
   switchToUsd(priceInUsdEnabled: boolean): void {
