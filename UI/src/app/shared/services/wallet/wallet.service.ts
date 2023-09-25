@@ -29,4 +29,13 @@ export class WalletService {
   get netWorkOnWallet$(): Observable<INetworkDetail | null> {
     return this.web3LoginService.currentNetwork$;
   }
+
+  formatErrorMessage(code: number): string {
+    switch (code) {
+      case -32000:
+        return 'Wallet connect has not enough balance to pay for the transaction';
+      default:
+        return 'An error occurred while sending the transaction on the wallet';
+    }
+  }
 }

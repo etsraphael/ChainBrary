@@ -11,7 +11,7 @@
   </div>
   <div class="my-4"></div>
   <!-- Page Container -->
-  <mat-vertical-stepper [linear]="true" #stepper>
+  <mat-vertical-stepper [linear]="true" #stepper (selectionChange)="onStepChange($event)">
     <mat-step [stepControl]="profileForm">
       <ng-template matStepLabel>User Details</ng-template>
       <app-payment-request-profile-settings [profileForm]="profileForm" (goToNextPage)="stepper.next()">
@@ -24,7 +24,7 @@
         [tokenSelected]="paymentTokenObs | async"
         [currentNetworkObs]="currentNetworkObs"
         [paymentConversion]="(paymentConversionObs | async)!"
-        (goToNextPage)="stepper.next(); generatePaymentRequest()"
+        (goToNextPage)="stepper.next()"
         (goToPreviousPage)="stepper.previous()"
         (swapCurrency)="swapCurrency()"
       >
