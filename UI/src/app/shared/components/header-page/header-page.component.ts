@@ -13,19 +13,30 @@ export class HeaderPageComponent implements OnInit {
 
   constructor(private router: Router) {}
 
+  get headerButtons(): IHeaderBtn[] {
+    return this.headerBtns.filter((btn) => btn.visible);
+  }
+
   ngOnInit(): void {
+    this.setUpNavButtons();
+  }
+
+  setUpNavButtons(): void {
     this.headerBtns = [
       {
         text: 'Home',
-        action: (): Promise<boolean> => this.router.navigate(['/'])
+        action: (): Promise<boolean> => this.router.navigate(['/']),
+        visible: this.router.url !== '/'
       },
       {
         text: 'Github',
-        action: (): Window | null => this.goToLinkOutsideApp('https://github.com/etsraphael/ChainBrary')
+        action: (): Window | null => this.goToLinkOutsideApp('https://github.com/etsraphael/ChainBrary'),
+        visible: true
       },
       {
         text: 'Discord',
-        action: (): Window | null => this.goToLinkOutsideApp('https://discord.gg/Y3pTujEsMe')
+        action: (): Window | null => this.goToLinkOutsideApp('https://discord.gg/Y3pTujEsMe'),
+        visible: true
       }
     ];
   }
@@ -38,4 +49,5 @@ export class HeaderPageComponent implements OnInit {
 interface IHeaderBtn {
   text: string;
   action: () => Promise<boolean> | Window | null;
+  visible: boolean;
 }

@@ -81,5 +81,5 @@ export const selectProfilePayment: MemoizedSelector<
 export const selectIsPaymentMaker: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   selectPublicAddress,
-  (s, adress) => adress === s.profile?.publicAddress
+  (s, adress) => adress?.toLowerCase() === s.profile?.publicAddress?.toLowerCase()
 );
