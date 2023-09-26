@@ -18,7 +18,6 @@ import {
   ReplaySubject,
   Subscription,
   debounceTime,
-  distinctUntilChanged,
   filter,
   map,
   of,
@@ -141,23 +140,25 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   listenNetworkChange(): Subscription {
-    return this.currentNetworkObs.pipe(takeUntil(this.destroyed$)).subscribe((currentNetwork: INetworkDetail | null) => {
-      if (currentNetwork) {
-        this.tokenChoiceForm.patchValue({
-          chainId: currentNetwork.chainId,
-          tokenId: currentNetwork.nativeCurrency.id
+    return this.currentNetworkObs
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((currentNetwork: INetworkDetail | null) => {
+        if (currentNetwork) {
+          this.tokenChoiceForm.patchValue({
+            chainId: currentNetwork.chainId,
+            tokenId: currentNetwork.nativeCurrency.id
+          });
+        } else {
+          this.tokenChoiceForm.patchValue({
+            chainId: NetworkChainId.ETHEREUM,
+            tokenId: TokenId.ETHEREUM
+          });
+        }
+        this.priceForm.patchValue({
+          amount: 1,
+          usdEnabled: false
         });
-      } else {
-        this.tokenChoiceForm.patchValue({
-          chainId: NetworkChainId.ETHEREUM,
-          tokenId: TokenId.ETHEREUM
-        });
-      }
-      this.priceForm.patchValue({
-        amount: 1,
-        usdEnabled: false
       });
-    });
   }
 
   setDefaultTokenSelection(): void {
