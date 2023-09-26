@@ -16,6 +16,7 @@ import { Buffer } from 'buffer';
 import {
   Observable,
   ReplaySubject,
+  Subscription,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -108,6 +109,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.listenToAmountChange();
     this.listenToTokenChange();
     this.listenToResetTransaction();
+    this.listenNetworkChange();
+    this.setDefaultTokenSelection();
   }
 
   listenToResetTransaction(): void {
@@ -135,26 +138,26 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
+  }
 
-    this.currentNetworkObs
-      .pipe(distinctUntilChanged(), takeUntil(this.destroyed$))
-      .subscribe((currentNetwork: INetworkDetail | null) => {
-        if (currentNetwork) {
-          this.tokenChoiceForm.patchValue({
-            chainId: currentNetwork.chainId,
-            tokenId: currentNetwork.nativeCurrency.id
-          });
-        } else {
-          this.tokenChoiceForm.patchValue({
-            chainId: NetworkChainId.ETHEREUM,
-            tokenId: TokenId.ETHEREUM
-          });
-        }
-        this.priceForm.patchValue({
-          amount: 1,
-          usdEnabled: false
+  listenNetworkChange(): Subscription {
+    return this.currentNetworkObs.pipe(takeUntil(this.destroyed$)).subscribe((currentNetwork: INetworkDetail | null) => {
+      if (currentNetwork) {
+        this.tokenChoiceForm.patchValue({
+          chainId: currentNetwork.chainId,
+          tokenId: currentNetwork.nativeCurrency.id
         });
+      } else {
+        this.tokenChoiceForm.patchValue({
+          chainId: NetworkChainId.ETHEREUM,
+          tokenId: TokenId.ETHEREUM
+        });
+      }
+      this.priceForm.patchValue({
+        amount: 1,
+        usdEnabled: false
       });
+    });
   }
 
   setDefaultTokenSelection(): void {

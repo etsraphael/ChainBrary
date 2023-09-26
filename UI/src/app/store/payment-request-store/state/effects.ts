@@ -252,7 +252,7 @@ export class PaymentRequestEffects {
           if (payload[3]) {
             return PaymentRequestActions.applyConversionTokenSuccess({
               usdAmount: payload[0].amount,
-              tokenAmount: payload[0].amount / price
+              tokenAmount: parseFloat((payload[0].amount / price).toFixed(12))
             });
           }
           // Set up the price based on the token
