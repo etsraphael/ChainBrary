@@ -39,7 +39,9 @@ jobs:
       # build and test the apps
       - name: build
         run: |
-          npm run build --prod
+          npm run build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
 
       # lint the code
       - name: Lint code
