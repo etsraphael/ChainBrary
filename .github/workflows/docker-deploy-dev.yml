@@ -37,6 +37,17 @@ jobs:
       - name: Lint code
         run: npm run lint
 
+      - name: build test
+        run: |
+          if [ -z "$SENTRY_AUTH_TOKEN" ]; then
+            echo "SENTRY_AUTH_TOKEN is empty"
+          else
+            echo "SENTRY_AUTH_TOKEN is set"
+          fi
+          npm run build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+
       # build and test the apps
       - name: build
         run: |
