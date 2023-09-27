@@ -1,4 +1,5 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import { resetAuth } from '../../auth-store/state/actions';
 import * as PaymentActions from './actions';
 import { initialState } from './init';
 import { IPaymentRequestState } from './interfaces';
@@ -172,6 +173,13 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         error: message,
         data: false
       }
+    })
+  ),
+  on(
+    resetAuth,
+    (state): IPaymentRequestState => ({
+      ...state,
+      conversion: initialState.conversion
     })
   )
 );

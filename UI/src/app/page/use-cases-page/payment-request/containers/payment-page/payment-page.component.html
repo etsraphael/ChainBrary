@@ -1,16 +1,36 @@
+<!-- Banner message -->
 <div *ngIf="isPaymentMaker | async" class="row text-light px-4 py-3 bg-banner mx-0" data-id="warning-banner">
   <div class="w-100">
     <h6 class="mb-0">
-      <i class="bi bi-exclamation-triangle me-3"></i>
+      <i class="bi bi-exclamation-triangle me-2"></i>
       <span>Attention: This is a preview of your request. Avoid the mistake of self-payment.</span>
     </h6>
   </div>
 </div>
 
 <div class="container bg-light pb-5">
+  <!-- Title container -->
+  <div class="row justify-content-center mt-3">
+    <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 text-start">
+      <h3 class="text-dark">Payment Request</h3>
+      <hr />
+    </div>
+  </div>
+
+  <!-- Description -->
+  <div class="row justify-content-center">
+    <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 text-start">
+      <p class="text-muted">
+        You've reached ChainBrary's secure payment portal. Fast, secure, and reliable cryptocurrency transactions start
+        here. Verify, confirm, and go!
+      </p>
+    </div>
+  </div>
+
+  <!-- Success Message -->
   <div *ngIf="(transactionCards$ | async)?.length! > 0">
     <div class="d-flex justify-content-center">
-      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-5">
+      <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
         <app-transaction-card [cardContent]="(transactionCards$ | async)![0]"></app-transaction-card>
       </div>
     </div>
@@ -23,7 +43,8 @@
       </div>
     </div>
   </div>
-  <div class="mt-5" *ngIf="(transactionCards$ | async)?.length! === 0">
+  <div *ngIf="(transactionCards$ | async)?.length! === 0">
+    <!-- Wrong network message -->
     <div *ngIf="paymentSelectedInvalid$ | async" class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
         <div class="alert alert-danger border-0 shadow-sm" data-id="wrong-network-alert" role="alert">
@@ -42,6 +63,7 @@
         </div>
       </div>
     </div>
+    <!-- Connected view header -->
     <div class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
         <app-use-cases-sidebar-header
@@ -52,6 +74,7 @@
       </div>
     </div>
     <div class="d-flex justify-content-center">
+      <!-- Loading animation -->
       <div
         class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 my-5"
         *ngIf="paymentIsLoading$ | async; else paymentRequestCard"
@@ -64,6 +87,7 @@
       </div>
       <ng-template #paymentRequestCard>
         <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 mt-2">
+          <!-- USD message -->
           <div
             *ngIf="(selectPaymentRequestState$ | async)?.payment?.data?.usdEnabled && tokenInfo"
             class="card shadow-sm border-0 mt-2"
@@ -78,12 +102,14 @@
               </p>
             </div>
           </div>
+          <!-- Error message -->
           <ng-container *ngIf="canTransferError$ | async as canTransferError; else showPaymentRequest">
             <div class="alert alert-danger border-0 shadow-sm mt-3" role="alert">
               <h4 class="alert-heading">Error</h4>
               <p>{{ canTransferError }}</p>
             </div>
           </ng-container>
+          <!-- Payment request card -->
           <ng-template #showPaymentRequest>
             <app-payment-request-card
               [canTransfer]="(smartContractCanTransfer$ | async)!"

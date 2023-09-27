@@ -41,6 +41,8 @@ jobs:
       - name: build
         run: |
           npm run build
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           
   push_to_Docker_Hub:
     environment: dev
@@ -78,6 +80,8 @@ jobs:
           file: ./UI/dockerfile/dockerfile-dev
           push: true
           tags: ${{ vars.DOCKERHUB_CONTAINER_NAME }}
+          build-args: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
       - name: Run the image in a container
         uses: addnab/docker-run-action@v3

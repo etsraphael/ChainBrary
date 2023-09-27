@@ -16,8 +16,8 @@ import { Buffer } from 'buffer';
 import {
   Observable,
   ReplaySubject,
+  Subscription,
   debounceTime,
-  distinctUntilChanged,
   filter,
   map,
   of,
@@ -108,6 +108,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.listenToAmountChange();
     this.listenToTokenChange();
     this.listenToResetTransaction();
+    this.listenNetworkChange();
+    this.setDefaultTokenSelection();
   }
 
   listenToResetTransaction(): void {
@@ -135,9 +137,11 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         username: new FormControl('', [Validators.required, Validators.maxLength(20)])
       })
     });
+  }
 
-    this.currentNetworkObs
-      .pipe(distinctUntilChanged(), takeUntil(this.destroyed$))
+  listenNetworkChange(): Subscription {
+    return this.currentNetworkObs
+      .pipe(takeUntil(this.destroyed$))
       .subscribe((currentNetwork: INetworkDetail | null) => {
         if (currentNetwork) {
           this.tokenChoiceForm.patchValue({
@@ -154,7 +158,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           amount: 1,
           usdEnabled: false
         });
-        this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
       });
   }
 
@@ -175,7 +178,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         amount: 1,
         usdEnabled: false
       });
-      this.setUpTokenChoice.emit(this.tokenChoiceForm.get('tokenId')?.value as string);
     });
   }
 
@@ -185,6 +187,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       ?.valueChanges.pipe(
         filter((tokenId: string | null) => tokenId !== null),
         map((tokenId: string | null) => tokenId as string),
+        debounceTime(400),
         takeUntil(this.destroyed$)
       )
       .subscribe((tokenId: string) => {
