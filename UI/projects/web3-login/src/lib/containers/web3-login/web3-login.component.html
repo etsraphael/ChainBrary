@@ -8,13 +8,13 @@
 </head>
 
 <body class="py-3 bg-light">
-  <lib-header></lib-header>
-  <lib-body
+  <lib-card-header-login></lib-card-header-login>
+  <lib-card-body-login
     [isLoading]="isLoading"
     (stateEvent)="eventHandler($event)"
     (openWalletProviderEvent)="openWalletProvider($event)"
   >
-  </lib-body>
+  </lib-card-body-login>
 </body>
 
 <script
