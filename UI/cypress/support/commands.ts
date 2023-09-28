@@ -40,7 +40,7 @@ Cypress.Commands.add('login', (walletAddress: string, signedMessage: string, net
 
   // Click on login button
   cy.get('app-use-cases-sidebar-header [data-id="login-btn"]').click();
-  cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+  cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
 });
 
 declare global {
