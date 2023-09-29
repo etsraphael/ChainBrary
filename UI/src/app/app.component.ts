@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   constructor(private analyticsService: AnalyticsService, private meta: Meta) {}
 
   ngOnInit(): void {
-    this.analyticsService.initializeGoogleAnalytics();
     this.meta.updateTag({ name: 'description', content: "ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing users with a library of open-source and secure tools for building and interacting with blockchain applications." });
+    this.analyticsService.initializeGoogleAnalytics();
   }
 }
