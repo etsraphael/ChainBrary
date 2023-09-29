@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Meta } from '@angular/platform-browser';
-import { ActivatedRoute, Params, Router } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -75,8 +75,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     private web3LoginService: Web3LoginService,
     private _snackBar: MatSnackBar,
     private actions$: Actions,
-    private meta: Meta,
-    private router: Router
+    private meta: Meta
   ) {
     this.setUpMetaData();
     this.setUpId();
@@ -203,34 +202,9 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   setUpMetaData(): void {
-    const title = 'Payment Request';
     const description =
       "ChainBrary's secure payment portal. Fast, secure, and reliable cryptocurrency transactions start here. Verify, confirm, and go!";
-
-    // Using Location and Router to get the full URL
-    const baseUrl = window.location.origin;
-    const path = this.router.url;
-    const fullUrl = baseUrl + path;
-    const image = baseUrl + '/assets/images/easy_payment_money_transaction_colorful.png';
-
-    // Set Primary Meta Tags
-    this.meta.addTags([
-      { name: 'title', content: title },
-
-      // Set Open Graph / Facebook meta tags
-      { property: 'og:type', content: 'website' },
-      { property: 'og:url', content: fullUrl },
-      { property: 'og:title', content: title },
-      { property: 'og:description', content: description },
-      { property: 'og:image', content: image },
-
-      // Set Twitter meta tags
-      { property: 'twitter:card', content: 'summary_large_image' },
-      { property: 'twitter:url', content: fullUrl },
-      { property: 'twitter:title', content: title },
-      { property: 'twitter:description', content: description },
-      { property: 'twitter:image', content: image }
-    ]);
+    this.meta.updateTag({ name: 'description', content: description });
   }
 
   ngOnDestroy(): void {
