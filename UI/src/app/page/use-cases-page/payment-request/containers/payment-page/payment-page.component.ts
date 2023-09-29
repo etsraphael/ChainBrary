@@ -78,6 +78,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     private meta: Meta,
     private router: Router
   ) {
+    this.setUpMetaData();
     this.setUpId();
   }
 
@@ -102,7 +103,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setUpMetaData();
     this.generateObs();
     this.setUpMessage();
     this.generateSubscription();
