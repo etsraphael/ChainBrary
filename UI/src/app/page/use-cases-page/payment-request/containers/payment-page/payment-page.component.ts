@@ -1,6 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Meta } from '@angular/platform-browser';
 import { ActivatedRoute, Params } from '@angular/router';
 import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
@@ -74,10 +73,8 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     private store: Store,
     private web3LoginService: Web3LoginService,
     private _snackBar: MatSnackBar,
-    private actions$: Actions,
-    private meta: Meta
+    private actions$: Actions
   ) {
-    this.setUpMetaData();
     this.setUpId();
   }
 
@@ -199,12 +196,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         map((network: INetworkDetail | null) => network as INetworkDetail)
       )
       .subscribe((network: INetworkDetail) => this.store.dispatch(networkChange({ network })));
-  }
-
-  setUpMetaData(): void {
-    const description =
-      "ChainBrary's secure payment portal. Fast, secure, and reliable cryptocurrency transactions start here. Verify, confirm, and go!";
-    this.meta.updateTag({ name: 'description', content: description });
   }
 
   ngOnDestroy(): void {
