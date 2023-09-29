@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IModalState, Web3Provider, providerData } from '../../interfaces';
 
 @Component({
-  selector: 'lib-body[isLoading]',
-  templateUrl: './body.component.html',
-  styleUrls: ['./body.component.scss']
+  selector: 'lib-card-body-login',
+  templateUrl: './card-body-login.component.html',
+  styleUrls: ['./card-body-login.component.scss']
 })
-export class BodyComponent {
+export class CardBodyLoginComponent {
   @Input() isLoading = false;
   @Output() stateEvent = new EventEmitter<IModalState>();
   @Output() openWalletProviderEvent = new EventEmitter<string>();
