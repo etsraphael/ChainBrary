@@ -12,7 +12,7 @@ describe('Log an user without Metamask', () => {
 
     // Click on login button
     cy.get('app-use-cases-sidebar-header [data-id="login-btn"]').click();
-    cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
 
     // Check snackbar message
     cy.get('mat-snack-bar-container').should('be.visible');
@@ -36,7 +36,7 @@ describe('Log an user with MetaMask', () => {
 
     // Click on login button
     cy.get('app-use-cases-sidebar-header [data-id="login-btn"]').click();
-    cy.get('lib-web3-login lib-body [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
 
     // check is address is visible
     cy.get('app-use-cases-sidebar-header [data-id="address-id"]').should('be.visible');
