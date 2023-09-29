@@ -101,10 +101,10 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setUpMetaData();
     this.generateObs();
     this.setUpMessage();
     this.generateSubscription();
-    this.setUpMetaData();
   }
 
   generateSubscription(): void {
