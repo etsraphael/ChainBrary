@@ -105,7 +105,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.generateObs();
     this.setUpMessage();
     this.generateSubscription();
-    this.setUpMetaData();
   }
 
   generateSubscription(): void {
