@@ -56,8 +56,6 @@ describe('TransactionBridge', function () {
         transactionBridge.connect(owner).transferFund([], { value: ethers.parseEther('2') })
       ).to.be.revertedWith('TransactionBridge: Invalid number of recipients');
     });
-
-    // Add more cases to test different scenarios and edge cases
   });
 
   it('Should transfer the correct fee to the owner', async function () {
