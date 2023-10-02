@@ -59,4 +59,26 @@ describe('TransactionBridge', function () {
 
     // Add more cases to test different scenarios and edge cases
   });
+
+  it('Should transfer the correct fee to the owner', async function () {
+    const { transactionBridge, owner, addr1, addr2 } = await loadFixture(deployContractFixture);
+    const sender = addr1;
+    const recipients = [addr2.address];
+
+    // Getting initial balance of the owner to check the fee later
+    const initialOwnerBalance = new BigNumber((await ethers.provider.getBalance(owner.address)).toString());
+
+    const amountToSend = new BigNumber(ethers.parseEther('2').toString());
+    const feeRate = new BigNumber((await transactionBridge.feeRate()).toString());
+    const fee = amountToSend.times(feeRate).div(100000);
+
+    // Sender sends the fund, instead of the owner
+    await transactionBridge.connect(sender).transferFund(recipients, { value: amountToSend.toString() });
+
+    const finalOwnerBalance = new BigNumber((await ethers.provider.getBalance(owner.address)).toString());
+
+    const expectedOwnerBalance = initialOwnerBalance.plus(fee);
+
+    expect(finalOwnerBalance.toString()).to.equal(expectedOwnerBalance.toString());
+  });
 });
