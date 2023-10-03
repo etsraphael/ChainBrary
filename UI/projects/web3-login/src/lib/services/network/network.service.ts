@@ -271,6 +271,10 @@ export class NetworkServiceWeb3Login {
         return EMPTY as Observable<string | undefined>;
       }
 
+      // TODO: delete this code
+      console.log('called');
+      console.log('window.ethereum', window.ethereum);
+
       return new Observable<string>((subscriber) => {
         window.ethereum.on('accountsChanged', (accounts: string[]) => {
           if (accounts.length === 0) {
