@@ -17,7 +17,8 @@
     "test-unit:local": "ng test",
     "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "build:libs": "./scripts/build_libraries.sh",
-    "publish:libs": "./scripts/publish_libraries.sh"
+    "publish:libs": "./scripts/publish_libraries.sh",
+    "ganache": "ganache-cli -p 7545 -e 1000 -a 10"
   },
   "private": true,
   "dependencies": {
@@ -71,6 +72,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "cypress": "^13.2.0",
     "eslint": "^8.39.0",
+    "ganache-cli": "^6.12.2",
     "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
