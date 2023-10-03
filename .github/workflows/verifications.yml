@@ -92,3 +92,8 @@ jobs:
       - name: generate abis
         run: |
           npm run abi
+
+      # unit test
+      - name: unit test
+        run: |
+          npm run test
