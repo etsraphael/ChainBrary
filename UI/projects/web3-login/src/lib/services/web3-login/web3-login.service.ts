@@ -37,11 +37,21 @@ export class Web3LoginService {
   }
 
   get onChainChangedEvent$(): Observable<INetworkDetail | null> {
-    return this.networkServiceWeb3Login.onChainChangedEvent();
+    return this.publicGlobalValuesService.walletConnected$.pipe(
+      distinctUntilChanged(),
+      switchMap((walletProvider: WalletProvider | null) => {
+        switch (walletProvider) {
+          case WalletProvider.METAMASK:
+            return this.metamaskProviderService.onChainChangedEvent();
+          default:
+            return of(null);
+        }
+      })
+    );
   }
 
   get currentNetwork$(): Observable<INetworkDetail | null> {
-    return this.networkServiceWeb3Login.currentNetwork$;
+    return this.publicGlobalValuesService.currentNetwork$;
   }
 
   openLoginModal(): MatDialogRef<Web3LoginComponent> {

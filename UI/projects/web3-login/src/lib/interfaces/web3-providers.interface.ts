@@ -1,4 +1,4 @@
-import { INetworkDetail } from './modalState.interface';
+import { INetworkDetail } from './network.interface';
 
 export enum WalletProvider {
   METAMASK = 'metamask'

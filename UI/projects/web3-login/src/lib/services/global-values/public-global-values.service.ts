@@ -1,6 +1,16 @@
 import { Inject, Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, combineLatest, distinctUntilChanged, filter, map } from 'rxjs';
-import { INetworkDetail, LoginPayload, NetworkChainCode, NetworkChainId, NetworkRpcUrlSupported, TokenId, WalletConnectedEvent, WalletProvider, Web3LoginConfig } from '../../interfaces';
+import {
+  INetworkDetail,
+  LoginPayload,
+  NetworkChainCode,
+  NetworkChainId,
+  NetworkRpcUrlSupported,
+  TokenId,
+  WalletConnectedEvent,
+  WalletProvider,
+  Web3LoginConfig
+} from '../../interfaces';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +18,11 @@ import { INetworkDetail, LoginPayload, NetworkChainCode, NetworkChainId, Network
 export class PublicGlobalValuesService {
   private _walletConnected: BehaviorSubject<WalletProvider | null> = new BehaviorSubject<WalletProvider | null>(null);
   private _loginPayload: BehaviorSubject<LoginPayload | null> = new BehaviorSubject<LoginPayload | null>(null);
+  private _currentNetwork: BehaviorSubject<INetworkDetail | null> = new BehaviorSubject<INetworkDetail | null>(null);
+
+  readonly walletConnected$: Observable<WalletProvider | null> = this._walletConnected.asObservable();
+  readonly recentLoginPayload$: Observable<LoginPayload | null> = this._loginPayload.asObservable();
+  readonly currentNetwork$: Observable<INetworkDetail | null> = this._currentNetwork.asObservable();
 
   constructor(@Inject('config') private config: Web3LoginConfig) {}
 
@@ -17,16 +32,12 @@ export class PublicGlobalValuesService {
     this._walletConnected.next(value);
   }
 
-  get walletConnected$(): Observable<WalletProvider | null> {
-    return this._walletConnected.asObservable();
-  }
-
   set recentLoginPayload(value: LoginPayload | null) {
     this._loginPayload.next(value);
   }
 
-  get recentLoginPayload$(): Observable<LoginPayload | null> {
-    return this._loginPayload.asObservable();
+  set currentNetwork(value: INetworkDetail | null) {
+    this._currentNetwork.next(value);
   }
 
   // events from providers
@@ -49,7 +60,6 @@ export class PublicGlobalValuesService {
   }
 
   // TODO: static function to remove
-
 
   getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
     const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();

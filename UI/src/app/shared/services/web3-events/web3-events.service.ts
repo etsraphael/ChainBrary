@@ -29,14 +29,13 @@ export class Web3EventsService {
       this.web3LoginService.closeLoginModal();
     });
 
-    // TODO: To put back when we have a way to get the network name from the chainId
-    // this.web3LoginService.onChainChangedEvent$
-    //   .pipe(
-    //     filter((network: INetworkDetail | null) => !!network),
-    //     map((network: INetworkDetail | null) => network as INetworkDetail)
-    //   )
-    //   .subscribe((network: INetworkDetail) => {
-    //     this.store.dispatch(networkChangeSuccess({ network }));
-    //   });
+    this.web3LoginService.onChainChangedEvent$
+      .pipe(
+        filter((network: INetworkDetail | null) => !!network),
+        map((network: INetworkDetail | null) => network as INetworkDetail)
+      )
+      .subscribe((network: INetworkDetail) => {
+        this.store.dispatch(networkChangeSuccess({ network }));
+      });
   }
 }

@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
-import { IModalState, INetworkDetail, ModalStateType, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -22,8 +23,7 @@ import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../.
 import {
   accountChanged,
   networkChange,
-  networkChangeSuccess,
-  setAuthPublicAddress
+  networkChangeSuccess
 } from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
@@ -46,7 +46,6 @@ import {
   selectSmartContractCanTransferError
 } from './../../../../../store/payment-request-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-payment-page',

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Observable } from 'rxjs';
+import { INetworkDetail } from '../../../interfaces';
 import { ErrorHandlerService } from '../../error-handler/error-handler.service';
 import { PrivateGlobalValuesService } from '../../global-values/private-global-values.service';
 import { PublicGlobalValuesService } from '../../global-values/public-global-values.service';
@@ -21,5 +22,6 @@ export abstract class BaseProviderService {
   ) {}
 
   abstract logInWithWallet(): void;
-  abstract onAccountChangedEvent(): Observable<string | undefined>
+  abstract onAccountChangedEvent(): Observable<string | undefined>;
+  abstract onChainChangedEvent(): Observable<INetworkDetail | null>;
 }

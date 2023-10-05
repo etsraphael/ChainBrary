@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { EMPTY, Observable, defer } from 'rxjs';
-import { WalletProvider } from '../../../interfaces';
+import { EMPTY, Observable, defer, of } from 'rxjs';
+import { INetworkDetail, WalletProvider } from '../../../interfaces';
 import { ErrorHandlerService } from '../../error-handler/error-handler.service';
 import { PrivateGlobalValuesService } from '../../global-values/private-global-values.service';
 import { PublicGlobalValuesService } from '../../global-values/public-global-values.service';
@@ -51,10 +51,6 @@ export class MetamaskProviderService extends BaseProviderService {
     } else {
       this.privateGlobalValuesService.isLoading = false;
       this.errorHandlerService.showSnackBar('Non-Ethereum browser detected. You should consider trying MetaMask!');
-      // this.stateEvent.emit({
-      //   type: ModalStateType.ERROR,
-      //   message: 'Non-Ethereum browser detected. You should consider trying MetaMask!'
-      // });
     }
   }
 
@@ -71,6 +67,18 @@ export class MetamaskProviderService extends BaseProviderService {
           } else {
             subscriber.next(accounts[0]);
           }
+        });
+      });
+    });
+  }
+
+  onChainChangedEvent(): Observable<INetworkDetail | null> {
+    return defer(() => {
+      if (typeof window?.ethereum === 'undefined') return of(null);
+      return new Observable<INetworkDetail>((subscriber) => {
+        window.ethereum.on('chainChanged', (chainCode: string) => {
+          subscriber.next(this.networkService.getNetworkDetailByChainCode(chainCode));
+          this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainCode(chainCode);
         });
       });
     });
