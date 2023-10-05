@@ -58,19 +58,23 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): void {
-    this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: IModalState) => {
-      switch (state.type) {
-        case ModalStateType.SUCCESS:
-          this.store.dispatch(
-            setAuthPublicAddress({
-              publicAddress: state.data?.publicAddress as string,
-              network: state.data?.network as INetworkDetail
-            })
-          );
-          this.web3LoginService.closeLoginModal();
-          break;
-      }
-    });
+
+    this.web3LoginService.openLoginModal();
+
+
+    // this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: IModalState) => {
+    //   switch (state.type) {
+    //     case ModalStateType.SUCCESS:
+    //       this.store.dispatch(
+    //         setAuthPublicAddress({
+    //           publicAddress: state.data?.publicAddress as string,
+    //           network: state.data?.network as INetworkDetail
+    //         })
+    //       );
+    //       this.web3LoginService.closeLoginModal();
+    //       break;
+    //   }
+    // });
   }
 
   logOut(): void {

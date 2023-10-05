@@ -4,7 +4,7 @@ export const GLOBAL_FEATURE_KEY = 'global';
 
 export interface IGlobalState {
   theme: string;
-  web3Provier: Web3;
+  web3Provier: Web3 | null;
 }
 
 export interface GlobalState {

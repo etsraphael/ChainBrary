@@ -265,28 +265,6 @@ export class NetworkServiceWeb3Login {
     return this.getNetworkDetailByChainId(null);
   }
 
-  onAccountChangedEvent(): Observable<string | undefined> {
-    return defer(() => {
-      if (typeof window?.ethereum === 'undefined') {
-        return EMPTY as Observable<string | undefined>;
-      }
-
-      // TODO: delete this code
-      console.log('called');
-      console.log('window.ethereum', window.ethereum);
-
-      return new Observable<string>((subscriber) => {
-        window.ethereum.on('accountsChanged', (accounts: string[]) => {
-          if (accounts.length === 0) {
-            subscriber.next(undefined);
-          } else {
-            subscriber.next(accounts[0]);
-          }
-        });
-      });
-    });
-  }
-
   onChainChangedEvent(): Observable<INetworkDetail | null> {
     return defer(() => {
       if (typeof window?.ethereum === 'undefined') return of(null);

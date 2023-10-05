@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IModalState, Web3Provider, providerData } from '../../interfaces';
+import { WalletProvider, Web3Provider, providerData } from '../../interfaces';
 
 @Component({
   selector: 'lib-card-body-login',
@@ -8,8 +8,7 @@ import { IModalState, Web3Provider, providerData } from '../../interfaces';
 })
 export class CardBodyLoginComponent {
   @Input() isLoading = false;
-  @Output() stateEvent = new EventEmitter<IModalState>();
-  @Output() openWalletProviderEvent = new EventEmitter<string>();
+  @Output() openWalletProviderEvent = new EventEmitter<WalletProvider>();
 
   providers = providerData;
 

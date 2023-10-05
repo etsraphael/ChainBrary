@@ -19,15 +19,28 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.analyticsService.initializeGoogleAnalytics();
 
-
-    // TODO: delete this code
+    // // TODO: delete this code
     // console.log('starting')
     // // test web3 connection to http://localhost:7545
     // const web3 = new Web3('http://localhost:7545');
 
     // // get balance of 0x641875Aef816aF684b714eC24D0670EBa326e140 address
-    // web3.eth.getBalance('0xCB2E3f10B09379Afe128078cd8A938AE3234ddef').then((balance)=> {
+    // web3.eth.getBalance('0x4d99C0d9aB90fa33B51Db0deF06124b8708F9681').then((balance)=> {
     //   console.log('balance: ', balance)
     // });
+
+
+    // web3.eth.getAccounts().then(accounts => {
+    //   const balancePromises = accounts.map(account =>
+    //     web3.eth.getBalance(account).then(balance => ({ account, balance: parseFloat(web3.utils.fromWei(balance, 'ether')) }))
+    //   );
+
+    //   Promise.all(balancePromises).then(balances => {
+    //     balances.sort((a, b) => b.balance - a.balance); // Sort by balance, descending
+    //     const top10 = balances.slice(0, 10); // Get top 10
+    //     console.log('Top 10 addresses:', top10);
+    //   });
+    // });
+
   }
 }

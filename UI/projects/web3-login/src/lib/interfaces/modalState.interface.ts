@@ -1,3 +1,4 @@
+// TODO: remove IModalState and ModalStateType
 export interface IModalState {
   type: ModalStateType;
   message?: string;

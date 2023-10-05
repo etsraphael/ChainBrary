@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
-import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
+import { IModalState, INetworkDetail, ModalStateType, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -46,6 +46,7 @@ import {
   selectSmartContractCanTransferError
 } from './../../../../../store/payment-request-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-payment-page',
@@ -138,23 +139,25 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
       );
   }
 
-  openLoginModal(): Subscription {
-    return this.web3LoginService
-      .openLoginModal()
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((state: IModalState) => {
-        switch (state.type) {
-          case ModalStateType.SUCCESS:
-            this.store.dispatch(
-              setAuthPublicAddress({
-                publicAddress: state.data?.publicAddress as string,
-                network: state.data?.network as INetworkDetail
-              })
-            );
-            this.web3LoginService.closeLoginModal();
-            break;
-        }
-      });
+  openLoginModal(): MatDialogRef<Web3LoginComponent> {
+
+    return this.web3LoginService.openLoginModal();
+    // return this.web3LoginService
+    //   .openLoginModal()
+    //   .pipe(takeUntil(this.destroyed$))
+    //   .subscribe((state: IModalState) => {
+    //     switch (state.type) {
+    //       case ModalStateType.SUCCESS:
+    //         this.store.dispatch(
+    //           setAuthPublicAddress({
+    //             publicAddress: state.data?.publicAddress as string,
+    //             network: state.data?.network as INetworkDetail
+    //           })
+    //         );
+    //         this.web3LoginService.closeLoginModal();
+    //         break;
+    //     }
+    //   });
   }
 
   handleNetwork(isSupportedAction: () => void): Subscription {
