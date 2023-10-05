@@ -21,15 +21,15 @@ export class NetworkServiceWeb3Login {
   currentNetwork$: Observable<INetworkDetail | null> = EMPTY;
 
   constructor(@Inject('config') private config: Web3LoginConfig) {
-    setTimeout(() => {
-      this.web3 = new Web3(window.ethereum);
-      this.currentNetwork$ = defer(() => {
-        if (window.ethereum) {
-          return of(this.getNetworkDetailByChainCode(window.ethereum.chainId));
-        }
-        return of(this.getNetworkDetailByChainId(null));
-      });
-    }, 1000);
+    // setTimeout(() => {
+    //   this.web3 = new Web3(window.ethereum);
+    //   this.currentNetwork$ = defer(() => {
+    //     if (window.ethereum) {
+    //       return of(this.getNetworkDetailByChainCode(window.ethereum.chainId));
+    //     }
+    //     return of(this.getNetworkDetailByChainId(null));
+    //   });
+    // }, 1000);
   }
 
   getNetworkDetailByChainId(chainId: string | null): INetworkDetail {

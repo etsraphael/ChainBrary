@@ -1,3 +1,5 @@
+import { INetworkDetail } from './modalState.interface';
+
 export enum WalletProvider {
   METAMASK = 'metamask'
 }
@@ -36,6 +38,8 @@ export interface LoginPayload {
   publicAddress: string;
   network: string;
 }
-export interface WalletConnectedEvent extends LoginPayload {
+export interface WalletConnectedEvent {
+  publicAddress: string;
+  network: INetworkDetail | null;
   walletProvider: WalletProvider;
 }

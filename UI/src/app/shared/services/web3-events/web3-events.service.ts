@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { INetworkDetail, WalletConnectedEvent, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { accountChanged, networkChangeSuccess } from './../../../store/auth-store/state/actions';
-import { filter, map } from 'rxjs';
+import { accountChanged, networkChangeSuccess, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
+import { filter, map, skip } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -14,14 +14,19 @@ export class Web3EventsService {
   ) {}
 
   init(): void {
-
-    this.web3LoginService.onAccountChangedEvent$.subscribe((account: string | undefined) => {
-      console.log('account', account);
+    // TODO: Find a way to trigger this even when the user is already connected
+    this.web3LoginService.onAccountChangedEvent$.pipe(skip(1)).subscribe((account: string | undefined) => {
       this.store.dispatch(accountChanged({ publicAddress: account ? account : null }));
     });
 
     this.web3LoginService.onWalletConnectedEvent$.subscribe((walletProvider: WalletConnectedEvent) => {
-      console.log('walletProvider', walletProvider);
+      this.store.dispatch(
+        setAuthPublicAddress({
+          publicAddress: walletProvider.publicAddress as string,
+          network: walletProvider.network as INetworkDetail
+        })
+      );
+      this.web3LoginService.closeLoginModal();
     });
 
     // TODO: To put back when we have a way to get the network name from the chainId

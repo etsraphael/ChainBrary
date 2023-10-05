@@ -140,24 +140,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   openLoginModal(): MatDialogRef<Web3LoginComponent> {
-
     return this.web3LoginService.openLoginModal();
-    // return this.web3LoginService
-    //   .openLoginModal()
-    //   .pipe(takeUntil(this.destroyed$))
-    //   .subscribe((state: IModalState) => {
-    //     switch (state.type) {
-    //       case ModalStateType.SUCCESS:
-    //         this.store.dispatch(
-    //           setAuthPublicAddress({
-    //             publicAddress: state.data?.publicAddress as string,
-    //             network: state.data?.network as INetworkDetail
-    //           })
-    //         );
-    //         this.web3LoginService.closeLoginModal();
-    //         break;
-    //     }
-    //   });
   }
 
   handleNetwork(isSupportedAction: () => void): Subscription {

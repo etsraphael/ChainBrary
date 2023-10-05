@@ -1,12 +1,13 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { IModalState, INetworkDetail, ModalStateType, Web3LoginService } from '@chainbrary/web3-login';
+import { MatDialogRef } from '@angular/material/dialog';
+import { INetworkDetail, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { AuthStatusCode } from '../../enum';
 import { IProfileAdded } from '../../interfaces';
 import { FormatService } from '../../services/format/format.service';
 import { environment } from './../../../../environments/environment';
-import { networkChange, resetAuth, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
+import { networkChange, resetAuth } from './../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectAuthStatus,
@@ -57,24 +58,8 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
     this.modalSub?.unsubscribe();
   }
 
-  openLoginModal(): void {
-
-    this.web3LoginService.openLoginModal();
-
-
-    // this.modalSub = this.web3LoginService.openLoginModal().subscribe((state: IModalState) => {
-    //   switch (state.type) {
-    //     case ModalStateType.SUCCESS:
-    //       this.store.dispatch(
-    //         setAuthPublicAddress({
-    //           publicAddress: state.data?.publicAddress as string,
-    //           network: state.data?.network as INetworkDetail
-    //         })
-    //       );
-    //       this.web3LoginService.closeLoginModal();
-    //       break;
-    //   }
-    // });
+  openLoginModal(): MatDialogRef<Web3LoginComponent> {
+    return this.web3LoginService.openLoginModal();
   }
 
   logOut(): void {
