@@ -29,7 +29,6 @@ export class AppComponent implements OnInit {
     //   console.log('balance: ', balance)
     // });
 
-
     // web3.eth.getAccounts().then(accounts => {
     //   const balancePromises = accounts.map(account =>
     //     web3.eth.getBalance(account).then(balance => ({ account, balance: parseFloat(web3.utils.fromWei(balance, 'ether')) }))
@@ -41,6 +40,5 @@ export class AppComponent implements OnInit {
     //     console.log('Top 10 addresses:', top10);
     //   });
     // });
-
   }
 }

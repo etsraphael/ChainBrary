@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService {
     return localStorage.removeItem('publicAddress');
   }
 
-  savechainId(chainId: string): void {
+  savechainId(chainId: NetworkChainId): void {
     return localStorage.setItem('chainId', chainId);
   }
 
@@ -27,4 +28,17 @@ export class AuthService {
   removechainId(): void {
     return localStorage.removeItem('chainId');
   }
+
+  saveRecentWallet(recentWallet: string): void {
+    return localStorage.setItem('recentWallet', recentWallet);
+  }
+
+  getRecentWallet(): string | null {
+    return localStorage.getItem('recentWallet');
+  }
+
+  removeRecentWallet(): void {
+    return localStorage.removeItem('recentWallet');
+  }
+
 }

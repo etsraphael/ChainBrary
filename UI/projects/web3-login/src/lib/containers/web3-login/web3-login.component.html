@@ -9,10 +9,7 @@
 
 <body class="py-3 bg-light">
   <lib-card-header-login></lib-card-header-login>
-  <lib-card-body-login
-    [isLoading]="(isLoading$ | async)!"
-    (openWalletProviderEvent)="openWalletProvider($event)"
-  >
+  <lib-card-body-login [isLoading]="(isLoading$ | async)!" (openWalletProviderEvent)="openWalletProvider($event)">
   </lib-card-body-login>
 </body>
 

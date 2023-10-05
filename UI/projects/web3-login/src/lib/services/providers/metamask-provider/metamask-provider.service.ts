@@ -28,7 +28,14 @@ export class MetamaskProviderService extends BaseProviderService {
     protected override privateGlobalValuesService: PrivateGlobalValuesService,
     protected override publicGlobalValuesService: PublicGlobalValuesService
   ) {
-    super(errorHandlerService, networkService, deviceService, router, privateGlobalValuesService, publicGlobalValuesService);
+    super(
+      errorHandlerService,
+      networkService,
+      deviceService,
+      router,
+      privateGlobalValuesService,
+      publicGlobalValuesService
+    );
   }
 
   logInWithWallet(): void {
@@ -101,5 +108,4 @@ export class MetamaskProviderService extends BaseProviderService {
         this.privateGlobalValuesService.isLoading = false;
       });
   }
-
 }

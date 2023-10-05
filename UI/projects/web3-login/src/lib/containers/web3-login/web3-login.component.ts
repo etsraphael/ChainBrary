@@ -33,5 +33,4 @@ export class Web3LoginComponent implements OnInit, OnDestroy {
         return this.metamaskProviderService.logInWithWallet();
     }
   }
-
 }

@@ -20,11 +20,7 @@ import {
 import { environment } from './../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../shared/enum';
 import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
-import {
-  accountChanged,
-  networkChange,
-  networkChangeSuccess
-} from './../../../../../store/auth-store/state/actions';
+import { accountChanged, networkChange, networkChangeSuccess } from './../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
   selectCurrentNetwork,
