@@ -40,5 +40,4 @@ export class AuthService {
   removeRecentWallet(): void {
     return localStorage.removeItem('recentWallet');
   }
-
 }

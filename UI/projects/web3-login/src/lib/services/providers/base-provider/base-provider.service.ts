@@ -24,4 +24,5 @@ export abstract class BaseProviderService {
   abstract logInWithWallet(): void;
   abstract onAccountChangedEvent(): Observable<string | undefined>;
   abstract onChainChangedEvent(): Observable<INetworkDetail | null>;
+  abstract retreiveWalletProvider(): void;
 }

@@ -91,6 +91,25 @@ export class MetamaskProviderService extends BaseProviderService {
     });
   }
 
+  retreiveWalletProvider(): void {
+    if (typeof window?.ethereum === 'undefined') {
+      this.publicGlobalValuesService.walletConnected = null;
+      return;
+    }
+
+    // send event to onWalletConnectedEvent$ if the user is already connected
+    if (window.ethereum.isMetaMask && window.ethereum.selectedAddress) {
+      setTimeout(() => {
+        this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
+        this.publicGlobalValuesService.recentLoginPayload = {
+          publicAddress: window.ethereum.selectedAddress,
+          network: window.ethereum.networkVersion
+        };
+      }, 1000);
+      return;
+    }
+  }
+
   private requestEthAccount(): void {
     window.ethereum
       .request({ method: 'eth_requestAccounts' })

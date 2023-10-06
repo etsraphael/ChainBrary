@@ -21,6 +21,7 @@ export class AuthEffects {
         tap((action: ReturnType<typeof AuthActions.setAuthPublicAddress>) => {
           this.authService.savePublicAddress(action.publicAddress);
           this.authService.savechainId(action.network.chainId);
+          this.web3LoginService.closeLoginModal();
         })
       );
     },
@@ -144,15 +145,21 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.accountChanged),
-        tap((action: ReturnType<typeof AuthActions.accountChanged>) => {
-          if (action.publicAddress) {
-            this.authService.savePublicAddress(action.publicAddress);
-          } else {
-            this.authService.removePublicAddress();
-          }
-        })
+        filter((action: ReturnType<typeof AuthActions.accountChanged>) => !!action.publicAddress),
+        tap((action: ReturnType<typeof AuthActions.accountChanged>) =>
+          this.authService.savePublicAddress(action.publicAddress as string)
+        )
       );
     },
     { dispatch: false }
   );
+
+  logOutFromWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.accountChanged),
+      filter((action: ReturnType<typeof AuthActions.accountChanged>) => !action.publicAddress),
+      tap(() => this.authService.removePublicAddress()),
+      map(() => AuthActions.resetAuth())
+    );
+  });
 }
