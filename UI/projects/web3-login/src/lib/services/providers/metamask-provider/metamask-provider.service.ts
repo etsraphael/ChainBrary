@@ -100,12 +100,14 @@ export class MetamaskProviderService extends BaseProviderService {
     // send event to onWalletConnectedEvent$ if the user is already connected
     if (window.ethereum.isMetaMask) {
       setTimeout(() => {
-        if (window.ethereum.selectedAddress === null) return;
-        this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
-        this.publicGlobalValuesService.recentLoginPayload = {
-          publicAddress: window.ethereum.selectedAddress,
-          network: window.ethereum.networkVersion
-        };
+        // Request account access
+        window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
+          this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
+          this.publicGlobalValuesService.recentLoginPayload = {
+            publicAddress: accounts[0],
+            network: window.ethereum.networkVersion
+          };
+        });
       }, 1000);
       return;
     }
