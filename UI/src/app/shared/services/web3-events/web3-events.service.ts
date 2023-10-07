@@ -18,11 +18,12 @@ export class Web3EventsService {
       this.store.dispatch(accountChanged({ publicAddress: account ? account : null }));
     });
 
-    this.web3LoginService.onWalletConnectedEvent$.subscribe((walletProvider: WalletConnectedEvent) => {
+    this.web3LoginService.onWalletConnectedEvent$.subscribe((wallet: WalletConnectedEvent) => {
       this.store.dispatch(
         setAuthPublicAddress({
-          publicAddress: walletProvider.publicAddress as string,
-          network: walletProvider.network as INetworkDetail
+          publicAddress: wallet.publicAddress as string,
+          network: wallet.network as INetworkDetail,
+          wallet: wallet.walletProvider as WalletProvider
         })
       );
     });
@@ -35,7 +36,5 @@ export class Web3EventsService {
       .subscribe((network: INetworkDetail) => {
         this.store.dispatch(networkChangeSuccess({ network }));
       });
-
-    this.web3LoginService.retreiveWalletProvider(WalletProvider.METAMASK);
   }
 }

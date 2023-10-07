@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { Observable, distinctUntilChanged, of, switchMap, take } from 'rxjs';
+import { Observable, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Web3LoginComponent } from '../../containers/web3-login/web3-login.component';
 import { INetworkDetail, WalletConnectedEvent, WalletProvider } from '../../interfaces';
 import { PublicGlobalValuesService } from '../global-values/public-global-values.service';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, WalletConnectedEvent } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
@@ -39,5 +39,11 @@ export class AuthService {
 
   removeRecentWallet(): void {
     return localStorage.removeItem('recentWallet');
+  }
+
+  saveWalletConnected(walletConnected: WalletConnectedEvent): void {
+    this.savePublicAddress(walletConnected.publicAddress);
+    this.savechainId(walletConnected.network?.chainId as NetworkChainId);
+    this.saveRecentWallet(walletConnected.walletProvider);
   }
 }

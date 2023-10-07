@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
@@ -19,8 +19,11 @@ export class AuthEffects {
       return this.actions$.pipe(
         ofType(AuthActions.setAuthPublicAddress),
         tap((action: ReturnType<typeof AuthActions.setAuthPublicAddress>) => {
-          this.authService.savePublicAddress(action.publicAddress);
-          this.authService.savechainId(action.network.chainId);
+          this.authService.saveWalletConnected({
+            publicAddress: action.publicAddress,
+            network: action.network,
+            walletProvider: action.wallet
+          });
           this.web3LoginService.closeLoginModal();
         })
       );
@@ -28,25 +31,25 @@ export class AuthEffects {
     { dispatch: false }
   );
 
-  addressChecking$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(AuthActions.addressChecking),
-      filter(() => !!this.authService.getPublicAddress() && !!this.authService.getchainId()),
-      map(() => {
-        const chainId: string = this.authService.getchainId() as string;
-        return AuthActions.setAuthPublicAddress({
-          publicAddress: this.authService.getPublicAddress() as string,
-          network: this.web3LoginService.getNetworkDetailByChainId(chainId)
-        });
-      })
-    );
-  });
+  addressChecking$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(AuthActions.addressChecking),
+        filter(() => !!this.authService.getRecentWallet()),
+        map(() => {
+          const recentWallet = this.authService.getRecentWallet() as WalletProvider;
+          this.web3LoginService.retreiveWalletProvider(recentWallet);
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
   resetAuth$ = createEffect(
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.resetAuth),
-        map(() => {
+        tap(() => {
           this.authService.removePublicAddress();
           this.authService.removechainId();
         })
@@ -158,7 +161,6 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.accountChanged),
       filter((action: ReturnType<typeof AuthActions.accountChanged>) => !action.publicAddress),
-      tap(() => this.authService.removePublicAddress()),
       map(() => AuthActions.resetAuth())
     );
   });
