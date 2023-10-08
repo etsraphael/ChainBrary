@@ -2,7 +2,6 @@
 
 import '@angular/compiler';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
-import { injectMetaMaskStub } from '../../../injectors/metamask-stub';
 import { IPaymentRequest } from './../../../../src/app/shared/interfaces';
 
 class MockPaymentService {
@@ -50,8 +49,7 @@ describe('Check native payment generated', () => {
     // before
     const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
     const SIGNED_MESSAGE = '...';
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
-
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     // test
@@ -65,7 +63,7 @@ describe('Check native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
@@ -84,8 +82,7 @@ describe('Check native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
-
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
     cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
@@ -164,7 +161,7 @@ describe('Check non-native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
