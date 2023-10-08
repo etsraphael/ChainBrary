@@ -102,6 +102,9 @@ export class MetamaskProviderService extends BaseProviderService {
       setTimeout(() => {
         // Request account access
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
+          this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(
+            window.ethereum.networkVersion
+          );
           this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
           this.publicGlobalValuesService.recentLoginPayload = {
             publicAddress: accounts[0],
