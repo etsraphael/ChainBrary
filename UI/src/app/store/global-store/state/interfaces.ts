@@ -1,10 +1,7 @@
-import Web3 from 'web3';
-
 export const GLOBAL_FEATURE_KEY = 'global';
 
 export interface IGlobalState {
   theme: string;
-  web3Provier: Web3 | null;
 }
 
 export interface GlobalState {
