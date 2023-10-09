@@ -5,10 +5,10 @@ import { IGlobalState } from './interfaces';
 
 export const globalReducer: ActionReducer<IGlobalState, Action> = createReducer(
   initialState,
-  on(setAuthPublicAddress, (state): IGlobalState => {
+  on(setAuthPublicAddress, (state, { wallet }): IGlobalState => {
     return {
-      ...state
-      // TODO: save provider here
+      ...state,
+      walletConnected: wallet
     };
   })
 );
