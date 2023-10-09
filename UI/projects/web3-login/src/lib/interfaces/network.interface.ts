@@ -1,12 +1,3 @@
-export interface IModalState {
-  type: ModalStateType;
-  message?: string;
-  data?: {
-    publicAddress: string;
-    network: INetworkDetail | null;
-  };
-}
-
 export interface INetworkDetail {
   chainId: NetworkChainId;
   chainCode: NetworkChainCode;
@@ -20,13 +11,6 @@ export interface INetworkDetail {
   };
   blockExplorerUrls: string;
   rpcUrls?: string[];
-}
-
-export enum ModalStateType {
-  SUCCESS = 'success',
-  ERROR = 'error',
-  CANCEL = 'cancel',
-  LOADING = 'loading'
 }
 
 export enum NetworkChainId {

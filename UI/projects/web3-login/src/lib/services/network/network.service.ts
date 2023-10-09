@@ -1,6 +1,4 @@
 import { Inject, Injectable } from '@angular/core';
-import { EMPTY, Observable, defer, of } from 'rxjs';
-import Web3 from 'web3';
 import {
   INetworkDetail,
   NetworkChainCode,
@@ -10,27 +8,11 @@ import {
   Web3LoginConfig
 } from '../../interfaces';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-declare let window: any;
-
 @Injectable({
   providedIn: 'root'
 })
 export class NetworkServiceWeb3Login {
-  web3: Web3;
-  currentNetwork$: Observable<INetworkDetail | null> = EMPTY;
-
-  constructor(@Inject('config') private config: Web3LoginConfig) {
-    setTimeout(() => {
-      this.web3 = new Web3(window.ethereum);
-      this.currentNetwork$ = defer(() => {
-        if (window.ethereum) {
-          return of(this.getNetworkDetailByChainCode(window.ethereum.chainId));
-        }
-        return of(this.getNetworkDetailByChainId(null));
-      });
-    }, 1000);
-  }
+  constructor(@Inject('config') private config: Web3LoginConfig) {}
 
   getNetworkDetailByChainId(chainId: string | null): INetworkDetail {
     const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
@@ -90,12 +72,6 @@ export class NetworkServiceWeb3Login {
       blockExplorerUrls: '',
       rpcUrls: ['']
     };
-  }
-
-  private getRpcUrl(chainId: NetworkChainId): string[] {
-    const urls = this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === chainId)
-      ?.rpcUrl;
-    return urls || [];
   }
 
   getNetworkDetailList(): INetworkDetail[] {
@@ -257,41 +233,9 @@ export class NetworkServiceWeb3Login {
     ];
   }
 
-  getCurrentNetwork(): INetworkDetail {
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      this.web3 = new Web3(window.ethereum);
-      return this.getNetworkDetailByChainId(window.ethereum.networkVersion);
-    }
-    return this.getNetworkDetailByChainId(null);
-  }
-
-  onAccountChangedEvent(): Observable<string | undefined> {
-    return defer(() => {
-      if (typeof window?.ethereum === 'undefined') {
-        return EMPTY as Observable<string | undefined>;
-      }
-
-      return new Observable<string>((subscriber) => {
-        window.ethereum.on('accountsChanged', (accounts: string[]) => {
-          if (accounts.length === 0) {
-            subscriber.next(undefined);
-          } else {
-            subscriber.next(accounts[0]);
-          }
-        });
-      });
-    });
-  }
-
-  onChainChangedEvent(): Observable<INetworkDetail | null> {
-    return defer(() => {
-      if (typeof window?.ethereum === 'undefined') return of(null);
-      return new Observable<INetworkDetail>((subscriber) => {
-        window.ethereum.on('chainChanged', (chainCode: string) => {
-          subscriber.next(this.getNetworkDetailByChainCode(chainCode));
-          this.currentNetwork$ = of(this.getNetworkDetailByChainCode(chainCode));
-        });
-      });
-    });
+  private getRpcUrl(chainId: NetworkChainId): string[] {
+    const urls = this.config.networkSupported.find((network: NetworkRpcUrlSupported) => network.chainId === chainId)
+      ?.rpcUrl;
+    return urls || [];
   }
 }

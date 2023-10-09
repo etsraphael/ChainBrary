@@ -1,5 +1,11 @@
+import { INetworkDetail } from './network.interface';
+
+export enum WalletProvider {
+  METAMASK = 'metamask'
+}
+
 export interface Web3Provider {
-  key: string;
+  key: WalletProvider.METAMASK;
   name: string;
   iconUrl: string;
   backgroundColorGradient: {
@@ -14,7 +20,7 @@ export interface Web3Provider {
 
 export const providerData: Web3Provider[] = [
   {
-    key: 'metamask',
+    key: WalletProvider.METAMASK,
     name: 'Metamask',
     iconUrl: './../assets/metamask.svg',
     backgroundColorGradient: {
@@ -27,3 +33,13 @@ export const providerData: Web3Provider[] = [
     }
   }
 ];
+
+export interface LoginPayload {
+  publicAddress: string;
+  network: string;
+}
+export interface WalletConnectedEvent {
+  publicAddress: string;
+  network: INetworkDetail | null;
+  walletProvider: WalletProvider;
+}

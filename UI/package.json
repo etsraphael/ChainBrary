@@ -17,7 +17,8 @@
     "test-unit:local": "ng test",
     "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "build:libs": "./scripts/build_libraries.sh",
-    "publish:libs": "./scripts/publish_libraries.sh"
+    "publish:libs": "./scripts/publish_libraries.sh",
+    "ganache": "ganache-cli -p 7545 -e 1000 -a 10"
   },
   "private": true,
   "dependencies": {
@@ -35,7 +36,7 @@
     "@apollo/client": "^3.8.3",
     "@chainbrary/token-bridge": "^16.0.7",
     "@chainbrary/transaction-search": "^16.0.5",
-    "@chainbrary/web3-login": "^16.0.10",
+    "@chainbrary/web3-login": "^16.0.13",
     "@eslint-community/regexpp": "^4.5.1",
     "@ngrx/effects": "^16.1.0",
     "@ngrx/entity": "^16.1.0",
@@ -72,6 +73,7 @@
     "@typescript-eslint/parser": "^5.62.0",
     "cypress": "^13.2.0",
     "eslint": "^8.39.0",
+    "ganache-cli": "^6.12.2",
     "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
