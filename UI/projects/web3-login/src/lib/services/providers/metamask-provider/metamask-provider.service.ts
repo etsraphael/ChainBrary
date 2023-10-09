@@ -100,6 +100,11 @@ export class MetamaskProviderService extends BaseProviderService {
     // send event to onWalletConnectedEvent$ if the user is already connected
     if (window.ethereum.isMetaMask) {
       setTimeout(() => {
+        // Stop if no account is connected
+        if (window.ethereum._state.accounts?.length === 0) {
+          return;
+        }
+
         // Request account access
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
           this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(
