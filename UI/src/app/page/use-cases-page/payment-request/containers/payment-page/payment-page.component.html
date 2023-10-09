@@ -119,6 +119,7 @@
               [authStatus]="(authStatus$ | async)!"
               [publicAddress]="publicAddress$ | async"
               [paymentRequest]="(selectPaymentRequestState$ | async)!"
+              [walletProviderObs]="walletConnected$"
               (openLoginModal)="openLoginModal()"
               (submitPayment)="submitPayment($event)"
               (approveSmartContract)="approveSmartContract()"

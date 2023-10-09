@@ -3,21 +3,17 @@ import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { PriceFeedContract } from '../../contracts';
 import { TokenPair } from '../../enum';
-import { NetworkChainId } from '@chainbrary/web3-login';
-
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    ethereum?: any;
-  }
-}
+import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
+import { Web3ProviderService } from '../../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PriceFeedService {
-  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId): Promise<number> {
-    const web3: Web3 = new Web3(window.ethereum);
+  constructor(private web3ProviderService: Web3ProviderService) {}
+
+  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId, w: WalletProvider): Promise<number> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const transactionContract = new PriceFeedContract(chainId, pair);
 
     if (!transactionContract.getPairAddress()) {
@@ -35,7 +31,7 @@ export class PriceFeedService {
       });
   }
 
-  getCurrentPriceOfNativeToken(chainId: NetworkChainId): Promise<number> {
+  getCurrentPriceOfNativeToken(chainId: NetworkChainId, w: WalletProvider): Promise<number> {
     let pair: TokenPair;
     switch (chainId) {
       case NetworkChainId.ETHEREUM:
@@ -55,6 +51,6 @@ export class PriceFeedService {
         return Promise.reject('Pair not found');
     }
 
-    return this.getCurrentPrice(pair, chainId);
+    return this.getCurrentPrice(pair, chainId, w);
   }
 }
