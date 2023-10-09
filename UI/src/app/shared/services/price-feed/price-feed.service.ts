@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
+import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { PriceFeedContract } from '../../contracts';
 import { TokenPair } from '../../enum';
-import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
-import { Web3ProviderService } from '../../web3-provider/web3-provider.service';
+import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
