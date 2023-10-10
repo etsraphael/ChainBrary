@@ -101,7 +101,7 @@ export class MetamaskProviderService extends BaseProviderService {
     if (window.ethereum.isMetaMask) {
       setTimeout(() => {
         // Stop if no account is connected
-        if (window.ethereum._state.accounts?.length === 0) {
+        if (window.ethereum._state?.accounts?.length === 0) {
           return;
         }
 
