@@ -8,7 +8,7 @@
     "deploy": "npx hardhat run scripts/deploy.ts",
     "abi": "npx hardhat export-abi",
     "graphgen": "npx hardhat run scripts/deploy-graph.ts",
-    "start-ganache": "ganache -p 8545 -e 1000 -a 10",
+    "start-ganache": "node start-ganache.js",
     "migrate": "truffle migrate --reset --network development"
   },
   "devDependencies": {
