@@ -1,12 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity >=0.4.22 <0.9.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 
-contract TokenBridge is Ownable, ReentrancyGuard {
+contract BridgeTokenTransfer is Ownable, ReentrancyGuard {
     using SafeMath for uint256;
     uint256 public feeRate = 1000; // 1000 means 0.1% fee (1/1000)
 

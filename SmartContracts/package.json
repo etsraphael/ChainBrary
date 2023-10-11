@@ -7,7 +7,9 @@
     "test": "npx hardhat test",
     "deploy": "npx hardhat run scripts/deploy.ts",
     "abi": "npx hardhat export-abi",
-    "graphgen": "npx hardhat run scripts/deploy-graph.ts"
+    "graphgen": "npx hardhat run scripts/deploy-graph.ts",
+    "start-ganache": "ganache -p 8545 -e 1000 -a 10",
+    "migrate": "truffle migrate --network development"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
@@ -20,6 +22,7 @@
     "@chainlink/contracts": "^0.8.0",
     "@graphprotocol/graph-cli": "^0.59.0",
     "@openzeppelin/contracts": "^4.9.3",
-    "bignumber.js": "^9.1.2"
+    "bignumber.js": "^9.1.2",
+    "ganache": "^7.9.1"
   }
 }

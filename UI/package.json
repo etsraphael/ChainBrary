@@ -73,7 +73,6 @@
     "@typescript-eslint/parser": "^5.62.0",
     "cypress": "^13.2.0",
     "eslint": "^8.39.0",
-    "ganache-cli": "^6.12.2",
     "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
