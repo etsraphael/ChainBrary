@@ -10512,66 +10512,15 @@
     "version": "0.8.21+commit.d9974bed.Emscripten.clang"
   },
   "networks": {
-    "1696987056093": {
-      "events": {
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        "0x5f2147fb558c977441fbdfebcf8cd5776606adc8da5ff95566fc2a4137e54d13": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "sender",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "destination",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "amount",
-              "type": "uint256"
-            },
-            {
-              "indexed": false,
-              "internalType": "address",
-              "name": "token",
-              "type": "address"
-            }
-          ],
-          "name": "Transfer",
-          "type": "event"
-        }
-      },
+    "1697060349212": {
+      "events": {},
       "links": {},
-      "address": "0x2ACEF49E5F87FF0A9Dbb672c70adcE691DfB3DF3",
-      "transactionHash": "0xd5e9b8465fc27a79aaa4f5bfb61ee74f85d0e17dcd990d769bd552641a808997"
+      "address": "0x691021115E6F0E512392CBCaf26Bbbe133eb7a75",
+      "transactionHash": "0xb8ab5e63c434830e2a3bcefe714c1df2b0337b21f8015f7d557c65f18957cac4"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-10-11T01:27:13.505Z",
+  "updatedAt": "2023-10-11T21:40:35.725Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

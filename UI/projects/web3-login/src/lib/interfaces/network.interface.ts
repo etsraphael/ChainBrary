@@ -25,7 +25,8 @@ export enum NetworkChainId {
   KAVA = '222',
   FANTOM = '250',
   CELO = '42220',
-  UNKNOWN = '0'
+  UNKNOWN = '0',
+  LOCALHOST = '1337'
 }
 
 export enum TokenId {
@@ -54,7 +55,8 @@ export enum NetworkChainCode {
   KAVA = '0x8ae',
   FANTOM = '0xfa',
   CELO = '0xa4ec',
-  UNKNOWN = '0'
+  UNKNOWN = '0',
+  LOCALHOST = '0x539'
 }
 
 export interface NetworkRpcUrlSupported {

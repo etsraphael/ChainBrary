@@ -14418,72 +14418,15 @@
     "version": "0.8.21+commit.d9974bed.Emscripten.clang"
   },
   "networks": {
-    "1696987056093": {
-      "events": {
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        "0xf9c203e6503695c04f24cd109104808202f7b6a594b9fade0900b6166c4f36e4": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "userAddress",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "username",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "imgUrl",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "string",
-              "name": "description",
-              "type": "string"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "expirationDate",
-              "type": "uint256"
-            }
-          ],
-          "name": "ProfileAdded",
-          "type": "event"
-        }
-      },
+    "1697060349212": {
+      "events": {},
       "links": {},
-      "address": "0x964Aa487216A383649F41252799ac24B420b4Ae4",
-      "transactionHash": "0xb5672d4e6a163794fe5b69fb314604f43c3ee0adcd512dc65cd12be428d22fa2"
+      "address": "0x049e86004BB2D6224FAe4d9297774D5308593841",
+      "transactionHash": "0xc93c2a166484f16d8aaff81c4e850b1f559f4e11e299a80ba70084cff4757852"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-10-11T01:27:13.509Z",
+  "updatedAt": "2023-10-11T21:40:35.734Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

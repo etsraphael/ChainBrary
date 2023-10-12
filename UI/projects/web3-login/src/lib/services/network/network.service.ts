@@ -229,6 +229,20 @@ export class NetworkServiceWeb3Login {
         },
         blockExplorerUrls: 'https://celoscan.io',
         rpcUrls: this.getRpcUrl(NetworkChainId.CELO)
+      },
+      {
+        chainId: NetworkChainId.LOCALHOST,
+        chainCode: NetworkChainCode.LOCALHOST,
+        name: 'Localhost',
+        shortName: 'Localhost',
+        nativeCurrency: {
+          id: TokenId.ETHEREUM,
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        },
+        blockExplorerUrls: 'https://etherscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.LOCALHOST)
       }
     ];
   }

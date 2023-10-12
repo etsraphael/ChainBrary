@@ -15343,85 +15343,15 @@
     "version": "0.8.21+commit.d9974bed.Emscripten.clang"
   },
   "networks": {
-    "1696987056093": {
-      "events": {
-        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "owner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "spender",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "Approval",
-          "type": "event"
-        },
-        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "previousOwner",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "newOwner",
-              "type": "address"
-            }
-          ],
-          "name": "OwnershipTransferred",
-          "type": "event"
-        },
-        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
-          "anonymous": false,
-          "inputs": [
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "from",
-              "type": "address"
-            },
-            {
-              "indexed": true,
-              "internalType": "address",
-              "name": "to",
-              "type": "address"
-            },
-            {
-              "indexed": false,
-              "internalType": "uint256",
-              "name": "value",
-              "type": "uint256"
-            }
-          ],
-          "name": "Transfer",
-          "type": "event"
-        }
-      },
+    "1697060349212": {
+      "events": {},
       "links": {},
-      "address": "0x8c59b8479A8dA04AFc7532dD147B856dE1235f1F",
-      "transactionHash": "0x6a2053b6176f468859c77a2f5210e914bc970c26f7357559a947c3901c79a675"
+      "address": "0x6B587f59F5B190938507cd6456b2600A9565231D",
+      "transactionHash": "0xecc4adec33b7dfdb0a7a148d5659a3e2b3693d9bbb14f181a6b3a30fe0169e6c"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-10-11T01:27:13.514Z",
+  "updatedAt": "2023-10-11T21:40:35.739Z",
   "networkType": "ethereum",
   "devdoc": {
     "events": {

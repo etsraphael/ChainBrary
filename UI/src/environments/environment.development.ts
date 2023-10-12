@@ -10,7 +10,8 @@ export const environment = {
         NetworkChainId.BNB,
         NetworkChainId.SEPOLIA,
         NetworkChainId.ETHEREUM,
-        NetworkChainId.AVALANCHE
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.LOCALHOST
       ],
       contracts: [
         {
@@ -32,6 +33,10 @@ export const environment = {
         {
           chainId: NetworkChainId.AVALANCHE,
           address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+        },
+        {
+          chainId: NetworkChainId.LOCALHOST,
+          address: '0xa978D33E4f4889Ba69dC4914e5Cd6576607719dc'
         }
       ]
     },

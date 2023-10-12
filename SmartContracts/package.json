@@ -9,7 +9,7 @@
     "abi": "npx hardhat export-abi",
     "graphgen": "npx hardhat run scripts/deploy-graph.ts",
     "start-ganache": "node start-ganache.js",
-    "migrate": "truffle migrate --reset --network development"
+    "migrate": "truffle migrate --network development"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",

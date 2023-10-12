@@ -21,6 +21,10 @@ export const web3LoginConfig: Web3LoginConfig = {
     {
       chainId: NetworkChainId.AVALANCHE,
       rpcUrl: ['https://api.avax.network/ext/bc/C/rpc']
+    },
+    {
+      chainId: NetworkChainId.LOCALHOST,
+      rpcUrl: ['http://localhost:8545']
     }
   ]
 };
