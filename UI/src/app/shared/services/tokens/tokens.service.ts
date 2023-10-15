@@ -101,13 +101,14 @@ export class TokensService {
     const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
     try {
-      const gas = await contract.methods
+      const gas: number = await contract.methods
         .transferFund(payload.addresses)
         .estimateGas({ from: payload.from, value: String(payload.amount) });
 
-      return contract.methods
+      const receipt: IReceiptTransaction = await contract.methods
         .transferFund(payload.addresses)
         .send({ from: payload.from, value: String(payload.amount), gas: gas });
+      return receipt;
     } catch (error) {
       return Promise.reject((error as { message: string; code: number }) || error);
     }

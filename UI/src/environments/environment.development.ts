@@ -36,7 +36,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.LOCALHOST,
-          address: '0xa978D33E4f4889Ba69dC4914e5Cd6576607719dc'
+          address: '0x6B587f59F5B190938507cd6456b2600A9565231D'
         }
       ]
     },

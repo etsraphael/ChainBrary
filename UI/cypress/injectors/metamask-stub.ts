@@ -1,8 +1,13 @@
 import '@angular/compiler';
 import { INetworkDetail, NetworkChainCode, NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import Web3 from 'web3';
+import { TransactionConfig } from 'web3-core';
+import { Contract } from 'web3-eth-contract';
+import { TransactionBridgeContract } from '../../src/app/shared/contracts';
 
 type EthereumRequest = {
   method: string;
+  params: any[];
 };
 
 type CallbackFunction = (event: string) => void;
@@ -19,13 +24,52 @@ type EthereumStub = {
 export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: string, networkChainId: NetworkChainId) => {
   const eventListeners: { [event: string]: CallbackFunction[] } = {};
 
-  const determineStubResponse = (request: EthereumRequest): string[] | string => {
+  const web3: Web3 = new Web3('http://localhost:8545');
+
+  const determineStubResponse = async (request: EthereumRequest): Promise<string[] | string | object | number> => {
     switch (request.method) {
       case 'eth_accounts':
       case 'eth_requestAccounts':
-        return [WALLET_ADDRESS];
+        return await web3.eth.getAccounts();
       case 'personal_sign':
         return SIGNED_MESSAGE;
+      case 'eth_chainId':
+        return await web3.eth.getChainId();
+      case 'eth_gasPrice':
+        return await web3.eth.getGasPrice();
+      case 'eth_estimateGas': {
+        return await web3.eth.estimateGas({
+          from: request.params[0].from,
+          to: request.params[0].to,
+          value: request.params[0].value
+        });
+      }
+      case 'eth_getBlockByNumber':
+        return await web3.eth.getBlock(request.params[0]);
+      case 'eth_sendTransaction': {
+        const transactionContract = new TransactionBridgeContract(NetworkChainId.LOCALHOST);
+        const contract: Contract = new web3.eth.Contract(
+          transactionContract.getAbi(),
+          transactionContract.getAddress()
+        );
+        const nonce = await web3.eth.getTransactionCount(request.params[0].from, 'pending');
+
+        const tx: TransactionConfig = {
+          from: request.params[0].from,
+          to: transactionContract.getAddress(),
+          value: web3.utils.toWei('1', 'ether'),
+          gas: 2000000,
+          data: contract.methods.transferFund(['0xd288b9f2028cea98f3132b700fa45c95023eca24']).encodeABI(), //TODO: add real value here
+          nonce: nonce + 1
+        };
+
+        return web3.eth.accounts
+          .signTransaction(tx, '0x958c7263fbecaafea7c1d81ff08482ef57655dc4f350890dbc3d7ef5784330dd') //TODO: add real value here
+          .then((signedTx) => web3.eth.sendSignedTransaction(signedTx.rawTransaction));
+      }
+      case 'eth_getTransactionReceipt': {
+        return web3.eth.getTransactionReceipt(request.params[0].transactionHash);
+      }
       default:
         throw Error(`Unknown request: ${request.method}`);
     }
@@ -220,6 +264,20 @@ export const getNetworkDetailList = (): INetworkDetail[] => {
         decimals: 18
       },
       blockExplorerUrls: 'https://celoscan.io',
+      rpcUrls: []
+    },
+    {
+      chainId: NetworkChainId.LOCALHOST,
+      chainCode: NetworkChainCode.LOCALHOST,
+      name: 'Localhost',
+      shortName: 'Localhost',
+      nativeCurrency: {
+        id: TokenId.ETHEREUM,
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18
+      },
+      blockExplorerUrls: 'https://etherscan.io',
       rpcUrls: []
     }
   ];

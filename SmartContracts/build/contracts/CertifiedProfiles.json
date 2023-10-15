@@ -14492,10 +14492,148 @@
       "links": {},
       "address": "0x23d7B42f96b5CF40730e446D31ad7F1F27eEC571",
       "transactionHash": "0x63f96cfecfa83f7aa3c3baa3468566eeed21398e67c42c32b2c0e2aaf6678dc7"
+    },
+    "1697330209977": {
+      "events": {},
+      "links": {},
+      "address": "0xa47A321F6B4B03478f2416Ce278aa7088F548278",
+      "transactionHash": "0x185ccb2ed589a5b05e842a1ac31f333ef5429eae990f44d430651e442263e85e"
+    },
+    "1697348432288": {
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0xf9c203e6503695c04f24cd109104808202f7b6a594b9fade0900b6166c4f36e4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "userAddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "username",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "imgUrl",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "expirationDate",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProfileAdded",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x6D660fBE32c0C7db6E384f2Da134896798623882",
+      "transactionHash": "0xc201ea1f0518f1e8d86f7e80507fd84bc71819c5e7c3ce2818d6e2476d60fd05"
+    },
+    "1697358581076": {
+      "events": {
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event"
+        },
+        "0xf9c203e6503695c04f24cd109104808202f7b6a594b9fade0900b6166c4f36e4": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "internalType": "address",
+              "name": "userAddress",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "username",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "imgUrl",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "string",
+              "name": "description",
+              "type": "string"
+            },
+            {
+              "indexed": false,
+              "internalType": "uint256",
+              "name": "expirationDate",
+              "type": "uint256"
+            }
+          ],
+          "name": "ProfileAdded",
+          "type": "event"
+        }
+      },
+      "links": {},
+      "address": "0x049e86004BB2D6224FAe4d9297774D5308593841",
+      "transactionHash": "0xc93c2a166484f16d8aaff81c4e850b1f559f4e11e299a80ba70084cff4757852"
+    },
+    "1697358833985": {
+      "events": {},
+      "links": {},
+      "address": "0xa47A321F6B4B03478f2416Ce278aa7088F548278",
+      "transactionHash": "0x185ccb2ed589a5b05e842a1ac31f333ef5429eae990f44d430651e442263e85e"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-10-12T22:18:06.654Z",
+  "updatedAt": "2023-10-15T08:34:15.775Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
