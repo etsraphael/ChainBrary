@@ -101,7 +101,7 @@ export class AuthEffects {
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: action.network.chainCode,
+                chainId: action.network.networkVersion,
                 chainName: action.network.name,
                 rpcUrls: action.network.rpcUrls,
                 nativeCurrency: action.network.nativeCurrency,
@@ -127,7 +127,7 @@ export class AuthEffects {
         try {
           await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: action.network.chainCode }]
+            params: [{ chainId: action.network.chainId }]
           });
           return AuthActions.networkChangeSuccessOutside();
         } catch (error: unknown) {

@@ -5,7 +5,7 @@ const accounts = [
   { secretKey: '0xc80021beb5f346800d62b3ca2e950853d1e024dc395e955e238899cf02ccaed2', balance: '0x2B5E3AF16B1880000' }, // 50 ETH in Wei
 ];
 
-const server = ganache.server({ accounts, blockTime: 5 });
+const server = ganache.server({ accounts, blockTime: 5, chainId: 1337 });
 
 server.listen(8545, async (err, blockchain) => {
   if (err) {

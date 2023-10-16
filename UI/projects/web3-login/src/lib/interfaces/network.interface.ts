@@ -1,6 +1,6 @@
 export interface INetworkDetail {
   chainId: NetworkChainId;
-  chainCode: NetworkChainCode;
+  networkVersion: NetworkVersion;
   name: string;
   shortName: string;
   nativeCurrency: {
@@ -13,7 +13,7 @@ export interface INetworkDetail {
   rpcUrls?: string[];
 }
 
-export enum NetworkChainId {
+export enum NetworkVersion {
   ETHEREUM = '1',
   BNB = '56',
   SEPOLIA = '11155111',
@@ -43,7 +43,7 @@ export enum TokenId {
   UNKNOWN = 'unknown0'
 }
 
-export enum NetworkChainCode {
+export enum NetworkChainId {
   ETHEREUM = '0x1',
   BNB = '0x38',
   SEPOLIA = '0xaa36a7',

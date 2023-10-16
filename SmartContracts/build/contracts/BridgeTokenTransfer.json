@@ -10706,10 +10706,16 @@
       "links": {},
       "address": "0x72CA9795b3CD6863d722a7a1d26Db0d934B33C98",
       "transactionHash": "0xaad5aab09443c7d8fa7ac24197c75fb1c120bea68f45ed39f7c691ffebf80301"
+    },
+    "1697361031913": {
+      "events": {},
+      "links": {},
+      "address": "0x93cC46125C0392354e4443f4CaC4818446bAa60d",
+      "transactionHash": "0x4b360c5b3e4e8f7bd434981d2ba9e037af025091961641c179e829ce8cc42d2e"
     }
   },
   "schemaVersion": "3.4.16",
-  "updatedAt": "2023-10-15T08:34:15.771Z",
+  "updatedAt": "2023-10-15T09:35:48.693Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",
