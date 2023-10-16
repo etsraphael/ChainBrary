@@ -20,10 +20,10 @@ describe('Check native payment generated', () => {
   const formatService = new MockPaymentService();
 
   const paymentRequest: IPaymentRequest = {
-    chainId: NetworkChainId.SEPOLIA,
-    tokenId: TokenId.SEPOLIA,
+    chainId: NetworkChainId.LOCALHOST,
+    tokenId: TokenId.ETHEREUM,
     username: 'John Doe',
-    publicAddress: '0xd288b9f2028cea98f3132b700fa45c95023eca24',
+    publicAddress: '0xB22BDe4519854326622B64f67C84D64D189772d4',
     amount: 1,
     description: 'A simple description',
     avatarUrl: '',
@@ -82,7 +82,7 @@ describe('Check native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.LOCALHOST);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
     cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
