@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, switchMap, tap } from 'rxjs';
+import { delay, filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -35,6 +35,7 @@ export class AuthEffects {
     () => {
       return this.actions$.pipe(
         ofType(AuthActions.addressChecking),
+        delay(1000),
         filter(() => !!this.authService.getRecentWallet()),
         map(() => {
           const recentWallet = this.authService.getRecentWallet() as WalletProvider;
