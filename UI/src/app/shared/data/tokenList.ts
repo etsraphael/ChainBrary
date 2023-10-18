@@ -225,5 +225,13 @@ export const tokenList: IToken[] = [
         priceFeed: []
       }
     ]
+  },
+  {
+    tokenId: TokenId.ETHEREUM,
+    name: 'Ethereum',
+    symbol: 'ETH',
+    decimals: 18,
+    nativeToChainId: NetworkChainId.LOCALHOST,
+    networkSupport: []
   }
 ];

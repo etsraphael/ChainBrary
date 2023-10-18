@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, switchMap, tap } from 'rxjs';
+import { delay, filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
 import * as AuthActions from './actions';
@@ -95,13 +95,14 @@ export class AuthEffects {
   addNetworkToWallet$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(AuthActions.addNetworkToWallet),
+      delay(1000),
       switchMap(async (action: ReturnType<typeof AuthActions.addNetworkToWallet>) => {
         try {
           await window.ethereum.request({
             method: 'wallet_addEthereumChain',
             params: [
               {
-                chainId: action.network.chainCode,
+                chainId: action.network.networkVersion,
                 chainName: action.network.name,
                 rpcUrls: action.network.rpcUrls,
                 nativeCurrency: action.network.nativeCurrency,
@@ -127,7 +128,7 @@ export class AuthEffects {
         try {
           await window.ethereum.request({
             method: 'wallet_switchEthereumChain',
-            params: [{ chainId: action.network.chainCode }]
+            params: [{ chainId: action.network.chainId }]
           });
           return AuthActions.networkChangeSuccessOutside();
         } catch (error: unknown) {
