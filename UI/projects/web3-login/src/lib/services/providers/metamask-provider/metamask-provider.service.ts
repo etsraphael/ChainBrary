@@ -83,9 +83,9 @@ export class MetamaskProviderService extends BaseProviderService {
     return defer(() => {
       if (typeof window?.ethereum === 'undefined') return of(null);
       return new Observable<INetworkDetail>((subscriber) => {
-        window.ethereum.on('chainChanged', (chainCode: string) => {
-          subscriber.next(this.networkService.getNetworkDetailByChainCode(chainCode));
-          this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainCode(chainCode);
+        window.ethereum.on('chainChanged', (chainId: string) => {
+          subscriber.next(this.networkService.getNetworkDetailByChainId(chainId));
+          this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(chainId);
         });
       });
     });
@@ -100,15 +100,20 @@ export class MetamaskProviderService extends BaseProviderService {
     // send event to onWalletConnectedEvent$ if the user is already connected
     if (window.ethereum.isMetaMask) {
       setTimeout(() => {
+        // Stop if no account is connected
+        if (window.ethereum._state?.accounts?.length === 0) {
+          return;
+        }
+
         // Request account access
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
           this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(
-            window.ethereum.networkVersion
+            window.ethereum.chainId
           );
           this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
           this.publicGlobalValuesService.recentLoginPayload = {
             publicAddress: accounts[0],
-            network: window.ethereum.networkVersion
+            network: window.ethereum.chainId
           };
         });
       }, 1000);

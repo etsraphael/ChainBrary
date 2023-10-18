@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Params } from '@angular/router';
-import { INetworkDetail, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -26,6 +26,7 @@ import {
   selectCurrentNetwork,
   selectPublicAddress
 } from './../../../../../store/auth-store/state/selectors';
+import { selectWalletConnected } from './../../../../../store/global-store/state/selectors';
 import {
   approveTokenAllowance,
   generatePaymentRequest,
@@ -59,6 +60,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   transactionCards$: Observable<ITransactionCard[]>;
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentNetwork$: Observable<INetworkDetail | null>;
+  walletConnected$: Observable<WalletProvider | null>;
   smartContractCanTransfer$: Observable<boolean>;
   isPaymentMaker: Observable<boolean>;
   nativeTokenInfo: INativeToken;
@@ -118,6 +120,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.canTransferError$ = this.store.select(selectSmartContractCanTransferError);
     this.isNonNativeToken$ = this.store.select(selectIsNonNativeToken);
     this.isPaymentMaker = this.store.select(selectIsPaymentMaker);
+    this.walletConnected$ = this.store.select(selectWalletConnected);
   }
 
   setUpMessage(): void {

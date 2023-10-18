@@ -69,7 +69,7 @@ export const selectSmartContractCanTransferError: MemoizedSelector<object, strin
 export const selectPaymentNetworkIsMathing: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   selectCurrentNetwork,
-  (s, network) => s.network?.chainCode === network?.chainCode
+  (s, network) => s.network?.chainId === network?.chainId
 );
 
 export const selectProfilePayment: MemoizedSelector<

@@ -1,9 +1,9 @@
 import { Inject, Injectable } from '@angular/core';
 import {
   INetworkDetail,
-  NetworkChainCode,
   NetworkChainId,
   NetworkRpcUrlSupported,
+  NetworkVersion,
   TokenId,
   Web3LoginConfig
 } from '../../interfaces';
@@ -31,7 +31,7 @@ export class NetworkServiceWeb3Login {
     }
     return {
       chainId: NetworkChainId.UNKNOWN,
-      chainCode: NetworkChainCode.UNKNOWN,
+      networkVersion: NetworkVersion.UNKNOWN,
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
@@ -45,10 +45,10 @@ export class NetworkServiceWeb3Login {
     };
   }
 
-  getNetworkDetailByChainCode(chainCode: string): INetworkDetail {
+  getNetworkDetailByNetworkVersion(networkVersion: string): INetworkDetail {
     const networkDetailList: INetworkDetail[] = this.getNetworkDetailList();
     const networkDetail: INetworkDetail | undefined = networkDetailList.find(
-      (network: INetworkDetail) => network.chainCode === chainCode
+      (network: INetworkDetail) => network.networkVersion === networkVersion
     );
     if (networkDetail) {
       return {
@@ -60,7 +60,7 @@ export class NetworkServiceWeb3Login {
     }
     return {
       chainId: NetworkChainId.UNKNOWN,
-      chainCode: NetworkChainCode.UNKNOWN,
+      networkVersion: NetworkVersion.UNKNOWN,
       name: 'Unknown',
       shortName: 'unknown',
       nativeCurrency: {
@@ -78,7 +78,7 @@ export class NetworkServiceWeb3Login {
     return [
       {
         chainId: NetworkChainId.ETHEREUM,
-        chainCode: NetworkChainCode.ETHEREUM,
+        networkVersion: NetworkVersion.ETHEREUM,
         name: 'Ethereum Mainnet',
         shortName: 'Ethereum',
         nativeCurrency: {
@@ -92,7 +92,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.BNB,
-        chainCode: NetworkChainCode.BNB,
+        networkVersion: NetworkVersion.BNB,
         name: 'Binance Smart Chain Mainnet',
         shortName: 'BNB Chain',
         nativeCurrency: {
@@ -106,7 +106,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.SEPOLIA,
-        chainCode: NetworkChainCode.SEPOLIA,
+        networkVersion: NetworkVersion.SEPOLIA,
         name: 'Sepolia',
         shortName: 'Sepolia',
         nativeCurrency: {
@@ -120,7 +120,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.ARBITRUM,
-        chainCode: NetworkChainCode.ARBITRUM,
+        networkVersion: NetworkVersion.ARBITRUM,
         name: 'Arbitrum One',
         shortName: 'Arbitrum',
         nativeCurrency: {
@@ -134,7 +134,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.POLYGON,
-        chainCode: NetworkChainCode.POLYGON,
+        networkVersion: NetworkVersion.POLYGON,
         name: 'Polygon',
         shortName: 'Polygon',
         nativeCurrency: {
@@ -148,7 +148,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.OPTIMISM,
-        chainCode: NetworkChainCode.OPTIMISM,
+        networkVersion: NetworkVersion.OPTIMISM,
         name: 'Optimism',
         shortName: 'Optimism',
         nativeCurrency: {
@@ -162,7 +162,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.AVALANCHE,
-        chainCode: NetworkChainCode.AVALANCHE,
+        networkVersion: NetworkVersion.AVALANCHE,
         name: 'Avalanche',
         shortName: 'Avalanche',
         nativeCurrency: {
@@ -176,7 +176,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.MOONBEAM,
-        chainCode: NetworkChainCode.MOONBEAM,
+        networkVersion: NetworkVersion.MOONBEAM,
         name: 'Moonbeam',
         shortName: 'Moonbeam',
         nativeCurrency: {
@@ -190,7 +190,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.KAVA,
-        chainCode: NetworkChainCode.KAVA,
+        networkVersion: NetworkVersion.KAVA,
         name: 'KAVA',
         shortName: 'KAVA',
         nativeCurrency: {
@@ -204,7 +204,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.FANTOM,
-        chainCode: NetworkChainCode.FANTOM,
+        networkVersion: NetworkVersion.FANTOM,
         name: 'Fantom',
         shortName: 'Fantom',
         nativeCurrency: {
@@ -218,7 +218,7 @@ export class NetworkServiceWeb3Login {
       },
       {
         chainId: NetworkChainId.CELO,
-        chainCode: NetworkChainCode.CELO,
+        networkVersion: NetworkVersion.CELO,
         name: 'Celo',
         shortName: 'Celo',
         nativeCurrency: {
@@ -229,6 +229,20 @@ export class NetworkServiceWeb3Login {
         },
         blockExplorerUrls: 'https://celoscan.io',
         rpcUrls: this.getRpcUrl(NetworkChainId.CELO)
+      },
+      {
+        chainId: NetworkChainId.LOCALHOST,
+        networkVersion: NetworkVersion.LOCALHOST,
+        name: 'Localhost',
+        shortName: 'Localhost',
+        nativeCurrency: {
+          id: TokenId.ETHEREUM,
+          name: 'Ether',
+          symbol: 'ETH',
+          decimals: 18
+        },
+        blockExplorerUrls: 'https://etherscan.io',
+        rpcUrls: this.getRpcUrl(NetworkChainId.LOCALHOST)
       }
     ];
   }

@@ -1,9 +1,9 @@
-import { INetworkDetail, NetworkChainCode, NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkVersion, NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { IConversionToken, IToken, StoreState } from './../../src/app/shared/interfaces';
 
 export const currentNetworkSample: INetworkDetail = {
   chainId: NetworkChainId.SEPOLIA,
-  chainCode: NetworkChainCode.SEPOLIA,
+  networkVersion: NetworkVersion.SEPOLIA,
   name: 'Sepolia',
   shortName: 'Sepolia',
   nativeCurrency: {
