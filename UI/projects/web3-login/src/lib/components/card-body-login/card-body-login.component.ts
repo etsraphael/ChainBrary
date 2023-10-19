@@ -13,6 +13,6 @@ export class CardBodyLoginComponent {
   providers = providerData;
 
   getGradientStyle(provider: Web3Provider): string {
-    return `linear-gradient(${provider.backgroundColorGradient.orientation.start[0]}deg, ${provider.backgroundColorGradient.start}, ${provider.backgroundColorGradient.end})`;
+    return `linear-gradient(${provider.backgroundColorGradient.orientation}deg, ${provider.backgroundColorGradient.start}, ${provider.backgroundColorGradient.end})`;
   }
 }
