@@ -3,6 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { WalletProvider } from '../../interfaces';
 import { PrivateGlobalValuesService } from '../../services/global-values/private-global-values.service';
+import { BraveWalletProviderService } from '../../services/providers/brave-wallet-provider/brave-wallet-provider.service';
 import { MetamaskProviderService } from '../../services/providers/metamask-provider/metamask-provider.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class Web3LoginComponent implements OnInit, OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<Web3LoginComponent>,
     private metamaskProviderService: MetamaskProviderService,
+    private braveWalletProviderService: BraveWalletProviderService,
     private privateGlobalValuesService: PrivateGlobalValuesService
   ) {}
 
@@ -31,6 +33,8 @@ export class Web3LoginComponent implements OnInit, OnDestroy {
     switch (providerKey) {
       case WalletProvider.METAMASK:
         return this.metamaskProviderService.logInWithWallet();
+      case WalletProvider.BRAVE_WALLET:
+        return this.braveWalletProviderService.logInWithWallet();
     }
   }
 }
