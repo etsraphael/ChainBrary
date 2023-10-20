@@ -5,6 +5,7 @@ import { Web3LoginComponent } from '../../containers/web3-login/web3-login.compo
 import { INetworkDetail, WalletConnectedEvent, WalletProvider } from '../../interfaces';
 import { PublicGlobalValuesService } from '../global-values/public-global-values.service';
 import { NetworkServiceWeb3Login } from '../network/network.service';
+import { BraveWalletProviderService } from '../providers/brave-wallet-provider/brave-wallet-provider.service';
 import { MetamaskProviderService } from '../providers/metamask-provider/metamask-provider.service';
 
 @Injectable({
@@ -15,7 +16,8 @@ export class Web3LoginService {
     private dialog: MatDialog,
     private networkServiceWeb3Login: NetworkServiceWeb3Login,
     private publicGlobalValuesService: PublicGlobalValuesService,
-    private metamaskProviderService: MetamaskProviderService
+    private metamaskProviderService: MetamaskProviderService,
+    private braveWalletProviderService: BraveWalletProviderService
   ) {}
 
   get onAccountChangedEvent$(): Observable<string | undefined> {
@@ -25,6 +27,8 @@ export class Web3LoginService {
         switch (walletProvider) {
           case WalletProvider.METAMASK:
             return this.metamaskProviderService.onAccountChangedEvent();
+          case WalletProvider.BRAVE_WALLET:
+            return this.braveWalletProviderService.onAccountChangedEvent();
           default:
             return of(undefined);
         }
@@ -43,6 +47,8 @@ export class Web3LoginService {
         switch (walletProvider) {
           case WalletProvider.METAMASK:
             return this.metamaskProviderService.onChainChangedEvent();
+          case WalletProvider.BRAVE_WALLET:
+            return this.braveWalletProviderService.onChainChangedEvent();
           default:
             return of(null);
         }
@@ -79,6 +85,8 @@ export class Web3LoginService {
     switch (wallet) {
       case WalletProvider.METAMASK:
         return this.metamaskProviderService.retreiveWalletProvider();
+      case WalletProvider.BRAVE_WALLET:
+        return this.braveWalletProviderService.retreiveWalletProvider();
       default:
         return;
     }

@@ -54,7 +54,7 @@ describe('Check native payment generated', () => {
 
     // test
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
     cy.get('app-payment-page [data-id="wrong-network-alert"]').should('be.visible').contains('Wrong network');
   });
 
@@ -67,7 +67,7 @@ describe('Check native payment generated', () => {
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
     cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
 
     cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');
@@ -85,7 +85,7 @@ describe('Check native payment generated', () => {
     cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
 
     cy.get('app-payment-page [data-id="warning-banner"]')
       .should('be.visible')
@@ -165,7 +165,7 @@ describe('Check non-native payment generated', () => {
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
     cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
 
     cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');

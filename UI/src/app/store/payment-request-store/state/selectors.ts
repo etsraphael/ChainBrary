@@ -6,14 +6,15 @@ import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/stat
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
 
-export const selectPaymentRequestIsLoading: MemoizedSelector<object, boolean, (s1: IPaymentRequestState) => boolean> =
-  createSelector(selectPaymentRequest, (s) => s.payment.loading);
+export const selectPaymentRequestIsLoading: MemoizedSelector<object, boolean> = createSelector(
+  selectPaymentRequest,
+  (s) => s.payment.loading
+);
 
-export const selectPayment: MemoizedSelector<
-  object,
-  IPaymentRequest | null,
-  (s1: IPaymentRequestState) => IPaymentRequest | null
-> = createSelector(selectPaymentRequest, (s) => s.payment.data);
+export const selectPayment: MemoizedSelector<object, IPaymentRequest | null> = createSelector(
+  selectPaymentRequest,
+  (s) => s.payment.data
+);
 
 export const selectPaymentRequestError: MemoizedSelector<object, string | null> = createSelector(
   selectPaymentRequest,
@@ -72,11 +73,10 @@ export const selectPaymentNetworkIsMathing: MemoizedSelector<object, boolean> = 
   (s, network) => s.network?.chainId === network?.chainId
 );
 
-export const selectProfilePayment: MemoizedSelector<
-  object,
-  IProfilePayment,
-  (s1: IPaymentRequestState) => IProfilePayment
-> = createSelector(selectPaymentRequest, (s) => s.profile);
+export const selectProfilePayment: MemoizedSelector<object, IProfilePayment> = createSelector(
+  selectPaymentRequest,
+  (s) => s.profile
+);
 
 export const selectIsPaymentMaker: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
