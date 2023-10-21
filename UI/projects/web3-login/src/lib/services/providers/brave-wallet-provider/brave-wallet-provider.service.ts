@@ -119,7 +119,7 @@ export class BraveWalletProviderService extends BaseProviderService {
         this.publicGlobalValuesService.walletConnected = WalletProvider.BRAVE_WALLET;
         this.publicGlobalValuesService.recentLoginPayload = {
           publicAddress: accounts[0],
-          network: window.ethereum.networkVersion
+          network: window.ethereum.chainId
         };
       })
       .catch((error: Error) => {

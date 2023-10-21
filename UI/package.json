@@ -35,7 +35,7 @@
     "@apollo/client": "^3.8.3",
     "@chainbrary/token-bridge": "^16.0.7",
     "@chainbrary/transaction-search": "^16.0.5",
-    "@chainbrary/web3-login": "^16.0.19",
+    "@chainbrary/web3-login": "^16.0.20",
     "@eslint-community/regexpp": "^4.5.1",
     "@ngrx/effects": "^16.3.0",
     "@ngrx/entity": "^16.3.0",
