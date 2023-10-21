@@ -128,7 +128,7 @@ export class MetamaskProviderService extends BaseProviderService {
         this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
         this.publicGlobalValuesService.recentLoginPayload = {
           publicAddress: accounts[0],
-          network: window.ethereum.networkVersion
+          network: window.ethereum.chainId
         };
       })
       .catch((error: Error) => {
