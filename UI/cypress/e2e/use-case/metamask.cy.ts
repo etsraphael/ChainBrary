@@ -19,7 +19,7 @@ describe('Metamask Injection', () => {
     const networkFound: INetworkDetail = getNetworkDetailList().find(
       (network: INetworkDetail) => network.chainId === NetworkChainId.ETHEREUM
     );
-    cy.window().its('ethereum.networkVersion').should('eq', networkFound.chainId);
-    cy.window().its('ethereum.chainId').should('eq', networkFound.chainCode);
+    cy.window().its('ethereum.networkVersion').should('eq', networkFound.networkVersion);
+    cy.window().its('ethereum.chainId').should('eq', networkFound.chainId);
   });
 });

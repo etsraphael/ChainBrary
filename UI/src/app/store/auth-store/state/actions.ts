@@ -1,11 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 import { ProfileCreation } from '../../../shared/creations/profileCreation';
 import { IOrganization, IProfileAdded } from '../../../shared/interfaces';
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
 
 export const setAuthPublicAddress = createAction(
   '[Auth] Set Auth Public Address',
-  props<{ publicAddress: string; network: INetworkDetail }>()
+  props<{ publicAddress: string; network: INetworkDetail; wallet: WalletProvider }>()
 );
 export const addressChecking = createAction('[Auth] Address Checking');
 

@@ -2,7 +2,6 @@
 
 import '@angular/compiler';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
-import { injectMetaMaskStub } from '../../../injectors/metamask-stub';
 import { IPaymentRequest } from './../../../../src/app/shared/interfaces';
 
 class MockPaymentService {
@@ -47,15 +46,15 @@ describe('Check native payment generated', () => {
   });
 
   it('Generate payment with wallet and wrong network', () => {
+    // before
     const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
     const SIGNED_MESSAGE = '...';
-
-    // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
+    // test
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
     cy.get('app-payment-page [data-id="wrong-network-alert"]').should('be.visible').contains('Wrong network');
   });
 
@@ -64,11 +63,11 @@ describe('Check native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
     cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
 
     cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');
@@ -83,10 +82,10 @@ describe('Check native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
 
     cy.get('app-payment-page [data-id="warning-banner"]')
       .should('be.visible')
@@ -162,11 +161,11 @@ describe('Check non-native payment generated', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
+    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
     cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
 
     cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn"]').click();
+    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
     cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
 
     cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');

@@ -11,7 +11,7 @@
             *ngFor="let item of providers"
             [ngStyle]="{ background: getGradientStyle(item) }"
             (click)="openWalletProviderEvent.emit(item.key)"
-            data-id="wallet-container-btn"
+            [attr.data-id]="'wallet-container-btn-' + item.key"
           >
             <div class="wallet-row row py-2 mx-0">
               <div class="col-3 col-md-6 brand-image-container ps-3">

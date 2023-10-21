@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
-import { Observable, ReplaySubject, filter, map, take, takeUntil } from 'rxjs';
+import { INetworkDetail, NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
+import { Observable, ReplaySubject, combineLatest, distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs';
 import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
 import { IToken } from './../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
@@ -23,6 +23,7 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
   @Input() paymentNetwork: INetworkDetail | null;
   @Input() canTransfer: boolean;
   @Input() canTransferError: string | null;
+  @Input() walletProviderObs: Observable<WalletProvider | null>;
   @Output() openLoginModal = new EventEmitter<void>();
   @Output() submitPayment = new EventEmitter<{ priceValue: number }>();
   @Output() approveSmartContract = new EventEmitter<void>();
@@ -56,20 +57,28 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
   }
 
   listenToNetworkChange(): void {
-    this.currentNetworkObs
-      .pipe(
-        filter((currentNetwork: INetworkDetail | null) => currentNetwork !== null),
-        map((currentNetwork: INetworkDetail | null) => currentNetwork as INetworkDetail),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((currentNetwork: INetworkDetail) => this.setUpConversion(currentNetwork));
+    const walletProviderObs: Observable<WalletProvider> = this.walletProviderObs.pipe(
+      filter((walletProvider: WalletProvider | null) => walletProvider !== null),
+      map((walletProvider: WalletProvider | null) => walletProvider as WalletProvider)
+    );
+
+    const currentNetworkObs: Observable<INetworkDetail> = this.currentNetworkObs.pipe(
+      filter((currentNetwork: INetworkDetail | null) => currentNetwork !== null),
+      map((currentNetwork: INetworkDetail | null) => currentNetwork as INetworkDetail)
+    );
+
+    combineLatest([currentNetworkObs, walletProviderObs])
+      .pipe(takeUntil(this.destroyed$), distinctUntilChanged())
+      .subscribe(([currentNetwork, walletProvider]: [INetworkDetail, WalletProvider]) => {
+        this.setUpConversion(currentNetwork, walletProvider);
+      });
   }
 
-  setUpConversion(currentNetwork: INetworkDetail): void {
+  setUpConversion(currentNetwork: INetworkDetail, walletConnected: WalletProvider): void {
     // if payment token is native token
     if (this.paymentToken.nativeToChainId === currentNetwork.chainId) {
       this.priceFeedService
-        .getCurrentPriceOfNativeToken(currentNetwork.chainId as NetworkChainId)
+        .getCurrentPriceOfNativeToken(currentNetwork.chainId as NetworkChainId, walletConnected)
         .then(
           (result: number) => (this.tokenConversionRate = (this.paymentRequest.payment.data?.amount as number) / result)
         )
@@ -82,7 +91,7 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
       )?.priceFeed[0] as TokenPair;
       if (priceFeed) {
         this.priceFeedService
-          .getCurrentPrice(priceFeed, currentNetwork.chainId as NetworkChainId)
+          .getCurrentPrice(priceFeed, currentNetwork.chainId as NetworkChainId, walletConnected)
           .then(
             (result: number) =>
               (this.tokenConversionRate = (this.paymentRequest?.payment?.data?.amount as number) / result)

@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
+import { selectWalletConnected } from '../../global-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { TransactionTokenBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
@@ -196,23 +197,26 @@ export class PaymentRequestEffects {
       concatLatestFrom(() => [
         this.store.select(selectPaymentToken),
         this.store.select(selectCurrentNetwork),
-        this.store.select(selectPaymentRequestInUsdIsEnabled)
+        this.store.select(selectPaymentRequestInUsdIsEnabled),
+        this.store.select(selectWalletConnected)
       ]),
-      filter((payload) => payload[1] !== null && payload[2] !== null),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[4] !== null),
       map(
         (
           payload: [
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
             INetworkDetail | null | null,
-            boolean
+            boolean,
+            WalletProvider | null
           ]
         ) =>
           payload as [
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
             INetworkDetail,
-            boolean
+            boolean,
+            WalletProvider
           ]
       ),
       switchMap(
@@ -221,7 +225,8 @@ export class PaymentRequestEffects {
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
             INetworkDetail,
-            boolean
+            boolean,
+            WalletProvider
           ]
         ) => {
           let price: number;
@@ -231,7 +236,7 @@ export class PaymentRequestEffects {
 
           // If the token is the native token of the network, we get the price of the native token
           if (tokenFound?.nativeToChainId === payload[2].chainId) {
-            price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId);
+            price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId, payload[4]);
           } else {
             const priceFeed = tokenFound?.networkSupport.find(
               (network: ITokenContract) => network.chainId === payload[2].chainId
@@ -245,7 +250,7 @@ export class PaymentRequestEffects {
               });
             }
             // If the token is supported by the network, we get the price of the token
-            price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId);
+            price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId, payload[4]);
           }
 
           // Set up the price based on USD

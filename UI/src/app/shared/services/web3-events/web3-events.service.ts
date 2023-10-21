@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, WalletConnectedEvent, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { accountChanged, networkChangeSuccess } from './../../../store/auth-store/state/actions';
-import { filter, map } from 'rxjs';
+import { filter, map, skip } from 'rxjs';
+import { accountChanged, networkChangeSuccess, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,18 @@ export class Web3EventsService {
   ) {}
 
   init(): void {
-    this.web3LoginService.onAccountChangedEvent$.subscribe((account: string | undefined) => {
+    this.web3LoginService.onAccountChangedEvent$.pipe(skip(1)).subscribe((account: string | undefined) => {
       this.store.dispatch(accountChanged({ publicAddress: account ? account : null }));
+    });
+
+    this.web3LoginService.onWalletConnectedEvent$.subscribe((wallet: WalletConnectedEvent) => {
+      this.store.dispatch(
+        setAuthPublicAddress({
+          publicAddress: wallet.publicAddress as string,
+          network: wallet.network as INetworkDetail,
+          wallet: wallet.walletProvider as WalletProvider
+        })
+      );
     });
 
     this.web3LoginService.onChainChangedEvent$

@@ -1,15 +1,6 @@
-export interface IModalState {
-  type: ModalStateType;
-  message?: string;
-  data?: {
-    publicAddress: string;
-    network: INetworkDetail | null;
-  };
-}
-
 export interface INetworkDetail {
   chainId: NetworkChainId;
-  chainCode: NetworkChainCode;
+  networkVersion: NetworkVersion;
   name: string;
   shortName: string;
   nativeCurrency: {
@@ -22,14 +13,7 @@ export interface INetworkDetail {
   rpcUrls?: string[];
 }
 
-export enum ModalStateType {
-  SUCCESS = 'success',
-  ERROR = 'error',
-  CANCEL = 'cancel',
-  LOADING = 'loading'
-}
-
-export enum NetworkChainId {
+export enum NetworkVersion {
   ETHEREUM = '1',
   BNB = '56',
   SEPOLIA = '11155111',
@@ -41,7 +25,8 @@ export enum NetworkChainId {
   KAVA = '222',
   FANTOM = '250',
   CELO = '42220',
-  UNKNOWN = '0'
+  UNKNOWN = '0',
+  LOCALHOST = '1337'
 }
 
 export enum TokenId {
@@ -58,7 +43,7 @@ export enum TokenId {
   UNKNOWN = 'unknown0'
 }
 
-export enum NetworkChainCode {
+export enum NetworkChainId {
   ETHEREUM = '0x1',
   BNB = '0x38',
   SEPOLIA = '0xaa36a7',
@@ -70,7 +55,8 @@ export enum NetworkChainCode {
   KAVA = '0x8ae',
   FANTOM = '0xfa',
   CELO = '0xa4ec',
-  UNKNOWN = '0'
+  UNKNOWN = '0',
+  LOCALHOST = '0x539'
 }
 
 export interface NetworkRpcUrlSupported {

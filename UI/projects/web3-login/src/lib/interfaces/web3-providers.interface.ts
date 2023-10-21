@@ -1,29 +1,50 @@
+import { INetworkDetail } from './network.interface';
+
+export enum WalletProvider {
+  METAMASK = 'metamask',
+  BRAVE_WALLET = 'brave_wallet'
+}
+
 export interface Web3Provider {
-  key: string;
+  key: WalletProvider;
   name: string;
   iconUrl: string;
   backgroundColorGradient: {
     start: string;
     end: string;
-    orientation: {
-      start: [number, number];
-      end: [number, number];
-    };
+    orientation: number;
   };
 }
 
 export const providerData: Web3Provider[] = [
   {
-    key: 'metamask',
+    key: WalletProvider.METAMASK,
     name: 'Metamask',
     iconUrl: './../assets/metamask.svg',
     backgroundColorGradient: {
       start: '#B16000',
       end: '#DF7900',
-      orientation: {
-        start: [0, 0],
-        end: [0, 1]
-      }
+      orientation: 0
+    }
+  },
+  {
+    key: WalletProvider.BRAVE_WALLET,
+    name: 'Brave Wallet',
+    iconUrl: './../assets/brave_lion.svg',
+    backgroundColorGradient: {
+      start: '#FB542B',
+      end: '#343546',
+      orientation: -90
     }
   }
 ];
+
+export interface LoginPayload {
+  publicAddress: string;
+  network: string;
+}
+export interface WalletConnectedEvent {
+  publicAddress: string;
+  network: INetworkDetail | null;
+  walletProvider: WalletProvider;
+}
