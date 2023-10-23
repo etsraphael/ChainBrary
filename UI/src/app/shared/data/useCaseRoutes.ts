@@ -6,28 +6,28 @@ const useCaseRoutes: ServiceItemMenu[] = [
     path: '/payment-request',
     icon: 'bi-credit-card-2-back',
     enabled: true,
-    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
+    description: 'Generate and share payment requests via link or QR Code swiftly and securely'
   },
   {
     title: 'Transaction history',
     path: '/activity',
     icon: 'bi-activity',
     enabled: true,
-    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
+    description: 'Track your transaction records accurately and conveniently in one place'
   },
   {
     title: 'Pay as a group',
     path: '/activity',
     icon: 'bi-people-fill',
     enabled: false,
-    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
+    description: 'Facilitate group payments easily, ideal for shared expenses and gifts'
   },
   {
     title: 'Start a bid',
     path: '/activity',
     icon: 'bi-alarm',
     enabled: false,
-    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
+    description: 'Launch and manage bidding effortlessly with full control and transparency.'
   }
 ];
 
