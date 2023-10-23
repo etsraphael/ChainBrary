@@ -14,11 +14,13 @@ const routes: Routes = [
     children: [
       {
         path: 'services',
-        component: UseCasesListComponent
+        component: UseCasesListComponent,
+        data: { animation: 'services' }
       },
       {
         path: 'payment-request',
-        component: PaymentRequestContainerComponent
+        component: PaymentRequestContainerComponent,
+        data: { animation: 'payment-request' }
       },
       {
         path: 'activity',
