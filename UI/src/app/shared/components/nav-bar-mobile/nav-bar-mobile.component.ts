@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { SideBarRoute } from '../../interfaces';
+import { ServiceItemMenu } from '../../interfaces';
 
 @Component({
   selector: 'app-nav-bar-mobile[routes]',
@@ -7,5 +7,5 @@ import { SideBarRoute } from '../../interfaces';
   styleUrls: ['./nav-bar-mobile.component.scss']
 })
 export class NavBarMobileComponent {
-  @Input() routes: SideBarRoute[];
+  @Input() routes: ServiceItemMenu[];
 }

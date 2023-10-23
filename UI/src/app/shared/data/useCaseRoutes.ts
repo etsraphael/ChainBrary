@@ -1,17 +1,33 @@
-import { SideBarRoute } from '../interfaces';
+import { ServiceItemMenu } from '../interfaces';
 
-const useCaseRoutes: SideBarRoute[] = [
+const useCaseRoutes: ServiceItemMenu[] = [
   {
     title: 'Payment Request',
     path: '/payment-request',
-    icon: 'bi-envelope-fill',
-    enabled: true
+    icon: 'bi-credit-card-2-back',
+    enabled: true,
+    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
   },
   {
-    title: 'Activity',
+    title: 'Transaction history',
     path: '/activity',
-    icon: 'bi-clipboard-data-fill',
-    enabled: true
+    icon: 'bi-activity',
+    enabled: true,
+    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
+  },
+  {
+    title: 'Pay as a group',
+    path: '/activity',
+    icon: 'bi-people-fill',
+    enabled: false,
+    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
+  },
+  {
+    title: 'Start a bid',
+    path: '/activity',
+    icon: 'bi-alarm',
+    enabled: false,
+    description: 'Create a payment request, a share quickly the link or the QR Code of your payment to somebody else'
   }
 ];
 

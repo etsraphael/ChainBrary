@@ -1,17 +1,10 @@
 <app-header-page></app-header-page>
-<div class="container py-md-3">
-  <div class="row">
-    <div class="col-md-5 col-lg-4 col-xl-3">
-      <app-use-cases-sidebar></app-use-cases-sidebar>
-    </div>
-    <div class="col-md-7 col-lg-8 col-xl-9">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</div>
-<ng-template [ngIf]="false">
+<router-outlet></router-outlet>
+
+<!-- TODO: To be removed soon-->
+<!-- <ng-template [ngIf]="false">
   <div class="d-block d-sm-block d-md-none mobile-margin"></div>
   <div class="d-sm-block d-md-none">
     <app-nav-bar-mobile [routes]="useCaseRoutes"></app-nav-bar-mobile>
   </div>
-</ng-template>
+</ng-template> -->

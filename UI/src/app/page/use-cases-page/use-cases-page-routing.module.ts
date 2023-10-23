@@ -4,6 +4,7 @@ import { ActivityContainerComponent } from './activity/containers/activity-conta
 import { AuthCheckingGuard } from './guards/auth-checking/auth-checking.guard';
 import { PaymentRequestContainerComponent } from './payment-request/containers/payment-request-container/payment-request-container.component';
 import { UseCasesPageComponent } from './use-cases-page.component';
+import { UseCasesListComponent } from './components/use-cases-list/use-cases-list.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
     component: UseCasesPageComponent,
     canActivate: [AuthCheckingGuard],
     children: [
+      {
+        path: 'services',
+        component: UseCasesListComponent
+      },
       {
         path: 'payment-request',
         component: PaymentRequestContainerComponent
@@ -21,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: '',
-        redirectTo: 'payment-request',
+        redirectTo: 'services',
         pathMatch: 'full'
       }
     ]

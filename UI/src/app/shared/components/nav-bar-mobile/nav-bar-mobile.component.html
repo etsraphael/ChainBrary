@@ -1,18 +1,19 @@
 <div class="nav-bar-movile-container py-2 border-top bg-light">
   <div class="container-fluid">
     <div class="row justify-content-center">
-      <app-chainbrary-button
-        *ngFor="let item of routes"
-        [buttonClasses]="['col-4', 'btn-light', 'my-2', 'border-0', 'w-init']"
-        routerLinkActive="active"
-        [routerLink]="'/use-cases' + item.path"
-      >
-        <div class="nav-bar-movile-item d-flex justify-content-center">
-          <div class="nav-bar-movile-item-icon">
-            <i class="bi" [ngClass]="item.icon"></i>
+      <div *ngFor="let item of routes" class="col">
+        <app-chainbrary-button
+          [buttonClasses]="['col', 'btn-light', 'my-2', 'border-0']"
+          routerLinkActive="active"
+          [routerLink]="'/use-cases' + item.path"
+        >
+          <div class="nav-bar-movile-item d-flex justify-content-center">
+            <div class="nav-bar-movile-item-icon">
+              <i class="bi" [ngClass]="item.icon"></i>
+            </div>
           </div>
-        </div>
-      </app-chainbrary-button>
+        </app-chainbrary-button>
+      </div>
     </div>
   </div>
 </div>

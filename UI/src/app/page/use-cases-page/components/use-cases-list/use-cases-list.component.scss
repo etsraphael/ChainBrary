@@ -1,0 +1,44 @@
+@import './../../../../../../node_modules/bootstrap/scss/mixins';
+@import './../../../../../../node_modules/bootstrap/scss/functions';
+@import './../../../../../../node_modules/bootstrap/scss/variables';
+
+.header-container {
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right, #ff6a00, #ee0979);
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+}
+
+.bi-house {
+  font-size: 2rem;
+}
+
+@include media-breakpoint-up(md) {
+  .header-container {
+    border-radius: 15px;
+  }
+}
+
+.icon-container {
+  background: linear-gradient(139deg, #8e2de2 5.4%, #4a00e0 95.8%);
+  background: -webkit-linear-gradient(139deg, #8e2de2 5.4%, #4a00e0 95.8%);
+}
+
+.card {
+  overflow: hidden;
+}
+
+.card:hover {
+  background-color: #f8f9fa;
+}
+
+.menu-item i {
+  font-size: 1.7rem;
+}
+
+.icon-container {
+  border-radius: 15px;
+}
+
+.menu-item-text {
+  line-height: 19px;
+}

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import useCaseRoutes from './../../shared/data/useCaseRoutes';
-import { SideBarRoute } from './../../shared/interfaces';
+import { ServiceItemMenu } from './../../shared/interfaces';
 
 @Component({
   selector: 'app-use-cases-page',
@@ -8,5 +8,5 @@ import { SideBarRoute } from './../../shared/interfaces';
   styleUrls: ['./use-cases-page.component.scss']
 })
 export class UseCasesPageComponent {
-  useCaseRoutes: SideBarRoute[] = useCaseRoutes;
+  useCaseRoutes: ServiceItemMenu[] = useCaseRoutes;
 }
