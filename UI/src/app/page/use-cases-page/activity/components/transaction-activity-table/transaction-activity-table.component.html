@@ -89,6 +89,12 @@
   <div class="d-flex flex-column align-items-center justify-content-center">
     <i class="bi bi-database-slash text-secondary"></i>
     <p class="text-center mt-3">{{ historicalTransactionsError }}</p>
+  </div>
+</div>
+
+<!-- Login button -->
+<div class="d-flex flex-column align-items-center justify-content-center" *ngIf="!userIsConnected">
+  <div class="d-flex flex-column align-items-center justify-content-center">
     <app-chainbrary-button
       [buttonClasses]="['btn-info-gradient', 'text-light']"
       buttonText="Connect Wallet"
