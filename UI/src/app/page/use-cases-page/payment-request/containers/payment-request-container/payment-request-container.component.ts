@@ -29,6 +29,7 @@ import {
   selectPaymentConversion,
   selectPaymentToken
 } from './../../../../../store/payment-request-store/state/selectors';
+import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
 
 @Component({
   selector: 'app-payment-request-container',
@@ -46,6 +47,11 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   paymentConversion$: Observable<StoreState<IConversionToken>>;
   resetTransaction$: Observable<Action>;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+  headerPayload: IUseCasesHeader = {
+    title: 'Payment Request',
+    description:
+      'Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.'
+  };
 
   constructor(
     private store: Store,

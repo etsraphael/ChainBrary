@@ -12,6 +12,7 @@ import {
   selectHistoricalTransactionsError,
   selectHistoricalTransactionsIsLoading
 } from './../../../../../store/transaction-store/state/selectors';
+import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
 
 @Component({
   selector: 'app-activity-container',
@@ -24,6 +25,11 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
   currentNetwork$: Observable<INetworkDetail | null>;
   historicalTransactionsError$: Observable<string | null>;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+  headerPayload: IUseCasesHeader = {
+    title: 'Recent Transactions',
+    description:
+      'Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.'
+  };
 
   constructor(
     private store: Store,

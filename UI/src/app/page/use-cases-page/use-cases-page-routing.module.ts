@@ -24,7 +24,8 @@ const routes: Routes = [
       },
       {
         path: 'activity',
-        component: ActivityContainerComponent
+        component: ActivityContainerComponent,
+        data: { animation: 'activity' }
       },
       {
         path: '',

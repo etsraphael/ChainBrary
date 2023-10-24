@@ -10,7 +10,7 @@ import { ServiceItemMenu } from './../../shared/interfaces';
   styleUrls: ['./use-cases-page.component.scss'],
   animations: [
     trigger('routeAnimations', [
-      transition('payment-request => services', [
+      transition('payment-request => services, activity => services', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
           style({
@@ -28,7 +28,7 @@ import { ServiceItemMenu } from './../../shared/interfaces';
         ]),
         query(':enter', animateChild())
       ]),
-      transition('services => payment-request', [
+      transition('services => payment-request, services => activity', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
           style({
@@ -55,7 +55,7 @@ import { ServiceItemMenu } from './../../shared/interfaces';
 export class UseCasesPageComponent implements AfterViewInit {
   useCaseRoutes: ServiceItemMenu[] = useCaseRoutes;
 
-  constructor(private cdRef:ChangeDetectorRef) { }
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   ngAfterViewInit() {
     this.cdRef.detectChanges();

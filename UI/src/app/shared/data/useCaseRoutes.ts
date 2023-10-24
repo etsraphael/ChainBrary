@@ -17,14 +17,14 @@ const useCaseRoutes: ServiceItemMenu[] = [
   },
   {
     title: 'Pay as a group',
-    path: '/activity',
+    path: '/',
     icon: 'bi-people-fill',
     enabled: false,
     description: 'Facilitate group payments easily, ideal for shared expenses and gifts'
   },
   {
     title: 'Start a bid',
-    path: '/activity',
+    path: '/',
     icon: 'bi-alarm',
     enabled: false,
     description: 'Launch and manage bidding effortlessly with full control and transparency.'

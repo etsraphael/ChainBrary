@@ -1,5 +1,5 @@
 <div class="container py-3">
-  <app-transaction-activity-header></app-transaction-activity-header>
+  <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
   <div class="my-3">
     <app-transaction-activity-table
       [transactionsTable]="(transactions$ | async)!"
