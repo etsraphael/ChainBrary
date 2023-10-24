@@ -1,7 +1,9 @@
 <div class="container px-0">
   <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+  <!-- Login Header -->
+  <app-use-cases-sidebar-header *ngIf="selectIsConnected$ | async"> </app-use-cases-sidebar-header>
   <!-- Payment request maker -->
-  <div class="row justify-content-center my-3">
+  <div class="row justify-content-center my-3 pt-4">
     <div class="co-12 col-md-10 col-lg-9 col-xl-8">
       <app-payment-request-maker
         [publicAddressObs]="publicAddress$"

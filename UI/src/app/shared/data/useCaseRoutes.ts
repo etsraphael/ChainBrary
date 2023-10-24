@@ -6,14 +6,14 @@ const useCaseRoutes: ServiceItemMenu[] = [
     path: '/payment-request',
     icon: 'bi-credit-card-2-back',
     enabled: true,
-    description: 'Generate and share payment requests via link or QR Code swiftly and securely'
+    description: 'Share payment requests fast and safely via link/QR code'
   },
   {
     title: 'Transaction history',
     path: '/activity',
     icon: 'bi-activity',
     enabled: true,
-    description: 'Track your transaction records accurately and conveniently in one place'
+    description: 'Easily track all transactions in one spot'
   },
   {
     title: 'Pay as a group',
@@ -27,7 +27,7 @@ const useCaseRoutes: ServiceItemMenu[] = [
     path: '/',
     icon: 'bi-alarm',
     enabled: false,
-    description: 'Launch and manage bidding effortlessly with full control and transparency.'
+    description: 'Easily manage transparent bids with complete control'
   }
 ];
 

@@ -3,8 +3,8 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable, ReplaySubject, Subscription, filter, take, takeUntil } from 'rxjs';
+import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
 import { tokenList } from './../../../../../shared/data/tokenList';
-import { AuthStatusCode } from './../../../../../shared/enum';
 import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../shared/interfaces';
 import {
   accountChanged,
@@ -14,8 +14,8 @@ import {
 } from './../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
-  selectAuthStatus,
   selectCurrentNetwork,
+  selectIsConnected,
   selectPublicAddress,
   selectUserAccountIsLoading
 } from './../../../../../store/auth-store/state/selectors';
@@ -29,7 +29,6 @@ import {
   selectPaymentConversion,
   selectPaymentToken
 } from './../../../../../store/payment-request-store/state/selectors';
-import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
 
 @Component({
   selector: 'app-payment-request-container',
@@ -37,9 +36,8 @@ import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-
   styleUrls: ['./payment-request-container.component.scss']
 })
 export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
-  authStatus$: Observable<AuthStatusCode>;
-  AuthStatusCodeTypes = AuthStatusCode;
   profileAccount$: Observable<IProfileAdded | null>;
+  selectIsConnected$: Observable<boolean>;
   publicAddress$: Observable<string | null>;
   userAccountIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
@@ -68,7 +66,7 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   }
 
   generateObs(): void {
-    this.authStatus$ = this.store.select(selectAuthStatus);
+    this.selectIsConnected$ = this.store.select(selectIsConnected);
     this.profileAccount$ = this.store.select(selectAccount);
     this.publicAddress$ = this.store.select(selectPublicAddress);
     this.userAccountIsLoading$ = this.store.select(selectUserAccountIsLoading);
