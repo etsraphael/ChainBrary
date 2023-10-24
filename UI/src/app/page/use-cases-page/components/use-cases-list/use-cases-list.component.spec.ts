@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { RouterTestingModule } from '@angular/router/testing';
 import { UseCasesListComponent } from './use-cases-list.component';
 
 describe('UseCasesListComponent', () => {
@@ -8,6 +8,7 @@ describe('UseCasesListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [RouterTestingModule],
       declarations: [UseCasesListComponent]
     });
     fixture = TestBed.createComponent(UseCasesListComponent);

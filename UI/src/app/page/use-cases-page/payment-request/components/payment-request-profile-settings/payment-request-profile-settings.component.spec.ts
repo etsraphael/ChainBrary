@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './../../../../../module/material.module';
-import { SharedComponentsModule } from './../../../../../shared/components/shared-components.module';
+import { SharedComponentsModule, SharedTestModule } from './../../../../../shared/components/shared-components.module';
 import { ProfileForm } from './../../../../../shared/interfaces';
 import { PaymentRequestProfileSettingsComponent } from './payment-request-profile-settings.component';
 
@@ -19,7 +19,7 @@ describe('PaymentRequestProfileSettingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MaterialModule, SharedComponentsModule, ReactiveFormsModule, BrowserAnimationsModule],
+      imports: [MaterialModule, SharedComponentsModule, ReactiveFormsModule, BrowserAnimationsModule, SharedTestModule],
       declarations: [PaymentRequestProfileSettingsComponent],
       providers: [
         { provide: MatSnackBarRef, useValue: {} },

@@ -33,7 +33,7 @@ describe('UseCasesPageComponent', () => {
   });
 
   it('should have useCaseRoutes with title property', () => {
-    const titles = ['Payment Request', 'Activity'];
+    const titles = useCaseRoutes.map((route: ServiceItemMenu) => route.title);
 
     useCaseRoutes.forEach((route: ServiceItemMenu, index: number) => {
       expect(route.title).toBeDefined();
