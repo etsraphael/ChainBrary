@@ -212,8 +212,13 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   listenToAddressChange(): void {
     this.publicAddressObs.pipe(takeUntil(this.destroyed$)).subscribe((publicAddress: string | null) => {
-      if (publicAddress) this.profileForm.get('publicAddress')?.setValue(publicAddress);
-      else this.profileForm.get('publicAddress')?.setValue('');
+      if (publicAddress) {
+        this.profileForm.get('publicAddress')?.setValue(publicAddress);
+        this.profileForm.get('publicAddress')?.disable();
+      } else {
+        this.profileForm.get('publicAddress')?.setValue('');
+        this.profileForm.get('publicAddress')?.enable();
+      }
     });
   }
 

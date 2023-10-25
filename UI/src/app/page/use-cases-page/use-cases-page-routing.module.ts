@@ -4,6 +4,7 @@ import { ActivityContainerComponent } from './activity/containers/activity-conta
 import { AuthCheckingGuard } from './guards/auth-checking/auth-checking.guard';
 import { PaymentRequestContainerComponent } from './payment-request/containers/payment-request-container/payment-request-container.component';
 import { UseCasesPageComponent } from './use-cases-page.component';
+import { UseCasesListComponent } from './components/use-cases-list/use-cases-list.component';
 
 const routes: Routes = [
   {
@@ -12,16 +13,23 @@ const routes: Routes = [
     canActivate: [AuthCheckingGuard],
     children: [
       {
+        path: 'services',
+        component: UseCasesListComponent,
+        data: { animation: 'services' }
+      },
+      {
         path: 'payment-request',
-        component: PaymentRequestContainerComponent
+        component: PaymentRequestContainerComponent,
+        data: { animation: 'payment-request' }
       },
       {
         path: 'activity',
-        component: ActivityContainerComponent
+        component: ActivityContainerComponent,
+        data: { animation: 'activity' }
       },
       {
         path: '',
-        redirectTo: 'payment-request',
+        redirectTo: 'services',
         pathMatch: 'full'
       }
     ]

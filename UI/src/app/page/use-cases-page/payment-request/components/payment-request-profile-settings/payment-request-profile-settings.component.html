@@ -3,14 +3,16 @@
     <div class="col-12 col-lg-7">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Wallet Address</mat-label>
-        <input
-          formControlName="publicAddress"
-          type="link"
-          class="text-center"
-          matInput
-          placeholder="0x"
-          data-id="address-input"
-        />
+        <input formControlName="publicAddress" type="link" matInput placeholder="0x" data-id="address-input" />
+        <div
+          *ngIf="!profileForm.get('publicAddress')?.value"
+          class="btn login-btn mx-2 btn-primary-gradient"
+          matSuffix
+          (click)="web3LoginService.openLoginModal()"
+          data-id="login-btn"
+        >
+          <span class="text-light">Login</span>
+        </div>
         <mat-error *ngIf="profileForm.get('publicAddress')?.hasError('invalidAddress')">
           A wallet address must start with 0x
         </mat-error>
@@ -24,7 +26,6 @@
         <input
           formControlName="avatarUrl"
           type="link"
-          class="text-center"
           matInput
           placeholder="https://my-url"
           data-id="avatarUrl-input"
@@ -38,14 +39,7 @@
     <div class="col-12 col-lg-7">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Name</mat-label>
-        <input
-          formControlName="username"
-          type="name"
-          class="text-center"
-          matInput
-          placeholder="Name"
-          data-id="username-input"
-        />
+        <input formControlName="username" type="name" matInput placeholder="Name" data-id="username-input" />
         <mat-error *ngIf="profileForm.get('username')!.hasError('maxlength')">
           Name must be less than 20 characters
         </mat-error>

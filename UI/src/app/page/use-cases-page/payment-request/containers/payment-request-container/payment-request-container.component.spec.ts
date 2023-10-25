@@ -9,6 +9,7 @@ import { PaymentRequestContainerComponent } from './payment-request-container.co
 import { PaymentRequestProfileSettingsComponent } from '../../components/payment-request-profile-settings/payment-request-profile-settings.component';
 import { PaymentRequestPriceSettingsComponent } from '../../components/payment-request-price-settings/payment-request-price-settings.component';
 import { PaymentRequestReviewComponent } from '../../components/payment-request-review/payment-request-review.component';
+import { UserCasesSharedComponentsModule } from '../../../components/user-cases-shared-components.module';
 
 describe('PaymentRequestContainerComponent', () => {
   let component: PaymentRequestContainerComponent;
@@ -21,7 +22,8 @@ describe('PaymentRequestContainerComponent', () => {
           auth: () => authInitialState,
           paymentRequest: () => paymentRequestInitialState
         }),
-        SharedTestModule
+        SharedTestModule,
+        UserCasesSharedComponentsModule
       ],
       declarations: [
         PaymentRequestContainerComponent,

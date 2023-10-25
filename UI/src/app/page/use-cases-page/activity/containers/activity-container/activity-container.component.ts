@@ -4,8 +4,9 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, skip, takeUntil } from 'rxjs';
+import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
 import { setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
-import { selectCurrentNetwork } from './../../../../../store/auth-store/state/selectors';
+import { selectCurrentNetwork, selectIsConnected } from './../../../../../store/auth-store/state/selectors';
 import { loadTransactionsFromBridgeTransfer } from './../../../../../store/transaction-store/state/actions';
 import {
   selectHistoricalTransactions,
@@ -23,7 +24,13 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
   transactionsIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
   historicalTransactionsError$: Observable<string | null>;
+  userIsConnected$: Observable<boolean>;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+  headerPayload: IUseCasesHeader = {
+    title: 'Recent Transactions',
+    description:
+      'Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.'
+  };
 
   constructor(
     private store: Store,
@@ -46,6 +53,7 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
     this.currentNetwork$ = this.store.select(selectCurrentNetwork);
     this.transactionsIsLoading$ = this.store.select(selectHistoricalTransactionsIsLoading);
     this.historicalTransactionsError$ = this.store.select(selectHistoricalTransactionsError);
+    this.userIsConnected$ = this.store.select(selectIsConnected);
   }
 
   callActions(): void {
