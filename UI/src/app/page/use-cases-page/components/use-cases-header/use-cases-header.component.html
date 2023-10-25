@@ -1,14 +1,15 @@
 <!-- Title container -->
-<div class="row justify-content-center mt-3">
-  <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8 text-start">
-    <h3 class="text-dark"><i class="bi bi-arrow-left me-2" [routerLink]="'./../'"></i> {{ header.title }}</h3>
-    <hr />
-  </div>
-</div>
-
-<!-- Description -->
-<div class="row justify-content-center">
-  <div class="col-11 col-sm-12 col-md-10 col-lg-9 col-xl-8 text-start">
-    <p class="text-muted">{{ header.description }}</p>
+<div class="container">
+  <div class="row">
+    <div class="col-12 text-start">
+      <!-- Title -->
+      <h3 class="text-dark">
+        <i class="bi bi-arrow-left me-3" [routerLink]="'./../'"></i>
+        <span>{{ header.title }}</span>
+      </h3>
+      <hr />
+      <!-- Description -->
+      <p class="text-muted">{{ header.description }}</p>
+    </div>
   </div>
 </div>

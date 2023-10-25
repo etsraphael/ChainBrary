@@ -11,7 +11,7 @@
           (click)="web3LoginService.openLoginModal()"
           data-id="login-btn"
         >
-          <span class="text-light">Or login</span>
+          <span class="text-light">Login</span>
         </div>
         <mat-error *ngIf="profileForm.get('publicAddress')?.hasError('invalidAddress')">
           A wallet address must start with 0x

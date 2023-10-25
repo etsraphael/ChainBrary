@@ -1,13 +1,17 @@
-<div class="container py-3">
-  <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
-  <div class="my-3">
-    <app-transaction-activity-table
-      [userIsConnected]="(userIsConnected$ | async)!"
-      [transactionsTable]="(transactions$ | async)!"
-      [currentNetwork]="currentNetwork$ | async"
-      [transactionsIsLoading]="(transactionsIsLoading$ | async)!"
-      [historicalTransactionsError]="historicalTransactionsError$ | async"
-    >
-    </app-transaction-activity-table>
+<div class="container px-0 pt-3 pb-5">
+  <div class="row justify-content-center mx-0">
+    <div class="col-12 col-md-8 col-lg-7 col-xl-6">
+      <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+      <div class="my-3">
+        <app-transaction-activity-table
+          [userIsConnected]="(userIsConnected$ | async)!"
+          [transactionsTable]="(transactions$ | async)!"
+          [currentNetwork]="currentNetwork$ | async"
+          [transactionsIsLoading]="(transactionsIsLoading$ | async)!"
+          [historicalTransactionsError]="historicalTransactionsError$ | async"
+        >
+        </app-transaction-activity-table>
+      </div>
+    </div>
   </div>
 </div>
