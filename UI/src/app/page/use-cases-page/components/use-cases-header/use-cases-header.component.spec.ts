@@ -16,10 +16,8 @@ describe('UseCasesHeaderComponent', () => {
     component.header = {
       title: 'title',
       description: 'description'
-    }
+    };
     fixture.detectChanges();
-
-
   });
 
   it('should create', () => {
