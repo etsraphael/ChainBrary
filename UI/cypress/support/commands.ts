@@ -39,7 +39,8 @@ Cypress.Commands.add('login', (walletAddress: string, signedMessage: string, net
   cy.get('[data-id="explore-solutions"]').click();
 
   // Click on login button
-  cy.get('app-use-cases-sidebar-header [data-id="login-btn"]').click();
+  cy.visit(`${Cypress.env('baseUrl')}/use-cases/payment-request`);
+  cy.get('app-payment-request-profile-settings [data-id="login-btn"]').click();
   cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
 });
 
