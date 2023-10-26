@@ -1,72 +1,74 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+// TODO: Migrate to OpenZeppelin 5.x
 
-contract CertifiedProfiles is Ownable {
-    event ProfileAdded(
-        address indexed userAddress,
-        string username,
-        string imgUrl,
-        string description,
-        uint256 expirationDate
-    );
+// import "@openzeppelin/contracts/access/Ownable.sol";
 
-    struct ProfileStruct {
-        address userAddress;
-        string username;
-        string imgUrl;
-        string description;
-        uint256 expirationDate;
-    }
+// contract CertifiedProfiles is Ownable {
+//     event ProfileAdded(
+//         address indexed userAddress,
+//         string username,
+//         string imgUrl,
+//         string description,
+//         uint256 expirationDate
+//     );
 
-    mapping(address => ProfileStruct) public profiles;
+//     struct ProfileStruct {
+//         address userAddress;
+//         string username;
+//         string imgUrl;
+//         string description;
+//         uint256 expirationDate;
+//     }
 
-    modifier profileNotNull() {
-        require(profiles[_msgSender()].userAddress != address(0), "Profile not found");
-        _;
-    }
+//     mapping(address => ProfileStruct) public profiles;
 
-    modifier profileOwner() {
-        require(profiles[_msgSender()].userAddress == _msgSender(), "Not authorized");
-        _;
-    }
+//     modifier profileNotNull() {
+//         require(profiles[_msgSender()].userAddress != address(0), "Profile not found");
+//         _;
+//     }
 
-    function addProfile(string memory _username, string memory _imgUrl, string memory _description) public {
-        require(profiles[_msgSender()].userAddress != _msgSender(), "Profile already exists");
-        uint256 oneYearInSeconds = 365 days;
-        uint256 expirationDate = block.timestamp + oneYearInSeconds;
-        emit ProfileAdded(_msgSender(), _username, _imgUrl, _description, expirationDate);
-        profiles[_msgSender()] = ProfileStruct(_msgSender(), _username, _imgUrl, _description, expirationDate);
-    }
+//     modifier profileOwner() {
+//         require(profiles[_msgSender()].userAddress == _msgSender(), "Not authorized");
+//         _;
+//     }
 
-    function extendExpiredDate() public profileOwner {
-        uint256 oneYearInSeconds = 365 days;
-        uint256 expirationDate = block.timestamp + oneYearInSeconds;
-        profiles[_msgSender()].expirationDate = expirationDate;
-    }
+//     function addProfile(string memory _username, string memory _imgUrl, string memory _description) public {
+//         require(profiles[_msgSender()].userAddress != _msgSender(), "Profile already exists");
+//         uint256 oneYearInSeconds = 365 days;
+//         uint256 expirationDate = block.timestamp + oneYearInSeconds;
+//         emit ProfileAdded(_msgSender(), _username, _imgUrl, _description, expirationDate);
+//         profiles[_msgSender()] = ProfileStruct(_msgSender(), _username, _imgUrl, _description, expirationDate);
+//     }
 
-    function updateProfile(string memory _username, string memory _description) public profileOwner {
-        profiles[_msgSender()].username = _username;
-        profiles[_msgSender()].description = _description;
-    }
+//     function extendExpiredDate() public profileOwner {
+//         uint256 oneYearInSeconds = 365 days;
+//         uint256 expirationDate = block.timestamp + oneYearInSeconds;
+//         profiles[_msgSender()].expirationDate = expirationDate;
+//     }
 
-    function getProfile(
-        address _address
-    ) public view profileNotNull returns (address, string memory, string memory, uint256) {
-        return (
-            profiles[_address].userAddress,
-            profiles[_address].username,
-            profiles[_address].description,
-            profiles[_address].expirationDate
-        );
-    }
+//     function updateProfile(string memory _username, string memory _description) public profileOwner {
+//         profiles[_msgSender()].username = _username;
+//         profiles[_msgSender()].description = _description;
+//     }
 
-    function deleteProfileByAddress(address _address) public profileNotNull onlyOwner {
-        delete profiles[_address];
-    }
+//     function getProfile(
+//         address _address
+//     ) public view profileNotNull returns (address, string memory, string memory, uint256) {
+//         return (
+//             profiles[_address].userAddress,
+//             profiles[_address].username,
+//             profiles[_address].description,
+//             profiles[_address].expirationDate
+//         );
+//     }
 
-    function deleteMyProfile() public profileOwner {
-        delete profiles[_msgSender()];
-    }
-}
+//     function deleteProfileByAddress(address _address) public profileNotNull onlyOwner {
+//         delete profiles[_address];
+//     }
+
+//     function deleteMyProfile() public profileOwner {
+//         delete profiles[_msgSender()];
+//     }
+// }
