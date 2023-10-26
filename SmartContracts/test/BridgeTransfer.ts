@@ -30,7 +30,7 @@ describe('TransactionBridge', function () {
       const amountToSend = new BigNumber(ethers.parseEther('2').toString());
       const tx = await transactionBridge.connect(owner).transferFund(recipients, { value: amountToSend.toString() });
       const feeRate = new BigNumber((await transactionBridge.feeRate()).toString());
-      const fee = amountToSend.times(feeRate).dividedBy(100000);
+      const fee = amountToSend.times(feeRate).dividedBy(10000);
       const amountPerRecipient = amountToSend.minus(fee).dividedBy(recipients.length);
       const finalAddr1Balance = new BigNumber((await ethers.provider.getBalance(addr1.address)).toString());
       const finalAddr2Balance = new BigNumber((await ethers.provider.getBalance(addr2.address)).toString());
@@ -68,7 +68,7 @@ describe('TransactionBridge', function () {
 
     const amountToSend = new BigNumber(ethers.parseEther('2').toString());
     const feeRate = new BigNumber((await transactionBridge.feeRate()).toString());
-    const fee = amountToSend.times(feeRate).div(100000);
+    const fee = amountToSend.times(feeRate).div(10000);
 
     // Sender sends the fund, instead of the owner
     await transactionBridge.connect(sender).transferFund(recipients, { value: amountToSend.toString() });
