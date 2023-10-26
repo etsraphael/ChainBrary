@@ -1,0 +1,73 @@
+@import './../../../../../../node_modules/bootstrap/scss/mixins';
+@import './../../../../../../node_modules/bootstrap/scss/functions';
+@import './../../../../../../node_modules/bootstrap/scss/variables';
+
+.header-container {
+  background: #ee0979;
+  background: -webkit-linear-gradient(to right, #ff6a00, #ee0979);
+  background: linear-gradient(to right, #ff6a00, #ee0979);
+}
+
+.bi-house {
+  font-size: 2rem;
+}
+
+@include media-breakpoint-up(md) {
+  .header-container {
+    border-radius: 15px;
+  }
+}
+
+.card {
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: #f8f9fa;
+}
+
+.menu-item i {
+  font-size: 1.7rem;
+}
+
+.icon-container {
+  border-radius: 15px;
+}
+
+.menu-item-text {
+  line-height: 19px;
+}
+
+.color-gradient-0 {
+  background: linear-gradient(139deg, #8e2de2 5.4%, #4a00e0 95.8%);
+  background: -webkit-linear-gradient(139deg, #8e2de2 5.4%, #4a00e0 95.8%);
+}
+
+.color-gradient-1 {
+  background: linear-gradient(139deg, #11998e 5.4%, #38ef7d 95.8%);
+  background: -webkit-linear-gradient(139deg, #11998e 5.4%, #38ef7d 95.8%);
+}
+
+.color-gradient-2 {
+  background: linear-gradient(139deg, #fe6517 5.4%, #dc281e 95.8%);
+  background: -webkit-linear-gradient(139deg, #fe6517 5.4%, #dc281e 95.8%);
+}
+
+.color-gradient-3 {
+  background: linear-gradient(139deg, #525252 5.4%, #3d72b4 95.8%);
+  background: -webkit-linear-gradient(139deg, #525252 5.4%, #3d72b4 95.8%);
+}
+
+.coming-soon-badge {
+  font-size: 0.8rem;
+}
+
+.disabled-screen {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  cursor: not-allowed;
+  background-color: black;
+  opacity: 0.3;
+}
