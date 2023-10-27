@@ -49,6 +49,10 @@ a {
   }
 }
 
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  --mdc-dialog-container-shape: 25px;
+}
+
 .mat-mdc-snack-bar-container.success-snackbar {
   --mdc-snackbar-container-color: #198754;
 }
