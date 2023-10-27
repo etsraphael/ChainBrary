@@ -3,12 +3,13 @@ pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract TokenBridge is Ownable, ReentrancyGuard {
-    using SafeMath for uint256;
     uint256 public feeRate = 1000; // 1000 means 0.1% fee (1/1000)
+
+    constructor() Ownable(_msgSender()) {}
 
     event Transfer(address indexed sender, address indexed destination, uint256 amount, address token);
 
@@ -19,8 +20,14 @@ contract TokenBridge is Ownable, ReentrancyGuard {
     function transfer(uint256 _amount, address _destinationAddress, IERC20 _token) external nonReentrant {
         require(canTransfer(_msgSender(), _amount, _token), "Contract not approved to transfer enough tokens");
 
-        uint256 feeAmount = _amount.mul(feeRate).div(10000);
-        uint256 transferAmount = _amount.sub(feeAmount);
+        (bool feeMulSuccess, uint256 feeMulAmount) = Math.tryMul(_amount, feeRate);
+        require(feeMulSuccess, "Multiplication overflow");
+
+        (bool feeDivSuccess, uint256 feeAmount) = Math.tryDiv(feeMulAmount, 10000);
+        require(feeDivSuccess, "Division overflow");
+
+        (bool feeSubSuccess, uint256 transferAmount) = Math.trySub(_amount, feeAmount);
+        require(feeSubSuccess, "Subtraction underflow");
 
         require(_token.transferFrom(_msgSender(), address(this), _amount), "Token transfer to contract failed");
 
