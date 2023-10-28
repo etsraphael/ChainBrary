@@ -4,7 +4,9 @@ import { ethers } from 'hardhat';
 export default buildModule('Apollo', (m) => {
   const rocketContract = deployContractContrat(m);
   const lockContract = deployLockContract(m);
-  return { rocketContract, lockContract };
+  const transactionTokenBridge = deployTransactionTokenBridge(m);
+  const transactionBridge = deployTransactionBridge(m);
+  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge };
 });
 
 function deployContractContrat(m: any) {
@@ -20,4 +22,14 @@ function deployLockContract(m: any) {
   const lockedAmount = ethers.parseEther('0.001');
   const lockContract = m.contract('Lock', [unlockTime], { value: lockedAmount });
   return lockContract;
+}
+
+function deployTransactionTokenBridge(m: any) {
+  const transactionTokenBridge = m.contract('TransactionTokenBridge');
+  return transactionTokenBridge;
+}
+
+function deployTransactionBridge(m: any) {
+  const transactionBridge = m.contract('TransactionBridge');
+  return transactionBridge;
 }
