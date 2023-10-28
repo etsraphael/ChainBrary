@@ -26,7 +26,7 @@ export enum NetworkVersion {
   FANTOM = '250',
   CELO = '42220',
   UNKNOWN = '0',
-  LOCALHOST = '1337'
+  LOCALHOST = '31337'
 }
 
 export enum TokenId {
@@ -56,7 +56,7 @@ export enum NetworkChainId {
   FANTOM = '0xfa',
   CELO = '0xa4ec',
   UNKNOWN = '0',
-  LOCALHOST = '0x539'
+  LOCALHOST = '0x7a69'
 }
 
 export interface NetworkRpcUrlSupported {
