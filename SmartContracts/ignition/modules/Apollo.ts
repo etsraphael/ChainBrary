@@ -6,7 +6,9 @@ export default buildModule('Apollo', (m) => {
   const lockContract = deployLockContract(m);
   const transactionTokenBridge = deployTransactionTokenBridge(m);
   const transactionBridge = deployTransactionBridge(m);
-  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge };
+  const priceFeed = deployPriceFeed(m);
+  const erc20FixedSupply = deployERC20FixedSupply(m);
+  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge, priceFeed, erc20FixedSupply };
 });
 
 function deployContractContrat(m: any) {
@@ -32,4 +34,14 @@ function deployTransactionTokenBridge(m: any) {
 function deployTransactionBridge(m: any) {
   const transactionBridge = m.contract('TransactionBridge');
   return transactionBridge;
+}
+
+function deployPriceFeed(m: any) {
+  const dataConsumerV3 = m.contract('DataConsumerV3');
+  return dataConsumerV3;
+}
+
+function deployERC20FixedSupply(m: any) {
+  const erc20FixedSupply = m.contract('ERC20FixedSupply');
+  return erc20FixedSupply;
 }
