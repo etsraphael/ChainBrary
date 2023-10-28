@@ -5,11 +5,13 @@
     "prettier": "prettier --write 'contracts/*.sol' --plugin=prettier-plugin-solidity",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
-    "deploy": "npx hardhat run scripts/deploy.ts",
+    "deploy:local": "npx hardhat ignition deploy ignition/modules/Apollo.ts",
     "abi": "npx hardhat export-abi",
+    "node": "npx hardhat node",
     "graphgen": "npx hardhat run scripts/deploy-graph.ts"
   },
   "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^0.11.0",
     "@nomicfoundation/hardhat-toolbox": "^3.0.0",
     "hardhat": "^2.18.2",
     "hardhat-abi-exporter": "^2.10.1",

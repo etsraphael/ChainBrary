@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract TokenBridge is Ownable, ReentrancyGuard {
+contract TransactionTokenBridge is Ownable, ReentrancyGuard {
     uint256 public feeRate = 1000; // 1000 means 0.1% fee (1/1000)
 
     constructor() Ownable(_msgSender()) {}
