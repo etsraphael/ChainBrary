@@ -1,3 +1,6 @@
+<!-- Login Header -->
+<app-use-cases-sidebar-header *ngIf="userIsConnected"> </app-use-cases-sidebar-header>
+
 <!-- Loading view -->
 <table class="w-100 shadow-sm bg-white" *ngIf="transactionsIsLoading && transactionsTable.length === 0">
   <thead>
@@ -86,5 +89,17 @@
   <div class="d-flex flex-column align-items-center justify-content-center">
     <i class="bi bi-database-slash text-secondary"></i>
     <p class="text-center mt-3">{{ historicalTransactionsError }}</p>
+  </div>
+</div>
+
+<!-- Login button -->
+<div class="d-flex flex-column align-items-center justify-content-center" *ngIf="!userIsConnected">
+  <div class="d-flex flex-column align-items-center justify-content-center">
+    <app-chainbrary-button
+      [buttonClasses]="['btn-info-gradient', 'text-light']"
+      buttonText="Connect Wallet"
+      (callToAction)="web3LoginService.openLoginModal()"
+      data-id="login-btn"
+    />
   </div>
 </div>

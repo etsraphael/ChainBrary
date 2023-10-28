@@ -10,7 +10,8 @@ describe('Go on activity page with a wallet', () => {
 
   it('Go on activity page started', () => {
     // Complete profile information
-    cy.get('#btn-use-case-bi-clipboard-data-fill').click();
+    cy.visit(`${Cypress.env('baseUrl')}/use-cases/activity`);
+    cy.get('app-transaction-activity-table [data-id="login-btn"]').click();
   });
 });
 
@@ -21,8 +22,6 @@ describe('Go on activity page without a wallet', () => {
 
   it('Go on activity page started', () => {
     // Complete profile information
-    cy.get('#btn-use-case-bi-clipboard-data-fill').click();
-
     cy.get('app-transaction-activity-table').contains('Wallet is not connected');
   });
 });

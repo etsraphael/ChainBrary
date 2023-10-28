@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ProfileForm } from './../../../../../shared/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Web3LoginService } from '@chainbrary/web3-login';
+import { ProfileForm } from './../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-payment-request-profile-settings[profileForm]',
@@ -12,7 +13,10 @@ export class PaymentRequestProfileSettingsComponent {
   @Input() profileForm: FormGroup<ProfileForm>;
   @Output() goToNextPage = new EventEmitter<void>();
 
-  constructor(private snackbar: MatSnackBar) {}
+  constructor(
+    private snackbar: MatSnackBar,
+    public web3LoginService: Web3LoginService
+  ) {}
 
   submitForm(): void {
     this.profileForm.markAllAsTouched();

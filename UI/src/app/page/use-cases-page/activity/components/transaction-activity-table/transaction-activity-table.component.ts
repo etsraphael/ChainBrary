@@ -4,7 +4,7 @@ import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { FormatService } from './../../../../../shared/services/format/format.service';
 
 @Component({
-  selector: 'app-transaction-activity-table',
+  selector: 'app-transaction-activity-table[userIsConnected]',
   templateUrl: './transaction-activity-table.component.html',
   styleUrls: ['./transaction-activity-table.component.scss']
 })
@@ -13,6 +13,7 @@ export class TransactionActivityTableComponent {
   @Input() currentNetwork: INetworkDetail | null;
   @Input() transactionsIsLoading: boolean;
   @Input() historicalTransactionsError: string | null;
+  @Input() userIsConnected: boolean;
   displayedColumns: string[] = ['action', 'amount', 'date'];
   role = TransactionRole;
 
