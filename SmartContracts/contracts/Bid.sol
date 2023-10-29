@@ -12,6 +12,7 @@ contract Bid is Ownable, ReentrancyGuard {
     uint256 public highestBid;
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
+    uint256 public extendTimeInSeconds;
 
     // List of all bidders
     Bidder[] public bidders;
@@ -38,8 +39,9 @@ contract Bid is Ownable, ReentrancyGuard {
         _;
     }
 
-    constructor(address _communityAddress) Ownable(_msgSender()) {
+    constructor(address _communityAddress, uint256 _extendTimeInSeconds) Ownable(_msgSender()) {
         communityAddress = _communityAddress; // Initialize dev community address
+        extendTimeInSeconds = _extendTimeInSeconds;
     }
 
     function auctionDone() public view returns (bool) {
@@ -74,7 +76,7 @@ contract Bid is Ownable, ReentrancyGuard {
 
         (bool actualBidAmountCalculationSuccess, uint256 actualBidAmount) = Math.trySub(msg.value, fee);
         require(actualBidAmountCalculationSuccess, "Subtraction overflow");
-        
+
         require(actualBidAmount > highestBid, "Bid amount after fee deduction is not high enough");
         require(msg.sender != highestBidder, "You are already the highest bidder");
 
@@ -89,6 +91,11 @@ contract Bid is Ownable, ReentrancyGuard {
         bids[msg.sender] = actualBidAmount;
         highestBidder = msg.sender;
         highestBid = actualBidAmount;
+
+        // Check if there are 10 minutes or less left in the auction
+        if (auctionEndTime - block.timestamp <= 10 minutes) {
+            auctionEndTime = block.timestamp + extendTimeInSeconds;
+        }
 
         // Send fee to the dev community address
         payable(communityAddress).transfer(fee);
