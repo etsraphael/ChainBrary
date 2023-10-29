@@ -10,6 +10,7 @@ contract Bid is Ownable, ReentrancyGuard {
     uint256 public auctionEndTime;
     address public highestBidder;
     uint256 public highestBid;
+    uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
 
     // List of all bidders
     Bidder[] public bidders;
@@ -42,6 +43,16 @@ contract Bid is Ownable, ReentrancyGuard {
         return auctionEndTime > block.timestamp;
     }
 
+    function calculateFee(uint256 _amount) internal pure returns (uint256) {
+        (bool feeCalculationSuccess, uint256 fee) = Math.tryDiv(FEE_PERCENT, 1000);
+        require(feeCalculationSuccess, "Division overflow");
+
+        (bool feeAmountCalculationSuccess, uint256 feeAmount) = Math.tryMul(_amount, fee);
+        require(feeAmountCalculationSuccess, "Multiplication overflow");
+
+        return feeAmount;
+    }
+
     function startAuction(uint256 _durationInMinutes) external onlyOwner {
         auctionStartTime = block.timestamp;
 
@@ -56,7 +67,12 @@ contract Bid is Ownable, ReentrancyGuard {
     }
 
     function bid() external payable auctionOngoing nonReentrant {
-        require(msg.value > highestBid, "Bid amount is not high enough");
+        uint256 fee = calculateFee(msg.value);
+
+        (bool actualBidAmountCalculationSuccess, uint256 actualBidAmount) = Math.trySub(msg.value, fee);
+        require(actualBidAmountCalculationSuccess, "Subtraction overflow");
+        
+        require(actualBidAmount > highestBid, "Bid amount after fee deduction is not high enough");
         require(msg.sender != highestBidder, "You are already the highest bidder");
 
         uint256 refundAmount = highestBid;
@@ -67,16 +83,19 @@ contract Bid is Ownable, ReentrancyGuard {
             bidderAddresses.push(msg.sender);
         }
 
-        bids[msg.sender] = msg.value;
+        bids[msg.sender] = actualBidAmount;
         highestBidder = msg.sender;
-        highestBid = msg.value;
+        highestBid = actualBidAmount;
+
+        // Send fee to the owner
+        payable(owner()).transfer(fee);
 
         // refund the previous highest bidder if applicable
         if (previousHighestBidder != address(0)) {
             payable(previousHighestBidder).transfer(refundAmount);
         }
 
-        emit NewBid(msg.sender, msg.value);
+        emit NewBid(msg.sender, actualBidAmount);
     }
 
     function withdrawAuctionAmount() external onlyOwner auctionEnded {
