@@ -10,6 +10,7 @@ contract Bid is Ownable, ReentrancyGuard {
     uint256 public auctionEndTime;
     address public highestBidder;
     uint256 public highestBid;
+    address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
 
     // List of all bidders
@@ -37,7 +38,9 @@ contract Bid is Ownable, ReentrancyGuard {
         _;
     }
 
-    constructor() Ownable(_msgSender()) {}
+    constructor(address _communityAddress) Ownable(_msgSender()) {
+        communityAddress = _communityAddress; // Initialize dev community address
+    }
 
     function auctionDone() public view returns (bool) {
         return auctionEndTime > block.timestamp;
@@ -87,8 +90,8 @@ contract Bid is Ownable, ReentrancyGuard {
         highestBidder = msg.sender;
         highestBid = actualBidAmount;
 
-        // Send fee to the owner
-        payable(owner()).transfer(fee);
+        // Send fee to the dev community address
+        payable(communityAddress).transfer(fee);
 
         // refund the previous highest bidder if applicable
         if (previousHighestBidder != address(0)) {
