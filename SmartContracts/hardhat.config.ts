@@ -5,8 +5,11 @@ import { HardhatUserConfig } from 'hardhat/config';
 
 const config: HardhatUserConfig = {
   solidity: '0.8.20',
-  defaultNetwork: 'hardhat',
+  defaultNetwork: 'localhost',
   networks: {
+    localhost: {
+      chainId: 31337
+    },
     hardhat: {
       chainId: 31337
     }
