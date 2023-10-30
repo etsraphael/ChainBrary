@@ -42,6 +42,7 @@ contract Bid is Ownable, ReentrancyGuard {
     constructor(address _communityAddress, uint256 _extendTimeInSeconds) Ownable(_msgSender()) {
         communityAddress = _communityAddress; // Initialize dev community address
         extendTimeInSeconds = _extendTimeInSeconds;
+        startAuction(120); // Start auction with 2 hours duration
     }
 
     function auctionDone() public view returns (bool) {
@@ -58,7 +59,7 @@ contract Bid is Ownable, ReentrancyGuard {
         return feeAmount;
     }
 
-    function startAuction(uint256 _durationInMinutes) external onlyOwner {
+    function startAuction(uint256 _durationInMinutes) internal {
         auctionStartTime = block.timestamp;
 
         (bool secondConvertionSuccess, uint256 secondConvertion) = Math.tryMul(_durationInMinutes, 60);
