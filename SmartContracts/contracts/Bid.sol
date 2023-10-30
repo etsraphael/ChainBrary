@@ -39,7 +39,11 @@ contract Bid is Ownable, ReentrancyGuard {
         _;
     }
 
-    constructor(address _communityAddress, uint256 _extendTimeInMinutes, uint256 _durationInMinutes) Ownable(_msgSender()) {
+    constructor(
+        address _communityAddress,
+        uint256 _extendTimeInMinutes,
+        uint256 _durationInMinutes
+    ) Ownable(_msgSender()) {
         communityAddress = _communityAddress;
         extendTimeInMinutes = _extendTimeInMinutes;
         startAuction(_durationInMinutes);
