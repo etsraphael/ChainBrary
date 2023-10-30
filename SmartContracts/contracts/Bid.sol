@@ -12,7 +12,7 @@ contract Bid is Ownable, ReentrancyGuard {
     uint256 public highestBid;
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
-    uint256 public extendTimeInSeconds;
+    uint256 public extendTimeInMinutes; // Changed variable name
 
     // List of all bidders
     Bidder[] public bidders;
@@ -39,10 +39,10 @@ contract Bid is Ownable, ReentrancyGuard {
         _;
     }
 
-    constructor(address _communityAddress, uint256 _extendTimeInSeconds) Ownable(_msgSender()) {
-        communityAddress = _communityAddress; // Initialize dev community address
-        extendTimeInSeconds = _extendTimeInSeconds;
-        startAuction(120); // Start auction with 2 hours duration
+    constructor(address _communityAddress, uint256 _extendTimeInMinutes, uint256 _durationInMinutes) Ownable(_msgSender()) {
+        communityAddress = _communityAddress;
+        extendTimeInMinutes = _extendTimeInMinutes;
+        startAuction(_durationInMinutes);
     }
 
     function auctionDone() public view returns (bool) {
@@ -62,10 +62,10 @@ contract Bid is Ownable, ReentrancyGuard {
     function startAuction(uint256 _durationInMinutes) internal {
         auctionStartTime = block.timestamp;
 
-        (bool secondConvertionSuccess, uint256 secondConvertion) = Math.tryMul(_durationInMinutes, 60);
-        require(secondConvertionSuccess, "Multiplication overflow");
+        (bool secondConversionSuccess, uint256 secondConversion) = Math.tryMul(_durationInMinutes, 60);
+        require(secondConversionSuccess, "Multiplication overflow");
 
-        (bool auctionEndTimeSuccess, uint256 _auctionEndTime) = Math.tryAdd(auctionStartTime, secondConvertion);
+        (bool auctionEndTimeSuccess, uint256 _auctionEndTime) = Math.tryAdd(auctionStartTime, secondConversion);
         auctionEndTime = _auctionEndTime;
         require(auctionEndTimeSuccess, "Addition overflow");
 
@@ -93,15 +93,17 @@ contract Bid is Ownable, ReentrancyGuard {
         highestBidder = msg.sender;
         highestBid = actualBidAmount;
 
-        // Check if there are 10 minutes or less left in the auction
+        // If the auction is about to end, extend the auction by the extendTimeInMinutes
         if (auctionEndTime - block.timestamp <= 10 minutes) {
-            auctionEndTime = block.timestamp + extendTimeInSeconds;
+            (bool extendedTimeSuccess, uint256 extendedTime) = Math.tryMul(extendTimeInMinutes, 60);
+            require(extendedTimeSuccess, "Multiplication overflow");
+            auctionEndTime = block.timestamp + extendedTime;
         }
 
-        // Send fee to the dev community address
+        // Transfer the fee to the community address
         payable(communityAddress).transfer(fee);
 
-        // refund the previous highest bidder if applicable
+        // Refund the previous highest bidder
         if (previousHighestBidder != address(0)) {
             payable(previousHighestBidder).transfer(refundAmount);
         }

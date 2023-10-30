@@ -48,6 +48,6 @@ function deployERC20FixedSupply(m: any) {
 }
 
 function deployBidContract(m: any) {
-  const bidContract = m.contract('Bid', ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '900']);
+  const bidContract = m.contract('Bid', ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '10', '120']);
   return bidContract;
 }
