@@ -96,65 +96,65 @@ describe('Bid', function () {
 
     });
   
-    // it('should refund the previous bidder when a new bid is placed', async function () {
-    //   const { bid, addr1, addr2 } = await loadFixture(deployContractFixture);
+    it('should refund the previous bidder when a new bid is placed', async function () {
+      const { bid, addr1, addr2 } = await loadFixture(deployContractFixture);
 
-    //   // Save balance of addr1 before placing the bid
-    //   const addr1BalanceBefore: BigNumber = new BigNumber((await ethers.provider.getBalance(addr1)).toString());
+      // Save balance of addr1 before placing the bid
+      const addr1BalanceBefore: bigint = await ethers.provider.getBalance(addr1);
 
-    //   // Addr1 places a bid
-    //   const bidAmount1: bigint = ethers.parseEther('100');
-    //   const tx1 = await bid.connect(addr1).bid({ value: bidAmount1 });
-    //   const receipt = await tx1.wait();
+      // Addr1 places a bid
+      const bidAmount1: bigint = ethers.parseEther('1');
+      const tx1 = await bid.connect(addr1).bid({ value: bidAmount1 });
+      const receipt = await tx1.wait();
 
-    //   await ethers.provider.send("evm_mine");
+      await ethers.provider.send("evm_mine");
 
-    //   if(!receipt) {
-    //     throw new Error('No receipt');
-    //   }
+      if(!receipt) {
+        throw new Error('No receipt');
+      }
 
-    //   // Calculate the cost of the transaction
-    //   const gasUsed: BigNumber = new BigNumber(receipt.gasUsed.toString());
-    //   const gasPrice: BigNumber = new BigNumber(tx1.gasPrice.toString());
-    //   const tx1Cost: BigNumber = gasUsed.times(gasPrice);
+      // Calculate the cost of the transaction
+      const gasUsed: BigNumber = new BigNumber(receipt.gasUsed.toString());
+      const gasPrice: BigNumber = new BigNumber(tx1.gasPrice.toString());
+      const tx1Cost: BigNumber = gasUsed.times(gasPrice);
+      const tx1CostBigInt: bigint = BigInt(tx1Cost.toString());
 
-    //   // Calculate the community fee for addr1's bid
-    //   const communityFee: BigNumber = calculateCommunityFee(new BigNumber(bidAmount1.toString()));
+      // Save balance of addr1 after placing the bid
+      const addr1BalanceAfterBid: bigint = await ethers.provider.getBalance(addr1);
+      
+      // Caculate the expected balance of addr1 after placing the bid
+      const expectedBalanceAfterBid: bigint = addr1BalanceBefore - (tx1CostBigInt + bidAmount1);
 
-    //   // Get initial balance of addr2 before placing any bids
-    //   const addr2InitialBalance = await ethers.provider.getBalance(addr2.address);
+      // check that the balance of addr1 decreased by the bid amount + tx cost
+      expect(expectedBalanceAfterBid).to.equal(addr1BalanceAfterBid);
 
-    //   // Addr2 places a bid
-    //   // const bidAmount2: bigint = ethers.parseEther('2');
-    //   // await bid.connect(addr2).bid({ value: bidAmount2 });
-    //   // const addr2BalanceAfterBid = await ethers.provider.getBalance(addr2.address);
+      // Addr2 places a bid
+      const bidAmount2: bigint = ethers.parseEther('2');
+      await bid.connect(addr2).bid({ value: bidAmount2 });
 
-    //   // Assert that addr2's balance decreased by 2 ETH after placing the bid
-    //   // expect(addr2InitialBalance - addr2BalanceAfterBid).to.equal(bidAmount2);
+      // Calculate the community fee for addr1's bid
+      const communityFee: BigNumber = calculateCommunityFee(bidAmount1);
+      const communityFeeBigInt: bigint = BigInt(communityFee.toString());
 
-    //   // Make sure addr1 got refunded the 1 ETH after being outbid
-    //   const addr1BalanceAfterOutbid = new BigNumber((await ethers.provider.getBalance(addr1)).toString());
+      // Make sure addr1 got refunded the 1 ETH after being outbid
+      const addr1BalanceAfterOutbid: bigint = await ethers.provider.getBalance(addr1);
 
-    //   console.log('addr1BalanceBefore', addr1BalanceBefore.toString())
-    //   console.log('addr1BalanceAfterOutbid', addr1BalanceAfterOutbid.minus(tx1Cost.plus(communityFee)).toString())
+      // Calculate the actual bid amount
+      const actualBidAmount1: bigint = bidAmount1 - communityFeeBigInt;
+      const expectedBalanceAfterOutbid: bigint = addr1BalanceAfterBid + actualBidAmount1;
 
-    //   expect(addr1BalanceBefore).to.equal(addr1BalanceAfterOutbid.minus(tx1Cost.plus(communityFee)));
+      // Check that the balance of addr1 increased by the bid amount
+      expect(addr1BalanceAfterOutbid).to.equal(expectedBalanceAfterOutbid);
 
-    //   // expect(addr1BalanceBefore).to.equal(addr1BalanceAfterOutbid.minus(tx1Cost.plus(communityFee)));
+    });
 
-    // });
+    it('should reject the request if the bid is lower than the current bid', async function () {
+      // TODO: Implement this test.
+    });
 
-    // it('should send the fees to the community treasury', async function () {
-    //   // TODO: Implement this test.
-    // })
-
-    // it('should reject the request if the bid is lower than the current bid', async function () {
-    //   // TODO: Implement this test.
-    // });
-
-    // it('should reject the request if the bid is expired', async function () {
-    //   // TODO: Implement this test.
-    // });
+    it('should reject the request if the bid is expired', async function () {
+      // TODO: Implement this test.
+    });
 
 
   });
