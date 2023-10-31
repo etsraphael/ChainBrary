@@ -65,22 +65,37 @@ describe('Bid', function () {
 
     });
 
-    // it('should extend the auction end time by 15 minutes when a bid is placed in the last 5 minutes', async function () {
-    //   const { bid, addr2 } = await loadFixture(deployContractFixture);
-    //   // Move time forward to 1h 55m after auction started.
-    //   await ethers.provider.send("evm_increaseTime", [6900]);
-    //   await ethers.provider.send("evm_mine");
+    it('should extend the auction end time by 15 minutes when a bid is placed in the last 5 minutes', async function () {
+      const { bid, addr2 } = await loadFixture(deployContractFixture);
+  
+      // Move time forward to 1h 55m after auction started.
+      await ethers.provider.send("evm_increaseTime", [6900]);
+      await ethers.provider.send("evm_mine");
+  
+      // Get the block timestamp before making the bid.
+      const blockBeforeBid = await ethers.provider.getBlock('latest');
 
-    //   const auctionEndTimeBeforeBid = await bid.auctionEndTime();
-    //   await bid.connect(addr2).bid({ value: ethers.parseEther("1") });
-    //   const auctionEndTimeAfterBid = await bid.auctionEndTime();
-    //   console.log('auctionEndTimeBeforeBid', auctionEndTimeBeforeBid);
-    //   console.log('auctionEndTimeAfterBid', auctionEndTimeAfterBid);
-    //   console.log('auctionEndTimeAfterBid - auctionEndTimeBeforeBid', auctionEndTimeAfterBid - auctionEndTimeBeforeBid)
-    //   console.log('extendTimeInMinutes', bid.extendTimeInMinutes)
-    //   expect(auctionEndTimeAfterBid - auctionEndTimeBeforeBid).equal(15 * 60); // 15 minutes in seconds.
-    // });
+      if(!blockBeforeBid) {
+        throw new Error('No block');
+      }
 
+      const timestampBeforeBid = blockBeforeBid.timestamp;
+  
+      // Place a bid 5 minutes before the auction ends
+      await bid.connect(addr2).bid({ value: ethers.parseEther("1") });
+  
+      // Save the auction end time after placing a bid
+      const auctionEndTimeAfterBid = await bid.auctionEndTime();
+  
+      // Calculate the expected auction end time.
+      const extendedTimeInSeconds = 5 * 60; // 5 minutes in seconds
+      const expectedAuctionEndTime = timestampBeforeBid + extendedTimeInSeconds;
+  
+      // Check if the actual auction end time matches the expected auction end time.
+      expect(Number(auctionEndTimeAfterBid)).to.be.closeTo(expectedAuctionEndTime, 1);
+
+    });
+  
     // it('should refund the previous bidder when a new bid is placed', async function () {
     //   const { bid, addr1, addr2 } = await loadFixture(deployContractFixture);
 
