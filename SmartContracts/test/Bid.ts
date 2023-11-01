@@ -61,8 +61,6 @@ describe('Bid', function () {
       const expectedBalanceAfterBid: bigint = communityTreasuryInitialBalance + communityFeeBigInt;
 
       expect(communityTreasuryBalanceAfterBid).to.equal(expectedBalanceAfterBid);
-
-
     });
 
     it('should extend the auction end time by 15 minutes when a bid is placed in the last 5 minutes', async function () {
@@ -149,12 +147,86 @@ describe('Bid', function () {
     });
 
     it('should reject the request if the bid is lower than the current bid', async function () {
-      // TODO: Implement this test.
+      const { bid, addr1, addr2 } = await loadFixture(deployContractFixture);
+
+      // Addr1 places a bid
+      const bidAmount1: bigint = ethers.parseEther('10');
+      await bid.connect(addr1).bid({ value: bidAmount1 });
+
+      // Addr2 tries to place a bid that is lower than the current bid
+      const bidAmount2: bigint = ethers.parseEther('5');
+      await expect(bid.connect(addr2).bid({ value: bidAmount2 })).to.be.revertedWith('Bid amount after fee deduction is not high enough');
     });
 
     it('should reject the request if the bid is expired', async function () {
-      // TODO: Implement this test.
+      const { bid, addr1 } = await loadFixture(deployContractFixture);
+
+      // Move time forward to 2h 1m after auction started.
+      await ethers.provider.send("evm_increaseTime", [7260]);
+      await ethers.provider.send("evm_mine");
+
+      // Addr1 places a bid
+      const bidAmount1: bigint = ethers.parseEther('10');
+      await expect(bid.connect(addr1).bid({ value: bidAmount1 })).to.be.revertedWith('Auction not ongoing');
+
     });
+
+    it('should withdraw the highest bid after the auction ends', async function () {
+      const { bid, owner, addr1 } = await loadFixture(deployContractFixture);
+
+      // Save contract's balance before the first bid
+      const contractBalanceBefore: bigint = await ethers.provider.getBalance(await bid.getAddress());
+      
+      // Expect contract's balance to be 0 before the first bid
+      expect(contractBalanceBefore).to.equal(0);
+      
+      // Addr1 places a bid
+      const bidAmount1: bigint = ethers.parseEther('10');
+      await bid.connect(addr1).bid({ value: bidAmount1 });
+  
+      // Move time forward to 2h 1m after auction started.
+      await ethers.provider.send("evm_increaseTime", [7260]);
+      await ethers.provider.send("evm_mine");
+
+      // Calculate the community fee for addr1's bid
+      const communityFee: BigNumber = calculateCommunityFee(bidAmount1);
+      const communityFeeBigInt: bigint = BigInt(communityFee.toString());
+  
+      // Save contract's balance after the first bid
+      const contractBalanceAfterBid: bigint = await ethers.provider.getBalance(await bid.getAddress());
+
+      // Expect contract's balance to be the bid amount minus the community fee
+      expect(contractBalanceAfterBid).to.equal(bidAmount1 - communityFeeBigInt);
+  
+      // Save owner's balance before the withdrawal
+      const ownerBalanceBefore: bigint = await ethers.provider.getBalance(owner);
+  
+      // Owner withdraws the highest bid
+      const tx = await bid.connect(owner).withdrawAuctionAmount();
+      const receipt = await tx.wait();
+
+      if(!receipt) {
+        throw new Error('No receipt');
+      }
+
+      const gasUsed: BigNumber = new BigNumber(receipt.gasUsed.toString());
+      const gasPrice: BigNumber = new BigNumber(tx.gasPrice.toString());
+      const txCost: BigNumber = gasUsed.times(gasPrice);
+      const txCostBigInt: bigint = BigInt(txCost.toString());
+  
+      // Save contract's balance after the withdrawal
+      const contractBalanceAfter: bigint = await ethers.provider.getBalance(await bid.getAddress());
+
+      // Expect contract's balance to be 0 after the withdrawal
+      expect(contractBalanceAfter).to.equal(0);
+  
+      // Save owner's balance after the withdrawal
+      const ownerBalanceAfter: bigint = await ethers.provider.getBalance(owner);
+
+      // Expect owner's balance to be get the highest bid amount minus the tx cost
+      expect(ownerBalanceAfter).to.equal(ownerBalanceBefore + bidAmount1 - (txCostBigInt + communityFeeBigInt));
+  
+  });
 
 
   });
