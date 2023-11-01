@@ -5,7 +5,7 @@
     "prettier": "prettier --write 'contracts/*.sol' --plugin=prettier-plugin-solidity",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
-    "deploy:local": "npx hardhat ignition deploy ignition/modules/Apollo.ts",
+    "deploy:local": "npx hardhat ignition deploy ignition/modules/Apollo.ts --network localhost",
     "abi": "npx hardhat export-abi",
     "node": "npx hardhat node",
     "graphgen": "npx hardhat run scripts/deploy-graph.ts"
