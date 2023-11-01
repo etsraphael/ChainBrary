@@ -8,7 +8,8 @@ export default buildModule('Apollo', (m) => {
   const transactionBridge = deployTransactionBridge(m);
   const priceFeed = deployPriceFeed(m);
   const erc20FixedSupply = deployERC20FixedSupply(m);
-  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge, priceFeed, erc20FixedSupply };
+  const bidContract = deployBidContract(m);
+  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge, priceFeed, erc20FixedSupply, bidContract };
 });
 
 function deployContractContrat(m: any) {
@@ -44,4 +45,9 @@ function deployPriceFeed(m: any) {
 function deployERC20FixedSupply(m: any) {
   const erc20FixedSupply = m.contract('ERC20FixedSupply');
   return erc20FixedSupply;
+}
+
+function deployBidContract(m: any) {
+  const bidContract = m.contract('Bid', ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '10', '120']);
+  return bidContract;
 }
