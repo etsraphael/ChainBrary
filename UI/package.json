@@ -32,7 +32,7 @@
     "@angular/platform-browser-dynamic": "^16.2.9",
     "@angular/router": "^16.2.9",
     "@angular/service-worker": "^16.2.9",
-    "@apollo/client": "^3.8.3",
+    "@apollo/client": "^3.8.6",
     "@chainbrary/token-bridge": "^16.0.7",
     "@chainbrary/transaction-search": "^16.0.5",
     "@chainbrary/web3-login": "^16.0.21",
