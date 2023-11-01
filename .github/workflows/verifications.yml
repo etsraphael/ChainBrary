@@ -94,6 +94,12 @@ jobs:
           npm run abi
 
       # unit test
-      - name: unit test
+      - name: Start node and run tests
         run: |
+          npm run node &
+          NODE_PID=$!
+          # Give the node process some time to start up. Adjust this time as needed.
+          sleep 10
           npm run test
+          # Kill the node process after tests
+          kill $NODE_PID
