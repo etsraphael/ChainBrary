@@ -9,6 +9,13 @@ import { UseCasesPageComponent } from './use-cases-page.component';
 
 @NgModule({
   declarations: [UseCasesPageComponent],
-  imports: [CommonModule, PaymentRequestModule, UseCasesPageRoutingModule, SharedComponentsModule, ActivityModule, BidModule]
+  imports: [
+    CommonModule,
+    PaymentRequestModule,
+    UseCasesPageRoutingModule,
+    SharedComponentsModule,
+    ActivityModule,
+    BidModule
+  ]
 })
 export class UseCasesPageModule {}
