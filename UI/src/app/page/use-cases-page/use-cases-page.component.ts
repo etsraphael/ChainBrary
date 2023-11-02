@@ -10,7 +10,7 @@ import { ServiceItemMenu } from './../../shared/interfaces';
   styleUrls: ['./use-cases-page.component.scss'],
   animations: [
     trigger('routeAnimations', [
-      transition('payment-request => services, activity => services', [
+      transition('payment-request => services, activity => services, bid => services', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
           style({
@@ -28,7 +28,7 @@ import { ServiceItemMenu } from './../../shared/interfaces';
         ]),
         query(':enter', animateChild())
       ]),
-      transition('services => payment-request, services => activity', [
+      transition('services => payment-request, services => activity, services => bid', [
         style({ position: 'relative' }),
         query(':enter, :leave', [
           style({
