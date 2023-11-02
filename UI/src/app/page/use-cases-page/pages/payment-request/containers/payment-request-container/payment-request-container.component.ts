@@ -3,32 +3,32 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable, ReplaySubject, Subscription, filter, take, takeUntil } from 'rxjs';
-import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
-import { tokenList } from './../../../../../shared/data/tokenList';
-import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../shared/interfaces';
+import { IUseCasesHeader } from '../../../../components/use-cases-header/use-cases-header.component';
+import { tokenList } from './../../../../../../shared/data/tokenList';
+import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../../shared/interfaces';
 import {
   accountChanged,
   networkChangeSuccess,
   resetAuth,
   setAuthPublicAddress
-} from './../../../../../store/auth-store/state/actions';
+} from './../../../../../../store/auth-store/state/actions';
 import {
   selectAccount,
   selectCurrentNetwork,
   selectIsConnected,
   selectPublicAddress,
   selectUserAccountIsLoading
-} from './../../../../../store/auth-store/state/selectors';
+} from './../../../../../../store/auth-store/state/selectors';
 import {
   applyConversionToken,
   initPaymentRequestMaker,
   switchToUsd,
   updatedToken
-} from './../../../../../store/payment-request-store/state/actions';
+} from './../../../../../../store/payment-request-store/state/actions';
 import {
   selectPaymentConversion,
   selectPaymentToken
-} from './../../../../../store/payment-request-store/state/selectors';
+} from './../../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-request-container',

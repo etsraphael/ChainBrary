@@ -17,22 +17,26 @@ import {
   take,
   takeUntil
 } from 'rxjs';
-import { environment } from './../../../../../../environments/environment';
-import { AuthStatusCode } from './../../../../../shared/enum';
-import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../shared/interfaces';
-import { accountChanged, networkChange, networkChangeSuccess } from './../../../../../store/auth-store/state/actions';
+import { environment } from './../../../../../../../environments/environment';
+import { AuthStatusCode } from './../../../../../../shared/enum';
+import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../../../shared/interfaces';
+import {
+  accountChanged,
+  networkChange,
+  networkChangeSuccess
+} from './../../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
   selectCurrentNetwork,
   selectPublicAddress
-} from './../../../../../store/auth-store/state/selectors';
-import { selectWalletConnected } from './../../../../../store/global-store/state/selectors';
+} from './../../../../../../store/auth-store/state/selectors';
+import { selectWalletConnected } from './../../../../../../store/global-store/state/selectors';
 import {
   approveTokenAllowance,
   generatePaymentRequest,
   sendAmount
-} from './../../../../../store/payment-request-store/state/actions';
-import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
+} from './../../../../../../store/payment-request-store/state/actions';
+import { IPaymentRequestState } from './../../../../../../store/payment-request-store/state/interfaces';
 import {
   selectCardIsLoading,
   selectIsNonNativeToken,
@@ -41,8 +45,8 @@ import {
   selectPaymentRequest,
   selectSmartContractCanTransfer,
   selectSmartContractCanTransferError
-} from './../../../../../store/payment-request-store/state/selectors';
-import { selectRecentTransactionsByComponent } from './../../../../../store/transaction-store/state/selectors';
+} from './../../../../../../store/payment-request-store/state/selectors';
+import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-payment-page',

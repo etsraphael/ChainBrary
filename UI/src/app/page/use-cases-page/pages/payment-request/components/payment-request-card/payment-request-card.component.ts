@@ -2,11 +2,11 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, combineLatest, distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs';
-import { AuthStatusCode, TokenPair } from './../../../../../shared/enum';
-import { IToken } from './../../../../../shared/interfaces';
-import { PriceFeedService } from './../../../../../shared/services/price-feed/price-feed.service';
-import { WalletService } from './../../../../../shared/services/wallet/wallet.service';
-import { IPaymentRequestState } from './../../../../../store/payment-request-store/state/interfaces';
+import { AuthStatusCode, TokenPair } from './../../../../../../shared/enum';
+import { IToken } from './../../../../../../shared/interfaces';
+import { PriceFeedService } from './../../../../../../shared/services/price-feed/price-feed.service';
+import { WalletService } from './../../../../../../shared/services/wallet/wallet.service';
+import { IPaymentRequestState } from './../../../../../../store/payment-request-store/state/interfaces';
 
 @Component({
   selector:

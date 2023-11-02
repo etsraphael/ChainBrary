@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormGroup } from '@angular/forms';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
-import { tokenList } from './../../../../../shared/data/tokenList';
+import { tokenList } from './../../../../../../shared/data/tokenList';
 import {
   IConversionToken,
   IToken,
@@ -10,7 +10,7 @@ import {
   PriceSettingsForm,
   StoreState,
   TokenChoiceMakerForm
-} from './../../../../../shared/interfaces';
+} from './../../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-payment-request-price-settings[priceForm][paymentConversion][currentNetworkObs]',

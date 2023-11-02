@@ -25,7 +25,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
-import { AuthStatusCode } from './../../../../../shared/enum';
+import { AuthStatusCode } from './../../../../../../shared/enum';
 import {
   IConversionToken,
   IPaymentRequest,
@@ -35,8 +35,8 @@ import {
   ProfileForm,
   StoreState,
   TokenChoiceMakerForm
-} from './../../../../../shared/interfaces';
-import { FormatService } from './../../../../../shared/services/format/format.service';
+} from './../../../../../../shared/interfaces';
+import { FormatService } from './../../../../../../shared/services/format/format.service';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',

@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { SharedComponentsModule } from './../../shared/components/shared-components.module';
-import { ActivityModule } from './activity/activity.module';
-import { PaymentRequestModule } from './payment-request/payment-request.module';
 import { UseCasesPageRoutingModule } from './use-cases-page-routing.module';
 import { UseCasesPageComponent } from './use-cases-page.component';
+import { PaymentRequestModule } from './pages/payment-request/payment-request.module';
+import { ActivityModule } from './pages/activity/activity.module';
 
 @NgModule({
   declarations: [UseCasesPageComponent],

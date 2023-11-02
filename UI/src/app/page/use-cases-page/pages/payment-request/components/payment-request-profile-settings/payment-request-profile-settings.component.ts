@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Web3LoginService } from '@chainbrary/web3-login';
-import { ProfileForm } from './../../../../../shared/interfaces';
+import { ProfileForm } from './../../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-payment-request-profile-settings[profileForm]',

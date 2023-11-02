@@ -1,8 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
-import { QrCodeContainerModalComponent } from './../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
-import { IToken } from './../../../../../shared/interfaces';
+import { QrCodeContainerModalComponent } from './../../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
+import { IToken } from './../../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-payment-request-review[username][amount][previewLink][usdEnabled][tokenSelected]',

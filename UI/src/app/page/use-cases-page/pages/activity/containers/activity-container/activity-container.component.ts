@@ -4,15 +4,15 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, skip, takeUntil } from 'rxjs';
-import { IUseCasesHeader } from '../../../components/use-cases-header/use-cases-header.component';
-import { setAuthPublicAddress } from './../../../../../store/auth-store/state/actions';
-import { selectCurrentNetwork, selectIsConnected } from './../../../../../store/auth-store/state/selectors';
-import { loadTransactionsFromBridgeTransfer } from './../../../../../store/transaction-store/state/actions';
+import { IUseCasesHeader } from '../../../../components/use-cases-header/use-cases-header.component';
+import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
+import { selectCurrentNetwork, selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
+import { loadTransactionsFromBridgeTransfer } from './../../../../../../store/transaction-store/state/actions';
 import {
   selectHistoricalTransactions,
   selectHistoricalTransactionsError,
   selectHistoricalTransactionsIsLoading
-} from './../../../../../store/transaction-store/state/selectors';
+} from './../../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-activity-container',

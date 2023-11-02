@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PaymentPageComponent } from '../page/use-cases-page/payment-request/containers/payment-page/payment-page.component';
+import { PaymentPageComponent } from '../page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component';
 
 const routes: Routes = [
   {

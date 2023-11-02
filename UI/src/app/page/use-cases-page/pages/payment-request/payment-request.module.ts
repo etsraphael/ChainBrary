@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
-import { MaterialModule } from './../../../module/material.module';
-import { SharedComponentsModule } from './../../../shared/components/shared-components.module';
+import { MaterialModule } from './../../../../module/material.module';
+import { SharedComponentsModule } from './../../../../shared/components/shared-components.module';
 import { PaymentRequestCardComponent } from './components/payment-request-card/payment-request-card.component';
 import { PaymentRequestMakerComponent } from './components/payment-request-maker/payment-request-maker.component';
 import { PaymentRequestPriceSettingsComponent } from './components/payment-request-price-settings/payment-request-price-settings.component';
@@ -12,7 +12,7 @@ import { PaymentRequestProfileSettingsComponent } from './components/payment-req
 import { PaymentRequestReviewComponent } from './components/payment-request-review/payment-request-review.component';
 import { PaymentPageComponent } from './containers/payment-page/payment-page.component';
 import { PaymentRequestContainerComponent } from './containers/payment-request-container/payment-request-container.component';
-import { UserCasesSharedComponentsModule } from '../components/user-cases-shared-components.module';
+import { UserCasesSharedComponentsModule } from '../../components/user-cases-shared-components.module';
 
 @NgModule({
   declarations: [
