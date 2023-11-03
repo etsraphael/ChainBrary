@@ -7,9 +7,10 @@ import { SharedComponentsModule } from './../../../../shared/components/shared-c
 import { BidRoutingModule } from './bid-routing.module';
 import { HomeBidMenuComponent } from './components/home-bid-menu/home-bid-menu.component';
 import { BidContainerComponent } from './containers/bid-container/bid-container.component';
+import { BidCreationComponent } from './components/bid-creation/bid-creation.component';
 
 @NgModule({
-  declarations: [BidContainerComponent, HomeBidMenuComponent],
+  declarations: [BidContainerComponent, HomeBidMenuComponent, BidCreationComponent],
   imports: [
     CommonModule,
     SharedComponentsModule,

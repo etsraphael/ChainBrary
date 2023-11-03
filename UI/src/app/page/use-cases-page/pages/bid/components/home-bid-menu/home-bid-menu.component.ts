@@ -18,7 +18,7 @@ export class HomeBidMenuComponent {
       title: 'Create a bid',
       descritpion:
         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ultricies mi, vel eleifend eros. Sed placerat volutpat feugiat. In velit ipsum, elementum a felis eget',
-      routerLink: '/use-cases/bid/create-bid',
+      routerLink: '/use-cases/bid/creation',
       buttonText: 'Start creation'
     },
     {
