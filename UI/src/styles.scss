@@ -50,7 +50,7 @@ a {
 }
 
 .mat-mdc-dialog-container .mdc-dialog__surface {
-  --mdc-dialog-container-shape: 25px;
+  --mdc-dialog-container-shape: 1rem;
 }
 
 .mat-mdc-snack-bar-container.success-snackbar {
@@ -62,7 +62,7 @@ a {
   --mdc-shape-small: 10px;
 
   .card {
-    --bs-card-border-radius: 1.5rem;
+    --bs-card-border-radius: 1rem;
   }
 
   .mat-mdc-menu-panel {

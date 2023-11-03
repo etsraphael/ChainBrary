@@ -1,11 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AuthCheckingGuard } from './guards/auth-checking/auth-checking.guard';
-import { UseCasesPageComponent } from './use-cases-page.component';
 import { UseCasesListComponent } from './components/use-cases-list/use-cases-list.component';
-import { PaymentRequestContainerComponent } from './pages/payment-request/containers/payment-request-container/payment-request-container.component';
+import { AuthCheckingGuard } from './guards/auth-checking/auth-checking.guard';
 import { ActivityContainerComponent } from './pages/activity/containers/activity-container/activity-container.component';
-import { BidContainerComponent } from './pages/bid/containers/bid-container/bid-container.component';
+import { PaymentRequestContainerComponent } from './pages/payment-request/containers/payment-request-container/payment-request-container.component';
+import { UseCasesPageComponent } from './use-cases-page.component';
 
 const routes: Routes = [
   {
@@ -25,7 +24,7 @@ const routes: Routes = [
       },
       {
         path: 'bid',
-        component: BidContainerComponent,
+        loadChildren: () => import('./pages/bid/bid.module').then((m) => m.BidModule),
         data: { animation: 'bid' }
       },
       {
