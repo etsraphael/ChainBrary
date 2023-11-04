@@ -3,10 +3,12 @@ import { APP_INITIALIZER, ErrorHandler, NgModule, isDevMode } from '@angular/cor
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { Router } from '@angular/router';
+import { ServiceWorkerModule } from '@angular/service-worker';
 import { Web3LoginModule } from '@chainbrary/web3-login';
 import * as Sentry from '@sentry/angular-ivy';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AppComponent } from './app.component';
+import { web3LoginConfig } from './data/web3LoginConfig.data';
 import { AppRoutingModule } from './module/app-routing.module';
 import { GraphQLModule } from './module/graphql.module';
 import { MaterialModule } from './module/material.module';
@@ -14,8 +16,6 @@ import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { UseCasesPageModule } from './page/use-cases-page/use-cases-page.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { RootStateModule } from './store';
-import { web3LoginConfig } from './data/web3LoginConfig.data';
-import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [AppComponent],

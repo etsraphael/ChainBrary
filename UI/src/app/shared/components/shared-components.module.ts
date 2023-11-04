@@ -15,6 +15,7 @@ import { TransactionCardComponent } from './transaction-card/transaction-card.co
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header/use-cases-sidebar-header.component';
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { MarkdownModule } from 'ngx-markdown';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent
   ],
-  imports: [CommonModule, RouterModule, QRCodeModule, MaterialModule],
+  imports: [CommonModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
     FooterPageComponent,
     HeaderPageComponent,

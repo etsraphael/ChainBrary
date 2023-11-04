@@ -3,9 +3,8 @@
     <div class="col-12 text-start">
       <h3 class="text-dark">How to show a picture on the blockchain?</h3>
       <p class="text-secondary">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ultricies mi, vel eleifend eros. Sed
-        placerat volutpat feugiat. In velit ipsum, elementum a felis eget, rutrum aliquam leo. Quisque et congue orci.
-        Nunc congue sagitti
+        Files aren't stored on the blockchain to avoid high costs and network congestion; they're externally hosted and
+        referenced for efficient, decentralized access.
       </p>
     </div>
     <div class="col-12">
@@ -17,10 +16,17 @@
     </div>
     <div class="col-12 text-start">
       <h6 class="text-dark">How can I quickly host my file somewhere?</h6>
-      <mat-button-toggle-group appearance="legacy">
-        <mat-button-toggle value="bold">Google Drive</mat-button-toggle>
-        <mat-button-toggle value="italic">Post Image</mat-button-toggle>
+      <mat-button-toggle-group
+        class="my-2"
+        appearance="legacy"
+        (change)="changeProviderStorage($event)"
+        [value]="providerSelected"
+      >
+        <mat-button-toggle [value]="item.key" *ngFor="let item of storageProviders">{{ item.label }}</mat-button-toggle>
       </mat-button-toggle-group>
+    </div>
+    <div class="col-12 mt-1">
+      <div markdown [data]="providerSelectedText" [disableSanitizer]="true"></div>
     </div>
   </div>
 </div>
