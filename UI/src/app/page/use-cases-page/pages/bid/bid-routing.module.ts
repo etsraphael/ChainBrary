@@ -11,11 +11,13 @@ const routes: Routes = [
     children: [
       {
         path: 'services',
-        component: HomeBidMenuComponent
+        component: HomeBidMenuComponent,
+        data: { animation: 'bid-services' }
       },
       {
         path: 'creation',
-        component: BidCreationComponent
+        component: BidCreationComponent,
+        data: { animation: 'bid-creation' }
       },
       {
         path: '',
