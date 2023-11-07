@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
+import { MatDialogRef } from '@angular/material/dialog';
 import { ReplaySubject, debounceTime, filter, map, takeUntil } from 'rxjs';
 
 @Component({
@@ -40,6 +41,10 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   get providerSelectedText(): string | undefined {
     return this.storageProviders.find((provider) => provider.key === this.providerSelected)?.text;
   }
+
+  constructor(
+    private dialogRef: MatDialogRef<UploadImgModalComponent>,
+  ) {}
 
   ngOnInit(): void {
     this.setUpForm();
@@ -117,6 +122,11 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   reset(): void {
     this.mainForm.reset();
     this.urlImageFound = null;
+  }
+
+  submit(): void {
+    const { url } = this.mainForm.value;
+    return this.dialogRef.close(url);
   }
 }
 

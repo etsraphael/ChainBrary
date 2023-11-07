@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
+import { takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-bid-creation',
@@ -29,11 +30,20 @@ export class BidCreationComponent implements OnInit {
   }
 
   openImageDialog(): void {
-    this.dialog.open(UploadImgModalComponent, {
+    const dialogRef: MatDialogRef<UploadImgModalComponent> =  this.dialog.open(UploadImgModalComponent, {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
       panelClass: ['col-12', 'col-md-6', 'col-lg-5', 'col-xl-4']
     });
+
+    const modalSub = dialogRef.afterClosed().pipe(
+    ).subscribe((url: string | null) => {
+      if(url) {
+        // TODO: add url to photos
+      }
+      modalSub.unsubscribe();
+    })
+
   }
 }
 
