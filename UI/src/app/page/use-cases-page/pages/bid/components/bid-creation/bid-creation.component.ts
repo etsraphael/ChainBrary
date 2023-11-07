@@ -24,7 +24,7 @@ export class BidCreationComponent implements OnInit {
       ownerName: new FormControl<string | null>(null, [Validators.required]),
       description: new FormControl<string | null>(null, [Validators.required]),
       duration: new FormControl<number | null>(null, [Validators.required]),
-      photos: new FormControl<ValidPhoto[] | null>(null),
+      photos: new FormControl<string[] | null>(null),
       termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue])
     });
   }
@@ -47,16 +47,12 @@ export class BidCreationComponent implements OnInit {
   }
 }
 
-export interface ValidPhoto {
-  url: string;
-  valid: boolean;
-}
 
 export interface BidForm {
   bidName: FormControl<string | null>;
   ownerName: FormControl<string | null>;
   description: FormControl<string | null>;
   duration: FormControl<number | null>;
-  photos: FormControl<ValidPhoto[] | null>;
+  photos: FormControl<string[] | null>;
   termsAndCond: FormControl<boolean | null>;
 }
