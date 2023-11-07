@@ -67,33 +67,27 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
 
   async reviewImage(url: string): Promise<void> {
     this.imageIsLoading = true;
-    switch (this.providerSelected) {
-      case 'googleDrive':
-        return this.googleDriveUrl(url);
-      case 'PostImg':
-        return this.postImage(url);
+
+    switch (true) {
+      case url.startsWith('https://drive.google.com/'): {
+        return this.handleImageUrl(
+          url,
+          new RegExp(/file\/d\/(.+?)\/view/),
+          'https://drive.google.com/uc?export=view&id='
+        );
+      }
+      default: {
+        return this.handleImageUrl(url, new RegExp(''), null);
+      }
     }
   }
 
-  async postImage(url: string): Promise<void> {
-    const postImgPattern = /^https:\/\/i\.postimg\.cc\/[a-zA-Z0-9]+\/.+\.jpg$/;
+  async handleImageUrl(url: string, pattern: RegExp, prefix: string | null): Promise<void> {
+    const match = prefix ? url.match(pattern)?.[1] : url;
+    const finalUrl = prefix ? `${prefix}${match}` : url;
 
-    // Check if the URL is a valid PostImg URL
-    if (postImgPattern.test(url) && (await this.isImageValid(url))) {
-      this.urlImageFound = url; // Assume this is where you want to store the valid URL
-    } else {
-      this.mainForm.get('url')?.setErrors({ invalidUrl: 'The URL provided does not have any pictures attached' });
-    }
-
-    this.imageIsLoading = false;
-  }
-
-  async googleDriveUrl(url: string): Promise<void> {
-    const fileId = url.match(/file\/d\/(.+?)\/view/)?.[1];
-    const embeddableUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
-
-    if (fileId && (await this.isImageValid(embeddableUrl))) {
-      this.urlImageFound = embeddableUrl;
+    if (match && (await this.isImageValid(finalUrl))) {
+      this.urlImageFound = finalUrl;
     } else {
       this.mainForm.get('url')?.setErrors({ invalidUrl: 'The URL provided does not have any pictures attached' });
     }
