@@ -1,5 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { ReplaySubject, debounceTime, filter, map, takeUntil } from 'rxjs';
 
@@ -23,7 +23,19 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   ];
   providerSelected: 'googleDrive' | 'PostImg' = 'googleDrive';
   mainForm: FormGroup<UploadImgModalForm>;
+  urlImageFound: string | null;
+  imageIsLoading = false;
+  urlInvalid = false;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+
+  urlRegex = new RegExp(
+    '(https?:\\/\\/)?' + // protocol
+      '([\\w\\d-]+\\.)+[\\w\\d-]+' + // domain
+      '(\\:[0-9]+)?' + // port
+      '(\\/[-a-zA-Z\\d%@_.~+&:]*)*' + // path
+      '(\\?[;&a-zA-Z\\d%@_.,~+&:=-]*)?' + // query
+      '(\\#[-a-zA-Z\\d_]*)?' // fragment locator
+  );
 
   get providerSelectedText(): string | undefined {
     return this.storageProviders.find((provider) => provider.key === this.providerSelected)?.text;
@@ -36,7 +48,7 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
 
   setUpForm(): void {
     this.mainForm = new FormGroup({
-      url: new FormControl<string | null>(null)
+      url: new FormControl<string | null>(null, [Validators.required, Validators.pattern(this.urlRegex)])
     });
   }
 
@@ -44,7 +56,8 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
     this.mainForm
       .get('url')
       ?.valueChanges.pipe(
-        filter((url: string | null) => url !== null),
+        map((url: string | null) => url?.trim() || ''), // Trim the URL and handle null
+        filter((url: string | null) => url !== null && this.mainForm.get('url')?.valid == true),
         map((url: string | null) => url as string),
         debounceTime(400),
         takeUntil(this.destroyed$)
@@ -53,22 +66,38 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   }
 
   reviewImage(url: string): void {
+    this.imageIsLoading = true;
+
     switch (this.providerSelected) {
-      case 'googleDrive':
-        // eslint-disable-next-line no-case-declarations
-        const fileIdMatch = url.match(/file\/d\/(.+?)\/view/);
-        if (fileIdMatch) {
-          const fileId = fileIdMatch[1];
-          const embeddableUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
-          console.log('Embeddable Google Drive Image URL:', embeddableUrl);
-        }
-
-        // TODO: Ignore https if already there - retreive image and check if it's valid
+      case 'googleDrive': this.googleDriveUrl(url);
         break;
-
       default:
         break;
     }
+  }
+
+  async googleDriveUrl(url: string): Promise<void> {
+    const fileId = url.match(/file\/d\/(.+?)\/view/)?.[1];
+    const embeddableUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+
+    if (fileId && await this.isImageValid(embeddableUrl)) {
+      this.urlImageFound = embeddableUrl;
+    } else {
+      this.mainForm.get('url')?.setErrors({ invalidUrl: 'The URL provided does not have any pictures attached' });
+    }
+
+    this.imageIsLoading = false;
+  }
+
+
+  async isImageValid(url: string): Promise<boolean> {
+    const img: HTMLImageElement = new Image();
+    img.src = url;
+
+    return new Promise((resolve) => {
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+    });
   }
 
   changeProviderStorage(provider: MatButtonToggleChange): void {
@@ -78,6 +107,11 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
+  }
+
+  reset(): void {
+    this.mainForm.reset();
+    this.urlImageFound = null;
   }
 }
 
