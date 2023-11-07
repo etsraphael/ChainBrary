@@ -65,23 +65,22 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
       .subscribe((url: string) => this.reviewImage(url));
   }
 
-  reviewImage(url: string): void {
+  async reviewImage(url: string): Promise<void> {
     this.imageIsLoading = true;
-
     switch (this.providerSelected) {
-      case 'googleDrive': this.googleDriveUrl(url);
-        break;
-      default:
-        break;
+      case 'googleDrive':
+        return this.googleDriveUrl(url);
+      case 'PostImg':
+        return this.postImage(url);
     }
   }
 
-  async googleDriveUrl(url: string): Promise<void> {
-    const fileId = url.match(/file\/d\/(.+?)\/view/)?.[1];
-    const embeddableUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+  async postImage(url: string): Promise<void> {
+    const postImgPattern = /^https:\/\/i\.postimg\.cc\/[a-zA-Z0-9]+\/.+\.jpg$/;
 
-    if (fileId && await this.isImageValid(embeddableUrl)) {
-      this.urlImageFound = embeddableUrl;
+    // Check if the URL is a valid PostImg URL
+    if (postImgPattern.test(url) && (await this.isImageValid(url))) {
+      this.urlImageFound = url; // Assume this is where you want to store the valid URL
     } else {
       this.mainForm.get('url')?.setErrors({ invalidUrl: 'The URL provided does not have any pictures attached' });
     }
@@ -89,6 +88,18 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
     this.imageIsLoading = false;
   }
 
+  async googleDriveUrl(url: string): Promise<void> {
+    const fileId = url.match(/file\/d\/(.+?)\/view/)?.[1];
+    const embeddableUrl = `https://drive.google.com/uc?export=view&id=${fileId}`;
+
+    if (fileId && (await this.isImageValid(embeddableUrl))) {
+      this.urlImageFound = embeddableUrl;
+    } else {
+      this.mainForm.get('url')?.setErrors({ invalidUrl: 'The URL provided does not have any pictures attached' });
+    }
+
+    this.imageIsLoading = false;
+  }
 
   async isImageValid(url: string): Promise<boolean> {
     const img: HTMLImageElement = new Image();
