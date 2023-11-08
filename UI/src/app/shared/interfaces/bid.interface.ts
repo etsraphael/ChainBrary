@@ -12,3 +12,9 @@ export interface IBidOffer {
   bidderAddress: string;
   amount: number;
 }
+
+export interface IBidResponse {
+  auctionStartTime: number;
+  auctionEndTime: number;
+  extendTimeInMinutes: number;
+}
