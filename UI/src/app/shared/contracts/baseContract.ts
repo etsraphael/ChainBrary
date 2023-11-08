@@ -4,3 +4,7 @@ export abstract class BaseContract {
   abstract getAddress(): string;
   abstract getAbi(): AbiItem[];
 }
+
+export abstract class BaseContractFactory {
+  abstract getAbi(): AbiItem[];
+}
