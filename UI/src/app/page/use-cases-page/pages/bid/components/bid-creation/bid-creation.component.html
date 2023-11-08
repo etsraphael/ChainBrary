@@ -46,17 +46,27 @@
       <div class="col-12">
         <div id="carouselExampleIndicators" class="carousel slide" #carouselExampleCaptions>
           <div class="carousel-indicators" [hidden]="imgList.length === 0">
-            <button *ngFor="let item of imgList; let i = index" type="button"
-              [attr.data-bs-target]="'#carouselExampleIndicators'" [attr.data-bs-slide-to]="i" [class.active]="i === 0"
-              [attr.aria-current]="i === 0 ? 'true' : null" [attr.aria-label]="'Slide ' + (i+1)">
-            </button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" [attr.data-bs-slide-to]="imgList.length"
-              [attr.aria-label]="'Slide ' + (imgList.length+1)"></button>
+            <button
+              *ngFor="let item of imgList; let i = index"
+              type="button"
+              [attr.data-bs-target]="'#carouselExampleIndicators'"
+              [attr.data-bs-slide-to]="i"
+              [class.active]="i === 0"
+              [attr.aria-current]="i === 0 ? 'true' : null"
+              [attr.aria-label]="'Slide ' + (i + 1)"
+            ></button>
+            <button
+              *ngIf="imgList.length < imgLimit"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              [attr.data-bs-slide-to]="imgList.length"
+              [attr.aria-label]="'Slide ' + (imgList.length + 1)"
+            ></button>
           </div>
           <div class="carousel-inner">
             <!-- List of pictures -->
-            <div class="carousel-item active" *ngFor="let item of imgList">
-              <img [src]="item" class="d-block w-100" alt="bid-photos">
+            <div class="carousel-item" *ngFor="let item of imgList; let i = index" [ngClass]="{ active: i === 0 }">
+              <img [src]="item" class="d-block w-100" alt="bid-photos" />
               <div class="carousel-caption">
                 <div class="text-center p-2 text-secondary">
                   <button class="btn btn-outline-light" (click)="removeImageByUrl(item)">Remove image</button>
@@ -64,7 +74,7 @@
               </div>
             </div>
             <!-- Add more picture -->
-            <div class="carousel-item bg-body-secondary text-center p-2" [ngClass]="{'active': imgList.length === 0}">
+            <div class="carousel-item bg-body-secondary text-center p-2" [ngClass]="{ active: imgList.length === 0 }">
               <div (click)="openImageDialog()" class="upload-image-carousel text-center px-2 py-4 text-secondary">
                 <div class="my-1">
                   <i class="bi bi-image"></i>
@@ -76,13 +86,23 @@
             </div>
           </div>
           <div [hidden]="imgList.length === 0">
-            <button #prevButton class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev">
+            <button
+              #prevButton
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="prev"
+            >
               <span class="carousel-control-prev-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Previous</span>
             </button>
-            <button #nextButton class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next">
+            <button
+              #nextButton
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide="next"
+            >
               <span class="carousel-control-next-icon" aria-hidden="true"></span>
               <span class="visually-hidden">Next</span>
             </button>

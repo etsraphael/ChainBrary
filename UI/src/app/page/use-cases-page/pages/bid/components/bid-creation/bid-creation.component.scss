@@ -1,6 +1,7 @@
 @import './../../../../../../shared/styles/form.scss';
 
-.bi-arrow-left, .upload-image-carousel {
+.bi-arrow-left,
+.upload-image-carousel {
   cursor: pointer;
 }
 
@@ -22,13 +23,11 @@
   font-size: 2rem;
 }
 
-
 /* CSS to blur the image */
 .blur-image {
   filter: blur(8px); /* Adjust the px value to increase/decrease the blur effect */
 }
 
-
 .carousel-inner .item {
-  height: 400px;  /* add this */
+  height: 400px; /* add this */
 }

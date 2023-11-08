@@ -42,9 +42,7 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
     return this.storageProviders.find((provider) => provider.key === this.providerSelected)?.text;
   }
 
-  constructor(
-    private dialogRef: MatDialogRef<UploadImgModalComponent>,
-  ) {}
+  constructor(private dialogRef: MatDialogRef<UploadImgModalComponent>) {}
 
   ngOnInit(): void {
     this.setUpForm();
