@@ -1,8 +1,10 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
+import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
+import { bidTermAndCond } from './../../../../../../shared/data/termAndCond';
 
 @Component({
   selector: 'app-bid-creation',
@@ -71,6 +73,18 @@ export class BidCreationComponent implements OnInit {
     const index = this.imgList.findIndex((photo: string) => photo === url);
     this.imgList.splice(index, 1);
     this.nextButton.nativeElement.click();
+  }
+
+  openTermAndCond(event: MouseEvent): void {
+    event.preventDefault();
+
+    this.dialog.open(TermAndCondModalComponent, {
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      panelClass: ['col-12', 'col-md-6', 'col-lg-8'],
+      data: bidTermAndCond,
+      autoFocus: false
+    });
   }
 }
 

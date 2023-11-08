@@ -110,7 +110,12 @@
         </div>
       </div>
       <div class="col-12 my-3">
-        <mat-checkbox formControlName="termsAndCond" color="primary">Accept term and conditions</mat-checkbox>
+        <mat-checkbox formControlName="termsAndCond" color="primary">
+          <span class="checkbox-label">
+            Accept
+            <a (click)="openTermAndCond($event)" class="terms-link">terms and conditions</a>
+          </span>
+        </mat-checkbox>
       </div>
       <div class="col-12 text-center">
         <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-light']" buttonText="Start the bid" />
