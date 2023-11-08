@@ -1,9 +1,9 @@
 export const bidTermAndCond = `
-Welcome to our online auction platform. Before you proceed with bidding, please carefully read the following terms and conditions:
+Before you proceed with bidding, please carefully read the following terms and conditions:
 
 ## 1. Agreement to Terms
 
-By participating in this auction, you agree to be bound by these Terms and Conditions and our [Privacy Policy](#). All bidders are subject to these terms, and any participation in the auction will signify acceptance.
+By participating in this auction, you are agreeing to be bound by these Terms. All bidders are subject to these terms, and any participation in the auction will signify acceptance.
 
 ## 2. Eligibility
 
@@ -11,48 +11,44 @@ Participants must be of legal age and capable of entering into legally binding c
 
 ## 3. Auction Process
 
-- The auction will start at the declared start time and continue until the stated end time.
-- Bids are to be placed in the increments specified on the bidding page.
-- The highest bid at the end of the auction will be deemed the winning bid, subject to meeting the reserve price, if any.
+- The auction commences at the declared start time and will continue until the stipulated end time.
+- Bids must be placed in the increments specified on the bidding page.
+- The highest bid when the auction concludes will be recognized as the winning bid, contingent upon meeting any reserve price set.
 
 ## 4. Bid Submissions
 
-- All bids are final and binding. You cannot retract a bid once it is placed.
-- If a bid is placed in the last ten minutes of the auction, the auction end time may be extended to allow for additional bidding activity.
-- Bidders are responsible for any bids placed under their registration.
+- Bids once placed are final and binding. Retraction of bids after submission is not permitted.
+- Any bid placed within the final ten minutes will extend the auction's end time to allow additional bids, ensuring fair opportunity for all interested parties.
 
 ## 5. Payments
 
-- The winning bidder must make payment within the specified timeframe after the auction ends.
-- Payment shall include the bid amount plus any applicable fees.
-- Failure to complete payment will result in forfeiture of the bid and possible account suspension.
+- The winning bidder is obliged to fulfill the payment within the predefined timeframe post-auction closure.
+- Payment will consist of the bid amount in addition to any pertinent fees.
 
 ## 6. Transfer of Ownership
 
-Ownership of the auctioned item is transferred only upon full payment of the winning bid amount.
+Ownership of the item on auction transfers solely upon the full settlement of the winning bid.
 
 ## 7. Withdrawals
 
-The auction owner reserves the right to withdraw an item from auction at any time without prior notice.
+The auction owner reserves the right to withdraw the auction amount only after the auction has officially ended.
 
-## 8. Liability
+## 8. Role of Chainbrary
 
-The auction platform is not liable for any issues that arise due to network failures, technical malfunctions, or user errors during the bidding process.
+Chainbrary does not exert control over the bid smart contract and serves solely as the facilitator for the auction creator's interface. While Chainbrary has no governance over the smart contract, all interactions are recorded on the blockchain, enhancing safety and transparency for all participants.
 
-## 9. Disputes
+## 9. Liability
 
-Any disputes related to the auction will be resolved in accordance with the laws of the jurisdiction in which our company is based.
+The auction platform disclaims liability for any complications arising from network downtime, technical glitches, or user input errors during the bidding activity.
 
 ## 10. Amendments
 
-We reserve the right to update these terms and conditions at any time without prior notice. Continued use of the auction platform after any changes constitutes acceptance of the new terms.
+We retain the prerogative to modify these terms and conditions without prior notification. Your continued utilization of the auction platform following any adjustments represents your consent to the updated terms.
 
 ## 11. Contact Us
 
-If you have any questions about these terms, please contact us at [support@email.com](mailto:support@email.com).
+Should you have inquiries regarding these terms, feel free to reach out to us on <a href="https://discord.gg/H3hFVuCrXN" target="_blank">Discord</a> .
 
-By placing a bid, you acknowledge that you have read, understood, and agreed to these Terms and Conditions.
+By placing a bid, you affirm that you have reviewed, comprehended, and concurred with these Terms and Conditions.
 
 `;
-
-// TODO: Make thie better
