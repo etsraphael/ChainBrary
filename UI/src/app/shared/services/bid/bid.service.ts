@@ -14,7 +14,7 @@ export class BidService {
 
   constructor(private web3ProviderService: Web3ProviderService) {}
 
-  getBidFromTxnHash(w: WalletProvider, txHash: string, networkChainId: NetworkChainId): Promise<IBidResponse> {
+  async getBidFromTxnHash(w: WalletProvider, txHash: string, networkChainId: NetworkChainId): Promise<IBidResponse> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
 

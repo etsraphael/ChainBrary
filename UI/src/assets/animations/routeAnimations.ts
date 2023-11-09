@@ -39,7 +39,7 @@ export const routeAnimations = trigger('routeAnimations', [
     query(':enter', animateChild())
   ]),
   // container transitions
-  transition('bid-creation => bid-services', [
+  transition('bid-creation => bid-services, bid-search => bid-services', [
     style({ position: 'relative' }),
     query(':enter, :leave', [
       style({
@@ -57,7 +57,7 @@ export const routeAnimations = trigger('routeAnimations', [
     ]),
     query(':enter', animateChild())
   ]),
-  transition('services => payment-request, services => activity, services => bid, bid-services => bid-creation', [
+  transition('bid-services => bid-creation, bid-services => bid-search', [
     style({ position: 'relative' }),
     query(':enter, :leave', [
       style({
