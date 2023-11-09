@@ -15,6 +15,16 @@
         "internalType": "uint256",
         "name": "_durationInMinutes",
         "type": "uint256"
+      },
+      {
+        "internalType": "string[]",
+        "name": "_imgLists",
+        "type": "string[]"
+      },
+      {
+        "internalType": "string",
+        "name": "bidName",
+        "type": "string"
       }
     ],
     "stateMutability": "nonpayable",
@@ -213,6 +223,24 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "bidMetaData",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "bidName",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "owner",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -313,6 +341,29 @@
         "internalType": "uint256[]",
         "name": "",
         "type": "uint256[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCompleteBidMetaData",
+    "outputs": [
+      {
+        "internalType": "string[]",
+        "name": "",
+        "type": "string[]"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
       }
     ],
     "stateMutability": "view",

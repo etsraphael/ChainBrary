@@ -9,7 +9,15 @@ export default buildModule('Apollo', (m) => {
   const priceFeed = deployPriceFeed(m);
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
-  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge, priceFeed, erc20FixedSupply, bidContract };
+  return {
+    rocketContract,
+    lockContract,
+    transactionTokenBridge,
+    transactionBridge,
+    priceFeed,
+    erc20FixedSupply,
+    bidContract
+  };
 });
 
 function deployContractContrat(m: any) {
@@ -48,6 +56,15 @@ function deployERC20FixedSupply(m: any) {
 }
 
 function deployBidContract(m: any) {
-  const bidContract = m.contract('Bid', ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '10', '120']);
+  const bidContract = m.contract('Bid', [
+    '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+    '10',
+    '120',
+    [
+      'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://plus.unsplash.com/premium_photo-1698952282280-c1fb6443092c?q=80&w=2717&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    ],
+    'House in the woods'
+  ]);
   return bidContract;
 }

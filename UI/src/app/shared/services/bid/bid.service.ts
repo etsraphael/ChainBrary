@@ -22,6 +22,6 @@ export class BidService {
 
     const contract: Contract = new web3.eth.Contract(bidFactoryContract.getAbi() as AbiItem[], txHash);
 
-    return contract.methods.auctionStartTime().call();
+    return contract.methods.bidMetaData().call();
   }
 }

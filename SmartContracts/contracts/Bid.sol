@@ -21,6 +21,14 @@ contract Bid is Ownable, ReentrancyGuard {
         uint256 amount;
     }
 
+    struct BidMetaData {
+        string bidName;
+        address owner;
+        string[] imgLists;
+    }
+
+    BidMetaData public bidMetaData;
+
     address[] public bidderAddresses;
     mapping(address => uint256) public bids;
 
@@ -43,11 +51,14 @@ contract Bid is Ownable, ReentrancyGuard {
     constructor(
         address _communityAddress,
         uint256 _extendTimeInMinutes,
-        uint256 _durationInMinutes
+        uint256 _durationInMinutes,
+        string[] memory _imgLists,
+        string memory bidName
     ) Ownable(_msgSender()) {
         communityAddress = _communityAddress;
         extendTimeInMinutes = _extendTimeInMinutes;
         startAuction(_durationInMinutes);
+        bidMetaData = BidMetaData({bidName: bidName, owner: _msgSender(), imgLists: _imgLists});
     }
 
     function auctionDone() public view returns (bool) {
@@ -126,5 +137,9 @@ contract Bid is Ownable, ReentrancyGuard {
         }
 
         return (bidderAddresses, amounts);
+    }
+
+    function getCompleteBidMetaData() public view returns (string[] memory, string memory, address) {
+        return (bidMetaData.imgLists, bidMetaData.bidName, bidMetaData.owner);
     }
 }

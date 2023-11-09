@@ -20,6 +20,16 @@ export class BidContract extends BaseContractFactory {
             internalType: 'uint256',
             name: '_durationInMinutes',
             type: 'uint256'
+          },
+          {
+            internalType: 'string[]',
+            name: '_imgLists',
+            type: 'string[]'
+          },
+          {
+            internalType: 'string',
+            name: 'bidName',
+            type: 'string'
           }
         ],
         stateMutability: 'nonpayable',
@@ -215,6 +225,24 @@ export class BidContract extends BaseContractFactory {
         name: 'bid',
         outputs: [],
         stateMutability: 'payable',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'bidMetaData',
+        outputs: [
+          {
+            internalType: 'string',
+            name: 'bidName',
+            type: 'string'
+          },
+          {
+            internalType: 'address',
+            name: 'owner',
+            type: 'address'
+          }
+        ],
+        stateMutability: 'view',
         type: 'function'
       },
       {
