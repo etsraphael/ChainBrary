@@ -353,6 +353,29 @@ export class BidContract extends BaseContractFactory {
       },
       {
         inputs: [],
+        name: 'getCompleteBidMetaData',
+        outputs: [
+          {
+            internalType: 'string[]',
+            name: '',
+            type: 'string[]'
+          },
+          {
+            internalType: 'string',
+            name: '',
+            type: 'string'
+          },
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
         name: 'highestBid',
         outputs: [
           {
