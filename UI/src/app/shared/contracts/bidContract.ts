@@ -2,8 +2,7 @@ import { AbiItem } from 'web3-utils';
 import { BaseContractFactory } from './baseContract';
 
 export class BidContract extends BaseContractFactory {
-
-  getAbi(): AbiItem[] {
+  getAbi(): (AbiItem | object)[] {
     return [
       {
         inputs: [
@@ -29,7 +28,7 @@ export class BidContract extends BaseContractFactory {
       {
         inputs: [],
         name: 'MathOverflowedMulDiv',
-        type: 'function'
+        type: 'error'
       },
       {
         inputs: [
@@ -40,7 +39,7 @@ export class BidContract extends BaseContractFactory {
           }
         ],
         name: 'OwnableInvalidOwner',
-        type: 'function'
+        type: 'error'
       },
       {
         inputs: [
@@ -51,12 +50,12 @@ export class BidContract extends BaseContractFactory {
           }
         ],
         name: 'OwnableUnauthorizedAccount',
-        type: 'function'
+        type: 'error'
       },
       {
         inputs: [],
         name: 'ReentrancyGuardReentrantCall',
-        type: 'function'
+        type: 'error'
       },
       {
         anonymous: false,

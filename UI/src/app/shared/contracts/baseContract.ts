@@ -6,5 +6,5 @@ export abstract class BaseContract {
 }
 
 export abstract class BaseContractFactory {
-  abstract getAbi(): AbiItem[];
+  abstract getAbi(): (AbiItem|object)[] ;
 }
