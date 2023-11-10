@@ -139,7 +139,27 @@ contract Bid is Ownable, ReentrancyGuard {
         return (bidderAddresses, amounts);
     }
 
-    function getCompleteBidMetaData() public view returns (string[] memory, string memory, address) {
-        return (bidMetaData.imgLists, bidMetaData.bidName, bidMetaData.owner);
+    function getCompleteBidMetaData()
+        public
+        view
+        returns (string[] memory, string memory, address, uint256, uint256, uint256, address[] memory, uint256[] memory)
+    {
+        uint256 length = bidderAddresses.length;
+        uint256[] memory amounts = new uint256[](length);
+
+        for (uint256 i = 0; i < length; i++) {
+            amounts[i] = bids[bidderAddresses[i]];
+        }
+
+        return (
+            bidMetaData.imgLists,
+            bidMetaData.bidName,
+            bidMetaData.owner,
+            auctionStartTime,
+            auctionEndTime,
+            extendTimeInMinutes,
+            bidderAddresses,
+            amounts
+        );
     }
 }

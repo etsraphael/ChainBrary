@@ -14,11 +14,10 @@ export interface IBidOffer {
 }
 
 export interface IBidResponse {
-  // TODO: Put back these values
-  // auctionStartTime: number;
-  // auctionEndTime: number;
-  // extendTimeInMinutes: number;
   bidName: string;
   owner: string;
   imgLists: string[];
+  auctionStartTime: number;
+  auctionEndTime: number;
+  extendTimeInMinutes: number;
 }

@@ -254,7 +254,6 @@ describe('Bid', function () {
       expect(bidName).to.equal(expectedBidName);
       expect(metaDataOwner).to.equal(owner);
     });
-
-    
+ 
   });
 });
