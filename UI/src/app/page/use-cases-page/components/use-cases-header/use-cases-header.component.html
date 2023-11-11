@@ -4,7 +4,7 @@
     <div class="col-12 text-start">
       <!-- Title -->
       <h3 class="text-dark">
-        <i class="bi bi-arrow-left me-3" [routerLink]="header.goBackLink"></i>
+        <i *ngIf="header.goBackLink" class="bi bi-arrow-left me-3" [routerLink]="header.goBackLink"></i>
         <span>{{ header.title }}</span>
       </h3>
       <hr />

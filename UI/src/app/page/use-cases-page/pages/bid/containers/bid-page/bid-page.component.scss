@@ -1,0 +1,11 @@
+@import './../../../../../../shared/styles/form.scss';
+
+.carousel {
+  border-radius: 8px 8px 0 0;
+  overflow: hidden;
+}
+
+.card,
+.list-group {
+  border-radius: 8px;
+}

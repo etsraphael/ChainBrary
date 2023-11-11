@@ -11,6 +11,6 @@ export class UseCasesHeaderComponent {
 
 export interface IUseCasesHeader {
   title: string;
-  goBackLink: string;
+  goBackLink: string | null;
   description: string | null;
 }
