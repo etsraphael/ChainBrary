@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BidCreationComponent } from './components/bid-creation/bid-creation.component';
+import { BidSearchComponent } from './components/bid-search/bid-search.component';
 import { HomeBidMenuComponent } from './components/home-bid-menu/home-bid-menu.component';
 import { BidContainerComponent } from './containers/bid-container/bid-container.component';
-import { BidSearchComponent } from './components/bid-search/bid-search.component';
+import { BidPageComponent } from './containers/bid-page/bid-page.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,10 @@ const routes: Routes = [
         path: 'search',
         component: BidSearchComponent,
         data: { animation: 'bid-search' }
+      },
+      {
+        path: 'search/:id',
+        component: BidPageComponent
       },
       {
         path: '',

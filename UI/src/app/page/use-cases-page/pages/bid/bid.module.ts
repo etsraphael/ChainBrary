@@ -10,9 +10,16 @@ import { BidCreationComponent } from './components/bid-creation/bid-creation.com
 import { BidSearchComponent } from './components/bid-search/bid-search.component';
 import { HomeBidMenuComponent } from './components/home-bid-menu/home-bid-menu.component';
 import { BidContainerComponent } from './containers/bid-container/bid-container.component';
+import { BidPageComponent } from './containers/bid-page/bid-page.component';
 
 @NgModule({
-  declarations: [BidContainerComponent, HomeBidMenuComponent, BidCreationComponent, BidSearchComponent],
+  declarations: [
+    BidContainerComponent,
+    HomeBidMenuComponent,
+    BidCreationComponent,
+    BidSearchComponent,
+    BidPageComponent
+  ],
   imports: [
     CommonModule,
     SharedComponentsModule,
