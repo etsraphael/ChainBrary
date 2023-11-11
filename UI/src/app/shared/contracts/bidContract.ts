@@ -369,6 +369,31 @@ export class BidContract extends BaseContractFactory {
             internalType: 'address',
             name: '',
             type: 'address'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address[]',
+            name: '',
+            type: 'address[]'
+          },
+          {
+            internalType: 'uint256[]',
+            name: '',
+            type: 'uint256[]'
           }
         ],
         stateMutability: 'view',

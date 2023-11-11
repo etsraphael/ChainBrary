@@ -9,6 +9,7 @@ export default buildModule('Apollo', (m) => {
   const priceFeed = deployPriceFeed(m);
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
+
   return {
     rocketContract,
     lockContract,
@@ -57,7 +58,7 @@ function deployERC20FixedSupply(m: any) {
 
 function deployBidContract(m: any) {
   const bidContract = m.contract('Bid', [
-    '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
     '10',
     '120',
     [
