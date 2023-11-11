@@ -17,7 +17,7 @@ export interface IBidResponse {
   bidName: string;
   owner: string;
   imgLists: string[];
-  auctionStartTime: number;
-  auctionEndTime: number;
+  auctionStartTime: Date;
+  auctionEndTime: Date;
   extendTimeInMinutes: number;
 }

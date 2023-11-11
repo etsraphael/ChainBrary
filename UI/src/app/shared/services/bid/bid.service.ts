@@ -14,6 +14,7 @@ export class BidService {
   constructor(private web3ProviderService: Web3ProviderService) {}
 
   async getBidFromTxnHash(w: WalletProvider, txHash: string, networkChainId: NetworkChainId): Promise<IBidResponse> {
+
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
 
@@ -24,11 +25,14 @@ export class BidService {
     return contract.methods
       .getCompleteBidMetaData()
       .call()
-      .then((res: [string[], string, string]) => {
+      .then((res: [string[], string, string, string, string, string]) => {
         return {
           imgLists: res[0],
           bidName: res[1],
-          owner: res[2]
+          owner: res[2],
+          auctionStartTime: new Date(parseInt(res[3]) * 1000),
+          auctionEndTime: new Date(parseInt(res[4]) * 1000),
+          extendTimeInMinutes: Number(res[5])
         } as IBidResponse;
       });
   }
