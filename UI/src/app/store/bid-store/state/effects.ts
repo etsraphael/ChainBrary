@@ -30,16 +30,12 @@ export class BidEffects {
         return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn, action[1].chainId)).pipe(
           map((response: IBidResponse) => {
             console.log('response', response);
-            return BidActions.getBidByTxnFailure({message: '...'})
-          } ),
-          catchError((error: { message: string; code: number }) =>
-            {
-              console.log('error', error);
-              return of(
-                BidActions.getBidByTxnFailure({message: error.message})
-              )
-            }
-          )
+            return BidActions.getBidByTxnFailure({ message: '...' });
+          }),
+          catchError((error: { message: string; code: number }) => {
+            console.log('error', error);
+            return of(BidActions.getBidByTxnFailure({ message: error.message }));
+          })
         );
       })
     );

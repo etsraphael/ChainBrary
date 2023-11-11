@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
+import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
 import { bidTermAndCond } from './../../../../../../shared/data/termAndCond';
 
@@ -19,6 +20,12 @@ export class BidCreationComponent implements OnInit {
   mainForm: FormGroup<BidForm>;
   imgList: string[] = [];
   imgLimit = 5;
+
+  headerPayload: IUseCasesHeader = {
+    title: 'Bid creation',
+    goBackLink: '/use-cases/bid/services',
+    description: null
+  };
 
   constructor(
     private dialog: MatDialog,

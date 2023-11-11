@@ -1,16 +1,5 @@
 <!-- Title container -->
-<div class="container">
-  <div class="row">
-    <div class="col-12 text-start">
-      <!-- Title -->
-      <h3 class="text-dark">
-        <i class="bi bi-arrow-left me-3" routerLink="/use-cases/bid/services"></i>
-        <span>Bid creation</span>
-      </h3>
-      <hr />
-    </div>
-  </div>
-</div>
+<app-use-cases-header [header]="headerPayload"></app-use-cases-header>
 <!-- Form container -->
 <div class="container">
   <form [formGroup]="mainForm">

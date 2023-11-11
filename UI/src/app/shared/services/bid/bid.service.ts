@@ -11,7 +11,6 @@ import { Web3ProviderService } from '../web3-provider/web3-provider.service';
   providedIn: 'root'
 })
 export class BidService {
-
   constructor(private web3ProviderService: Web3ProviderService) {}
 
   async getBidFromTxnHash(w: WalletProvider, txHash: string, networkChainId: NetworkChainId): Promise<IBidResponse> {
@@ -22,12 +21,15 @@ export class BidService {
 
     const contract: Contract = new web3.eth.Contract(bidFactoryContract.getAbi() as AbiItem[], txHash);
 
-    return contract.methods.getCompleteBidMetaData().call().then((res: [string[], string, string]) => {
-      return {
-        imgLists: res[0],
-        bidName: res[1],
-        owner: res[2],
-      } as IBidResponse;
-    })
+    return contract.methods
+      .getCompleteBidMetaData()
+      .call()
+      .then((res: [string[], string, string]) => {
+        return {
+          imgLists: res[0],
+          bidName: res[1],
+          owner: res[2]
+        } as IBidResponse;
+      });
   }
 }
