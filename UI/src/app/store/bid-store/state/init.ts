@@ -5,5 +5,10 @@ export const initialState: IBidState = {
     loading: false,
     error: null,
     data: null
+  },
+  searchBid: {
+    loading: false,
+    error: null,
+    data: null
   }
 };

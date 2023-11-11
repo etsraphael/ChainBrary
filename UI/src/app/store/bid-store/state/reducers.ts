@@ -37,6 +37,39 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
         error: null
       }
     })
+  ),
+  on(
+    BidActions.getBidByTxn,
+    (state): IBidState => ({
+      ...state,
+      searchBid: {
+        data: null,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    BidActions.getBidByTxnSuccess,
+    (state, { payload }): IBidState => ({
+      ...state,
+      searchBid: {
+        data: payload,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    BidActions.getBidByTxnFailure,
+    (state, { message }): IBidState => ({
+      ...state,
+      searchBid: {
+        data: null,
+        loading: false,
+        error: message
+      }
+    })
   )
 );
 

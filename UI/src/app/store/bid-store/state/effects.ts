@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
 import { selectCurrentNetwork } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
-import { IBidResponse } from './../../../shared/interfaces/bid.interface';
+import { IBid } from './../../../shared/interfaces/bid.interface';
 import { BidService } from './../../../shared/services/bid/bid.service';
 import * as BidActions from './actions';
 
@@ -28,9 +28,9 @@ export class BidEffects {
       ),
       switchMap((action: [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail, WalletProvider]) => {
         return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn, action[1].chainId)).pipe(
-          map((response: IBidResponse) => {
+          map((response: IBid) => {
             console.log('response', response);
-            return BidActions.getBidByTxnFailure({ message: '...' });
+            return BidActions.getBidByTxnSuccess({ payload: response });
           }),
           catchError((error: { message: string; code: number }) => {
             console.log('error', error);

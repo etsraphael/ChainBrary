@@ -9,3 +9,8 @@ export const selectCurrentBid: MemoizedSelector<object, StoreState<IBid | null>>
   selectBid,
   (s: IBidState) => s.currentBid
 );
+
+export const selectSearchBid: MemoizedSelector<object, StoreState<IBid | null>> = createSelector(
+  selectBid,
+  (s: IBidState) => s.searchBid
+);

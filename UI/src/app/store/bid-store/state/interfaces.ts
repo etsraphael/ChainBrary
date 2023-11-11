@@ -5,6 +5,7 @@ export const BID_FEATURE_KEY = 'bid';
 
 export interface IBidState {
   currentBid: StoreState<IBid | null>;
+  searchBid: StoreState<IBid | null>;
 }
 
 export interface BidState {

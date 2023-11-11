@@ -1,22 +1,57 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { IUseCasesHeader } from './../../../../../..//page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { Observable, map } from 'rxjs';
+import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IBid } from './../../../../../../shared/interfaces/bid.interface';
+import { getBidByTxn } from './../../../../../../store/bid-store/state/actions';
+import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bid-page',
   templateUrl: './bid-page.component.html',
   styleUrls: ['./bid-page.component.scss']
 })
-export class BidPageComponent {
+export class BidPageComponent implements OnInit {
   headerPayload: IUseCasesHeader = {
     title: 'Saint Albans House - 2 Bed Flat',
     goBackLink: null,
     description: null
   };
 
-  constructor(private readonly store: Store) {}
+  constructor(
+    private readonly store: Store,
+    private route: ActivatedRoute
+  ) {}
 
-  // ngOnInit(): void {
-  //   // this.store.dispatch(getBidByTxn({txn: '0x5fbdb2315678afecb367f032d93f642f64180aa3'}))
-  // }
+  selectSearchBid$ = this.store.select(selectSearchBid);
+
+  get bidIsLoading$(): Observable<boolean> {
+    return this.selectSearchBid$.pipe(map((state) => state.loading));
+  }
+
+  get bidError$(): Observable<string | null> {
+    return this.selectSearchBid$.pipe(map((state) => state.error));
+  }
+
+  get bid$(): Observable<IBid | null> {
+    return this.selectSearchBid$.pipe(map((state) => state.data));
+  }
+
+  get successfulHeader$(): Observable<IUseCasesHeader> {
+    return this.bid$.pipe(
+      map((bid) => bid as IBid),
+      map((bid: IBid) => ({
+        title: bid.bidName,
+        goBackLink: null,
+        description: null
+      }))
+    );
+  }
+
+  ngOnInit(): void {
+    setTimeout(() => {
+      this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
+    }, 1000);
+  }
 }
