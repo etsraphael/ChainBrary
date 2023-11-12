@@ -9,3 +9,14 @@
 .list-group {
   border-radius: 8px;
 }
+
+.no-spinners::-webkit-inner-spin-button,
+.no-spinners::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* For Firefox */
+.no-spinners {
+  -moz-appearance: textfield;
+}

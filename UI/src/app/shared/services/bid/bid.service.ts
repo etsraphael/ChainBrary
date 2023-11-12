@@ -34,7 +34,7 @@ export class BidService {
           extendTimeInMinutes: Number(res[5]),
           ownerName: res[8],
           description: res[9],
-          highestBid: Number(res[10]),
+          highestBid: Number(res[10])
         } as IBid;
       });
   }

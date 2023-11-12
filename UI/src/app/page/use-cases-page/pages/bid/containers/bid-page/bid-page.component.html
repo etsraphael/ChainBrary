@@ -37,7 +37,7 @@
               </h2>
               <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                 {{bid.description}}
+                  {{ bid.description }}
                 </div>
               </div>
             </div>
@@ -91,32 +91,39 @@
         </div>
         <div class="card-footer pt-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="text-muted">{{bid.ownerName}}</span>
-            <span>{{getCountdown(bid.auctionEndTime)|async}}</span>
+            <span class="text-muted">{{ bid.ownerName }}</span>
+            <!-- <span>{{getCountdown(bid.auctionEndTime)|async}}</span> -->
           </div>
         </div>
       </div>
       <!-- Current bid -->
-      <div class="row justify-content-center my-3">
-        <div class="col-12">
-          <mat-form-field class="example-form-field w-100" appearance="outline">
-            <button matPrefix mat-icon-button>
-              <i class="bi bi-dash-circle"></i>
-            </button>
-            <input matInput type="text" [value]="bid.highestBid" class="text-center" />
-            <mat-hint>The current bid is at <strong>{{bid.highestBid}} ETH</strong></mat-hint>
-            <button matSuffix mat-icon-button>
-              <i class="bi bi-plus-circle"></i>
-            </button>
-          </mat-form-field>
+      <form [formGroup]="bidForm" (ngSubmit)="onSubmit()">
+        <div class="row justify-content-center my-3">
+          <div class="col-12">
+            <mat-form-field class="example-form-field w-100" appearance="outline">
+              <button matPrefix mat-icon-button type="button" (click)="decrementBid()">
+                <i class="bi bi-dash-circle"></i>
+              </button>
+              <input matInput type="number" formControlName="highestBid" class="text-center no-spinners" />
+              <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')"
+                >Please enter a value higher than the current bid</mat-error
+              >
+              <mat-hint
+                >The current bid is at <strong>{{ bid.highestBid }} ETH</strong></mat-hint
+              >
+              <button matSuffix mat-icon-button type="button" (click)="incrementBid()">
+                <i class="bi bi-plus-circle"></i>
+              </button>
+            </mat-form-field>
+          </div>
         </div>
-      </div>
-      <!-- Action button -->
-      <div class="row my-2">
-        <div class="col-12">
-          <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Set the bid" />
+        <!-- Action button -->
+        <div class="row my-2">
+          <div class="col-12">
+            <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Set the bid" />
+          </div>
         </div>
-      </div>
+      </form>
       <!-- History -->
       <div class="row mt-3">
         <h5>History of Bid</h5>

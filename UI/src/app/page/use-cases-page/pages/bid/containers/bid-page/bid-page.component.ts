@@ -1,21 +1,25 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, interval, map, startWith } from 'rxjs';
+import { Observable, filter, interval, map, startWith } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { IBid } from './../../../../../../shared/interfaces/bid.interface';
 import { getBidByTxn } from './../../../../../../store/bid-store/state/actions';
 import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-bid-page',
   templateUrl: './bid-page.component.html',
   styleUrls: ['./bid-page.component.scss']
 })
-export class BidPageComponent implements OnInit {
+export class BidPageComponent implements OnInit, AfterViewInit {
+  bidForm: FormGroup;
+
   constructor(
     private readonly store: Store,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private cdRef: ChangeDetectorRef
   ) {}
 
   selectSearchBid$ = this.store.select(selectSearchBid);
@@ -56,6 +60,26 @@ export class BidPageComponent implements OnInit {
       this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
     }, 1000);
     // TODO: create form to update the price
+
+    this.setUpForm();
+  }
+
+  ngAfterViewInit(): void {
+    this.cdRef.detectChanges();
+  }
+
+  setUpForm(): void {
+    this.bid$
+      .pipe(
+        filter((bid) => !!bid),
+        map((bid) => bid as IBid)
+        // takeUntil(this.destroy$)
+      )
+      .subscribe((bid) => {
+        this.bidForm = new FormGroup({
+          highestBid: new FormControl(bid.highestBid, [Validators.required, Validators.min(bid.highestBid)])
+        });
+      });
   }
 
   getCountdown(endTime: Date): Observable<string> {
@@ -84,4 +108,24 @@ export class BidPageComponent implements OnInit {
       })
     );
   }
+
+  incrementBid(): void {
+    const currentBid = this.bidForm.get('highestBid')?.value;
+    this.bidForm.get('highestBid')?.setValue(currentBid + 1);
+  }
+
+  decrementBid(): void {
+    const currentBid = this.bidForm.get('highestBid')?.value;
+    if (currentBid > 0) {
+      this.bidForm.get('highestBid')?.setValue(currentBid - 1);
+    }
+  }
+
+  onSubmit(): void {
+    console.log('value', this.bidForm.value);
+  }
+}
+
+export interface IBidForm {
+  highestBid: FormControl<number | null>;
 }
