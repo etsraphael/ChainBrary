@@ -138,7 +138,7 @@
 
 <!-- Bid not found -->
 <ng-container *ngIf="(bidError$ | async) !== null">
-  <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+  <app-use-cases-header [header]="failureHeader"></app-use-cases-header>
   <div class="container">
     <div class="row">
       <div class="col-12">

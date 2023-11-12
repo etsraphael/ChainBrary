@@ -13,12 +13,6 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./bid-page.component.scss']
 })
 export class BidPageComponent implements OnInit {
-  headerPayload: IUseCasesHeader = {
-    title: 'Saint Albans House - 2 Bed Flat',
-    goBackLink: null,
-    description: null
-  };
-
   constructor(
     private readonly store: Store,
     private route: ActivatedRoute
@@ -49,10 +43,19 @@ export class BidPageComponent implements OnInit {
     );
   }
 
+  get failureHeader(): IUseCasesHeader {
+    return {
+      title: 'Bid not found',
+      goBackLink: '/use-cases/bid/search',
+      description: null
+    };
+  }
+
   ngOnInit(): void {
     setTimeout(() => {
       this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
     }, 1000);
+    // TODO: create form to update the price
   }
 
   getCountdown(endTime: Date): Observable<string> {
