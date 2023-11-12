@@ -65,7 +65,9 @@ function deployBidContract(m: any) {
       'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       'https://plus.unsplash.com/premium_photo-1698952282280-c1fb6443092c?q=80&w=2717&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
     ],
-    'House in the woods'
+    'House in the woods',
+    'Ray Red Agency',
+    '3 bedroom house in the woods, with a beautiful view of the lake. Perfect for a family of 4, or a couple looking to get away from the city.'
   ]);
   return bidContract;
 }

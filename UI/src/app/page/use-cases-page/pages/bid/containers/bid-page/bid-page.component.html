@@ -37,11 +37,7 @@
               </h2>
               <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                 <div class="accordion-body">
-                  <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse
-                  plugin adds the appropriate classes that we use to style each element. These classes control the
-                  overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this
-                  with custom CSS or overriding our default variables. It's also worth noting that just about any HTML
-                  can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                 {{bid.description}}
                 </div>
               </div>
             </div>
@@ -93,10 +89,10 @@
             </button>
           </div>
         </div>
-        <div class="card-footer">
+        <div class="card-footer pt-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
-            <span class="text-muted">Norman Gordon</span>
-            <span>14h : 30m : 47s</span>
+            <span class="text-muted">{{bid.ownerName}}</span>
+            <span>{{getCountdown(bid.auctionEndTime)|async}}</span>
           </div>
         </div>
       </div>
@@ -107,8 +103,8 @@
             <button matPrefix mat-icon-button>
               <i class="bi bi-dash-circle"></i>
             </button>
-            <input matInput type="text" value="1.5" class="text-center" />
-            <mat-hint>The current bid is at <strong>1.5 ETH</strong></mat-hint>
+            <input matInput type="text" [value]="bid.highestBid" class="text-center" />
+            <mat-hint>The current bid is at <strong>{{bid.highestBid}} ETH</strong></mat-hint>
             <button matSuffix mat-icon-button>
               <i class="bi bi-plus-circle"></i>
             </button>

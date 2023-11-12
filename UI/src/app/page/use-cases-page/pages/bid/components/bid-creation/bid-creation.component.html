@@ -27,7 +27,7 @@
       </div>
       <div class="col-12">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Duration (days)</mat-label>
+          <mat-label>Duration (minutes)</mat-label>
           <input formControlName="duration" matInput type="number" />
           <mat-error *ngIf="mainForm.get('duration')?.hasError('required')"> Duration is required </mat-error>
         </mat-form-field>

@@ -28,14 +28,8 @@ export class BidEffects {
       ),
       switchMap((action: [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail, WalletProvider]) => {
         return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn, action[1].chainId)).pipe(
-          map((response: IBid) => {
-            console.log('response', response);
-            return BidActions.getBidByTxnSuccess({ payload: response });
-          }),
-          catchError((error: { message: string; code: number }) => {
-            console.log('error', error);
-            return of(BidActions.getBidByTxnFailure({ message: error.message }));
-          })
+          map((response: IBid) => BidActions.getBidByTxnSuccess({ payload: response })),
+          catchError((error: { message: string; code: number }) => of(BidActions.getBidByTxnFailure({ message: error.message })))
         );
       })
     );

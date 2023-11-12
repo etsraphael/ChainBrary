@@ -5,7 +5,10 @@ export interface IBid {
   auctionStartTime: Date;
   auctionEndTime: Date;
   extendTimeInMinutes: number;
-  // bidders: IBidOffer[];
+  bidders: IBidOffer[];
+  description: string;
+  ownerName: string;
+  highestBid: number;
 }
 
 export interface IBidCreation {

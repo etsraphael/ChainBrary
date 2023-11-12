@@ -24,14 +24,17 @@ export class BidService {
     return contract.methods
       .getCompleteBidMetaData()
       .call()
-      .then((res: [string[], string, string, string, string, string]) => {
+      .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
         return {
           imgLists: res[0],
           bidName: res[1],
           owner: res[2],
           auctionStartTime: new Date(parseInt(res[3]) * 1000),
           auctionEndTime: new Date(parseInt(res[4]) * 1000),
-          extendTimeInMinutes: Number(res[5])
+          extendTimeInMinutes: Number(res[5]),
+          ownerName: res[8],
+          description: res[9],
+          highestBid: Number(res[10]),
         } as IBid;
       });
   }
