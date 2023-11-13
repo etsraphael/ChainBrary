@@ -1,10 +1,11 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, filter, interval, map, startWith } from 'rxjs';
+import { Observable, ReplaySubject, filter, interval, map, startWith, takeUntil } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
-import { IBid } from './../../../../../../shared/interfaces/bid.interface';
+import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
+import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
 import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
@@ -13,13 +14,15 @@ import { selectSearchBid } from './../../../../../../store/bid-store/state/selec
   templateUrl: './bid-page.component.html',
   styleUrls: ['./bid-page.component.scss']
 })
-export class BidPageComponent implements OnInit, AfterViewInit {
+export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   bidForm: FormGroup;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     private readonly store: Store,
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef
+    private cdRef: ChangeDetectorRef,
+    public formatService: FormatService,
   ) {}
 
   selectSearchBid$ = this.store.select(selectSearchBid);
@@ -34,6 +37,14 @@ export class BidPageComponent implements OnInit, AfterViewInit {
 
   get bid$(): Observable<IBid | null> {
     return this.selectSearchBid$.pipe(map((state) => state.data));
+  }
+
+  get bidderList$(): Observable<IBidOffer[]> {
+    return this.bid$.pipe(
+      filter((bid) => !!bid),
+      map((bid) => bid as IBid),
+      map((bid: IBid) => bid.bidders)
+    );
   }
 
   get successfulHeader$(): Observable<IUseCasesHeader> {
@@ -59,7 +70,6 @@ export class BidPageComponent implements OnInit, AfterViewInit {
     setTimeout(() => {
       this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
     }, 1000);
-    // TODO: create form to update the price
 
     this.setUpForm();
   }
@@ -72,8 +82,8 @@ export class BidPageComponent implements OnInit, AfterViewInit {
     this.bid$
       .pipe(
         filter((bid) => !!bid),
-        map((bid) => bid as IBid)
-        // takeUntil(this.destroy$)
+        map((bid) => bid as IBid),
+        takeUntil(this.destroyed$)
       )
       .subscribe((bid) => {
         this.bidForm = new FormGroup({
@@ -84,8 +94,10 @@ export class BidPageComponent implements OnInit, AfterViewInit {
 
   getCountdown(endTime: Date): Observable<string> {
     return interval(1000).pipe(
+      takeUntil(this.destroyed$),
       startWith(0),
       map(() => {
+
         const now = new Date();
         const distance = endTime.getTime() - now.getTime();
 
@@ -123,6 +135,11 @@ export class BidPageComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     this.store.dispatch(placeBid({ amount: this.bidForm.get('highestBid')?.value as number }));
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
   }
 }
 

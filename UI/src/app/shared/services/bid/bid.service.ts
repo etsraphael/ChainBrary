@@ -5,7 +5,7 @@ import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import { BidContract } from '../../contracts';
 import { IReceiptTransaction } from '../../interfaces';
-import { IBid } from '../../interfaces/bid.interface';
+import { IBid, IBidOffer } from '../../interfaces/bid.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
@@ -23,6 +23,11 @@ export class BidService {
       .getCompleteBidMetaData()
       .call()
       .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
+        const bidders: IBidOffer[] = res[6].map((address, index) => ({
+          bidderAddress: address,
+          amount: Number(web3.utils.fromWei(String(res[7][index]), 'ether'))
+        }));
+
         return {
           conctractAddress: txHash,
           imgLists: res[0],
@@ -33,7 +38,8 @@ export class BidService {
           extendTimeInMinutes: Number(res[5]),
           ownerName: res[8],
           description: res[9],
-          highestBid: Number(res[10])
+          highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether')),
+          bidders
         } as IBid;
       });
   }
@@ -46,13 +52,13 @@ export class BidService {
   ): Promise<IReceiptTransaction> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
-
     const contract: Contract = new web3.eth.Contract(bidFactoryContract.getAbi() as AbiItem[], contractAddress);
 
     try {
-      const gas: number = await contract.methods.bid().estimateGas({ from, value: String(amount) });
-
-      const receipt: IReceiptTransaction = contract.methods.bid().send({ from, value: String(amount), gas: gas });
+      const gas: number = await contract.methods.bid().estimateGas({ from, value: String(amount * 1e18) });
+      const receipt: IReceiptTransaction = contract.methods
+        .bid()
+        .send({ from, value: String(amount * 1e18), gas: gas });
 
       return receipt;
     } catch (error) {
