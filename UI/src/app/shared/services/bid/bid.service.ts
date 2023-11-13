@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
-import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
+import { WalletProvider } from '@chainbrary/web3-login';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import { BidContract } from '../../contracts';
-import { Web3ProviderService } from '../web3-provider/web3-provider.service';
+import { IReceiptTransaction } from '../../interfaces';
 import { IBid } from '../../interfaces/bid.interface';
+import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,12 +14,9 @@ import { IBid } from '../../interfaces/bid.interface';
 export class BidService {
   constructor(private web3ProviderService: Web3ProviderService) {}
 
-  async getBidFromTxnHash(w: WalletProvider, txHash: string, networkChainId: NetworkChainId): Promise<IBid> {
+  async getBidFromTxnHash(w: WalletProvider, txHash: string): Promise<IBid> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
-
-    // TODO: create a value in ENV to filter by network supported
-
     const contract: Contract = new web3.eth.Contract(bidFactoryContract.getAbi() as AbiItem[], txHash);
 
     return contract.methods
@@ -26,6 +24,7 @@ export class BidService {
       .call()
       .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
         return {
+          conctractAddress: txHash,
           imgLists: res[0],
           bidName: res[1],
           owner: res[2],
@@ -37,5 +36,27 @@ export class BidService {
           highestBid: Number(res[10])
         } as IBid;
       });
+  }
+
+  async placeBid(
+    w: WalletProvider,
+    from: string,
+    amount: number,
+    contractAddress: string
+  ): Promise<IReceiptTransaction> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const bidFactoryContract = new BidContract();
+
+    const contract: Contract = new web3.eth.Contract(bidFactoryContract.getAbi() as AbiItem[], contractAddress);
+
+    try {
+      const gas: number = await contract.methods.bid().estimateGas({ from, value: String(amount) });
+
+      const receipt: IReceiptTransaction = contract.methods.bid().send({ from, value: String(amount), gas: gas });
+
+      return receipt;
+    } catch (error) {
+      return Promise.reject((error as { message: string; code: number }) || error);
+    }
   }
 }

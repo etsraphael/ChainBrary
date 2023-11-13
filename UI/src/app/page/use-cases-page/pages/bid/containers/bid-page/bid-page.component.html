@@ -92,7 +92,7 @@
         <div class="card-footer pt-3">
           <div class="d-flex justify-content-between align-items-center mb-2">
             <span class="text-muted">{{ bid.ownerName }}</span>
-            <!-- <span>{{getCountdown(bid.auctionEndTime)|async}}</span> -->
+            <span>{{ getCountdown(bid.auctionEndTime) | async }}</span>
           </div>
         </div>
       </div>
@@ -120,7 +120,11 @@
         <!-- Action button -->
         <div class="row my-2">
           <div class="col-12">
-            <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Set the bid" />
+            <app-chainbrary-button
+              [buttonClasses]="['btn-primary-gradient', 'text-light']"
+              buttonText="Set the bid"
+              (callToAction)="onSubmit()"
+            />
           </div>
         </div>
       </form>

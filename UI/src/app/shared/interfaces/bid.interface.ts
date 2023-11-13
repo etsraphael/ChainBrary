@@ -1,4 +1,5 @@
 export interface IBid {
+  conctractAddress: string;
   bidName: string;
   owner: string;
   imgLists: string[];

@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { Observable, filter, interval, map, startWith } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { IBid } from './../../../../../../shared/interfaces/bid.interface';
-import { getBidByTxn } from './../../../../../../store/bid-store/state/actions';
+import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
 import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
@@ -122,7 +122,7 @@ export class BidPageComponent implements OnInit, AfterViewInit {
   }
 
   onSubmit(): void {
-    console.log('value', this.bidForm.value);
+    this.store.dispatch(placeBid({ amount: this.bidForm.get('highestBid')?.value as number }));
   }
 }
 

@@ -12,7 +12,7 @@ contract Bid is Ownable, ReentrancyGuard {
     uint256 public highestBid;
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
-    uint256 public extendTimeInMinutes; 
+    uint256 public extendTimeInMinutes;
 
     // List of all bidders
     Bidder[] public bidders;
@@ -152,7 +152,19 @@ contract Bid is Ownable, ReentrancyGuard {
     function getCompleteBidMetaData()
         public
         view
-        returns (string[] memory, string memory, address, uint256, uint256, uint256, address[] memory, uint256[] memory, string memory, string memory, uint256)
+        returns (
+            string[] memory,
+            string memory,
+            address,
+            uint256,
+            uint256,
+            uint256,
+            address[] memory,
+            uint256[] memory,
+            string memory,
+            string memory,
+            uint256
+        )
     {
         uint256 length = bidderAddresses.length;
         uint256[] memory amounts = new uint256[](length);

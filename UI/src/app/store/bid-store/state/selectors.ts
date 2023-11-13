@@ -14,3 +14,8 @@ export const selectSearchBid: MemoizedSelector<object, StoreState<IBid | null>> 
   selectBid,
   (s: IBidState) => s.searchBid
 );
+
+export const selectBidContractAddress: MemoizedSelector<object, string | null> = createSelector(
+  selectSearchBid,
+  (s: StoreState<IBid | null>) => s.data?.conctractAddress ?? null
+);

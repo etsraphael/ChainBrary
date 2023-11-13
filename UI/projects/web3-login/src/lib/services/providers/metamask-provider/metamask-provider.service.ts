@@ -108,12 +108,12 @@ export class MetamaskProviderService extends BaseProviderService {
         // Request account access
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
           this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(
-            window.ethereum.chainId
+            window.ethereum.eth_chainId
           );
           this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
           this.publicGlobalValuesService.recentLoginPayload = {
             publicAddress: accounts[0],
-            network: window.ethereum.chainId
+            network: window.ethereum.eth_chainId
           };
         });
       }, 1000);
@@ -128,7 +128,7 @@ export class MetamaskProviderService extends BaseProviderService {
         this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
         this.publicGlobalValuesService.recentLoginPayload = {
           publicAddress: accounts[0],
-          network: window.ethereum.chainId
+          network: window.ethereum.eth_chainId
         };
       })
       .catch((error: Error) => {
