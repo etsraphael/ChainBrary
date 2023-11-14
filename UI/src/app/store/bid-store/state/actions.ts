@@ -10,5 +10,5 @@ export const getBidByTxnSuccess = createAction('[Bid] Get Bid By Txn Success', p
 export const getBidByTxnFailure = createAction('[Bid] Get Bid By Txn Failure', props<{ message: string }>());
 
 export const placeBid = createAction('[Bid] Place Bid', props<{ amount: number }>());
-export const placeBidSuccess = createAction('[Bid] Place Bid Success', props<{ txn: string }>());
+export const placeBidSuccess = createAction('[Bid] Place Bid Success', props<{ txn: string, contractAddress: string }>());
 export const placeBidFailure = createAction('[Bid] Place Bid Failure', props<{ message: string }>());

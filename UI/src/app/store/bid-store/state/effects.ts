@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, from, map, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, of, switchMap, tap } from 'rxjs';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { IReceiptTransaction } from './../../../shared/interfaces';
@@ -13,10 +14,13 @@ import { selectBidContractAddress } from './selectors';
 
 @Injectable()
 export class BidEffects {
+  readonly errorMessage: string[] = ['You are already the highest bidder', 'Auction not ongoing'];
+
   constructor(
     private readonly store: Store,
     private actions$: Actions,
-    private bidService: BidService
+    private bidService: BidService,
+    private snackBar: MatSnackBar
   ) {}
 
   getBidByTxn$ = createEffect(() => {
@@ -55,14 +59,56 @@ export class BidEffects {
       switchMap((action: [ReturnType<typeof BidActions.placeBid>, WalletProvider, string, string]) => {
         return from(this.bidService.placeBid(action[1], action[2], action[0].amount, action[3])).pipe(
           map((response: IReceiptTransaction) => {
-            console.log('response', response);
-            return BidActions.placeBidSuccess({ txn: response.transactionHash });
+            console.log(response);
+            return BidActions.placeBidSuccess({ txn: response.transactionHash, contractAddress: response.to });
           }),
-          catchError((error: { message: string; code: number }) => {
-            console.log('error', error);
-            return of(BidActions.placeBidFailure({ message: error.message }));
-          })
+          catchError((error: string) => of(BidActions.placeBidFailure({ message: error })))
         );
+      })
+    );
+  });
+
+  placeBidError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(BidActions.placeBidFailure),
+        map((action: { message: string }) => {
+          let formattedMessage = String(action.message);
+          let isErrorKnown = false;
+
+          // TODO: Has to be fixed, the first one is always true
+          Object.keys(this.errorMessage).forEach((knownError: string) => {
+            if (formattedMessage.includes(knownError)) {
+              formattedMessage = this.errorMessage[knownError as keyof typeof this.errorMessage] as string;
+              isErrorKnown = true;
+            }
+          });
+
+          if (!isErrorKnown) {
+            formattedMessage = 'An error occured while placing your bid';
+          }
+
+          return this.snackBar.open(formattedMessage, 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
+
+  placeBidSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.placeBidSuccess),
+      tap(() =>
+        this.snackBar.open('Bid placed successfully', '', {
+          duration: 5000,
+          panelClass: ['success-snackbar']
+        })
+      ),
+      map((action: { contractAddress: string }) => {
+        return BidActions.getBidByTxn({ txn: action.contractAddress });
       })
     );
   });

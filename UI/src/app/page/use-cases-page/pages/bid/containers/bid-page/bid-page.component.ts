@@ -49,6 +49,7 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get successfulHeader$(): Observable<IUseCasesHeader> {
     return this.bid$.pipe(
+      filter((bid) => !!bid),
       map((bid) => bid as IBid),
       map((bid: IBid) => ({
         title: bid.bidName,

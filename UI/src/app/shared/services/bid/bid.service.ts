@@ -23,10 +23,11 @@ export class BidService {
       .getCompleteBidMetaData()
       .call()
       .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
-        const bidders: IBidOffer[] = res[6].map((address, index) => ({
-          bidderAddress: address,
-          amount: Number(web3.utils.fromWei(String(res[7][index]), 'ether'))
-        }));
+        const bidders: IBidOffer[] = res[6]
+          .map((address, index) => ({
+            bidderAddress: address,
+            amount: Number(web3.utils.fromWei(String(res[7][index]), 'ether'))
+          })).sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount)
 
         return {
           conctractAddress: txHash,
@@ -62,7 +63,7 @@ export class BidService {
 
       return receipt;
     } catch (error) {
-      return Promise.reject((error as { message: string; code: number }) || error);
+      return Promise.reject(error as string);
     }
   }
 }
