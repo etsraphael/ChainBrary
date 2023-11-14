@@ -14,7 +14,11 @@ import { selectBidContractAddress } from './selectors';
 
 @Injectable()
 export class BidEffects {
-  readonly errorMessage: string[] = ['You are already the highest bidder', 'Auction not ongoing'];
+  readonly errorMessage: string[] = [
+    'Auction not ongoing',
+    'You are already the highest bidder',
+    'Bid amount after fee deduction is not high enough'
+  ];
 
   constructor(
     private readonly store: Store,
@@ -58,10 +62,9 @@ export class BidEffects {
       ),
       switchMap((action: [ReturnType<typeof BidActions.placeBid>, WalletProvider, string, string]) => {
         return from(this.bidService.placeBid(action[1], action[2], action[0].amount, action[3])).pipe(
-          map((response: IReceiptTransaction) => {
-            console.log(response);
-            return BidActions.placeBidSuccess({ txn: response.transactionHash, contractAddress: response.to });
-          }),
+          map((response: IReceiptTransaction) =>
+            BidActions.placeBidSuccess({ txn: response.transactionHash, contractAddress: response.to })
+          ),
           catchError((error: string) => of(BidActions.placeBidFailure({ message: error })))
         );
       })
@@ -76,10 +79,9 @@ export class BidEffects {
           let formattedMessage = String(action.message);
           let isErrorKnown = false;
 
-          // TODO: Has to be fixed, the first one is always true
-          Object.keys(this.errorMessage).forEach((knownError: string) => {
+          this.errorMessage.forEach((knownError: string) => {
             if (formattedMessage.includes(knownError)) {
-              formattedMessage = this.errorMessage[knownError as keyof typeof this.errorMessage] as string;
+              formattedMessage = knownError;
               isErrorKnown = true;
             }
           });
