@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -25,7 +26,8 @@ export class BidEffects {
     private readonly store: Store,
     private actions$: Actions,
     private bidService: BidService,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    private router: Router
   ) {}
 
   getBidByTxn$ = createEffect(() => {
@@ -139,8 +141,26 @@ export class BidEffects {
     );
   });
 
+  createBidSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.createBidSuccess),
+      tap((action: { txn: string }) =>
+        {
+          this.router.navigate(['/use-cases/bid/search/', action.txn]);
+          this.snackBar.open('Bid created successfully', '', {
+          duration: 5000,
+          panelClass: ['success-snackbar']
+        })
+      }
+      ),
+      map((action: { txn: string }) => {
+        return BidActions.getBidByTxn({ txn: action.txn });
+      })
+    );
+  });
 
-  // TODO: Fix after deployement
+
+  // // TODO: Fix after deployement
   // getBiddersList$ = createEffect(() => {
   //   return this.actions$.pipe(
   //     ofType(BidActions.biddersListCheck),

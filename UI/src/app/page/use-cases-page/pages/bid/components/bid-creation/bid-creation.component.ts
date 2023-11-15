@@ -7,8 +7,11 @@ import { UploadImgModalComponent } from './../../../../../../page/use-cases-page
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
 import { bidTermAndCond } from './../../../../../../shared/data/termAndCond';
-import { IBidCreation } from './../../../../../../shared/interfaces/bid.interface';
+import { StoreState } from './../../../../../../shared/interfaces';
+import { IBid, IBidCreation } from './../../../../../../shared/interfaces/bid.interface';
 import { createBid } from './../../../../../../store/bid-store/state/actions';
+import { selectCurrentBid } from './../../../../../../store/bid-store/state/selectors';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-bid-creation',
@@ -29,6 +32,12 @@ export class BidCreationComponent implements OnInit {
     goBackLink: '/use-cases/bid/services',
     description: null
   };
+
+  bidCreation$: Observable<StoreState<IBid | null>> = this.store.select(selectCurrentBid);
+
+  get bidCreationLoading$(): Observable<boolean> {
+    return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.loading))
+  }
 
   constructor(
     private readonly store: Store,
@@ -113,7 +122,7 @@ export class BidCreationComponent implements OnInit {
       communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
     };
 
-    return this.store.dispatch(createBid({payload}));
+    return this.store.dispatch(createBid({ payload }));
   }
 }
 

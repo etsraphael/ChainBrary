@@ -1,117 +1,114 @@
-<!-- Title container -->
-<app-use-cases-header [header]="headerPayload"></app-use-cases-header>
-<!-- Form container -->
-<div class="container">
-  <form [formGroup]="mainForm">
-    <div class="row mx-0">
-      <div class="col-12">
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Bid name</mat-label>
-          <input formControlName="bidName" matInput data-id="bid-name-input" type="text" />
-          <mat-error *ngIf="mainForm.get('bidName')?.hasError('required')"> Bid name is required </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-12">
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Owner name</mat-label>
-          <input formControlName="ownerName" matInput type="text" />
-          <mat-error *ngIf="mainForm.get('ownerName')?.hasError('required')"> Owner name is required </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-12">
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Description</mat-label>
-          <textarea formControlName="description" matInput></textarea>
-          <mat-error *ngIf="mainForm.get('description')?.hasError('required')"> Description is required </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-12">
-        <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Duration (minutes)</mat-label>
-          <input formControlName="duration" matInput type="number" />
-          <mat-error *ngIf="mainForm.get('duration')?.hasError('required')"> Duration is required </mat-error>
-        </mat-form-field>
-      </div>
-      <div class="col-12">
-        <div id="carouselExampleIndicators" class="carousel slide" #carouselExampleCaptions>
-          <div class="carousel-indicators" [hidden]="imgList.length === 0">
-            <button
-              *ngFor="let item of imgList; let i = index"
-              type="button"
-              [attr.data-bs-target]="'#carouselExampleIndicators'"
-              [attr.data-bs-slide-to]="i"
-              [class.active]="i === 0"
-              [attr.aria-current]="i === 0 ? 'true' : null"
-              [attr.aria-label]="'Slide ' + (i + 1)"
-            ></button>
-            <button
-              *ngIf="imgList.length < imgLimit"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              [attr.data-bs-slide-to]="imgList.length"
-              [attr.aria-label]="'Slide ' + (imgList.length + 1)"
-            ></button>
-          </div>
-          <div class="carousel-inner">
-            <!-- List of pictures -->
-            <div class="carousel-item" *ngFor="let item of imgList; let i = index" [ngClass]="{ active: i === 0 }">
-              <img [src]="item" class="d-block w-100" alt="bid-photos" />
-              <div class="carousel-caption">
-                <div class="text-center p-2 text-secondary">
-                  <button class="btn btn-outline-light" (click)="removeImageByUrl(item)">Remove image</button>
-                </div>
-              </div>
-            </div>
-            <!-- Add more picture -->
-            <div class="carousel-item bg-body-secondary text-center p-2" [ngClass]="{ active: imgList.length === 0 }">
-              <div (click)="openImageDialog()" class="upload-image-carousel text-center px-2 py-4 text-secondary">
-                <div class="my-1">
-                  <i class="bi bi-image"></i>
-                </div>
-                <div class="my-2">
-                  <span>Link images</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div [hidden]="imgList.length === 0">
-            <button
-              #prevButton
-              class="carousel-control-prev"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="prev"
-            >
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button
-              #nextButton
-              class="carousel-control-next"
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide="next"
-            >
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
+<!-- Loading Spinner -->
+<ng-container *ngIf="(bidCreationLoading$ | async) === true">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-center pt-5">
+        <div class="spinner-border text-primary">
+          <span class="visually-hidden">Loading...</span>
         </div>
       </div>
-      <div class="col-12 my-3">
-        <mat-checkbox formControlName="termsAndCond" color="primary">
-          <span class="checkbox-label">
-            Accept
-            <a (click)="openTermAndCond($event)" class="terms-link">terms and conditions</a>
-          </span>
-          <mat-error *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched">
-            You must accept the terms and conditions
-          </mat-error>
-        </mat-checkbox>
-      </div>
-      <div class="col-12 text-center">
-        <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-light']" buttonText="Start the bid" (callToAction)="createBid()" />
-      </div>
     </div>
-  </form>
-</div>
+  </div>
+</ng-container>
+<!-- Bid Creation page -->
+<ng-container *ngIf="(bidCreationLoading$ | async) === false">
+  <!-- Title container -->
+  <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+  <!-- Form container -->
+  <div class="container">
+    <form [formGroup]="mainForm">
+      <div class="row mx-0">
+        <div class="col-12">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Bid name</mat-label>
+            <input formControlName="bidName" matInput data-id="bid-name-input" type="text" />
+            <mat-error *ngIf="mainForm.get('bidName')?.hasError('required')"> Bid name is required </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Owner name</mat-label>
+            <input formControlName="ownerName" matInput type="text" />
+            <mat-error *ngIf="mainForm.get('ownerName')?.hasError('required')"> Owner name is required </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Description</mat-label>
+            <textarea formControlName="description" matInput></textarea>
+            <mat-error *ngIf="mainForm.get('description')?.hasError('required')"> Description is required </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Duration (minutes)</mat-label>
+            <input formControlName="duration" matInput type="number" />
+            <mat-error *ngIf="mainForm.get('duration')?.hasError('required')"> Duration is required </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-12">
+          <div id="carouselExampleIndicators" class="carousel slide" #carouselExampleCaptions>
+            <div class="carousel-indicators" [hidden]="imgList.length === 0">
+              <button *ngFor="let item of imgList; let i = index" type="button"
+                [attr.data-bs-target]="'#carouselExampleIndicators'" [attr.data-bs-slide-to]="i"
+                [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
+                [attr.aria-label]="'Slide ' + (i + 1)"></button>
+              <button *ngIf="imgList.length < imgLimit" type="button" data-bs-target="#carouselExampleIndicators"
+                [attr.data-bs-slide-to]="imgList.length" [attr.aria-label]="'Slide ' + (imgList.length + 1)"></button>
+            </div>
+            <div class="carousel-inner">
+              <!-- List of pictures -->
+              <div class="carousel-item" *ngFor="let item of imgList; let i = index" [ngClass]="{ active: i === 0 }">
+                <img [src]="item" class="d-block w-100" alt="bid-photos" />
+                <div class="carousel-caption">
+                  <div class="text-center p-2 text-secondary">
+                    <button class="btn btn-outline-light" (click)="removeImageByUrl(item)">Remove image</button>
+                  </div>
+                </div>
+              </div>
+              <!-- Add more picture -->
+              <div class="carousel-item bg-body-secondary text-center p-2" [ngClass]="{ active: imgList.length === 0 }">
+                <div (click)="openImageDialog()" class="upload-image-carousel text-center px-2 py-4 text-secondary">
+                  <div class="my-1">
+                    <i class="bi bi-image"></i>
+                  </div>
+                  <div class="my-2">
+                    <span>Link images</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div [hidden]="imgList.length === 0">
+              <button #prevButton class="carousel-control-prev" type="button"
+                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button #nextButton class="carousel-control-next" type="button"
+                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 my-3">
+          <mat-checkbox formControlName="termsAndCond" color="primary">
+            <span class="checkbox-label">
+              Accept
+              <a (click)="openTermAndCond($event)" class="terms-link">terms and conditions</a>
+            </span>
+            <mat-error
+              *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched">
+              You must accept the terms and conditions
+            </mat-error>
+          </mat-checkbox>
+        </div>
+        <div class="col-12 text-center">
+          <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-light']" buttonText="Start the bid"
+            (callToAction)="createBid()" />
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-container>
