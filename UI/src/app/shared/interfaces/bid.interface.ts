@@ -10,6 +10,7 @@ export interface IBid {
   description: string;
   ownerName: string;
   highestBid: number;
+  blockNumber: number;
 }
 
 export interface IBidCreation {
@@ -18,9 +19,16 @@ export interface IBidCreation {
   durationInMinutes: number;
   imgLists: string[];
   bidName: string;
+  description: string;
+  ownerName: string;
 }
 
 export interface IBidOffer {
   bidderAddress: string;
   amount: number;
+}
+
+export interface IBidReference {
+  contractAddress: string;
+  transactionHash: string;
 }

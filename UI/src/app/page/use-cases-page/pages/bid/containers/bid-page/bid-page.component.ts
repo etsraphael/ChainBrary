@@ -6,6 +6,7 @@ import { Observable, ReplaySubject, filter, interval, map, startWith, takeUntil 
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { Web3ProviderService } from './../../../../../../shared/services/web3-provider/web3-provider.service';
 import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
 import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
@@ -23,6 +24,7 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     public formatService: FormatService,
+    private web3ProviderService: Web3ProviderService
   ) {}
 
   selectSearchBid$ = this.store.select(selectSearchBid);
@@ -74,6 +76,7 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.setUpForm();
   }
+
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -142,6 +145,8 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
   }
+
+  // TODO: listen to contract event here
 }
 
 export interface IBidForm {

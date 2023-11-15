@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { IBid, IBidCreation } from './../../../shared/interfaces/bid.interface';
+import { IBid, IBidCreation, IBidOffer } from './../../../shared/interfaces/bid.interface';
 
 export const createBid = createAction('[Bid] Create Bid', props<{ payload: IBidCreation }>());
 export const createBidSuccess = createAction('[Bid] Create Bid Success', props<{ txn: string }>());
@@ -12,3 +12,7 @@ export const getBidByTxnFailure = createAction('[Bid] Get Bid By Txn Failure', p
 export const placeBid = createAction('[Bid] Place Bid', props<{ amount: number }>());
 export const placeBidSuccess = createAction('[Bid] Place Bid Success', props<{ txn: string, contractAddress: string }>());
 export const placeBidFailure = createAction('[Bid] Place Bid Failure', props<{ message: string }>());
+
+export const biddersListCheck = createAction('[Bid] Bidders List Check', props<{ blockNumber: string, contractAddress: string }>());
+export const biddersListCheckSuccess = createAction('[Bid] Bidders List Check Success', props<{ bidders: IBidOffer[] }>());
+export const biddersListCheckFailure = createAction('[Bid] Bidders List Check Failure', props<{ message: string }>());

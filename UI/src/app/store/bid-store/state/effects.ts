@@ -4,6 +4,7 @@ import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap, tap } from 'rxjs';
+import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { IReceiptTransaction } from './../../../shared/interfaces';
@@ -114,4 +115,51 @@ export class BidEffects {
       })
     );
   });
+
+  createBid$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.createBid),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (
+          payload: [ReturnType<typeof BidActions.createBid>, WalletProvider | null, string | null]
+        ) => payload as [ReturnType<typeof BidActions.createBid>, WalletProvider, string]
+      ),
+      switchMap((action: [ReturnType<typeof BidActions.createBid>, WalletProvider, string]) => {
+        return from(this.bidService.deployBidContract(action[1], action[2], action[0].payload)).pipe(
+          map((response: { contract: Contract, transactionHash: string }) =>
+            BidActions.createBidSuccess({ txn: response.transactionHash })),
+          catchError((error: string) => of(BidActions.createBidFailure({ message: error })))
+        );
+      })
+    );
+  });
+
+
+  // TODO: Fix after deployement
+  // getBiddersList$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(BidActions.biddersListCheck),
+  //     concatLatestFrom(() => [
+  //       this.store.select(selectWalletConnected),
+  //       this.store.select(selectBidContractAddress)
+  //     ]),
+  //     filter((payload) => payload[1] !== null && payload[2] !== null),
+  //     map(
+  //       (
+  //         payload: [ReturnType<typeof BidActions.biddersListCheck>, WalletProvider | null, string | null]
+  //       ) => payload as [ReturnType<typeof BidActions.biddersListCheck>, WalletProvider, string]
+  //     ),
+  //     switchMap((action: [ReturnType<typeof BidActions.biddersListCheck>, WalletProvider, string]) => {
+  //       return from(this.bidService.getBidderList(action[1], action[2], action[0].blockNumber, action[3])).pipe(
+  //         map((response: IBidOffer[]) => BidActions.biddersListCheckSuccess({ bidders: response })),
+  //         catchError((error: string) => of(BidActions.biddersListCheckFailure({ message: error })))
+  //       );
+  //     })
+  //   );
+  // });
 }

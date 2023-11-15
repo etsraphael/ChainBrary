@@ -7,4 +7,5 @@ export abstract class BaseContract {
 
 export abstract class BaseContractFactory {
   abstract getAbi(): (AbiItem | object)[];
+  abstract getByteCode(): string;
 }

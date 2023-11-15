@@ -2,10 +2,13 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Store } from '@ngrx/store';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
 import { bidTermAndCond } from './../../../../../../shared/data/termAndCond';
+import { IBidCreation } from './../../../../../../shared/interfaces/bid.interface';
+import { createBid } from './../../../../../../store/bid-store/state/actions';
 
 @Component({
   selector: 'app-bid-creation',
@@ -28,6 +31,7 @@ export class BidCreationComponent implements OnInit {
   };
 
   constructor(
+    private readonly store: Store,
     private dialog: MatDialog,
     private snackBar: MatSnackBar
   ) {}
@@ -92,6 +96,24 @@ export class BidCreationComponent implements OnInit {
       data: bidTermAndCond,
       autoFocus: false
     });
+  }
+
+  createBid(): void {
+    this.mainForm.markAllAsTouched();
+    if (this.mainForm.invalid) return;
+
+    const { bidName, ownerName, description, duration } = this.mainForm.value;
+    const payload: IBidCreation = {
+      bidName: bidName as string,
+      ownerName: ownerName as string,
+      description: description as string,
+      extendTimeInMinutes: 10,
+      durationInMinutes: duration as number,
+      imgLists: this.imgList,
+      communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
+    };
+
+    return this.store.dispatch(createBid({payload}));
   }
 }
 
