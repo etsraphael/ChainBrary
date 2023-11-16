@@ -6,13 +6,25 @@ export const createBidSuccess = createAction('[Bid] Create Bid Success', props<{
 export const createBidFailure = createAction('[Bid] Create Bid Failure', props<{ message: string }>());
 
 export const getBidByTxn = createAction('[Bid] Get Bid By Txn', props<{ txn: string }>());
-export const getBidByTxnSuccess = createAction('[Bid] Get Bid By Txn Success', props<{ payload: IBid }>());
-export const getBidByTxnFailure = createAction('[Bid] Get Bid By Txn Failure', props<{ message: string }>());
+export const getBidByContractAddress = createAction(
+  '[Bid] Get Bid By Address Contract',
+  props<{ contractAddress: string }>()
+);
+export const getBidSuccess = createAction('[Bid] Get Bid Success', props<{ payload: IBid }>());
+export const getBidFailure = createAction('[Bid] Get Bid Failure', props<{ message: string }>());
 
 export const placeBid = createAction('[Bid] Place Bid', props<{ amount: number }>());
-export const placeBidSuccess = createAction('[Bid] Place Bid Success', props<{ txn: string, contractAddress: string }>());
+export const placeBidSuccess = createAction(
+  '[Bid] Place Bid Success',
+  props<{ txn: string; contractAddress: string }>()
+);
 export const placeBidFailure = createAction('[Bid] Place Bid Failure', props<{ message: string }>());
 
-export const biddersListCheck = createAction('[Bid] Bidders List Check', props<{ blockNumber: string, contractAddress: string }>());
-export const biddersListCheckSuccess = createAction('[Bid] Bidders List Check Success', props<{ bidders: IBidOffer[] }>());
+export const biddersListCheck = createAction(
+  '[Bid] Bidders List Check'
+);
+export const biddersListCheckSuccess = createAction(
+  '[Bid] Bidders List Check Success',
+  props<{ bidders: IBidOffer[] }>()
+);
 export const biddersListCheckFailure = createAction('[Bid] Bidders List Check Failure', props<{ message: string }>());

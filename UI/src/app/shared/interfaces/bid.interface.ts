@@ -10,7 +10,7 @@ export interface IBid {
   description: string;
   ownerName: string;
   highestBid: number;
-  blockNumber: number;
+  blockNumber: string;
 }
 
 export interface IBidCreation {

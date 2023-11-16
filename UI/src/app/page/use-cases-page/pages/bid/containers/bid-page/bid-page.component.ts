@@ -6,8 +6,7 @@ import { Observable, ReplaySubject, filter, interval, map, startWith, takeUntil 
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { Web3ProviderService } from './../../../../../../shared/services/web3-provider/web3-provider.service';
-import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
+import { biddersListCheck, getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
 import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
@@ -24,7 +23,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
     public formatService: FormatService,
-    private web3ProviderService: Web3ProviderService
   ) {}
 
   selectSearchBid$ = this.store.select(selectSearchBid);
@@ -75,6 +73,11 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 1000);
 
     this.setUpForm();
+
+    // TODO: find the best way to add this
+    // setTimeout(() => {
+    //   this.callLastestBidders();
+    // }, 5000);
   }
 
 
@@ -146,7 +149,9 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.destroyed$.unsubscribe();
   }
 
-  // TODO: listen to contract event here
+  callLastestBidders(): void {
+    this.store.dispatch(biddersListCheck());
+  }
 }
 
 export interface IBidForm {

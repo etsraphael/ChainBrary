@@ -50,7 +50,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     })
   ),
   on(
-    BidActions.getBidByTxnSuccess,
+    BidActions.getBidSuccess,
     (state, { payload }): IBidState => ({
       ...state,
       searchBid: {
@@ -61,7 +61,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     })
   ),
   on(
-    BidActions.getBidByTxnFailure,
+    BidActions.getBidFailure,
     (state, { message }): IBidState => ({
       ...state,
       searchBid: {

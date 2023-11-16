@@ -19,3 +19,9 @@ export const selectBidContractAddress: MemoizedSelector<object, string | null> =
   selectSearchBid,
   (s: StoreState<IBid | null>) => s.data?.conctractAddress ?? null
 );
+
+export const selectBlockNumber: MemoizedSelector<
+  object,
+  string | null,
+  (s1: StoreState<IBid | null>) => string | null
+> = createSelector(selectSearchBid, (s: StoreState<IBid | null>) => s.data?.blockNumber ?? null);

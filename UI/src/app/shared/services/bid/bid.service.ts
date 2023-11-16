@@ -69,7 +69,7 @@ export class BidService {
 
           return {
             conctractAddress: receipt.contractAddress,
-            blockNumber: receipt.blockNumber,
+            blockNumber: String(receipt.blockNumber),
             imgLists: res[0],
             bidName: res[1],
             owner: res[2],
@@ -121,7 +121,7 @@ export class BidService {
       .then((events: EventData[]) =>
         events
           .map((event: EventData) => ({
-            bidderAddress: event.returnValues['address'],
+            bidderAddress: event.returnValues['bidder'],
             amount: Number(web3.utils.fromWei(String(event.returnValues['amount']), 'ether'))
           }))
           .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount)
