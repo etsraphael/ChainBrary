@@ -2,7 +2,7 @@ import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, ReplaySubject, filter, interval, map, startWith, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, filter, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
@@ -69,6 +69,41 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  get countdown$(): Observable<string> {
+    return this.bid$.pipe(
+      filter((bid) => !!bid),  // Ensure bid is not null or undefined
+      map((bid) => bid as IBid),
+      map((bid: IBid) => new Date(bid.auctionEndTime)),  // Extract auctionEndTime and convert it to a Date object
+      switchMap((endTime: Date) => {
+        return interval(1000).pipe(
+          takeUntil(this.destroyed$),  // Continue until the component is destroyed
+          startWith(0),
+          map(() => {
+            const now = new Date();
+            const distance = endTime.getTime() - now.getTime();
+
+            if (distance < 0) {
+              return 'Auction ended';
+            }
+
+            const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
+
+            return (
+              hours.toString().padStart(2, '0') +
+              'h : ' +
+              minutes.toString().padStart(2, '0') +
+              'm : ' +
+              seconds.toString().padStart(2, '0') +
+              's'
+            );
+          })
+        );
+      })
+    );
+  }
+
   ngOnInit(): void {
     setTimeout(() => {
       this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
@@ -93,34 +128,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
           highestBid: new FormControl(bid.highestBid, [Validators.required, Validators.min(bid.highestBid)])
         });
       });
-  }
-
-  getCountdown(endTime: Date): Observable<string> {
-    return interval(1000).pipe(
-      takeUntil(this.destroyed$),
-      startWith(0),
-      map(() => {
-        const now = new Date();
-        const distance = endTime.getTime() - now.getTime();
-
-        if (distance < 0) {
-          return 'Auction ended';
-        }
-
-        const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
-
-        return (
-          hours.toString().padStart(2, '0') +
-          'h : ' +
-          minutes.toString().padStart(2, '0') +
-          'm : ' +
-          seconds.toString().padStart(2, '0') +
-          's'
-        );
-      })
-    );
   }
 
   incrementBid(): void {
