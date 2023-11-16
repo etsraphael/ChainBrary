@@ -132,8 +132,8 @@
       <div class="row mt-3">
         <h5>History of Bid</h5>
         <ul class="list-group list-group-flush shadow-sm pe-0">
-          <li class="list-group-item py-4" *ngFor="let bid of (bidderList$|async)">
-            <span>{{formatService.formatPublicAddress(bid.bidderAddress, 9)}}</span>
+          <li class="list-group-item py-4" *ngFor="let bid of bidderList$ | async">
+            <span>{{ formatService.formatPublicAddress(bid.bidderAddress, 9) }}</span>
             <span class="float-end">{{ bid.amount }} ETH</span>
           </li>
         </ul>

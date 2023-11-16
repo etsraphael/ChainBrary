@@ -49,12 +49,22 @@
         <div class="col-12">
           <div id="carouselExampleIndicators" class="carousel slide" #carouselExampleCaptions>
             <div class="carousel-indicators" [hidden]="imgList.length === 0">
-              <button *ngFor="let item of imgList; let i = index" type="button"
-                [attr.data-bs-target]="'#carouselExampleIndicators'" [attr.data-bs-slide-to]="i"
-                [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
-                [attr.aria-label]="'Slide ' + (i + 1)"></button>
-              <button *ngIf="imgList.length < imgLimit" type="button" data-bs-target="#carouselExampleIndicators"
-                [attr.data-bs-slide-to]="imgList.length" [attr.aria-label]="'Slide ' + (imgList.length + 1)"></button>
+              <button
+                *ngFor="let item of imgList; let i = index"
+                type="button"
+                [attr.data-bs-target]="'#carouselExampleIndicators'"
+                [attr.data-bs-slide-to]="i"
+                [class.active]="i === 0"
+                [attr.aria-current]="i === 0 ? 'true' : null"
+                [attr.aria-label]="'Slide ' + (i + 1)"
+              ></button>
+              <button
+                *ngIf="imgList.length < imgLimit"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                [attr.data-bs-slide-to]="imgList.length"
+                [attr.aria-label]="'Slide ' + (imgList.length + 1)"
+              ></button>
             </div>
             <div class="carousel-inner">
               <!-- List of pictures -->
@@ -79,13 +89,23 @@
               </div>
             </div>
             <div [hidden]="imgList.length === 0">
-              <button #prevButton class="carousel-control-prev" type="button"
-                data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+              <button
+                #prevButton
+                class="carousel-control-prev"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="prev"
+              >
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Previous</span>
               </button>
-              <button #nextButton class="carousel-control-next" type="button"
-                data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+              <button
+                #nextButton
+                class="carousel-control-next"
+                type="button"
+                data-bs-target="#carouselExampleIndicators"
+                data-bs-slide="next"
+              >
                 <span class="carousel-control-next-icon" aria-hidden="true"></span>
                 <span class="visually-hidden">Next</span>
               </button>
@@ -99,14 +119,18 @@
               <a (click)="openTermAndCond($event)" class="terms-link">terms and conditions</a>
             </span>
             <mat-error
-              *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched">
+              *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched"
+            >
               You must accept the terms and conditions
             </mat-error>
           </mat-checkbox>
         </div>
         <div class="col-12 text-center">
-          <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-light']" buttonText="Start the bid"
-            (callToAction)="createBid()" />
+          <app-chainbrary-button
+            [buttonClasses]="['btn-info-gradient', 'text-light']"
+            buttonText="Start the bid"
+            (callToAction)="createBid()"
+          />
         </div>
       </div>
     </form>

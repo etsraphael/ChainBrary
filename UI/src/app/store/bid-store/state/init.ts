@@ -10,5 +10,10 @@ export const initialState: IBidState = {
     loading: false,
     error: null,
     data: null
+  },
+  bidders: {
+    loading: false,
+    error: null,
+    data: []
   }
 };

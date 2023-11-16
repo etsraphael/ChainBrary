@@ -20,9 +20,7 @@ export const placeBidSuccess = createAction(
 );
 export const placeBidFailure = createAction('[Bid] Place Bid Failure', props<{ message: string }>());
 
-export const biddersListCheck = createAction(
-  '[Bid] Bidders List Check'
-);
+export const biddersListCheck = createAction('[Bid] Bidders List Check');
 export const biddersListCheckSuccess = createAction(
   '[Bid] Bidders List Check Success',
   props<{ bidders: IBidOffer[] }>()

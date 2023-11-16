@@ -6,7 +6,6 @@ export interface IBid {
   auctionStartTime: Date;
   auctionEndTime: Date;
   extendTimeInMinutes: number;
-  bidders: IBidOffer[];
   description: string;
   ownerName: string;
   highestBid: number;

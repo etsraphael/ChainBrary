@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, from, map, of, switchMap, tap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -41,7 +41,10 @@ export class BidEffects {
       ),
       switchMap((action: [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail, WalletProvider]) => {
         return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn)).pipe(
-          map((response: IBid) => BidActions.getBidSuccess({ payload: response })),
+          mergeMap((response: IBid) => [
+            BidActions.getBidSuccess({ payload: response }),
+            BidActions.biddersListCheck()
+          ]),
           catchError((error: { message: string; code: number }) =>
             of(BidActions.getBidFailure({ message: error.message }))
           )
@@ -175,7 +178,6 @@ export class BidEffects {
     );
   });
 
-  // TODO: Call this every 30 seconds from the components
   getBiddersList$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(BidActions.biddersListCheck),

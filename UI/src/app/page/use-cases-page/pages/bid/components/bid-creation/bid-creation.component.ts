@@ -36,7 +36,7 @@ export class BidCreationComponent implements OnInit {
   bidCreation$: Observable<StoreState<IBid | null>> = this.store.select(selectCurrentBid);
 
   get bidCreationLoading$(): Observable<boolean> {
-    return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.loading))
+    return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.loading));
   }
 
   constructor(

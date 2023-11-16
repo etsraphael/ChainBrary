@@ -24,13 +24,6 @@ export class BidService {
       .getCompleteBidMetaData()
       .call()
       .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
-        const bidders: IBidOffer[] = res[6]
-          .map((address, index) => ({
-            bidderAddress: address,
-            amount: Number(web3.utils.fromWei(String(res[7][index]), 'ether'))
-          }))
-          .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
-
         return {
           conctractAddress: contractAddress,
           imgLists: res[0],
@@ -41,8 +34,7 @@ export class BidService {
           extendTimeInMinutes: Number(res[5]),
           ownerName: res[8],
           description: res[9],
-          highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether')),
-          bidders
+          highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether'))
         } as IBid;
       });
   }
@@ -60,13 +52,6 @@ export class BidService {
         .getCompleteBidMetaData()
         .call()
         .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
-          const bidders: IBidOffer[] = res[6]
-            .map((address, index) => ({
-              bidderAddress: address,
-              amount: Number(web3.utils.fromWei(String(res[7][index]), 'ether'))
-            }))
-            .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
-
           return {
             conctractAddress: receipt.contractAddress,
             blockNumber: String(receipt.blockNumber),
@@ -78,8 +63,7 @@ export class BidService {
             extendTimeInMinutes: Number(res[5]),
             ownerName: res[8],
             description: res[9],
-            highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether')),
-            bidders
+            highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether'))
           } as IBid;
         })
         .catch((error: string) => Promise.reject(error));

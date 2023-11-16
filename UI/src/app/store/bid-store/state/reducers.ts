@@ -70,6 +70,39 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
         error: message
       }
     })
+  ),
+  on(
+    BidActions.biddersListCheck,
+    (state): IBidState => ({
+      ...state,
+      bidders: {
+        data: state.bidders.data,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    BidActions.biddersListCheckSuccess,
+    (state, { bidders }): IBidState => ({
+      ...state,
+      bidders: {
+        data: bidders,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    BidActions.biddersListCheckFailure,
+    (state, { message }): IBidState => ({
+      ...state,
+      bidders: {
+        data: [],
+        loading: false,
+        error: message
+      }
+    })
   )
 );
 

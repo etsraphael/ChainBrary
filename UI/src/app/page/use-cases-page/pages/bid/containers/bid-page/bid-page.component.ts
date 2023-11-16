@@ -4,10 +4,11 @@ import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, interval, map, startWith, takeUntil } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { biddersListCheck, getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
-import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
+import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
+import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
   selector: 'app-bid-page',
@@ -22,29 +23,30 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly store: Store,
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
-    public formatService: FormatService,
+    public formatService: FormatService
   ) {}
 
-  selectSearchBid$ = this.store.select(selectSearchBid);
+  searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
+  bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
 
   get bidIsLoading$(): Observable<boolean> {
-    return this.selectSearchBid$.pipe(map((state) => state.loading));
+    return this.searchBidStore$.pipe(map((state) => state.loading));
   }
 
   get bidError$(): Observable<string | null> {
-    return this.selectSearchBid$.pipe(map((state) => state.error));
+    return this.searchBidStore$.pipe(map((state) => state.error));
   }
 
   get bid$(): Observable<IBid | null> {
-    return this.selectSearchBid$.pipe(map((state) => state.data));
+    return this.searchBidStore$.pipe(map((state) => state.data));
   }
 
   get bidderList$(): Observable<IBidOffer[]> {
-    return this.bid$.pipe(
-      filter((bid) => !!bid),
-      map((bid) => bid as IBid),
-      map((bid: IBid) => bid.bidders)
-    );
+    return this.bidderListStore$.pipe(map((state) => state.data));
+  }
+
+  get bidderListIsLoading$(): Observable<boolean> {
+    return this.bidderListStore$.pipe(map((state) => state.loading));
   }
 
   get successfulHeader$(): Observable<IUseCasesHeader> {
@@ -73,13 +75,7 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     }, 1000);
 
     this.setUpForm();
-
-    // TODO: find the best way to add this
-    // setTimeout(() => {
-    //   this.callLastestBidders();
-    // }, 5000);
   }
-
 
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -104,7 +100,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
       takeUntil(this.destroyed$),
       startWith(0),
       map(() => {
-
         const now = new Date();
         const distance = endTime.getTime() - now.getTime();
 
@@ -147,10 +142,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
-  }
-
-  callLastestBidders(): void {
-    this.store.dispatch(biddersListCheck());
   }
 }
 
