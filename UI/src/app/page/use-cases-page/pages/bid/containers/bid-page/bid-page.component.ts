@@ -1,12 +1,16 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Web3LoginService } from '@chainbrary/web3-login';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
+import { selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
 import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
 import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
@@ -23,11 +27,14 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly store: Store,
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
-    public formatService: FormatService
+    public formatService: FormatService,
+    public web3LoginService: Web3LoginService,
+    private actions$: Actions
   ) {}
 
   searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
   bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
+  userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
 
   get bidIsLoading$(): Observable<boolean> {
     return this.searchBidStore$.pipe(map((state) => state.loading));
@@ -69,14 +76,22 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     };
   }
 
+  get loginHeader(): IUseCasesHeader {
+    return {
+      title: 'Bid page',
+      goBackLink: '/use-cases/bid/search',
+      description: null
+    };
+  }
+
   get countdown$(): Observable<string> {
     return this.bid$.pipe(
-      filter((bid) => !!bid),  // Ensure bid is not null or undefined
+      filter((bid) => !!bid), // Ensure bid is not null or undefined
       map((bid) => bid as IBid),
-      map((bid: IBid) => new Date(bid.auctionEndTime)),  // Extract auctionEndTime and convert it to a Date object
+      map((bid: IBid) => new Date(bid.auctionEndTime)), // Extract auctionEndTime and convert it to a Date object
       switchMap((endTime: Date) => {
         return interval(1000).pipe(
-          takeUntil(this.destroyed$),  // Continue until the component is destroyed
+          takeUntil(this.destroyed$), // Continue until the component is destroyed
           startWith(0),
           map(() => {
             const now = new Date();
@@ -105,11 +120,8 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    setTimeout(() => {
-      this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
-    }, 1000);
-
     this.setUpForm();
+    this.callActions();
   }
 
   ngAfterViewInit(): void {
@@ -143,7 +155,20 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   onSubmit(): void {
-    this.store.dispatch(placeBid({ amount: this.bidForm.get('highestBid')?.value as number }));
+    return this.store.dispatch(placeBid({ amount: this.bidForm.get('highestBid')?.value as number }));
+  }
+
+  callActions(): void {
+    this.actions$
+      .pipe(
+        ofType(setAuthPublicAddress),
+        filter(
+          (event: { publicAddress: string }) =>
+            this.route.snapshot.paramMap.get('id') !== null && event.publicAddress !== null
+        ),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(() => this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string })));
   }
 
   ngOnDestroy(): void {
