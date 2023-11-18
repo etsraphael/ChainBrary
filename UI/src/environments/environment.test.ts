@@ -99,5 +99,8 @@ export const environment = {
     }
   },
   organizationName: 'chainbrary0',
-  gtagId: 'G-5GWCMSZWW7'
+  gtagId: 'G-5GWCMSZWW7',
+  bid: {
+    biddersCountdown: 15
+  }
 };

@@ -104,5 +104,8 @@ export const environment = {
     }
   },
   organizationName: 'chainbrary0',
-  gtagId: ''
+  gtagId: '',
+  bid: {
+    biddersCountdown: 60
+  }
 };

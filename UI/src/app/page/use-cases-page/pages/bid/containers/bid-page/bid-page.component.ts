@@ -17,6 +17,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
+import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
@@ -31,7 +32,7 @@ import {
 } from './../../../../../../store/bid-store/state/actions';
 import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
-const DEFAULT_COUNTDOWN = 60;
+const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 
 @Component({
   selector: 'app-bid-page',
@@ -56,7 +57,7 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
   userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
   biddersCountdown$: Observable<number>;
-  countdownSubscription: Subscription
+  countdownSubscription: Subscription;
 
   get bidIsLoading$(): Observable<boolean> {
     return this.searchBidStore$.pipe(map((state) => state.loading));
@@ -75,15 +76,40 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
       filter((bid) => !!bid),
       map((bid) => bid as IBid),
       map((bid: IBid) => new Date(bid.auctionEndTime)),
-      map((endTime: Date) => {
-        const now = new Date();
-        const distance = endTime.getTime() - now.getTime();
+      map((endTime: Date) => this.calculateTimeDifference(endTime) < 0)
+    );
+  }
 
-        if (distance < 0) {
-          return true;
-        }
+  get countdown$(): Observable<string> {
+    return this.bid$.pipe(
+      filter((bid) => !!bid),
+      map((bid) => bid as IBid),
+      map((bid: IBid) => new Date(bid.auctionEndTime)),
+      switchMap((endTime: Date) => {
+        return interval(1000).pipe(
+          takeUntil(this.destroyed$),
+          startWith(0),
+          map(() => {
+            const distance = this.calculateTimeDifference(endTime);
 
-        return false;
+            if (distance < 0) {
+              return 'Auction ended';
+            }
+
+            const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
+
+            return (
+              hours.toString().padStart(2, '0') +
+              'h : ' +
+              minutes.toString().padStart(2, '0') +
+              'm : ' +
+              seconds.toString().padStart(2, '0') +
+              's'
+            );
+          })
+        );
       })
     );
   }
@@ -122,41 +148,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
       goBackLink: '/use-cases/bid/search',
       description: null
     };
-  }
-
-  get countdown$(): Observable<string> {
-    return this.bid$.pipe(
-      filter((bid) => !!bid),
-      map((bid) => bid as IBid),
-      map((bid: IBid) => new Date(bid.auctionEndTime)),
-      switchMap((endTime: Date) => {
-        return interval(1000).pipe(
-          takeUntil(this.destroyed$),
-          startWith(0),
-          map(() => {
-            const now = new Date();
-            const distance = endTime.getTime() - now.getTime();
-
-            if (distance < 0) {
-              return 'Auction ended';
-            }
-
-            const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
-
-            return (
-              hours.toString().padStart(2, '0') +
-              'h : ' +
-              minutes.toString().padStart(2, '0') +
-              'm : ' +
-              seconds.toString().padStart(2, '0') +
-              's'
-            );
-          })
-        );
-      })
-    );
   }
 
   ngOnInit(): void {
@@ -212,16 +203,11 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
       .subscribe(() => this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string })));
 
     // start countdown when bid is loaded
-    this.actions$
-      .pipe(
-        ofType(biddersListCheckSuccess),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe(() => {
-        this.countdownSubscription?.unsubscribe();
-        this.biddersCountdown$ = interval(1000).pipe(take(DEFAULT_COUNTDOWN));
-        this.countdownSubscription = this.startBidderCountdown();
-      });
+    this.actions$.pipe(ofType(biddersListCheckSuccess), takeUntil(this.destroyed$)).subscribe(() => {
+      this.countdownSubscription?.unsubscribe();
+      this.biddersCountdown$ = interval(1000).pipe(take(DEFAULT_COUNTDOWN));
+      this.countdownSubscription = this.startBidderCountdown();
+    });
   }
 
   startBidderCountdown(): Subscription {
@@ -247,6 +233,11 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
+  }
+
+  private calculateTimeDifference(endTime: Date): number {
+    const now = new Date();
+    return endTime.getTime() - now.getTime();
   }
 }
 
