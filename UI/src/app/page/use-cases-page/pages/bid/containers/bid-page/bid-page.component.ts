@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, ReplaySubject, filter, interval, map, startWith, switchMap, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, Subscription, filter, interval, map, startWith, switchMap, take, takeUntil } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
@@ -14,6 +14,8 @@ import { selectIsConnected } from './../../../../../../store/auth-store/state/se
 import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
 import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
+const DEFAULT_COUNTDOWN = 15;
+
 @Component({
   selector: 'app-bid-page',
   templateUrl: './bid-page.component.html',
@@ -21,6 +23,7 @@ import { selectBidders, selectSearchBid } from './../../../../../../store/bid-st
 })
 export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   bidForm: FormGroup;
+  biddersCountdown = DEFAULT_COUNTDOWN;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
@@ -86,12 +89,12 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get countdown$(): Observable<string> {
     return this.bid$.pipe(
-      filter((bid) => !!bid), // Ensure bid is not null or undefined
+      filter((bid) => !!bid),
       map((bid) => bid as IBid),
-      map((bid: IBid) => new Date(bid.auctionEndTime)), // Extract auctionEndTime and convert it to a Date object
+      map((bid: IBid) => new Date(bid.auctionEndTime)),
       switchMap((endTime: Date) => {
         return interval(1000).pipe(
-          takeUntil(this.destroyed$), // Continue until the component is destroyed
+          takeUntil(this.destroyed$),
           startWith(0),
           map(() => {
             const now = new Date();
@@ -168,7 +171,24 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
         ),
         takeUntil(this.destroyed$)
       )
-      .subscribe(() => this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string })));
+      .subscribe(() => {
+        this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
+        this.startBidderCountdown();
+      });
+  }
+
+  startBidderCountdown(): Subscription {
+    return interval(1000).pipe(
+      take(DEFAULT_COUNTDOWN)
+    )
+    .subscribe(() => {
+      this.biddersCountdown--;
+      if (this.biddersCountdown === 0) {
+        // this.refreshData();
+        this.biddersCountdown = DEFAULT_COUNTDOWN;
+        this.startBidderCountdown();
+      }
+    });
   }
 
   ngOnDestroy(): void {

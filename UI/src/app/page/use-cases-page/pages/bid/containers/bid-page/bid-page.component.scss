@@ -21,6 +21,10 @@
   -moz-appearance: textfield;
 }
 
-.bi-wallet2 {
+.bi-wallet2, .bi-exclamation-circle {
   font-size: 3rem;
+}
+
+.container-refreshing {
+  border-radius: 15px;
 }
