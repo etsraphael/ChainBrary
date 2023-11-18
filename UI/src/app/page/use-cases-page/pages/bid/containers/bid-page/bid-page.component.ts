@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
@@ -7,21 +7,17 @@ import { Store } from '@ngrx/store';
 import {
   Observable,
   ReplaySubject,
-  Subscription,
-  combineLatest,
   filter,
   interval,
   map,
   startWith,
   switchMap,
-  take,
   takeUntil
 } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
-import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
 import {
@@ -40,7 +36,6 @@ const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
   styleUrls: ['./bid-page.component.scss']
 })
 export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
-  bidForm: FormGroup;
   biddersCountdown = DEFAULT_COUNTDOWN;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
@@ -48,7 +43,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly store: Store,
     private route: ActivatedRoute,
     private cdRef: ChangeDetectorRef,
-    public formatService: FormatService,
     public web3LoginService: Web3LoginService,
     private actions$: Actions
   ) {}
@@ -56,8 +50,10 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
   bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
   userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
-  biddersCountdown$: Observable<number>;
-  countdownSubscription: Subscription;
+  startBidderCountdownTrigger$: Observable<ReturnType<typeof biddersListCheckSuccess>> = this.actions$.pipe(
+    ofType(biddersListCheckSuccess),
+    takeUntil(this.destroyed$)
+  );
 
   get bidIsLoading$(): Observable<boolean> {
     return this.searchBidStore$.pipe(map((state) => state.loading));
@@ -67,8 +63,8 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     return this.searchBidStore$.pipe(map((state) => state.error));
   }
 
-  get bid$(): Observable<IBid | null> {
-    return this.searchBidStore$.pipe(map((state) => state.data));
+  get bid$(): Observable<IBid> {
+    return this.searchBidStore$.pipe(map((state) => state.data as IBid));
   }
 
   get bidEnded$(): Observable<boolean> {
@@ -77,60 +73,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
       map((bid) => bid as IBid),
       map((bid: IBid) => new Date(bid.auctionEndTime)),
       map((endTime: Date) => this.calculateTimeDifference(endTime) < 0)
-    );
-  }
-
-  get countdown$(): Observable<string> {
-    return this.bid$.pipe(
-      filter((bid) => !!bid),
-      map((bid) => bid as IBid),
-      map((bid: IBid) => new Date(bid.auctionEndTime)),
-      switchMap((endTime: Date) => {
-        return interval(1000).pipe(
-          takeUntil(this.destroyed$),
-          startWith(0),
-          map(() => {
-            const distance = this.calculateTimeDifference(endTime);
-
-            if (distance < 0) {
-              return 'Auction ended';
-            }
-
-            const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
-
-            return (
-              hours.toString().padStart(2, '0') +
-              'h : ' +
-              minutes.toString().padStart(2, '0') +
-              'm : ' +
-              seconds.toString().padStart(2, '0') +
-              's'
-            );
-          })
-        );
-      })
-    );
-  }
-
-  get bidderList$(): Observable<IBidOffer[]> {
-    return this.bidderListStore$.pipe(map((state) => state.data));
-  }
-
-  get bidderListIsLoading$(): Observable<boolean> {
-    return this.bidderListStore$.pipe(map((state) => state.loading));
-  }
-
-  get successfulHeader$(): Observable<IUseCasesHeader> {
-    return this.bid$.pipe(
-      filter((bid) => !!bid),
-      map((bid) => bid as IBid),
-      map((bid: IBid) => ({
-        title: bid.bidName,
-        goBackLink: null,
-        description: null
-      }))
     );
   }
 
@@ -151,7 +93,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setUpForm();
     this.callActions();
   }
 
@@ -159,34 +100,8 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
     this.cdRef.detectChanges();
   }
 
-  setUpForm(): void {
-    this.bid$
-      .pipe(
-        filter((bid) => !!bid),
-        map((bid) => bid as IBid),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((bid) => {
-        this.bidForm = new FormGroup({
-          highestBid: new FormControl(bid.highestBid, [Validators.required, Validators.min(bid.highestBid)])
-        });
-      });
-  }
-
-  incrementBid(): void {
-    const currentBid = this.bidForm.get('highestBid')?.value;
-    this.bidForm.get('highestBid')?.setValue(currentBid + 1);
-  }
-
-  decrementBid(): void {
-    const currentBid = this.bidForm.get('highestBid')?.value;
-    if (currentBid > 0) {
-      this.bidForm.get('highestBid')?.setValue(currentBid - 1);
-    }
-  }
-
-  onSubmit(): void {
-    return this.store.dispatch(placeBid({ amount: this.bidForm.get('highestBid')?.value as number }));
+  onSubmit(event: { amount: number }): void {
+    return this.store.dispatch(placeBid({ amount: event.amount }));
   }
 
   callActions(): void {
@@ -201,29 +116,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe(() => this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string })));
-
-    // start countdown when bid is loaded
-    this.actions$.pipe(ofType(biddersListCheckSuccess), takeUntil(this.destroyed$)).subscribe(() => {
-      this.countdownSubscription?.unsubscribe();
-      this.biddersCountdown$ = interval(1000).pipe(take(DEFAULT_COUNTDOWN));
-      this.countdownSubscription = this.startBidderCountdown();
-    });
-  }
-
-  startBidderCountdown(): Subscription {
-    return combineLatest([this.biddersCountdown$, this.bidEnded$, this.bidderListIsLoading$])
-      .pipe(
-        filter(([, bidEnded, bidderListIsLoading]) => !bidEnded && !bidderListIsLoading),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe(() => {
-        if (this.biddersCountdown !== 1) {
-          this.biddersCountdown--;
-        } else {
-          this.biddersCountdown = DEFAULT_COUNTDOWN + 1;
-          this.refreshBidderList();
-        }
-      });
   }
 
   refreshBidderList(): void {
