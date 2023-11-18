@@ -1,19 +1,10 @@
-import { AfterViewInit, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import {
-  Observable,
-  ReplaySubject,
-  filter,
-  interval,
-  map,
-  startWith,
-  switchMap,
-  takeUntil
-} from 'rxjs';
+import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
@@ -35,14 +26,13 @@ const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
   templateUrl: './bid-page.component.html',
   styleUrls: ['./bid-page.component.scss']
 })
-export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
+export class BidPageComponent implements OnInit, OnDestroy {
   biddersCountdown = DEFAULT_COUNTDOWN;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     private readonly store: Store,
     private route: ActivatedRoute,
-    private cdRef: ChangeDetectorRef,
     public web3LoginService: Web3LoginService,
     private actions$: Actions
   ) {}
@@ -72,7 +62,10 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
       filter((bid) => !!bid),
       map((bid) => bid as IBid),
       map((bid: IBid) => new Date(bid.auctionEndTime)),
-      map((endTime: Date) => this.calculateTimeDifference(endTime) < 0)
+      map((endTime: Date) => {
+        const now = new Date();
+        return endTime.getTime() - now.getTime() < 0;
+      })
     );
   }
 
@@ -94,10 +87,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   ngOnInit(): void {
     this.callActions();
-  }
-
-  ngAfterViewInit(): void {
-    this.cdRef.detectChanges();
   }
 
   onSubmit(event: { amount: number }): void {
@@ -125,11 +114,6 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
-  }
-
-  private calculateTimeDifference(endTime: Date): number {
-    const now = new Date();
-    return endTime.getTime() - now.getTime();
   }
 }
 

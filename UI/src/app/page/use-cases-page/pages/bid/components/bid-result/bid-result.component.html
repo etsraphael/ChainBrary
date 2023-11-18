@@ -1,21 +1,27 @@
 <!-- Header -->
-<app-use-cases-header [header]="(header$|async)!"></app-use-cases-header>
+<app-use-cases-header [header]="(header$ | async)!"></app-use-cases-header>
 <!-- Body -->
-<div class="container">
+<div class="container" *ngIf="bidObs | async as bid">
   <!-- Description -->
   <div class="row">
     <div class="col-12">
       <div class="accordion mb-3">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-              data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+            <button
+              class="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#collapseThree"
+              aria-expanded="false"
+              aria-controls="collapseThree"
+            >
               Description
             </button>
           </h2>
           <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
             <div class="accordion-body">
-              {{ (bidObs|async)?.description }}
+              {{ bid.description }}
             </div>
           </div>
         </div>
@@ -26,26 +32,39 @@
   <div class="card border-0 shadow mb-4">
     <div class="card-body p-0">
       <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators" *ngIf="(bidObs|async)?.imgLists?.length! > 1">
-          <button *ngFor="let item of (bidObs|async)?.imgLists; let i = index" type="button"
-            data-bs-target="#carouselExampleIndicators" [attr.data-bs-target]="'#carouselExampleIndicators'"
-            [attr.data-bs-slide-to]="i" [class.active]="i === 0" [attr.aria-current]="i === 0 ? 'true' : null"
-            [attr.aria-label]="'Slide ' + (i + 1)">
-          </button>
+        <div class="carousel-indicators" *ngIf="bid.imgLists.length > 1">
+          <button
+            *ngFor="let item of bid.imgLists; let i = index"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            [attr.data-bs-target]="'#carouselExampleIndicators'"
+            [attr.data-bs-slide-to]="i"
+            [class.active]="i === 0"
+            [attr.aria-current]="i === 0 ? 'true' : null"
+            [attr.aria-label]="'Slide ' + (i + 1)"
+          ></button>
         </div>
         <div class="carousel-inner">
-          <div class="carousel-item" *ngFor="let item of (bidObs|async)?.imgLists; let i = index" [ngClass]="{ active: i === 0 }">
+          <div class="carousel-item" *ngFor="let item of bid.imgLists; let i = index" [ngClass]="{ active: i === 0 }">
             <img [src]="item" class="d-block w-100" />
           </div>
         </div>
-        <ng-container *ngIf="(bidObs|async)?.imgLists?.length! > 1">
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="prev">
+        <ng-container *ngIf="bid.imgLists.length > 1">
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev"
+          >
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Previous</span>
           </button>
-          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
-            data-bs-slide="next">
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next"
+          >
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
             <span class="visually-hidden">Next</span>
           </button>
@@ -54,8 +73,8 @@
     </div>
     <div class="card-footer pt-3">
       <div class="d-flex justify-content-between align-items-center mb-2">
-        <span class="text-muted">{{ (bidObs|async)?.ownerName }}</span>
-        <span>{{timeRemaining}}</span>
+        <span class="text-muted">{{ bid.ownerName }}</span>
+        <span>{{ timeRemaining }}</span>
       </div>
     </div>
   </div>
@@ -68,9 +87,12 @@
             <i class="bi bi-dash-circle"></i>
           </button>
           <input matInput type="number" formControlName="highestBid" class="text-center no-spinners" />
-          <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')">Please enter a value higher than the current
-            bid</mat-error>
-          <mat-hint>The current bid is at <strong>{{ (bidObs|async)?.highestBid }} ETH</strong></mat-hint>
+          <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')"
+            >Please enter a value higher than the current bid</mat-error
+          >
+          <mat-hint
+            >The current bid is at <strong>{{ bid.highestBid }} ETH</strong></mat-hint
+          >
           <button matSuffix mat-icon-button type="button" (click)="incrementBid()">
             <i class="bi bi-plus-circle"></i>
           </button>
@@ -80,14 +102,17 @@
     <!-- Action button -->
     <div class="row my-2">
       <div class="col-12">
-        <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Set the bid"
-          (callToAction)="onSubmit()" />
+        <app-chainbrary-button
+          [buttonClasses]="['btn-primary-gradient', 'text-light']"
+          buttonText="Set the bid"
+          (callToAction)="onSubmit()"
+        />
       </div>
     </div>
   </form>
   <!-- History -->
-  <div class="row mt-3">
-    <div class="d-flex justify-content-between">
+  <div class="row pt-1 mx-0">
+    <div class="d-flex justify-content-between my-2">
       <h5 class="my-auto ps-2">History of Bid</h5>
       <div *ngIf="(bidEnded$ | async) === false">
         <div class="btn d-flex container-refreshing bg-primary-subtle px-2 py-1">
@@ -95,17 +120,15 @@
             <mat-spinner [diameter]="15"></mat-spinner>
           </div>
           <p class="ps-2 mb-0 pe-1">
-            <span *ngIf="(bidderListIsLoading$|async) === false">
-              Refreshing... {{ biddersCountdown }} seconds
-            </span>
-            <span *ngIf="(bidderListIsLoading$|async) === true"> Loading </span>
+            <span *ngIf="(bidderListIsLoading$ | async) === false"> Refreshing... {{ biddersCountdown }} seconds </span>
+            <span *ngIf="(bidderListIsLoading$ | async) === true"> Loading </span>
           </p>
         </div>
       </div>
     </div>
     <ul class="list-group list-group-flush shadow-sm pe-0">
-      <ng-container *ngIf="(bidderList$|async)?.length; else noBidsTemplate">
-        <li class="list-group-item py-4" *ngFor="let bid of (bidderList$|async)">
+      <ng-container *ngIf="(bidderList$ | async)?.length; else noBidsTemplate">
+        <li class="list-group-item py-4" *ngFor="let bid of bidderList$ | async">
           <span>{{ formatService.formatPublicAddress(bid.bidderAddress, 9) }}</span>
           <span class="float-end">{{ bid.amount }} ETH</span>
         </li>

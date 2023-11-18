@@ -1,6 +1,17 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { Observable, ReplaySubject, Subscription, combineLatest, filter, interval, map, startWith, take, takeUntil } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  Subscription,
+  combineLatest,
+  filter,
+  interval,
+  map,
+  startWith,
+  take,
+  takeUntil
+} from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
@@ -45,7 +56,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
       map((bid: IBid) => new Date(bid.auctionEndTime)),
       map((endTime: Date) => {
         const now = new Date();
-        return endTime.getTime() - now.getTime() < 0
+        return endTime.getTime() - now.getTime() < 0;
       })
     );
   }
@@ -106,43 +117,40 @@ export class BidResultComponent implements OnInit, OnDestroy {
         takeUntil(this.destroyed$)
       )
       .subscribe((endTime: Date) => {
-        return interval(1000).pipe(
-          takeUntil(this.destroyed$),
-          startWith(0),
-          map(() => {
+        return interval(1000)
+          .pipe(
+            takeUntil(this.destroyed$),
+            startWith(0),
+            map(() => {
+              const now = new Date();
+              const distance = endTime.getTime() - now.getTime();
 
-            const now = new Date();
-            const distance = endTime.getTime() - now.getTime();
+              if (distance < 0) {
+                this.timeRemaining = 'Auction ended';
+                return;
+              }
 
-            if (distance < 0) {
-              this.timeRemaining = 'Auction ended';
-              return;
-            }
+              const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+              const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+              const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
-
-            this.timeRemaining =
-              hours.toString().padStart(2, '0') +
-              'h : ' +
-              minutes.toString().padStart(2, '0') +
-              'm : ' +
-              seconds.toString().padStart(2, '0') +
-              's';
-          })
-        ).subscribe();
+              this.timeRemaining =
+                hours.toString().padStart(2, '0') +
+                'h : ' +
+                minutes.toString().padStart(2, '0') +
+                'm : ' +
+                seconds.toString().padStart(2, '0') +
+                's';
+            })
+          )
+          .subscribe();
       });
   }
 
   startBidderCountdown(): Subscription {
     const bidderListIsLoading$ = this.bidderListStoreObs.pipe(map((state) => state.loading));
 
-    return combineLatest([
-      this.biddersCountdown$,
-      this.bidEnded$,
-      bidderListIsLoading$
-    ])
+    return combineLatest([this.biddersCountdown$, this.bidEnded$, bidderListIsLoading$])
       .pipe(
         filter(([, bidEnded, bidderListIsLoading]) => !bidEnded && !bidderListIsLoading),
         takeUntil(this.destroyed$)

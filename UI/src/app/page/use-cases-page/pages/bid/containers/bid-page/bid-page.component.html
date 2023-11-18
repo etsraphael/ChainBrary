@@ -7,8 +7,12 @@
     <div class="d-flex flex-column align-items-center justify-content-center">
       <i class="bi bi-wallet2 text-secondary"></i>
       <p class="text-center mt-3">A connected wallet is necessary to see the the progress of the bid.</p>
-      <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-light']" buttonText="Connect Wallet"
-        (callToAction)="web3LoginService.openLoginModal()" data-id="login-btn" />
+      <app-chainbrary-button
+        [buttonClasses]="['btn-info-gradient', 'text-light']"
+        buttonText="Connect Wallet"
+        (callToAction)="web3LoginService.openLoginModal()"
+        data-id="login-btn"
+      />
     </div>
   </div>
 </ng-container>
@@ -29,13 +33,13 @@
 
   <!-- Bid page -->
   <ng-container *ngIf="(bidIsLoading$ | async) === false && (bid$ | async) !== null">
-      <app-bid-result
+    <app-bid-result
       [bidObs]="bid$"
       [bidderListStoreObs]="bidderListStore$"
       (placeBid)="onSubmit($event)"
       (refreshBidderList)="refreshBidderList()"
       [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
-      >
+    >
     </app-bid-result>
   </ng-container>
 
