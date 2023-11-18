@@ -5,7 +5,6 @@ import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
-import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
@@ -19,15 +18,12 @@ import {
 } from './../../../../../../store/bid-store/state/actions';
 import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
-const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
-
 @Component({
   selector: 'app-bid-page',
   templateUrl: './bid-page.component.html',
   styleUrls: ['./bid-page.component.scss']
 })
 export class BidPageComponent implements OnInit, OnDestroy {
-  biddersCountdown = DEFAULT_COUNTDOWN;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
