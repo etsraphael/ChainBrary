@@ -4,17 +4,34 @@ import { ActivatedRoute } from '@angular/router';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, ReplaySubject, Subscription, filter, interval, map, startWith, switchMap, take, takeUntil } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  Subscription,
+  combineLatest,
+  filter,
+  interval,
+  map,
+  startWith,
+  switchMap,
+  take,
+  takeUntil
+} from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
-import { getBidByTxn, placeBid } from './../../../../../../store/bid-store/state/actions';
+import {
+  biddersListCheck,
+  biddersListCheckSuccess,
+  getBidByTxn,
+  placeBid
+} from './../../../../../../store/bid-store/state/actions';
 import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
-const DEFAULT_COUNTDOWN = 15;
+const DEFAULT_COUNTDOWN = 60;
 
 @Component({
   selector: 'app-bid-page',
@@ -38,6 +55,8 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
   bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
   userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
+  biddersCountdown$: Observable<number>;
+  countdownSubscription: Subscription
 
   get bidIsLoading$(): Observable<boolean> {
     return this.searchBidStore$.pipe(map((state) => state.loading));
@@ -49,6 +68,24 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get bid$(): Observable<IBid | null> {
     return this.searchBidStore$.pipe(map((state) => state.data));
+  }
+
+  get bidEnded$(): Observable<boolean> {
+    return this.bid$.pipe(
+      filter((bid) => !!bid),
+      map((bid) => bid as IBid),
+      map((bid: IBid) => new Date(bid.auctionEndTime)),
+      map((endTime: Date) => {
+        const now = new Date();
+        const distance = endTime.getTime() - now.getTime();
+
+        if (distance < 0) {
+          return true;
+        }
+
+        return false;
+      })
+    );
   }
 
   get bidderList$(): Observable<IBidOffer[]> {
@@ -162,6 +199,7 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   callActions(): void {
+    // load bid when user is connected
     this.actions$
       .pipe(
         ofType(setAuthPublicAddress),
@@ -171,24 +209,39 @@ export class BidPageComponent implements OnInit, AfterViewInit, OnDestroy {
         ),
         takeUntil(this.destroyed$)
       )
+      .subscribe(() => this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string })));
+
+    // start countdown when bid is loaded
+    this.actions$
+      .pipe(
+        ofType(biddersListCheckSuccess),
+        takeUntil(this.destroyed$)
+      )
       .subscribe(() => {
-        this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
-        this.startBidderCountdown();
+        this.countdownSubscription?.unsubscribe();
+        this.biddersCountdown$ = interval(1000).pipe(take(DEFAULT_COUNTDOWN));
+        this.countdownSubscription = this.startBidderCountdown();
       });
   }
 
   startBidderCountdown(): Subscription {
-    return interval(1000).pipe(
-      take(DEFAULT_COUNTDOWN)
-    )
-    .subscribe(() => {
-      this.biddersCountdown--;
-      if (this.biddersCountdown === 0) {
-        // this.refreshData();
-        this.biddersCountdown = DEFAULT_COUNTDOWN;
-        this.startBidderCountdown();
-      }
-    });
+    return combineLatest([this.biddersCountdown$, this.bidEnded$, this.bidderListIsLoading$])
+      .pipe(
+        filter(([, bidEnded, bidderListIsLoading]) => !bidEnded && !bidderListIsLoading),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(() => {
+        if (this.biddersCountdown !== 1) {
+          this.biddersCountdown--;
+        } else {
+          this.biddersCountdown = DEFAULT_COUNTDOWN + 1;
+          this.refreshBidderList();
+        }
+      });
+  }
+
+  refreshBidderList(): void {
+    return this.store.dispatch(biddersListCheck());
   }
 
   ngOnDestroy(): void {
