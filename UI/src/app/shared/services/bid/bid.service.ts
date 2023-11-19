@@ -51,7 +51,7 @@ export class BidService {
       return contract.methods
         .getCompleteBidMetaData()
         .call()
-        .then((res: [string[], string, string, string, string, string[], string[], string, string, string, number]) => {
+        .then((res: [string[], string, string, string, string, string, string, string, number]) => {
           return {
             conctractAddress: receipt.contractAddress,
             blockNumber: String(receipt.blockNumber),
@@ -61,9 +61,9 @@ export class BidService {
             auctionStartTime: new Date(parseInt(res[3]) * 1000),
             auctionEndTime: new Date(parseInt(res[4]) * 1000),
             extendTimeInMinutes: Number(res[5]),
-            ownerName: res[8],
-            description: res[9],
-            highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether'))
+            ownerName: res[6],
+            description: res[7],
+            highestBid: Number(web3.utils.fromWei(String(res[8]), 'ether'))
           } as IBid;
         })
         .catch((error: string) => Promise.reject(error));

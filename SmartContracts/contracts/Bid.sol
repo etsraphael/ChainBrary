@@ -160,20 +160,11 @@ contract Bid is Ownable, ReentrancyGuard {
             uint256,
             uint256,
             uint256,
-            address[] memory,
-            uint256[] memory,
             string memory,
             string memory,
             uint256
         )
     {
-        uint256 length = bidderAddresses.length;
-        uint256[] memory amounts = new uint256[](length);
-
-        for (uint256 i = 0; i < length; i++) {
-            amounts[i] = bids[bidderAddresses[i]];
-        }
-
         return (
             bidMetaData.imgLists,
             bidMetaData.bidName,
@@ -181,8 +172,6 @@ contract Bid is Ownable, ReentrancyGuard {
             auctionStartTime,
             auctionEndTime,
             extendTimeInMinutes,
-            bidderAddresses,
-            amounts,
             bidMetaData.ownerName,
             bidMetaData.description,
             highestBid
