@@ -17,7 +17,7 @@ import { IUseCasesHeader } from './../../../../../../page/use-cases-page/compone
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { biddersListCheckSuccess } from './../../../../../../store/bid-store/state/actions';
+import { bidRefreshCheckSuccess } from './../../../../../../store/bid-store/state/actions';
 
 const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 
@@ -29,7 +29,7 @@ const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 export class BidResultComponent implements OnInit, OnDestroy {
   @Input() bidObs: Observable<IBid>;
   @Input() bidderListStoreObs: Observable<StoreState<IBidOffer[]>>;
-  @Input() startBidderCountdownTrigger: Observable<ReturnType<typeof biddersListCheckSuccess>>;
+  @Input() startBidderCountdownTrigger: Observable<ReturnType<typeof bidRefreshCheckSuccess>>;
   @Output() placeBid = new EventEmitter<{ amount: number }>();
   @Output() refreshBidderList = new EventEmitter<void>();
 

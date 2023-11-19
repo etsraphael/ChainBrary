@@ -7,7 +7,7 @@ import { ContractSendMethod } from 'web3-eth-contract/types';
 import { AbiItem } from 'web3-utils';
 import { BidContract } from '../../contracts';
 import { IReceiptTransaction } from '../../interfaces';
-import { IBid, IBidCreation, IBidOffer } from '../../interfaces/bid.interface';
+import { IBid, IBidCreation, IBidOffer, IBidRefreshResponse } from '../../interfaces/bid.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 @Injectable({
   providedIn: 'root'
@@ -157,4 +157,33 @@ export class BidService {
       return Promise.reject((error as Error)?.message || error);
     }
   }
+
+  async getBidderListWithDetails(w: WalletProvider, blockNumber: string, contractAddress: string): Promise<IBidRefreshResponse> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const contract: Contract = new web3.eth.Contract(new BidContract().getAbi() as AbiItem[], contractAddress);
+
+    try {
+      const bidList = await contract.getPastEvents('NewBid', {
+        fromBlock: blockNumber,
+        toBlock: 'latest'
+      });
+
+      const highestBid = await contract.methods.highestBid().call();
+      const auctionEndTime = await contract.methods.auctionEndTime().call();
+
+      const list = bidList.map((event: EventData) => ({
+        bidderAddress: event.returnValues['bidder'],
+        amount: Number(web3.utils.fromWei(String(event.returnValues['amount']), 'ether'))
+      })).sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
+
+      return {
+        list: list,
+        highestBid: Number(web3.utils.fromWei(String(highestBid), 'ether')),
+        auctionEndTime: new Date(parseInt(auctionEndTime) * 1000)
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
 }

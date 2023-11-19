@@ -2,6 +2,7 @@ import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import * as BidActions from './actions';
 import { initialState } from './init';
 import { IBidState } from './interfaces';
+import { IBid } from './../../../shared/interfaces/bid.interface';
 
 export const authReducer: ActionReducer<IBidState, Action> = createReducer(
   initialState,
@@ -50,7 +51,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     })
   ),
   on(
-    BidActions.getBidSuccess,
+    BidActions.getBidByTxnSuccess,
     (state, { payload }): IBidState => ({
       ...state,
       searchBid: {
@@ -61,7 +62,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     })
   ),
   on(
-    BidActions.getBidFailure,
+    BidActions.getBidByTxnFailure,
     (state, { message }): IBidState => ({
       ...state,
       searchBid: {
@@ -72,7 +73,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     })
   ),
   on(
-    BidActions.biddersListCheck,
+    BidActions.bidRefreshCheck,
     (state): IBidState => ({
       ...state,
       bidders: {
@@ -83,18 +84,26 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     })
   ),
   on(
-    BidActions.biddersListCheckSuccess,
-    (state, { bidders }): IBidState => ({
+    BidActions.bidRefreshCheckSuccess,
+    (state, { bidDetails }): IBidState => ({
       ...state,
+      searchBid: {
+        ...state.searchBid,
+        data: {
+          ...state.searchBid.data as IBid,
+          auctionEndTime: bidDetails.auctionEndTime,
+          highestBid: bidDetails.highestBid
+        },
+      },
       bidders: {
-        data: bidders,
+        data: bidDetails.list,
         loading: false,
         error: null
       }
     })
   ),
   on(
-    BidActions.biddersListCheckFailure,
+    BidActions.bidRefreshCheckFailure,
     (state, { message }): IBidState => ({
       ...state,
       bidders: {

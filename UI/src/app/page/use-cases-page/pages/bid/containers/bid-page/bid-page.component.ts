@@ -11,8 +11,8 @@ import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.inter
 import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
 import {
-  biddersListCheck,
-  biddersListCheckSuccess,
+  bidRefreshCheck,
+  bidRefreshCheckSuccess,
   getBidByTxn,
   placeBid
 } from './../../../../../../store/bid-store/state/actions';
@@ -36,8 +36,8 @@ export class BidPageComponent implements OnInit, OnDestroy {
   searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
   bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
   userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
-  startBidderCountdownTrigger$: Observable<ReturnType<typeof biddersListCheckSuccess>> = this.actions$.pipe(
-    ofType(biddersListCheckSuccess),
+  startBidderCountdownTrigger$: Observable<ReturnType<typeof bidRefreshCheckSuccess>> = this.actions$.pipe(
+    ofType(bidRefreshCheckSuccess),
     takeUntil(this.destroyed$)
   );
 
@@ -104,7 +104,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
   }
 
   refreshBidderList(): void {
-    return this.store.dispatch(biddersListCheck());
+    return this.store.dispatch(bidRefreshCheck());
   }
 
   ngOnDestroy(): void {

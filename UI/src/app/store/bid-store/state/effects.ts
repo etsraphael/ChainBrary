@@ -9,7 +9,7 @@ import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { IReceiptTransaction } from './../../../shared/interfaces';
-import { IBid, IBidOffer } from './../../../shared/interfaces/bid.interface';
+import { IBid, IBidRefreshResponse } from './../../../shared/interfaces/bid.interface';
 import { BidService } from './../../../shared/services/bid/bid.service';
 import * as BidActions from './actions';
 import { selectBidContractAddress, selectBlockNumber } from './selectors';
@@ -42,32 +42,11 @@ export class BidEffects {
       switchMap((action: [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail, WalletProvider]) => {
         return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn)).pipe(
           mergeMap((response: IBid) => [
-            BidActions.getBidSuccess({ payload: response }),
-            BidActions.biddersListCheck()
+            BidActions.getBidByTxnSuccess({ payload: response }),
+            BidActions.bidRefreshCheck()
           ]),
           catchError((error: { message: string; code: number }) =>
-            of(BidActions.getBidFailure({ message: error.message }))
-          )
-        );
-      })
-    );
-  });
-
-  getBidByContractAddress$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(BidActions.getBidByContractAddress),
-      concatLatestFrom(() => [this.store.select(selectCurrentNetwork), this.store.select(selectWalletConnected)]),
-      filter((payload) => payload[1] !== null && payload[2] !== null),
-      map(
-        (
-          payload: [ReturnType<typeof BidActions.getBidByContractAddress>, INetworkDetail | null, WalletProvider | null]
-        ) => payload as [ReturnType<typeof BidActions.getBidByContractAddress>, INetworkDetail, WalletProvider]
-      ),
-      switchMap((action: [ReturnType<typeof BidActions.getBidByContractAddress>, INetworkDetail, WalletProvider]) => {
-        return from(this.bidService.getBidFromContractAddress(action[2], action[0].contractAddress)).pipe(
-          map((response: IBid) => BidActions.getBidSuccess({ payload: response })),
-          catchError((error: { message: string; code: number }) =>
-            of(BidActions.getBidFailure({ message: error.message }))
+            of(BidActions.getBidByTxnFailure({ message: error.message }))
           )
         );
       })
@@ -175,9 +154,9 @@ export class BidEffects {
     );
   });
 
-  getBiddersList$ = createEffect(() => {
+  getbidRefresh$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(BidActions.biddersListCheck),
+      ofType(BidActions.bidRefreshCheck),
       concatLatestFrom(() => [
         this.store.select(selectWalletConnected),
         this.store.select(selectBidContractAddress),
@@ -187,13 +166,13 @@ export class BidEffects {
       filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
       map(
         (
-          payload: [ReturnType<typeof BidActions.biddersListCheck>, WalletProvider | null, string | null, string | null]
-        ) => payload as [ReturnType<typeof BidActions.biddersListCheck>, WalletProvider, string, string]
+          payload: [ReturnType<typeof BidActions.bidRefreshCheck>, WalletProvider | null, string | null, string | null]
+        ) => payload as [ReturnType<typeof BidActions.bidRefreshCheck>, WalletProvider, string, string]
       ),
-      switchMap((action: [ReturnType<typeof BidActions.biddersListCheck>, WalletProvider, string, string]) => {
-        return from(this.bidService.getBidderList(action[1], action[3], action[2])).pipe(
-          map((response: IBidOffer[]) => BidActions.biddersListCheckSuccess({ bidders: response })),
-          catchError((error: string) => of(BidActions.biddersListCheckFailure({ message: error })))
+      switchMap((action: [ReturnType<typeof BidActions.bidRefreshCheck>, WalletProvider, string, string]) => {
+        return from(this.bidService.getBidderListWithDetails(action[1], action[3], action[2])).pipe(
+          map((response: IBidRefreshResponse) => BidActions.bidRefreshCheckSuccess({ bidDetails: response })),
+          catchError((error: string) => of(BidActions.bidRefreshCheckFailure({ message: error })))
         );
       })
     );

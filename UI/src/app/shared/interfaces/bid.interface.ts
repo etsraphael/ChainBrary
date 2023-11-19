@@ -27,6 +27,12 @@ export interface IBidOffer {
   amount: number;
 }
 
+export interface IBidRefreshResponse {
+  list: IBidOffer[];
+  highestBid: number;
+  auctionEndTime: Date;
+}
+
 export interface IBidReference {
   contractAddress: string;
   transactionHash: string;
