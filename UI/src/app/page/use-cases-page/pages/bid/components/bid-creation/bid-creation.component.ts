@@ -19,9 +19,9 @@ import { Observable, map } from 'rxjs';
   styleUrls: ['./bid-creation.component.scss']
 })
 export class BidCreationComponent implements OnInit {
-  @ViewChild('carouselExampleCaptions', { static: true }) carousel: ElementRef;
-  @ViewChild('nextButton', { static: true }) nextButton: ElementRef<HTMLButtonElement>;
-  @ViewChild('prevButton', { static: true }) prevButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('carouselExampleCaptions', { static: false }) carousel: ElementRef;
+  @ViewChild('nextButton', { static: false }) nextButton: ElementRef<HTMLButtonElement>;
+  @ViewChild('prevButton', { static: false }) prevButton: ElementRef<HTMLButtonElement>;
 
   mainForm: FormGroup<BidForm>;
   imgList: string[] = [];
@@ -84,7 +84,7 @@ export class BidCreationComponent implements OnInit {
 
         // Add URL to list
         this.imgList.push(url);
-        this.prevButton.nativeElement.click();
+        this.prevButton?.nativeElement?.click();
         modalSub.unsubscribe();
       });
   }

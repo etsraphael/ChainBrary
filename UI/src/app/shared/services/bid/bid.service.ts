@@ -79,12 +79,13 @@ export class BidService {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
     const contract: Contract = new web3.eth.Contract(bidFactoryContract.getAbi() as AbiItem[], contractAddress);
+    const amountInWei: string = web3.utils.toWei(String(amount), 'ether');
 
     try {
-      const gas: number = await contract.methods.bid().estimateGas({ from, value: String(amount * 1e18) });
+      const gas: number = await contract.methods.bid().estimateGas({ from, value: amountInWei });
       const receipt: IReceiptTransaction = contract.methods
         .bid()
-        .send({ from, value: String(amount * 1e18), gas: gas });
+        .send({ from, value: amountInWei, gas: gas });
 
       return receipt;
     } catch (error) {

@@ -39,6 +39,7 @@ contract Bid is Ownable, ReentrancyGuard {
     event Withdrawal(address indexed bidder, uint256 amount);
     event AuctionSuccessful(address indexed bidder, uint256 amount);
     event CommunityTransfer(address indexed bidder, uint256 amount);
+    event FallbackCalled(address indexed sender);
 
     modifier auctionOngoing() {
         require(block.timestamp >= auctionStartTime && block.timestamp <= auctionEndTime, "Auction not ongoing");
@@ -186,5 +187,9 @@ contract Bid is Ownable, ReentrancyGuard {
             bidMetaData.description,
             highestBid
         );
+    }
+
+    fallback() external { 
+        emit FallbackCalled(msg.sender);
     }
 }
