@@ -36,9 +36,10 @@
     <app-bid-result
       [bidObs]="bid$"
       [bidderListStoreObs]="bidderListStore$"
+      [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
+      [isOwner]="(isOwner$ | async)!"
       (placeBid)="onSubmit($event)"
       (refreshBidderList)="refreshBidderList()"
-      [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
     >
     </app-bid-result>
   </ng-container>

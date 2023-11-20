@@ -22,7 +22,7 @@ import { bidRefreshCheckSuccess } from './../../../../../../store/bid-store/stat
 const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 
 @Component({
-  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger]',
+  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner]',
   templateUrl: './bid-result.component.html',
   styleUrls: ['./bid-result.component.scss']
 })
@@ -30,6 +30,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   @Input() bidObs: Observable<IBid>;
   @Input() bidderListStoreObs: Observable<StoreState<IBidOffer[]>>;
   @Input() startBidderCountdownTrigger: Observable<ReturnType<typeof bidRefreshCheckSuccess>>;
+  @Input() isOwner: boolean;
   @Output() placeBid = new EventEmitter<{ amount: number }>();
   @Output() refreshBidderList = new EventEmitter<void>();
 
@@ -163,6 +164,10 @@ export class BidResultComponent implements OnInit, OnDestroy {
           this.refreshBidderList.emit();
         }
       });
+  }
+
+  withdrawal(): void {
+    // TODO: implement withdrawal
   }
 
   ngOnDestroy(): void {

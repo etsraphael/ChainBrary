@@ -83,9 +83,7 @@ export class BidService {
 
     try {
       const gas: number = await contract.methods.bid().estimateGas({ from, value: amountInWei });
-      const receipt: IReceiptTransaction = contract.methods
-        .bid()
-        .send({ from, value: amountInWei, gas: gas });
+      const receipt: IReceiptTransaction = contract.methods.bid().send({ from, value: amountInWei, gas: gas });
 
       return receipt;
     } catch (error) {
@@ -158,7 +156,11 @@ export class BidService {
     }
   }
 
-  async getBidderListWithDetails(w: WalletProvider, blockNumber: string, contractAddress: string): Promise<IBidRefreshResponse> {
+  async getBidderListWithDetails(
+    w: WalletProvider,
+    blockNumber: string,
+    contractAddress: string
+  ): Promise<IBidRefreshResponse> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const contract: Contract = new web3.eth.Contract(new BidContract().getAbi() as AbiItem[], contractAddress);
 
@@ -171,10 +173,12 @@ export class BidService {
       const highestBid = await contract.methods.highestBid().call();
       const auctionEndTime = await contract.methods.auctionEndTime().call();
 
-      const list = bidList.map((event: EventData) => ({
-        bidderAddress: event.returnValues['bidder'],
-        amount: Number(web3.utils.fromWei(String(event.returnValues['amount']), 'ether'))
-      })).sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
+      const list = bidList
+        .map((event: EventData) => ({
+          bidderAddress: event.returnValues['bidder'],
+          amount: Number(web3.utils.fromWei(String(event.returnValues['amount']), 'ether'))
+        }))
+        .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
 
       return {
         list: list,
@@ -185,5 +189,4 @@ export class BidService {
       return Promise.reject(error);
     }
   }
-
 }

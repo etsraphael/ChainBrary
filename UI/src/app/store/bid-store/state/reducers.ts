@@ -90,10 +90,10 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
       searchBid: {
         ...state.searchBid,
         data: {
-          ...state.searchBid.data as IBid,
+          ...(state.searchBid.data as IBid),
           auctionEndTime: bidDetails.auctionEndTime,
           highestBid: bidDetails.highestBid
-        },
+        }
       },
       bidders: {
         data: bidDetails.list,

@@ -165,7 +165,6 @@ export class BidEffects {
         this.store.select(selectBidContractAddress),
         this.store.select(selectBlockNumber)
       ]),
-      tap((action) => console.log('action', action)),
       filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
       map(
         (

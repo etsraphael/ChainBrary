@@ -4,12 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
+import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
-import { selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
+import { selectIsConnected, selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import {
   bidRefreshCheck,
   bidRefreshCheckSuccess,
@@ -40,6 +40,15 @@ export class BidPageComponent implements OnInit, OnDestroy {
     ofType(bidRefreshCheckSuccess),
     takeUntil(this.destroyed$)
   );
+
+  get isOwner$(): Observable<boolean> {
+    return this.bid$.pipe(
+      withLatestFrom(this.store.select(selectPublicAddress)),
+      filter(([bid, address]) => bid !== null && address !== null),
+      map(([bid, address]) => bid.owner.toLowerCase() === address?.toLowerCase()),
+      takeUntil(this.destroyed$)
+    );
+  }
 
   get bidIsLoading$(): Observable<boolean> {
     return this.searchBidStore$.pipe(map((state) => state.loading));
