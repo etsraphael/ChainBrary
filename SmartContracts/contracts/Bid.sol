@@ -42,7 +42,7 @@ contract Bid is Ownable, ReentrancyGuard {
     event FallbackCalled(address indexed sender);
 
     modifier auctionOngoing() {
-        require(block.timestamp >= auctionStartTime && block.timestamp <= auctionEndTime, "Auction not ongoing");
+        require(block.timestamp >= auctionStartTime && block.timestamp <= auctionEndTime, "auction_not_ongoing");
         _;
     }
 
@@ -99,8 +99,8 @@ contract Bid is Ownable, ReentrancyGuard {
         (bool actualBidAmountCalculationSuccess, uint256 actualBidAmount) = Math.trySub(msg.value, fee);
         require(actualBidAmountCalculationSuccess, "Subtraction overflow");
 
-        require(actualBidAmount > highestBid, "Bid amount after fee deduction is not high enough");
-        require(_msgSender() != highestBidder, "You are already the highest bidder");
+        require(actualBidAmount > highestBid, "bid_amount_not_high_enough");
+        require(_msgSender() != highestBidder, "already_highest_bidder");
 
         uint256 refundAmount = highestBid;
         address previousHighestBidder = highestBidder;

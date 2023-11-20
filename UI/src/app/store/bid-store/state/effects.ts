@@ -8,7 +8,7 @@ import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxj
 import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
-import { IReceiptTransaction } from './../../../shared/interfaces';
+import { IReceiptTransaction, KeyAndLabel } from './../../../shared/interfaces';
 import { IBid, IBidRefreshResponse } from './../../../shared/interfaces/bid.interface';
 import { BidService } from './../../../shared/services/bid/bid.service';
 import * as BidActions from './actions';
@@ -16,10 +16,10 @@ import { selectBidContractAddress, selectBlockNumber } from './selectors';
 
 @Injectable()
 export class BidEffects {
-  readonly errorMessage: string[] = [
-    'Auction not ongoing',
-    'You are already the highest bidder',
-    'Bid amount after fee deduction is not high enough'
+  readonly errorMessage: KeyAndLabel[] = [
+    { key: 'auction_not_ongoing', label: 'Auction not ongoing' },
+    { key: 'already_highest_bidder', label: 'You are already the highest bidder' },
+    { key: 'bid_amount_not_high_enough', label: 'Bid amount after fee deduction is not high enough' }
   ];
 
   constructor(
@@ -85,9 +85,9 @@ export class BidEffects {
           let formattedMessage = String(action.message);
           let isErrorKnown = false;
 
-          this.errorMessage.forEach((knownError: string) => {
-            if (formattedMessage.includes(knownError)) {
-              formattedMessage = knownError;
+          this.errorMessage.forEach((knownError: KeyAndLabel) => {
+            if (formattedMessage.includes(knownError.key)) {
+              formattedMessage = knownError.label;
               isErrorKnown = true;
             }
           });
@@ -106,17 +106,20 @@ export class BidEffects {
     { dispatch: false }
   );
 
-  placeBidSuccess$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(BidActions.placeBidSuccess),
-      tap(() =>
-        this.snackBar.open('Bid placed successfully', '', {
-          duration: 5000,
-          panelClass: ['success-snackbar']
-        })
-      )
-    );
-  }, {dispatch: false});
+  placeBidSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(BidActions.placeBidSuccess),
+        tap(() =>
+          this.snackBar.open('Bid placed successfully', '', {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          })
+        )
+      );
+    },
+    { dispatch: false }
+  );
 
   createBid$ = createEffect(() => {
     return this.actions$.pipe(
