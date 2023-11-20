@@ -13,6 +13,7 @@ contract Bid is Ownable, ReentrancyGuard {
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
     uint256 public extendTimeInMinutes;
+    bool public auctionAmountWithdrawn = false;
 
     // List of all bidders
     Bidder[] public bidders;
@@ -134,7 +135,9 @@ contract Bid is Ownable, ReentrancyGuard {
     }
 
     function withdrawAuctionAmount() external onlyOwner auctionEnded {
+        require(!auctionAmountWithdrawn, "Auction amount already withdrawn");
         payable(owner()).transfer(highestBid);
+        auctionAmountWithdrawn = true;
         emit Withdrawal(owner(), highestBid);
         emit AuctionSuccessful(highestBidder, highestBid);
     }
@@ -162,7 +165,8 @@ contract Bid is Ownable, ReentrancyGuard {
             uint256,
             string memory,
             string memory,
-            uint256
+            uint256,
+            bool
         )
     {
         return (
@@ -174,7 +178,8 @@ contract Bid is Ownable, ReentrancyGuard {
             extendTimeInMinutes,
             bidMetaData.ownerName,
             bidMetaData.description,
-            highestBid
+            highestBid,
+            auctionAmountWithdrawn
         );
     }
 
