@@ -10,7 +10,8 @@ import {
   map,
   startWith,
   take,
-  takeUntil
+  takeUntil,
+  withLatestFrom
 } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
@@ -69,6 +70,19 @@ export class BidResultComponent implements OnInit, OnDestroy {
 
   get bidderList$(): Observable<IBidOffer[]> {
     return this.bidderListStoreObs.pipe(map((state) => state.data));
+  }
+
+  get withdrawBtnIsVisible$(): Observable<boolean> {
+    return this.bidEnded$.pipe(
+      withLatestFrom(
+        this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false))
+      ),
+      map(([bidEnded, bidCondition]) => bidEnded && bidCondition)
+    );
+  }
+
+  get withdrawReceiptIsVisible$(): Observable<boolean> {
+    return this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn));
   }
 
   constructor(public formatService: FormatService) {}
