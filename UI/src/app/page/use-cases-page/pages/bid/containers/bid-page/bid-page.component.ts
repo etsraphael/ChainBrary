@@ -14,7 +14,8 @@ import {
   bidRefreshCheck,
   bidRefreshCheckSuccess,
   getBidByTxn,
-  placeBid
+  placeBid,
+  requestWithdraw
 } from './../../../../../../store/bid-store/state/actions';
 import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
@@ -114,6 +115,10 @@ export class BidPageComponent implements OnInit, OnDestroy {
 
   refreshBidderList(): void {
     return this.store.dispatch(bidRefreshCheck());
+  }
+
+  requestWithdraw(): void {
+    return this.store.dispatch(requestWithdraw())
   }
 
   ngOnDestroy(): void {

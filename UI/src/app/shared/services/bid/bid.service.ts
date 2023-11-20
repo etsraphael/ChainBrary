@@ -189,4 +189,22 @@ export class BidService {
       return Promise.reject(error);
     }
   }
+
+  async requestWithdraw(
+    w: WalletProvider,
+    from: string,
+    contractAddress: string
+  ): Promise<IReceiptTransaction> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const contract: Contract = new web3.eth.Contract(new BidContract().getAbi() as AbiItem[], contractAddress);
+
+    try {
+      const gas: number = await contract.methods.withdrawAuctionAmount().estimateGas({ from });
+      const receipt: IReceiptTransaction = contract.methods.withdrawAuctionAmount().send({ from, gas: gas });
+
+      return receipt;
+    } catch (error) {
+      return Promise.reject(error as string);
+    }
+  }
 }

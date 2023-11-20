@@ -179,4 +179,49 @@ export class BidEffects {
       })
     );
   });
+
+  requestWithdraw = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.requestWithdraw),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectBidContractAddress)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [ReturnType<typeof BidActions.requestWithdraw>, WalletProvider | null, string | null, string | null]
+        ) => payload as [ReturnType<typeof BidActions.requestWithdraw>, WalletProvider, string, string]
+      ),
+      switchMap((action: [ReturnType<typeof BidActions.requestWithdraw>, WalletProvider, string, string]) => {
+        return from(this.bidService.requestWithdraw(action[1], action[2], action[3])).pipe(
+          map((response: IReceiptTransaction) => BidActions.requestWithdrawSuccess({ txn: response.transactionHash })),
+          tap(() => {
+            this.snackBar.open('Withdraw request sent successfully', '', {
+              duration: 5000,
+              panelClass: ['success-snackbar']
+            });
+          }),
+          catchError((error: { message: string }) => of(BidActions.requestWithdrawFailure({ message: error.message })))
+        );
+      })
+    );
+  });
+
+
+  requestWithdrawFailure$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(BidActions.requestWithdrawFailure),
+        map((action: { message: string }) => {
+          return this.snackBar.open(action.message, 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
 }

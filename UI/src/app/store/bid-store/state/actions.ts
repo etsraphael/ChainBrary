@@ -9,6 +9,10 @@ export const getBidByTxn = createAction('[Bid] Get Bid By Txn', props<{ txn: str
 export const getBidByTxnSuccess = createAction('[Bid] Get Bid By Txn Success', props<{ payload: IBid }>());
 export const getBidByTxnFailure = createAction('[Bid] Get Bid By Txn Failure', props<{ message: string }>());
 
+export const requestWithdraw = createAction('[Bid] Request Withdraw');
+export const requestWithdrawSuccess = createAction('[Bid] Request Withdraw Success', props<{ txn: string }>());
+export const requestWithdrawFailure = createAction('[Bid] Request Withdraw Failure', props<{ message: string }>());
+
 export const placeBid = createAction('[Bid] Place Bid', props<{ amount: number }>());
 export const placeBidSuccess = createAction(
   '[Bid] Place Bid Success',

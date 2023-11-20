@@ -33,6 +33,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   @Input() isOwner: boolean;
   @Output() placeBid = new EventEmitter<{ amount: number }>();
   @Output() refreshBidderList = new EventEmitter<void>();
+  @Output() requestWithdraw = new EventEmitter<void>();
 
   biddersCountdown = DEFAULT_COUNTDOWN;
   bidForm: FormGroup;
@@ -164,10 +165,6 @@ export class BidResultComponent implements OnInit, OnDestroy {
           this.refreshBidderList.emit();
         }
       });
-  }
-
-  withdrawal(): void {
-    // TODO: implement withdrawal
   }
 
   ngOnDestroy(): void {
