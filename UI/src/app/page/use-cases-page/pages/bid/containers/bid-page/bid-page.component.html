@@ -38,6 +38,7 @@
       [bidderListStoreObs]="bidderListStore$"
       [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
       [isOwner]="(isOwner$ | async)!"
+      [bidWidthdrawingObs]="bidWidthdrawing$"
       (placeBid)="onSubmit($event)"
       (refreshBidderList)="refreshBidderList()"
       (requestWithdraw)="requestWithdraw()"

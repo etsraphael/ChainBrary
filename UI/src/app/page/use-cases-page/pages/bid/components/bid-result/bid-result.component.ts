@@ -15,7 +15,7 @@ import {
 } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
-import { StoreState } from './../../../../../../shared/interfaces';
+import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { bidRefreshCheckSuccess } from './../../../../../../store/bid-store/state/actions';
@@ -23,7 +23,7 @@ import { bidRefreshCheckSuccess } from './../../../../../../store/bid-store/stat
 const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 
 @Component({
-  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner]',
+  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner][bidWidthdrawingObs]',
   templateUrl: './bid-result.component.html',
   styleUrls: ['./bid-result.component.scss']
 })
@@ -32,6 +32,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   @Input() bidderListStoreObs: Observable<StoreState<IBidOffer[]>>;
   @Input() startBidderCountdownTrigger: Observable<ReturnType<typeof bidRefreshCheckSuccess>>;
   @Input() isOwner: boolean;
+  @Input() bidWidthdrawingObs: Observable<ActionStoreProcessing>;
   @Output() placeBid = new EventEmitter<{ amount: number }>();
   @Output() refreshBidderList = new EventEmitter<void>();
   @Output() requestWithdraw = new EventEmitter<void>();
@@ -75,9 +76,10 @@ export class BidResultComponent implements OnInit, OnDestroy {
   get withdrawBtnIsVisible$(): Observable<boolean> {
     return this.bidEnded$.pipe(
       withLatestFrom(
-        this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false))
+        this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false)),
+        this.isWidthdrawing$
       ),
-      map(([bidEnded, bidCondition]) => bidEnded && bidCondition)
+      map(([bidEnded, bidCondition, isWidthdrawing]) => bidEnded && bidCondition && !isWidthdrawing)
     );
   }
 
@@ -87,6 +89,10 @@ export class BidResultComponent implements OnInit, OnDestroy {
 
   get explorerLink$(): Observable<string> {
     return this.bidObs.pipe(map((bid) => `https://etherscan.io/address/${bid.conctractAddress}`));
+  }
+
+  get isWidthdrawing$(): Observable<boolean> {
+    return this.bidWidthdrawingObs.pipe(map((state) => state.isLoading));
   }
 
   constructor(public formatService: FormatService) {}
@@ -189,4 +195,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
+
+
+  // TODO: check if the successful withdrawal is called
 }

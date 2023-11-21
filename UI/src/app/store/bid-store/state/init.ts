@@ -15,5 +15,9 @@ export const initialState: IBidState = {
     loading: false,
     error: null,
     data: []
+  },
+  widthdrawing: {
+    isLoading: false,
+    errorMessage: null
   }
 };

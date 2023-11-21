@@ -112,6 +112,36 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
         error: message
       }
     })
+  ),
+  on(
+    BidActions.requestWithdraw,
+    (state): IBidState => ({
+      ...state,
+      widthdrawing: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    BidActions.requestWithdrawSuccess,
+    (state): IBidState => ({
+      ...state,
+      widthdrawing: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    BidActions.requestWithdrawFailure,
+    (state, { message }): IBidState => ({
+      ...state,
+      widthdrawing: {
+        isLoading: false,
+        errorMessage: message
+      }
+    })
   )
 );
 

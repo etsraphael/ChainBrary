@@ -6,7 +6,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
-import { StoreState } from './../../../../../../shared/interfaces';
+import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectIsConnected, selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
@@ -17,7 +17,7 @@ import {
   placeBid,
   requestWithdraw
 } from './../../../../../../store/bid-store/state/actions';
-import { selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
+import { selectBidWidthdrawing, selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
   selector: 'app-bid-page',
@@ -41,6 +41,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
     ofType(bidRefreshCheckSuccess),
     takeUntil(this.destroyed$)
   );
+  bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing)
 
   get isOwner$(): Observable<boolean> {
     return this.bid$.pipe(

@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { StoreState } from '../../../shared/interfaces';
+import { ActionStoreProcessing, StoreState } from '../../../shared/interfaces';
 import { IBid, IBidOffer } from '../../../shared/interfaces/bid.interface';
 import { BID_FEATURE_KEY, IBidState } from './interfaces';
 
@@ -23,6 +23,11 @@ export const selectBidders: MemoizedSelector<object, StoreState<IBidOffer[]>> = 
 export const selectBidContractAddress: MemoizedSelector<object, string | null> = createSelector(
   selectSearchBid,
   (s: StoreState<IBid | null>) => s.data?.conctractAddress ?? null
+);
+
+export const selectBidWidthdrawing: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
+  selectBid,
+  (s: IBidState) => s.widthdrawing
 );
 
 export const selectBlockNumber: MemoizedSelector<
