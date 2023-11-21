@@ -15,7 +15,8 @@ import {
   bidRefreshCheckSuccess,
   getBidByTxn,
   placeBid,
-  requestWithdraw
+  requestWithdraw,
+  requestWithdrawSuccess
 } from './../../../../../../store/bid-store/state/actions';
 import { selectBidWidthdrawing, selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
@@ -39,6 +40,10 @@ export class BidPageComponent implements OnInit, OnDestroy {
   userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
   startBidderCountdownTrigger$: Observable<ReturnType<typeof bidRefreshCheckSuccess>> = this.actions$.pipe(
     ofType(bidRefreshCheckSuccess),
+    takeUntil(this.destroyed$)
+  );
+  requestWithdrawSuccess$: Observable<ReturnType<typeof requestWithdrawSuccess>> = this.actions$.pipe(
+    ofType(requestWithdrawSuccess),
     takeUntil(this.destroyed$)
   );
   bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing)

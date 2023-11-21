@@ -39,6 +39,7 @@
       [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
       [isOwner]="(isOwner$ | async)!"
       [bidWidthdrawingObs]="bidWidthdrawing$"
+      [requestWithdrawSuccessObs]="requestWithdrawSuccess$"
       (placeBid)="onSubmit($event)"
       (refreshBidderList)="refreshBidderList()"
       (requestWithdraw)="requestWithdraw()"

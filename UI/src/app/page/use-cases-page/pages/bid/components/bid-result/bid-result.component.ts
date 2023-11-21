@@ -18,12 +18,12 @@ import { IUseCasesHeader } from './../../../../../../page/use-cases-page/compone
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { bidRefreshCheckSuccess } from './../../../../../../store/bid-store/state/actions';
+import { bidRefreshCheckSuccess, requestWithdrawSuccess } from './../../../../../../store/bid-store/state/actions';
 
 const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 
 @Component({
-  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner][bidWidthdrawingObs]',
+  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner][bidWidthdrawingObs][requestWithdrawSuccessObs]',
   templateUrl: './bid-result.component.html',
   styleUrls: ['./bid-result.component.scss']
 })
@@ -33,6 +33,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   @Input() startBidderCountdownTrigger: Observable<ReturnType<typeof bidRefreshCheckSuccess>>;
   @Input() isOwner: boolean;
   @Input() bidWidthdrawingObs: Observable<ActionStoreProcessing>;
+  @Input() requestWithdrawSuccessObs: Observable<ReturnType<typeof requestWithdrawSuccess>>;
   @Output() placeBid = new EventEmitter<{ amount: number }>();
   @Output() refreshBidderList = new EventEmitter<void>();
   @Output() requestWithdraw = new EventEmitter<void>();
@@ -42,6 +43,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   timeRemaining: string;
   biddersCountdown$: Observable<number>;
   countdownSubscription: Subscription;
+  widthdrawTaken = false;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
@@ -79,12 +81,12 @@ export class BidResultComponent implements OnInit, OnDestroy {
         this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false)),
         this.isWidthdrawing$
       ),
-      map(([bidEnded, bidCondition, isWidthdrawing]) => bidEnded && bidCondition && !isWidthdrawing)
+      map(([bidEnded, bidCondition, isWidthdrawing]) => bidEnded && bidCondition && !isWidthdrawing && !this.widthdrawTaken)
     );
   }
 
   get withdrawReceiptIsVisible$(): Observable<boolean> {
-    return this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn && this.isOwner === true ));
+    return this.bidObs.pipe(map((bid) => (bid.auctionAmountWithdrawn && this.isOwner === true) || this.widthdrawTaken));
   }
 
   get explorerLink$(): Observable<string> {
@@ -105,6 +107,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
       this.biddersCountdown$ = interval(1000).pipe(take(DEFAULT_COUNTDOWN));
       this.countdownSubscription = this.startBidderCountdown();
     });
+    this.listenForWithdrawSuccess();
   }
 
   setUpForm(): void {
@@ -191,11 +194,14 @@ export class BidResultComponent implements OnInit, OnDestroy {
       });
   }
 
+  listenForWithdrawSuccess(): Subscription {
+    return this.requestWithdrawSuccessObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.widthdrawTaken = true;
+    });
+  }
+
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
   }
-
-
-  // TODO: check if the successful withdrawal is called
 }
