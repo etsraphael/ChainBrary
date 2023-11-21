@@ -82,7 +82,11 @@ export class BidResultComponent implements OnInit, OnDestroy {
   }
 
   get withdrawReceiptIsVisible$(): Observable<boolean> {
-    return this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn));
+    return this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn && this.isOwner === true ));
+  }
+
+  get explorerLink$(): Observable<string> {
+    return this.bidObs.pipe(map((bid) => `https://etherscan.io/address/${bid.conctractAddress}`));
   }
 
   constructor(public formatService: FormatService) {}

@@ -131,10 +131,9 @@
       <p>Your withdrawal request has been processed successfully. Below are the transaction details:</p>
       <hr>
       <div class="mb-0">
-        Transaction ID: <strong>xxx</strong><br>
-        Amount Withdrawn: <strong>xxx ETH</strong><br>
-        Transaction Date: <strong>xxx</strong><br>
-        <a target="_blank" class="btn btn-primary mt-3">View on Etherscan</a>
+        Transaction ID: <strong>{{bid.conctractAddress}}</strong><br>
+        Amount Withdrawn: <strong>{{bid.highestBid}} ETH</strong><br>
+        <a [href]="(explorerLink$|async)" target="_blank" class="btn btn-primary mt-3">View on Etherscan</a>
       </div>
     </div>
   </ng-container>
