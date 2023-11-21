@@ -19,7 +19,7 @@ export class BidEffects {
   readonly errorMessage: KeyAndLabel[] = [
     { key: 'auction_not_ongoing', label: 'Auction not ongoing' },
     { key: 'already_highest_bidder', label: 'You are already the highest bidder' },
-    { key: 'bid_amount_not_high_enough', label: 'Bid amount after fee deduction is not high enough' }
+    { key: 'bid_amount_not_high_enough', label: 'Bid amount is not high enough' }
   ];
 
   constructor(

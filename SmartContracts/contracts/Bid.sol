@@ -95,12 +95,7 @@ contract Bid is Ownable, ReentrancyGuard {
     }
 
     function bid() external payable auctionOngoing nonReentrant {
-        uint256 fee = calculateFee(msg.value);
-
-        (bool actualBidAmountCalculationSuccess, uint256 actualBidAmount) = Math.trySub(msg.value, fee);
-        require(actualBidAmountCalculationSuccess, "Subtraction overflow");
-
-        require(actualBidAmount > highestBid, "bid_amount_not_high_enough");
+        require(msg.value > highestBid, "bid_amount_not_high_enough");
         require(_msgSender() != highestBidder, "already_highest_bidder");
 
         uint256 refundAmount = highestBid;
@@ -111,34 +106,30 @@ contract Bid is Ownable, ReentrancyGuard {
             bidderAddresses.push(_msgSender());
         }
 
-        bids[_msgSender()] = actualBidAmount;
+        bids[_msgSender()] = msg.value;
         highestBidder = _msgSender();
-        highestBid = actualBidAmount;
-
-        // If the auction is about to end, extend the auction by the extendTimeInMinutes
-        if (auctionEndTime - block.timestamp <= 10 minutes) {
-            (bool extendedTimeSuccess, uint256 extendedTime) = Math.tryMul(extendTimeInMinutes, 60);
-            require(extendedTimeSuccess, "Multiplication overflow");
-            auctionEndTime = block.timestamp + extendedTime;
-        }
-
-        // Transfer the fee to the community address
-        payable(communityAddress).transfer(fee);
-        emit CommunityTransfer(_msgSender(), fee);
+        highestBid = msg.value;
 
         // Refund the previous highest bidder
         if (previousHighestBidder != address(0)) {
             payable(previousHighestBidder).transfer(refundAmount);
         }
 
-        emit NewBid(_msgSender(), actualBidAmount);
+        emit NewBid(_msgSender(), msg.value);
     }
 
     function withdrawAuctionAmount() external onlyOwner auctionEnded {
         require(!auctionAmountWithdrawn, "Auction amount already withdrawn");
-        payable(owner()).transfer(highestBid);
+
+        uint256 fee = calculateFee(highestBid);
+        uint256 amountAfterFee = highestBid - fee;
+
+        payable(communityAddress).transfer(fee);
+        payable(owner()).transfer(amountAfterFee);
+
         auctionAmountWithdrawn = true;
-        emit Withdrawal(owner(), highestBid);
+        emit Withdrawal(owner(), amountAfterFee);
+        emit CommunityTransfer(communityAddress, fee);
         emit AuctionSuccessful(highestBidder, highestBid);
     }
 
@@ -183,7 +174,7 @@ contract Bid is Ownable, ReentrancyGuard {
         );
     }
 
-    fallback() external { 
+    fallback() external {
         emit FallbackCalled(msg.sender);
     }
 }

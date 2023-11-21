@@ -144,15 +144,11 @@ describe('Bid', function () {
       const bidAmount2: bigint = ethers.parseEther('2');
       await bid.connect(addr2).bid({ value: bidAmount2 });
 
-      // Calculate the community fee for addr1's bid
-      const communityFee: BigNumber = calculateCommunityFee(bidAmount1);
-      const communityFeeBigInt: bigint = BigInt(communityFee.toString());
-
       // Make sure addr1 got refunded the 1 ETH after being outbid
       const addr1BalanceAfterOutbid: bigint = await ethers.provider.getBalance(addr1);
 
       // Calculate the actual bid amount
-      const actualBidAmount1: bigint = bidAmount1 - communityFeeBigInt;
+      const actualBidAmount1: bigint = bidAmount1;
       const expectedBalanceAfterOutbid: bigint = addr1BalanceAfterBid + actualBidAmount1;
 
       // Check that the balance of addr1 increased by the bid amount
@@ -169,7 +165,7 @@ describe('Bid', function () {
       // Addr2 tries to place a bid that is lower than the current bid
       const bidAmount2: bigint = ethers.parseEther('5');
       await expect(bid.connect(addr2).bid({ value: bidAmount2 })).to.be.revertedWith(
-        'Bid amount after fee deduction is not high enough'
+        'bid_amount_not_high_enough'
       );
     });
 
@@ -182,11 +178,16 @@ describe('Bid', function () {
 
       // Addr1 places a bid
       const bidAmount1: bigint = ethers.parseEther('10');
-      await expect(bid.connect(addr1).bid({ value: bidAmount1 })).to.be.revertedWith('Auction not ongoing');
+      await expect(bid.connect(addr1).bid({ value: bidAmount1 })).to.be.revertedWith('auction_not_ongoing');
     });
 
-    it('should withdraw the highest bid after the auction ends', async function () {
+    it.only('should withdraw the highest bid after the auction ends', async function () {
       const { bid, owner, addr1 } = await loadFixture(deployContractFixture);
+
+      // Get balance of the community treasury before placing any bids
+      const communityTreasuryInitialBalance: bigint = await ethers.provider.getBalance(
+        '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af'
+      );
 
       // Save contract's balance before the first bid
       const contractBalanceBefore: bigint = await ethers.provider.getBalance(await bid.getAddress());
@@ -202,15 +203,11 @@ describe('Bid', function () {
       await ethers.provider.send('evm_increaseTime', [7260]);
       await ethers.provider.send('evm_mine');
 
-      // Calculate the community fee for addr1's bid
-      const communityFee: BigNumber = calculateCommunityFee(bidAmount1);
-      const communityFeeBigInt: bigint = BigInt(communityFee.toString());
-
       // Save contract's balance after the first bid
       const contractBalanceAfterBid: bigint = await ethers.provider.getBalance(await bid.getAddress());
 
       // Expect contract's balance to be the bid amount minus the community fee
-      expect(contractBalanceAfterBid).to.equal(bidAmount1 - communityFeeBigInt);
+      expect(contractBalanceAfterBid).to.equal(bidAmount1);
 
       // Save owner's balance before the withdrawal
       const ownerBalanceBefore: bigint = await ethers.provider.getBalance(owner);
@@ -223,10 +220,14 @@ describe('Bid', function () {
         throw new Error('No receipt');
       }
 
+      // Tx cost
       const gasUsed: BigNumber = new BigNumber(receipt.gasUsed.toString());
       const gasPrice: BigNumber = new BigNumber(tx.gasPrice.toString());
       const txCost: BigNumber = gasUsed.times(gasPrice);
       const txCostBigInt: bigint = BigInt(txCost.toString());
+
+      const communityFee: BigNumber = calculateCommunityFee(bidAmount1);
+      const communityFeeBigInt: bigint = BigInt(communityFee.toString());
 
       // Save contract's balance after the withdrawal
       const contractBalanceAfter: bigint = await ethers.provider.getBalance(await bid.getAddress());
@@ -239,6 +240,15 @@ describe('Bid', function () {
 
       // Expect owner's balance to be get the highest bid amount minus the tx cost
       expect(ownerBalanceAfter).to.equal(ownerBalanceBefore + bidAmount1 - (txCostBigInt + communityFeeBigInt));
+
+      // Check that the community treasury balance increased by the community fee
+      const communityTreasuryBalanceAfterBid: bigint = await ethers.provider.getBalance(
+        '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af'
+      );
+
+      const expectedBalanceAfterBid: bigint = communityTreasuryInitialBalance + communityFeeBigInt;
+
+      expect(communityTreasuryBalanceAfterBid).to.equal(expectedBalanceAfterBid);
     });
 
     it('should return the correct bidMetaData after deployment', async function () {
