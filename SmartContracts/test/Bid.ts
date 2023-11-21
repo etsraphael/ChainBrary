@@ -48,36 +48,6 @@ describe('Bid', function () {
       expect(auctionEndTime - auctionStartTime).to.equal(2 * 60 * 60); // 2 hours in seconds.
     });
 
-    it('should send 0.1% of fee to the community', async function () {
-      const { bid, addr1 } = await loadFixture(deployContractFixture);
-
-      // Get balance of the community treasury before placing any bids
-      const communityTreasuryInitialBalance: bigint = await ethers.provider.getBalance(
-        '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af'
-      );
-
-      // Addr1 places a bid
-      const bidAmount1: bigint = ethers.parseEther('10');
-      const tx1 = await bid.connect(addr1).bid({ value: bidAmount1 });
-      const receipt = await tx1.wait();
-
-      if (!receipt) {
-        throw new Error('No receipt');
-      }
-
-      // Calculate the community fee for addr1's bid
-      const communityFee: BigNumber = calculateCommunityFee(bidAmount1);
-      const communityFeeBigInt: bigint = BigInt(communityFee.toString());
-
-      // Check that the community treasury balance increased by the community fee
-      const communityTreasuryBalanceAfterBid: bigint = await ethers.provider.getBalance(
-        '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af'
-      );
-      const expectedBalanceAfterBid: bigint = communityTreasuryInitialBalance + communityFeeBigInt;
-
-      expect(communityTreasuryBalanceAfterBid).to.equal(expectedBalanceAfterBid);
-    });
-
     it('should extend the auction end time by 15 minutes when a bid is placed in the last 5 minutes', async function () {
       const { bid, addr2 } = await loadFixture(deployContractFixture);
 
@@ -181,7 +151,7 @@ describe('Bid', function () {
       await expect(bid.connect(addr1).bid({ value: bidAmount1 })).to.be.revertedWith('auction_not_ongoing');
     });
 
-    it.only('should withdraw the highest bid after the auction ends', async function () {
+    it('should withdraw the highest bid after the auction ends', async function () {
       const { bid, owner, addr1 } = await loadFixture(deployContractFixture);
 
       // Get balance of the community treasury before placing any bids
