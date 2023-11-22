@@ -107,5 +107,6 @@ export const environment = {
   gtagId: '',
   bid: {
     biddersCountdown: 60
-  }
+  },
+  communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
 };

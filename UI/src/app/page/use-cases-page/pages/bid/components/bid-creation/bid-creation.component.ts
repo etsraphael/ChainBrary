@@ -3,6 +3,8 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
+import { Observable, map } from 'rxjs';
+import { environment } from './../../../../../../../environments/environment';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
@@ -11,7 +13,6 @@ import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidCreation } from './../../../../../../shared/interfaces/bid.interface';
 import { createBid } from './../../../../../../store/bid-store/state/actions';
 import { selectCurrentBid } from './../../../../../../store/bid-store/state/selectors';
-import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'app-bid-creation',
@@ -127,7 +128,7 @@ export class BidCreationComponent implements OnInit {
       extendTimeInMinutes: 10,
       durationInMinutes: duration as number,
       imgLists: this.imgList,
-      communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
+      communityAddress: environment.communityAddress
     };
 
     return this.store.dispatch(createBid({ payload }));
