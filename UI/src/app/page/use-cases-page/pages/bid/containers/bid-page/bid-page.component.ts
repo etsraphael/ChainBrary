@@ -18,7 +18,11 @@ import {
   requestWithdraw,
   requestWithdrawSuccess
 } from './../../../../../../store/bid-store/state/actions';
-import { selectBidWidthdrawing, selectBidders, selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
+import {
+  selectBidWidthdrawing,
+  selectBidders,
+  selectSearchBid
+} from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
   selector: 'app-bid-page',
@@ -46,7 +50,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
     ofType(requestWithdrawSuccess),
     takeUntil(this.destroyed$)
   );
-  bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing)
+  bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing);
 
   get isOwner$(): Observable<boolean> {
     return this.bid$.pipe(
@@ -124,7 +128,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
   }
 
   requestWithdraw(): void {
-    return this.store.dispatch(requestWithdraw())
+    return this.store.dispatch(requestWithdraw());
   }
 
   ngOnDestroy(): void {

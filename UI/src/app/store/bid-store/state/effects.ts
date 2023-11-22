@@ -209,7 +209,6 @@ export class BidEffects {
     );
   });
 
-
   requestWithdrawFailure$ = createEffect(
     () => {
       return this.actions$.pipe(

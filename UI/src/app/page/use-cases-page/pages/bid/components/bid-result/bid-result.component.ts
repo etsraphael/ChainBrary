@@ -23,7 +23,8 @@ import { bidRefreshCheckSuccess, requestWithdrawSuccess } from './../../../../..
 const DEFAULT_COUNTDOWN = environment.bid.biddersCountdown;
 
 @Component({
-  selector: 'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner][bidWidthdrawingObs][requestWithdrawSuccessObs]',
+  selector:
+    'app-bid-result[bidObs][bidderListStoreObs][startBidderCountdownTrigger][isOwner][bidWidthdrawingObs][requestWithdrawSuccessObs]',
   templateUrl: './bid-result.component.html',
   styleUrls: ['./bid-result.component.scss']
 })
@@ -46,6 +47,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   widthdrawTaken = false;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+  private timerSubscription: Subscription | null = null;
 
   get header$(): Observable<IUseCasesHeader> {
     return this.bidObs.pipe(
@@ -77,11 +79,11 @@ export class BidResultComponent implements OnInit, OnDestroy {
 
   get withdrawBtnIsVisible$(): Observable<boolean> {
     return this.bidEnded$.pipe(
-      withLatestFrom(
-        this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false)),
-        this.isWidthdrawing$
-      ),
-      map(([bidEnded, bidCondition, isWidthdrawing]) => bidEnded && bidCondition && !isWidthdrawing && !this.widthdrawTaken)
+      withLatestFrom(this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false)), this.isWidthdrawing$),
+      map(
+        ([bidEnded, bidCondition, isWidthdrawing]) =>
+          bidEnded && bidCondition && !isWidthdrawing && !this.widthdrawTaken
+      )
     );
   }
 
@@ -140,13 +142,17 @@ export class BidResultComponent implements OnInit, OnDestroy {
   }
 
   setUpEndTimer(): Subscription {
+    // TODO: make sure the timer is not duplicated
     return this.bidObs
       .pipe(
         map((bid: IBid) => new Date(bid.auctionEndTime)),
         takeUntil(this.destroyed$)
       )
       .subscribe((endTime: Date) => {
-        return interval(1000)
+        this.timerSubscription?.unsubscribe();
+
+        // create a single intervale here to avoid multiple subscriptions
+        this.timerSubscription = interval(1000)
           .pipe(
             takeUntil(this.destroyed$),
             startWith(0),
@@ -203,5 +209,6 @@ export class BidResultComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
+    this.timerSubscription?.unsubscribe();
   }
 }

@@ -111,6 +111,14 @@ export class BidCreationComponent implements OnInit {
     this.mainForm.markAllAsTouched();
     if (this.mainForm.invalid) return;
 
+    if (this.imgList.length < 1) {
+      this.snackBar.open('Please add at least one image', 'Close', {
+        duration: 5000,
+        panelClass: ['error-snackbar']
+      });
+      return;
+    }
+
     const { bidName, ownerName, description, duration } = this.mainForm.value;
     const payload: IBidCreation = {
       bidName: bidName as string,

@@ -191,11 +191,7 @@ export class BidService {
     }
   }
 
-  async requestWithdraw(
-    w: WalletProvider,
-    from: string,
-    contractAddress: string
-  ): Promise<IReceiptTransaction> {
+  async requestWithdraw(w: WalletProvider, from: string, contractAddress: string): Promise<IReceiptTransaction> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const contract: Contract = new web3.eth.Contract(new BidContract().getAbi() as AbiItem[], contractAddress);
 

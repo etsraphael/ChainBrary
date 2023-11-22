@@ -125,20 +125,21 @@
     </div>
   </ng-container>
   <!-- Widthdrawal Receipt -->
-  <ng-container *ngIf="(withdrawReceiptIsVisible$|async) === true">
+  <ng-container *ngIf="(withdrawReceiptIsVisible$ | async) === true">
     <div class="alert alert-success" role="alert">
       <h4 class="alert-heading">Withdrawal Successful!</h4>
       <p>Your withdrawal request has been processed successfully. Below are the transaction details:</p>
-      <hr>
+      <hr />
       <div class="mb-0">
-        Transaction ID: <strong>{{bid.conctractAddress}}</strong><br>
-        Amount Withdrawn: <strong>{{bid.highestBid}} ETH</strong><br>
-        <a [href]="(explorerLink$|async)" target="_blank" class="btn btn-primary mt-3">View on Etherscan</a>
+        Transaction ID: <strong>{{ bid.conctractAddress }}</strong
+        ><br />
+        Amount Withdrawn: <strong>{{ bid.highestBid }} ETH</strong><br />
+        <a [href]="explorerLink$ | async" target="_blank" class="btn btn-primary mt-3">View on Etherscan</a>
       </div>
     </div>
   </ng-container>
   <!-- Is Widthdrawing -->
-  <ng-container *ngIf="(isWidthdrawing$|async) === true">
+  <ng-container *ngIf="(isWidthdrawing$ | async) === true">
     <div class="row justify-content-center">
       <div class="spinner-border text-primary" role="status">
         <span class="visually-hidden">Loading...</span>
