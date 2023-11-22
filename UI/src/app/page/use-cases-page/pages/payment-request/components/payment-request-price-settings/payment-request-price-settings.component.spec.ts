@@ -7,10 +7,10 @@ import {
   currentNetworkSample,
   paymentConversionStoreSample,
   tokenSample
-} from './../../../../../../../tests/samples/network';
-import { MaterialModule } from './../../../../../module/material.module';
-import { SharedComponentsModule } from './../../../../../shared/components/shared-components.module';
-import { PriceSettingsForm } from './../../../../../shared/interfaces';
+} from './../../../../../../../../tests/samples/network';
+import { MaterialModule } from './../../../../../../module/material.module';
+import { SharedComponentsModule } from './../../../../../../shared/components/shared-components.module';
+import { PriceSettingsForm } from './../../../../../../shared/interfaces';
 import { PaymentRequestPriceSettingsComponent } from './payment-request-price-settings.component';
 
 describe('PaymentRequestPriceSettingsComponent', () => {

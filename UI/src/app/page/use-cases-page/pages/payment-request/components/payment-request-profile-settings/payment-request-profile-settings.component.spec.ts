@@ -2,9 +2,12 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_SNACK_BAR_DATA, MatSnackBarRef } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from './../../../../../module/material.module';
-import { SharedComponentsModule, SharedTestModule } from './../../../../../shared/components/shared-components.module';
-import { ProfileForm } from './../../../../../shared/interfaces';
+import { MaterialModule } from './../../../../../../module/material.module';
+import {
+  SharedComponentsModule,
+  SharedTestModule
+} from './../../../../../../shared/components/shared-components.module';
+import { ProfileForm } from './../../../../../../shared/interfaces';
 import { PaymentRequestProfileSettingsComponent } from './payment-request-profile-settings.component';
 
 describe('PaymentRequestProfileSettingsComponent', () => {

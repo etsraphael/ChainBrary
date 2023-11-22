@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
 import { BidContainerComponent } from './bid-container.component';
 
 describe('BidContainerComponent', () => {
@@ -8,6 +8,7 @@ describe('BidContainerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [SharedTestModule],
       declarations: [BidContainerComponent]
     });
     fixture = TestBed.createComponent(BidContainerComponent);

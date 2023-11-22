@@ -7,14 +7,14 @@ import { Observable, Subject, of } from 'rxjs';
 import { IConversionToken, StoreState } from 'src/app/shared/interfaces';
 import { PaymentRequestProfileSettingsComponent } from '../payment-request-profile-settings/payment-request-profile-settings.component';
 import { PaymentRequestReviewComponent } from '../payment-request-review/payment-request-review.component';
-import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
+import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
 import {
   accountChanged,
   networkChangeSuccess,
   resetAuth,
   setAuthPublicAddress
-} from './../../../../../store/auth-store/state/actions';
-import { initialState as authInitialState } from './../../../../../store/auth-store/state/init';
+} from './../../../../../../store/auth-store/state/actions';
+import { initialState as authInitialState } from './../../../../../../store/auth-store/state/init';
 import { PaymentRequestMakerComponent } from './payment-request-maker.component';
 import { PaymentRequestPriceSettingsComponent } from '../payment-request-price-settings/payment-request-price-settings.component';
 

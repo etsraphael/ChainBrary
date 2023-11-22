@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { MaterialModule } from './../../../../../module/material.module';
-import { SharedTestModule } from './../../../../../shared/components/shared-components.module';
+import { MaterialModule } from './../../../../../../module/material.module';
+import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
 import { TransactionActivityTableComponent } from './transaction-activity-table.component';
 
 describe('TransactionActivityTableComponent', () => {
