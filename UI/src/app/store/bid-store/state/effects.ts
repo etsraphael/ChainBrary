@@ -243,7 +243,7 @@ export class BidEffects {
           catchError(() =>
             of(
               BidActions.searchBidFailure({
-                message: 'This address is not associated with any bids that have been created.'
+                message: 'This address is not associated with any bids that have been created. Please make sure the network is correct and try again.'
               })
             )
           )
