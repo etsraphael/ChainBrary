@@ -142,7 +142,6 @@ export class BidResultComponent implements OnInit, OnDestroy {
   }
 
   setUpEndTimer(): Subscription {
-    // TODO: make sure the timer is not duplicated
     return this.bidObs
       .pipe(
         map((bid: IBid) => new Date(bid.auctionEndTime)),
@@ -150,8 +149,6 @@ export class BidResultComponent implements OnInit, OnDestroy {
       )
       .subscribe((endTime: Date) => {
         this.timerSubscription?.unsubscribe();
-
-        // create a single intervale here to avoid multiple subscriptions
         this.timerSubscription = interval(1000)
           .pipe(
             takeUntil(this.destroyed$),
