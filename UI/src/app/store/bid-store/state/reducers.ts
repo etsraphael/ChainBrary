@@ -6,6 +6,7 @@ import { IBid } from './../../../shared/interfaces/bid.interface';
 
 export const authReducer: ActionReducer<IBidState, Action> = createReducer(
   initialState,
+  on(BidActions.resetBid, (): IBidState => initialState),
   on(
     BidActions.createBid,
     (state): IBidState => ({

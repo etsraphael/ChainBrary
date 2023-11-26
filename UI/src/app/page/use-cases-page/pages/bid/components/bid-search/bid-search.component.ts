@@ -1,11 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid } from './../../../../../../shared/interfaces/bid.interface';
-import { searchBid } from './../../../../../../store/bid-store/state/actions';
+import { resetBid, searchBid } from './../../../../../../store/bid-store/state/actions';
 import { selectSearchBid } from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
@@ -13,7 +13,7 @@ import { selectSearchBid } from './../../../../../../store/bid-store/state/selec
   templateUrl: './bid-search.component.html',
   styleUrls: ['./bid-search.component.scss']
 })
-export class BidSearchComponent {
+export class BidSearchComponent implements OnInit {
   headerPayload: IUseCasesHeader = {
     title: 'Join a bid',
     goBackLink: '/use-cases/bid/services',
@@ -33,6 +33,10 @@ export class BidSearchComponent {
 
   get bidErrorMessage$(): Observable<string | null> {
     return this.searchBid$.pipe(map(({ error }) => error));
+  }
+
+  ngOnInit(): void {
+    this.store.dispatch(resetBid());
   }
 
   onSubmit(): void {

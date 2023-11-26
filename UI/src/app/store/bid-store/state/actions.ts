@@ -30,3 +30,5 @@ export const bidRefreshCheckSuccess = createAction(
   props<{ bidDetails: IBidRefreshResponse }>()
 );
 export const bidRefreshCheckFailure = createAction('[Bid] Bid Refresh Check Failure', props<{ message: string }>());
+
+export const resetBid = createAction('[Bid] Reset Bid');
