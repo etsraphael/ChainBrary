@@ -96,10 +96,10 @@ export class BidCreationComponent implements OnInit {
     this.nextButton.nativeElement.click();
   }
 
-  openTermAndCond(event: MouseEvent): void {
+  openTermAndCond(event: MouseEvent): MatDialogRef<TermAndCondModalComponent> {
     event.preventDefault();
 
-    this.dialog.open(TermAndCondModalComponent, {
+    return this.dialog.open(TermAndCondModalComponent, {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
       panelClass: ['col-12', 'col-md-6', 'col-lg-8'],
