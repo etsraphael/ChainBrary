@@ -40,6 +40,10 @@ export class BidCreationComponent implements OnInit {
     return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.loading));
   }
 
+  get bidCreationError$(): Observable<string | null> {
+    return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.error));
+  }
+
   constructor(
     private readonly store: Store,
     private dialog: MatDialog,

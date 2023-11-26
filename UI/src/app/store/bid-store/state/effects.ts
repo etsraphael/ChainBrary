@@ -135,7 +135,14 @@ export class BidEffects {
           map((response: { contract: Contract; transactionHash: string }) =>
             BidActions.createBidSuccess({ txn: response.transactionHash })
           ),
-          catchError((error: string) => of(BidActions.createBidFailure({ message: error })))
+          catchError(() =>
+            of(
+              BidActions.createBidFailure({
+                message:
+                  'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.'
+              })
+            )
+          )
         );
       })
     );
