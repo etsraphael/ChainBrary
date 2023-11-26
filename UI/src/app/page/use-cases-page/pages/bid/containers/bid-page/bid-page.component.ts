@@ -8,7 +8,7 @@ import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } fro
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
-import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
+import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectIsConnected, selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import {
   bidRefreshCheck,
@@ -103,10 +103,17 @@ export class BidPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.callActions();
+    this.listenNetworkChanged();
   }
 
   onSubmit(event: { amount: number }): void {
     return this.store.dispatch(placeBid({ amount: event.amount }));
+  }
+
+  listenNetworkChanged(): void {
+    this.actions$
+    .pipe(ofType(networkChangeSuccess), takeUntil(this.destroyed$))
+    .subscribe(() => this.getBid());
   }
 
   callActions(): void {
@@ -120,7 +127,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
         ),
         takeUntil(this.destroyed$)
       )
-      .subscribe(() => this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string })));
+      .subscribe(() => this.getBid());
   }
 
   refreshBidderList(): void {
@@ -134,6 +141,10 @@ export class BidPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
+  }
+
+  private getBid(): void {
+    return this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }))
   }
 }
 
