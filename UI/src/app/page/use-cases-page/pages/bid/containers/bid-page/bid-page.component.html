@@ -34,12 +34,13 @@
   <!-- Bid page -->
   <ng-container *ngIf="(bidIsLoading$ | async) === false && (bid$ | async) !== null">
     <app-bid-result
-      [bidObs]="bid$"
+      [bidObs]="nonNullBid$"
       [bidderListStoreObs]="bidderListStore$"
       [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
       [isOwner]="(isOwner$ | async)!"
       [bidWidthdrawingObs]="bidWidthdrawing$"
       [requestWithdrawSuccessObs]="requestWithdrawSuccess$"
+      [currentNetwork]="(currentNetwork$ | async)!"
       (placeBid)="onSubmit($event)"
       (refreshBidderList)="refreshBidderList()"
       (requestWithdraw)="requestWithdraw()"
@@ -57,7 +58,8 @@
             <div class="alert alert-danger border-0" role="alert">
               <h4 class="alert-heading">Bid not found</h4>
               <p>
-                The bid you are seeking cannot be found on this network. Please verify that you have entered the correct address and are on the appropriate network. Please check the URL or go back to the
+                The bid you are seeking cannot be found on this network. Please verify that you have entered the correct
+                address and are on the appropriate network. Please check the URL or go back to the
                 <a routerLink="/use-cases/search">search</a> page.
               </p>
             </div>

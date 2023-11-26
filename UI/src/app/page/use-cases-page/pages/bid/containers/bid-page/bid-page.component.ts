@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
@@ -9,7 +9,11 @@ import { IUseCasesHeader } from './../../../../../../page/use-cases-page/compone
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
-import { selectIsConnected, selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
+import {
+  selectCurrentNetwork,
+  selectIsConnected,
+  selectPublicAddress
+} from './../../../../../../store/auth-store/state/selectors';
 import {
   bidRefreshCheck,
   bidRefreshCheckSuccess,
@@ -51,12 +55,13 @@ export class BidPageComponent implements OnInit, OnDestroy {
     takeUntil(this.destroyed$)
   );
   bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing);
+  currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 
   get isOwner$(): Observable<boolean> {
     return this.bid$.pipe(
       withLatestFrom(this.store.select(selectPublicAddress)),
       filter(([bid, address]) => bid !== null && address !== null),
-      map(([bid, address]) => bid.owner.toLowerCase() === address?.toLowerCase()),
+      map(([bid, address]) => bid?.owner.toLowerCase() === address?.toLowerCase()),
       takeUntil(this.destroyed$)
     );
   }
@@ -69,8 +74,12 @@ export class BidPageComponent implements OnInit, OnDestroy {
     return this.searchBidStore$.pipe(map((state) => state.error));
   }
 
-  get bid$(): Observable<IBid> {
-    return this.searchBidStore$.pipe(map((state) => state.data as IBid));
+  get bid$(): Observable<IBid | null> {
+    return this.searchBidStore$.pipe(map((state) => state.data));
+  }
+
+  get nonNullBid$(): Observable<IBid> {
+    return this.bid$.pipe(filter((bid) => bid !== null)) as Observable<IBid>;
   }
 
   get bidEnded$(): Observable<boolean> {
@@ -111,9 +120,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
   }
 
   listenNetworkChanged(): void {
-    this.actions$
-    .pipe(ofType(networkChangeSuccess), takeUntil(this.destroyed$))
-    .subscribe(() => this.getBid());
+    this.actions$.pipe(ofType(networkChangeSuccess), takeUntil(this.destroyed$)).subscribe(() => this.getBid());
   }
 
   callActions(): void {
@@ -144,7 +151,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
   }
 
   private getBid(): void {
-    return this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }))
+    return this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
   }
 }
 

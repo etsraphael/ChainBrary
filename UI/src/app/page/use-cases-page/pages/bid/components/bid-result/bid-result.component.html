@@ -88,12 +88,13 @@
               <i class="bi bi-dash-circle"></i>
             </button>
             <input matInput type="number" formControlName="highestBid" class="text-center no-spinners" />
-            <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')"
-              >Please enter a value higher than the current bid</mat-error
-            >
-            <mat-hint
-              >The current bid is at <strong>{{ bid.highestBid }} ETH</strong></mat-hint
-            >
+            <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')">
+              Please enter a value higher than the current bid
+            </mat-error>
+            <!-- TODO: Show the network used here -->
+            <mat-hint>
+              The current bid is at <strong>{{ bid.highestBid }} {{ currentNetwork.nativeCurrency.symbol }}</strong>
+            </mat-hint>
             <button matSuffix mat-icon-button type="button" (click)="incrementBid()">
               <i class="bi bi-plus-circle"></i>
             </button>

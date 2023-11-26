@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { INetworkDetail } from '@chainbrary/web3-login';
 import {
   Observable,
   ReplaySubject,
@@ -35,6 +36,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   @Input() isOwner: boolean;
   @Input() bidWidthdrawingObs: Observable<ActionStoreProcessing>;
   @Input() requestWithdrawSuccessObs: Observable<ReturnType<typeof requestWithdrawSuccess>>;
+  @Input() currentNetwork: INetworkDetail;
   @Output() placeBid = new EventEmitter<{ amount: number }>();
   @Output() refreshBidderList = new EventEmitter<void>();
   @Output() requestWithdraw = new EventEmitter<void>();
