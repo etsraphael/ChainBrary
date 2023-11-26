@@ -20,6 +20,6 @@ describe('Metamask Injection', () => {
       (network: INetworkDetail) => network.chainId === NetworkChainId.ETHEREUM
     );
     cy.window().its('ethereum.networkVersion').should('eq', networkFound.networkVersion);
-    cy.window().its('ethereum.chainId').should('eq', networkFound.chainId);
+    cy.window().its('ethereum.eth_chainId').should('eq', networkFound.chainId);
   });
 });
