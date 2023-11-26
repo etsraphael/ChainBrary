@@ -18,14 +18,14 @@ export class HomeBidMenuComponent {
     {
       title: 'Create a bid',
       descritpion:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ultricies mi, vel eleifend eros. Sed placerat volutpat feugiat. In velit ipsum, elementum a felis eget',
+        "Kickstart your bidding process with 'Create a Bid.' Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.",
       routerLink: '/use-cases/bid/creation',
       buttonText: 'Start creation'
     },
     {
       title: 'Join a bid',
       descritpion:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam tincidunt ultricies mi, vel eleifend eros. Sed placerat volutpat feugiat. In velit ipsum, elementum a felis eget',
+        "Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.",
       routerLink: '/use-cases/bid/search',
       buttonText: 'Start joining'
     }

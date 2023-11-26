@@ -223,4 +223,32 @@ export class BidEffects {
     },
     { dispatch: false }
   );
+
+  searchBid$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.searchBid),
+      concatLatestFrom(() => [this.store.select(selectCurrentNetwork), this.store.select(selectWalletConnected)]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (payload: [ReturnType<typeof BidActions.searchBid>, INetworkDetail | null, WalletProvider | null]) =>
+          payload as [ReturnType<typeof BidActions.searchBid>, INetworkDetail, WalletProvider]
+      ),
+      switchMap((action: [ReturnType<typeof BidActions.searchBid>, INetworkDetail, WalletProvider]) => {
+        return from(this.bidService.getBidFromTxnHash(action[2], action[0].txHash)).pipe(
+          tap(() => this.router.navigate(['/use-cases/bid/search/', action[0].txHash])),
+          mergeMap((response: IBid) => [
+            BidActions.searchBidSuccess({ payload: response }),
+            BidActions.bidRefreshCheck()
+          ]),
+          catchError(() =>
+            of(
+              BidActions.searchBidFailure({
+                message: 'This address is not associated with any bids that have been created.'
+              })
+            )
+          )
+        );
+      })
+    );
+  });
 }

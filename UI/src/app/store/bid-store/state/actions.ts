@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { IBid, IBidCreation, IBidRefreshResponse } from './../../../shared/interfaces/bid.interface';
 
+export const searchBid = createAction('[Bid] Search Bid', props<{ txHash: string }>());
+export const searchBidSuccess = createAction('[Bid] Search Bid Success', props<{ payload: IBid }>());
+export const searchBidFailure = createAction('[Bid] Search Bid Failure', props<{ message: string }>());
+
 export const createBid = createAction('[Bid] Create Bid', props<{ payload: IBidCreation }>());
 export const createBidSuccess = createAction('[Bid] Create Bid Success', props<{ txn: string }>());
 export const createBidFailure = createAction('[Bid] Create Bid Failure', props<{ message: string }>());
