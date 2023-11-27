@@ -91,7 +91,6 @@
             <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')">
               Please enter a value higher than the current bid
             </mat-error>
-            <!-- TODO: Show the network used here -->
             <mat-hint>
               The current bid is at <strong>{{ bid.highestBid }} {{ currentNetwork.nativeCurrency.symbol }}</strong>
             </mat-hint>
@@ -134,7 +133,8 @@
       <div class="mb-0">
         Transaction ID: <strong>{{ bid.conctractAddress }}</strong
         ><br />
-        Amount Withdrawn: <strong>{{ bid.highestBid }} ETH</strong><br />
+        Amount Withdrawn: <strong>{{ bid.highestBid }} {{ currentNetwork.nativeCurrency.symbol }}</strong
+        ><br />
         <a [href]="explorerLink$ | async" target="_blank" class="btn btn-primary mt-3">View on Etherscan</a>
       </div>
     </div>
@@ -167,15 +167,23 @@
       <ng-container *ngIf="(bidderList$ | async)?.length; else noBidsTemplate">
         <li class="list-group-item py-4" *ngFor="let bid of bidderList$ | async">
           <span>{{ formatService.formatPublicAddress(bid.bidderAddress, 9) }}</span>
-          <span class="float-end">{{ bid.amount }} ETH</span>
+          <span class="float-end">{{ bid.amount }} {{ currentNetwork.nativeCurrency.symbol }}</span>
         </li>
       </ng-container>
     </ul>
     <ng-template #noBidsTemplate>
-      <div class="text-center py-4">
-        <i class="bi bi-exclamation-circle text-secondary"></i>
-        <p>No bids have been placed yet. Be the first!</p>
-      </div>
+      <ng-container *ngIf="(bidEnded$ | async) === false">
+        <div class="text-center py-4">
+          <i class="bi bi-exclamation-circle text-secondary"></i>
+          <p>No bids have been placed yet. Be the first!</p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="(bidEnded$ | async) === true">
+        <div class="text-center py-4">
+          <i class="bi bi-exclamation-circle text-secondary"></i>
+          <p>Bidding has ended without any participation.</p>
+        </div>
+      </ng-container>
     </ng-template>
   </div>
 </div>

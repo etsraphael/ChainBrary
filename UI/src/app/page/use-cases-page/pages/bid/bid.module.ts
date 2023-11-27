@@ -7,11 +7,12 @@ import { MaterialModule } from './../../../../module/material.module';
 import { SharedComponentsModule } from './../../../../shared/components/shared-components.module';
 import { BidRoutingModule } from './bid-routing.module';
 import { BidCreationComponent } from './components/bid-creation/bid-creation.component';
+import { BidResultComponent } from './components/bid-result/bid-result.component';
 import { BidSearchComponent } from './components/bid-search/bid-search.component';
+import { BidWithdrawalComponent } from './components/bid-withdrawal/bid-withdrawal.component';
 import { HomeBidMenuComponent } from './components/home-bid-menu/home-bid-menu.component';
 import { BidContainerComponent } from './containers/bid-container/bid-container.component';
 import { BidPageComponent } from './containers/bid-page/bid-page.component';
-import { BidResultComponent } from './components/bid-result/bid-result.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { BidResultComponent } from './components/bid-result/bid-result.component
     BidCreationComponent,
     BidSearchComponent,
     BidPageComponent,
-    BidResultComponent
+    BidResultComponent,
+    BidWithdrawalComponent
   ],
   imports: [
     CommonModule,

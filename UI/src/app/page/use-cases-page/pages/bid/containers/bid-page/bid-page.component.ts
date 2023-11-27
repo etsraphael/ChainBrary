@@ -1,10 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
+import { BidWithdrawalComponent } from '../../components/bid-withdrawal/bid-withdrawal.component';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
@@ -19,7 +21,6 @@ import {
   bidRefreshCheckSuccess,
   getBidByTxn,
   placeBid,
-  requestWithdraw,
   requestWithdrawSuccess
 } from './../../../../../../store/bid-store/state/actions';
 import {
@@ -40,7 +41,8 @@ export class BidPageComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private route: ActivatedRoute,
     public web3LoginService: Web3LoginService,
-    private actions$: Actions
+    private actions$: Actions,
+    private dialog: MatDialog
   ) {}
 
   searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
@@ -141,8 +143,12 @@ export class BidPageComponent implements OnInit, OnDestroy {
     return this.store.dispatch(bidRefreshCheck());
   }
 
-  requestWithdraw(): void {
-    return this.store.dispatch(requestWithdraw());
+  requestWithdraw(): MatDialogRef<BidWithdrawalComponent> {
+    return this.dialog.open(BidWithdrawalComponent, {
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      panelClass: ['col-12', 'col-md-6', 'col-lg-5', 'col-xl-4']
+    });
   }
 
   ngOnDestroy(): void {

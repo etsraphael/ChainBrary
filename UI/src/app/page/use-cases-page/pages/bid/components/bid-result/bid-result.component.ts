@@ -81,10 +81,13 @@ export class BidResultComponent implements OnInit, OnDestroy {
 
   get withdrawBtnIsVisible$(): Observable<boolean> {
     return this.bidEnded$.pipe(
-      withLatestFrom(this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false)), this.isWidthdrawing$),
+      withLatestFrom(
+        this.bidObs.pipe(map((bid) => bid.auctionAmountWithdrawn === false && bid.highestBid > 0)),
+        this.isWidthdrawing$
+      ),
       map(
         ([bidEnded, bidCondition, isWidthdrawing]) =>
-          bidEnded && bidCondition && !isWidthdrawing && !this.widthdrawTaken
+          bidEnded && bidCondition && !isWidthdrawing && !this.widthdrawTaken && this.isOwner
       )
     );
   }

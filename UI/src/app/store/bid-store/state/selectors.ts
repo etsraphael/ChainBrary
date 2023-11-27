@@ -20,6 +20,11 @@ export const selectBidders: MemoizedSelector<object, StoreState<IBidOffer[]>> = 
   (s: IBidState) => s.bidders
 );
 
+export const selectHighestBid: MemoizedSelector<object, number | null> = createSelector(
+  selectSearchBid,
+  (s: StoreState<IBid | null>) => s.data?.highestBid ?? null
+);
+
 export const selectBidContractAddress: MemoizedSelector<object, string | null> = createSelector(
   selectSearchBid,
   (s: StoreState<IBid | null>) => s.data?.conctractAddress ?? null
