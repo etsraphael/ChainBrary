@@ -137,7 +137,10 @@ export class BidService {
 
     try {
       const deployment: ContractSendMethod = contract.deploy(contractData);
-      const gasEstimate: number = await deployment.estimateGas();
+      const gasEstimate: number = await web3.eth.estimateGas({
+        from,
+        data: deployment.encodeABI()
+      });
 
       return new Promise((resolve, reject) => {
         deployment
