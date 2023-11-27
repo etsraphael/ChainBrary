@@ -47,6 +47,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   biddersCountdown$: Observable<number>;
   countdownSubscription: Subscription;
   widthdrawTaken = false;
+  tenMinutesLeft = false;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   private timerSubscription: Subscription | null = null;
@@ -164,12 +165,18 @@ export class BidResultComponent implements OnInit, OnDestroy {
 
               if (distance < 0) {
                 this.timeRemaining = 'Auction ended';
+                this.tenMinutesLeft = false;
                 return;
               }
 
               const hours: number = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
               const minutes: number = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
               const seconds: number = Math.floor((distance % (1000 * 60)) / 1000);
+
+              // indicate if 10 minutes left
+              if (minutes <= 10 && hours === 0) {
+                this.tenMinutesLeft = true;
+              }
 
               this.timeRemaining =
                 hours.toString().padStart(2, '0') +

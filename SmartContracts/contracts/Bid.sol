@@ -115,6 +115,17 @@ contract Bid is Ownable, ReentrancyGuard {
             payable(previousHighestBidder).transfer(refundAmount);
         }
 
+        // Extend the auction if the bid is placed in extra time
+        // Convert extendTimeInMinutes to seconds
+        uint256 extendTimeInSeconds = extendTimeInMinutes * 60;
+
+        if (auctionEndTime - block.timestamp < extendTimeInSeconds) {
+            // Safely calculate the new end time
+            (bool success, uint256 newEndTime) = Math.tryAdd(block.timestamp, extendTimeInSeconds);
+            require(success, "Time calculation overflow");
+            auctionEndTime = newEndTime;
+        }
+
         emit NewBid(_msgSender(), msg.value);
     }
 

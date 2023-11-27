@@ -100,6 +100,23 @@
           </mat-form-field>
         </div>
       </div>
+      <!-- Warning message -->
+      <div *ngIf="tenMinutesLeft && (bidEnded$ | async) === false" class="row my-2">
+        <div class="col-12">
+          <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">Warning!</h4>
+            <p>
+              We are currently approchaing the end of the auction. Please make sure to submit your bid with a higher
+              value of fee to ensure that your transaction will be processed in time.
+            </p>
+            <hr />
+            <p class="mb-0">
+              An extra of 10 minutes will be added to the auction if a bid is placed within the last 10 minutes of the
+              auction.
+            </p>
+          </div>
+        </div>
+      </div>
       <!-- Action button -->
       <div class="row my-2">
         <div class="col-12">
