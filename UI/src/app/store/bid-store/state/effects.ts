@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
+import { INetworkDetail, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
@@ -27,7 +27,8 @@ export class BidEffects {
     private actions$: Actions,
     private bidService: BidService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router,
+    private web3LoginService: Web3LoginService
   ) {}
 
   getBidByTxn$ = createEffect(() => {
@@ -120,6 +121,26 @@ export class BidEffects {
     },
     { dispatch: false }
   );
+
+  createBidWithoutWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.createBid),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] == null && payload[2] == null),
+      map(
+        (payload: [ReturnType<typeof BidActions.createBid>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof BidActions.createBid>, WalletProvider, string]
+      ),
+
+      tap(() => this.web3LoginService.openLoginModal()),
+      map(() => {
+        return BidActions.createBidFailure({
+          message:
+            'Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.'
+        })
+      })
+    );
+  });
 
   createBid$ = createEffect(() => {
     return this.actions$.pipe(

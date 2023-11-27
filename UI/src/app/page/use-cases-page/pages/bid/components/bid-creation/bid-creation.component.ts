@@ -1,9 +1,18 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
+import {
+  Observable,
+  ReplaySubject,
+  distinctUntilChanged,
+  filter,
+  map,
+  takeUntil,
+  withLatestFrom
+} from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
@@ -11,6 +20,7 @@ import { TermAndCondModalComponent } from './../../../../../../shared/components
 import { bidTermAndCond } from './../../../../../../shared/data/termAndCond';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidCreation } from './../../../../../../shared/interfaces/bid.interface';
+import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 import { createBid } from './../../../../../../store/bid-store/state/actions';
 import { selectCurrentBid } from './../../../../../../store/bid-store/state/selectors';
 
@@ -19,7 +29,7 @@ import { selectCurrentBid } from './../../../../../../store/bid-store/state/sele
   templateUrl: './bid-creation.component.html',
   styleUrls: ['./bid-creation.component.scss']
 })
-export class BidCreationComponent implements OnInit {
+export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('carouselExampleCaptions', { static: false }) carousel: ElementRef;
   @ViewChild('nextButton', { static: false }) nextButton: ElementRef<HTMLButtonElement>;
   @ViewChild('prevButton', { static: false }) prevButton: ElementRef<HTMLButtonElement>;
@@ -27,6 +37,8 @@ export class BidCreationComponent implements OnInit {
   mainForm: FormGroup<BidForm>;
   imgList: string[] = [];
   imgLimit = 5;
+  networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.networkSupported;
+  networkList: INetworkDetail[] = [];
 
   headerPayload: IUseCasesHeader = {
     title: 'Bid creation',
@@ -34,7 +46,7 @@ export class BidCreationComponent implements OnInit {
     description: null
   };
 
-  bidCreation$: Observable<StoreState<IBid | null>> = this.store.select(selectCurrentBid);
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   get bidCreationLoading$(): Observable<boolean> {
     return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.loading));
@@ -47,11 +59,22 @@ export class BidCreationComponent implements OnInit {
   constructor(
     private readonly store: Store,
     private dialog: MatDialog,
-    private snackBar: MatSnackBar
+    private snackBar: MatSnackBar,
+    public web3LoginService: Web3LoginService
   ) {}
+
+  currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  bidCreation$: Observable<StoreState<IBid | null>> = this.store.select(selectCurrentBid);
 
   ngOnInit(): void {
     this.setUpForm();
+    this.generateNetworkSupported();
+  }
+
+  generateNetworkSupported(): void {
+    this.networkList = this.networkSupported.map((chainId: NetworkChainId) =>
+      this.web3LoginService.getNetworkDetailByChainId(chainId)
+    );
   }
 
   setUpForm(): void {
@@ -60,8 +83,48 @@ export class BidCreationComponent implements OnInit {
       ownerName: new FormControl<string | null>(null, [Validators.required]),
       description: new FormControl<string | null>(null, [Validators.required]),
       duration: new FormControl<number | null>(null, [Validators.required]),
-      termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue])
+      termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
+      networkChainId: new FormControl<NetworkChainId | null>(null, [Validators.required])
     });
+
+    this.mainForm
+      .get('networkChainId')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        withLatestFrom(this.currentNetwork$),
+        takeUntil(this.destroyed$),
+        filter(([chainId,]: [NetworkChainId | null, INetworkDetail | null]) => chainId !== null),
+        map((payload) => payload as [NetworkChainId, INetworkDetail | null])
+      )
+      .subscribe(([chainId, network]: [NetworkChainId, INetworkDetail | null]) => {
+
+        // reset error
+        this.mainForm.get('networkChainId')?.clearValidators();
+        this.mainForm.get('networkChainId')?.setValidators([Validators.required]);
+        this.mainForm.get('networkChainId')?.updateValueAndValidity();
+
+        if(chainId !== network?.chainId){
+          this.mainForm.get('networkChainId')?.setErrors({ notMatching: true });
+        }
+
+        if (!this.networkSupported.includes(chainId)) {
+          this.mainForm.get('networkChainId')?.setErrors({ notSupported: true });
+        }
+
+      });
+  }
+
+
+  ngAfterViewInit(): void {
+    this.currentNetwork$
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((network: INetworkDetail | null) => network !== null),
+        map((network: INetworkDetail | null) => network as INetworkDetail),
+      )
+      .subscribe((network: INetworkDetail) => {
+        this.mainForm.get('networkChainId')?.setValue(network.chainId);
+      });
   }
 
   openImageDialog(): void {
@@ -137,6 +200,11 @@ export class BidCreationComponent implements OnInit {
 
     return this.store.dispatch(createBid({ payload }));
   }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
+  }
 }
 
 export interface BidForm {
@@ -145,4 +213,5 @@ export interface BidForm {
   description: FormControl<string | null>;
   duration: FormControl<number | null>;
   termsAndCond: FormControl<boolean | null>;
+  networkChainId: FormControl<NetworkChainId | null>;
 }

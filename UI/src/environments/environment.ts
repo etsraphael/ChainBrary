@@ -96,6 +96,16 @@ export const environment = {
           address: '0x537339ca0a52a79cd1509ee340113a10b25ab2b0'
         }
       ]
+    },
+    bid: {
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.BNB,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.ETHEREUM,
+        NetworkChainId.LOCALHOST
+      ]
     }
   },
   organizationName: 'chainbrary0',
