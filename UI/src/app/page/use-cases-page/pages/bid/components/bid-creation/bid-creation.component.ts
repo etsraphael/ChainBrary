@@ -4,15 +4,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import {
-  Observable,
-  ReplaySubject,
-  distinctUntilChanged,
-  filter,
-  map,
-  takeUntil,
-  withLatestFrom
-} from 'rxjs';
+import { Observable, ReplaySubject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
@@ -93,34 +85,31 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
         distinctUntilChanged(),
         withLatestFrom(this.currentNetwork$),
         takeUntil(this.destroyed$),
-        filter(([chainId,]: [NetworkChainId | null, INetworkDetail | null]) => chainId !== null),
+        filter(([chainId]: [NetworkChainId | null, INetworkDetail | null]) => chainId !== null),
         map((payload) => payload as [NetworkChainId, INetworkDetail | null])
       )
       .subscribe(([chainId, network]: [NetworkChainId, INetworkDetail | null]) => {
-
         // reset error
         this.mainForm.get('networkChainId')?.clearValidators();
         this.mainForm.get('networkChainId')?.setValidators([Validators.required]);
         this.mainForm.get('networkChainId')?.updateValueAndValidity();
 
-        if(chainId !== network?.chainId){
+        if (chainId !== network?.chainId) {
           this.mainForm.get('networkChainId')?.setErrors({ notMatching: true });
         }
 
         if (!this.networkSupported.includes(chainId)) {
           this.mainForm.get('networkChainId')?.setErrors({ notSupported: true });
         }
-
       });
   }
-
 
   ngAfterViewInit(): void {
     this.currentNetwork$
       .pipe(
         takeUntil(this.destroyed$),
         filter((network: INetworkDetail | null) => network !== null),
-        map((network: INetworkDetail | null) => network as INetworkDetail),
+        map((network: INetworkDetail | null) => network as INetworkDetail)
       )
       .subscribe((network: INetworkDetail) => {
         this.mainForm.get('networkChainId')?.setValue(network.chainId);

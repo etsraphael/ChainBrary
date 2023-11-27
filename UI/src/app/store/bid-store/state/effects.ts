@@ -137,7 +137,7 @@ export class BidEffects {
         return BidActions.createBidFailure({
           message:
             'Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.'
-        })
+        });
       })
     );
   });

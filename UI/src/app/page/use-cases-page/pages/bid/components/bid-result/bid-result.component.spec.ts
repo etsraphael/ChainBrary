@@ -6,6 +6,7 @@ import { UserCasesSharedComponentsModule } from './../../../../components/user-c
 import { BidResultComponent } from './bid-result.component';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { requestWithdrawSuccess } from 'src/app/store/bid-store/state/actions';
+import { INetworkDetail, NetworkChainId, NetworkVersion, TokenId } from '@chainbrary/web3-login';
 
 describe('BidResultComponent', () => {
   let component: BidResultComponent;
@@ -50,6 +51,20 @@ describe('BidResultComponent', () => {
     component.requestWithdrawSuccessObs = of(<ReturnType<typeof requestWithdrawSuccess>>{
       txn: ''
     });
+
+    component.currentNetwork = <INetworkDetail>{
+      chainId: NetworkChainId.ETHEREUM,
+      networkVersion: NetworkVersion.ETHEREUM,
+      name: 'Ethereum Mainnet',
+      shortName: 'Ethereum',
+      nativeCurrency: {
+        id: TokenId.ETHEREUM,
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18
+      },
+      blockExplorerUrls: 'https://etherscan.io'
+    };
 
     fixture.detectChanges();
   });
