@@ -26,6 +26,8 @@ export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: strin
         return [WALLET_ADDRESS];
       case 'personal_sign':
         return SIGNED_MESSAGE;
+      case 'eth_chainId':
+        return networkChainId;
       default:
         throw Error(`Unknown request: ${request.method}`);
     }
