@@ -11,7 +11,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     BidActions.createBid,
     (state): IBidState => ({
       ...state,
-      currentBid: {
+      bidCreation: {
         data: null,
         loading: true,
         error: null
@@ -22,7 +22,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     BidActions.createBidFailure,
     (state, { message }): IBidState => ({
       ...state,
-      currentBid: {
+      bidCreation: {
         data: null,
         loading: false,
         error: message
@@ -33,7 +33,7 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     BidActions.createBidSuccess,
     (state): IBidState => ({
       ...state,
-      currentBid: {
+      bidCreation: {
         data: null,
         loading: false,
         error: null

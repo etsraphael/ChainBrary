@@ -132,14 +132,14 @@ export class BidResultComponent implements OnInit, OnDestroy {
   }
 
   incrementBid(): void {
-    const currentBid = this.bidForm.get('highestBid')?.value;
-    this.bidForm.get('highestBid')?.setValue(currentBid + 1);
+    const bidCreation = this.bidForm.get('highestBid')?.value;
+    this.bidForm.get('highestBid')?.setValue(bidCreation + 1);
   }
 
   decrementBid(): void {
-    const currentBid = this.bidForm.get('highestBid')?.value;
-    if (currentBid > 0) {
-      this.bidForm.get('highestBid')?.setValue(currentBid - 1);
+    const bidCreation = this.bidForm.get('highestBid')?.value;
+    if (bidCreation > 0) {
+      this.bidForm.get('highestBid')?.setValue(bidCreation - 1);
     }
   }
 

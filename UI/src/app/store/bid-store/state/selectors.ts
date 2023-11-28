@@ -5,9 +5,9 @@ import { BID_FEATURE_KEY, IBidState } from './interfaces';
 
 export const selectBid = createFeatureSelector<IBidState>(BID_FEATURE_KEY);
 
-export const selectCurrentBid: MemoizedSelector<object, StoreState<IBid | null>> = createSelector(
+export const selectbidCreation: MemoizedSelector<object, StoreState<IBid | null>> = createSelector(
   selectBid,
-  (s: IBidState) => s.currentBid
+  (s: IBidState) => s.bidCreation
 );
 
 export const selectSearchBid: MemoizedSelector<object, StoreState<IBid | null>> = createSelector(

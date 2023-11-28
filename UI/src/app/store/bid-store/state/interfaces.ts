@@ -4,7 +4,7 @@ import { IBid, IBidOffer } from './../../../shared/interfaces/bid.interface';
 export const BID_FEATURE_KEY = 'bid';
 
 export interface IBidState {
-  currentBid: StoreState<IBid | null>;
+  bidCreation: StoreState<IBid | null>;
   searchBid: StoreState<IBid | null>;
   bidders: StoreState<IBidOffer[]>;
   widthdrawing: ActionStoreProcessing;
