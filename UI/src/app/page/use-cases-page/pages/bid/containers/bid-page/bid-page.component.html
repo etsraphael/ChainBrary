@@ -62,6 +62,13 @@
                 address and are on the appropriate network. Please check the URL or go back to the
                 <a routerLink="/use-cases/search">search</a> page.
               </p>
+              <hr />
+              <p>
+                Please be aware that confirmation times for recent bids can vary due to network conditions. For the
+                latest status, kindly refresh this page. If your transaction is still processing, you can track it here:
+                <a target="_blank" [href]="txnLink$ | async">{{ txnFormatted$ | async }}</a>. Thank you for your
+                patience.
+              </p>
             </div>
           </div>
         </div>

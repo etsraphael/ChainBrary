@@ -10,6 +10,7 @@ import { BidWithdrawalComponent } from '../../components/bid-withdrawal/bid-with
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
+import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import {
   selectCurrentNetwork,
@@ -38,11 +39,12 @@ export class BidPageComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
-    private readonly store: Store,
-    private route: ActivatedRoute,
     public web3LoginService: Web3LoginService,
+    private route: ActivatedRoute,
+    private readonly store: Store,
     private actions$: Actions,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private formatService: FormatService
   ) {}
 
   searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
@@ -110,6 +112,23 @@ export class BidPageComponent implements OnInit, OnDestroy {
       goBackLink: '/use-cases/bid/search',
       description: null
     };
+  }
+
+  get txnLink$(): Observable<string | null> {
+    return this.currentNetwork$.pipe(
+      takeUntil(this.destroyed$),
+      filter((network) => network !== null),
+      map((network) => network as INetworkDetail),
+      withLatestFrom(this.route.paramMap),
+      map(([network, param]) => this.formatService.generateScanLink(network.chainId, param.get('id') as string))
+    );
+  }
+
+  get txnFormatted$(): Observable<string | null> {
+    return this.route.paramMap.pipe(
+      map((param) => param.get('id') as string),
+      map((txn) => this.formatService.formatPublicAddress(txn, 6))
+    );
   }
 
   ngOnInit(): void {
