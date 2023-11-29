@@ -5,6 +5,7 @@ export const BID_FEATURE_KEY = 'bid';
 
 export interface IBidState {
   bidCreation: StoreState<IBid | null>;
+  bidRefreshCheck: StoreState<{ attempt: number }>;
   searchBid: StoreState<IBid | null>;
   bidders: StoreState<IBidOffer[]>;
   widthdrawing: ActionStoreProcessing;

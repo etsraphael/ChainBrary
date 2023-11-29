@@ -4,15 +4,16 @@ import { Router } from '@angular/router';
 import { INetworkDetail, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, delay, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
-import { IReceiptTransaction, KeyAndLabel } from './../../../shared/interfaces';
+import { environment } from './../../../../environments/environment';
+import { IReceiptTransaction, KeyAndLabel, StoreState } from './../../../shared/interfaces';
 import { IBid, IBidRefreshResponse } from './../../../shared/interfaces/bid.interface';
 import { BidService } from './../../../shared/services/bid/bid.service';
 import * as BidActions from './actions';
-import { selectBidContractAddress, selectBlockNumber } from './selectors';
+import { selectBidContractAddress, selectBidRefreshCheck, selectBlockNumber } from './selectors';
 
 @Injectable()
 export class BidEffects {
@@ -30,6 +31,82 @@ export class BidEffects {
     private router: Router,
     private web3LoginService: Web3LoginService
   ) {}
+
+  bidCreationChecking$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.bidCreationChecking),
+      concatLatestFrom(() => [
+        this.store.select(selectCurrentNetwork),
+        this.store.select(selectWalletConnected),
+        this.store.select(selectBidRefreshCheck)
+      ]),
+      filter(
+        (payload) =>
+          payload[1] !== null && payload[2] !== null && payload[3].data.attempt <= environment.contracts.bid.maxAttempt
+      ),
+      delay(environment.contracts.bid.attemptTimeout * 1000 * 60),
+      map(
+        (
+          payload: [
+            ReturnType<typeof BidActions.bidCreationChecking>,
+            INetworkDetail | null,
+            WalletProvider | null,
+            StoreState<{ attempt: number }>
+          ]
+        ) =>
+          payload as [
+            ReturnType<typeof BidActions.bidCreationChecking>,
+            INetworkDetail,
+            WalletProvider,
+            StoreState<{ attempt: number }>
+          ]
+      ),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof BidActions.bidCreationChecking>,
+            INetworkDetail,
+            WalletProvider,
+            StoreState<{ attempt: number }>
+          ]
+        ) => {
+          return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn)).pipe(
+            map((response: IBid) => BidActions.bidCreationCheckingSuccess({ bid: response, txn: action[0].txn })),
+            catchError((error: { message: string }) =>
+              of(BidActions.bidCreationCheckingFailure({ message: error.message, txn: action[0].txn }))
+            )
+          );
+        }
+      )
+    );
+  });
+
+  bidCreationCheckingFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.bidCreationCheckingFailure),
+      concatLatestFrom(() => [this.store.select(selectBidRefreshCheck)]),
+      map((payload: [ReturnType<typeof BidActions.bidCreationCheckingFailure>, StoreState<{ attempt: number }>]) => {
+        if (payload[1].data.attempt > environment.contracts.bid.maxAttempt) {
+          return BidActions.bidCreationCheckingEnd();
+        } else {
+          return BidActions.bidCreationChecking({ txn: payload[0].txn });
+        }
+      })
+    );
+  });
+
+  bidCreationCheckingSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(BidActions.bidCreationCheckingSuccess),
+      tap((action: ReturnType<typeof BidActions.bidCreationCheckingSuccess>) => {
+        this.router.navigate(['/use-cases/bid/search/', action.txn]);
+      }),
+      mergeMap((response: ReturnType<typeof BidActions.bidCreationCheckingSuccess>) => [
+        BidActions.getBidByTxnSuccess({ payload: response.bid }),
+        BidActions.bidRefreshCheck()
+      ])
+    );
+  });
 
   getBidByTxn$ = createEffect(() => {
     return this.actions$.pipe(
@@ -154,7 +231,7 @@ export class BidEffects {
       switchMap((action: [ReturnType<typeof BidActions.createBid>, WalletProvider, string]) => {
         return from(this.bidService.deployBidContract(action[1], action[2], action[0].payload)).pipe(
           map((response: { contract: Contract; transactionHash: string }) =>
-            BidActions.createBidSuccess({ txn: response.transactionHash })
+            BidActions.bidCreationChecking({ txn: response.transactionHash })
           ),
           catchError(() =>
             of(
@@ -208,7 +285,7 @@ export class BidEffects {
     );
   });
 
-  requestWithdraw = createEffect(() => {
+  requestWithdraw$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(BidActions.requestWithdraw),
       concatLatestFrom(() => [

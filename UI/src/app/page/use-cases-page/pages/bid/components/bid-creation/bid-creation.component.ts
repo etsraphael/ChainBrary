@@ -14,7 +14,7 @@ import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidCreation } from './../../../../../../shared/interfaces/bid.interface';
 import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 import { createBid } from './../../../../../../store/bid-store/state/actions';
-import { selectbidCreation } from './../../../../../../store/bid-store/state/selectors';
+import { selectBidCreation } from './../../../../../../store/bid-store/state/selectors';
 
 @Component({
   selector: 'app-bid-creation',
@@ -57,7 +57,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   ) {}
 
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
-  bidCreation$: Observable<StoreState<IBid | null>> = this.store.select(selectbidCreation);
+  bidCreation$: Observable<StoreState<IBid | null>> = this.store.select(selectBidCreation);
 
   ngOnInit(): void {
     this.setUpForm();

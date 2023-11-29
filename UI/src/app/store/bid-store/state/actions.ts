@@ -9,6 +9,17 @@ export const createBid = createAction('[Bid] Create Bid', props<{ payload: IBidC
 export const createBidSuccess = createAction('[Bid] Create Bid Success', props<{ txn: string }>());
 export const createBidFailure = createAction('[Bid] Create Bid Failure', props<{ message: string }>());
 
+export const bidCreationChecking = createAction('[Bid] Bid Creation Looking', props<{ txn: string }>());
+export const bidCreationCheckingSuccess = createAction(
+  '[Bid] Bid Creation Looking Success',
+  props<{ bid: IBid; txn: string }>()
+);
+export const bidCreationCheckingFailure = createAction(
+  '[Bid] Bid Creation Looking Failure',
+  props<{ message: string; txn: string }>()
+);
+export const bidCreationCheckingEnd = createAction('[Bid] Bid Creation Looking End');
+
 export const getBidByTxn = createAction('[Bid] Get Bid By Txn', props<{ txn: string }>());
 export const getBidByTxnSuccess = createAction('[Bid] Get Bid By Txn Success', props<{ payload: IBid }>());
 export const getBidByTxnFailure = createAction('[Bid] Get Bid By Txn Failure', props<{ message: string }>());

@@ -6,6 +6,13 @@ export const initialState: IBidState = {
     error: null,
     data: null
   },
+  bidRefreshCheck: {
+    loading: false,
+    error: null,
+    data: {
+      attempt: 0
+    }
+  },
   searchBid: {
     loading: false,
     error: null,

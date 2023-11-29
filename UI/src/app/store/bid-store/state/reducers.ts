@@ -176,6 +176,41 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
         error: message
       }
     })
+  ),
+  on(
+    BidActions.bidCreationChecking,
+    (state): IBidState => ({
+      ...state,
+      bidRefreshCheck: {
+        data: {
+          attempt: state.bidRefreshCheck.data ? state.bidRefreshCheck.data.attempt + 1 : 1
+        },
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    BidActions.bidCreationCheckingSuccess,
+    (state): IBidState => ({
+      ...state,
+      bidRefreshCheck: {
+        ...state.bidRefreshCheck,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    BidActions.bidCreationCheckingFailure,
+    (state, { message }): IBidState => ({
+      ...state,
+      bidRefreshCheck: {
+        ...state.bidRefreshCheck,
+        loading: false,
+        error: message
+      }
+    })
   )
 );
 
