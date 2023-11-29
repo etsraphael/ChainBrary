@@ -1,0 +1,32 @@
+@import './../../../../../../shared/styles/form.scss';
+
+.upload-image-carousel {
+  cursor: pointer;
+}
+
+.carousel-inner {
+  border-radius: 12px;
+}
+
+.upload-image-container {
+  border-radius: 12px;
+  border: 1px dashed #9e9e9e;
+  cursor: pointer;
+}
+
+.upload-image-container:hover {
+  background-color: #9e9e9e24;
+}
+
+.bi-image {
+  font-size: 2rem;
+}
+
+/* CSS to blur the image */
+.blur-image {
+  filter: blur(8px); /* Adjust the px value to increase/decrease the blur effect */
+}
+
+.carousel-inner .item {
+  height: 400px; /* add this */
+}

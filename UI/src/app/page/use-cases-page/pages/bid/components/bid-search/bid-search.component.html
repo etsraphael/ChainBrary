@@ -1,0 +1,36 @@
+<!-- Title container -->
+<app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+<!-- Form container -->
+<div class="container">
+  <div class="row mx-0">
+    <div class="col-12">
+      <form [formGroup]="mainForm">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label>Bid address</mat-label>
+          <input formControlName="address" matInput data-id="bid-txn-input" type="text" placeholder="0x" />
+          <mat-error *ngIf="mainForm.get('address')?.hasError('required')"> Bid name is required </mat-error>
+          <mat-error *ngIf="mainForm.get('address')?.hasError('pattern')">
+            Bid address must be a valid address
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </div>
+    <!-- Error message -->
+    <div *ngIf="bidErrorMessage$ | async as error" class="col-12 my-2">
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+    </div>
+    <div *ngIf="(bidIsLoading$ | async) === false" class="col-12">
+      <app-chainbrary-button
+        data-id="search-bid-btn"
+        [buttonClasses]="['btn-info-gradient', 'text-light']"
+        buttonText="Search"
+        (callToAction)="onSubmit()"
+      />
+    </div>
+    <div *ngIf="(bidIsLoading$ | async) === true" class="col-12 d-flex justify-content-center">
+      <mat-spinner [diameter]="35"></mat-spinner>
+    </div>
+  </div>
+</div>

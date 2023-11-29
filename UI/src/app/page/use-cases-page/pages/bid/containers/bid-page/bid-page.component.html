@@ -1,0 +1,95 @@
+<!-- Login -->
+<ng-container *ngIf="(userIsConnected$ | async) === false; else loggedInTemplate">
+  <!-- Header -->
+  <app-use-cases-header [header]="loginHeader"></app-use-cases-header>
+  <!-- Body -->
+  <div class="d-flex flex-column align-items-center justify-content-center pt-5">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <i class="bi bi-wallet2 text-secondary"></i>
+      <p class="text-center mt-3">A connected wallet is necessary to see the the progress of the bid.</p>
+      <app-chainbrary-button
+        [buttonClasses]="['btn-info-gradient', 'text-light']"
+        buttonText="Connect Wallet"
+        (callToAction)="web3LoginService.openLoginModal()"
+        data-id="login-btn"
+      />
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loggedInTemplate>
+  <!-- Creation Loading -->
+  <ng-container *ngIf="(bidCreationIsLoading$ | async) === true">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="d-flex flex-column align-items-center pt-5">
+          <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+          <p class="mt-3 text-secondary text-center">
+            <span>
+              Creating your bid... Please confirm the request on your wallet. This could take 5 minutes, please stay on
+              this page.
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Loading -->
+  <ng-container *ngIf="bidIsLoading$ | async">
+    <div class="row">
+      <div class="col-12">
+        <div class="d-flex justify-content-center pt-5">
+          <div class="spinner-border text-primary">
+            <span class="visually-hidden">Loading...</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <!-- Bid page -->
+  <ng-container *ngIf="(bidIsLoading$ | async) === false && (bid$ | async) !== null">
+    <app-bid-result
+      [bidObs]="nonNullBid$"
+      [bidderListStoreObs]="bidderListStore$"
+      [startBidderCountdownTrigger]="startBidderCountdownTrigger$"
+      [isOwner]="(isOwner$ | async)!"
+      [bidWidthdrawingObs]="bidWidthdrawing$"
+      [requestWithdrawSuccessObs]="requestWithdrawSuccess$"
+      [currentNetwork]="(currentNetwork$ | async)!"
+      (placeBid)="onSubmit($event)"
+      (refreshBidderList)="refreshBidderList()"
+      (requestWithdraw)="requestWithdraw()"
+    >
+    </app-bid-result>
+  </ng-container>
+
+  <!-- Bid not found -->
+  <ng-container *ngIf="(bidError$ | async) !== null">
+    <app-use-cases-header [header]="failureHeader"></app-use-cases-header>
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex justify-content-center">
+            <div class="alert alert-danger border-0" role="alert">
+              <h4 class="alert-heading">Bid not found</h4>
+              <p>
+                The bid you are seeking cannot be found on this network. Please verify that you have entered the correct
+                address and are on the appropriate network. Please check the URL or go back to the
+                <a routerLink="/use-cases/search">search</a> page.
+              </p>
+              <hr />
+              <p>
+                Please be aware that confirmation times for recent bids can vary due to network conditions. For the
+                latest status, kindly refresh this page. If your transaction is still processing, you can track it here:
+                <a target="_blank" [href]="txnLink$ | async">{{ txnFormatted$ | async }}</a
+                >. Thank you for your patience.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</ng-template>

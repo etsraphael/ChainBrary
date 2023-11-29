@@ -206,7 +206,7 @@ export class PaymentRequestEffects {
           payload: [
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
-            INetworkDetail | null | null,
+            INetworkDetail | null,
             boolean,
             WalletProvider | null
           ]
