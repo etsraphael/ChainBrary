@@ -10,6 +10,11 @@ export const selectBidCreation: MemoizedSelector<object, StoreState<IBid | null>
   (s: IBidState) => s.bidCreation
 );
 
+export const selectBidCreationIsLoading: MemoizedSelector<object, boolean> = createSelector(
+  selectBidCreation,
+  (s: StoreState<IBid | null>) => s.loading
+);
+
 export const selectBidRefreshCheck: MemoizedSelector<object, StoreState<{ attempt: number }>> = createSelector(
   selectBid,
   (s: IBidState) => s.bidRefreshCheck

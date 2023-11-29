@@ -25,6 +25,7 @@ import {
   requestWithdrawSuccess
 } from './../../../../../../store/bid-store/state/actions';
 import {
+  selectBidCreationIsLoading,
   selectBidWidthdrawing,
   selectBidders,
   selectSearchBid
@@ -60,6 +61,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
   );
   bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing);
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  bidCreationIsLoading$: Observable<boolean> = this.store.select(selectBidCreationIsLoading);
 
   get isOwner$(): Observable<boolean> {
     return this.bid$.pipe(
@@ -153,6 +155,8 @@ export class BidPageComponent implements OnInit, OnDestroy {
           (event: { publicAddress: string }) =>
             this.route.snapshot.paramMap.get('id') !== null && event.publicAddress !== null
         ),
+        withLatestFrom(this.bidCreationIsLoading$),
+        filter(([, isLoading]) => !isLoading),
         takeUntil(this.destroyed$)
       )
       .subscribe(() => this.getBid());

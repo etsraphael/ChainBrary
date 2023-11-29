@@ -18,6 +18,23 @@
 </ng-container>
 
 <ng-template #loggedInTemplate>
+  <!-- Creation Loading -->
+  <ng-container *ngIf="(bidCreationIsLoading$ | async) === true">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="d-flex flex-column align-items-center pt-5">
+          <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+          <p class="mt-3 text-secondary text-center">
+            <span>
+              Creating your bid... Please confirm the request on your wallet. This could take 5 minutes, please stay on
+              this page.
+            </span>
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
   <!-- Loading -->
   <ng-container *ngIf="bidIsLoading$ | async">
     <div class="row">

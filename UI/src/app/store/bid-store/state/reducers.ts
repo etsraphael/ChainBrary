@@ -194,6 +194,11 @@ export const authReducer: ActionReducer<IBidState, Action> = createReducer(
     BidActions.bidCreationCheckingSuccess,
     (state): IBidState => ({
       ...state,
+      bidCreation: {
+        ...state.bidCreation,
+        loading: false,
+        error: null
+      },
       bidRefreshCheck: {
         ...state.bidRefreshCheck,
         loading: false,

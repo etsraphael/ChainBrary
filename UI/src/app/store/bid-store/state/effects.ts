@@ -98,9 +98,6 @@ export class BidEffects {
   bidCreationCheckingSuccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(BidActions.bidCreationCheckingSuccess),
-      tap((action: ReturnType<typeof BidActions.bidCreationCheckingSuccess>) => {
-        this.router.navigate(['/use-cases/bid/search/', action.txn]);
-      }),
       mergeMap((response: ReturnType<typeof BidActions.bidCreationCheckingSuccess>) => [
         BidActions.getBidByTxnSuccess({ payload: response.bid }),
         BidActions.bidRefreshCheck()
@@ -233,6 +230,9 @@ export class BidEffects {
           map((response: { contract: Contract; transactionHash: string }) =>
             BidActions.bidCreationChecking({ txn: response.transactionHash })
           ),
+          tap((action: ReturnType<typeof BidActions.bidCreationChecking>) => {
+            this.router.navigate(['/use-cases/bid/search/', action.txn]);
+          }),
           catchError(() =>
             of(
               BidActions.createBidFailure({
@@ -246,21 +246,20 @@ export class BidEffects {
     );
   });
 
-  createBidSuccess$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(BidActions.createBidSuccess),
-      tap((action: { txn: string }) => {
-        this.router.navigate(['/use-cases/bid/search/', action.txn]);
-        this.snackBar.open('Bid created successfully', '', {
-          duration: 5000,
-          panelClass: ['success-snackbar']
-        });
-      }),
-      map((action: { txn: string }) => {
-        return BidActions.getBidByTxn({ txn: action.txn });
-      })
-    );
-  });
+  createBidSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(BidActions.createBidSuccess),
+        tap(() => {
+          this.snackBar.open('Bid created successfully', '', {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
   getbidRefresh$ = createEffect(() => {
     return this.actions$.pipe(
