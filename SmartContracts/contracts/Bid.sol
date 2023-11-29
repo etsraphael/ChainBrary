@@ -12,7 +12,8 @@ contract Bid is Ownable, ReentrancyGuard {
     uint256 public highestBid;
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
-    uint256 public extendTimeInMinutes; // Changed variable name
+    uint256 public extendTimeInMinutes;
+    bool public auctionAmountWithdrawn = false;
 
     // List of all bidders
     Bidder[] public bidders;
@@ -20,6 +21,16 @@ contract Bid is Ownable, ReentrancyGuard {
         address bidderAddress;
         uint256 amount;
     }
+
+    struct BidMetaData {
+        string bidName;
+        string ownerName;
+        string description;
+        address owner;
+        string[] imgLists;
+    }
+
+    BidMetaData public bidMetaData;
 
     address[] public bidderAddresses;
     mapping(address => uint256) public bids;
@@ -29,9 +40,10 @@ contract Bid is Ownable, ReentrancyGuard {
     event Withdrawal(address indexed bidder, uint256 amount);
     event AuctionSuccessful(address indexed bidder, uint256 amount);
     event CommunityTransfer(address indexed bidder, uint256 amount);
+    event FallbackCalled(address indexed sender);
 
     modifier auctionOngoing() {
-        require(block.timestamp >= auctionStartTime && block.timestamp <= auctionEndTime, "Auction not ongoing");
+        require(block.timestamp >= auctionStartTime && block.timestamp <= auctionEndTime, "auction_not_ongoing");
         _;
     }
 
@@ -43,11 +55,22 @@ contract Bid is Ownable, ReentrancyGuard {
     constructor(
         address _communityAddress,
         uint256 _extendTimeInMinutes,
-        uint256 _durationInMinutes
+        uint256 _durationInMinutes,
+        string[] memory _imgLists,
+        string memory bidName,
+        string memory ownerName,
+        string memory description
     ) Ownable(_msgSender()) {
         communityAddress = _communityAddress;
         extendTimeInMinutes = _extendTimeInMinutes;
         startAuction(_durationInMinutes);
+        bidMetaData = BidMetaData({
+            bidName: bidName,
+            owner: _msgSender(),
+            imgLists: _imgLists,
+            ownerName: ownerName,
+            description: description
+        });
     }
 
     function auctionDone() public view returns (bool) {
@@ -72,13 +95,8 @@ contract Bid is Ownable, ReentrancyGuard {
     }
 
     function bid() external payable auctionOngoing nonReentrant {
-        uint256 fee = calculateFee(msg.value);
-
-        (bool actualBidAmountCalculationSuccess, uint256 actualBidAmount) = Math.trySub(msg.value, fee);
-        require(actualBidAmountCalculationSuccess, "Subtraction overflow");
-
-        require(actualBidAmount > highestBid, "Bid amount after fee deduction is not high enough");
-        require(_msgSender() != highestBidder, "You are already the highest bidder");
+        require(msg.value > highestBid, "bid_amount_not_high_enough");
+        require(_msgSender() != highestBidder, "already_highest_bidder");
 
         uint256 refundAmount = highestBid;
         address previousHighestBidder = highestBidder;
@@ -88,32 +106,41 @@ contract Bid is Ownable, ReentrancyGuard {
             bidderAddresses.push(_msgSender());
         }
 
-        bids[_msgSender()] = actualBidAmount;
+        bids[_msgSender()] = msg.value;
         highestBidder = _msgSender();
-        highestBid = actualBidAmount;
-
-        // If the auction is about to end, extend the auction by the extendTimeInMinutes
-        if (auctionEndTime - block.timestamp <= 10 minutes) {
-            (bool extendedTimeSuccess, uint256 extendedTime) = Math.tryMul(extendTimeInMinutes, 60);
-            require(extendedTimeSuccess, "Multiplication overflow");
-            auctionEndTime = block.timestamp + extendedTime;
-        }
-
-        // Transfer the fee to the community address
-        payable(communityAddress).transfer(fee);
-        emit CommunityTransfer(_msgSender(), fee);
+        highestBid = msg.value;
 
         // Refund the previous highest bidder
         if (previousHighestBidder != address(0)) {
             payable(previousHighestBidder).transfer(refundAmount);
         }
 
-        emit NewBid(_msgSender(), actualBidAmount);
+        // Extend the auction if the bid is placed in extra time
+        // Convert extendTimeInMinutes to seconds
+        uint256 extendTimeInSeconds = extendTimeInMinutes * 60;
+
+        if (auctionEndTime - block.timestamp < extendTimeInSeconds) {
+            // Safely calculate the new end time
+            (bool success, uint256 newEndTime) = Math.tryAdd(block.timestamp, extendTimeInSeconds);
+            require(success, "Time calculation overflow");
+            auctionEndTime = newEndTime;
+        }
+
+        emit NewBid(_msgSender(), msg.value);
     }
 
     function withdrawAuctionAmount() external onlyOwner auctionEnded {
-        payable(owner()).transfer(highestBid);
-        emit Withdrawal(owner(), highestBid);
+        require(!auctionAmountWithdrawn, "Auction amount already withdrawn");
+
+        uint256 fee = calculateFee(highestBid);
+        uint256 amountAfterFee = highestBid - fee;
+
+        payable(communityAddress).transfer(fee);
+        payable(owner()).transfer(amountAfterFee);
+
+        auctionAmountWithdrawn = true;
+        emit Withdrawal(owner(), amountAfterFee);
+        emit CommunityTransfer(communityAddress, fee);
         emit AuctionSuccessful(highestBidder, highestBid);
     }
 
@@ -126,5 +153,39 @@ contract Bid is Ownable, ReentrancyGuard {
         }
 
         return (bidderAddresses, amounts);
+    }
+
+    function getCompleteBidMetaData()
+        public
+        view
+        returns (
+            string[] memory,
+            string memory,
+            address,
+            uint256,
+            uint256,
+            uint256,
+            string memory,
+            string memory,
+            uint256,
+            bool
+        )
+    {
+        return (
+            bidMetaData.imgLists,
+            bidMetaData.bidName,
+            bidMetaData.owner,
+            auctionStartTime,
+            auctionEndTime,
+            extendTimeInMinutes,
+            bidMetaData.ownerName,
+            bidMetaData.description,
+            highestBid,
+            auctionAmountWithdrawn
+        );
+    }
+
+    fallback() external {
+        emit FallbackCalled(msg.sender);
     }
 }

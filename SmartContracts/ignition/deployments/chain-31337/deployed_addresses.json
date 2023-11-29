@@ -1,9 +1,9 @@
 {
-  "Apollo#Bid": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
-  "Apollo#DataConsumerV3": "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512",
-  "Apollo#ERC20FixedSupply": "0x9fe46736679d2d9a65f0992f2272de9f3c7fa6e0",
-  "Apollo#Lock": "0xcf7ed3acca5a467e9e704c703e8d87f634fb0fc9",
-  "Apollo#Rocket": "0xdc64a140aa3e981100a9beca4e685f962f0cf6c9",
-  "Apollo#TransactionBridge": "0x5fc8d32690cc91d4c39d9d3abcbd16989f875707",
-  "Apollo#TransactionTokenBridge": "0x0165878a594ca255338adfa4d48449f69242eb8f"
+  "Apollo#Bid": "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+  "Apollo#DataConsumerV3": "0x8A791620dd6260079BF849Dc5567aDC3F2FdC318",
+  "Apollo#ERC20FixedSupply": "0x610178dA211FEF7D417bC0e6FeD39F05609AD788",
+  "Apollo#Lock": "0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e",
+  "Apollo#Rocket": "0xA51c1fc2f0D1a1b8494Ed1FE312d7C3a78Ed91C0",
+  "Apollo#TransactionBridge": "0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82",
+  "Apollo#TransactionTokenBridge": "0x9A676e781A523b5d0C0e43731313A708CB607508"
 }

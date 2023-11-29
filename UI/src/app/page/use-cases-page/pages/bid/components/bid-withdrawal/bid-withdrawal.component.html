@@ -1,0 +1,57 @@
+<div class="container p-4">
+  <!-- Description -->
+  <div class="row">
+    <div class="col-12 text-start">
+      <h3 class="text-dark">Withdraw Bid</h3>
+      <p class="text-secondary">
+        You are about to withdraw your bid. Please review the details below carefully. Note that a withdrawal fee will
+        be deducted from the total amount. This action cannot be undone.
+      </p>
+    </div>
+    <!-- Bid Withdrawal Details Table -->
+    <div class="col-12">
+      <table class="table">
+        <thead>
+          <tr>
+            <th scope="col">Description</th>
+            <th scope="col">Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">Total Bid Amount</th>
+            <td class="text-end">{{ bidResult.total }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Withdrawal Fee (0.01%)</th>
+            <td class="text-end">{{ bidResult.fee }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+          </tr>
+          <tr>
+            <th scope="row">Amount to Receive</th>
+            <td class="text-end">{{ bidResult.net }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- Action Buttons -->
+    <div class="col-12">
+      <div class="row mt-3">
+        <div class="col-6">
+          <app-chainbrary-button
+            [buttonClasses]="['btn-secondary-gradient', 'text-light']"
+            buttonText="Cancel"
+            (callToAction)="closeModal()"
+          />
+        </div>
+        <div class="col-6">
+          <app-chainbrary-button
+            data-id="withdraw-bid"
+            [buttonClasses]="['btn-success-gradient', 'text-light']"
+            buttonText="Withdraw Bid"
+            (callToAction)="submit()"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

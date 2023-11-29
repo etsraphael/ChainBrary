@@ -9,7 +9,16 @@ export default buildModule('Apollo', (m) => {
   const priceFeed = deployPriceFeed(m);
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
-  return { rocketContract, lockContract, transactionTokenBridge, transactionBridge, priceFeed, erc20FixedSupply, bidContract };
+
+  return {
+    rocketContract,
+    lockContract,
+    transactionTokenBridge,
+    transactionBridge,
+    priceFeed,
+    erc20FixedSupply,
+    bidContract
+  };
 });
 
 function deployContractContrat(m: any) {
@@ -48,6 +57,17 @@ function deployERC20FixedSupply(m: any) {
 }
 
 function deployBidContract(m: any) {
-  const bidContract = m.contract('Bid', ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '10', '120']);
+  const bidContract = m.contract('Bid', [
+    '0x70997970C51812dc3A010C7d01b50e0d17dc79C8',
+    '10',
+    '120',
+    [
+      'https://images.unsplash.com/photo-1554995207-c18c203602cb?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'https://images.unsplash.com/photo-1537726235470-8504e3beef77?q=80&w=3870&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    ],
+    'House in the woods',
+    'Ray Red Agency',
+    '3 bedroom house in the woods, with a beautiful view of the lake. Perfect for a family of 4, or a couple looking to get away from the city.'
+  ]);
   return bidContract;
 }

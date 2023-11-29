@@ -5,12 +5,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { QRCodeModule } from 'angularx-qrcode';
+import { MarkdownModule } from 'ngx-markdown';
 import { web3LoginConfig } from './../../data/web3LoginConfig.data';
 import { MaterialModule } from './../../module/material.module';
 import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';
 import { FooterPageComponent } from './footer-page/footer-page.component';
 import { HeaderPageComponent } from './header-page/header-page.component';
 import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/qr-code-container-modal.component';
+import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
 import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header/use-cases-sidebar-header.component';
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
@@ -25,9 +27,10 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     UseCasesSidebarComponent,
     TransactionCardComponent,
     ChainbraryButtonComponent,
-    QrCodeContainerModalComponent
+    QrCodeContainerModalComponent,
+    TermAndCondModalComponent
   ],
-  imports: [CommonModule, RouterModule, QRCodeModule, MaterialModule],
+  imports: [CommonModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
     FooterPageComponent,
     HeaderPageComponent,
@@ -36,7 +39,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     UseCasesSidebarComponent,
     TransactionCardComponent,
     ChainbraryButtonComponent,
-    QrCodeContainerModalComponent
+    QrCodeContainerModalComponent,
+    TermAndCondModalComponent
   ]
 })
 export class SharedComponentsModule {}

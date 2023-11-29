@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
@@ -34,5 +35,25 @@ export class FormatService {
       }
     }
     return result;
+  }
+
+  generateScanLink(chainId: NetworkChainId, txn: string): string | null {
+    switch (chainId) {
+      case NetworkChainId.LOCALHOST:
+      case NetworkChainId.ETHEREUM:
+        return `https://etherscan.io/tx/${txn}`;
+      case NetworkChainId.SEPOLIA:
+        return `https://sepolia.etherscan.io/tx/${txn}`;
+      case NetworkChainId.POLYGON:
+        return `https://polygonscan.com/tx/${txn}`;
+      case NetworkChainId.BNB:
+        return `https://bscscan.com/tx/${txn}`;
+      case NetworkChainId.AVALANCHE:
+        return `https://snowtrace.io/tx/${txn}`;
+      case NetworkChainId.FANTOM:
+        return `https://ftmscan.com/tx/${txn}`;
+      default:
+        return null;
+    }
   }
 }
