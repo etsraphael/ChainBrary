@@ -85,6 +85,20 @@ export const getNetworkDetailList = (): INetworkDetail[] => {
       rpcUrls: []
     },
     {
+      chainId: NetworkChainId.LOCALHOST,
+      networkVersion: NetworkVersion.LOCALHOST,
+      name: 'Localhost',
+      shortName: 'Localhost',
+      nativeCurrency: {
+        id: TokenId.ETHEREUM,
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18
+      },
+      blockExplorerUrls: 'https://etherscan.io',
+      rpcUrls: []
+    },
+    {
       chainId: NetworkChainId.BNB,
       networkVersion: NetworkVersion.BNB,
       name: 'Binance Smart Chain Mainnet',

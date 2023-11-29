@@ -6,7 +6,7 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 describe('Create a bid without a wallet', () => {
   beforeEach(() => {
     cy.viewport('iphone-x');
-    cy.login('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '...', NetworkChainId.ETHEREUM);
+    cy.login('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '...', NetworkChainId.LOCALHOST);
     cy.visit(`${Cypress.env('baseUrl')}/use-cases/bid`);
   });
 

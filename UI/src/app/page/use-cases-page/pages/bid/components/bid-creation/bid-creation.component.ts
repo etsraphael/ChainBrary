@@ -79,18 +79,6 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
       termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
       networkChainId: new FormControl<NetworkChainId | null>(null, [Validators.required])
     });
-  }
-
-  ngAfterViewInit(): void {
-    this.currentNetwork$
-      .pipe(
-        takeUntil(this.destroyed$),
-        filter((network: INetworkDetail | null) => network !== null),
-        map((network: INetworkDetail | null) => network as INetworkDetail)
-      )
-      .subscribe((network: INetworkDetail) => {
-        this.mainForm.get('networkChainId')?.setValue(network.chainId);
-      });
 
     this.mainForm
       .get('networkChainId')
@@ -115,6 +103,16 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
           this.mainForm.get('networkChainId')?.setErrors({ notSupported: true });
         }
       });
+  }
+
+  ngAfterViewInit(): void {
+    this.currentNetwork$
+      .pipe(
+        takeUntil(this.destroyed$),
+        filter((network: INetworkDetail | null) => network !== null),
+        map((network: INetworkDetail | null) => network as INetworkDetail)
+      )
+      .subscribe((network: INetworkDetail) => this.mainForm.get('networkChainId')?.setValue(network.chainId));
 
     this.cdr.detectChanges();
   }
