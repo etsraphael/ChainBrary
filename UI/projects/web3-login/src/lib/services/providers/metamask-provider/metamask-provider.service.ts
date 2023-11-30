@@ -127,10 +127,14 @@ export class MetamaskProviderService extends BaseProviderService {
       .request({ method: 'eth_requestAccounts' })
       .then((accounts: string[]) => {
         this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
-        this.publicGlobalValuesService.recentLoginPayload = {
-          publicAddress: accounts[0],
-          network: window.ethereum.eth_chainId
-        };
+        window.ethereum.request({ method: 'eth_chainId' }).then((chainId: string) => {
+          this.publicGlobalValuesService.recentLoginPayload = {
+            publicAddress: accounts[0],
+            network: chainId
+          };
+        }).catch((error: Error) => {
+          this.errorHandlerService.showSnackBar(error.message);
+        })
       })
       .catch((error: Error) => {
         this.errorHandlerService.showSnackBar(error.message);
