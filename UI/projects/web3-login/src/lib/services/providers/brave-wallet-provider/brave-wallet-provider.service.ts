@@ -99,12 +99,12 @@ export class BraveWalletProviderService extends BaseProviderService {
         // Request account access
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
           this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(
-            window.ethereum.eth_chainId
+            window.ethereum.chainId
           );
           this.publicGlobalValuesService.walletConnected = WalletProvider.BRAVE_WALLET;
           this.publicGlobalValuesService.recentLoginPayload = {
             publicAddress: accounts[0],
-            network: window.ethereum.eth_chainId
+            network: window.ethereum.chainId
           };
         });
       }, 1000);
@@ -119,7 +119,7 @@ export class BraveWalletProviderService extends BaseProviderService {
         this.publicGlobalValuesService.walletConnected = WalletProvider.BRAVE_WALLET;
         this.publicGlobalValuesService.recentLoginPayload = {
           publicAddress: accounts[0],
-          network: window.ethereum.eth_chainId
+          network: window.ethereum.chainId
         };
       })
       .catch((error: Error) => {
