@@ -123,8 +123,7 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   }
 
   submit(): void {
-    const { url } = this.mainForm.value;
-    return this.dialogRef.close(url);
+    return this.dialogRef.close(this.urlImageFound);
   }
 }
 

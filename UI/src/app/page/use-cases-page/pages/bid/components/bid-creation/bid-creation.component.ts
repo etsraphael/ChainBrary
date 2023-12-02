@@ -26,7 +26,6 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   @ViewChild('nextButton', { static: false }) nextButton: ElementRef<HTMLButtonElement>;
   @ViewChild('prevButton', { static: false }) prevButton: ElementRef<HTMLButtonElement>;
 
-  mainForm: FormGroup<BidForm>;
   imgList: string[] = [];
   imgLimit = 5;
   networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.networkSupported;
@@ -47,6 +46,15 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   get bidCreationError$(): Observable<string | null> {
     return this.bidCreation$.pipe(map((state: StoreState<IBid | null>) => state.error));
   }
+
+  mainForm = new FormGroup<BidForm>({
+    bidName: new FormControl<string | null>(null, [Validators.required]),
+    ownerName: new FormControl<string | null>(null, [Validators.required]),
+    description: new FormControl<string | null>(null, [Validators.required]),
+    duration: new FormControl<number | null>(null, [Validators.required]),
+    termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
+    networkChainId: new FormControl<NetworkChainId | null>(null, [Validators.required])
+  });
 
   constructor(
     private readonly store: Store,
@@ -71,15 +79,6 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   setUpForm(): void {
-    this.mainForm = new FormGroup({
-      bidName: new FormControl<string | null>(null, [Validators.required]),
-      ownerName: new FormControl<string | null>(null, [Validators.required]),
-      description: new FormControl<string | null>(null, [Validators.required]),
-      duration: new FormControl<number | null>(null, [Validators.required]),
-      termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
-      networkChainId: new FormControl<NetworkChainId | null>(null, [Validators.required])
-    });
-
     this.mainForm
       .get('networkChainId')
       ?.valueChanges.pipe(
@@ -148,7 +147,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   removeImageByUrl(url: string): void {
-    const index = this.imgList.findIndex((photo: string) => photo === url);
+    const index: number = this.imgList.findIndex((photo: string) => photo === url);
     this.imgList.splice(index, 1);
     this.nextButton.nativeElement.click();
   }
