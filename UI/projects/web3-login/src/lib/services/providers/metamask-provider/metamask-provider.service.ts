@@ -107,14 +107,15 @@ export class MetamaskProviderService extends BaseProviderService {
 
         // Request account access
         window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
-          this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(
-            window.ethereum.chainId
-          );
-          this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
-          this.publicGlobalValuesService.recentLoginPayload = {
-            publicAddress: accounts[0],
-            network: window.ethereum.chainId
-          };
+          // Request chainId
+          window.ethereum.request({ method: 'eth_chainId' }).then((chainId: string) => {
+            this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(chainId);
+            this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
+            this.publicGlobalValuesService.recentLoginPayload = {
+              publicAddress: accounts[0],
+              network: chainId
+            };
+          });
         });
       }, 1000);
       return;
@@ -126,10 +127,17 @@ export class MetamaskProviderService extends BaseProviderService {
       .request({ method: 'eth_requestAccounts' })
       .then((accounts: string[]) => {
         this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
-        this.publicGlobalValuesService.recentLoginPayload = {
-          publicAddress: accounts[0],
-          network: window.ethereum.chainId
-        };
+        window.ethereum
+          .request({ method: 'eth_chainId' })
+          .then((chainId: string) => {
+            this.publicGlobalValuesService.recentLoginPayload = {
+              publicAddress: accounts[0],
+              network: chainId
+            };
+          })
+          .catch((error: Error) => {
+            this.errorHandlerService.showSnackBar(error.message);
+          });
       })
       .catch((error: Error) => {
         this.errorHandlerService.showSnackBar(error.message);

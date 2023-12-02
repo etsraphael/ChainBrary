@@ -101,8 +101,24 @@ export const environment = {
           address: '0x537339ca0a52a79cd1509ee340113a10b25ab2b0'
         }
       ]
+    },
+    bid: {
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.BNB,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.ETHEREUM,
+        NetworkChainId.LOCALHOST
+      ],
+      maxAttempt: 5,
+      attemptTimeout: 1 // minutes
     }
   },
   organizationName: 'chainbrary0',
-  gtagId: ''
+  gtagId: '',
+  bid: {
+    biddersCountdown: 60
+  },
+  communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
 };

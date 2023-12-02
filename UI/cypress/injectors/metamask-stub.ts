@@ -26,6 +26,8 @@ export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: strin
         return [WALLET_ADDRESS];
       case 'personal_sign':
         return SIGNED_MESSAGE;
+      case 'eth_chainId':
+        return networkChainId;
       default:
         throw Error(`Unknown request: ${request.method}`);
     }
@@ -38,7 +40,7 @@ export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: strin
   cy.on('window:before:load', (win: Window & typeof globalThis & { ethereum?: EthereumStub }) => {
     win.ethereum = {
       isMetaMask: true,
-      chainId: networkFound.chainId,
+      eth_chainId: networkFound.chainId,
       networkVersion: networkFound.networkVersion,
 
       request: async (request: EthereumRequest) => determineStubResponse(request),
@@ -73,6 +75,20 @@ export const getNetworkDetailList = (): INetworkDetail[] => {
       networkVersion: NetworkVersion.ETHEREUM,
       name: 'Ethereum Mainnet',
       shortName: 'Ethereum',
+      nativeCurrency: {
+        id: TokenId.ETHEREUM,
+        name: 'Ether',
+        symbol: 'ETH',
+        decimals: 18
+      },
+      blockExplorerUrls: 'https://etherscan.io',
+      rpcUrls: []
+    },
+    {
+      chainId: NetworkChainId.LOCALHOST,
+      networkVersion: NetworkVersion.LOCALHOST,
+      name: 'Localhost',
+      shortName: 'Localhost',
       nativeCurrency: {
         id: TokenId.ETHEREUM,
         name: 'Ether',

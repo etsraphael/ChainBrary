@@ -15,7 +15,8 @@ describe('UseCasesHeaderComponent', () => {
     component = fixture.componentInstance;
     component.header = {
       title: 'title',
-      description: 'description'
+      description: 'description',
+      goBackLink: '/use-cases/services'
     };
     fixture.detectChanges();
   });
