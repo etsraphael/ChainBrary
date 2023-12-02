@@ -9,21 +9,21 @@ const useCaseRoutes: ServiceItemMenu[] = [
     description: 'Share payment requests fast and safely via link/QR code'
   },
   {
-    title: 'Transaction history',
+    title: 'Transaction History',
     path: '/activity',
     icon: 'bi-activity',
     enabled: true,
     description: 'Track all your past transactions in one consolidated view'
   },
   {
-    title: 'Start a bid',
+    title: 'Start Bid',
     path: '/bid',
     icon: 'bi-alarm',
     enabled: true,
     description: 'Easily manage transparent bids with complete control'
   },
   {
-    title: 'Pay as a group',
+    title: 'Pay Together',
     path: '/',
     icon: 'bi-people-fill',
     enabled: false,
