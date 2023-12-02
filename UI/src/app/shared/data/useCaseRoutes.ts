@@ -16,7 +16,7 @@ const useCaseRoutes: ServiceItemMenu[] = [
     description: 'Track all your past transactions in one consolidated view'
   },
   {
-    title: 'Start Bid',
+    title: 'Start a Bid',
     path: '/bid',
     icon: 'bi-alarm',
     enabled: true,
