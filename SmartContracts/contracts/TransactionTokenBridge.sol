@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract TransactionTokenBridge is Ownable, ReentrancyGuard {
-    uint256 public feeRate = 1000; // 1000 means 0.1% fee (1/1000)
+    uint256 public constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
 
     constructor() Ownable(_msgSender()) {}
 
@@ -18,27 +18,26 @@ contract TransactionTokenBridge is Ownable, ReentrancyGuard {
     }
 
     function transfer(uint256 _amount, address _destinationAddress, IERC20 _token) external nonReentrant {
+        // Check if the contract is approved to transfer the amount of tokens
         require(canTransfer(_msgSender(), _amount, _token), "Contract not approved to transfer enough tokens");
 
-        (bool feeMulSuccess, uint256 feeMulAmount) = Math.tryMul(_amount, feeRate);
-        require(feeMulSuccess, "Multiplication overflow");
+        // Calculate the fee
+        uint256 fee = Math.mulDiv(_amount, FEE_PERCENT, 1000);
 
-        (bool feeDivSuccess, uint256 feeAmount) = Math.tryDiv(feeMulAmount, 10000);
-        require(feeDivSuccess, "Division overflow");
-
-        (bool feeSubSuccess, uint256 transferAmount) = Math.trySub(_amount, feeAmount);
+        // Subtract the fee from the amount
+        (bool feeSubSuccess, uint256 transferAmount) = Math.trySub(_amount, fee);
         require(feeSubSuccess, "Subtraction underflow");
 
+        // Transfer the tokens to the contract
         require(_token.transferFrom(_msgSender(), address(this), _amount), "Token transfer to contract failed");
+        emit Transfer(_msgSender(), address(this), _amount, address(_token));
 
-        require(_token.transfer(owner(), feeAmount), "Fee transfer failed");
+        // Transfer the fee to the owner
+        require(_token.transfer(owner(), fee), "Fee transfer failed");
+        emit Transfer(_msgSender(), owner(), fee, address(_token));
 
+        // Transfer the amount to the destination address
         require(_token.transfer(_destinationAddress, transferAmount), "Destination transfer failed");
-
         emit Transfer(_msgSender(), _destinationAddress, transferAmount, address(_token));
-    }
-
-    function setFeeRate(uint256 _feeRateBasisPoints) external onlyOwner {
-        feeRate = _feeRateBasisPoints;
     }
 }
