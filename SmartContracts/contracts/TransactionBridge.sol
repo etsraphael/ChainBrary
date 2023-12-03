@@ -42,7 +42,7 @@ contract TransactionBridge is Ownable, ReentrancyGuard {
 
     function transferTokenFund(uint256 _amount, address _destinationAddress, IERC20 _token) external nonReentrant {
         // Check if the contract is approved to transfer the amount of tokens
-        require(canTransfer(_msgSender(), _amount, _token), "Contract not approved to transfer enough tokens");
+        require(canTransferToken(_msgSender(), _amount, _token), "Contract not approved to transfer enough tokens");
 
         // Calculate the fee
         uint256 fee = calculateFee(_amount);
