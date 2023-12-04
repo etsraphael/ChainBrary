@@ -63,5 +63,4 @@ contract TransactionBridge is Ownable, ReentrancyGuard {
         require(_token.transfer(_destinationAddress, transferAmount), "Destination transfer failed");
         emit TransferToken(_msgSender(), _destinationAddress, transferAmount, address(_token));
     }
-
 }
