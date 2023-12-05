@@ -11,14 +11,12 @@ import { showErrorNotification, showSuccessNotification } from '../../notificati
 import { TransactionTokenBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
-  IConversionToken,
   IPaymentRequest,
   IReceiptTransaction,
   IToken,
   ITokenContract,
   SendNativeTokenToMultiSigPayload,
   SendTransactionTokenBridgePayload,
-  StoreState,
   TransactionTokenBridgePayload
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
@@ -26,11 +24,11 @@ import { TokensService } from './../../../shared/services/tokens/tokens.service'
 import { WalletService } from './../../../shared/services/wallet/wallet.service';
 import * as PaymentRequestActions from './actions';
 import {
+  DataConversionStore,
   selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
   selectPaymentNetworkIsMathing,
-  selectPaymentRequestInUsdIsEnabled,
   selectPaymentToken
 } from './selectors';
 
@@ -197,17 +195,15 @@ export class PaymentRequestEffects {
       concatLatestFrom(() => [
         this.store.select(selectPaymentToken),
         this.store.select(selectCurrentNetwork),
-        this.store.select(selectPaymentRequestInUsdIsEnabled),
         this.store.select(selectWalletConnected)
       ]),
-      filter((payload) => payload[1] !== null && payload[2] !== null && payload[4] !== null),
+      filter((payload) => payload[1] !== null && payload[3] !== null),
       map(
         (
           payload: [
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
             INetworkDetail | null,
-            boolean,
             WalletProvider | null
           ]
         ) =>
@@ -215,7 +211,6 @@ export class PaymentRequestEffects {
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
             INetworkDetail,
-            boolean,
             WalletProvider
           ]
       ),
@@ -225,7 +220,6 @@ export class PaymentRequestEffects {
             ReturnType<typeof PaymentRequestActions.applyConversionToken>,
             IToken | null,
             INetworkDetail,
-            boolean,
             WalletProvider
           ]
         ) => {
@@ -236,7 +230,7 @@ export class PaymentRequestEffects {
 
           // If the token is the native token of the network, we get the price of the native token
           if (tokenFound?.nativeToChainId === payload[2].chainId) {
-            price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId, payload[4]);
+            price = await this.priceFeedService.getCurrentPriceOfNativeToken(payload[2].chainId, payload[3]);
           } else {
             const priceFeed = tokenFound?.networkSupport.find(
               (network: ITokenContract) => network.chainId === payload[2].chainId
@@ -246,26 +240,31 @@ export class PaymentRequestEffects {
             if (priceFeed === undefined) {
               return PaymentRequestActions.applyConversionTokenSuccess({
                 usdAmount: 0,
-                tokenAmount: payload[0].amount
+                tokenAmount: payload[0].amount,
+                amountInUsd: payload[0].amountInUsd
               });
             }
             // If the token is supported by the network, we get the price of the token
-            price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId, payload[4]);
+            price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId, payload[3]);
           }
 
           // Set up the price based on USD
-          if (payload[3]) {
+          if (payload[0].amountInUsd) {
             return PaymentRequestActions.applyConversionTokenSuccess({
               usdAmount: payload[0].amount,
-              tokenAmount: parseFloat((payload[0].amount / price).toFixed(12))
+              tokenAmount: parseFloat((payload[0].amount / price).toFixed(12)),
+              amountInUsd: payload[0].amountInUsd
             });
           }
           // Set up the price based on the token
-          else
+          else{
+            console.log('okok')
+
             return PaymentRequestActions.applyConversionTokenSuccess({
               usdAmount: price * payload[0].amount,
-              tokenAmount: payload[0].amount
-            });
+              tokenAmount: payload[0].amount,
+              amountInUsd: payload[0].amountInUsd
+            });}
         }
       )
     );
@@ -276,17 +275,24 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.updatedToken),
       concatLatestFrom(() => [
         this.store.select(selectPaymentConversion),
-        this.store.select(selectPaymentRequestInUsdIsEnabled)
       ]),
-      filter((payload) => payload[1].data.tokenAmount !== null && payload[1].data.usdAmount !== null),
-      map((payload: [ReturnType<typeof PaymentRequestActions.updatedToken>, StoreState<IConversionToken>, boolean]) => {
-        if (payload[2]) {
-          return PaymentRequestActions.applyConversionToken({
-            amount: payload[1].data.usdAmount ? payload[1].data.usdAmount : 0
-          });
-        } else {
-          return PaymentRequestActions.applyConversionToken({ amount: payload[1].data.tokenAmount as number });
-        }
+      filter((payload) => payload[1].conversionToken.data !== null && payload[1].conversionUSD.data !== null),
+      map((payload: [ReturnType<typeof PaymentRequestActions.updatedToken>, DataConversionStore]) => {
+
+        return PaymentRequestActions.applyConversionToken({
+          amount: payload[1].conversionToken?.data ?? 0,
+          amountInUsd: false
+        });
+
+
+        // if (payload[1]) {
+        //   return PaymentRequestActions.applyConversionToken({
+        //     amount: payload[1].data.usdAmount ? payload[1].data.usdAmount : 0,
+        //     amountInUsd: true
+        //   });
+        // } else {
+        //   return PaymentRequestActions.applyConversionToken({ amount: payload[1] as number, amountInUsd: false });
+        // }
       })
     );
   });

@@ -16,6 +16,7 @@ export interface PriceSettingsForm {
   token: FormGroup<TokenChoiceMakerForm>;
   description: FormControl<string | null>;
   amount: FormControl<number | null>;
+  amountInUsd: FormControl<number | null>;
   usdEnabled: FormControl<boolean | null>;
 }
 

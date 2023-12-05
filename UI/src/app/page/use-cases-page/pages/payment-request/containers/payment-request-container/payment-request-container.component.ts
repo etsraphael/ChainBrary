@@ -26,6 +26,7 @@ import {
   updatedToken
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
+  DataConversionStore,
   selectPaymentConversion,
   selectPaymentToken
 } from './../../../../../../store/payment-request-store/state/selectors';
@@ -42,7 +43,7 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   userAccountIsLoading$: Observable<boolean>;
   currentNetwork$: Observable<INetworkDetail | null>;
   paymentToken$: Observable<IToken | null>;
-  paymentConversion$: Observable<StoreState<IConversionToken>>;
+  paymentConversion$: Observable<DataConversionStore>;
   resetTransaction$: Observable<Action>;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   headerPayload: IUseCasesHeader = {
@@ -85,13 +86,13 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     return this.store.dispatch(updatedToken({ token: tokenFound }));
   }
 
-  applyConversionToken(amount: number): Subscription {
+  applyConversionToken(payload: {amount: number, amountInUsd: boolean}): Subscription {
     return this.currentNetwork$
       .pipe(
         take(1),
         filter((network) => !!network)
       )
-      .subscribe(() => this.store.dispatch(applyConversionToken({ amount })));
+      .subscribe(() => this.store.dispatch(applyConversionToken(payload)));
   }
 
   switchToUsd(priceInUsdEnabled: boolean): void {

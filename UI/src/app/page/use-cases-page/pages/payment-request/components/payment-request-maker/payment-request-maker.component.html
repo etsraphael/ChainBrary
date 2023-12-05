@@ -26,13 +26,12 @@
         [paymentConversion]="(paymentConversionObs | async)!"
         (goToNextPage)="stepper.next()"
         (goToPreviousPage)="stepper.previous()"
-        (swapCurrency)="swapCurrency()"
       >
       </app-payment-request-price-settings>
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Review & Confirm</ng-template>
-      <app-payment-request-review
+      <!-- <app-payment-request-review
         [username]="mainForm.controls.profile.controls.username.value!"
         [amount]="(amount | async)!"
         [previewLink]="linkGenerated"
@@ -41,7 +40,7 @@
         [usdEnabled]="priceForm.controls.usdEnabled.value!"
         (goToPreviousPageEvent)="stepper.previous()"
       >
-      </app-payment-request-review>
+      </app-payment-request-review> -->
     </mat-step>
   </mat-vertical-stepper>
 </div>

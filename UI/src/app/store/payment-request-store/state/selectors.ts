@@ -36,15 +36,15 @@ export const selectPaymentToken: MemoizedSelector<object, IToken | null> = creat
   (s) => s.token
 );
 
-export const selectPaymentConversion: MemoizedSelector<object, StoreState<IConversionToken>> = createSelector(
+export const selectPaymentConversion: MemoizedSelector<object, DataConversionStore> = createSelector(
   selectPaymentRequest,
-  (s) => s.conversion
+  (s) => ({ conversionToken: s.conversionToken, conversionUSD: s.conversionUSD })
 );
 
-export const selectPaymentRequestInUsdIsEnabled: MemoizedSelector<object, boolean> = createSelector(
-  selectPaymentConversion,
-  (s) => s.data.priceInUsdEnabled
-);
+// export const selectPaymentRequestInUsdIsEnabled: MemoizedSelector<object, boolean> = createSelector(
+//   selectPaymentConversion,
+//   (s) => s.data.priceInUsdEnabled
+// );
 
 export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
@@ -83,3 +83,8 @@ export const selectIsPaymentMaker: MemoizedSelector<object, boolean> = createSel
   selectPublicAddress,
   (s, adress) => adress?.toLowerCase() === s.profile?.publicAddress?.toLowerCase()
 );
+
+export interface DataConversionStore {
+  conversionToken: StoreState<number | null>;
+  conversionUSD: StoreState<number | null>;
+}

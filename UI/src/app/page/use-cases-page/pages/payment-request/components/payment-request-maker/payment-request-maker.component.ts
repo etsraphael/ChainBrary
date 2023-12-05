@@ -18,6 +18,7 @@ import {
   ReplaySubject,
   Subscription,
   debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   of,
@@ -37,6 +38,7 @@ import {
   TokenChoiceMakerForm
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
@@ -47,16 +49,32 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Input() paymentTokenObs: Observable<IToken | null>;
-  @Input() paymentConversionObs: Observable<StoreState<IConversionToken>>;
+  @Input() paymentConversionObs: Observable<DataConversionStore>;
   @Input() resetTransactionObs: Observable<Action>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
-  @Output() applyConversionToken: EventEmitter<number> = new EventEmitter<number>();
+  @Output() applyConversionToken: EventEmitter<{amount: number, amountInUsd: boolean}> = new EventEmitter<{amount: number, amountInUsd: boolean}>();
   @Output() switchToUsd: EventEmitter<boolean> = new EventEmitter<boolean>();
   @ViewChild('stepper') stepper: MatStepper;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
-  mainForm: FormGroup<PaymentMakerForm>;
+  mainForm = new FormGroup<PaymentMakerForm>({
+    price: new FormGroup({
+      token: new FormGroup({
+        tokenId: new FormControl('', [Validators.required]),
+        chainId: new FormControl('', [Validators.required])
+      }),
+      description: new FormControl('', []),
+      amount: new FormControl(1, [Validators.required, Validators.min(0)]),
+      amountInUsd: new FormControl(0, []),
+      usdEnabled: new FormControl(false, [])
+    }),
+    profile: new FormGroup({
+      publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
+      avatarUrl: new FormControl('', [], [this.urlValidator()]),
+      username: new FormControl('', [Validators.required, Validators.maxLength(20)])
+    })
+  });
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
@@ -70,17 +88,17 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.mainForm.get('profile') as FormGroup<ProfileForm>;
   }
 
-  get amount(): Observable<number> {
-    if (this.priceForm?.get('usdEnabled')?.value as boolean) {
-      return this.paymentConversionObs.pipe(map((x) => x.data.tokenAmount as number));
-    } else {
-      return of(this.priceForm.get('amount')?.value as number);
-    }
+  get tokenAmount(): Observable<number | null> {
+    return this.paymentConversionObs.pipe(map((x) => x.conversionToken.data));
   }
 
   get usdAmount(): Observable<number | null> {
-    return this.paymentConversionObs.pipe(map((x) => x.data.usdAmount));
+    return this.paymentConversionObs.pipe(map((x) => x.conversionUSD.data));
   }
+
+  // get conversionData(): Observable<DataConversionStore> {
+  //   return this.paymentConversionObs.pipe(map((x: StoreState<IConversionToken>) => x.data));
+  // }
 
   get avatarValue(): string | null {
     return this.profileControls.avatarUrl.value;
@@ -103,7 +121,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setUpForm();
     this.listenToAddressChange();
     this.listenToAmountChange();
     this.listenToTokenChange();
@@ -117,25 +134,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       this.stepper.selectedIndex = 0;
       this.priceForm.reset();
       this.setDefaultTokenSelection();
-    });
-  }
-
-  setUpForm(): void {
-    this.mainForm = new FormGroup({
-      price: new FormGroup({
-        token: new FormGroup({
-          tokenId: new FormControl('', [Validators.required]),
-          chainId: new FormControl('', [Validators.required])
-        }),
-        description: new FormControl('', []),
-        amount: new FormControl(1, [Validators.required, Validators.min(0)]),
-        usdEnabled: new FormControl(false, [])
-      }),
-      profile: new FormGroup({
-        publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
-        avatarUrl: new FormControl('', [], [this.urlValidator()]),
-        username: new FormControl('', [Validators.required, Validators.maxLength(20)])
-      })
     });
   }
 
@@ -192,8 +190,8 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       )
       .subscribe((tokenId: string) => {
         this.setUpTokenChoice.emit(tokenId);
-        const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
-        if (usdEnabled) this.swapCurrency();
+        // const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
+        // if (usdEnabled) this.swapCurrency();
       });
   }
 
@@ -201,13 +199,65 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.priceForm
       .get('amount')
       ?.valueChanges.pipe(
+        distinctUntilChanged(),
         startWith(this.priceForm.get('amount')?.value || 0),
         debounceTime(1000),
         filter((amount: number | null) => amount !== null && amount > 0),
         map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number) => this.applyConversionToken.emit(amount as number));
+      .subscribe((amount: number) => {
+        console.log('amount', amount);
+        return this.applyConversionToken.emit({amount, amountInUsd: false})
+      }); // TODO: dig more here
+
+
+      this.priceForm
+      .get('amountInUsd')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        startWith(this.priceForm.get('amountInUsd')?.value || 0),
+        debounceTime(1000),
+        filter((amount: number | null) => amount !== null && amount > 0),
+        map((amount: number | null) => amount as number),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((amount: number) => {
+        console.log('amountInUsd', amount);
+        return this.applyConversionToken.emit({amount, amountInUsd: true}) // TODO: put this back soon
+
+      });
+
+    this.paymentConversionObs.pipe(
+      distinctUntilChanged(),
+      // filter((conversion: IConversionToken) => conversion !== null && conversion.tokenAmount !== null ),
+      takeUntil(this.destroyed$)
+    ).subscribe((conversion: DataConversionStore) => {
+      console.log('conversion', conversion);
+
+      if(conversion.conversionToken.data !== null) {
+        this.priceForm.patchValue({
+          amount: conversion.conversionToken.data,
+          amountInUsd: conversion.conversionUSD.data,
+          usdEnabled: false
+        }, { emitEvent: false });
+      }
+
+      if(conversion.conversionUSD.data !== null) {
+        this.priceForm.patchValue({
+          amount: conversion.conversionToken.data,
+          amountInUsd: conversion.conversionUSD.data,
+          usdEnabled: true
+        }, { emitEvent: false });
+      }
+
+
+      // this.priceForm.patchValue({
+      //   amountInUsd: conversion.usdAmount,
+      //   // amount: conversion.tokenAmount
+      // });
+
+    })
   }
 
   listenToAddressChange(): void {
@@ -292,23 +342,25 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     };
   }
 
-  swapCurrency(): void {
-    this.switchToUsd.emit(!this.priceForm?.get('usdEnabled')?.value as boolean);
+  // swapCurrency(): void {
+  //   this.switchToUsd.emit(!this.priceForm?.get('usdEnabled')?.value as boolean);
 
-    this.paymentConversionObs.pipe(take(1)).subscribe((conversion: StoreState<IConversionToken>) => {
-      if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
-        this.priceForm.patchValue({
-          amount: conversion.data.usdAmount,
-          usdEnabled: true
-        });
-      } else {
-        this.priceForm.patchValue({
-          amount: conversion.data.tokenAmount,
-          usdEnabled: false
-        });
-      }
-    });
-  }
+  //   this.paymentConversionObs.pipe(take(1)).subscribe((conversion: StoreState<IConversionToken>) => {
+  //     if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
+  //       this.priceForm.patchValue({
+  //         amount: conversion.data.usdAmount,
+  //         amountInUsd: conversion.data.usdAmount,
+  //         usdEnabled: true
+  //       });
+  //     } else {
+  //       this.priceForm.patchValue({
+  //         amount: conversion.data.tokenAmount,
+  //         amountInUsd: conversion.data.usdAmount,
+  //         usdEnabled: false
+  //       });
+  //     }
+  //   });
+  // }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
