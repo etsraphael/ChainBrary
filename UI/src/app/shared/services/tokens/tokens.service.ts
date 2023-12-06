@@ -14,10 +14,11 @@ import { tokenList } from '../../data/tokenList';
 import {
   IReceiptTransaction,
   IToken,
-  SendNativeTokenToMultiSigPayload,
+  SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
 } from '../../interfaces';
+import { TransactionReceipt } from 'web3-core';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,7 @@ export class TokensService {
     }
   }
 
-  async transferNonNativeToken(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
+  async transferNonNativeTokenSC(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
 
@@ -96,19 +97,42 @@ export class TokensService {
     }
   }
 
-  async transferNativeToken(payload: SendNativeTokenToMultiSigPayload): Promise<IReceiptTransaction> {
+  async transferNativeTokenSC(payload: SendNativeTokenPayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionBridgeContract(String(payload.chainId));
     const contract: Contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
 
     try {
       const gas: number = await contract.methods
-        .transferFund(payload.addresses)
+        .transferFund(payload.to)
         .estimateGas({ from: payload.from, value: String(payload.amount) });
 
       const receipt: IReceiptTransaction = contract.methods
-        .transferFund(payload.addresses)
+        .transferFund(payload.to)
         .send({ from: payload.from, value: String(payload.amount), gas: gas });
+
+      return receipt;
+    } catch (error) {
+      return Promise.reject((error as { message: string; code: number }) || error);
+    }
+  }
+
+  async transferNativeToken(payload: SendNativeTokenPayload): Promise<TransactionReceipt> {
+    const web3: Web3 = new Web3(window.ethereum);
+
+    try {
+
+      // const estimatedGasLimit: number = await web3.eth.estimateGas({
+      //   from: payload.from,
+      //   to: payload.to,
+      //   value: String(payload.amount)
+      // });
+
+      const receipt: TransactionReceipt = await web3.eth.sendTransaction({
+        from: payload.from,
+        to: payload.to,
+        value: String(payload.amount)
+      });
 
       return receipt;
     } catch (error) {

@@ -15,7 +15,7 @@ import {
   IReceiptTransaction,
   IToken,
   ITokenContract,
-  SendNativeTokenToMultiSigPayload,
+  SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
 } from './../../../shared/interfaces';
@@ -31,6 +31,7 @@ import {
   selectPaymentNetworkIsMathing,
   selectPaymentToken
 } from './selectors';
+import { TransactionReceipt } from 'web3-core';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -330,7 +331,7 @@ export class PaymentRequestEffects {
     );
   });
 
-  sendNonNativeToken$ = createEffect(() => {
+  sendNonNativeTokenWithFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
@@ -338,7 +339,7 @@ export class PaymentRequestEffects {
         this.store.select(selectPayment),
         this.store.select(selectIsNonNativeToken)
       ]),
-      filter((payload) => payload[1] !== null && payload[3]),
+      filter((payload) => payload[1] !== null && payload[3] && payload[2]?.usdEnabled === true),
       map(
         (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
       ),
@@ -353,7 +354,7 @@ export class PaymentRequestEffects {
           ownerAdress: action[1],
           destinationAddress: action[2].publicAddress
         };
-        return from(this.tokensService.transferNonNativeToken(payload)).pipe(
+        return from(this.tokensService.transferNonNativeTokenSC(payload)).pipe(
           map((receipt: IReceiptTransaction) =>
             PaymentRequestActions.amountSent({
               hash: receipt.transactionHash,
@@ -372,7 +373,7 @@ export class PaymentRequestEffects {
     );
   });
 
-  sendNativeToken$ = createEffect(() => {
+  sendNativeTokenWithFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
@@ -380,18 +381,18 @@ export class PaymentRequestEffects {
         this.store.select(selectPayment),
         this.store.select(selectIsNonNativeToken)
       ]),
-      filter((payload) => !payload[3]),
+      filter((payload) => !payload[3] && payload[2]?.usdEnabled === true),
       switchMap(
         (
           action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
         ) => {
-          const payload: SendNativeTokenToMultiSigPayload = {
-            addresses: [action[2]?.publicAddress as string],
+          const payload: SendNativeTokenPayload = {
+            to: action[2]?.publicAddress as string,
             amount: Number(action[0].priceValue),
             chainId: action[2]?.chainId as NetworkChainId,
             from: action[1] as string
           };
-          return from(this.tokensService.transferNativeToken(payload)).pipe(
+          return from(this.tokensService.transferNativeTokenSC(payload)).pipe(
             map((receipt: IReceiptTransaction) =>
               PaymentRequestActions.amountSent({
                 hash: receipt.transactionHash,
@@ -410,4 +411,45 @@ export class PaymentRequestEffects {
       )
     );
   });
+
+  sendNativeTokenWithoutFees$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.sendAmount),
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectPayment),
+        this.store.select(selectIsNonNativeToken)
+      ]),
+      filter((payload) => !payload[3] && payload[2]?.usdEnabled === false),
+      switchMap(
+        (
+          action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
+        ) => {
+          const payload: SendNativeTokenPayload = {
+            to: action[2]?.publicAddress as string,
+            amount: Number(action[0].priceValue),
+            chainId: action[2]?.chainId as NetworkChainId,
+            from: action[1] as string
+          };
+          return from(this.tokensService.transferNativeToken(payload)).pipe(
+            map((receipt: TransactionReceipt) => PaymentRequestActions.amountSent({
+              hash: receipt.transactionHash,
+              chainId: action[2]?.chainId as NetworkChainId
+            })),
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.amountSentFailure({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
+            )
+          );
+        }
+      )
+    );
+  })
+
+
+  // TODO: sendNonNativeTokenWithoutFees$
+
 }
