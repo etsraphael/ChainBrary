@@ -1,7 +1,7 @@
+import { AbiItem } from 'web3-utils';
 import { environment } from '../../../environments/environment';
 import { IContract } from '../interfaces';
 import { BaseContract } from './baseContract';
-import { AbiItem } from 'web3-utils';
 
 export class TransactionTokenBridgeContract extends BaseContract {
   constructor(public chainId: string) {
@@ -15,18 +15,39 @@ export class TransactionTokenBridgeContract extends BaseContract {
     return contractLink.address;
   }
 
-  getAbi(): AbiItem[] {
+  getAbi(): (AbiItem | object)[] {
     return [
+      {
+        inputs: [],
+        stateMutability: 'nonpayable',
+        type: 'constructor'
+      },
       {
         inputs: [
           {
-            internalType: 'uint256',
-            name: '_feeRateBasisPoints',
-            type: 'uint256'
+            internalType: 'address',
+            name: 'owner',
+            type: 'address'
           }
         ],
-        stateMutability: 'nonpayable',
-        type: 'constructor'
+        name: 'OwnableInvalidOwner',
+        type: 'error'
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'account',
+            type: 'address'
+          }
+        ],
+        name: 'OwnableUnauthorizedAccount',
+        type: 'error'
+      },
+      {
+        inputs: [],
+        name: 'ReentrancyGuardReentrantCall',
+        type: 'error'
       },
       {
         anonymous: false,
@@ -109,7 +130,7 @@ export class TransactionTokenBridgeContract extends BaseContract {
       },
       {
         inputs: [],
-        name: 'feeRateBasisPoints',
+        name: 'feeRate',
         outputs: [
           {
             internalType: 'uint256',

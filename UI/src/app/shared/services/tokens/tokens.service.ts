@@ -8,6 +8,7 @@ import {
 } from '@chainbrary/token-bridge';
 import Web3 from 'web3';
 import { Contract } from 'web3-eth-contract';
+import { AbiItem } from 'web3-utils';
 import { TransactionBridgeContract, TransactionTokenBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import {
@@ -62,7 +63,7 @@ export class TokensService {
         throw new Error('Network not supported');
       }
 
-      const contract = new web3.eth.Contract(transactionContract.getAbi(), address);
+      const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], address);
 
       return await contract.methods
         .canTransfer(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
@@ -80,7 +81,7 @@ export class TokensService {
       return Promise.reject('Network not supported');
     }
 
-    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
 
     try {
       const gas = await contract.methods
@@ -98,7 +99,7 @@ export class TokensService {
   async transferNativeToken(payload: SendNativeTokenToMultiSigPayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionBridgeContract(String(payload.chainId));
-    const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract: Contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
 
     try {
       const gas: number = await contract.methods
