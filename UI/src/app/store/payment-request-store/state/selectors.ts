@@ -1,8 +1,8 @@
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { IConversionToken, IPaymentRequest, IProfilePayment, IToken, StoreState } from './../../../shared/interfaces';
-import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
+import { IPaymentRequest, IProfilePayment, IToken, StoreState } from './../../../shared/interfaces';
+import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
 

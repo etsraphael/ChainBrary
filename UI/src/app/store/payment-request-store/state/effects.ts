@@ -253,11 +253,12 @@ export class PaymentRequestEffects {
             });
           }
           // Set up the price based on the token
-          else return PaymentRequestActions.applyConversionTokenSuccess({
-            usdAmount: price * payload[0].amount,
-            tokenAmount: payload[0].amount,
-            amountInUsd: payload[0].amountInUsd
-          });
+          else
+            return PaymentRequestActions.applyConversionTokenSuccess({
+              usdAmount: price * payload[0].amount,
+              tokenAmount: payload[0].amount,
+              amountInUsd: payload[0].amountInUsd
+            });
         }
       )
     );
@@ -266,26 +267,13 @@ export class PaymentRequestEffects {
   tokenChoiceUpdated$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.updatedToken),
-      concatLatestFrom(() => [
-        this.store.select(selectPaymentConversion),
-      ]),
+      concatLatestFrom(() => [this.store.select(selectPaymentConversion)]),
       filter((payload) => payload[1].conversionToken.data !== null && payload[1].conversionUSD.data !== null),
       map((payload: [ReturnType<typeof PaymentRequestActions.updatedToken>, DataConversionStore]) => {
-
         return PaymentRequestActions.applyConversionToken({
           amount: payload[1].conversionToken?.data ?? 0,
           amountInUsd: false
         });
-
-
-        // if (payload[1]) {
-        //   return PaymentRequestActions.applyConversionToken({
-        //     amount: payload[1].data.usdAmount ? payload[1].data.usdAmount : 0,
-        //     amountInUsd: true
-        //   });
-        // } else {
-        //   return PaymentRequestActions.applyConversionToken({ amount: payload[1] as number, amountInUsd: false });
-        // }
       })
     );
   });

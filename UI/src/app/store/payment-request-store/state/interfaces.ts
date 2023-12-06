@@ -5,8 +5,8 @@ export const PAYMENT_REQUEST_FEATURE_KEY = 'paymentRequest';
 
 export interface IPaymentRequestState {
   payment: StoreState<IPaymentRequest | null>;
-  conversionToken: StoreState<number|null>;
-  conversionUSD: StoreState<number|null>;
+  conversionToken: StoreState<number | null>;
+  conversionUSD: StoreState<number | null>;
   smartContractCanTransfer: StoreState<boolean>;
   token: IToken | null;
   profile: IProfilePayment;

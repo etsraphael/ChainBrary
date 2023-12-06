@@ -24,9 +24,12 @@
             </ng-container>
             <ng-container *ngIf="(currentNetworkObs | async) === null">
               <mat-optgroup *ngFor="let group of tokenGroup" [label]="group.name + ' (NETWORK)'">
-                <mat-option (click)="saveGroup(group.nativeToChainId!)"
-                  *ngFor="let t of getTokenByChainId(group.nativeToChainId!)" [value]="t.tokenId">{{ t.name }} ({{
-                  t.symbol }})</mat-option>
+                <mat-option
+                  (click)="saveGroup(group.nativeToChainId!)"
+                  *ngFor="let t of getTokenByChainId(group.nativeToChainId!)"
+                  [value]="t.tokenId"
+                  >{{ t.name }} ({{ t.symbol }})</mat-option
+                >
               </mat-optgroup>
             </ng-container>
           </mat-select>
@@ -37,8 +40,11 @@
   <!-- Amount -->
   <div class="row">
     <div class="col-12">
-      <mat-form-field class="w-100 text-dark" appearance="outline"
-        [ngClass]="{'no-bottom': paymentConversionIsNotSupported === false}">
+      <mat-form-field
+        class="w-100 text-dark"
+        appearance="outline"
+        [ngClass]="{ 'no-bottom': paymentConversionIsNotSupported === false }"
+      >
         <mat-label>Amount</mat-label>
         <input formControlName="amount" type="number" class="ps-1" matInput />
         <div class="d-flex" matSuffix>
@@ -61,7 +67,7 @@
           <input formControlName="amountInUsd" type="number" class="ps-1" matInput />
           <div class="d-flex" matSuffix>
             <mat-spinner *ngIf="paymentConversion.conversionUSD.loading" [diameter]="15"></mat-spinner>
-            <h6 class="mb-0 px-3">$USD </h6>
+            <h6 class="mb-0 px-3">$USD</h6>
           </div>
           <mat-hint>
             <mat-checkbox formControlName="valueLockedInUsd" color="primary">
@@ -77,8 +83,16 @@
     <div class="col-12 col-lg-7">
       <mat-form-field class="w-100 text-dark" appearance="outline">
         <mat-label>Description</mat-label>
-        <textarea formControlName="description" cdkTextareaAutosize cdkAutosizeMinRows="1" cdkAutosizeMaxRows="5"
-          matInput placeholder="Description" maxlength="150" data-id="description-input"></textarea>
+        <textarea
+          formControlName="description"
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="5"
+          matInput
+          placeholder="Description"
+          maxlength="150"
+          data-id="description-input"
+        ></textarea>
       </mat-form-field>
     </div>
   </div>
@@ -87,12 +101,19 @@
   <div class="col-12 col-lg-7">
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <app-chainbrary-button [buttonClasses]="['btn-secondary-gradient', 'text-white']" [buttonText]="'Back'"
-          (callToAction)="goToPreviousPage.emit()" />
+        <app-chainbrary-button
+          [buttonClasses]="['btn-secondary-gradient', 'text-white']"
+          [buttonText]="'Back'"
+          (callToAction)="goToPreviousPage.emit()"
+        />
       </div>
       <div class="col-12 col-lg-6 py-2 py-lg-0">
-        <app-chainbrary-button [buttonClasses]="['btn-info-gradient', 'text-white']" [buttonText]="'Next'"
-          (callToAction)="goToNextPage.emit()" data-id="submit-button" />
+        <app-chainbrary-button
+          [buttonClasses]="['btn-info-gradient', 'text-white']"
+          [buttonText]="'Next'"
+          (callToAction)="goToNextPage.emit()"
+          data-id="submit-button"
+        />
       </div>
     </div>
   </div>

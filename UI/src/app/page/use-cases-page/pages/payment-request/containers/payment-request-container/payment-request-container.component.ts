@@ -55,7 +55,7 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   readonly userAccountIsLoading$: Observable<boolean> = this.store.select(selectUserAccountIsLoading);
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
   readonly paymentToken$: Observable<IToken | null> = this.store.select(selectPaymentToken);
-  readonly paymentConversion$:  Observable<DataConversionStore> = this.store.select(selectPaymentConversion);
+  readonly paymentConversion$: Observable<DataConversionStore> = this.store.select(selectPaymentConversion);
   readonly resetTransaction$: Observable<Action> = this.actions$.pipe(
     ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
     takeUntil(this.destroyed$)
@@ -74,7 +74,7 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     return this.store.dispatch(updatedToken({ token: tokenFound }));
   }
 
-  applyConversionToken(payload: {amount: number, amountInUsd: boolean}): Subscription {
+  applyConversionToken(payload: { amount: number; amountInUsd: boolean }): Subscription {
     return this.currentNetwork$
       .pipe(
         take(1),

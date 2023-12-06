@@ -3,12 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../../shared/data/tokenList';
-import {
-  IToken,
-  ITokenContract,
-  PriceSettingsForm,
-  TokenChoiceMakerForm
-} from './../../../../../../shared/interfaces';
+import { IToken, ITokenContract, PriceSettingsForm, TokenChoiceMakerForm } from './../../../../../../shared/interfaces';
 import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
 
 @Component({
@@ -33,7 +28,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
   }
 
   get paymentConversionIsNotSupported(): boolean {
-    return this.paymentConversion.conversionUSD.error === 'NOT_SUPPORTED'
+    return this.paymentConversion.conversionUSD.error === 'NOT_SUPPORTED';
   }
 
   ngOnInit(): void {

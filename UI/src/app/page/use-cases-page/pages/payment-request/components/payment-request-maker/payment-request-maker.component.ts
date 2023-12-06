@@ -262,15 +262,16 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   generatePaymentRequest(): void {
     const { username, publicAddress, avatarUrl } = this.profileControls;
-    const { amount, description, valueLockedInUsd } = this.priceControls;
+    const { amount, amountInUsd, description, valueLockedInUsd } = this.priceControls;
     const { tokenId, chainId } = this.tokenChoiceControls;
+    const amountToReceive: number | null = valueLockedInUsd.value ? amountInUsd.value : amount.value;
 
     const paymentRequest: IPaymentRequest = {
       chainId: chainId.value as NetworkChainId,
       tokenId: tokenId.value as string,
       username: username.value as string,
       publicAddress: publicAddress.value as string,
-      amount: amount.value as number,
+      amount: amountToReceive as number,
       description: description.value as string,
       avatarUrl: avatarUrl.value as string,
       usdEnabled: valueLockedInUsd.value as boolean
