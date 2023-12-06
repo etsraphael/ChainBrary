@@ -31,16 +31,16 @@
     </mat-step>
     <mat-step>
       <ng-template matStepLabel>Review & Confirm</ng-template>
-      <!-- <app-payment-request-review
+      <app-payment-request-review
         [username]="mainForm.controls.profile.controls.username.value!"
-        [amount]="(amount | async)!"
+        [amount]="(tokenAmount$ | async)!"
         [previewLink]="linkGenerated"
         [tokenSelected]="paymentTokenObs | async"
-        [usdAmount]="usdAmount | async"
+        [usdAmount]="usdAmount$ | async"
         [usdEnabled]="priceForm.controls.usdEnabled.value!"
         (goToPreviousPageEvent)="stepper.previous()"
       >
-      </app-payment-request-review> -->
+      </app-payment-request-review>
     </mat-step>
   </mat-vertical-stepper>
 </div>

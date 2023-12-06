@@ -17,7 +17,6 @@ import {
   Observable,
   ReplaySubject,
   Subscription,
-  combineLatest,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -29,13 +28,11 @@ import {
 } from 'rxjs';
 import { AuthStatusCode } from './../../../../../../shared/enum';
 import {
-  IConversionToken,
   IPaymentRequest,
   IToken,
   PaymentMakerForm,
   PriceSettingsForm,
   ProfileForm,
-  StoreState,
   TokenChoiceMakerForm
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
@@ -91,17 +88,13 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.mainForm.get('profile') as FormGroup<ProfileForm>;
   }
 
-  get tokenAmount(): Observable<number | null> {
+  get tokenAmount$(): Observable<number | null> {
     return this.paymentConversionObs.pipe(map((x) => x.conversionToken.data));
   }
 
-  get usdAmount(): Observable<number | null> {
+  get usdAmount$(): Observable<number | null> {
     return this.paymentConversionObs.pipe(map((x) => x.conversionUSD.data));
   }
-
-  // get conversionData(): Observable<DataConversionStore> {
-  //   return this.paymentConversionObs.pipe(map((x: StoreState<IConversionToken>) => x.data));
-  // }
 
   get avatarValue(): string | null {
     return this.profileControls.avatarUrl.value;
@@ -191,11 +184,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         debounceTime(400),
         takeUntil(this.destroyed$)
       )
-      .subscribe((tokenId: string) => {
-        this.setUpTokenChoice.emit(tokenId);
-        // const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
-        // if (usdEnabled) this.swapCurrency();
-      });
+      .subscribe((tokenId: string) => this.setUpTokenChoice.emit(tokenId));
   }
 
   listenToAmountChange(): void {
@@ -209,9 +198,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number) => this.applyConversionToken.emit({amount, amountInUsd: false}));
+      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: false }));
 
-      this.priceForm
+    this.priceForm
       .get('amountInUsd')
       ?.valueChanges.pipe(
         distinctUntilChanged(),
@@ -221,15 +210,16 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number) => this.applyConversionToken.emit({amount, amountInUsd: true}));
+      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: true }));
 
     this.paymentConversionObs
       .pipe(
         distinctUntilChanged(),
-        takeUntil(this.destroyed$)
+        debounceTime(1000),
+        takeUntil(this.destroyed$),
+        filter((conversion: DataConversionStore) => conversion.conversionUSD.error !== 'NOT_SUPPORTED')
       )
       .subscribe((conversion: DataConversionStore) => {
-
         if (conversion.conversionToken.data !== null) {
           this.priceForm.patchValue(
             {
