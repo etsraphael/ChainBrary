@@ -92,41 +92,21 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       token
     })
   ),
-  on(
-    PaymentActions.applyConversionToken,
-    (state, { amountInUsd }): IPaymentRequestState => {
-      const key = amountInUsd ? 'conversionToken' : 'conversionUSD';
-      return {
-        ...state,
-        [key]: {
-          ...state[key],
-          loading: true,
-          error: null
-        }
+  on(PaymentActions.applyConversionToken, (state, { amountInUsd }): IPaymentRequestState => {
+    const key = amountInUsd ? 'conversionToken' : 'conversionUSD';
+    return {
+      ...state,
+      [key]: {
+        ...state[key],
+        loading: true,
+        error: null
       }
-    }
-  ),
+    };
+  }),
   on(
     PaymentActions.applyConversionTokenSuccess,
-    (state, { usdAmount, tokenAmount, amountInUsd }): IPaymentRequestState =>  {
-
-      if(!amountInUsd) {
-        return {
-          ...state,
-          conversionToken: {
-            ...state.conversionToken,
-            loading: false,
-            error: null,
-            data: tokenAmount
-          },
-          conversionUSD: {
-            ...state.conversionUSD,
-            loading: false,
-            error: null,
-            data: usdAmount
-          }
-        }
-      } else return {
+    (state, { usdAmount, tokenAmount }): IPaymentRequestState => {
+      return {
         ...state,
         conversionToken: {
           ...state.conversionToken,
@@ -140,23 +120,21 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
           error: null,
           data: usdAmount
         }
-      }
+      };
+
     }
   ),
-  on(
-    PaymentActions.applyConversionTokenFailure,
-    (state, { errorMessage, amountInUsd }): IPaymentRequestState => {
-      const key = amountInUsd ? 'conversionUSD' : 'conversionToken';
-      return {
-        ...state,
-        [key]: {
-          ...state[key],
-          loading: false,
-          error: errorMessage
-        }
+  on(PaymentActions.applyConversionTokenFailure, (state, { errorMessage, amountInUsd }): IPaymentRequestState => {
+    const key = amountInUsd ? 'conversionUSD' : 'conversionToken';
+    return {
+      ...state,
+      [key]: {
+        ...state[key],
+        loading: false,
+        error: errorMessage
       }
-    }
-  ),
+    };
+  }),
   on(
     PaymentActions.applyConversionNotSupported,
     (state): IPaymentRequestState => ({
@@ -206,7 +184,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     (state): IPaymentRequestState => ({
       ...state,
       conversionUSD: initialState.conversionUSD,
-      conversionToken: initialState.conversionToken,
+      conversionToken: initialState.conversionToken
     })
   )
 );
