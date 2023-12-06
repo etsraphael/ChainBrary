@@ -143,19 +143,6 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       }
     }
   ),
-  // on(
-  //   PaymentActions.switchToUsd,
-  //   (state, { priceInUsdEnabled }): IPaymentRequestState => ({
-  //     ...state,
-  //     conversion: {
-  //       ...state.conversion,
-  //       data: {
-  //         ...state.conversion.data,
-  //         priceInUsdEnabled
-  //       }
-  //     }
-  //   })
-  // ),
   on(
     PaymentActions.applyConversionTokenFailure,
     (state, { errorMessage, amountInUsd }): IPaymentRequestState => {
@@ -169,6 +156,17 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         }
       }
     }
+  ),
+  on(
+    PaymentActions.applyConversionNotSupported,
+    (state): IPaymentRequestState => ({
+      ...state,
+      conversionUSD: {
+        loading: false,
+        error: 'NOT_SUPPORTED',
+        data: null
+      }
+    })
   ),
   on(
     PaymentActions.smartContractCanTransfer,

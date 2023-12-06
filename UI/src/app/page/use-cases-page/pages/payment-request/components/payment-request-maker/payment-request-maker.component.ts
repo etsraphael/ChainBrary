@@ -17,6 +17,7 @@ import {
   Observable,
   ReplaySubject,
   Subscription,
+  combineLatest,
   debounceTime,
   distinctUntilChanged,
   filter,
@@ -52,8 +53,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() paymentConversionObs: Observable<DataConversionStore>;
   @Input() resetTransactionObs: Observable<Action>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
-  @Output() applyConversionToken: EventEmitter<{amount: number, amountInUsd: boolean}> = new EventEmitter<{amount: number, amountInUsd: boolean}>();
-  @Output() switchToUsd: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() applyConversionToken: EventEmitter<{ amount: number; amountInUsd: boolean }> = new EventEmitter<{
+    amount: number;
+    amountInUsd: boolean;
+  }>();
   @ViewChild('stepper') stepper: MatStepper;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
@@ -206,11 +209,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number) => {
-        console.log('amount', amount);
-        return this.applyConversionToken.emit({amount, amountInUsd: false})
-      }); // TODO: dig more here
-
+      .subscribe((amount: number) => this.applyConversionToken.emit({amount, amountInUsd: false}));
 
       this.priceForm
       .get('amountInUsd')
@@ -222,42 +221,37 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number) => {
-        console.log('amountInUsd', amount);
-        return this.applyConversionToken.emit({amount, amountInUsd: true}) // TODO: put this back soon
+      .subscribe((amount: number) => this.applyConversionToken.emit({amount, amountInUsd: true}));
 
+    this.paymentConversionObs
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((conversion: DataConversionStore) => {
+
+        if (conversion.conversionToken.data !== null) {
+          this.priceForm.patchValue(
+            {
+              amount: conversion.conversionToken.data,
+              amountInUsd: conversion.conversionUSD.data,
+              usdEnabled: false
+            },
+            { emitEvent: false }
+          );
+        }
+
+        if (conversion.conversionUSD.data !== null) {
+          this.priceForm.patchValue(
+            {
+              amount: conversion.conversionToken.data,
+              amountInUsd: conversion.conversionUSD.data,
+              usdEnabled: true
+            },
+            { emitEvent: false }
+          );
+        }
       });
-
-    this.paymentConversionObs.pipe(
-      distinctUntilChanged(),
-      // filter((conversion: IConversionToken) => conversion !== null && conversion.tokenAmount !== null ),
-      takeUntil(this.destroyed$)
-    ).subscribe((conversion: DataConversionStore) => {
-      console.log('conversion', conversion);
-
-      if(conversion.conversionToken.data !== null) {
-        this.priceForm.patchValue({
-          amount: conversion.conversionToken.data,
-          amountInUsd: conversion.conversionUSD.data,
-          usdEnabled: false
-        }, { emitEvent: false });
-      }
-
-      if(conversion.conversionUSD.data !== null) {
-        this.priceForm.patchValue({
-          amount: conversion.conversionToken.data,
-          amountInUsd: conversion.conversionUSD.data,
-          usdEnabled: true
-        }, { emitEvent: false });
-      }
-
-
-      // this.priceForm.patchValue({
-      //   amountInUsd: conversion.usdAmount,
-      //   // amount: conversion.tokenAmount
-      // });
-
-    })
   }
 
   listenToAddressChange(): void {
@@ -341,26 +335,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       });
     };
   }
-
-  // swapCurrency(): void {
-  //   this.switchToUsd.emit(!this.priceForm?.get('usdEnabled')?.value as boolean);
-
-  //   this.paymentConversionObs.pipe(take(1)).subscribe((conversion: StoreState<IConversionToken>) => {
-  //     if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
-  //       this.priceForm.patchValue({
-  //         amount: conversion.data.usdAmount,
-  //         amountInUsd: conversion.data.usdAmount,
-  //         usdEnabled: true
-  //       });
-  //     } else {
-  //       this.priceForm.patchValue({
-  //         amount: conversion.data.tokenAmount,
-  //         amountInUsd: conversion.data.usdAmount,
-  //         usdEnabled: false
-  //       });
-  //     }
-  //   });
-  // }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);

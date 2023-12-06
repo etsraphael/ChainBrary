@@ -238,11 +238,7 @@ export class PaymentRequestEffects {
 
             // If the token is not supported by the network, we return 0
             if (priceFeed === undefined) {
-              return PaymentRequestActions.applyConversionTokenSuccess({
-                usdAmount: 0,
-                tokenAmount: payload[0].amount,
-                amountInUsd: payload[0].amountInUsd
-              });
+              return PaymentRequestActions.applyConversionNotSupported();
             }
             // If the token is supported by the network, we get the price of the token
             price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId, payload[3]);
@@ -257,14 +253,11 @@ export class PaymentRequestEffects {
             });
           }
           // Set up the price based on the token
-          else{
-            console.log('okok')
-
-            return PaymentRequestActions.applyConversionTokenSuccess({
-              usdAmount: price * payload[0].amount,
-              tokenAmount: payload[0].amount,
-              amountInUsd: payload[0].amountInUsd
-            });}
+          else return PaymentRequestActions.applyConversionTokenSuccess({
+            usdAmount: price * payload[0].amount,
+            tokenAmount: payload[0].amount,
+            amountInUsd: payload[0].amountInUsd
+          });
         }
       )
     );

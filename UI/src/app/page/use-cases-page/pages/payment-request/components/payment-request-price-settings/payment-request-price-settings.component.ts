@@ -7,7 +7,6 @@ import {
   IToken,
   ITokenContract,
   PriceSettingsForm,
-  StoreState,
   TokenChoiceMakerForm
 } from './../../../../../../shared/interfaces';
 import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
@@ -31,6 +30,10 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
 
   get tokenChoiceForm(): FormGroup<TokenChoiceMakerForm> {
     return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;
+  }
+
+  get paymentConversionIsNotSupported(): boolean {
+    return this.paymentConversion.conversionUSD.error === 'NOT_SUPPORTED'
   }
 
   ngOnInit(): void {

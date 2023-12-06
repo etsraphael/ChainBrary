@@ -8,8 +8,6 @@ export const selectToken = createAction('[Payment Request] Select Token', props<
 
 export const updatedToken = createAction('[Payment Request] Updated Token', props<{ token: IToken }>());
 
-export const switchToUsd = createAction('[Payment Request] Switch To USD', props<{ priceInUsdEnabled: boolean }>());
-
 export const applyConversionToken = createAction(
   '[Payment Request] Apply Conversion Token',
   props<{ amount: number, amountInUsd: boolean }>()
@@ -21,6 +19,9 @@ export const applyConversionTokenSuccess = createAction(
 export const applyConversionTokenFailure = createAction(
   '[Payment Request] Apply Conversion Token Failure',
   props<{ errorMessage: string, amountInUsd: boolean }>()
+);
+export const applyConversionNotSupported = createAction(
+  '[Payment Request] Apply Conversion Not Supported',
 );
 
 export const generatePaymentRequest = createAction(
