@@ -37,7 +37,7 @@
         [previewLink]="linkGenerated"
         [tokenSelected]="paymentTokenObs | async"
         [usdAmount]="usdAmount$ | async"
-        [usdEnabled]="priceForm.controls.usdEnabled.value!"
+        [valueLockedInUsd]="priceForm.controls.valueLockedInUsd.value!"
         (goToPreviousPageEvent)="stepper.previous()"
       >
       </app-payment-request-review>

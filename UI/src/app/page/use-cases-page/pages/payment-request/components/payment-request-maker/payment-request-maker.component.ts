@@ -67,7 +67,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       description: new FormControl('', []),
       amount: new FormControl(1, [Validators.required, Validators.min(0)]),
       amountInUsd: new FormControl(0, []),
-      usdEnabled: new FormControl(false, [])
+      valueLockedInUsd: new FormControl(false, [])
     }),
     profile: new FormGroup({
       publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
@@ -150,7 +150,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         }
         this.priceForm.patchValue({
           amount: 1,
-          usdEnabled: false
+          valueLockedInUsd: false
         });
       });
   }
@@ -170,7 +170,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       }
       this.priceForm.patchValue({
         amount: 1,
-        usdEnabled: false
+        valueLockedInUsd: false
       });
     });
   }
@@ -224,8 +224,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           this.priceForm.patchValue(
             {
               amount: conversion.conversionToken.data,
-              amountInUsd: conversion.conversionUSD.data,
-              usdEnabled: false
+              amountInUsd: conversion.conversionUSD.data
             },
             { emitEvent: false }
           );
@@ -235,8 +234,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           this.priceForm.patchValue(
             {
               amount: conversion.conversionToken.data,
-              amountInUsd: conversion.conversionUSD.data,
-              usdEnabled: true
+              amountInUsd: conversion.conversionUSD.data
             },
             { emitEvent: false }
           );
@@ -264,7 +262,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   generatePaymentRequest(): void {
     const { username, publicAddress, avatarUrl } = this.profileControls;
-    const { amount, description, usdEnabled } = this.priceControls;
+    const { amount, description, valueLockedInUsd } = this.priceControls;
     const { tokenId, chainId } = this.tokenChoiceControls;
 
     const paymentRequest: IPaymentRequest = {
@@ -275,7 +273,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       amount: amount.value as number,
       description: description.value as string,
       avatarUrl: avatarUrl.value as string,
-      usdEnabled: usdEnabled.value as boolean
+      usdEnabled: valueLockedInUsd.value as boolean
     };
 
     const paymentRequestBase64: string = Buffer.from(
