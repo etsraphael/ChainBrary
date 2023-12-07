@@ -239,7 +239,7 @@ export class PaymentRequestEffects {
 
             // If the token is not supported by the network, we return 0
             if (priceFeed === undefined) {
-              return PaymentRequestActions.applyConversionNotSupported();
+              return PaymentRequestActions.applyConversionNotSupported({ amountInToken: payload[0].amount });
             }
             // If the token is supported by the network, we get the price of the token
             price = await this.priceFeedService.getCurrentPrice(priceFeed, payload[2].chainId, payload[3]);
@@ -269,7 +269,7 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.updatedToken),
       concatLatestFrom(() => [this.store.select(selectPaymentConversion)]),
-      filter((payload) => payload[1].conversionToken.data !== null && payload[1].conversionUSD.data !== null),
+      filter((payload) => payload[1].conversionToken.data !== null),
       map((payload: [ReturnType<typeof PaymentRequestActions.updatedToken>, DataConversionStore]) => {
         return PaymentRequestActions.applyConversionToken({
           amount: payload[1].conversionToken?.data ?? 0,
@@ -432,10 +432,12 @@ export class PaymentRequestEffects {
             from: action[1] as string
           };
           return from(this.tokensService.transferNativeToken(payload)).pipe(
-            map((receipt: TransactionReceipt) => PaymentRequestActions.amountSent({
-              hash: receipt.transactionHash,
-              chainId: action[2]?.chainId as NetworkChainId
-            })),
+            map((receipt: TransactionReceipt) =>
+              PaymentRequestActions.amountSent({
+                hash: receipt.transactionHash,
+                chainId: action[2]?.chainId as NetworkChainId
+              })
+            ),
             catchError((error: { message: string; code: number }) =>
               of(
                 PaymentRequestActions.amountSentFailure({
@@ -447,9 +449,47 @@ export class PaymentRequestEffects {
         }
       )
     );
-  })
+  });
 
-
-  // TODO: sendNonNativeTokenWithoutFees$
-
+  sendNonNativeTokenWithoutFees$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.sendAmount),
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectPayment),
+        this.store.select(selectIsNonNativeToken)
+      ]),
+      filter((payload) => payload[1] !== null && payload[3] && payload[2]?.usdEnabled === false),
+      map(
+        (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+      ),
+      switchMap((action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
+        const tokenAddress: string = tokenList
+          .find((token) => token.tokenId === action[2].tokenId)
+          ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+        const payload: SendTransactionTokenBridgePayload = {
+          tokenAddress: tokenAddress,
+          chainId: action[2].chainId,
+          amount: action[2].amount,
+          ownerAdress: action[1],
+          destinationAddress: action[2].publicAddress
+        };
+        return from(this.tokensService.transferNonNativeToken(payload)).pipe(
+          map((receipt: TransactionReceipt) =>
+            PaymentRequestActions.amountSent({
+              hash: receipt.transactionHash,
+              chainId: action[2].chainId as NetworkChainId
+            })
+          ),
+          catchError((error: { message: string; code: number }) =>
+            of(
+              PaymentRequestActions.amountSentFailure({
+                message: this.walletService.formatErrorMessage((error as { code: number }).code)
+              })
+            )
+          )
+        );
+      })
+    );
+  });
 }

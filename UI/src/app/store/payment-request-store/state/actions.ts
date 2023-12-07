@@ -20,7 +20,10 @@ export const applyConversionTokenFailure = createAction(
   '[Payment Request] Apply Conversion Token Failure',
   props<{ errorMessage: string; amountInUsd: boolean }>()
 );
-export const applyConversionNotSupported = createAction('[Payment Request] Apply Conversion Not Supported');
+export const applyConversionNotSupported = createAction(
+  '[Payment Request] Apply Conversion Not Supported',
+  props<{ amountInToken: number }>()
+);
 
 export const generatePaymentRequest = createAction(
   '[Payment Request] Generate Payment Request',

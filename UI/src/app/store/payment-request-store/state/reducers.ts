@@ -103,27 +103,23 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       }
     };
   }),
-  on(
-    PaymentActions.applyConversionTokenSuccess,
-    (state, { usdAmount, tokenAmount }): IPaymentRequestState => {
-      return {
-        ...state,
-        conversionToken: {
-          ...state.conversionToken,
-          loading: false,
-          error: null,
-          data: tokenAmount
-        },
-        conversionUSD: {
-          ...state.conversionUSD,
-          loading: false,
-          error: null,
-          data: usdAmount
-        }
-      };
-
-    }
-  ),
+  on(PaymentActions.applyConversionTokenSuccess, (state, { usdAmount, tokenAmount }): IPaymentRequestState => {
+    return {
+      ...state,
+      conversionToken: {
+        ...state.conversionToken,
+        loading: false,
+        error: null,
+        data: tokenAmount
+      },
+      conversionUSD: {
+        ...state.conversionUSD,
+        loading: false,
+        error: null,
+        data: usdAmount
+      }
+    };
+  }),
   on(PaymentActions.applyConversionTokenFailure, (state, { errorMessage, amountInUsd }): IPaymentRequestState => {
     const key = amountInUsd ? 'conversionUSD' : 'conversionToken';
     return {
@@ -137,12 +133,17 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   }),
   on(
     PaymentActions.applyConversionNotSupported,
-    (state): IPaymentRequestState => ({
+    (state, { amountInToken }): IPaymentRequestState => ({
       ...state,
       conversionUSD: {
         loading: false,
         error: 'NOT_SUPPORTED',
         data: null
+      },
+      conversionToken: {
+        loading: false,
+        error: null,
+        data: amountInToken
       }
     })
   ),
