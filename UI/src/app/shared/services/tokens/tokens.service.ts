@@ -21,7 +21,6 @@ import {
   TransactionTokenBridgePayload
 } from '../../interfaces';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -69,7 +68,11 @@ export class TokensService {
       const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], address);
 
       return await contract.methods
-        .canTransferToken(payload.ownerAdress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'), payload.tokenAddress)
+        .canTransferToken(
+          payload.ownerAdress,
+          web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
+          payload.tokenAddress
+        )
         .call();
     } catch (error) {
       return Promise.reject('Network not supported yet');
@@ -88,11 +91,19 @@ export class TokensService {
 
     try {
       const gas = await contract.methods
-        .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
+        .transferTokenFund(
+          web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
+          payload.destinationAddress,
+          payload.tokenAddress
+        )
         .estimateGas({ from: payload.ownerAdress });
 
       return contract.methods
-        .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
+        .transferTokenFund(
+          web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
+          payload.destinationAddress,
+          payload.tokenAddress
+        )
         .send({ from: payload.ownerAdress, gas: gas });
     } catch (error) {
       return Promise.reject((error as Error)?.message || error);
@@ -121,7 +132,7 @@ export class TokensService {
 
       return receipt;
     } catch (error) {
-      console.log('error', error)
+      console.log('error', error);
       return Promise.reject((error as { message: string; code: number }) || error);
     }
   }
@@ -154,7 +165,6 @@ export class TokensService {
       return contract.methods
         .transfer(payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
         .send({ from: payload.ownerAdress, gas: gas });
-
     } catch (error) {
       return Promise.reject((error as { message: string; code: number }) || error);
     }
