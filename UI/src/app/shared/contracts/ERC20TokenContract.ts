@@ -16,7 +16,7 @@ export class ERC20TokenContract extends BaseContract {
   }
 
   getBridgeAddress(): string {
-    const contractLink: IContract = environment.contracts.bridgeTokenTransfer.contracts.find(
+    const contractLink: IContract = environment.contracts.bridgeTransfer.contracts.find(
       (contract: IContract) => this.chainId === contract.chainId
     ) as IContract;
     return contractLink.address;

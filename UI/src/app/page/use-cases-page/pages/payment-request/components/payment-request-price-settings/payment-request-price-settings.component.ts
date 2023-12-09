@@ -28,7 +28,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
   }
 
   get paymentConversionIsNotSupported(): boolean {
-    return this.paymentConversion.conversionUSD.error === 'NOT_SUPPORTED';
+    return this.paymentConversion.conversionUSD.error !== null;
   }
 
   ngOnInit(): void {

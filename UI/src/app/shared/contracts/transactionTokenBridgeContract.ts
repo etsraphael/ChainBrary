@@ -9,7 +9,7 @@ export class TransactionTokenBridgeContract extends BaseContract {
   }
 
   getAddress(): string {
-    const contractLink: IContract = environment.contracts.bridgeTokenTransfer.contracts.find(
+    const contractLink: IContract = environment.contracts.bridgeTransfer.contracts.find(
       (contract: IContract) => this.chainId === contract.chainId
     ) as IContract;
     return contractLink.address;
@@ -21,6 +21,11 @@ export class TransactionTokenBridgeContract extends BaseContract {
         inputs: [],
         stateMutability: 'nonpayable',
         type: 'constructor'
+      },
+      {
+        inputs: [],
+        name: 'MathOverflowedMulDiv',
+        type: 'error'
       },
       {
         inputs: [
@@ -74,30 +79,74 @@ export class TransactionTokenBridgeContract extends BaseContract {
           {
             indexed: true,
             internalType: 'address',
-            name: 'sender',
+            name: 'from',
             type: 'address'
           },
           {
             indexed: true,
             internalType: 'address',
-            name: 'destination',
+            name: 'to',
             type: 'address'
           },
           {
             indexed: false,
             internalType: 'uint256',
-            name: 'amount',
+            name: 'value',
             type: 'uint256'
           },
           {
             indexed: false,
+            internalType: 'uint256',
+            name: 'fee',
+            type: 'uint256'
+          }
+        ],
+        name: 'Transfer',
+        type: 'event'
+      },
+      {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'from',
+            type: 'address'
+          },
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'to',
+            type: 'address'
+          },
+          {
+            indexed: false,
+            internalType: 'uint256',
+            name: 'value',
+            type: 'uint256'
+          },
+          {
+            indexed: true,
             internalType: 'address',
             name: 'token',
             type: 'address'
           }
         ],
-        name: 'Transfer',
+        name: 'TransferToken',
         type: 'event'
+      },
+      {
+        inputs: [],
+        name: 'FEE_PERCENT',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
       },
       {
         inputs: [
@@ -117,25 +166,12 @@ export class TransactionTokenBridgeContract extends BaseContract {
             type: 'address'
           }
         ],
-        name: 'canTransfer',
+        name: 'canTransferToken',
         outputs: [
           {
             internalType: 'bool',
             name: '',
             type: 'bool'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'feeRate',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
           }
         ],
         stateMutability: 'view',
@@ -164,12 +200,25 @@ export class TransactionTokenBridgeContract extends BaseContract {
       {
         inputs: [
           {
-            internalType: 'uint256',
-            name: '_feeRateBasisPoints',
-            type: 'uint256'
+            internalType: 'address payable',
+            name: 'recipient',
+            type: 'address'
           }
         ],
-        name: 'setFeeRate',
+        name: 'transferFund',
+        outputs: [],
+        stateMutability: 'payable',
+        type: 'function'
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'newOwner',
+            type: 'address'
+          }
+        ],
+        name: 'transferOwnership',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function'
@@ -192,20 +241,7 @@ export class TransactionTokenBridgeContract extends BaseContract {
             type: 'address'
           }
         ],
-        name: 'transfer',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'newOwner',
-            type: 'address'
-          }
-        ],
-        name: 'transferOwnership',
+        name: 'transferTokenFund',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function'

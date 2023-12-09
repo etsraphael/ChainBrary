@@ -67,7 +67,7 @@ export class TokensService {
       const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], address);
 
       return await contract.methods
-        .canTransfer(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
+        .canTransferToken(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
         .call();
     } catch (error) {
       return Promise.reject('Network not supported yet');

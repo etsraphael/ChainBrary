@@ -5,6 +5,7 @@ import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { TransactionReceipt } from 'web3-core';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
@@ -31,7 +32,6 @@ import {
   selectPaymentNetworkIsMathing,
   selectPaymentToken
 } from './selectors';
-import { TransactionReceipt } from 'web3-core';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -61,7 +61,79 @@ export class PaymentRequestEffects {
     );
   });
 
-  checkIfTransferIsPossible$ = createEffect(() => {
+  checkIfTransferIsPossibleAfterManually$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.smartContractCanTransfer),
+      concatLatestFrom(() => [
+        this.store.select(selectPublicAddress),
+        this.store.select(selectIsNonNativeToken),
+        this.store.select(selectPaymentNetworkIsMathing),
+        this.store.select(selectPayment)
+      ]),
+      filter(
+        (
+          payload: [
+            ReturnType<typeof PaymentRequestActions.smartContractCanTransfer>,
+            string | null,
+            boolean,
+            boolean,
+            IPaymentRequest | null
+          ]
+        ) => payload[1] !== null && payload[3] && payload[4] !== null
+      ),
+      map(
+        (payload) =>
+          payload as [
+            ReturnType<typeof PaymentRequestActions.smartContractCanTransfer>,
+            string,
+            boolean,
+            boolean,
+            IPaymentRequest
+          ]
+      ),
+      switchMap(
+        async (
+          action: [
+            ReturnType<typeof PaymentRequestActions.smartContractCanTransfer>,
+            string,
+            boolean,
+            boolean,
+            IPaymentRequest
+          ]
+        ) => {
+          if (action[2] === false) {
+            return PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable: true });
+          }
+
+          const tokenAddress: ITokenContract | undefined = tokenList
+            .find((token) => token.tokenId === action[4].tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[4].chainId);
+
+          if (!tokenAddress) {
+            return PaymentRequestActions.smartContractCanTransferFailure({ message: 'Token address not found!' });
+          }
+
+          const payload: TransactionTokenBridgePayload = {
+            ownerAdress: action[1],
+            tokenAddress: tokenAddress.address,
+            chainId: action[4].chainId,
+            amount: action[4].amount
+          };
+
+          return this.tokensService
+            .getTransferAvailable(payload)
+            .then((isTransferable: boolean) =>
+              PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable })
+            );
+        }
+      ),
+      catchError((error: string) => {
+        return of(PaymentRequestActions.smartContractCanTransferFailure({ message: error }));
+      })
+    );
+  });
+
+  checkIfTransferIsPossibleAfterPaymentGeneration$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.generatePaymentRequestSuccess),
       concatLatestFrom(() => [
@@ -87,12 +159,16 @@ export class PaymentRequestEffects {
         async (
           action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
         ) => {
+          if (action[0].paymentRequest.usdEnabled === false) {
+            return PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable: true });
+          }
+
           const tokenAddress: ITokenContract | undefined = tokenList
             .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
             ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);
 
           if (!tokenAddress) {
-            return PaymentRequestActions.checkTokenAllowanceFailure({ message: 'Token address not found!' });
+            return PaymentRequestActions.smartContractCanTransferFailure({ message: 'Token address not found!' });
           }
 
           const payload: TransactionTokenBridgePayload = {
@@ -110,7 +186,7 @@ export class PaymentRequestEffects {
         }
       ),
       catchError((error: string) => {
-        return of(PaymentRequestActions.checkTokenAllowanceFailure({ message: error }));
+        return of(PaymentRequestActions.smartContractCanTransferFailure({ message: error }));
       })
     );
   });
@@ -261,6 +337,14 @@ export class PaymentRequestEffects {
               amountInUsd: payload[0].amountInUsd
             });
         }
+      ),
+      catchError(() =>
+        of(
+          PaymentRequestActions.applyConversionTokenFailure({
+            errorMessage: 'Error retreiving data from the blockchain',
+            amountInUsd: false
+          })
+        )
       )
     );
   });
@@ -312,11 +396,12 @@ export class PaymentRequestEffects {
 
   sendAmountTransactionsError$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(PaymentRequestActions.amountSentFailure, PaymentRequestActions.checkTokenAllowanceFailure),
+      ofType(PaymentRequestActions.amountSentFailure, PaymentRequestActions.smartContractCanTransferFailure),
       map(
         (
           action: ReturnType<
-            typeof PaymentRequestActions.amountSentFailure | typeof PaymentRequestActions.checkTokenAllowanceFailure
+            | typeof PaymentRequestActions.amountSentFailure
+            | typeof PaymentRequestActions.smartContractCanTransferFailure
           >
         ) => showErrorNotification({ message: action.message })
       )
@@ -451,6 +536,7 @@ export class PaymentRequestEffects {
     );
   });
 
+  // TODO: Check this one
   sendNonNativeTokenWithoutFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),

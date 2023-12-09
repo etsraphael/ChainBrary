@@ -41,11 +41,6 @@ export const selectPaymentConversion: MemoizedSelector<object, DataConversionSto
   (s) => ({ conversionToken: s.conversionToken, conversionUSD: s.conversionUSD })
 );
 
-// export const selectPaymentRequestInUsdIsEnabled: MemoizedSelector<object, boolean> = createSelector(
-//   selectPaymentConversion,
-//   (s) => s.data.priceInUsdEnabled
-// );
-
 export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   (s) => s.payment.data?.tokenId !== s.network?.nativeCurrency.id

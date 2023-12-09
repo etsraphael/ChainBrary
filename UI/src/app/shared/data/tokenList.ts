@@ -223,6 +223,11 @@ export const tokenList: IToken[] = [
         chainId: NetworkChainId.SEPOLIA,
         address: '0x75eC33387b1b309359598bf1Cc75E4823807F281',
         priceFeed: []
+      },
+      {
+        chainId: NetworkChainId.LOCALHOST,
+        address: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
+        priceFeed: []
       }
     ]
   },

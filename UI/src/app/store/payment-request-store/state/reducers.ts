@@ -74,17 +74,6 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     })
   ),
   on(
-    PaymentActions.checkTokenAllowanceFailure,
-    (state, { message }): IPaymentRequestState => ({
-      ...state,
-      smartContractCanTransfer: {
-        ...state.smartContractCanTransfer,
-        loading: false,
-        error: message
-      }
-    })
-  ),
-  on(
     PaymentActions.selectToken,
     PaymentActions.updatedToken,
     (state, { token }): IPaymentRequestState => ({
@@ -121,7 +110,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     };
   }),
   on(PaymentActions.applyConversionTokenFailure, (state, { errorMessage, amountInUsd }): IPaymentRequestState => {
-    const key = amountInUsd ? 'conversionUSD' : 'conversionToken';
+    const key = amountInUsd ? 'conversionToken' : 'conversionUSD';
     return {
       ...state,
       [key]: {
