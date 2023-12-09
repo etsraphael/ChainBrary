@@ -23,6 +23,11 @@ export class TransactionBridgeContract extends BaseContract {
         type: 'constructor'
       },
       {
+        inputs: [],
+        name: 'MathOverflowedMulDiv',
+        type: 'error'
+      },
+      {
         inputs: [
           {
             internalType: 'address',
@@ -100,8 +105,39 @@ export class TransactionBridgeContract extends BaseContract {
         type: 'event'
       },
       {
+        anonymous: false,
+        inputs: [
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'from',
+            type: 'address'
+          },
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'to',
+            type: 'address'
+          },
+          {
+            indexed: false,
+            internalType: 'uint256',
+            name: 'value',
+            type: 'uint256'
+          },
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'token',
+            type: 'address'
+          }
+        ],
+        name: 'TransferToken',
+        type: 'event'
+      },
+      {
         inputs: [],
-        name: 'MAX_RECIPIENTS',
+        name: 'FEE_PERCENT',
         outputs: [
           {
             internalType: 'uint256',
@@ -113,13 +149,29 @@ export class TransactionBridgeContract extends BaseContract {
         type: 'function'
       },
       {
-        inputs: [],
-        name: 'feeRate',
-        outputs: [
+        inputs: [
+          {
+            internalType: 'address',
+            name: '_owner',
+            type: 'address'
+          },
           {
             internalType: 'uint256',
-            name: '',
+            name: '_amount',
             type: 'uint256'
+          },
+          {
+            internalType: 'contract IERC20',
+            name: '_token',
+            type: 'address'
+          }
+        ],
+        name: 'canTransferToken',
+        outputs: [
+          {
+            internalType: 'bool',
+            name: '',
+            type: 'bool'
           }
         ],
         stateMutability: 'view',
@@ -148,9 +200,9 @@ export class TransactionBridgeContract extends BaseContract {
       {
         inputs: [
           {
-            internalType: 'address payable[]',
-            name: 'recipients',
-            type: 'address[]'
+            internalType: 'address payable',
+            name: 'recipient',
+            type: 'address'
           }
         ],
         name: 'transferFund',
@@ -167,6 +219,29 @@ export class TransactionBridgeContract extends BaseContract {
           }
         ],
         name: 'transferOwnership',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function'
+      },
+      {
+        inputs: [
+          {
+            internalType: 'uint256',
+            name: '_amount',
+            type: 'uint256'
+          },
+          {
+            internalType: 'address',
+            name: '_destinationAddress',
+            type: 'address'
+          },
+          {
+            internalType: 'contract IERC20',
+            name: '_token',
+            type: 'address'
+          }
+        ],
+        name: 'transferTokenFund',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function'

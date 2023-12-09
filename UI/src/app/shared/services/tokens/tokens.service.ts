@@ -6,10 +6,12 @@ import {
   IEditAllowancePayload,
   ITransferPayload
 } from '@chainbrary/token-bridge';
+import BigNumber from 'bignumber.js';
 import Web3 from 'web3';
+import { TransactionReceipt } from 'web3-core';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import { ERC20TokenContract, TransactionBridgeContract, TransactionTokenBridgeContract } from '../../contracts';
+import { ERC20TokenContract, TransactionBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import {
   IReceiptTransaction,
@@ -18,8 +20,6 @@ import {
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
 } from '../../interfaces';
-import { TransactionReceipt } from 'web3-core';
-import BigNumber from 'bignumber.js';
 
 
 @Injectable({
@@ -59,7 +59,7 @@ export class TokensService {
   async getTransferAvailable(payload: TransactionTokenBridgePayload): Promise<boolean> {
     try {
       const web3: Web3 = new Web3(window.ethereum);
-      const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
+      const transactionContract = new TransactionBridgeContract(payload.chainId);
 
       const address = transactionContract.getAddress();
       if (!address) {
@@ -78,7 +78,7 @@ export class TokensService {
 
   async transferNonNativeTokenSC(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
-    const transactionContract = new TransactionTokenBridgeContract(payload.chainId);
+    const transactionContract = new TransactionBridgeContract(payload.chainId);
 
     if (!transactionContract.getAddress()) {
       return Promise.reject('Network not supported');
@@ -107,17 +107,21 @@ export class TokensService {
       transactionContract.getAddress()
     );
 
+    const amount = new BigNumber(payload.amount);
+    const amountFormat = amount.decimalPlaces(0, BigNumber.ROUND_HALF_UP).toString(10);
+
     try {
       const gas: number = await contract.methods
         .transferFund(payload.to)
-        .estimateGas({ from: payload.from, value: new BigNumber(payload.amount).toString(10) });
+        .estimateGas({ from: payload.from, value: amountFormat });
 
       const receipt: IReceiptTransaction = contract.methods
         .transferFund(payload.to)
-        .send({ from: payload.from, value: new BigNumber(payload.amount).toString(10), gas: gas });
+        .send({ from: payload.from, value: amountFormat, gas: gas });
 
       return receipt;
     } catch (error) {
+      console.log('error', error)
       return Promise.reject((error as { message: string; code: number }) || error);
     }
   }

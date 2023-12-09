@@ -9,7 +9,7 @@ import { TransactionReceipt } from 'web3-core';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
-import { TransactionTokenBridgeContract } from './../../../shared/contracts';
+import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IPaymentRequest,
@@ -248,7 +248,7 @@ export class PaymentRequestEffects {
           tokenAddress: tokenAddress,
           chainId: payment.chainId,
           owner: publicAddress,
-          spender: new TransactionTokenBridgeContract(payment.chainId).getAddress(),
+          spender: new TransactionBridgeContract(payment.chainId).getAddress(),
           amount: payment.amount
         };
 
@@ -459,7 +459,6 @@ export class PaymentRequestEffects {
     );
   });
 
-  // TODO: check it on SEP
   sendNativeTokenWithFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
