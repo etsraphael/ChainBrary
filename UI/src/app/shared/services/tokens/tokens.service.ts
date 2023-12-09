@@ -19,6 +19,8 @@ import {
   TransactionTokenBridgePayload
 } from '../../interfaces';
 import { TransactionReceipt } from 'web3-core';
+import BigNumber from 'bignumber.js';
+
 
 @Injectable({
   providedIn: 'root'
@@ -67,7 +69,7 @@ export class TokensService {
       const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], address);
 
       return await contract.methods
-        .canTransferToken(payload.ownerAdress, web3.utils.toWei(String(payload.amount), 'ether'), payload.tokenAddress)
+        .canTransferToken(payload.ownerAdress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'), payload.tokenAddress)
         .call();
     } catch (error) {
       return Promise.reject('Network not supported yet');
@@ -108,11 +110,11 @@ export class TokensService {
     try {
       const gas: number = await contract.methods
         .transferFund(payload.to)
-        .estimateGas({ from: payload.from, value: String(payload.amount) });
+        .estimateGas({ from: payload.from, value: new BigNumber(payload.amount).toString(10) });
 
       const receipt: IReceiptTransaction = contract.methods
         .transferFund(payload.to)
-        .send({ from: payload.from, value: String(payload.amount), gas: gas });
+        .send({ from: payload.from, value: new BigNumber(payload.amount).toString(10), gas: gas });
 
       return receipt;
     } catch (error) {
@@ -122,12 +124,11 @@ export class TokensService {
 
   async transferNativeToken(payload: SendNativeTokenPayload): Promise<TransactionReceipt> {
     const web3: Web3 = new Web3(window.ethereum);
-
     try {
       const receipt: TransactionReceipt = await web3.eth.sendTransaction({
         from: payload.from,
         to: payload.to,
-        value: String(payload.amount)
+        value: new BigNumber(payload.amount).toString(10)
       });
 
       return receipt;
@@ -143,12 +144,13 @@ export class TokensService {
 
     try {
       const gas = await contract.methods
-        .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
+        .transfer(payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
         .estimateGas({ from: payload.ownerAdress });
 
       return contract.methods
-        .transfer(web3.utils.toWei(String(payload.amount), 'ether'), payload.destinationAddress, payload.tokenAddress)
+        .transfer(payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
         .send({ from: payload.ownerAdress, gas: gas });
+
     } catch (error) {
       return Promise.reject((error as { message: string; code: number }) || error);
     }

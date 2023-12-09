@@ -416,6 +416,7 @@ export class PaymentRequestEffects {
     );
   });
 
+  // TODO: check it on SEP
   sendNonNativeTokenWithFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
@@ -458,6 +459,7 @@ export class PaymentRequestEffects {
     );
   });
 
+  // TODO: check it on SEP
   sendNativeTokenWithFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
@@ -536,7 +538,6 @@ export class PaymentRequestEffects {
     );
   });
 
-  // TODO: Check this one
   sendNonNativeTokenWithoutFees$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.sendAmount),
