@@ -20,19 +20,19 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.POLYGON,
-          address: '0x537339ca0A52A79CD1509eE340113a10B25AB2B0'
+          address: '0xc4E84da25fc7450c53919031B5a98e790F38F4d0'
         },
         {
           chainId: NetworkChainId.BNB,
-          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+          address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
         },
         {
-          chainId: NetworkChainId.ETHEREUM,
-          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+          chainId: NetworkChainId.ETHEREUM, //TODO: like BNB
+          address: ''
         },
         {
-          chainId: NetworkChainId.AVALANCHE,
-          address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+          chainId: NetworkChainId.AVALANCHE,//TODO: like BNB
+          address: ''
         },
         {
           chainId: NetworkChainId.LOCALHOST,
