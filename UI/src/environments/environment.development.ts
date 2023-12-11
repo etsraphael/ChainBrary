@@ -9,7 +9,7 @@ export const environment = {
         NetworkChainId.POLYGON,
         NetworkChainId.BNB,
         NetworkChainId.SEPOLIA,
-        NetworkChainId.ETHEREUM,
+        // NetworkChainId.ETHEREUM, // TODO: Put back when contract is deployed
         NetworkChainId.AVALANCHE,
         NetworkChainId.LOCALHOST
       ],
@@ -27,12 +27,12 @@ export const environment = {
           address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
         },
         {
-          chainId: NetworkChainId.ETHEREUM, //TODO: like BNB
+          chainId: NetworkChainId.ETHEREUM, //TODO: like BNB // https://bscscan.com/address/0x0c28a863fd9d5bbf4ac48b156e736d3a200e4403#code
           address: ''
         },
         {
-          chainId: NetworkChainId.AVALANCHE,//TODO: like BNB
-          address: ''
+          chainId: NetworkChainId.AVALANCHE,
+          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
         },
         {
           chainId: NetworkChainId.LOCALHOST,
