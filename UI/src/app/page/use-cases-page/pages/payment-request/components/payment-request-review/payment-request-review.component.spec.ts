@@ -69,8 +69,8 @@ describe('PaymentRequestReviewComponent', () => {
 
   it('should have the correct value for usdEnabled', () => {
     const usdEnabled = true;
-    component.usdEnabled = usdEnabled;
-    expect(component.usdEnabled).toEqual(usdEnabled);
+    component.valueLockedInUsd = usdEnabled;
+    expect(component.valueLockedInUsd).toEqual(usdEnabled);
   });
 
   it('should emit goToPreviousPageEvent when goToPreviousPage() is called', () => {
@@ -79,25 +79,11 @@ describe('PaymentRequestReviewComponent', () => {
     expect(emitSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should calculate the receiving amount correctly', () => {
-    component.amount = 100;
-    component.protocolFee = 0.1;
-    const expectedReceivingAmount = component.amount - component.amount * component.protocolFee;
-    expect(component.receivingAmount).toBe(expectedReceivingAmount);
-  });
-
   it('should calculate the protocol fee amount correctly', () => {
     component.amount = 100;
     component.protocolFee = 0.1;
     const expectedProtocolFeeAmount = component.amount * component.protocolFee;
     expect(component.protocolFeeAmount).toBe(expectedProtocolFeeAmount);
-  });
-
-  it('should calculate the receiving amount correctly', () => {
-    component.amount = 100;
-    component.protocolFee = 0.1;
-    const expectedReceivingAmount = component.amount - component.amount * component.protocolFee;
-    expect(component.receivingAmount).toBe(expectedReceivingAmount);
   });
 
   it('should calculate the USD protocol fee amount correctly', () => {
