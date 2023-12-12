@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition": "^0.11.2",
-    "@nomicfoundation/hardhat-toolbox": "^3.0.0",
+    "@nomicfoundation/hardhat-toolbox": "^4.0.0",
     "hardhat": "^2.19.2",
     "hardhat-abi-exporter": "^2.10.1",
     "prettier": "^3.1.0",
