@@ -10,7 +10,6 @@ export const environment = {
         NetworkChainId.POLYGON,
         NetworkChainId.BNB,
         NetworkChainId.SEPOLIA,
-        // NetworkChainId.ETHEREUM, // TODO: Put back when contract is deployed - too expensive right now.
         NetworkChainId.AVALANCHE,
         NetworkChainId.LOCALHOST
       ],
@@ -27,10 +26,6 @@ export const environment = {
           chainId: NetworkChainId.BNB,
           address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
         },
-        // {
-        //   chainId: NetworkChainId.ETHEREUM,
-        //   address: ''
-        // },
         {
           chainId: NetworkChainId.AVALANCHE,
           address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
