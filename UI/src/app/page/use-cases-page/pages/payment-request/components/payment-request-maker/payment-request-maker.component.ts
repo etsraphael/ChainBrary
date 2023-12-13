@@ -10,7 +10,7 @@ import {
   Validators
 } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { INetworkDetail, NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Action } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import {
@@ -26,6 +26,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
+import { environment } from './../../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../../shared/enum';
 import {
   IPaymentRequest,
@@ -78,7 +79,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(private formatService: FormatService) {}
+  constructor(
+    private formatService: FormatService,
+    private web3LoginService: Web3LoginService
+  ) {}
+
+  get currentNetworkIsSupported$(): Observable<boolean> {
+    return this.currentNetworkObs.pipe(
+      filter((currentNetwork: INetworkDetail | null) => currentNetwork !== null),
+      map((currentNetwork: INetworkDetail | null) => currentNetwork as INetworkDetail),
+      map((currentNetwork: INetworkDetail) =>
+        environment.contracts.bridgeTransfer.networkSupported.includes(currentNetwork.chainId)
+      )
+    );
+  }
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -163,9 +177,13 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           tokenId: currentNetwork.nativeCurrency.id
         });
       } else {
+        const network: INetworkDetail = this.web3LoginService.getNetworkDetailByChainId(
+          environment.contracts.bridgeTransfer.defaultNetwork
+        );
+
         this.tokenChoiceForm.patchValue({
-          chainId: NetworkChainId.ETHEREUM,
-          tokenId: TokenId.ETHEREUM
+          chainId: network.chainId,
+          tokenId: network.nativeCurrency.id
         });
       }
       this.priceForm.patchValue({

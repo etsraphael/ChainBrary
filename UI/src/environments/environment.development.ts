@@ -5,11 +5,12 @@ export const environment = {
   certificationUri: 'https://api.studio.thegraph.com/query/43513/organizationschainbrary/v0.0.4',
   contracts: {
     bridgeTransfer: {
+      defaultNetwork: NetworkChainId.SEPOLIA,
       networkSupported: [
         NetworkChainId.POLYGON,
         NetworkChainId.BNB,
         NetworkChainId.SEPOLIA,
-        // NetworkChainId.ETHEREUM, // TODO: Put back when contract is deployed
+        // NetworkChainId.ETHEREUM, // TODO: Put back when contract is deployed - too expensive right now.
         NetworkChainId.AVALANCHE,
         NetworkChainId.LOCALHOST
       ],
@@ -26,10 +27,10 @@ export const environment = {
           chainId: NetworkChainId.BNB,
           address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
         },
-        {
-          chainId: NetworkChainId.ETHEREUM, //TODO: like BNB // https://bscscan.com/address/0x0c28a863fd9d5bbf4ac48b156e736d3a200e4403#code
-          address: ''
-        },
+        // {
+        //   chainId: NetworkChainId.ETHEREUM,
+        //   address: ''
+        // },
         {
           chainId: NetworkChainId.AVALANCHE,
           address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'

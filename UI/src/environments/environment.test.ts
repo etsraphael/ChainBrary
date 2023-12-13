@@ -5,6 +5,7 @@ export const environment = {
   certificationUri: 'https://api.studio.thegraph.com/query/43513/organizationschainbrary/v0.0.4',
   contracts: {
     bridgeTransfer: {
+      defaultNetwork: NetworkChainId.POLYGON,
       networkSupported: [
         NetworkChainId.POLYGON,
         NetworkChainId.BNB,
