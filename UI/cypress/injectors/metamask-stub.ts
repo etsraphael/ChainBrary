@@ -71,7 +71,7 @@ export const injectMetaMaskStub = (WALLET_ADDRESS: string, SIGNED_MESSAGE: strin
 export const getNetworkDetailList = (): INetworkDetail[] => {
   return [
     {
-      chainId: NetworkChainId.ETHEREUM,
+      chainId: NetworkChainId.POLYGON,
       networkVersion: NetworkVersion.ETHEREUM,
       name: 'Ethereum Mainnet',
       shortName: 'Ethereum',

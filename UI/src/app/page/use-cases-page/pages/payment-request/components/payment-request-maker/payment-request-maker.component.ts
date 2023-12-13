@@ -84,12 +84,10 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     private web3LoginService: Web3LoginService
   ) {}
 
-  get currentNetworkIsSupported$(): Observable<boolean> {
+  get currentNetworkIsNotSupported$(): Observable<boolean> {
     return this.currentNetworkObs.pipe(
-      filter((currentNetwork: INetworkDetail | null) => currentNetwork !== null),
-      map((currentNetwork: INetworkDetail | null) => currentNetwork as INetworkDetail),
-      map((currentNetwork: INetworkDetail) =>
-        environment.contracts.bridgeTransfer.networkSupported.includes(currentNetwork.chainId)
+      map((currentNetwork: INetworkDetail | null) =>
+        currentNetwork ? !environment.contracts.bridgeTransfer.networkSupported.includes(currentNetwork.chainId) : false
       )
     );
   }
