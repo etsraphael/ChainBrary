@@ -6,3 +6,15 @@ ngx-skeleton-loader {
 ::ng-deep .mat-mdc-optgroup-label {
   font-weight: bold;
 }
+
+.bi-arrow-left-right {
+  transform: rotate(90deg);
+}
+
+.no-bottom {
+  margin-bottom: -1.25em !important;
+}
+
+.usd-fiat-price-container {
+  margin-bottom: 1.6rem !important;
+}

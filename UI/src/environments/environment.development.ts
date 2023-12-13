@@ -5,69 +5,34 @@ export const environment = {
   certificationUri: 'https://api.studio.thegraph.com/query/43513/organizationschainbrary/v0.0.4',
   contracts: {
     bridgeTransfer: {
+      defaultNetwork: NetworkChainId.SEPOLIA,
       networkSupported: [
         NetworkChainId.POLYGON,
         NetworkChainId.BNB,
         NetworkChainId.SEPOLIA,
-        NetworkChainId.ETHEREUM,
         NetworkChainId.AVALANCHE,
         NetworkChainId.LOCALHOST
       ],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
-          address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
+          address: '0x87a3bfc5f321Dad77A0829eae8e69BF66877a9a7'
         },
         {
           chainId: NetworkChainId.POLYGON,
-          address: '0x537339ca0A52A79CD1509eE340113a10B25AB2B0'
+          address: '0xc4E84da25fc7450c53919031B5a98e790F38F4d0'
         },
         {
           chainId: NetworkChainId.BNB,
-          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
-        },
-        {
-          chainId: NetworkChainId.ETHEREUM,
-          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+          address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
         },
         {
           chainId: NetworkChainId.LOCALHOST,
-          address: '0xdc64a140aa3e981100a9beca4e685f962f0cf6c9'
-        }
-      ]
-    },
-    bridgeTokenTransfer: {
-      networkSupported: [
-        NetworkChainId.SEPOLIA,
-        NetworkChainId.ETHEREUM,
-        NetworkChainId.AVALANCHE,
-        NetworkChainId.BNB,
-        NetworkChainId.POLYGON
-      ],
-      contracts: [
-        {
-          chainId: NetworkChainId.SEPOLIA,
-          address: '0x34B84Db9fE97d2831d1a83DDa4Fcc3F8d73c6Fe4'
-        },
-        {
-          chainId: NetworkChainId.ETHEREUM,
-          address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
-        },
-        {
-          chainId: NetworkChainId.AVALANCHE,
-          address: '0x81ae6e4B9a49A24B668975b2a679aa08a4408495'
-        },
-        {
-          chainId: NetworkChainId.BNB,
-          address: '0x3e662a32EAD3583ca4A0Ea8aB127AdC6291d27279'
-        },
-        {
-          chainId: NetworkChainId.POLYGON,
-          address: '0x5e946601261ab9c447086727a5d7Ed9474F523f0'
+          address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
         }
       ]
     },

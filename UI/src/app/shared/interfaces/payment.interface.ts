@@ -16,7 +16,8 @@ export interface PriceSettingsForm {
   token: FormGroup<TokenChoiceMakerForm>;
   description: FormControl<string | null>;
   amount: FormControl<number | null>;
-  usdEnabled: FormControl<boolean | null>;
+  amountInUsd: FormControl<number | null>;
+  valueLockedInUsd: FormControl<boolean | null>;
 }
 
 export interface ProfileForm {
@@ -63,9 +64,9 @@ export interface SendTransactionTokenBridgePayload extends TransactionTokenBridg
   destinationAddress: string;
 }
 
-export interface SendNativeTokenToMultiSigPayload {
+export interface SendNativeTokenPayload {
   from: string;
+  to: string;
   amount: number;
   chainId: NetworkChainId;
-  addresses: string[];
 }

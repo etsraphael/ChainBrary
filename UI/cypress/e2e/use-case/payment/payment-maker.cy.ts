@@ -5,7 +5,7 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 
 describe('Create a payment request with wallet', () => {
   beforeEach(() => {
-    cy.login('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '...', NetworkChainId.ETHEREUM);
+    cy.login('0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', '...', NetworkChainId.POLYGON);
   });
 
   it('Start payment generate a payment with Metamask', () => {
