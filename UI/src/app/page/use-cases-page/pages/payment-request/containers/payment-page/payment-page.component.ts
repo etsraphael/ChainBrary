@@ -23,7 +23,8 @@ import { INativeToken, IPaymentRequest, ITransactionCard } from './../../../../.
 import {
   accountChanged,
   networkChange,
-  networkChangeSuccess
+  networkChangeSuccess,
+  setAuthPublicAddress
 } from './../../../../../../store/auth-store/state/actions';
 import {
   selectAuthStatus,
@@ -34,7 +35,8 @@ import { selectWalletConnected } from './../../../../../../store/global-store/st
 import {
   approveTokenAllowance,
   generatePaymentRequest,
-  sendAmount
+  sendAmount,
+  smartContractCanTransfer
 } from './../../../../../../store/payment-request-store/state/actions';
 import { IPaymentRequestState } from './../../../../../../store/payment-request-store/state/interfaces';
 import {
@@ -54,19 +56,6 @@ import { selectRecentTransactionsByComponent } from './../../../../../../store/t
   styleUrls: ['./payment-page.component.scss']
 })
 export class PaymentPageComponent implements OnInit, OnDestroy {
-  AuthStatusCodeTypes = AuthStatusCode;
-  selectPaymentRequestState$: Observable<IPaymentRequestState>;
-  paymentIsLoading$: Observable<boolean>;
-  canTransferError$: Observable<string | null>;
-  authStatus$: Observable<AuthStatusCode>;
-  isNonNativeToken$: Observable<boolean>;
-  publicAddress$: Observable<string | null>;
-  transactionCards$: Observable<ITransactionCard[]>;
-  currentNetwork$: Observable<INetworkDetail | null>;
-  paymentNetwork$: Observable<INetworkDetail | null>;
-  walletConnected$: Observable<WalletProvider | null>;
-  smartContractCanTransfer$: Observable<boolean>;
-  isPaymentMaker: Observable<boolean>;
   nativeTokenInfo: INativeToken;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
@@ -79,6 +68,22 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   ) {
     this.setUpId();
   }
+
+  readonly selectPaymentRequestState$: Observable<IPaymentRequestState> = this.store.select(selectPaymentRequest);
+  readonly paymentIsLoading$: Observable<boolean> = this.store.select(selectCardIsLoading);
+  readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+  readonly publicAddress$: Observable<string | null> = this.store.select(selectPublicAddress);
+  readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly paymentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectPaymentNetwork);
+  readonly smartContractCanTransfer$: Observable<boolean> = this.store.select(selectSmartContractCanTransfer);
+  readonly canTransferError$: Observable<string | null> = this.store.select(selectSmartContractCanTransferError);
+  readonly isNonNativeToken$: Observable<boolean> = this.store.select(selectIsNonNativeToken);
+  readonly isPaymentMaker: Observable<boolean> = this.store.select(selectIsPaymentMaker);
+  readonly walletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected);
+  readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
+    selectRecentTransactionsByComponent('PaymentPageComponent')
+  );
+  readonly AuthStatusCodeTypes = AuthStatusCode;
 
   get paymentSelectedInvalid$(): Observable<boolean> {
     return combineLatest([this.currentNetwork$, this.paymentNetwork$]).pipe(
@@ -101,7 +106,6 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.generateObs();
     this.setUpMessage();
     this.generateSubscription();
   }
@@ -110,21 +114,8 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
     this.actions$
       .pipe(ofType(accountChanged, networkChangeSuccess), takeUntil(this.destroyed$))
       .subscribe(() => this.setUpId());
-  }
 
-  generateObs(): void {
-    this.selectPaymentRequestState$ = this.store.select(selectPaymentRequest);
-    this.paymentIsLoading$ = this.store.select(selectCardIsLoading);
-    this.authStatus$ = this.store.select(selectAuthStatus);
-    this.publicAddress$ = this.store.select(selectPublicAddress);
-    this.transactionCards$ = this.store.select(selectRecentTransactionsByComponent('PaymentPageComponent'));
-    this.currentNetwork$ = this.store.select(selectCurrentNetwork);
-    this.paymentNetwork$ = this.store.select(selectPaymentNetwork);
-    this.smartContractCanTransfer$ = this.store.select(selectSmartContractCanTransfer);
-    this.canTransferError$ = this.store.select(selectSmartContractCanTransferError);
-    this.isNonNativeToken$ = this.store.select(selectIsNonNativeToken);
-    this.isPaymentMaker = this.store.select(selectIsPaymentMaker);
-    this.walletConnected$ = this.store.select(selectWalletConnected);
+    this.actions$.pipe(ofType(setAuthPublicAddress)).subscribe(() => this.store.dispatch(smartContractCanTransfer()));
   }
 
   setUpMessage(): void {

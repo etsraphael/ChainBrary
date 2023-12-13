@@ -1,7 +1,7 @@
 <form class="container pt-2" [formGroup]="priceForm">
   <!-- Warning message for LogIn -->
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-10 col-xl-9">
       <div class="alert alert-warning border-0" role="alert" *ngIf="(currentNetworkObs | async) === null">
         <div class="d-flex align-items-center">
           <p class="mb-0">
@@ -14,7 +14,7 @@
   </div>
   <!-- Token choice -->
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-10 col-xl-9">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Choose token</mat-label>
         <div formGroupName="token">
@@ -39,42 +39,48 @@
   </div>
   <!-- Amount -->
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
-      <p [ngClass]="{ 'mb-0': !paymentConversion.data.usdAmount }">
-        <mat-form-field class="w-100 text-dark" appearance="outline">
+    <div class="col-12 col-lg-10 col-xl-9">
+      <mat-form-field
+        class="w-100 text-dark"
+        appearance="outline"
+        [ngClass]="{ 'no-bottom': paymentConversionIsNotSupported === false }"
+      >
+        <mat-label>Amount</mat-label>
+        <input formControlName="amount" type="number" class="ps-1" matInput />
+        <div class="d-flex" matSuffix>
+          <mat-spinner *ngIf="paymentConversion.conversionToken.loading" [diameter]="15"></mat-spinner>
+          <h6 class="mb-0 px-3">
+            <ng-container *ngIf="tokenSelected">{{ tokenSelected.symbol }}</ng-container>
+          </h6>
+        </div>
+      </mat-form-field>
+    </div>
+    <ng-container *ngIf="paymentConversionIsNotSupported === false">
+      <div class="col-12 col-lg-10 col-xl-9">
+        <div class="d-flex align-items-center justify-content-center h-100">
+          <i class="bi bi-arrow-left-right py-2"></i>
+        </div>
+      </div>
+      <div class="col-12 col-lg-10 col-xl-9">
+        <mat-form-field class="w-100 text-dark usd-fiat-price-container" appearance="outline">
           <mat-label>Amount</mat-label>
-          <input formControlName="amount" type="number" class="ps-1" matInput placeholder="Amount" />
-          <div matSuffix>
-            <h6 class="mb-0 pe-3">
-              <ng-container *ngIf="!usdEnabled && tokenSelected">{{ tokenSelected.symbol }}</ng-container>
-              <ng-container *ngIf="usdEnabled">$USD</ng-container>
-            </h6>
+          <input formControlName="amountInUsd" type="number" class="ps-1" matInput />
+          <div class="d-flex" matSuffix>
+            <mat-spinner *ngIf="paymentConversion.conversionUSD.loading" [diameter]="15"></mat-spinner>
+            <h6 class="mb-0 px-3">$USD</h6>
           </div>
-          <mat-hint *ngIf="!usdEnabled && paymentConversion.data.usdAmount && paymentConversion.data.usdAmount > 0">
-            <ng-container *ngIf="!paymentConversion.loading">
-              $USD {{ paymentConversion.data.usdAmount }}
-            </ng-container>
-            <ng-container *ngIf="paymentConversion.loading">
-              <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
-            </ng-container>
-            <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
-          </mat-hint>
-          <mat-hint *ngIf="usdEnabled && paymentConversion.data.tokenAmount && paymentConversion.data.tokenAmount > 0">
-            <ng-container *ngIf="!paymentConversion.loading">
-              {{ paymentConversion.data.tokenAmount }} {{ tokenSelected!.symbol }}
-            </ng-container>
-            <ng-container *ngIf="paymentConversion.loading">
-              <ngx-skeleton-loader count="1" [theme]="{ width: '6rem', margin: 0 }"></ngx-skeleton-loader>
-            </ng-container>
-            <i (click)="swapCurrency.emit()" class="bi bi-arrow-left-right px-2 btn py-0 px-1"></i>
+          <mat-hint>
+            <mat-checkbox formControlName="valueLockedInUsd" color="primary">
+              Lock in USD value (0.1% fee)
+            </mat-checkbox>
           </mat-hint>
         </mat-form-field>
-      </p>
-    </div>
+      </div>
+    </ng-container>
   </div>
   <!-- Add a description textarea here -->
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-10 col-xl-9">
       <mat-form-field class="w-100 text-dark" appearance="outline">
         <mat-label>Description</mat-label>
         <textarea
@@ -92,7 +98,7 @@
   </div>
 </form>
 <div class="row justify-content-center">
-  <div class="col-12 col-lg-7">
+  <div class="col-12 col-lg-10 col-xl-9">
     <div class="row justify-content-center mb-4">
       <div class="col-12 col-lg-6 py-2 py-lg-0">
         <app-chainbrary-button

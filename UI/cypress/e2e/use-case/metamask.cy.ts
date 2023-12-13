@@ -10,14 +10,14 @@ describe('Metamask Injection', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
+    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.POLYGON);
 
     cy.visit(`${Cypress.env('baseUrl')}/`);
 
     // Check if MetaMask is injected
     cy.window().its('ethereum.isMetaMask').should('be.true');
     const networkFound: INetworkDetail = getNetworkDetailList().find(
-      (network: INetworkDetail) => network.chainId === NetworkChainId.ETHEREUM
+      (network: INetworkDetail) => network.chainId === NetworkChainId.POLYGON
     );
     cy.window().its('ethereum.networkVersion').should('eq', networkFound.networkVersion);
     cy.window().its('ethereum.eth_chainId').should('eq', networkFound.chainId);

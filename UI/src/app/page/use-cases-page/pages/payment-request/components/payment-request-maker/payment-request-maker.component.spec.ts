@@ -4,7 +4,7 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { ofType } from '@ngrx/effects';
 import { Action, StoreModule } from '@ngrx/store';
 import { Observable, Subject, of } from 'rxjs';
-import { IConversionToken, StoreState } from 'src/app/shared/interfaces';
+import { PaymentRequestPriceSettingsComponent } from '../payment-request-price-settings/payment-request-price-settings.component';
 import { PaymentRequestProfileSettingsComponent } from '../payment-request-profile-settings/payment-request-profile-settings.component';
 import { PaymentRequestReviewComponent } from '../payment-request-review/payment-request-review.component';
 import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
@@ -15,8 +15,8 @@ import {
   setAuthPublicAddress
 } from './../../../../../../store/auth-store/state/actions';
 import { initialState as authInitialState } from './../../../../../../store/auth-store/state/init';
+import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
 import { PaymentRequestMakerComponent } from './payment-request-maker.component';
-import { PaymentRequestPriceSettingsComponent } from '../payment-request-price-settings/payment-request-price-settings.component';
 
 describe('PaymentRequestMakerComponent', () => {
   let component: PaymentRequestMakerComponent;
@@ -24,14 +24,17 @@ describe('PaymentRequestMakerComponent', () => {
 
   const publicAddressObs: Observable<string | null> = of(null);
   const currentNetworkObs: Observable<INetworkDetail | null> = of(null);
-  const paymentConversionObs: Observable<StoreState<IConversionToken>> = of({
-    data: {
-      usdAmount: 100,
-      tokenAmount: 2,
-      priceInUsdEnabled: false
+  const paymentConversionObs: Observable<DataConversionStore> = of({
+    conversionToken: {
+      loading: false,
+      error: null,
+      data: 1
     },
-    loading: false,
-    error: null
+    conversionUSD: {
+      loading: false,
+      error: null,
+      data: 1
+    }
   });
 
   const actions$ = new Subject<Action>();

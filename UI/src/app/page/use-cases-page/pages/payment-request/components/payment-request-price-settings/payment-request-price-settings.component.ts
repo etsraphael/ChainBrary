@@ -3,14 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../../shared/data/tokenList';
-import {
-  IConversionToken,
-  IToken,
-  ITokenContract,
-  PriceSettingsForm,
-  StoreState,
-  TokenChoiceMakerForm
-} from './../../../../../../shared/interfaces';
+import { IToken, ITokenContract, PriceSettingsForm, TokenChoiceMakerForm } from './../../../../../../shared/interfaces';
+import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-request-price-settings[priceForm][paymentConversion][currentNetworkObs]',
@@ -20,22 +14,21 @@ import {
 export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
   @Input() priceForm: FormGroup<PriceSettingsForm>;
   @Input() tokenSelected: IToken | null;
-  @Input() paymentConversion: StoreState<IConversionToken>;
+  @Input() paymentConversion: DataConversionStore;
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Output() goToNextPage = new EventEmitter<void>();
   @Output() goToPreviousPage = new EventEmitter<void>();
-  @Output() swapCurrency = new EventEmitter<void>();
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   tokenList: IToken[] = [];
   tokenGroup: IToken[] = tokenList.filter((token: IToken) => token.nativeToChainId !== undefined);
 
-  get usdEnabled(): boolean {
-    return this.paymentConversion.data.priceInUsdEnabled;
-  }
-
   get tokenChoiceForm(): FormGroup<TokenChoiceMakerForm> {
     return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;
+  }
+
+  get paymentConversionIsNotSupported(): boolean {
+    return this.paymentConversion.conversionUSD.error !== null;
   }
 
   ngOnInit(): void {
@@ -49,7 +42,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
   setUpTokenList(): void {
     this.currentNetworkObs
       .pipe(
-        filter((x) => x !== null),
+        filter((x: INetworkDetail | null) => x !== null),
         map((x) => x as INetworkDetail),
         takeUntil(this.destroyed$)
       )

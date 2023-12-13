@@ -1,8 +1,8 @@
 import { AbiItem } from 'web3-utils';
 
 export abstract class BaseContract {
+  abstract getAbi(): (AbiItem | object)[];
   abstract getAddress(): string;
-  abstract getAbi(): AbiItem[];
 }
 
 export abstract class BaseContractFactory {

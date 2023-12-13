@@ -1,47 +1,66 @@
-<div class="card cb-card border-0 shadow-sm position-relative payment-maker-card-container pb-3">
-  <!-- Avatar -->
-  <div class="position-relative">
-    <div class="card-header-custom position-absolute w-100">
-      <div class="row justify-content-center">
-        <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
-          <app-user-avatar [avatarUrl]="isAvatarUrlValid ? avatarValue : null"></app-user-avatar>
+<!-- Network not supported note -->
+<ng-container *ngIf="(currentNetworkIsNotSupported$ | async) === true; else paymentCard">
+  <div class="alert alert-danger" role="alert">
+    <div class="row justify-content-center">
+      <div class="col-10">
+        <div class="d-flex align-items-center">
+          <span>
+            Your current network is not supported. Please switch to a compatible network. For assistance or to share
+            your suggestions with our community, join us on
+            <a href="https://discord.gg/Y3pTujEsMe" target="_blank" rel="noopener noreferrer">Discord</a>.
+          </span>
         </div>
       </div>
     </div>
   </div>
-  <div class="my-4"></div>
-  <!-- Page Container -->
-  <mat-vertical-stepper [linear]="true" #stepper (selectionChange)="onStepChange($event)">
-    <mat-step [stepControl]="profileForm">
-      <ng-template matStepLabel>User Details</ng-template>
-      <app-payment-request-profile-settings [profileForm]="profileForm" (goToNextPage)="stepper.next()">
-      </app-payment-request-profile-settings>
-    </mat-step>
-    <mat-step [stepControl]="priceForm">
-      <ng-template matStepLabel>Payment Details</ng-template>
-      <app-payment-request-price-settings
-        [priceForm]="priceForm"
-        [tokenSelected]="paymentTokenObs | async"
-        [currentNetworkObs]="currentNetworkObs"
-        [paymentConversion]="(paymentConversionObs | async)!"
-        (goToNextPage)="stepper.next()"
-        (goToPreviousPage)="stepper.previous()"
-        (swapCurrency)="swapCurrency()"
-      >
-      </app-payment-request-price-settings>
-    </mat-step>
-    <mat-step>
-      <ng-template matStepLabel>Review & Confirm</ng-template>
-      <app-payment-request-review
-        [username]="mainForm.controls.profile.controls.username.value!"
-        [amount]="(amount | async)!"
-        [previewLink]="linkGenerated"
-        [tokenSelected]="paymentTokenObs | async"
-        [usdAmount]="usdAmount | async"
-        [usdEnabled]="priceForm.controls.usdEnabled.value!"
-        (goToPreviousPageEvent)="stepper.previous()"
-      >
-      </app-payment-request-review>
-    </mat-step>
-  </mat-vertical-stepper>
-</div>
+</ng-container>
+
+<!-- Payment Card Maker -->
+<ng-template #paymentCard>
+  <div class="card cb-card border-0 shadow-sm position-relative payment-maker-card-container pb-3">
+    <!-- Avatar -->
+    <div class="position-relative">
+      <div class="card-header-custom position-absolute w-100">
+        <div class="row justify-content-center">
+          <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
+            <app-user-avatar [avatarUrl]="isAvatarUrlValid ? avatarValue : null"></app-user-avatar>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="my-4"></div>
+    <!-- Page Container -->
+    <mat-vertical-stepper [linear]="true" #stepper (selectionChange)="onStepChange($event)">
+      <mat-step [stepControl]="profileForm">
+        <ng-template matStepLabel>User Details</ng-template>
+        <app-payment-request-profile-settings [profileForm]="profileForm" (goToNextPage)="stepper.next()">
+        </app-payment-request-profile-settings>
+      </mat-step>
+      <mat-step [stepControl]="priceForm">
+        <ng-template matStepLabel>Payment Details</ng-template>
+        <app-payment-request-price-settings
+          [priceForm]="priceForm"
+          [tokenSelected]="paymentTokenObs | async"
+          [currentNetworkObs]="currentNetworkObs"
+          [paymentConversion]="(paymentConversionObs | async)!"
+          (goToNextPage)="stepper.next()"
+          (goToPreviousPage)="stepper.previous()"
+        >
+        </app-payment-request-price-settings>
+      </mat-step>
+      <mat-step>
+        <ng-template matStepLabel>Review & Confirm</ng-template>
+        <app-payment-request-review
+          [username]="mainForm.controls.profile.controls.username.value!"
+          [amount]="(tokenAmount$ | async)!"
+          [previewLink]="linkGenerated"
+          [tokenSelected]="paymentTokenObs | async"
+          [usdAmount]="usdAmount$ | async"
+          [valueLockedInUsd]="priceForm.controls.valueLockedInUsd.value!"
+          (goToPreviousPageEvent)="stepper.previous()"
+        >
+        </app-payment-request-review>
+      </mat-step>
+    </mat-vertical-stepper>
+  </div>
+</ng-template>

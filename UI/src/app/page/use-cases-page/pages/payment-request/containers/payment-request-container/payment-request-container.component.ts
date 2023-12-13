@@ -5,7 +5,7 @@ import { Action, Store } from '@ngrx/store';
 import { Observable, ReplaySubject, Subscription, filter, take, takeUntil } from 'rxjs';
 import { IUseCasesHeader } from '../../../../components/use-cases-header/use-cases-header.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
-import { IConversionToken, IProfileAdded, IToken, StoreState } from './../../../../../../shared/interfaces';
+import { IProfileAdded, IToken } from './../../../../../../shared/interfaces';
 import {
   accountChanged,
   networkChangeSuccess,
@@ -22,10 +22,10 @@ import {
 import {
   applyConversionToken,
   initPaymentRequestMaker,
-  switchToUsd,
   updatedToken
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
+  DataConversionStore,
   selectPaymentConversion,
   selectPaymentToken
 } from './../../../../../../store/payment-request-store/state/selectors';
@@ -36,16 +36,8 @@ import {
   styleUrls: ['./payment-request-container.component.scss']
 })
 export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
-  profileAccount$: Observable<IProfileAdded | null>;
-  selectIsConnected$: Observable<boolean>;
-  publicAddress$: Observable<string | null>;
-  userAccountIsLoading$: Observable<boolean>;
-  currentNetwork$: Observable<INetworkDetail | null>;
-  paymentToken$: Observable<IToken | null>;
-  paymentConversion$: Observable<StoreState<IConversionToken>>;
-  resetTransaction$: Observable<Action>;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
-  headerPayload: IUseCasesHeader = {
+  readonly headerPayload: IUseCasesHeader = {
     title: 'Payment Request',
     goBackLink: '/use-cases/services',
     description:
@@ -57,8 +49,19 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     private actions$: Actions
   ) {}
 
+  readonly selectIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
+  readonly profileAccount$: Observable<IProfileAdded | null> = this.store.select(selectAccount);
+  readonly publicAddress$: Observable<string | null> = this.store.select(selectPublicAddress);
+  readonly userAccountIsLoading$: Observable<boolean> = this.store.select(selectUserAccountIsLoading);
+  readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly paymentToken$: Observable<IToken | null> = this.store.select(selectPaymentToken);
+  readonly paymentConversion$: Observable<DataConversionStore> = this.store.select(selectPaymentConversion);
+  readonly resetTransaction$: Observable<Action> = this.actions$.pipe(
+    ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
+    takeUntil(this.destroyed$)
+  );
+
   ngOnInit(): void {
-    this.generateObs();
     this.callActions();
   }
 
@@ -66,36 +69,18 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
     this.store.dispatch(initPaymentRequestMaker());
   }
 
-  generateObs(): void {
-    this.selectIsConnected$ = this.store.select(selectIsConnected);
-    this.profileAccount$ = this.store.select(selectAccount);
-    this.publicAddress$ = this.store.select(selectPublicAddress);
-    this.userAccountIsLoading$ = this.store.select(selectUserAccountIsLoading);
-    this.currentNetwork$ = this.store.select(selectCurrentNetwork);
-    this.paymentToken$ = this.store.select(selectPaymentToken);
-    this.paymentConversion$ = this.store.select(selectPaymentConversion);
-    this.resetTransaction$ = this.actions$.pipe(
-      ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
-      takeUntil(this.destroyed$)
-    );
-  }
-
   setUpTokenChoice(tokenId: string): void {
     const tokenFound: IToken = tokenList.find((token) => token.tokenId === tokenId) as IToken;
     return this.store.dispatch(updatedToken({ token: tokenFound }));
   }
 
-  applyConversionToken(amount: number): Subscription {
+  applyConversionToken(payload: { amount: number; amountInUsd: boolean }): Subscription {
     return this.currentNetwork$
       .pipe(
         take(1),
         filter((network) => !!network)
       )
-      .subscribe(() => this.store.dispatch(applyConversionToken({ amount })));
-  }
-
-  switchToUsd(priceInUsdEnabled: boolean): void {
-    return this.store.dispatch(switchToUsd({ priceInUsdEnabled }));
+      .subscribe(() => this.store.dispatch(applyConversionToken(payload)));
   }
 
   ngOnDestroy(): void {

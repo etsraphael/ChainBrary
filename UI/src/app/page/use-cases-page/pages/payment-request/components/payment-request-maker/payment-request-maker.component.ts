@@ -10,7 +10,7 @@ import {
   Validators
 } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { INetworkDetail, NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Action } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import {
@@ -18,6 +18,7 @@ import {
   ReplaySubject,
   Subscription,
   debounceTime,
+  distinctUntilChanged,
   filter,
   map,
   of,
@@ -25,18 +26,18 @@ import {
   take,
   takeUntil
 } from 'rxjs';
+import { environment } from './../../../../../../../environments/environment';
 import { AuthStatusCode } from './../../../../../../shared/enum';
 import {
-  IConversionToken,
   IPaymentRequest,
   IToken,
   PaymentMakerForm,
   PriceSettingsForm,
   ProfileForm,
-  StoreState,
   TokenChoiceMakerForm
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
 
 @Component({
   selector: 'app-payment-request-maker[publicAddressObs][currentNetworkObs]',
@@ -47,20 +48,49 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   @Input() publicAddressObs: Observable<string | null>;
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
   @Input() paymentTokenObs: Observable<IToken | null>;
-  @Input() paymentConversionObs: Observable<StoreState<IConversionToken>>;
+  @Input() paymentConversionObs: Observable<DataConversionStore>;
   @Input() resetTransactionObs: Observable<Action>;
   @Output() setUpTokenChoice: EventEmitter<string> = new EventEmitter<string>();
-  @Output() applyConversionToken: EventEmitter<number> = new EventEmitter<number>();
-  @Output() switchToUsd: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() applyConversionToken: EventEmitter<{ amount: number; amountInUsd: boolean }> = new EventEmitter<{
+    amount: number;
+    amountInUsd: boolean;
+  }>();
   @ViewChild('stepper') stepper: MatStepper;
 
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
-  mainForm: FormGroup<PaymentMakerForm>;
+  mainForm = new FormGroup<PaymentMakerForm>({
+    price: new FormGroup({
+      token: new FormGroup({
+        tokenId: new FormControl('', [Validators.required]),
+        chainId: new FormControl('', [Validators.required])
+      }),
+      description: new FormControl('', []),
+      amount: new FormControl(1, [Validators.required, Validators.min(0)]),
+      amountInUsd: new FormControl(0, []),
+      valueLockedInUsd: new FormControl(false, [])
+    }),
+    profile: new FormGroup({
+      publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
+      avatarUrl: new FormControl('', [], [this.urlValidator()]),
+      username: new FormControl('', [Validators.required, Validators.maxLength(20)])
+    })
+  });
   linkGenerated: string;
   isAvatarUrlValid: boolean;
 
-  constructor(private formatService: FormatService) {}
+  constructor(
+    private formatService: FormatService,
+    private web3LoginService: Web3LoginService
+  ) {}
+
+  get currentNetworkIsNotSupported$(): Observable<boolean> {
+    return this.currentNetworkObs.pipe(
+      map((currentNetwork: INetworkDetail | null) =>
+        currentNetwork ? !environment.contracts.bridgeTransfer.networkSupported.includes(currentNetwork.chainId) : false
+      )
+    );
+  }
 
   get priceForm(): FormGroup<PriceSettingsForm> {
     return this.mainForm.get('price') as FormGroup<PriceSettingsForm>;
@@ -70,16 +100,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.mainForm.get('profile') as FormGroup<ProfileForm>;
   }
 
-  get amount(): Observable<number> {
-    if (this.priceForm?.get('usdEnabled')?.value as boolean) {
-      return this.paymentConversionObs.pipe(map((x) => x.data.tokenAmount as number));
-    } else {
-      return of(this.priceForm.get('amount')?.value as number);
-    }
+  get tokenAmount$(): Observable<number | null> {
+    return this.paymentConversionObs.pipe(map((x) => x.conversionToken.data));
   }
 
-  get usdAmount(): Observable<number | null> {
-    return this.paymentConversionObs.pipe(map((x) => x.data.usdAmount));
+  get usdAmount$(): Observable<number | null> {
+    return this.paymentConversionObs.pipe(map((x) => x.conversionUSD.data));
   }
 
   get avatarValue(): string | null {
@@ -103,7 +129,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setUpForm();
     this.listenToAddressChange();
     this.listenToAmountChange();
     this.listenToTokenChange();
@@ -117,25 +142,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       this.stepper.selectedIndex = 0;
       this.priceForm.reset();
       this.setDefaultTokenSelection();
-    });
-  }
-
-  setUpForm(): void {
-    this.mainForm = new FormGroup({
-      price: new FormGroup({
-        token: new FormGroup({
-          tokenId: new FormControl('', [Validators.required]),
-          chainId: new FormControl('', [Validators.required])
-        }),
-        description: new FormControl('', []),
-        amount: new FormControl(1, [Validators.required, Validators.min(0)]),
-        usdEnabled: new FormControl(false, [])
-      }),
-      profile: new FormGroup({
-        publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
-        avatarUrl: new FormControl('', [], [this.urlValidator()]),
-        username: new FormControl('', [Validators.required, Validators.maxLength(20)])
-      })
     });
   }
 
@@ -156,7 +162,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         }
         this.priceForm.patchValue({
           amount: 1,
-          usdEnabled: false
+          valueLockedInUsd: false
         });
       });
   }
@@ -169,14 +175,18 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
           tokenId: currentNetwork.nativeCurrency.id
         });
       } else {
+        const network: INetworkDetail = this.web3LoginService.getNetworkDetailByChainId(
+          environment.contracts.bridgeTransfer.defaultNetwork
+        );
+
         this.tokenChoiceForm.patchValue({
-          chainId: NetworkChainId.ETHEREUM,
-          tokenId: TokenId.ETHEREUM
+          chainId: network.chainId,
+          tokenId: network.nativeCurrency.id
         });
       }
       this.priceForm.patchValue({
         amount: 1,
-        usdEnabled: false
+        valueLockedInUsd: false
       });
     });
   }
@@ -190,24 +200,62 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         debounceTime(400),
         takeUntil(this.destroyed$)
       )
-      .subscribe((tokenId: string) => {
-        this.setUpTokenChoice.emit(tokenId);
-        const usdEnabled: boolean = this.priceForm.get('usdEnabled')?.value as boolean;
-        if (usdEnabled) this.swapCurrency();
-      });
+      .subscribe((tokenId: string) => this.setUpTokenChoice.emit(tokenId));
   }
 
   listenToAmountChange(): void {
     this.priceForm
       .get('amount')
       ?.valueChanges.pipe(
+        distinctUntilChanged(),
         startWith(this.priceForm.get('amount')?.value || 0),
         debounceTime(1000),
         filter((amount: number | null) => amount !== null && amount > 0),
         map((amount: number | null) => amount as number),
         takeUntil(this.destroyed$)
       )
-      .subscribe((amount: number) => this.applyConversionToken.emit(amount as number));
+      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: false }));
+
+    this.priceForm
+      .get('amountInUsd')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        startWith(this.priceForm.get('amountInUsd')?.value || 0),
+        debounceTime(1000),
+        filter((amount: number | null) => amount !== null && amount > 0),
+        map((amount: number | null) => amount as number),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: true }));
+
+    this.paymentConversionObs
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(1000),
+        takeUntil(this.destroyed$),
+        filter((conversion: DataConversionStore) => conversion.conversionUSD.error !== 'NOT_SUPPORTED')
+      )
+      .subscribe((conversion: DataConversionStore) => {
+        if (conversion.conversionToken.data !== null) {
+          this.priceForm.patchValue(
+            {
+              amount: conversion.conversionToken.data,
+              amountInUsd: conversion.conversionUSD.data
+            },
+            { emitEvent: false }
+          );
+        }
+
+        if (conversion.conversionUSD.data !== null) {
+          this.priceForm.patchValue(
+            {
+              amount: conversion.conversionToken.data,
+              amountInUsd: conversion.conversionUSD.data
+            },
+            { emitEvent: false }
+          );
+        }
+      });
   }
 
   listenToAddressChange(): void {
@@ -230,18 +278,19 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
 
   generatePaymentRequest(): void {
     const { username, publicAddress, avatarUrl } = this.profileControls;
-    const { amount, description, usdEnabled } = this.priceControls;
+    const { amount, amountInUsd, description, valueLockedInUsd } = this.priceControls;
     const { tokenId, chainId } = this.tokenChoiceControls;
+    const amountToReceive: number | null = valueLockedInUsd.value ? amountInUsd.value : amount.value;
 
     const paymentRequest: IPaymentRequest = {
       chainId: chainId.value as NetworkChainId,
       tokenId: tokenId.value as string,
       username: username.value as string,
       publicAddress: publicAddress.value as string,
-      amount: amount.value as number,
+      amount: amountToReceive as number,
       description: description.value as string,
       avatarUrl: avatarUrl.value as string,
-      usdEnabled: usdEnabled.value as boolean
+      usdEnabled: valueLockedInUsd.value as boolean
     };
 
     const paymentRequestBase64: string = Buffer.from(
@@ -290,24 +339,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         };
       });
     };
-  }
-
-  swapCurrency(): void {
-    this.switchToUsd.emit(!this.priceForm?.get('usdEnabled')?.value as boolean);
-
-    this.paymentConversionObs.pipe(take(1)).subscribe((conversion: StoreState<IConversionToken>) => {
-      if (!this.priceForm?.get('usdEnabled')?.value as boolean) {
-        this.priceForm.patchValue({
-          amount: conversion.data.usdAmount,
-          usdEnabled: true
-        });
-      } else {
-        this.priceForm.patchValue({
-          amount: conversion.data.tokenAmount,
-          usdEnabled: false
-        });
-      }
-    });
   }
 
   ngOnDestroy(): void {

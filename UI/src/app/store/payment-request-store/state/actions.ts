@@ -8,19 +8,21 @@ export const selectToken = createAction('[Payment Request] Select Token', props<
 
 export const updatedToken = createAction('[Payment Request] Updated Token', props<{ token: IToken }>());
 
-export const switchToUsd = createAction('[Payment Request] Switch To USD', props<{ priceInUsdEnabled: boolean }>());
-
 export const applyConversionToken = createAction(
   '[Payment Request] Apply Conversion Token',
-  props<{ amount: number }>()
+  props<{ amount: number; amountInUsd: boolean }>()
 );
 export const applyConversionTokenSuccess = createAction(
   '[Payment Request] Apply Conversion Token Success',
-  props<{ usdAmount: number; tokenAmount: number }>()
+  props<{ usdAmount: number; tokenAmount: number; amountInUsd: boolean }>()
 );
 export const applyConversionTokenFailure = createAction(
   '[Payment Request] Apply Conversion Token Failure',
-  props<{ errorMessage: string }>()
+  props<{ errorMessage: string; amountInUsd: boolean }>()
+);
+export const applyConversionNotSupported = createAction(
+  '[Payment Request] Apply Conversion Not Supported',
+  props<{ amountInToken: number }>()
 );
 
 export const generatePaymentRequest = createAction(
@@ -59,16 +61,6 @@ export const amountSentSuccess = createAction(
   props<{ hash: string; numberConfirmation: number }>()
 );
 export const amountSentFailure = createAction('[Payment Request] Amount Sent Failure', props<{ message: string }>());
-
-export const checkTokenAllowance = createAction('[Payment Request] Check Token Allowance');
-export const checkTokenAllowanceSuccess = createAction(
-  '[Payment Request] Check Token Allowance Success',
-  props<{ isAllowed: boolean }>()
-);
-export const checkTokenAllowanceFailure = createAction(
-  '[Payment Request] Check Token Allowance Failure',
-  props<{ message: string }>()
-);
 
 export const smartContractCanTransfer = createAction('[Payment Request] Smart Contract Can Transfer');
 export const smartContractCanTransferSuccess = createAction(

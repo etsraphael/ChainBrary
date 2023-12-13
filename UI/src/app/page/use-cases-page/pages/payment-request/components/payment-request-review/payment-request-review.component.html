@@ -1,7 +1,7 @@
 <div class="container pt-2" *ngIf="tokenSelected">
   <div class="row justify-content-center">
     <div class="col-12 col-md-11 col-lg-9">
-      <p *ngIf="usdEnabled" class="px-2 text-dark header-message">
+      <p *ngIf="valueLockedInUsd" class="px-2 text-dark header-message">
         You're requesting <strong>$USD {{ usdAmount }}</strong
         >.
         <br />
@@ -21,7 +21,7 @@
               <span *ngIf="usdAmount" class="convertion-rate text-secondary">($USD {{ usdAmount }})</span>
             </td>
           </tr>
-          <tr>
+          <tr *ngIf="valueLockedInUsd">
             <td class="align-middle">Protocol Fee (0.1%)</td>
             <td>
               {{ protocolFeeAmount }} {{ tokenSelected.symbol }}<br />
