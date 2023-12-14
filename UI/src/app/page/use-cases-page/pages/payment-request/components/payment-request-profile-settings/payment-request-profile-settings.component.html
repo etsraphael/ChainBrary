@@ -1,6 +1,6 @@
 <form [formGroup]="profileForm" class="pt-2">
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-10 col-xl-9">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Wallet Address</mat-label>
         <input formControlName="publicAddress" type="link" matInput placeholder="0x" data-id="address-input" />
@@ -20,23 +20,22 @@
     </div>
   </div>
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Url of your image</mat-label>
-        <input
-          formControlName="avatarUrl"
-          type="link"
-          matInput
-          placeholder="https://my-url"
-          data-id="avatarUrl-input"
-        />
-        <mat-error *ngIf="profileForm.get('avatarUrl')?.hasError('required')"> Field is required </mat-error>
-        <mat-error *ngIf="profileForm.get('avatarUrl')!.hasError('invalidUrl')"> Invalid image url </mat-error>
-      </mat-form-field>
+    <div class="col-12 col-lg-10 col-xl-9">
+      <button
+        type="button"
+        class="upload-btn w-100 btn btn-outline-secondary mb-4 text-start py-2"
+        (click)="openImageDialog()"
+      >
+        <span *ngIf="!profileForm.get('avatarUrl')?.value">Link an avatar (Optional)</span>
+        <span *ngIf="profileForm.get('avatarUrl')?.value" class="link-text">
+          <i class="bi bi-x"></i>
+          {{ profileForm.get('avatarUrl')?.value }}
+        </span>
+      </button>
     </div>
   </div>
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7">
+    <div class="col-12 col-lg-10 col-xl-9">
       <mat-form-field class="w-100" appearance="outline">
         <mat-label>Name</mat-label>
         <input formControlName="username" type="name" matInput placeholder="Name" data-id="username-input" />
@@ -48,7 +47,7 @@
   </div>
 
   <div class="row justify-content-center" *ngIf="profileForm.get('publicAddress')?.invalid">
-    <div class="col-12 col-lg-7 text-center mb-2">
+    <div class="col-12 col-lg-10 col-xl-9 text-center mb-2">
       <mat-error *ngIf="profileForm.get('publicAddress')?.touched">
         Enter your wallet address to receive funds
       </mat-error>
@@ -56,7 +55,7 @@
   </div>
 
   <div class="row justify-content-center">
-    <div class="col-12 col-lg-7" (click)="submitForm()" data-id="submit-button">
+    <div class="col-12 col-lg-10 col-xl-9" (click)="submitForm()" data-id="submit-button">
       <app-chainbrary-button
         [buttonClasses]="['btn-success-gradient', 'text-light']"
         buttonText="Next"

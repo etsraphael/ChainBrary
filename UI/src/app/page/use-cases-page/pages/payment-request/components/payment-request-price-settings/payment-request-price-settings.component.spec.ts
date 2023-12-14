@@ -24,7 +24,8 @@ describe('PaymentRequestPriceSettingsComponent', () => {
     }),
     description: new FormControl('', []),
     amount: new FormControl(1, [Validators.required, Validators.min(0)]),
-    usdEnabled: new FormControl(false, [])
+    amountInUsd: new FormControl(1, [Validators.required, Validators.min(0)]),
+    valueLockedInUsd: new FormControl(false, [])
   });
 
   beforeEach(async () => {
@@ -62,12 +63,12 @@ describe('PaymentRequestPriceSettingsComponent', () => {
 
   it('should have tokenAmount initialized correctly', () => {
     component.paymentConversion = paymentConversionStoreSample;
-    expect(typeof component.paymentConversion.data.tokenAmount).toBe('number');
+    expect(typeof component.paymentConversion.conversionToken.data).toBe('number');
   });
 
   it('should have usdAmount initialized correctly', () => {
     component.paymentConversion = paymentConversionStoreSample;
-    expect(typeof component.paymentConversion.data.usdAmount).toBe('number');
+    expect(typeof component.paymentConversion.conversionUSD.data).toBe('number');
   });
 
   it('should emit goToNextPage event', () => {
@@ -80,11 +81,5 @@ describe('PaymentRequestPriceSettingsComponent', () => {
     spyOn(component.goToPreviousPage, 'emit');
     component.goToPreviousPage.emit();
     expect(component.goToPreviousPage.emit).toHaveBeenCalled();
-  });
-
-  it('should emit swapCurrency event', () => {
-    spyOn(component.swapCurrency, 'emit');
-    component.swapCurrency.emit();
-    expect(component.swapCurrency.emit).toHaveBeenCalled();
   });
 });

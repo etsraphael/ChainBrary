@@ -13,14 +13,15 @@ export const initialState: IPaymentRequestState = {
   },
   network: null,
   token: null,
-  conversion: {
+  conversionToken: {
     loading: false,
     error: null,
-    data: {
-      usdAmount: null,
-      tokenAmount: null,
-      priceInUsdEnabled: false
-    }
+    data: null
+  },
+  conversionUSD: {
+    loading: false,
+    error: null,
+    data: null
   },
   smartContractCanTransfer: {
     loading: false,

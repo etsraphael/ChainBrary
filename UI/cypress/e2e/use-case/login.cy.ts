@@ -29,7 +29,7 @@ describe('Log an user with MetaMask', () => {
     const SIGNED_MESSAGE = '...';
 
     // Inject MetaMask
-    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.ETHEREUM);
+    injectMetaMaskStub(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.POLYGON);
 
     // Go to explore solutions page
     cy.visit(`${Cypress.env('baseUrl')}/`);

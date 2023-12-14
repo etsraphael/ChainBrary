@@ -1,3 +1,12 @@
-.login-btn {
+.login-btn,
+.upload-btn {
   border-radius: 10px;
+}
+
+.link-text {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 }

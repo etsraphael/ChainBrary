@@ -1,5 +1,6 @@
 import { INetworkDetail, NetworkVersion, NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { IConversionToken, IToken, StoreState } from './../../src/app/shared/interfaces';
+import { DataConversionStore } from './../../src/app/store/payment-request-store/state/selectors';
 
 export const currentNetworkSample: INetworkDetail = {
   chainId: NetworkChainId.SEPOLIA,
@@ -16,14 +17,17 @@ export const currentNetworkSample: INetworkDetail = {
   rpcUrls: [NetworkChainId.SEPOLIA]
 };
 
-export const paymentConversionStoreSample: StoreState<IConversionToken> = {
-  data: {
-    usdAmount: 100,
-    tokenAmount: 1,
-    priceInUsdEnabled: true
+export const paymentConversionStoreSample: DataConversionStore = {
+  conversionToken: {
+    loading: false,
+    error: null,
+    data: 1
   },
-  loading: false,
-  error: null
+  conversionUSD: {
+    loading: false,
+    error: null,
+    data: 1
+  }
 };
 
 export const tokenSample: IToken = {
