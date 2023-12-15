@@ -20,11 +20,6 @@ import {
   styleUrls: ['./activity-container.component.scss']
 })
 export class ActivityContainerComponent implements OnInit, OnDestroy {
-  transactions$: Observable<ITransactionLog[]>;
-  transactionsIsLoading$: Observable<boolean>;
-  currentNetwork$: Observable<INetworkDetail | null>;
-  historicalTransactionsError$: Observable<string | null>;
-  userIsConnected$: Observable<boolean>;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   headerPayload: IUseCasesHeader = {
     title: 'Recent Transactions',
@@ -38,8 +33,15 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
     private actions$: Actions
   ) {}
 
+  readonly transactions$: Observable<ITransactionLog[]> = this.store.select(selectHistoricalTransactions);
+  readonly transactionsIsLoading$: Observable<boolean> = this.store.select(selectHistoricalTransactionsIsLoading);
+  readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly historicalTransactionsError$: Observable<string | null> = this.store.select(
+    selectHistoricalTransactionsError
+  );
+  readonly userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
+
   ngOnInit(): void {
-    this.generateObs();
     this.callActions();
     this.generateSubs();
     this.loginListener();
@@ -47,14 +49,6 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
 
   loginListener(): void {
     this.actions$.pipe(ofType(setAuthPublicAddress), takeUntil(this.destroyed$)).subscribe(() => this.callActions());
-  }
-
-  generateObs(): void {
-    this.transactions$ = this.store.select(selectHistoricalTransactions);
-    this.currentNetwork$ = this.store.select(selectCurrentNetwork);
-    this.transactionsIsLoading$ = this.store.select(selectHistoricalTransactionsIsLoading);
-    this.historicalTransactionsError$ = this.store.select(selectHistoricalTransactionsError);
-    this.userIsConnected$ = this.store.select(selectIsConnected);
   }
 
   callActions(): void {
