@@ -66,7 +66,6 @@ describe('DocumentLocker', function () {
       const { documentLocker, addr1, owner } = await loadFixture(deployContractFixture);
       const amount: bigint = ethers.parseEther('5');
 
-
       // get balance before
       const communityTreasuryInitialBalance: bigint = await ethers.provider.getBalance(
         '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af'
