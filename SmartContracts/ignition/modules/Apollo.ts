@@ -8,6 +8,7 @@ export default buildModule('Apollo', (m) => {
   const priceFeed = deployPriceFeed(m);
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
+  const documentLocker = deployDocumentLocker(m);
 
   return {
     rocketContract,
@@ -15,7 +16,8 @@ export default buildModule('Apollo', (m) => {
     transactionBridge,
     priceFeed,
     erc20FixedSupply,
-    bidContract
+    bidContract,
+    documentLocker
   };
 });
 
@@ -63,4 +65,15 @@ function deployBidContract(m: any) {
     '3 bedroom house in the woods, with a beautiful view of the lake. Perfect for a family of 4, or a couple looking to get away from the city.'
   ]);
   return bidContract;
+}
+
+function deployDocumentLocker(m: any) {
+  const documentLocker = m.contract('DocumentLocker', [
+    '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af',
+    'Private document',
+    'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    5,
+    'This is a private document, please do not share it with anyone else.'
+  ]);
+  return documentLocker;
 }
