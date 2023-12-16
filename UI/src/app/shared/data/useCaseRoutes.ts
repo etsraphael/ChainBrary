@@ -16,6 +16,13 @@ const useCaseRoutes: ServiceItemMenu[] = [
     description: 'Easily manage transparent bids with complete control'
   },
   {
+    title: 'Document Locker',
+    path: '/document-locker',
+    icon: 'bi-file-lock',
+    enabled: true,
+    description: 'Securely store and share documents with anyone'
+  },
+  {
     title: 'Pay Together',
     path: '/',
     icon: 'bi-people-fill',

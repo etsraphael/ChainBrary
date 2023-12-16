@@ -10,6 +10,7 @@ import { DocumentLockerFoundComponent } from './containers/document-locker-found
 import { DocumentLockerHomeComponent } from './containers/document-locker-home/document-locker-home.component';
 import { DocumentLockerMakerComponent } from './containers/document-locker-maker/document-locker-maker.component';
 import { DocumentLockerMenuComponent } from './component/document-locker-menu/document-locker-menu.component';
+import { DocumentLockerRoutingModule } from './document-locker-routing.module';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { DocumentLockerMenuComponent } from './component/document-locker-menu/do
   ],
   imports: [
     CommonModule,
+    DocumentLockerRoutingModule,
     SharedComponentsModule,
     MaterialModule,
     NgxSkeletonLoaderModule,
