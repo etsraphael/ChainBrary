@@ -36,11 +36,11 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
     }
 
     function unlockFile() public payable nonReentrant {
-        require(msg.value >= unlockingPrice, "Not enough funds to unlock file");
+        require(msg.value >= unlockingPrice, "not_enough_funds");
 
         uint256 fee = calculateFee(msg.value);
         (bool amountAfterFeeSuccess, uint256 amountAfterFee) = Math.trySub(msg.value, fee);
-        require(amountAfterFeeSuccess, "Fee calculation error");
+        require(amountAfterFeeSuccess, "calculation_error");
 
         payable(communityAddress).transfer(fee);
         payable(owner()).transfer(amountAfterFee);
@@ -66,7 +66,7 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
         view
         returns (string memory, string memory, uint, string memory, address)
     {
-        require(_msgSender() == accessAddress, "You don't have access to this document");
+        require(_msgSender() == accessAddress, "no_access");
         return (documentName, posterURL, unlockingPrice, documentDesc, accessAddress);
     }
 }
