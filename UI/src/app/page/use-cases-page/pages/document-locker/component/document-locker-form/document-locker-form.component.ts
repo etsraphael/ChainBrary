@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
-import { DocumentLockingForm, DocumentLockingFormValue } from './../../../../../../shared/interfaces';
+import { DocumentLockingForm, IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-document-locker-form[currentNetworkObs]',
@@ -12,7 +12,7 @@ import { DocumentLockingForm, DocumentLockingFormValue } from './../../../../../
 })
 export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
-  @Output() submitDocumentForm = new EventEmitter<DocumentLockingFormValue>();
+  @Output() submitDocumentForm = new EventEmitter<IDocumentLockerCreation>();
   networkSupported: NetworkChainId[] = environment.contracts.documentLocker.networkSupported;
 
   constructor(public web3LoginService: Web3LoginService) {}
@@ -76,15 +76,13 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const { documentName, ownerName, desc, price, termsAndCond, networkChainId } = this.mainForm
-      .value as DocumentLockingFormValue;
+    const { documentName, ownerName, desc, price, networkChainId } = this.mainForm.value as IDocumentLockerCreation;
 
     return this.submitDocumentForm.emit({
       documentName,
       ownerName,
       desc,
       price,
-      termsAndCond,
       networkChainId
     });
   }

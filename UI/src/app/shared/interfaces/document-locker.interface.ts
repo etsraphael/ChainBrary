@@ -10,11 +10,17 @@ export interface DocumentLockingForm {
   networkChainId: FormControl<NetworkChainId | null>;
 }
 
-export interface DocumentLockingFormValue {
+export interface IDocumentLockerCreation {
   documentName: string;
   ownerName: string;
   desc: string;
   price: number;
-  termsAndCond: boolean;
   networkChainId: NetworkChainId;
+}
+
+export interface IDocumentLockerResponse {
+  documentName: string;
+  ownerName: string;
+  price: number;
+  ownerAddress: string;
 }

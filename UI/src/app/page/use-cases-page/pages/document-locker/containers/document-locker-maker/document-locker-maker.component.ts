@@ -3,7 +3,7 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
-import { DocumentLockingFormValue } from './../../../../../../shared/interfaces';
+import { IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 
 @Component({
@@ -22,7 +22,7 @@ export class DocumentLockerMakerComponent {
 
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 
-  sendDocumentLockerAction(payload: DocumentLockingFormValue): void {
+  sendDocumentLockerAction(payload: IDocumentLockerCreation): void {
     console.log('sendDocumentLockerAction', payload);
   }
 }
