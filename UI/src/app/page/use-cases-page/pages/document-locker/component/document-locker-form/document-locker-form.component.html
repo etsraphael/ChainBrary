@@ -25,16 +25,15 @@
             </mat-option>
           </mat-select>
           <mat-error *ngIf="mainForm.get('networkChainId')?.hasError('required')"> Network is required </mat-error>
-          <!--  <mat-error *ngIf="mainForm.get('networkChainId')?.hasError('notMatching')">
+          <mat-error *ngIf="mainForm.get('networkChainId')?.hasError('notMatching')">
             Network is not matching with wallet
             <a
-              *ngIf="(currentNetwork$ | async) === null"
+              *ngIf="(currentNetworkObs | async) === null"
               class="text-primary"
               (click)="web3LoginService.openLoginModal()"
               >(Login)</a
             ></mat-error
           >
-           -->
         </mat-form-field>
       </div>
       <div class="col-12">

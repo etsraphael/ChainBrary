@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
+import { INetworkDetail } from '@chainbrary/web3-login';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 
 @Component({
   selector: 'app-document-locker-maker',
@@ -12,4 +16,8 @@ export class DocumentLockerMakerComponent {
     goBackLink: '/use-cases/document-locker/services',
     description: null
   };
+
+  constructor(private readonly store: Store) {}
+
+  currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 }
