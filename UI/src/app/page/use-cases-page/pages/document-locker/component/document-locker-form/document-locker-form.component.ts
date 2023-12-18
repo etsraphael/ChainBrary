@@ -1,8 +1,9 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
+import { DocumentLockingForm, DocumentLockingFormValue } from './../../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-document-locker-form[currentNetworkObs]',
@@ -11,6 +12,7 @@ import { environment } from './../../../../../../../environments/environment';
 })
 export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
+  @Output() submitDocumentForm = new EventEmitter<DocumentLockingFormValue>();
   networkSupported: NetworkChainId[] = environment.contracts.documentLocker.networkSupported;
 
   constructor(public web3LoginService: Web3LoginService) {}
@@ -19,11 +21,18 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
     this.web3LoginService.getNetworkDetailByChainId(chainId)
   );
 
+  get tokenSelected(): string | null {
+    return this.mainForm.get('networkChainId')?.value
+      ? this.web3LoginService.getNetworkDetailByChainId(this.mainForm.get('networkChainId')?.value as NetworkChainId)
+          .nativeCurrency.symbol
+      : null;
+  }
+
   mainForm = new FormGroup<DocumentLockingForm>({
     documentName: new FormControl<string | null>(null, [Validators.required]),
     ownerName: new FormControl<string | null>(null, [Validators.required]),
     desc: new FormControl<string | null>(null, [Validators.required]),
-    price: new FormControl<number | null>(null, [Validators.required]),
+    price: new FormControl<number | null>(null, [Validators.required, Validators.min(0)]),
     termsAndCond: new FormControl<boolean | null>(null, [Validators.requiredTrue]),
     networkChainId: new FormControl<NetworkChainId | null>(null, [Validators.required])
   });
@@ -63,27 +72,25 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   submitForm(): void {
     this.mainForm.markAllAsTouched();
 
-    const formValue = this.mainForm.value;
-
-    console.log(formValue);
-
     if (this.mainForm.invalid) {
       return;
     }
 
-    alert('sent');
+    const { documentName, ownerName, desc, price, termsAndCond, networkChainId } = this.mainForm
+      .value as DocumentLockingFormValue;
+
+    return this.submitDocumentForm.emit({
+      documentName,
+      ownerName,
+      desc,
+      price,
+      termsAndCond,
+      networkChainId
+    });
   }
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
   }
-}
-export interface DocumentLockingForm {
-  documentName: FormControl<string | null>;
-  ownerName: FormControl<string | null>;
-  desc: FormControl<string | null>;
-  price: FormControl<number | null>;
-  termsAndCond: FormControl<boolean | null>;
-  networkChainId: FormControl<NetworkChainId | null>;
 }

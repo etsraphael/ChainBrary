@@ -1,3 +1,7 @@
 <!-- Title container -->
 <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
-<app-document-locker-form [currentNetworkObs]="currentNetwork$"></app-document-locker-form>
+<!-- Body -->
+<app-document-locker-form
+  [currentNetworkObs]="currentNetwork$"
+  (submitDocumentForm)="sendDocumentLockerAction($event)"
+></app-document-locker-form>
