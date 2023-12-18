@@ -6,7 +6,12 @@ import { Contract } from 'web3-eth-contract';
 import { ContractSendMethod } from 'web3-eth-contract/types';
 import { AbiItem } from 'web3-utils';
 import { DocumentLockerContract } from '../../contracts';
-import { IDocumentLockerCreation, IDocumentLockerResponse } from '../../interfaces';
+import {
+  IDocumentLockerCreation,
+  IDocumentLockerResponse,
+  IDocumentUnlockedResponse,
+  IReceiptTransaction
+} from '../../interfaces';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 import { environment } from './../../../../environments/environment';
 
@@ -77,5 +82,62 @@ export class DocumentLockerService {
         })
         .catch((error: string) => Promise.reject(error));
     });
+  }
+
+  async getDocumentDataFromOwner(w: WalletProvider, txnHash: string): Promise<IDocumentUnlockedResponse> {
+    return this.getDocumentData('getDocumentDataFromOwner', w, txnHash);
+  }
+
+  async getDocumentDataFromBuyer(w: WalletProvider, txnHash: string): Promise<IDocumentUnlockedResponse> {
+    return this.getDocumentData('getDocumentDataFromBuyer', w, txnHash);
+  }
+
+  private async getDocumentData(
+    methodName: string,
+    w: WalletProvider,
+    txnHash: string
+  ): Promise<IDocumentUnlockedResponse> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const dlFactoryContract = new DocumentLockerContract();
+
+    return web3.eth.getTransactionReceipt(txnHash).then((receipt: TransactionReceipt) => {
+      const contract: Contract = new web3.eth.Contract(
+        dlFactoryContract.getAbi() as AbiItem[],
+        receipt.contractAddress
+      );
+      return contract.methods[methodName]()
+        .call()
+        .then((res: [string, string, number, string, string]) => {
+          return {
+            documentName: res[0],
+            ownerName: res[1],
+            price: res[2],
+            desc: res[3],
+            ownerAddress: res[4]
+          } as IDocumentLockerResponse;
+        })
+        .catch((error: string) => Promise.reject(error));
+    });
+  }
+
+  async unlockFile(
+    w: WalletProvider,
+    from: string,
+    amount: number,
+    contractAddress: string
+  ): Promise<IReceiptTransaction> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const dlFactoryContract = new DocumentLockerContract();
+    const contract: Contract = new web3.eth.Contract(dlFactoryContract.getAbi() as AbiItem[], contractAddress);
+    const amountInWei: string = web3.utils.toWei(String(amount), 'ether');
+
+    try {
+      const gas: number = await contract.methods.unlockFile().estimateGas({ from, value: amountInWei });
+      const receipt: IReceiptTransaction = contract.methods.unlockFile().send({ from, value: amountInWei, gas: gas });
+
+      return receipt;
+    } catch (error) {
+      return Promise.reject(error as string);
+    }
   }
 }
