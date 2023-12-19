@@ -1,0 +1,68 @@
+import { createAction, props } from '@ngrx/store';
+import {
+  IDocumentLockerCreation,
+  IDocumentLockerResponse,
+  IDocumentUnlockedResponse
+} from '../../../shared/interfaces';
+
+export const searchDocumentLocker = createAction('[DocumentLocker] Document Locked', props<{ txHash: string }>());
+export const searchDocumentLockerSuccess = createAction(
+  '[DocumentLocker] Document Locked Success',
+  props<{ payload: IDocumentLockerResponse }>()
+);
+export const searchDocumentLockerFailure = createAction(
+  '[DocumentLocker] Document Locked Failure',
+  props<{ message: string }>()
+);
+
+export const createDocumentLocker = createAction(
+  '[DocumentLocker] Create DocumentLocker',
+  props<{ payload: IDocumentLockerCreation }>()
+);
+export const createDocumentLockerSuccess = createAction(
+  '[DocumentLocker] Create DocumentLocker Success',
+  props<{ txn: string }>()
+);
+export const createDocumentLockerFailure = createAction(
+  '[DocumentLocker] Create DocumentLocker Failure',
+  props<{ message: string }>()
+);
+
+export const documentLockerChecking = createAction(
+  '[DocumentLocker] DocumentLocker Creation Looking',
+  props<{ txn: string }>()
+);
+export const documentLockerCheckingSuccess = createAction(
+  '[DocumentLocker] DocumentLocker Creation Looking Success',
+  props<{ payload: IDocumentUnlockedResponse; txn: string }>()
+);
+export const documentLockerCheckingFailure = createAction(
+  '[DocumentLocker] DocumentLocker Creation Looking Failure',
+  props<{ message: string; txn: string }>()
+);
+export const documentLockerCheckingEnd = createAction('[DocumentLocker] Bid Creation Looking End');
+
+export const getDocumentLockerByTxn = createAction(
+  '[DocumentLocker] Get DocumentLocker By Txn',
+  props<{ txn: string }>()
+);
+export const getDocumentLockerByTxnSuccess = createAction(
+  '[DocumentLocker] Get DocumentLocker By Txn Success',
+  props<{ payload: IDocumentLockerResponse }>()
+);
+export const getDocumentLockerByTxnFailure = createAction(
+  '[DocumentLocker] Get DocumentLocker By Txn Failure',
+  props<{ message: string }>()
+);
+
+export const unlockDocument = createAction('[DocumentLocker] Unlock Document', props<{ amount: number }>());
+export const unlockDocumentSuccess = createAction(
+  '[DocumentLocker] Unlock Document Success',
+  props<{ txn: string; contractAddress: string }>()
+);
+export const unlockDocumentFailure = createAction(
+  '[DocumentLocker] Unlock Document Failure',
+  props<{ message: string }>()
+);
+
+export const reset = createAction('[DocumentLocker] Reset Document Locker');
