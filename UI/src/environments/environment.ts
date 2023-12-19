@@ -77,7 +77,9 @@ export const environment = {
         NetworkChainId.AVALANCHE,
         NetworkChainId.ETHEREUM,
         NetworkChainId.LOCALHOST
-      ]
+      ],
+      maxAttempt: 5,
+      attemptTimeout: 2 // minutes
     }
   },
   organizationName: 'chainbrary0',

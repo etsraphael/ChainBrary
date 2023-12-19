@@ -74,6 +74,7 @@ export class DocumentLockerService {
         .call()
         .then((res: [string, string, number, string]) => {
           return {
+            conctractAddress: receipt.contractAddress,
             documentName: res[0],
             ownerName: res[1],
             price: res[2],
@@ -109,6 +110,7 @@ export class DocumentLockerService {
         .call()
         .then((res: [string, string, number, string, string]) => {
           return {
+            conctractAddress: receipt.contractAddress,
             documentName: res[0],
             ownerName: res[1],
             price: res[2],

@@ -29,3 +29,13 @@ export const selectUnlocking: MemoizedSelector<object, ActionStoreProcessing> = 
   selectDocumentLocker,
   (s: IDocumentLockerState) => s.unlocking
 );
+
+export const selectDocumentLockerRefreshCheck: MemoizedSelector<
+  object,
+  StoreState<{ attempt: number }>
+> = createSelector(selectDocumentLocker, (s: IDocumentLockerState) => s.dlRefreshCheck);
+
+export const selectDocumentLockerContractAddress: MemoizedSelector<object, string | null> = createSelector(
+  selectSearchDocumentLocked,
+  (s: StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>) => s.data?.conctractAddress ?? null
+);

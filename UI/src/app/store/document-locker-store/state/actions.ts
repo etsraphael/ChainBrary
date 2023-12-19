@@ -1,8 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import {
   IDocumentLockerCreation,
-  IDocumentLockerResponse,
-  IDocumentUnlockedResponse
+  IDocumentLockerResponse
 } from '../../../shared/interfaces';
 
 export const searchDocumentLocker = createAction('[DocumentLocker] Document Locked', props<{ txHash: string }>());
@@ -34,7 +33,7 @@ export const documentLockerChecking = createAction(
 );
 export const documentLockerCheckingSuccess = createAction(
   '[DocumentLocker] DocumentLocker Creation Looking Success',
-  props<{ payload: IDocumentUnlockedResponse; txn: string }>()
+  props<{ payload: IDocumentLockerResponse; txn: string }>()
 );
 export const documentLockerCheckingFailure = createAction(
   '[DocumentLocker] DocumentLocker Creation Looking Failure',
@@ -62,6 +61,16 @@ export const unlockDocumentSuccess = createAction(
 );
 export const unlockDocumentFailure = createAction(
   '[DocumentLocker] Unlock Document Failure',
+  props<{ message: string }>()
+);
+
+export const documentLockerRefreshCheck = createAction('[DocumentLocker] DocumentLocker Refresh Check');
+export const documentLockerRefreshCheckSuccess = createAction(
+  '[DocumentLocker] DocumentLocker Refresh Check Success',
+  props<{ bidDetails: IDocumentLockerResponse }>()
+);
+export const documentLockerRefreshCheckFailure = createAction(
+  '[DocumentLocker] DocumentLocker Refresh Check Failure',
   props<{ message: string }>()
 );
 

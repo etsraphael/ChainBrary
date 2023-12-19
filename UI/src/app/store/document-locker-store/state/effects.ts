@@ -8,11 +8,11 @@ import { catchError, delay, filter, from, map, mergeMap, of, switchMap, tap } fr
 import { DocumentLockerService } from 'src/app/shared/services/document-locker/document-locker.service';
 import { Contract } from 'web3-eth-contract';
 import { environment } from '../../../../environments/environment';
-import { IReceiptTransaction, KeyAndLabel, StoreState } from '../../../shared/interfaces';
-import { IBid, IBidRefreshResponse } from '../../../shared/interfaces/bid.interface';
+import { IDocumentLockerResponse, IReceiptTransaction, KeyAndLabel, StoreState } from '../../../shared/interfaces';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import * as DLActions from './actions';
+import { selectDocumentLockerContractAddress, selectDocumentLockerRefreshCheck } from './selectors';
 
 @Injectable()
 export class DocumentLockerEffects {
@@ -25,334 +25,240 @@ export class DocumentLockerEffects {
   constructor(
     private readonly store: Store,
     private actions$: Actions,
-    private documentLockerService: DocumentLockerService,
+    private DLService: DocumentLockerService,
     private snackBar: MatSnackBar,
     private router: Router,
     private web3LoginService: Web3LoginService
   ) {}
 
-  // bidCreationChecking$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.bidCreationChecking),
-  //     concatLatestFrom(() => [
-  //       this.store.select(selectCurrentNetwork),
-  //       this.store.select(selectWalletConnected),
-  //       this.store.select(selectdlRefreshCheck)
-  //     ]),
-  //     filter(
-  //       (payload) =>
-  //         payload[1] !== null && payload[2] !== null && payload[3].data.attempt <= environment.contracts.bid.maxAttempt
-  //     ),
-  //     delay(environment.contracts.bid.attemptTimeout * 1000 * 60),
-  //     map(
-  //       (
-  //         payload: [
-  //           ReturnType<typeof BidActions.bidCreationChecking>,
-  //           INetworkDetail | null,
-  //           WalletProvider | null,
-  //           StoreState<{ attempt: number }>
-  //         ]
-  //       ) =>
-  //         payload as [
-  //           ReturnType<typeof BidActions.bidCreationChecking>,
-  //           INetworkDetail,
-  //           WalletProvider,
-  //           StoreState<{ attempt: number }>
-  //         ]
-  //     ),
-  //     switchMap(
-  //       (
-  //         action: [
-  //           ReturnType<typeof BidActions.bidCreationChecking>,
-  //           INetworkDetail,
-  //           WalletProvider,
-  //           StoreState<{ attempt: number }>
-  //         ]
-  //       ) => {
-  //         return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn)).pipe(
-  //           map((response: IBid) => BidActions.bidCreationCheckingSuccess({ bid: response, txn: action[0].txn })),
-  //           catchError((error: { message: string }) =>
-  //             of(BidActions.bidCreationCheckingFailure({ message: error.message, txn: action[0].txn }))
-  //           )
-  //         );
-  //       }
-  //     )
-  //   );
-  // });
+  createDocumentLocker$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.createDocumentLocker),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (payload: [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider, string]
+      ),
+      switchMap((action: [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider, string]) => {
+        return from(this.DLService.deployDocumentLockerContract(action[1], action[2], action[0].payload)).pipe(
+          map((response: { contract: Contract; transactionHash: string }) =>
+            DLActions.documentLockerChecking({ txn: response.transactionHash })
+          ),
+          tap((action: ReturnType<typeof DLActions.documentLockerChecking>) => {
+            this.router.navigate(['/use-cases/document-locker/search/', action.txn]);
+          }),
+          catchError(() =>
+            of(
+              DLActions.createDocumentLockerFailure({
+                message:
+                  'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.'
+              })
+            )
+          )
+        );
+      })
+    );
+  });
 
-  // bidCreationCheckingFailure$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.bidCreationCheckingFailure),
-  //     concatLatestFrom(() => [this.store.select(selectdlRefreshCheck)]),
-  //     map((payload: [ReturnType<typeof BidActions.bidCreationCheckingFailure>, StoreState<{ attempt: number }>]) => {
-  //       if (payload[1].data.attempt > environment.contracts.bid.maxAttempt) {
-  //         return BidActions.bidCreationCheckingEnd();
-  //       } else {
-  //         return BidActions.bidCreationChecking({ txn: payload[0].txn });
-  //       }
-  //     })
-  //   );
-  // });
+  documentLockerChecking$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.documentLockerChecking),
+      concatLatestFrom(() => [
+        this.store.select(selectCurrentNetwork),
+        this.store.select(selectWalletConnected),
+        this.store.select(selectDocumentLockerRefreshCheck)
+      ]),
+      filter(
+        (payload) =>
+          payload[1] !== null &&
+          payload[2] !== null &&
+          payload[3].data.attempt <= environment.contracts.documentLocker.maxAttempt
+      ),
+      delay(environment.contracts.documentLocker.attemptTimeout * 1000 * 60),
+      map(
+        (
+          payload: [
+            ReturnType<typeof DLActions.documentLockerChecking>,
+            INetworkDetail | null,
+            WalletProvider | null,
+            StoreState<{ attempt: number }>
+          ]
+        ) =>
+          payload as [
+            ReturnType<typeof DLActions.documentLockerChecking>,
+            INetworkDetail,
+            WalletProvider,
+            StoreState<{ attempt: number }>
+          ]
+      ),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof DLActions.documentLockerChecking>,
+            INetworkDetail,
+            WalletProvider,
+            StoreState<{ attempt: number }>
+          ]
+        ) => {
+          return from(this.DLService.getDocumentLockerFromTxnHash(action[2], action[0].txn)).pipe(
+            map((response: IDocumentLockerResponse) =>
+              DLActions.documentLockerCheckingSuccess({ payload: response, txn: action[0].txn })
+            ),
+            catchError((error: { message: string }) =>
+              of(DLActions.documentLockerCheckingFailure({ message: error.message, txn: action[0].txn }))
+            )
+          );
+        }
+      )
+    );
+  });
 
-  // bidCreationCheckingSuccess$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.bidCreationCheckingSuccess),
-  //     mergeMap((response: ReturnType<typeof BidActions.bidCreationCheckingSuccess>) => [
-  //       BidActions.getBidByTxnSuccess({ payload: response.bid }),
-  //       BidActions.dlRefreshCheck()
-  //     ])
-  //   );
-  // });
+  documentLockerCheckingFailure$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.documentLockerCheckingFailure),
+      concatLatestFrom(() => [this.store.select(selectDocumentLockerRefreshCheck)]),
+      map((payload: [ReturnType<typeof DLActions.documentLockerCheckingFailure>, StoreState<{ attempt: number }>]) => {
+        if (payload[1].data.attempt > environment.contracts.documentLocker.maxAttempt) {
+          return DLActions.documentLockerCheckingEnd();
+        } else {
+          return DLActions.documentLockerChecking({ txn: payload[0].txn });
+        }
+      })
+    );
+  });
 
-  // getBidByTxn$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.getBidByTxn),
-  //     concatLatestFrom(() => [this.store.select(selectCurrentNetwork), this.store.select(selectWalletConnected)]),
-  //     filter((payload) => payload[1] !== null && payload[2] !== null),
-  //     map(
-  //       (payload: [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail | null, WalletProvider | null]) =>
-  //         payload as [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail, WalletProvider]
-  //     ),
-  //     switchMap((action: [ReturnType<typeof BidActions.getBidByTxn>, INetworkDetail, WalletProvider]) => {
-  //       return from(this.bidService.getBidFromTxnHash(action[2], action[0].txn)).pipe(
-  //         mergeMap((response: IBid) => [
-  //           BidActions.getBidByTxnSuccess({ payload: response }),
-  //           BidActions.dlRefreshCheck()
-  //         ]),
-  //         catchError((error: { message: string; code: number }) =>
-  //           of(BidActions.getBidByTxnFailure({ message: error.message }))
-  //         )
-  //       );
-  //     })
-  //   );
-  // });
+  documentLockerCheckingSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.documentLockerCheckingSuccess),
+      mergeMap((response: ReturnType<typeof DLActions.documentLockerCheckingSuccess>) => [
+        DLActions.getDocumentLockerByTxnSuccess({ payload: response.payload }),
+        DLActions.documentLockerRefreshCheck()
+      ])
+    );
+  });
 
-  // placeBid$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.placeBid),
-  //     concatLatestFrom(() => [
-  //       this.store.select(selectWalletConnected),
-  //       this.store.select(selectPublicAddress),
-  //       this.store.select(selectBidContractAddress)
-  //     ]),
-  //     filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
-  //     map(
-  //       (payload: [ReturnType<typeof BidActions.placeBid>, WalletProvider | null, string | null, string | null]) =>
-  //         payload as [ReturnType<typeof BidActions.placeBid>, WalletProvider, string, string]
-  //     ),
-  //     switchMap((action: [ReturnType<typeof BidActions.placeBid>, WalletProvider, string, string]) => {
-  //       return from(this.bidService.placeBid(action[1], action[2], action[0].amount, action[3])).pipe(
-  //         map((response: IReceiptTransaction) =>
-  //           BidActions.placeBidSuccess({ txn: response.transactionHash, contractAddress: response.to })
-  //         ),
-  //         catchError((error: string) => of(BidActions.placeBidFailure({ message: error })))
-  //       );
-  //     })
-  //   );
-  // });
+  getDocumentLockerByTxn$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.getDocumentLockerByTxn),
+      concatLatestFrom(() => [this.store.select(selectCurrentNetwork), this.store.select(selectWalletConnected)]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (
+          payload: [ReturnType<typeof DLActions.getDocumentLockerByTxn>, INetworkDetail | null, WalletProvider | null]
+        ) => payload as [ReturnType<typeof DLActions.getDocumentLockerByTxn>, INetworkDetail, WalletProvider]
+      ),
+      switchMap((action: [ReturnType<typeof DLActions.getDocumentLockerByTxn>, INetworkDetail, WalletProvider]) => {
+        return from(this.DLService.getDocumentLockerFromTxnHash(action[2], action[0].txn)).pipe(
+          map((response: IDocumentLockerResponse) => DLActions.getDocumentLockerByTxnSuccess({ payload: response })),
+          catchError((error: { message: string; code: number }) =>
+            of(DLActions.getDocumentLockerByTxnFailure({ message: error.message }))
+          )
+        );
+      })
+    );
+  });
 
-  // placeBidError$ = createEffect(
-  //   () => {
-  //     return this.actions$.pipe(
-  //       ofType(BidActions.placeBidFailure),
-  //       map((action: { message: string }) => {
-  //         let formattedMessage = String(action.message);
-  //         let isErrorKnown = false;
+  // TODO: Handle the response after unlocking the document
+  unlockDocument$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.unlockDocument),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectDocumentLockerContractAddress)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (payload: [ReturnType<typeof DLActions.unlockDocument>, WalletProvider | null, string | null, string | null]) =>
+          payload as [ReturnType<typeof DLActions.unlockDocument>, WalletProvider, string, string]
+      ),
+      switchMap((action: [ReturnType<typeof DLActions.unlockDocument>, WalletProvider, string, string]) => {
+        return from(this.DLService.unlockFile(action[1], action[2], action[0].amount, action[3])).pipe(
+          map((response: IReceiptTransaction) =>
+            DLActions.unlockDocumentSuccess({ txn: response.transactionHash, contractAddress: response.to })
+          ),
+          catchError((error: string) => of(DLActions.unlockDocumentFailure({ message: error })))
+        );
+      })
+    );
+  });
 
-  //         this.errorMessage.forEach((knownError: KeyAndLabel) => {
-  //           if (formattedMessage.includes(knownError.key)) {
-  //             formattedMessage = knownError.label;
-  //             isErrorKnown = true;
-  //           }
-  //         });
+  unlockDocumentError$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(DLActions.unlockDocumentFailure),
+        map((action: { message: string }) => {
+          let formattedMessage = String(action.message);
+          let isErrorKnown = false;
 
-  //         if (!isErrorKnown) {
-  //           formattedMessage = 'An error occured while placing your bid';
-  //         }
+          this.errorMessage.forEach((knownError: KeyAndLabel) => {
+            if (formattedMessage.includes(knownError.key)) {
+              formattedMessage = knownError.label;
+              isErrorKnown = true;
+            }
+          });
 
-  //         return this.snackBar.open(formattedMessage, 'Close', {
-  //           duration: 5000,
-  //           panelClass: ['error-snackbar']
-  //         });
-  //       })
-  //     );
-  //   },
-  //   { dispatch: false }
-  // );
+          if (!isErrorKnown) {
+            formattedMessage = 'An error occured while placing your bid';
+          }
 
-  // placeBidSuccess$ = createEffect(
-  //   () => {
-  //     return this.actions$.pipe(
-  //       ofType(BidActions.placeBidSuccess),
-  //       tap(() =>
-  //         this.snackBar.open('Bid placed successfully', '', {
-  //           duration: 5000,
-  //           panelClass: ['success-snackbar']
-  //         })
-  //       )
-  //     );
-  //   },
-  //   { dispatch: false }
-  // );
+          return this.snackBar.open(formattedMessage, 'Close', {
+            duration: 5000,
+            panelClass: ['error-snackbar']
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
 
-  // createBidWithoutWallet$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.createBid),
-  //     concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
-  //     filter((payload) => payload[1] == null && payload[2] == null),
-  //     map(
-  //       (payload: [ReturnType<typeof BidActions.createBid>, WalletProvider | null, string | null]) =>
-  //         payload as [ReturnType<typeof BidActions.createBid>, WalletProvider, string]
-  //     ),
+  unlockDocumentSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(DLActions.unlockDocumentSuccess),
+        tap(() =>
+          this.snackBar.open('Bid placed successfully', '', {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          })
+        )
+      );
+    },
+    { dispatch: false }
+  );
 
-  //     tap(() => this.web3LoginService.openLoginModal()),
-  //     map(() => {
-  //       return BidActions.createBidFailure({
-  //         message:
-  //           'Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.'
-  //       });
-  //     })
-  //   );
-  // });
+  createDocumentLockerWithoutWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.createDocumentLocker),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] == null && payload[2] == null),
+      map(
+        (payload: [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider, string]
+      ),
+      tap(() => this.web3LoginService.openLoginModal()),
+      map(() => {
+        return DLActions.createDocumentLockerFailure({
+          message:
+            'Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.'
+        });
+      })
+    );
+  });
 
-  // createBid$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.createBid),
-  //     concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
-  //     filter((payload) => payload[1] !== null && payload[2] !== null),
-  //     map(
-  //       (payload: [ReturnType<typeof BidActions.createBid>, WalletProvider | null, string | null]) =>
-  //         payload as [ReturnType<typeof BidActions.createBid>, WalletProvider, string]
-  //     ),
-  //     switchMap((action: [ReturnType<typeof BidActions.createBid>, WalletProvider, string]) => {
-  //       return from(this.bidService.deployBidContract(action[1], action[2], action[0].payload)).pipe(
-  //         map((response: { contract: Contract; transactionHash: string }) =>
-  //           BidActions.bidCreationChecking({ txn: response.transactionHash })
-  //         ),
-  //         tap((action: ReturnType<typeof BidActions.bidCreationChecking>) => {
-  //           this.router.navigate(['/use-cases/bid/search/', action.txn]);
-  //         }),
-  //         catchError(() =>
-  //           of(
-  //             BidActions.createBidFailure({
-  //               message:
-  //                 'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.'
-  //             })
-  //           )
-  //         )
-  //       );
-  //     })
-  //   );
-  // });
-
-  // createBidSuccess$ = createEffect(
-  //   () => {
-  //     return this.actions$.pipe(
-  //       ofType(BidActions.createBidSuccess),
-  //       tap(() => {
-  //         this.snackBar.open('Bid created successfully', '', {
-  //           duration: 5000,
-  //           panelClass: ['success-snackbar']
-  //         });
-  //       })
-  //     );
-  //   },
-  //   { dispatch: false }
-  // );
-
-  // getbidRefresh$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.dlRefreshCheck),
-  //     concatLatestFrom(() => [
-  //       this.store.select(selectWalletConnected),
-  //       this.store.select(selectBidContractAddress),
-  //       this.store.select(selectBlockNumber)
-  //     ]),
-  //     filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
-  //     map(
-  //       (
-  //         payload: [ReturnType<typeof BidActions.dlRefreshCheck>, WalletProvider | null, string | null, string | null]
-  //       ) => payload as [ReturnType<typeof BidActions.dlRefreshCheck>, WalletProvider, string, string]
-  //     ),
-  //     switchMap((action: [ReturnType<typeof BidActions.dlRefreshCheck>, WalletProvider, string, string]) => {
-  //       return from(this.bidService.getBidderListWithDetails(action[1], action[3], action[2])).pipe(
-  //         map((response: IBidRefreshResponse) => BidActions.dlRefreshCheckSuccess({ bidDetails: response })),
-  //         catchError((error: string) => of(BidActions.dlRefreshCheckFailure({ message: error })))
-  //       );
-  //     })
-  //   );
-  // });
-
-  // requestWithdraw$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.requestWithdraw),
-  //     concatLatestFrom(() => [
-  //       this.store.select(selectWalletConnected),
-  //       this.store.select(selectPublicAddress),
-  //       this.store.select(selectBidContractAddress)
-  //     ]),
-  //     filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
-  //     map(
-  //       (
-  //         payload: [ReturnType<typeof BidActions.requestWithdraw>, WalletProvider | null, string | null, string | null]
-  //       ) => payload as [ReturnType<typeof BidActions.requestWithdraw>, WalletProvider, string, string]
-  //     ),
-  //     switchMap((action: [ReturnType<typeof BidActions.requestWithdraw>, WalletProvider, string, string]) => {
-  //       return from(this.bidService.requestWithdraw(action[1], action[2], action[3])).pipe(
-  //         map((response: IReceiptTransaction) => BidActions.requestWithdrawSuccess({ txn: response.transactionHash })),
-  //         tap(() => {
-  //           this.snackBar.open('Withdraw request sent successfully', '', {
-  //             duration: 5000,
-  //             panelClass: ['success-snackbar']
-  //           });
-  //         }),
-  //         catchError((error: { message: string }) => of(BidActions.requestWithdrawFailure({ message: error.message })))
-  //       );
-  //     })
-  //   );
-  // });
-
-  // requestWithdrawFailure$ = createEffect(
-  //   () => {
-  //     return this.actions$.pipe(
-  //       ofType(BidActions.requestWithdrawFailure),
-  //       map((action: { message: string }) => {
-  //         return this.snackBar.open(action.message, 'Close', {
-  //           duration: 5000,
-  //           panelClass: ['error-snackbar']
-  //         });
-  //       })
-  //     );
-  //   },
-  //   { dispatch: false }
-  // );
-
-  // searchDocumentLocked$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(BidActions.searchDocumentLocked),
-  //     concatLatestFrom(() => [this.store.select(selectCurrentNetwork), this.store.select(selectWalletConnected)]),
-  //     filter((payload) => payload[1] !== null && payload[2] !== null),
-  //     map(
-  //       (payload: [ReturnType<typeof BidActions.searchDocumentLocked>, INetworkDetail | null, WalletProvider | null]) =>
-  //         payload as [ReturnType<typeof BidActions.searchDocumentLocked>, INetworkDetail, WalletProvider]
-  //     ),
-  //     switchMap((action: [ReturnType<typeof BidActions.searchDocumentLocked>, INetworkDetail, WalletProvider]) => {
-  //       return from(this.bidService.getBidFromTxnHash(action[2], action[0].txHash)).pipe(
-  //         tap(() => this.router.navigate(['/use-cases/bid/search/', action[0].txHash])),
-  //         mergeMap((response: IBid) => [
-  //           BidActions.searchDocumentLockedSuccess({ payload: response }),
-  //           BidActions.dlRefreshCheck()
-  //         ]),
-  //         catchError(() =>
-  //           of(
-  //             BidActions.searchDocumentLockedFailure({
-  //               message:
-  //                 'This address is not associated with any bids that have been created. Please make sure the network is correct and try again.'
-  //             })
-  //           )
-  //         )
-  //       );
-  //     })
-  //   );
-  // });
+  createDocumentLockerSuccess$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(DLActions.createDocumentLockerSuccess),
+        tap(() => {
+          this.snackBar.open('Bid created successfully', '', {
+            duration: 5000,
+            panelClass: ['success-snackbar']
+          });
+        })
+      );
+    },
+    { dispatch: false }
+  );
 }

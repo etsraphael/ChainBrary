@@ -19,6 +19,7 @@ export interface IDocumentLockerCreation {
 }
 
 export interface IDocumentLockerResponse {
+  conctractAddress: string;
   documentName: string;
   ownerName: string;
   price: number;
