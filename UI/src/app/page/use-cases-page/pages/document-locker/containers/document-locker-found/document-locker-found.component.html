@@ -1,1 +1,30 @@
-<p>document-locker-found works!</p>
+<!-- Title container -->
+<app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+<!-- Body -->
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <h4>This is a locked document.</h4>
+      <p class="text-secondary">
+        Praesent non ultrices eros. Fusce eget suscipit a massa. Aenean gravida, ex in dignissim congue, quam nunc
+        varius nisl, euismod condimentum…
+      </p>
+    </div>
+    <div class="col-12">
+      <div class="card border-0 shadow overflow-hidden">
+        <div class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
+          <i class="bi bi-shield-lock"></i>
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">
+            Some quick example text to build on the card title and make up the bulk of the card's content.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-center my-4">
+      <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Unlock" />
+    </div>
+  </div>
+</div>
