@@ -1,8 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import {
-  IDocumentLockerCreation,
-  IDocumentLockerResponse
-} from '../../../shared/interfaces';
+import { IDocumentLockerCreation, IDocumentLockerResponse } from '../../../shared/interfaces';
 
 export const searchDocumentLocker = createAction('[DocumentLocker] Document Locked', props<{ txHash: string }>());
 export const searchDocumentLockerSuccess = createAction(

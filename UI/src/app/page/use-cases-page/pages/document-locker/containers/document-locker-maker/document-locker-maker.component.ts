@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
+import { createDocumentLocker } from './../../../../../../store/document-locker-store/state/actions';
 
 @Component({
   selector: 'app-document-locker-maker',
@@ -23,6 +24,6 @@ export class DocumentLockerMakerComponent {
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 
   sendDocumentLockerAction(payload: IDocumentLockerCreation): void {
-    console.log('sendDocumentLockerAction', payload);
+    return this.store.dispatch(createDocumentLocker({ payload }));
   }
 }

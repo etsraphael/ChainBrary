@@ -5,10 +5,10 @@ import { INetworkDetail, WalletProvider, Web3LoginService } from '@chainbrary/we
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, delay, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
-import { DocumentLockerService } from 'src/app/shared/services/document-locker/document-locker.service';
 import { Contract } from 'web3-eth-contract';
 import { environment } from '../../../../environments/environment';
 import { IDocumentLockerResponse, IReceiptTransaction, KeyAndLabel, StoreState } from '../../../shared/interfaces';
+import { DocumentLockerService } from '../../../shared/services/document-locker/document-locker.service';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import * as DLActions from './actions';

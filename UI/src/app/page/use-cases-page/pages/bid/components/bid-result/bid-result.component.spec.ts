@@ -1,12 +1,12 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { INetworkDetail, NetworkChainId, NetworkVersion, TokenId } from '@chainbrary/web3-login';
 import { of } from 'rxjs';
 import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
+import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
+import { requestWithdrawSuccess } from './../../../../../../store/bid-store/state/actions';
 import { UserCasesSharedComponentsModule } from './../../../../components/user-cases-shared-components.module';
 import { BidResultComponent } from './bid-result.component';
-import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
-import { requestWithdrawSuccess } from 'src/app/store/bid-store/state/actions';
-import { INetworkDetail, NetworkChainId, NetworkVersion, TokenId } from '@chainbrary/web3-login';
 
 describe('BidResultComponent', () => {
   let component: BidResultComponent;
