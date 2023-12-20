@@ -1,30 +1,25 @@
 <!-- Title container -->
 <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
 <!-- Body -->
-<div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h4>This is a locked document.</h4>
-      <p class="text-secondary">
-        Praesent non ultrices eros. Fusce eget suscipit a massa. Aenean gravida, ex in dignissim congue, quam nunc
-        varius nisl, euismod condimentum…
-      </p>
-    </div>
-    <div class="col-12">
-      <div class="card border-0 shadow overflow-hidden">
-        <div class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
-          <i class="bi bi-shield-lock"></i>
-        </div>
-        <div class="card-body">
-          <h5 class="card-title">Card title</h5>
-          <p class="card-text">
-            Some quick example text to build on the card title and make up the bulk of the card's content.
-          </p>
-        </div>
+<ng-container *ngIf="(documentLockedIsLoading$ | async) === false && (documentLocked$ | async) !== null">
+  <app-document-locker-content [documentLockerContent]="(documentLocked$ | async)!"></app-document-locker-content>
+</ng-container>
+<!-- Loading -->
+<ng-container *ngIf="(documentLockedIsLoading$ | async) === true">
+  <div class="row justify-content-center">
+    <div class="col-10">
+      <div class="d-flex flex-column align-items-center pt-5">
+        <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+        <p class="mt-3 text-secondary text-center">
+          <span>Searching document locked</span>
+        </p>
       </div>
     </div>
-    <div class="col-12 text-center my-4">
-      <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Unlock" />
-    </div>
+  </div>
+</ng-container>
+<!-- Error message -->
+<div *ngIf="documentLockedIsError$ | async as error" class="col-12 my-2">
+  <div class="alert alert-danger" role="alert">
+    {{ error }}
   </div>
 </div>

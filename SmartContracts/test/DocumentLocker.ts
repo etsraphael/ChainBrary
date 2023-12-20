@@ -9,7 +9,7 @@ describe('DocumentLocker', function () {
     const documentLocker = await DocumentLocker.deploy(
       '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af',
       'Private document',
-      'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      'Web3 Dev Provider',
       5,
       'This is a private document, please do not share it with anyone else.'
     );
@@ -29,12 +29,10 @@ describe('DocumentLocker', function () {
 
     it('Should retrieve the document as Owner', async function () {
       const { documentLocker } = await loadFixture(deployContractFixture);
-      const [documentName, posterURL, unlockingPrice, documentDesc] = await documentLocker.getDocumentDataFromOwner();
+      const [documentName, ownerName, unlockingPrice, documentDesc] = await documentLocker.getDocumentDataFromOwner();
 
       expect(documentName).to.equal('Private document');
-      expect(posterURL).to.equal(
-        'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-      );
+      expect(ownerName).to.equal('Web3 Dev Provider');
       expect(unlockingPrice).to.equal(5);
       expect(documentDesc).to.equal('This is a private document, please do not share it with anyone else.');
     });
@@ -50,14 +48,12 @@ describe('DocumentLocker', function () {
 
       // retreive the document with payment
       await documentLocker.connect(addr1).unlockFile({ value: 5 });
-      const [documentName, posterURL, unlockingPrice, documentDesc] = await documentLocker
+      const [documentName, ownerName, unlockingPrice, documentDesc] = await documentLocker
         .connect(addr1)
         .getDocumentDataFromBuyer();
 
       expect(documentName).to.equal('Private document');
-      expect(posterURL).to.equal(
-        'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
-      );
+      expect(ownerName).to.equal('Web3 Dev Provider');
       expect(unlockingPrice).to.equal(5);
       expect(documentDesc).to.equal('This is a private document, please do not share it with anyone else.');
     });

@@ -64,25 +64,28 @@ export class DocumentLockerService {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const dlFactoryContract = new DocumentLockerContract();
 
-    return web3.eth.getTransactionReceipt(txnHash).then((receipt: TransactionReceipt) => {
-      const contract: Contract = new web3.eth.Contract(
-        dlFactoryContract.getAbi() as AbiItem[],
-        receipt.contractAddress
-      );
-      return contract.methods
-        .getDocumentData()
-        .call()
-        .then((res: [string, string, number, string]) => {
-          return {
-            conctractAddress: receipt.contractAddress,
-            documentName: res[0],
-            ownerName: res[1],
-            price: res[2],
-            ownerAddress: res[3]
-          } as IDocumentLockerResponse;
-        })
-        .catch((error: string) => Promise.reject(error));
-    });
+    return web3.eth
+      .getTransactionReceipt(txnHash)
+      .then((receipt: TransactionReceipt) => {
+        const contract: Contract = new web3.eth.Contract(
+          dlFactoryContract.getAbi() as AbiItem[],
+          receipt.contractAddress
+        );
+        return contract.methods
+          .getDocumentData()
+          .call()
+          .then((res: [string, string, string, number, string]) => {
+            return {
+              conctractAddress: receipt.contractAddress,
+              documentName: res[0],
+              ownerName: res[1],
+              price: res[3],
+              ownerAddress: res[4]
+            } as IDocumentLockerResponse;
+          })
+          .catch((error: string) => Promise.reject(error));
+      })
+      .catch(() => Promise.reject({ message: 'not_found' }));
   }
 
   async getDocumentDataFromOwner(w: WalletProvider, txnHash: string): Promise<IDocumentUnlockedResponse> {

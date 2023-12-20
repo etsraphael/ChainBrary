@@ -71,7 +71,7 @@ function deployDocumentLocker(m: any) {
   const documentLocker = m.contract('DocumentLocker', [
     '0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af',
     'Private document',
-    'https://images.unsplash.com/photo-1699099259299-ef7ec1174f64?q=80&w=3387&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    'Web3 Dev Provider',
     5,
     'This is a private document, please do not share it with anyone else.'
   ]);

@@ -3,9 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
-import { networkChangeSuccess, setAuthPublicAddress } from 'src/app/store/auth-store/state/actions';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import { IDocumentLockerResponse, IDocumentUnlockedResponse, StoreState } from './../../../../../../shared/interfaces';
+import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { getDocumentLockerByTxn } from './../../../../../../store/document-locker-store/state/actions';
 import { selectSearchDocumentLocked } from './../../../../../../store/document-locker-store/state/selectors';
 

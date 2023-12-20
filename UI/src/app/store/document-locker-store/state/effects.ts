@@ -19,7 +19,8 @@ export class DocumentLockerEffects {
   readonly errorMessage: KeyAndLabel[] = [
     { key: 'not_enough_funds', label: 'Not enough funds' },
     { key: 'calculation_error', label: 'Calculation error' },
-    { key: 'no_access', label: 'No access' }
+    { key: 'no_access', label: 'No access' },
+    { key: 'not_found', label: 'Not found' }
   ];
 
   constructor(

@@ -8,7 +8,7 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 contract DocumentLocker is Ownable, ReentrancyGuard {
     // public values
     string public documentName;
-    string public posterURL;
+    string public ownerName;
     uint public unlockingPrice;
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
@@ -20,13 +20,13 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
     constructor(
         address _communityAddress,
         string memory _documentName,
-        string memory _posterURL,
+        string memory _ownerName,
         uint _unlockingPrice,
         string memory _documentDesc
     ) Ownable(_msgSender()) {
         communityAddress = _communityAddress;
         documentName = _documentName;
-        posterURL = _posterURL;
+        ownerName = _ownerName;
         unlockingPrice = _unlockingPrice;
         documentDesc = _documentDesc;
     }
@@ -49,7 +49,7 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
     }
 
     function getDocumentData() public view returns (string memory, string memory, uint, address) {
-        return (documentName, posterURL, unlockingPrice, owner());
+        return (documentName, ownerName, unlockingPrice, owner());
     }
 
     function getDocumentDataFromOwner()
@@ -58,7 +58,7 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
         onlyOwner
         returns (string memory, string memory, uint, string memory, address)
     {
-        return (documentName, posterURL, unlockingPrice, documentDesc, accessAddress);
+        return (documentName, ownerName, unlockingPrice, documentDesc, accessAddress);
     }
 
     function getDocumentDataFromBuyer()
@@ -67,6 +67,6 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
         returns (string memory, string memory, uint, string memory, address)
     {
         require(_msgSender() == accessAddress, "no_access");
-        return (documentName, posterURL, unlockingPrice, documentDesc, accessAddress);
+        return (documentName, ownerName, unlockingPrice, documentDesc, accessAddress);
     }
 }

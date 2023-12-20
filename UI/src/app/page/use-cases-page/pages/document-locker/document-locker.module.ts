@@ -11,6 +11,7 @@ import { DocumentLockerHomeComponent } from './containers/document-locker-home/d
 import { DocumentLockerMakerComponent } from './containers/document-locker-maker/document-locker-maker.component';
 import { DocumentLockerMenuComponent } from './component/document-locker-menu/document-locker-menu.component';
 import { DocumentLockerRoutingModule } from './document-locker-routing.module';
+import { DocumentLockerContentComponent } from './component/document-locker-content/document-locker-content.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import { DocumentLockerRoutingModule } from './document-locker-routing.module';
     DocumentLockerFormComponent,
     DocumentLockerFoundComponent,
     DocumentLockerMakerComponent,
-    DocumentLockerMenuComponent
+    DocumentLockerMenuComponent,
+    DocumentLockerContentComponent
   ],
   imports: [
     CommonModule,

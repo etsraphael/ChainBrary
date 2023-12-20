@@ -24,6 +24,6 @@ export class DocumentLockerMakerComponent {
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 
   sendDocumentLockerAction(payload: IDocumentLockerCreation): void {
-    return this.store.dispatch(createDocumentLocker({ payload }));
+    return this.store.dispatch(createDocumentLocker({ payload })); // TODO: check this
   }
 }
