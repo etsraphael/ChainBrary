@@ -30,7 +30,7 @@ export class DocumentLockerService {
     const dlFactoryContract = new DocumentLockerContract();
     const contractData = {
       data: dlFactoryContract.getByteCode(),
-      arguments: [environment.communityAddress, dl.documentName, '', dl.price, dl.desc]
+      arguments: [environment.communityAddress, dl.documentName, dl.ownerName, dl.price, dl.desc]
     };
 
     const contract = new web3.eth.Contract(dlFactoryContract.getAbi() as AbiItem[]);

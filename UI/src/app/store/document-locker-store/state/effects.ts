@@ -47,7 +47,7 @@ export class DocumentLockerEffects {
             DLActions.documentLockerChecking({ txn: response.transactionHash })
           ),
           tap((action: ReturnType<typeof DLActions.documentLockerChecking>) => {
-            this.router.navigate(['/use-cases/document-locker/search/', action.txn]);
+            this.router.navigate(['/use-cases/document-locker/id/', action.txn]);
           }),
           catchError(() =>
             of(

@@ -5,7 +5,9 @@
   <app-document-locker-content [documentLockerContent]="(documentLocked$ | async)!"></app-document-locker-content>
 </ng-container>
 <!-- Loading -->
-<ng-container *ngIf="(documentLockedIsLoading$ | async) === true">
+<ng-container
+  *ngIf="(documentLockedIsLoading$ | async) === true || (documentLockerCreationIsLoading$ | async) === true"
+>
   <div class="row justify-content-center">
     <div class="col-10">
       <div class="d-flex flex-column align-items-center pt-5">

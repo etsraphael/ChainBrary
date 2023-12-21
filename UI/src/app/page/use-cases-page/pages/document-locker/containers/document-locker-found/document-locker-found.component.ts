@@ -4,10 +4,18 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
-import { IDocumentLockerResponse, IDocumentUnlockedResponse, StoreState } from './../../../../../../shared/interfaces';
+import {
+  IDocumentLockerCreation,
+  IDocumentLockerResponse,
+  IDocumentUnlockedResponse,
+  StoreState
+} from './../../../../../../shared/interfaces';
 import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { getDocumentLockerByTxn } from './../../../../../../store/document-locker-store/state/actions';
-import { selectSearchDocumentLocked } from './../../../../../../store/document-locker-store/state/selectors';
+import {
+  selectDocumentLockerCreation,
+  selectSearchDocumentLocked
+} from './../../../../../../store/document-locker-store/state/selectors';
 
 @Component({
   selector: 'app-document-locker-found',
@@ -32,9 +40,15 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   private readonly documentLockedStore$: Observable<
     StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>
   > = this.store.select(selectSearchDocumentLocked);
+  private readonly documentLockerCreationStore$: Observable<StoreState<IDocumentLockerCreation | null>> =
+    this.store.select(selectDocumentLockerCreation);
 
   get documentLocked$(): Observable<IDocumentLockerResponse | IDocumentUnlockedResponse | null> {
     return this.documentLockedStore$.pipe(map((s) => s.data));
+  }
+
+  get documentLockerCreationIsLoading$(): Observable<boolean> {
+    return this.documentLockerCreationStore$.pipe(map((s) => s.loading));
   }
 
   get documentLockedIsLoading$(): Observable<boolean> {
