@@ -75,6 +75,11 @@
           <!-- TODO: Term and Cond 2: 1% fee and final result -->
         </mat-checkbox>
       </div>
+      <div class="col-12 mb-3" *ngIf="errorMessage !== null">
+        <div class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+      </div>
       <div class="col-12 text-center">
         <app-chainbrary-button
           data-id="start-bid-btn"

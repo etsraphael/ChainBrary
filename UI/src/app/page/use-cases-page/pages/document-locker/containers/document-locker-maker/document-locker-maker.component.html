@@ -3,5 +3,6 @@
 <!-- Body -->
 <app-document-locker-form
   [currentNetworkObs]="currentNetwork$"
+  [errorMessage]="creationError$ | async"
   (submitDocumentForm)="sendDocumentLockerAction($event)"
 ></app-document-locker-form>

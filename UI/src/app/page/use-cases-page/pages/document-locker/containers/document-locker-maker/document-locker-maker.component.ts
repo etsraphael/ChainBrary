@@ -6,6 +6,7 @@ import { IUseCasesHeader } from './../../../../../../page/use-cases-page/compone
 import { IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 import { createDocumentLocker } from './../../../../../../store/document-locker-store/state/actions';
+import { selectDocumentLockerCreationError } from './../../../../../../store/document-locker-store/state/selectors';
 
 @Component({
   selector: 'app-document-locker-maker',
@@ -22,6 +23,7 @@ export class DocumentLockerMakerComponent {
   constructor(private readonly store: Store) {}
 
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  creationError$: Observable<string | null> = this.store.select(selectDocumentLockerCreationError);
 
   sendDocumentLockerAction(payload: IDocumentLockerCreation): void {
     return this.store.dispatch(createDocumentLocker({ payload }));

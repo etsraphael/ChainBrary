@@ -6,12 +6,13 @@ import { environment } from './../../../../../../../environments/environment';
 import { DocumentLockingForm, IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 
 @Component({
-  selector: 'app-document-locker-form[currentNetworkObs]',
+  selector: 'app-document-locker-form[currentNetworkObs][errorMessage]',
   templateUrl: './document-locker-form.component.html',
   styleUrls: ['./document-locker-form.component.scss']
 })
 export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   @Input() currentNetworkObs: Observable<INetworkDetail | null>;
+  @Input() errorMessage: string | null;
   @Output() submitDocumentForm = new EventEmitter<IDocumentLockerCreation>();
   networkSupported: NetworkChainId[] = environment.contracts.documentLocker.networkSupported;
 

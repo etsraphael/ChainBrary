@@ -15,6 +15,11 @@ export const selectDocumentLockerCreation: MemoizedSelector<
   StoreState<IDocumentLockerCreation | null>
 > = createSelector(selectDocumentLocker, (s: IDocumentLockerState) => s.dlCreation);
 
+export const selectDocumentLockerCreationError: MemoizedSelector<object, string | null> = createSelector(
+  selectDocumentLockerCreation,
+  (s: StoreState<IDocumentLockerCreation | null>) => s.error
+);
+
 export const selectDlRefreshCheck: MemoizedSelector<object, StoreState<{ attempt: number }>> = createSelector(
   selectDocumentLocker,
   (s: IDocumentLockerState) => s.dlRefreshCheck
