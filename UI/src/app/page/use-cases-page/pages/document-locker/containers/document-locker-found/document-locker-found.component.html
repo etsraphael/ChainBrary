@@ -1,5 +1,21 @@
 <!-- Title container -->
 <app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+<!-- Login -->
+<ng-container *ngIf="(userIsConnected$ | async) === false">
+  <!-- Body -->
+  <div class="d-flex flex-column align-items-center justify-content-center pt-5">
+    <div class="d-flex flex-column align-items-center justify-content-center">
+      <i class="bi bi-wallet2 text-secondary"></i>
+      <p class="text-center mt-3">A connected wallet is necessary to see the protected document</p>
+      <app-chainbrary-button
+        [buttonClasses]="['btn-info-gradient', 'text-light']"
+        buttonText="Connect Wallet"
+        (callToAction)="web3LoginService.openLoginModal()"
+        data-id="login-btn"
+      />
+    </div>
+  </div>
+</ng-container>
 <!-- Body -->
 <ng-container *ngIf="(documentLockedIsLoading$ | async) === false && (documentLocked$ | async) !== null">
   <app-document-locker-content [documentLockerContent]="(documentLocked$ | async)!"></app-document-locker-content>
