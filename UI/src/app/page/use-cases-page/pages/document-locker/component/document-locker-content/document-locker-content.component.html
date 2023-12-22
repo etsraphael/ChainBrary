@@ -24,7 +24,11 @@
       </div>
     </div>
     <div class="col-12 text-center my-4">
-      <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Unlock" />
+      <app-chainbrary-button
+        [buttonClasses]="['btn-primary-gradient', 'text-light']"
+        [buttonText]="'Unlock (' + documentLockerContent.price + ' ' + currentNetwork.nativeCurrency.symbol + ')'"
+        (callToAction)="unlockDocument.emit()"
+      />
     </div>
   </div>
 </div>

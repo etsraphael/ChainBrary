@@ -30,6 +30,14 @@ export const selectSearchDocumentLocked: MemoizedSelector<
   StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>
 > = createSelector(selectDocumentLocker, (s: IDocumentLockerState) => s.searchDocumentLocked);
 
+export const selectSearchDocumentLockedData: MemoizedSelector<
+  object,
+  IDocumentLockerResponse | IDocumentUnlockedResponse | null
+> = createSelector(
+  selectSearchDocumentLocked,
+  (s: StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>) => s.data
+);
+
 export const selectUnlocking: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
   selectDocumentLocker,
   (s: IDocumentLockerState) => s.unlocking

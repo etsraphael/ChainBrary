@@ -74,13 +74,13 @@ export class DocumentLockerService {
         return contract.methods
           .getDocumentData()
           .call()
-          .then((res: [string, string, string, number, string]) => {
+          .then((res: [string, string, number, string]) => {
             return {
               conctractAddress: receipt.contractAddress,
               documentName: res[0],
               ownerName: res[1],
-              price: res[3],
-              ownerAddress: res[4]
+              price: res[2],
+              ownerAddress: res[3]
             } as IDocumentLockerResponse;
           })
           .catch((error: string) => Promise.reject(error));

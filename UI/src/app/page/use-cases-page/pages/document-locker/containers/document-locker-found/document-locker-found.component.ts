@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
@@ -12,8 +12,8 @@ import {
   StoreState
 } from './../../../../../../shared/interfaces';
 import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
-import { selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
-import { getDocumentLockerByTxn } from './../../../../../../store/document-locker-store/state/actions';
+import { selectCurrentNetwork, selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
+import { getDocumentLockerByTxn, unlockDocument } from './../../../../../../store/document-locker-store/state/actions';
 import {
   selectDocumentLockerCreation,
   selectSearchDocumentLocked
@@ -46,6 +46,7 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   private readonly documentLockerCreationStore$: Observable<StoreState<IDocumentLockerCreation | null>> =
     this.store.select(selectDocumentLockerCreation);
   readonly userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
+  readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 
   get documentLocked$(): Observable<IDocumentLockerResponse | IDocumentUnlockedResponse | null> {
     return this.documentLockedStore$.pipe(map((s) => s.data));
@@ -91,6 +92,10 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.unsubscribe();
+  }
+
+  unlockDocument(): void {
+    return this.store.dispatch(unlockDocument());
   }
 
   private getDocument(): void {

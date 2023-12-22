@@ -18,7 +18,12 @@
 </ng-container>
 <!-- Body -->
 <ng-container *ngIf="(documentLockedIsLoading$ | async) === false && (documentLocked$ | async) !== null">
-  <app-document-locker-content [documentLockerContent]="(documentLocked$ | async)!"></app-document-locker-content>
+  <app-document-locker-content
+    [documentLockerContent]="(documentLocked$ | async)!"
+    [currentNetwork]="(currentNetwork$ | async)!"
+    (unlockDocument)="unlockDocument()"
+  >
+  </app-document-locker-content>
 </ng-container>
 <!-- Loading -->
 <ng-container
