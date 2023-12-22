@@ -12,10 +12,15 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
     uint public unlockingPrice;
     address public communityAddress;
     uint256 private constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
+    address public accessAddress;
 
     // private values
     string private documentDesc;
-    address private accessAddress;
+
+    modifier onlyAuthorized() {
+        require(owner() == _msgSender() || accessAddress == _msgSender(), "no_access");
+        _;
+    }
 
     constructor(
         address _communityAddress,
@@ -48,25 +53,16 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
         accessAddress = _msgSender();
     }
 
-    function getDocumentData() public view returns (string memory, string memory, uint, address) {
-        return (documentName, ownerName, unlockingPrice, owner());
+    function getDocumentData() public view returns (string memory, string memory, uint, address, address) {
+        return (documentName, ownerName, unlockingPrice, owner(), accessAddress);
     }
 
-    function getDocumentDataFromOwner()
+    function getFullDocumentData()
         public
         view
-        onlyOwner
+        onlyAuthorized
         returns (string memory, string memory, uint, string memory, address)
     {
-        return (documentName, ownerName, unlockingPrice, documentDesc, accessAddress);
-    }
-
-    function getDocumentDataFromBuyer()
-        public
-        view
-        returns (string memory, string memory, uint, string memory, address)
-    {
-        require(_msgSender() == accessAddress, "no_access");
         return (documentName, ownerName, unlockingPrice, documentDesc, accessAddress);
     }
 }

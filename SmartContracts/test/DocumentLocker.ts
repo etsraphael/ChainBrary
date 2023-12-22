@@ -29,7 +29,7 @@ describe('DocumentLocker', function () {
 
     it('Should retrieve the document as Owner', async function () {
       const { documentLocker } = await loadFixture(deployContractFixture);
-      const [documentName, ownerName, unlockingPrice, documentDesc] = await documentLocker.getDocumentDataFromOwner();
+      const [documentName, ownerName, unlockingPrice, documentDesc] = await documentLocker.getFullDocumentData();
 
       expect(documentName).to.equal('Private document');
       expect(ownerName).to.equal('Web3 Dev Provider');
@@ -41,7 +41,7 @@ describe('DocumentLocker', function () {
       const { documentLocker, addr1 } = await loadFixture(deployContractFixture);
 
       // retreive the document without payment
-      await expect(documentLocker.connect(addr1).getDocumentDataFromBuyer()).to.be.revertedWith('no_access');
+      await expect(documentLocker.connect(addr1).getFullDocumentData()).to.be.revertedWith('no_access');
 
       // make a wrong payment
       await expect(documentLocker.connect(addr1).unlockFile({ value: 1 })).to.be.revertedWith('not_enough_funds');
@@ -50,7 +50,7 @@ describe('DocumentLocker', function () {
       await documentLocker.connect(addr1).unlockFile({ value: 5 });
       const [documentName, ownerName, unlockingPrice, documentDesc] = await documentLocker
         .connect(addr1)
-        .getDocumentDataFromBuyer();
+        .getFullDocumentData();
 
       expect(documentName).to.equal('Private document');
       expect(ownerName).to.equal('Web3 Dev Provider');

@@ -41,7 +41,7 @@ export const getDocumentLockerByTxnFailure = createAction(
   props<{ message: string }>()
 );
 
-export const unlockDocument = createAction('[DocumentLocker] Unlock Document');
+export const unlockDocument = createAction('[DocumentLocker] Unlock Document', props<{ hasAccess: boolean }>());
 export const unlockDocumentSuccess = createAction(
   '[DocumentLocker] Unlock Document Success',
   props<{ txn: string; contractAddress: string }>()

@@ -21,7 +21,7 @@
   <app-document-locker-content
     [documentLockerContent]="(documentLocked$ | async)!"
     [currentNetwork]="(currentNetwork$ | async)!"
-    (unlockDocument)="unlockDocument()"
+    (unlockDocument)="unlockDocument($event)"
   >
   </app-document-locker-content>
 </ng-container>

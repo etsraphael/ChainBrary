@@ -166,8 +166,7 @@ export class DocumentLockerEffects {
     );
   });
 
-  // TODO: Handle the response after unlocking the document
-  unlockDocument$ = createEffect(() => {
+  unlockDocumentWithoutAccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DLActions.unlockDocument),
       concatLatestFrom(() => [
@@ -175,7 +174,9 @@ export class DocumentLockerEffects {
         this.store.select(selectPublicAddress),
         this.store.select(selectSearchDocumentLockedData)
       ]),
-      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      filter(
+        (payload) => payload[0].hasAccess == false && payload[1] !== null && payload[2] !== null && payload[3] !== null
+      ),
       map(
         (
           payload: [

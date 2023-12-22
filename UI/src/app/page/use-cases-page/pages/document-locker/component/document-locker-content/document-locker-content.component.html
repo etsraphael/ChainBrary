@@ -27,8 +27,15 @@
       <app-chainbrary-button
         [buttonClasses]="['btn-primary-gradient', 'text-light']"
         [buttonText]="'Unlock (' + documentLockerContent.price + ' ' + currentNetwork.nativeCurrency.symbol + ')'"
-        (callToAction)="unlockDocument.emit()"
+        (callToAction)="unlockDocument.emit({ hasAccess: false })"
       />
+    </div>
+    <div class="col-12">
+      <div class="alert alert-warning" role="alert">
+        As the owner of this page, this document is currently unlocked for you. You can see the full content of this by
+        clicking here. Make sure your screen is not shared with anyone else.
+        <span class="unlock-btn" (click)="unlockDocument.emit({ hasAccess: true })">Unlock here</span>
+      </div>
     </div>
   </div>
 </div>

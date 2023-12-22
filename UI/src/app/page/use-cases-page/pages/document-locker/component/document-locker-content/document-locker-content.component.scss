@@ -2,3 +2,9 @@
   font-size: 5rem;
   color: rgba(var(--bs-secondary-rgb));
 }
+
+.unlock-btn {
+  color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
+  text-decoration: underline;
+  cursor: pointer;
+}

@@ -10,5 +10,5 @@ import { IDocumentLockerResponse, IDocumentUnlockedResponse } from './../../../.
 export class DocumentLockerContentComponent {
   @Input() documentLockerContent: IDocumentLockerResponse | IDocumentUnlockedResponse;
   @Input() currentNetwork: INetworkDetail;
-  @Output() unlockDocument: EventEmitter<void> = new EventEmitter<void>();
+  @Output() unlockDocument: EventEmitter<{ hasAccess: boolean }> = new EventEmitter<{ hasAccess: boolean }>();
 }

@@ -94,8 +94,8 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
     this.destroyed$.unsubscribe();
   }
 
-  unlockDocument(): void {
-    return this.store.dispatch(unlockDocument());
+  unlockDocument(event: { hasAccess: boolean }): void {
+    return this.store.dispatch(unlockDocument({ hasAccess: event.hasAccess }));
   }
 
   private getDocument(): void {
