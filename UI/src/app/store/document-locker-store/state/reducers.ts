@@ -5,7 +5,7 @@ import { IDocumentLockerState } from './interfaces';
 
 export const authReducer: ActionReducer<IDocumentLockerState, Action> = createReducer(
   initialState,
-  on(DLActions.reset, (): IDocumentLockerState => initialState),
+  on(DLActions.resetDocumentLocker, (): IDocumentLockerState => initialState),
   on(
     DLActions.createDocumentLocker,
     (): IDocumentLockerState => ({

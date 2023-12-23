@@ -89,7 +89,7 @@ export const environment = {
         NetworkChainId.LOCALHOST
       ],
       maxAttempt: 5,
-      attemptTimeout: 1 // minute
+      attemptTimeout: 0.5 // minute
     }
   },
   organizationName: 'chainbrary0',

@@ -1,10 +1,12 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
+import { Observable, ReplaySubject, takeUntil } from 'rxjs';
 import {
   ActionStoreProcessing,
   DocumentLockerRole,
   IDocumentLockerResponse
 } from './../../../../../../shared/interfaces';
+import { unlockDocumentSuccess } from './../../../../../../store/document-locker-store/state/actions';
 
 enum DocumentLockerStatus {
   LOCKED,
@@ -16,17 +18,21 @@ enum DocumentLockerStatus {
 }
 
 @Component({
-  selector: 'app-document-locker-content[documentLockerContent][currentNetwork][hasAccessAs][unlockIsProcessing]',
+  selector:
+    'app-document-locker-content[documentLockerContent][currentNetwork][hasAccessAs][unlockIsProcessing][[unlockDocumentSuccessTriggerObs]]',
   templateUrl: './document-locker-content.component.html',
   styleUrls: ['./document-locker-content.component.scss']
 })
-export class DocumentLockerContentComponent {
+export class DocumentLockerContentComponent implements OnInit, OnDestroy {
   @Input() documentLockerContent: IDocumentLockerResponse;
   @Input() currentNetwork: INetworkDetail;
   @Input() hasAccessAs: DocumentLockerRole;
   @Input() unlockIsProcessing: ActionStoreProcessing;
+  @Input() unlockDocumentSuccessTriggerObs: Observable<ReturnType<typeof unlockDocumentSuccess>>;
   @Output() unlockDocument: EventEmitter<{ hasAccess: boolean }> = new EventEmitter<{ hasAccess: boolean }>();
   documentLockerStatusTypes = DocumentLockerStatus;
+  paymentSuccessful = false;
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   get fileUnlocked(): boolean {
     return !!this.documentLockerContent.desc;
@@ -48,6 +54,8 @@ export class DocumentLockerContentComponent {
         return DocumentLockerStatus.UNLOCKED_BY_OTHER_USER;
       case !this.fileUnlocked && this.hasAccessAs === DocumentLockerRole.BUYER:
         return DocumentLockerStatus.LOCKED_AND_BUYER;
+      case this.fileUnlocked && this.hasAccessAs === DocumentLockerRole.BUYER:
+        return DocumentLockerStatus.UNLOCKED_BY_BUYER;
       default:
         return DocumentLockerStatus.LOCKED;
     }
@@ -74,5 +82,25 @@ export class DocumentLockerContentComponent {
       this.hasAccessAs === DocumentLockerRole.OWNER &&
       this.documentLockerStatus === DocumentLockerStatus.LOCKED_AND_OWNER
     );
+  }
+
+  get btnText(): string {
+    const priceInfo = `${this.documentLockerContent.price} ${this.currentNetwork.nativeCurrency.symbol}`;
+    return this.alreadySold ? `Already sold at ${priceInfo}` : `Unlock (${priceInfo})`;
+  }
+
+  ngOnInit(): void {
+    this.listenActions();
+  }
+
+  listenActions(): void {
+    this.unlockDocumentSuccessTriggerObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.paymentSuccessful = true;
+    });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
   }
 }

@@ -12,9 +12,17 @@ import {
   IDocumentLockerResponse,
   StoreState
 } from './../../../../../../shared/interfaces';
-import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
+import {
+  accountChanged,
+  networkChangeSuccess,
+  setAuthPublicAddress
+} from './../../../../../../store/auth-store/state/actions';
 import { selectCurrentNetwork, selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
-import { getDocumentLockerByTxn, unlockDocument } from './../../../../../../store/document-locker-store/state/actions';
+import {
+  getDocumentLockerByTxn,
+  unlockDocument,
+  unlockDocumentSuccess
+} from './../../../../../../store/document-locker-store/state/actions';
 import {
   selectDocumentLockerCreation,
   selectHasAccessToDocument,
@@ -51,6 +59,9 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
   readonly hasAccessToDocument$: Observable<DocumentLockerRole> = this.store.select(selectHasAccessToDocument);
   readonly unlockProcess$: Observable<ActionStoreProcessing> = this.store.select(selectUnlockProcess);
+  readonly unlockDocumentSuccessTriggerObs$: Observable<ReturnType<typeof unlockDocumentSuccess>> = this.actions$.pipe(
+    ofType(unlockDocumentSuccess)
+  );
 
   get documentLocked$(): Observable<IDocumentLockerResponse | null> {
     return this.documentLockedStore$.pipe(map((s) => s.data));
@@ -74,7 +85,11 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   }
 
   listenNetworkChanged(): void {
-    this.actions$.pipe(ofType(networkChangeSuccess), takeUntil(this.destroyed$)).subscribe(() => this.getDocument());
+    this.actions$
+      .pipe(ofType(networkChangeSuccess, accountChanged), takeUntil(this.destroyed$))
+      .subscribe(() => this.getDocument());
+
+    this.actions$.pipe(ofType(unlockDocumentSuccess));
   }
 
   callActions(): void {

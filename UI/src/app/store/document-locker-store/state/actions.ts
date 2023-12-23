@@ -61,4 +61,4 @@ export const documentLockerRefreshCheckFailure = createAction(
   props<{ message: string }>()
 );
 
-export const reset = createAction('[DocumentLocker] Reset Document Locker');
+export const resetDocumentLocker = createAction('[DocumentLocker] Reset Document Locker');

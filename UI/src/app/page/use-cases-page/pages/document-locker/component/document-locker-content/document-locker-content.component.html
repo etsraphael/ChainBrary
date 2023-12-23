@@ -11,8 +11,15 @@
     <div class="col-12">
       <div class="card border-0 shadow overflow-hidden">
         <ng-container *ngIf="headerLocked; else unlockHeader">
-          <div class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
-            <i class="bi bi-shield-lock"></i>
+          <div
+            class="card-header d-flex flex-column justify-content-center align-items-center bg-dark-subtle position-relative"
+          >
+            <div class="text-center mb-2">
+              <i class="bi bi-shield-lock"></i>
+            </div>
+            <div *ngIf="alreadySold" class="text-center mb-2">
+              <span class="badge bg-secondary">Already unlocked by an account</span>
+            </div>
           </div>
         </ng-container>
         <ng-template #unlockHeader>
@@ -30,6 +37,15 @@
                 This document has already been unlocked by another user. This means that the content of this document is
                 only accessible to the owner of the document and the user who unlocked it first.
               </p>
+            </ng-container>
+            <ng-container *ngSwitchCase="documentLockerStatusTypes.UNLOCKED_BY_BUYER">
+              <p class="card-text text-secondary">
+                {{ documentLockerContent.desc }}
+              </p>
+              <div class="alert alert-warning" role="alert">
+                This description is only visible for the owner of the document and the first buyer. Make sure your
+                screen is not recorded
+              </div>
             </ng-container>
             <ng-container *ngSwitchCase="documentLockerStatusTypes.UNLOCKED_BY_OWNER">
               <p class="card-text text-secondary">
@@ -67,19 +83,25 @@
         <div class="card-footer text-body-secondary">By {{ documentLockerContent.ownerName }}</div>
       </div>
     </div>
-    <div *ngIf="!paymentBtnNotVisible" class="col-12 text-center my-4">
+    <div *ngIf="!paymentBtnNotVisible && !paymentSuccessful" class="col-12 text-center my-4">
       <app-chainbrary-button
         [buttonClasses]="['btn-primary-gradient', 'text-light']"
         [isDisabled]="alreadySold || unlockIsProcessing.isLoading"
-        [buttonText]="'Unlock (' + documentLockerContent.price + ' ' + currentNetwork.nativeCurrency.symbol + ')'"
+        [buttonText]="btnText"
         (callToAction)="unlockDocument.emit({ hasAccess: false })"
       />
     </div>
-    <div class="col-12" *ngIf="ownerUnlockingCardVisible">
+    <div class="col-12 my-3" *ngIf="ownerUnlockingCardVisible">
       <div class="alert alert-warning" role="alert">
         As the owner of this document, this is currently unlocked for you. You can see the full content of this by
         clicking here. Make sure your screen is not shared with anyone else.
         <span class="unlock-btn" (click)="unlockDocument.emit({ hasAccess: true })">Unlock here</span>
+      </div>
+    </div>
+    <div class="col-12 my-3" *ngIf="paymentSuccessful">
+      <div class="alert alert-info" role="alert">
+        Payment is processing and may take a few minutes. Once confirmed from your wallet, refresh to unlock the
+        document. If there are any issues, the transaction will be reverted.
       </div>
     </div>
     <!-- TODO: Back to unlocked view -->
