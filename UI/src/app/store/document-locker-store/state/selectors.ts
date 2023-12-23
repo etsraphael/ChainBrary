@@ -1,6 +1,7 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import {
   ActionStoreProcessing,
+  DocumentLockerRole,
   IDocumentLockerCreation,
   IDocumentLockerResponse,
   StoreState
@@ -30,16 +31,14 @@ export const selectSearchDocumentLocked: MemoizedSelector<
   StoreState<IDocumentLockerResponse | null>
 > = createSelector(selectDocumentLocker, (s: IDocumentLockerState) => s.searchDocumentLocked);
 
-export const selectHasAccessToDocument: MemoizedSelector<object, boolean> = createSelector(
+export const selectHasAccessToDocument: MemoizedSelector<object, DocumentLockerRole> = createSelector(
   selectDocumentLocker,
   selectPublicAddress,
   (s: IDocumentLockerState, authAddress: string | null) => {
-    if (
-      s.searchDocumentLocked.data?.ownerAddress.toLocaleLowerCase() === authAddress ||
-      s.searchDocumentLocked.data?.accessAddress.toLocaleLowerCase() === authAddress
-    )
-      return true;
-    else return false;
+    if (s.searchDocumentLocked.data?.ownerAddress.toLocaleLowerCase() === authAddress) return DocumentLockerRole.OWNER;
+    else if (s.searchDocumentLocked.data?.accessAddress.toLocaleLowerCase() === authAddress)
+      return DocumentLockerRole.BUYER;
+    else return DocumentLockerRole.NONE;
   }
 );
 

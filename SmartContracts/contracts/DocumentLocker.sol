@@ -61,8 +61,8 @@ contract DocumentLocker is Ownable, ReentrancyGuard {
         public
         view
         onlyAuthorized
-        returns (string memory, string memory, uint, string memory, address)
+        returns (string memory, string memory, uint, string memory, address, address)
     {
-        return (documentName, ownerName, unlockingPrice, documentDesc, accessAddress);
+        return (documentName, ownerName, unlockingPrice, documentDesc, owner(), accessAddress);
     }
 }

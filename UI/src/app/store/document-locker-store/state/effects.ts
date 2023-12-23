@@ -32,6 +32,8 @@ export class DocumentLockerEffects {
     private web3LoginService: Web3LoginService
   ) {}
 
+  // TODO: Change bid reference here
+
   createDocumentLocker$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DLActions.createDocumentLocker),

@@ -27,3 +27,9 @@ export interface IDocumentLockerResponse {
   accessAddress: string;
   desc?: string;
 }
+
+export enum DocumentLockerRole {
+  OWNER,
+  BUYER,
+  NONE
+}

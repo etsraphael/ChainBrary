@@ -5,7 +5,12 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
-import { IDocumentLockerCreation, IDocumentLockerResponse, StoreState } from './../../../../../../shared/interfaces';
+import {
+  DocumentLockerRole,
+  IDocumentLockerCreation,
+  IDocumentLockerResponse,
+  StoreState
+} from './../../../../../../shared/interfaces';
 import { networkChangeSuccess, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectCurrentNetwork, selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
 import { getDocumentLockerByTxn, unlockDocument } from './../../../../../../store/document-locker-store/state/actions';
@@ -42,7 +47,7 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
     this.store.select(selectDocumentLockerCreation);
   readonly userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
-  readonly hasAccessToDocument$: Observable<boolean> = this.store.select(selectHasAccessToDocument);
+  readonly hasAccessToDocument$: Observable<DocumentLockerRole> = this.store.select(selectHasAccessToDocument);
 
   get documentLocked$(): Observable<IDocumentLockerResponse | null> {
     return this.documentLockedStore$.pipe(map((s) => s.data));
