@@ -111,6 +111,36 @@ export const authReducer: ActionReducer<IDocumentLockerState, Action> = createRe
         error: message
       }
     })
+  ),
+  on(
+    DLActions.unlockDocument,
+    (state): IDocumentLockerState => ({
+      ...state,
+      unlocking: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    DLActions.unlockDocumentSuccess,
+    (state): IDocumentLockerState => ({
+      ...state,
+      unlocking: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    DLActions.unlockDocumentFailure,
+    (state, action): IDocumentLockerState => ({
+      ...state,
+      unlocking: {
+        isLoading: false,
+        errorMessage: action.message
+      }
+    })
   )
 );
 

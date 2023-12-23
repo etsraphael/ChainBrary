@@ -61,3 +61,8 @@ export const selectDocumentLockerContractAddress: MemoizedSelector<object, strin
   selectSearchDocumentLocked,
   (s: StoreState<IDocumentLockerResponse | null>) => s.data?.conctractAddress ?? null
 );
+
+export const selectUnlockProcess: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
+  selectDocumentLocker,
+  (s: IDocumentLockerState) => s.unlocking
+);

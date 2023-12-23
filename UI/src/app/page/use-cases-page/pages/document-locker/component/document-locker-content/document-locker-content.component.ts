@@ -1,6 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
-import { DocumentLockerRole, IDocumentLockerResponse } from './../../../../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  DocumentLockerRole,
+  IDocumentLockerResponse
+} from './../../../../../../shared/interfaces';
 
 enum DocumentLockerStatus {
   LOCKED,
@@ -12,7 +16,7 @@ enum DocumentLockerStatus {
 }
 
 @Component({
-  selector: 'app-document-locker-content[documentLockerContent][currentNetwork][hasAccessAs]',
+  selector: 'app-document-locker-content[documentLockerContent][currentNetwork][hasAccessAs][unlockIsProcessing]',
   templateUrl: './document-locker-content.component.html',
   styleUrls: ['./document-locker-content.component.scss']
 })
@@ -20,6 +24,7 @@ export class DocumentLockerContentComponent {
   @Input() documentLockerContent: IDocumentLockerResponse;
   @Input() currentNetwork: INetworkDetail;
   @Input() hasAccessAs: DocumentLockerRole;
+  @Input() unlockIsProcessing: ActionStoreProcessing;
   @Output() unlockDocument: EventEmitter<{ hasAccess: boolean }> = new EventEmitter<{ hasAccess: boolean }>();
   documentLockerStatusTypes = DocumentLockerStatus;
 

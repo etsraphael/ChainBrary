@@ -1,67 +1,3 @@
-<!-- <div class="container">
-  <div class="row">
-    <div class="col-12">
-      <h4>Protected Document</h4>
-      <p class="text-secondary">
-        This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security
-        and integrity. Access to its content is exclusively reserved for the document's owner and the initial purchaser,
-        reflecting a new standard in document privacy and ownership.
-      </p>
-    </div>
-    <div class="col-12">
-      <div class="card border-0 shadow overflow-hidden">
-        <div *ngIf="!fileUnlocked" class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
-          <i class="bi bi-shield-lock"></i>
-        </div>
-        <div *ngIf="fileUnlocked"
-          class="card-header d-flex justify-content-start py-2 px-lg-5 px-4 bg-dark-subtle align-items-center">
-          <i class="bi bi-unlock px-3"></i>
-          <div>
-            <h5 class="mb-0">Document unlocked</h5>
-          </div>
-        </div>
-        <div class="card-body">
-          <ng-container *ngIf="!fileAlreadyUnlockedByOtherUser">
-            <h5 class="card-title">{{ documentLockerContent.documentName }}</h5>
-            <p class="card-text text-secondary" *ngIf="!fileUnlocked">
-              The detailed description of this document remains securely locked. Full access to this content will be
-              granted upon completion of the contract payment, ensuring exclusive access for authorized parties.
-            </p>
-            <ng-container *ngIf="fileUnlocked">
-              <p class="card-text text-secondary">
-                {{ documentLockerContent.desc }}
-              </p>
-              <div class="alert alert-warning" role="alert">
-                This description is only visible for the owner of the document and the first buyer. Make sure your screen is not
-                recorded
-              </div>
-            </ng-container>
-          </ng-container>
-          <ng-container *ngIf="alreadySold">
-            <p class="card-text text-danger">
-              This document has already been unlocked by another user. This means that the content of this document is only accessible to the owner of the document and the user who unlocked it first.
-            </p>
-          </ng-container>
-        </div>
-        <div class="card-footer text-body-secondary">By {{ documentLockerContent.ownerName }}</div>
-      </div>
-    </div>
-    <div *ngIf="!fileUnlocked && !fileAlreadyUnlockedByOtherUser" class="col-12 text-center my-4">
-      <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']"
-      [isDisabled]="alreadySold"
-        [buttonText]="'Unlock (' + documentLockerContent.price + ' ' + currentNetwork.nativeCurrency.symbol + ')'"
-        (callToAction)="unlockDocument.emit({ hasAccess: false })" />
-    </div>
-    <div class="col-12" *ngIf="!fileUnlocked && hasAccess">
-      <div class="alert alert-warning" role="alert">
-        As the owner of this document, this is currently unlocked for you. You can see the full content of this by
-        clicking here. Make sure your screen is not shared with anyone else.
-        <span class="unlock-btn" (click)="unlockDocument.emit({ hasAccess: true })">Unlock here</span>
-      </div>
-    </div>
-  </div>
-</div> -->
-
 <div class="container">
   <div class="row">
     <div class="col-12">
@@ -134,7 +70,7 @@
     <div *ngIf="!paymentBtnNotVisible" class="col-12 text-center my-4">
       <app-chainbrary-button
         [buttonClasses]="['btn-primary-gradient', 'text-light']"
-        [isDisabled]="alreadySold"
+        [isDisabled]="alreadySold || unlockIsProcessing.isLoading"
         [buttonText]="'Unlock (' + documentLockerContent.price + ' ' + currentNetwork.nativeCurrency.symbol + ')'"
         (callToAction)="unlockDocument.emit({ hasAccess: false })"
       />
@@ -146,5 +82,6 @@
         <span class="unlock-btn" (click)="unlockDocument.emit({ hasAccess: true })">Unlock here</span>
       </div>
     </div>
+    <!-- TODO: Back to unlocked view -->
   </div>
 </div>

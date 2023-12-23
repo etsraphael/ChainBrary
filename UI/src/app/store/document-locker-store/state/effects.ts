@@ -32,8 +32,6 @@ export class DocumentLockerEffects {
     private web3LoginService: Web3LoginService
   ) {}
 
-  // TODO: Change bid reference here
-
   createDocumentLocker$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DLActions.createDocumentLocker),
@@ -55,7 +53,7 @@ export class DocumentLockerEffects {
             of(
               DLActions.createDocumentLockerFailure({
                 message:
-                  'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.'
+                  'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.'
               })
             )
           )
@@ -194,6 +192,7 @@ export class DocumentLockerEffects {
     );
   });
 
+  // TODO: Find a way to show it's loading, maybe a spinner
   unlockDocumentWithoutAccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DLActions.unlockDocument),
@@ -246,7 +245,7 @@ export class DocumentLockerEffects {
           });
 
           if (!isErrorKnown) {
-            formattedMessage = 'An error occured while placing your bid';
+            formattedMessage = 'An error occured while processing your document. Please try again.';
           }
 
           return this.snackBar.open(formattedMessage, 'Close', {
@@ -264,7 +263,7 @@ export class DocumentLockerEffects {
       return this.actions$.pipe(
         ofType(DLActions.unlockDocumentSuccess),
         tap(() =>
-          this.snackBar.open('Bid placed successfully', '', {
+          this.snackBar.open('Contract unlocking in process', '', {
             duration: 5000,
             panelClass: ['success-snackbar']
           })
@@ -298,7 +297,7 @@ export class DocumentLockerEffects {
       return this.actions$.pipe(
         ofType(DLActions.createDocumentLockerSuccess),
         tap(() => {
-          this.snackBar.open('Bid created successfully', '', {
+          this.snackBar.open('Locking document created successfully', '', {
             duration: 5000,
             panelClass: ['success-snackbar']
           });

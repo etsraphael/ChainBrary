@@ -26,7 +26,7 @@ export const documentLockerCheckingFailure = createAction(
   '[DocumentLocker] DocumentLocker Creation Looking Failure',
   props<{ message: string; txn: string }>()
 );
-export const documentLockerCheckingEnd = createAction('[DocumentLocker] Bid Creation Looking End');
+export const documentLockerCheckingEnd = createAction('[DocumentLocker] DocumentLocker Creation Looking End');
 
 export const getDocumentLockerByTxn = createAction(
   '[DocumentLocker] Get DocumentLocker By Txn',
@@ -54,7 +54,7 @@ export const unlockDocumentFailure = createAction(
 export const documentLockerRefreshCheck = createAction('[DocumentLocker] DocumentLocker Refresh Check');
 export const documentLockerRefreshCheckSuccess = createAction(
   '[DocumentLocker] DocumentLocker Refresh Check Success',
-  props<{ bidDetails: IDocumentLockerResponse }>()
+  props<{ dlDetails: IDocumentLockerResponse }>()
 );
 export const documentLockerRefreshCheckFailure = createAction(
   '[DocumentLocker] DocumentLocker Refresh Check Failure',

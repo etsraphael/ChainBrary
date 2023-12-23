@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
 import {
+  ActionStoreProcessing,
   DocumentLockerRole,
   IDocumentLockerCreation,
   IDocumentLockerResponse,
@@ -17,7 +18,8 @@ import { getDocumentLockerByTxn, unlockDocument } from './../../../../../../stor
 import {
   selectDocumentLockerCreation,
   selectHasAccessToDocument,
-  selectSearchDocumentLocked
+  selectSearchDocumentLocked,
+  selectUnlockProcess
 } from './../../../../../../store/document-locker-store/state/selectors';
 
 @Component({
@@ -48,6 +50,7 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   readonly userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
   readonly hasAccessToDocument$: Observable<DocumentLockerRole> = this.store.select(selectHasAccessToDocument);
+  readonly unlockProcess$: Observable<ActionStoreProcessing> = this.store.select(selectUnlockProcess);
 
   get documentLocked$(): Observable<IDocumentLockerResponse | null> {
     return this.documentLockedStore$.pipe(map((s) => s.data));
