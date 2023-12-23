@@ -5,6 +5,7 @@ import {
   IDocumentLockerResponse,
   StoreState
 } from '../../../shared/interfaces';
+import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { DOCUMENT_LOCKER_FEATURE_KEY, IDocumentLockerState } from './interfaces';
 
 export const selectDocumentLocker = createFeatureSelector<IDocumentLockerState>(DOCUMENT_LOCKER_FEATURE_KEY);
@@ -28,6 +29,19 @@ export const selectSearchDocumentLocked: MemoizedSelector<
   object,
   StoreState<IDocumentLockerResponse | null>
 > = createSelector(selectDocumentLocker, (s: IDocumentLockerState) => s.searchDocumentLocked);
+
+export const selectHasAccessToDocument: MemoizedSelector<object, boolean> = createSelector(
+  selectDocumentLocker,
+  selectPublicAddress,
+  (s: IDocumentLockerState, authAddress: string | null) => {
+    if (
+      s.searchDocumentLocked.data?.ownerAddress.toLocaleLowerCase() === authAddress ||
+      s.searchDocumentLocked.data?.accessAddress.toLocaleLowerCase() === authAddress
+    )
+      return true;
+    else return false;
+  }
+);
 
 export const selectSearchDocumentLockedData: MemoizedSelector<object, IDocumentLockerResponse | null> = createSelector(
   selectSearchDocumentLocked,

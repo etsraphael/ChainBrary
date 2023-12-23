@@ -21,6 +21,7 @@
   <app-document-locker-content
     [documentLockerContent]="(documentLocked$ | async)!"
     [currentNetwork]="(currentNetwork$ | async)!"
+    [hasAccess]="(hasAccessToDocument$ | async)!"
     (unlockDocument)="unlockDocument($event)"
   >
   </app-document-locker-content>

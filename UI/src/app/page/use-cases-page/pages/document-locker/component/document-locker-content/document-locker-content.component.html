@@ -13,7 +13,10 @@
         <div *ngIf="!fileUnlocked" class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
           <i class="bi bi-shield-lock"></i>
         </div>
-        <div *ngIf="fileUnlocked" class="card-header d-flex justify-content-start py-2 px-lg-5 px-4 bg-dark-subtle align-items-center">
+        <div
+          *ngIf="fileUnlocked"
+          class="card-header d-flex justify-content-start py-2 px-lg-5 px-4 bg-dark-subtle align-items-center"
+        >
           <i class="bi bi-unlock px-3"></i>
           <div>
             <h5 class="mb-0">Document unlocked</h5>
@@ -26,25 +29,26 @@
             granted upon completion of the contract payment, ensuring exclusive access for authorized parties.
           </p>
           <ng-container *ngIf="fileUnlocked">
-          <p class="card-text text-secondary">
-            {{ documentLockerContent.desc }}
-          </p>
-          <div class="alert alert-warning" role="alert">
-            This description is only visible for the owner of the document and you. Make sure your screen is not recorded
-          </div>
-        </ng-container>
+            <p class="card-text text-secondary">
+              {{ documentLockerContent.desc }}
+            </p>
+            <div class="alert alert-warning" role="alert">
+              This description is only visible for the owner of the document and you. Make sure your screen is not
+              recorded
+            </div>
+          </ng-container>
         </div>
         <div class="card-footer text-body-secondary">By {{ documentLockerContent.ownerName }}</div>
       </div>
     </div>
-    <div class="col-12 text-center my-4">
+    <div *ngIf="!fileUnlocked" class="col-12 text-center my-4">
       <app-chainbrary-button
         [buttonClasses]="['btn-primary-gradient', 'text-light']"
         [buttonText]="'Unlock (' + documentLockerContent.price + ' ' + currentNetwork.nativeCurrency.symbol + ')'"
         (callToAction)="unlockDocument.emit({ hasAccess: false })"
       />
     </div>
-    <div class="col-12" *ngIf="!fileUnlocked">
+    <div class="col-12" *ngIf="!fileUnlocked && hasAccess">
       <div class="alert alert-warning" role="alert">
         As the owner of this document, this is currently unlocked for you. You can see the full content of this by
         clicking here. Make sure your screen is not shared with anyone else.

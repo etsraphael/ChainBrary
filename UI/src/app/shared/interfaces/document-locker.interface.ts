@@ -24,5 +24,6 @@ export interface IDocumentLockerResponse {
   ownerName: string;
   price: number;
   ownerAddress: string;
+  accessAddress: string;
   desc?: string;
 }

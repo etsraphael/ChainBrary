@@ -69,13 +69,14 @@ export class DocumentLockerService {
         return contract.methods
           .getDocumentData()
           .call()
-          .then((res: [string, string, number, string]) => {
+          .then((res: [string, string, number, string, string]) => {
             return {
               conctractAddress: receipt.contractAddress,
               documentName: res[0],
               ownerName: res[1],
               price: res[2],
-              ownerAddress: res[3]
+              ownerAddress: res[3],
+              accessAddress: res[4]
             } as IDocumentLockerResponse;
           })
           .catch((error: string) => Promise.reject(error));
@@ -112,14 +113,15 @@ export class DocumentLockerService {
     return contract.methods
       .getFullDocumentData()
       .call()
-      .then((res: [string, string, number, string, string]) => {
+      .then((res: [string, string, number, string, string, string]) => {
         return {
           conctractAddress: conctractAddress,
           documentName: res[0],
           ownerName: res[1],
           price: res[2],
           desc: res[3],
-          ownerAddress: res[4]
+          ownerAddress: res[4],
+          accessAddress: res[5]
         } as IDocumentLockerResponse;
       })
       .catch((error: string) => Promise.reject(error));

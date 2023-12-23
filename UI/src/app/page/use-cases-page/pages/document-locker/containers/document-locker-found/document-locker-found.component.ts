@@ -11,6 +11,7 @@ import { selectCurrentNetwork, selectIsConnected } from './../../../../../../sto
 import { getDocumentLockerByTxn, unlockDocument } from './../../../../../../store/document-locker-store/state/actions';
 import {
   selectDocumentLockerCreation,
+  selectHasAccessToDocument,
   selectSearchDocumentLocked
 } from './../../../../../../store/document-locker-store/state/selectors';
 
@@ -41,6 +42,7 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
     this.store.select(selectDocumentLockerCreation);
   readonly userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly hasAccessToDocument$: Observable<boolean> = this.store.select(selectHasAccessToDocument);
 
   get documentLocked$(): Observable<IDocumentLockerResponse | null> {
     return this.documentLockedStore$.pipe(map((s) => s.data));
