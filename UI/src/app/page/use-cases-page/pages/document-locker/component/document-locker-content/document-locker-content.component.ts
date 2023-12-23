@@ -12,4 +12,9 @@ export class DocumentLockerContentComponent {
   @Input() currentNetwork: INetworkDetail;
   @Output() unlockDocument: EventEmitter<{ hasAccess: boolean }> = new EventEmitter<{ hasAccess: boolean }>();
   // TODO: @Input() has access
+
+
+  get fileUnlocked(): boolean {
+    return !!this.documentLockerContent.desc
+  }
 }

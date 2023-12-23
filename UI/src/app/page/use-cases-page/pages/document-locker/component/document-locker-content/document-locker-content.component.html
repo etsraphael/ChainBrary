@@ -10,19 +10,29 @@
     </div>
     <div class="col-12">
       <div class="card border-0 shadow overflow-hidden">
-        <div class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
+        <div *ngIf="!fileUnlocked" class="card-header d-flex justify-content-center p-5 bg-dark-subtle">
           <i class="bi bi-shield-lock"></i>
+        </div>
+        <div *ngIf="fileUnlocked" class="card-header d-flex justify-content-start py-2 px-lg-5 px-4 bg-dark-subtle align-items-center">
+          <i class="bi bi-unlock px-3"></i>
+          <div>
+            <h5 class="mb-0">Document unlocked</h5>
+          </div>
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ documentLockerContent.documentName }}</h5>
-          <p class="card-text text-secondary" *ngIf="documentLockerContent?.desc === undefined">
+          <p class="card-text text-secondary" *ngIf="!fileUnlocked">
             The detailed description of this document remains securely locked. Full access to this content will be
             granted upon completion of the contract payment, ensuring exclusive access for authorized parties.
           </p>
-
-          <p class="card-text text-secondary" *ngIf="documentLockerContent?.desc; let d">
-            {{ d }}
+          <ng-container *ngIf="fileUnlocked">
+          <p class="card-text text-secondary">
+            {{ documentLockerContent.desc }}
           </p>
+          <div class="alert alert-warning" role="alert">
+            This description is only visible for the owner of the document and you. Make sure your screen is not recorded
+          </div>
+        </ng-container>
         </div>
         <div class="card-footer text-body-secondary">By {{ documentLockerContent.ownerName }}</div>
       </div>
@@ -34,9 +44,9 @@
         (callToAction)="unlockDocument.emit({ hasAccess: false })"
       />
     </div>
-    <div class="col-12">
+    <div class="col-12" *ngIf="!fileUnlocked">
       <div class="alert alert-warning" role="alert">
-        As the owner of this page, this document is currently unlocked for you. You can see the full content of this by
+        As the owner of this document, this is currently unlocked for you. You can see the full content of this by
         clicking here. Make sure your screen is not shared with anyone else.
         <span class="unlock-btn" (click)="unlockDocument.emit({ hasAccess: true })">Unlock here</span>
       </div>

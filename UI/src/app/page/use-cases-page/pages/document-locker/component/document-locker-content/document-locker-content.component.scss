@@ -3,6 +3,10 @@
   color: rgba(var(--bs-secondary-rgb));
 }
 
+.bi-unlock {
+  font-size: 2rem;
+}
+
 .unlock-btn {
   color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
   text-decoration: underline;
