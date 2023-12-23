@@ -8,8 +8,8 @@ export const authReducer: ActionReducer<IDocumentLockerState, Action> = createRe
   on(DLActions.reset, (): IDocumentLockerState => initialState),
   on(
     DLActions.createDocumentLocker,
-    (state): IDocumentLockerState => ({
-      ...state,
+    (): IDocumentLockerState => ({
+      ...initialState,
       dlCreation: {
         data: null,
         loading: true,

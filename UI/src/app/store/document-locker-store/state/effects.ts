@@ -7,13 +7,7 @@ import { Store } from '@ngrx/store';
 import { catchError, delay, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { Contract } from 'web3-eth-contract';
 import { environment } from '../../../../environments/environment';
-import {
-  IDocumentLockerResponse,
-  IDocumentUnlockedResponse,
-  IReceiptTransaction,
-  KeyAndLabel,
-  StoreState
-} from '../../../shared/interfaces';
+import { IDocumentLockerResponse, IReceiptTransaction, KeyAndLabel, StoreState } from '../../../shared/interfaces';
 import { DocumentLockerService } from '../../../shared/services/document-locker/document-locker.service';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -166,6 +160,38 @@ export class DocumentLockerEffects {
     );
   });
 
+  unlockDocumentWithAccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DLActions.unlockDocument),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectSearchDocumentLockedData)
+      ]),
+      filter(
+        (payload) => payload[0].hasAccess == true && payload[1] !== null && payload[2] !== null && payload[3] !== null
+      ),
+      map(
+        (
+          payload: [
+            ReturnType<typeof DLActions.unlockDocument>,
+            WalletProvider | null,
+            string | null,
+            IDocumentLockerResponse | null
+          ]
+        ) => payload as [ReturnType<typeof DLActions.unlockDocument>, WalletProvider, string, IDocumentLockerResponse]
+      ),
+      switchMap(
+        (action: [ReturnType<typeof DLActions.unlockDocument>, WalletProvider, string, IDocumentLockerResponse]) => {
+          return from(this.DLService.getFullDocumentData(action[1], action[3].conctractAddress)).pipe(
+            map((response: IDocumentLockerResponse) => DLActions.getDocumentLockerByTxnSuccess({ payload: response })),
+            catchError((error: string) => of(DLActions.getDocumentLockerByTxnFailure({ message: error })))
+          );
+        }
+      )
+    );
+  });
+
   unlockDocumentWithoutAccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DLActions.unlockDocument),
@@ -183,7 +209,7 @@ export class DocumentLockerEffects {
             ReturnType<typeof DLActions.unlockDocument>,
             WalletProvider | null,
             string | null,
-            IDocumentLockerResponse | IDocumentUnlockedResponse | null
+            IDocumentLockerResponse | null
           ]
         ) => payload as [ReturnType<typeof DLActions.unlockDocument>, WalletProvider, string, IDocumentLockerResponse]
       ),

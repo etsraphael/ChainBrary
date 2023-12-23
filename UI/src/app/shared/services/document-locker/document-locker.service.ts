@@ -6,12 +6,7 @@ import { Contract } from 'web3-eth-contract';
 import { ContractSendMethod } from 'web3-eth-contract/types';
 import { AbiItem } from 'web3-utils';
 import { DocumentLockerContract } from '../../contracts';
-import {
-  IDocumentLockerCreation,
-  IDocumentLockerResponse,
-  IDocumentUnlockedResponse,
-  IReceiptTransaction
-} from '../../interfaces';
+import { IDocumentLockerCreation, IDocumentLockerResponse, IReceiptTransaction } from '../../interfaces';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 import { environment } from './../../../../environments/environment';
 
@@ -109,29 +104,24 @@ export class DocumentLockerService {
     }
   }
 
-  async getDocumentData(w: WalletProvider, txnHash: string): Promise<IDocumentUnlockedResponse> {
+  async getFullDocumentData(w: WalletProvider, conctractAddress: string): Promise<IDocumentLockerResponse> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const dlFactoryContract = new DocumentLockerContract();
 
-    return web3.eth.getTransactionReceipt(txnHash).then((receipt: TransactionReceipt) => {
-      const contract: Contract = new web3.eth.Contract(
-        dlFactoryContract.getAbi() as AbiItem[],
-        receipt.contractAddress
-      );
-      return contract.methods
-        .getFullDocumentData()
-        .call()
-        .then((res: [string, string, number, string, string]) => {
-          return {
-            conctractAddress: receipt.contractAddress,
-            documentName: res[0],
-            ownerName: res[1],
-            price: res[2],
-            desc: res[3],
-            ownerAddress: res[4]
-          } as IDocumentLockerResponse;
-        })
-        .catch((error: string) => Promise.reject(error));
-    });
+    const contract: Contract = new web3.eth.Contract(dlFactoryContract.getAbi() as AbiItem[], conctractAddress);
+    return contract.methods
+      .getFullDocumentData()
+      .call()
+      .then((res: [string, string, number, string, string]) => {
+        return {
+          conctractAddress: conctractAddress,
+          documentName: res[0],
+          ownerName: res[1],
+          price: res[2],
+          desc: res[3],
+          ownerAddress: res[4]
+        } as IDocumentLockerResponse;
+      })
+      .catch((error: string) => Promise.reject(error));
   }
 }

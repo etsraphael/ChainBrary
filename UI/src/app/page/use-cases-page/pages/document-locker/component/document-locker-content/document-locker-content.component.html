@@ -15,9 +15,13 @@
         </div>
         <div class="card-body">
           <h5 class="card-title">{{ documentLockerContent.documentName }}</h5>
-          <p class="card-text text-secondary">
+          <p class="card-text text-secondary" *ngIf="documentLockerContent?.desc === undefined">
             The detailed description of this document remains securely locked. Full access to this content will be
             granted upon completion of the contract payment, ensuring exclusive access for authorized parties.
+          </p>
+
+          <p class="card-text text-secondary" *ngIf="documentLockerContent?.desc; let d">
+            {{ d }}
           </p>
         </div>
         <div class="card-footer text-body-secondary">By {{ documentLockerContent.ownerName }}</div>

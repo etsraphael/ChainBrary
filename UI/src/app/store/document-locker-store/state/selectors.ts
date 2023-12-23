@@ -3,7 +3,6 @@ import {
   ActionStoreProcessing,
   IDocumentLockerCreation,
   IDocumentLockerResponse,
-  IDocumentUnlockedResponse,
   StoreState
 } from '../../../shared/interfaces';
 import { DOCUMENT_LOCKER_FEATURE_KEY, IDocumentLockerState } from './interfaces';
@@ -27,15 +26,12 @@ export const selectDlRefreshCheck: MemoizedSelector<object, StoreState<{ attempt
 
 export const selectSearchDocumentLocked: MemoizedSelector<
   object,
-  StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>
+  StoreState<IDocumentLockerResponse | null>
 > = createSelector(selectDocumentLocker, (s: IDocumentLockerState) => s.searchDocumentLocked);
 
-export const selectSearchDocumentLockedData: MemoizedSelector<
-  object,
-  IDocumentLockerResponse | IDocumentUnlockedResponse | null
-> = createSelector(
+export const selectSearchDocumentLockedData: MemoizedSelector<object, IDocumentLockerResponse | null> = createSelector(
   selectSearchDocumentLocked,
-  (s: StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>) => s.data
+  (s: StoreState<IDocumentLockerResponse | null>) => s.data
 );
 
 export const selectUnlocking: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
@@ -50,5 +46,5 @@ export const selectDocumentLockerRefreshCheck: MemoizedSelector<
 
 export const selectDocumentLockerContractAddress: MemoizedSelector<object, string | null> = createSelector(
   selectSearchDocumentLocked,
-  (s: StoreState<IDocumentLockerResponse | IDocumentUnlockedResponse | null>) => s.data?.conctractAddress ?? null
+  (s: StoreState<IDocumentLockerResponse | null>) => s.data?.conctractAddress ?? null
 );

@@ -24,8 +24,5 @@ export interface IDocumentLockerResponse {
   ownerName: string;
   price: number;
   ownerAddress: string;
-}
-
-export interface IDocumentUnlockedResponse extends IDocumentLockerResponse {
-  desc: string;
+  desc?: string;
 }
