@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
+import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
+import { documentLockerTermAndCond } from './../../../../../../shared/data/termAndCond';
 import { DocumentLockingForm, IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 
 @Component({
@@ -16,7 +19,10 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   @Output() submitDocumentForm = new EventEmitter<IDocumentLockerCreation>();
   networkSupported: NetworkChainId[] = environment.contracts.documentLocker.networkSupported;
 
-  constructor(public web3LoginService: Web3LoginService) {}
+  constructor(
+    public web3LoginService: Web3LoginService,
+    private dialog: MatDialog
+  ) {}
 
   networkList: INetworkDetail[] = this.networkSupported.map((chainId: NetworkChainId) =>
     this.web3LoginService.getNetworkDetailByChainId(chainId)
@@ -85,6 +91,18 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
       desc,
       price,
       networkChainId
+    });
+  }
+
+  openTermAndCond(event: MouseEvent): MatDialogRef<TermAndCondModalComponent> {
+    event.preventDefault();
+
+    return this.dialog.open(TermAndCondModalComponent, {
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      panelClass: ['col-12', 'col-md-6', 'col-lg-8'],
+      data: documentLockerTermAndCond,
+      autoFocus: false
     });
   }
 

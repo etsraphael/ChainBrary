@@ -19,7 +19,7 @@ enum DocumentLockerStatus {
 
 @Component({
   selector:
-    'app-document-locker-content[documentLockerContent][currentNetwork][hasAccessAs][unlockIsProcessing][[unlockDocumentSuccessTriggerObs]]',
+    'app-document-locker-content[documentLockerContent][currentNetwork][hasAccessAs][unlockIsProcessing][unlockDocumentSuccessTriggerObs]',
   templateUrl: './document-locker-content.component.html',
   styleUrls: ['./document-locker-content.component.scss']
 })

@@ -62,3 +62,4 @@ export const documentLockerRefreshCheckFailure = createAction(
 );
 
 export const resetDocumentLocker = createAction('[DocumentLocker] Reset Document Locker');
+export const lockDocumentOnScreen = createAction('[DocumentLocker] Lock Document On Screen');

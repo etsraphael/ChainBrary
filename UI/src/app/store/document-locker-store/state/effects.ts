@@ -192,7 +192,6 @@ export class DocumentLockerEffects {
     );
   });
 
-  // TODO: Find a way to show it's loading, maybe a spinner
   unlockDocumentWithoutAccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DLActions.unlockDocument),
