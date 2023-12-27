@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@chainlink/contracts": "^0.8.0",
-    "@graphprotocol/graph-cli": "^0.63.1",
+    "@graphprotocol/graph-cli": "^0.64.1",
     "@openzeppelin/contracts": "^5.0.1",
     "bignumber.js": "^9.1.2"
   }
