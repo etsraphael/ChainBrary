@@ -1,6 +1,4 @@
 export const bidTermAndCond = `
-# Terms and Conditions for Smart Contract Auction
-
 Before you proceed with bidding, please carefully read the following terms and conditions:
 
 ## 1. Agreement to Terms
@@ -43,4 +41,46 @@ Terms may be modified without notice. Continued use implies agreement to new ter
 For inquiries, reach out on [Discord](https://discord.gg/H3hFVuCrXN).
 
 By bidding, you affirm understanding and agreement with these Terms and Conditions.
+`;
+
+export const documentLockerTermAndCond = `
+Before utilizing our Document Locker, please carefully read the following terms and conditions:
+
+## 1. Agreement to Terms
+By using the Document Locker, you agree to be bound by these Terms. All users are subject to these terms, and usage signifies acceptance.
+
+## 2. Eligibility
+Participants must be of legal age and capable of entering into legally binding contracts. By using this service, you confirm that you meet these requirements.
+
+## 3. Usage Process
+- Documents are encrypted and stored upon upload.
+- Access to documents is exclusively granted to the buyer and the owner of the smart contract.
+- Once a document is unlocked, it is permanently encrypted on the blockchain, ensuring it cannot be shared or accessed by any other parties.
+
+## 4. Document Submissions
+- All documents uploaded remain the intellectual property of the original owner.
+- Users must have the right or authority to secure documents uploaded.
+- The platform may not be used for illegal activities or storing prohibited content.
+
+## 5. Confidentiality and Security
+- We employ robust encryption and security measures to protect the documents.
+- Once unlocked, the document is solely accessible to the owner and the buyer and cannot be shared or accessed by others, ensuring exclusive and private use.
+
+## 6. Transaction and Payments
+- Upon purchase, 99.9% of the funds are transferred directly to the document's owner, and 0.1% is contributed to the community.
+- There are no withdrawals or refunds once a purchase is made. The transaction is final and binding.
+
+## 7. Role of Platform
+We provide a secure environment for document storage but are not responsible for the contents of the documents or the actions of users.
+
+## 8. Liability
+The platform is not liable for issues like unauthorized access due to user negligence or unforeseen security breaches.
+
+## 9. Amendments
+Terms may be modified without notice. Continued use implies agreement to new terms.
+
+## 10. Contact Us
+For inquiries or assistance, reach out through our support channel.
+
+By using the Document Locker, you affirm understanding and agreement with these Terms and Conditions.
 `;

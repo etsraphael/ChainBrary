@@ -28,6 +28,12 @@ const routes: Routes = [
         data: { animation: 'bid' }
       },
       {
+        path: 'document-locker',
+        loadChildren: () =>
+          import('./pages/document-locker/document-locker.module').then((m) => m.DocumentLockerModule),
+        data: { animation: 'document-locker' }
+      },
+      {
         path: 'activity',
         component: ActivityContainerComponent,
         data: { animation: 'activity' }
