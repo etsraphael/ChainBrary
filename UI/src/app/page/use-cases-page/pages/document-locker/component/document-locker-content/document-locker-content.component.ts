@@ -30,6 +30,7 @@ export class DocumentLockerContentComponent implements OnInit, OnDestroy {
   @Input() unlockIsProcessing: ActionStoreProcessing;
   @Input() unlockDocumentSuccessTriggerObs: Observable<ReturnType<typeof unlockDocumentSuccess>>;
   @Output() unlockDocument: EventEmitter<{ hasAccess: boolean }> = new EventEmitter<{ hasAccess: boolean }>();
+  @Output() lockDocumentOnScreen: EventEmitter<void> = new EventEmitter<void>();
   documentLockerStatusTypes = DocumentLockerStatus;
   paymentSuccessful = false;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();

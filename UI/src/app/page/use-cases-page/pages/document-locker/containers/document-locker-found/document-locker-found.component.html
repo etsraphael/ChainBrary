@@ -25,6 +25,7 @@
     [unlockIsProcessing]="(unlockProcess$ | async)!"
     [unlockDocumentSuccessTriggerObs]="unlockDocumentSuccessTriggerObs$"
     (unlockDocument)="unlockDocument($event)"
+    (lockDocumentOnScreen)="lockDocumentOnScreen()"
   >
   </app-document-locker-content>
 </ng-container>

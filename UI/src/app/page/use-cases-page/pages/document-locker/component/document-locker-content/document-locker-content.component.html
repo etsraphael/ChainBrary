@@ -104,6 +104,14 @@
         document. If there are any issues, the transaction will be reverted.
       </div>
     </div>
-    <!-- TODO: Back to unlocked view -->
+    <div
+      class="col-12 text-end mt-3"
+      *ngIf="
+        documentLockerStatus === documentLockerStatusTypes.UNLOCKED_BY_BUYER ||
+        documentLockerStatus === documentLockerStatusTypes.UNLOCKED_BY_OWNER
+      "
+    >
+      <span class="unlock-btn" (click)="lockDocumentOnScreen.emit()">Hide card</span>
+    </div>
   </div>
 </div>

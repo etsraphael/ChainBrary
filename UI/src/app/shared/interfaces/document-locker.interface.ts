@@ -25,7 +25,7 @@ export interface IDocumentLockerResponse {
   price: number;
   ownerAddress: string;
   accessAddress: string;
-  desc?: string;
+  desc?: string | null;
 }
 
 export enum DocumentLockerRole {

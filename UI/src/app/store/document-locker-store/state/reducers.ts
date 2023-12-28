@@ -1,4 +1,5 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import { IDocumentLockerResponse } from './../../../shared/interfaces';
 import * as DLActions from './actions';
 import { initialState } from './init';
 import { IDocumentLockerState } from './interfaces';
@@ -37,6 +38,20 @@ export const authReducer: ActionReducer<IDocumentLockerState, Action> = createRe
         loading: false,
         error: null
       }
+    })
+  ),
+  on(
+    DLActions.lockDocumentOnScreen,
+    (state): IDocumentLockerState => ({
+      ...state,
+      searchDocumentLocked: {
+        ...state.searchDocumentLocked,
+        data: {
+          ...(state.searchDocumentLocked.data as IDocumentLockerResponse),
+          desc: undefined
+        }
+      },
+      unlocking: initialState.unlocking
     })
   ),
   on(

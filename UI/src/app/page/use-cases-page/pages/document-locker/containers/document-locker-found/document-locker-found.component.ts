@@ -20,6 +20,7 @@ import {
 import { selectCurrentNetwork, selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
 import {
   getDocumentLockerByTxn,
+  lockDocumentOnScreen,
   unlockDocument,
   unlockDocumentSuccess
 } from './../../../../../../store/document-locker-store/state/actions';
@@ -115,6 +116,10 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
 
   unlockDocument(event: { hasAccess: boolean }): void {
     return this.store.dispatch(unlockDocument({ hasAccess: event.hasAccess }));
+  }
+
+  lockDocumentOnScreen(): void {
+    return this.store.dispatch(lockDocumentOnScreen());
   }
 
   private getDocument(): void {
