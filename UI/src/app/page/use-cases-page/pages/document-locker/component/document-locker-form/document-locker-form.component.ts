@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
-import { Observable, ReplaySubject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
+import { Observable, ReplaySubject, combineLatest, distinctUntilChanged, filter, map, takeUntil } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
 import { documentLockerTermAndCond } from './../../../../../../shared/data/termAndCond';
@@ -51,29 +51,32 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   }
 
   setUpForm(): void {
-    this.mainForm
+    const networkChainIdChanges: Observable<NetworkChainId | null> | undefined = this.mainForm
       .get('networkChainId')
-      ?.valueChanges.pipe(
-        distinctUntilChanged(),
-        withLatestFrom(this.currentNetworkObs),
-        takeUntil(this.destroyed$),
-        filter(([chainId]: [NetworkChainId | null, INetworkDetail | null]) => chainId !== null),
-        map((payload) => payload as [NetworkChainId, INetworkDetail | null])
-      )
-      .subscribe(([chainId, network]: [NetworkChainId, INetworkDetail | null]) => {
-        // reset error
-        this.mainForm.get('networkChainId')?.clearValidators();
-        this.mainForm.get('networkChainId')?.setValidators([Validators.required]);
-        this.mainForm.get('networkChainId')?.updateValueAndValidity();
+      ?.valueChanges.pipe(distinctUntilChanged());
 
-        if (chainId !== network?.chainId) {
-          this.mainForm.get('networkChainId')?.setErrors({ notMatching: true });
-        }
+    if (networkChainIdChanges) {
+      combineLatest([networkChainIdChanges, this.currentNetworkObs])
+        .pipe(
+          takeUntil(this.destroyed$),
+          filter(([chainId]) => chainId !== null),
+          map(([chainId, network]) => [chainId, network] as [NetworkChainId, INetworkDetail | null])
+        )
+        .subscribe(([chainId, network]: [NetworkChainId, INetworkDetail | null]) => {
+          // reset error
+          this.mainForm.get('networkChainId')?.clearValidators();
+          this.mainForm.get('networkChainId')?.setValidators([Validators.required]);
+          this.mainForm.get('networkChainId')?.updateValueAndValidity();
 
-        if (!this.networkSupported.includes(chainId)) {
-          this.mainForm.get('networkChainId')?.setErrors({ notSupported: true });
-        }
-      });
+          if (chainId !== network?.chainId) {
+            this.mainForm.get('networkChainId')?.setErrors({ notMatching: true });
+          }
+
+          if (!this.networkSupported.includes(chainId)) {
+            this.mainForm.get('networkChainId')?.setErrors({ notSupported: true });
+          }
+        });
+    }
   }
 
   submitForm(): void {
