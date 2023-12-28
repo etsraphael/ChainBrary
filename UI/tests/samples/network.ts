@@ -1,5 +1,5 @@
-import { INetworkDetail, NetworkVersion, NetworkChainId, TokenId } from '@chainbrary/web3-login';
-import { IConversionToken, IToken, StoreState } from './../../src/app/shared/interfaces';
+import { INetworkDetail, NetworkChainId, NetworkVersion, TokenId } from '@chainbrary/web3-login';
+import { IToken } from './../../src/app/shared/interfaces';
 import { DataConversionStore } from './../../src/app/store/payment-request-store/state/selectors';
 
 export const currentNetworkSample: INetworkDetail = {
