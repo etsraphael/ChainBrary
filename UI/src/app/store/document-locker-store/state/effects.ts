@@ -183,7 +183,7 @@ export class DocumentLockerEffects {
       ),
       switchMap(
         (action: [ReturnType<typeof DLActions.unlockDocument>, WalletProvider, string, IDocumentLockerResponse]) => {
-          return from(this.DLService.getFullDocumentData(action[1], action[3].conctractAddress)).pipe(
+          return from(this.DLService.getFullDocumentData(action[1], action[3].conctractAddress, action[2])).pipe(
             map((response: IDocumentLockerResponse) => DLActions.getDocumentLockerByTxnSuccess({ payload: response })),
             catchError((error: string) => of(DLActions.getDocumentLockerByTxnFailure({ message: error })))
           );
