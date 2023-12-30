@@ -105,14 +105,18 @@ export class DocumentLockerService {
     }
   }
 
-  async getFullDocumentData(w: WalletProvider, conctractAddress: string): Promise<IDocumentLockerResponse> {
+  async getFullDocumentData(
+    w: WalletProvider,
+    conctractAddress: string,
+    from: string
+  ): Promise<IDocumentLockerResponse> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const dlFactoryContract = new DocumentLockerContract();
 
     const contract: Contract = new web3.eth.Contract(dlFactoryContract.getAbi() as AbiItem[], conctractAddress);
     return contract.methods
       .getFullDocumentData()
-      .call()
+      .call({ from })
       .then((res: [string, string, number, string, string, string]) => {
         return {
           conctractAddress: conctractAddress,
