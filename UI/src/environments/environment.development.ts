@@ -78,6 +78,18 @@ export const environment = {
       ],
       maxAttempt: 5,
       attemptTimeout: 1 // minutes
+    },
+    documentLocker: {
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.BNB,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.ETHEREUM,
+        NetworkChainId.LOCALHOST
+      ],
+      maxAttempt: 5,
+      attemptTimeout: 0.5 // minute
     }
   },
   organizationName: 'chainbrary0',

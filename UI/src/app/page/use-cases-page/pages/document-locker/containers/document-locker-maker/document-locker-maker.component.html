@@ -1,0 +1,8 @@
+<!-- Title container -->
+<app-use-cases-header [header]="headerPayload"></app-use-cases-header>
+<!-- Body -->
+<app-document-locker-form
+  [currentNetworkObs]="currentNetwork$"
+  [errorMessage]="creationError$ | async"
+  (submitDocumentForm)="sendDocumentLockerAction($event)"
+></app-document-locker-form>

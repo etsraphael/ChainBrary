@@ -6,3 +6,4 @@ export * from './user.interface';
 export * from './web3-tools.interface';
 export * from './wrappers.interface';
 export * from './core.interface';
+export * from './document-locker.interface';
