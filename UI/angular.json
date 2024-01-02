@@ -4,6 +4,15 @@
   "newProjectRoot": "projects",
   "projects": {
     "ChainBrary": {
+      "i18n": {
+        "sourceLocale": "en-US",
+        "locales": {
+          "fr": {
+            "translation": "src/locale/messages.fr.xlf",
+            "baseHref": "fr/"
+          }
+        }
+      },
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,6 +26,9 @@
         "build": {
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
+            "localize": [
+              "en-US"
+            ],
             "allowedCommonJsDependencies": ["web3", "buffer", "qrcode"],
             "outputPath": "dist/chainbrary",
             "index": "src/index.html",
