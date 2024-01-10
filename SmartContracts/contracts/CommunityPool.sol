@@ -40,23 +40,20 @@ contract CommunityPool is Ownable, ReentrancyGuard {
         return address(this).balance - totalStackingBalance;
     }
 
-    function withdraw(uint256 amount) public nonReentrant {
-        require(amount > 0, "Amount must be greater than 0");
-        require(amount <= stackingBalances[_msgSender()], "Amount must be less than or equal to stacking balance");
+    function withdrawAccount() public nonReentrant {
+        uint256 stackingAmount = stackingBalances[_msgSender()];
 
-        uint256 rewardAmount = rewardBalances[_msgSender()];
-        uint256 totalAmount = amount + rewardAmount;
-
-        require(totalAmount <= address(this).balance, "Insufficient contract balance");
+        require(stackingAmount > 0, "Amount must be greater than 0");
 
         // Update the stacking and reward balances
-        stackingBalances[_msgSender()] -= amount;
-        rewardBalances[_msgSender()] = 0; // Assuming the entire reward is withdrawn
-        totalStackingBalance -= amount;
+        stackingBalances[_msgSender()] = 0;
+        rewardBalances[_msgSender()] = 0;
+        totalStackingBalance = totalStackingBalance - stackingAmount;
 
-        // Transfer the total amount (stacked + reward) to the user
-        payable(_msgSender()).transfer(totalAmount);
+        uint256 rewardAmount = rewardBalances[_msgSender()];
 
-        emit Transfer(address(this), _msgSender(), totalAmount);
+        payable(_msgSender()).transfer(rewardAmount);
+
+        emit Transfer(address(this), _msgSender(), rewardAmount);
     }
 }
