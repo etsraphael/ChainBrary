@@ -8,24 +8,46 @@ import "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract CommunityPool is Ownable, ReentrancyGuard {
     mapping(address => uint256) public stackingBalances;
-    mapping(address => uint256) public rewardBalances;
+    mapping(address => uint256) public rewardBalancesAdjusted;
+
     uint256 public totalStackingBalance;
+    uint256 public totalRewardBalancesAdjusted;
+    uint256 public totalRewardBalance;
 
     constructor() Ownable(_msgSender()) {}
 
     event Transfer(address indexed from, address indexed to, uint256 value);
 
     function deposit() public payable {
-        stackingBalances[_msgSender()] += msg.value;
-        totalStackingBalance += msg.value;
+        // check if reward already exists
+        if (totalRewardBalance > 0) {
+            uint256 rewardBalanceAdjusted = (msg.value / totalStackingBalance) * totalRewardBalance;
+            uint256 stackingAmount = msg.value - rewardBalanceAdjusted;
+
+            rewardBalancesAdjusted[_msgSender()] += rewardBalanceAdjusted;
+            stackingBalances[_msgSender()] += stackingAmount;
+
+            totalStackingBalance += stackingAmount;
+            totalRewardBalancesAdjusted += rewardBalanceAdjusted;
+        }
+        // if not, add to stacking balance
+        else {
+            stackingBalances[_msgSender()] += msg.value;
+            totalStackingBalance += msg.value;
+        }
     }
 
     function getStackingBalance(address user) public view returns (uint256) {
-        return stackingBalances[user];
+        return stackingBalances[user] + rewardBalancesAdjusted[user];
     }
 
     function getRewardBalance(address user) public view returns (uint256) {
-        return rewardBalances[user];
+        if (rewardBalancesAdjusted[user] == 0) {
+            return (stackingBalances[user] / totalStackingBalance) * totalRewardBalance;
+        } else {
+            return
+                ((rewardBalancesAdjusted[user] + stackingBalances[user]) / totalStackingBalance) * totalRewardBalance;
+        }
     }
 
     function getTotalStackingBalance() public view returns (uint256) {
@@ -37,23 +59,27 @@ contract CommunityPool is Ownable, ReentrancyGuard {
     }
 
     function getTotalRewardBalance() public view returns (uint256) {
-        return address(this).balance - totalStackingBalance;
+        return address(this).balance - totalRewardBalancesAdjusted - totalStackingBalance;
     }
 
     function withdrawAccount() public nonReentrant {
+        // get stacking amount
         uint256 stackingAmount = stackingBalances[_msgSender()];
-
         require(stackingAmount > 0, "Amount must be greater than 0");
 
         // Update the stacking and reward balances
         stackingBalances[_msgSender()] = 0;
-        rewardBalances[_msgSender()] = 0;
-        totalStackingBalance = totalStackingBalance - stackingAmount;
+        rewardBalancesAdjusted[_msgSender()] = 0;
 
-        uint256 rewardAmount = rewardBalances[_msgSender()];
+        // get reward amount
+        uint256 rewardAmount = getRewardBalance(_msgSender());
 
+        // transfer the full amount
         payable(_msgSender()).transfer(rewardAmount);
-
         emit Transfer(address(this), _msgSender(), rewardAmount);
+    }
+
+    receive() external payable {
+        totalRewardBalance += msg.value;
     }
 }
