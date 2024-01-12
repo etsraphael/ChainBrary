@@ -67,12 +67,16 @@ contract CommunityPool is Ownable, ReentrancyGuard {
         uint256 stackingAmount = stackingBalances[_msgSender()];
         require(stackingAmount > 0, "Amount must be greater than 0");
 
+        // get reward amount
+        uint256 rewardAmount = getRewardBalance(_msgSender());
+
+        // update total values
+        totalStackingBalance -= stackingAmount;
+        totalRewardBalancesAdjusted -= rewardBalancesAdjusted[_msgSender()];
+
         // Update the stacking and reward balances
         stackingBalances[_msgSender()] = 0;
         rewardBalancesAdjusted[_msgSender()] = 0;
-
-        // get reward amount
-        uint256 rewardAmount = getRewardBalance(_msgSender());
 
         // transfer the full amount
         payable(_msgSender()).transfer(rewardAmount);
