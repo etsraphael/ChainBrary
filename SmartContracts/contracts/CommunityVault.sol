@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract CommunityPool is Ownable, ReentrancyGuard {
+contract CommunityVault is Ownable, ReentrancyGuard {
     mapping(address => uint256) public stackingBalances;
     mapping(address => uint256) public rewardBalancesAdjusted;
 
