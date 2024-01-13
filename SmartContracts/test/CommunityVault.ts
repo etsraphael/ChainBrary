@@ -177,27 +177,59 @@ describe('CommunityVault', function () {
         'Amount must be greater than 0'
       );
     });
-
   });
 
-    // it('Should have the totalStackingBalance after 3 different deposits', async function () {
-    //   const { communityVault, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
+  describe('Reward', function () {
+    // TODO: Withdraw reward after 3 deposits and injections of rewards
+    it.only('Should withdraw the correct amounts and emit the right events', async function () {
+      const { communityVault, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
 
-    //   // Amounts to send
-    //   const amountToSend0: bigint = ethers.parseEther('10');
-    //   const amountToSend1: bigint = ethers.parseEther('20');
-    //   const amountToSend2: bigint = ethers.parseEther('30');
+      // Getting initial balance of the users to check the fee later
+      const initialAddr1Balance1: bigint = await ethers.provider.getBalance(addr1.address);
+      const initialAddr2Balance2: bigint = await ethers.provider.getBalance(addr2.address);
+      const initialAddr3Balance3: bigint = await ethers.provider.getBalance(addr3.address);
 
-    //   // Sender sends the fund
-    //   const tx0: ContractTransactionResponse = await communityVault
-    //     .connect(addr1)
-    //     .deposit({ value: amountToSend0.toString() });
-    //   await tx0.wait();
+      // Amount to send
+      const amountToSend0: bigint = ethers.parseEther('10');
+      const amountToSend1: bigint = ethers.parseEther('20');
+      const amountToSend2: bigint = ethers.parseEther('30');
 
-    //   const tx1: ContractTransactionResponse = await communityVault
-    //     .connect(addr2)
-    //     .deposit({ value: amountToSend1.toString() });
-    //   await tx1.wait();
+      // Sender sends the fund
+
+      const tx0: ContractTransactionResponse = await communityVault
+        .connect(addr1)
+        .deposit({ value: amountToSend0.toString() });
+      const receipt0 = await tx0.wait();
+
+      if (!receipt0) {
+        throw new Error('No receipt');
+      }
+
+      const tx1: ContractTransactionResponse = await communityVault
+        .connect(addr2)
+        .deposit({ value: amountToSend1.toString() });
+      const receipt1 = await tx1.wait();
+
+      if (!receipt1) {
+        throw new Error('No receipt');
+      }
+
+      const tx2: ContractTransactionResponse = await communityVault
+        .connect(addr3)
+        .deposit({ value: amountToSend2.toString() });
+      const receipt2 = await tx2.wait();
+
+      if (!receipt2) {
+        throw new Error('No receipt');
+      }
+
+      
 
 
+
+    });
+
+
+
+  });
 });
