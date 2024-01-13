@@ -16,8 +16,8 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
     constructor() Ownable(_msgSender()) {}
 
-    event Transfer(address indexed from, address indexed to, uint256 value);
-    event Deposit(address indexed user, uint256 amount);
+    event WithdrawEvent(address indexed to, uint256 value);
+    event DepositEvent(address indexed user, uint256 amount);
 
     function deposit() public payable {
         require(msg.value > 0, "Amount must be greater than 0");
@@ -39,7 +39,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
             totalStackingBalance += msg.value;
         }
 
-        emit Deposit(_msgSender(), msg.value);
+        emit DepositEvent(_msgSender(), msg.value);
     }
 
     function getStackingBalance(address user) public view returns (uint256) {
@@ -85,7 +85,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
         // transfer the full amount
         payable(_msgSender()).transfer(rewardAmount);
-        emit Transfer(address(this), _msgSender(), rewardAmount);
+        emit WithdrawEvent(_msgSender(), rewardAmount);
     }
 
     receive() external payable {
