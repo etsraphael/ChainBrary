@@ -182,7 +182,7 @@ describe('CommunityVault', function () {
   describe('Reward', function () {
     // TODO: Withdraw reward after 3 deposits and injections of rewards
     it.only('Should withdraw the correct amounts and emit the right events', async function () {
-      const { communityVault, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
+      const { communityVault, owner, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the users to check the fee later
       const initialAddr1Balance1: bigint = await ethers.provider.getBalance(addr1.address);
@@ -195,7 +195,6 @@ describe('CommunityVault', function () {
       const amountToSend2: bigint = ethers.parseEther('30');
 
       // Sender sends the fund
-
       const tx0: ContractTransactionResponse = await communityVault
         .connect(addr1)
         .deposit({ value: amountToSend0.toString() });
@@ -223,7 +222,18 @@ describe('CommunityVault', function () {
         throw new Error('No receipt');
       }
 
-      
+      // send some rewards to the contract
+      const generatedReward: bigint = ethers.parseEther('100');
+      const contractAddress = await communityVault.getAddress()
+      const rewardTransaction = await owner.sendTransaction({ to: contractAddress, value: generatedReward.toString() });
+      const receipt3 = await rewardTransaction.wait();
+
+      if (!receipt3) {
+        throw new Error('No receipt');
+      }
+
+      // check totalRewardBalance before withdraw
+      expect(await communityVault.totalRewardBalance()).to.equal(generatedReward);
 
 
 
