@@ -17,6 +17,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     constructor() Ownable(_msgSender()) {}
 
     event Transfer(address indexed from, address indexed to, uint256 value);
+    event Deposit(address indexed user, uint256 amount);
 
     function deposit() public payable {
         // check if reward already exists
@@ -35,6 +36,8 @@ contract CommunityVault is Ownable, ReentrancyGuard {
             stackingBalances[_msgSender()] += msg.value;
             totalStackingBalance += msg.value;
         }
+
+        emit Deposit(_msgSender(), msg.value);
     }
 
     function getStackingBalance(address user) public view returns (uint256) {
