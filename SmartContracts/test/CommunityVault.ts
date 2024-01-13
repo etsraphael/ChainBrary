@@ -176,7 +176,7 @@ describe('CommunityVault', function () {
 
   describe('Reward', function () {
     // TODO: Withdraw reward after 3 deposits and injections of rewards
-    it.only('Should withdraw the correct amounts and emit the right events', async function () {
+    it('Should withdraw the correct amounts and emit the right events', async function () {
       const { communityVault, owner, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the users to check the fee later
