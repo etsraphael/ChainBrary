@@ -7,8 +7,8 @@ describe('CommunityVault', function () {
   async function deployContractFixture() {
     const CommunityVault = await ethers.getContractFactory('CommunityVault');
     const communityVault = await CommunityVault.deploy();
-    const [owner, addr1, addr2] = await ethers.getSigners();
-    return { communityVault, owner, addr1, addr2 };
+    const [owner, addr1, addr2, addr3] = await ethers.getSigners();
+    return { communityVault, owner, addr1, addr2, addr3 };
   }
 
   describe('Deployment', function () {
@@ -62,5 +62,35 @@ describe('CommunityVault', function () {
         'Amount must be greater than 0'
       );
     });
+
+    it('Should have the totalStackingBalance after 3 different deposits', async function () {
+      const { communityVault, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
+
+      // Amounts to send
+      const amountToSend0: bigint = ethers.parseEther('10');
+      const amountToSend1: bigint = ethers.parseEther('20');
+      const amountToSend2: bigint = ethers.parseEther('30');
+
+      // Sender sends the fund
+      const tx0: ContractTransactionResponse = await communityVault
+        .connect(addr1)
+        .deposit({ value: amountToSend0.toString() });
+      await tx0.wait();
+
+      const tx1: ContractTransactionResponse = await communityVault
+        .connect(addr2)
+        .deposit({ value: amountToSend1.toString() });
+      await tx1.wait();
+
+      const tx2: ContractTransactionResponse = await communityVault
+        .connect(addr3)
+        .deposit({ value: amountToSend2.toString() });
+      await tx2.wait();
+
+      // Checking the totalStackingBalance
+      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
+    }
+    );
+
   });
 });
