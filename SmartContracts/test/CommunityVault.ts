@@ -52,5 +52,15 @@ describe('CommunityVault', function () {
       await expect(tx).to.emit(communityVault, 'Deposit').withArgs(addr1.address, amountToSend);
 
     });
+
+    it('Should revert when depositing 0', async function () {
+      const { communityVault, addr1 } = await loadFixture(deployContractFixture);
+
+      // Sender sends the fund, instead of the owner
+      const amountToSend: bigint = ethers.parseEther('0');
+      await expect(communityVault.connect(addr1).deposit({ value: amountToSend.toString() })).to.be.revertedWith(
+        'Amount must be greater than 0'
+      );
+    });
   });
 });

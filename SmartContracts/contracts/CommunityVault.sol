@@ -20,6 +20,8 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     event Deposit(address indexed user, uint256 amount);
 
     function deposit() public payable {
+        require(msg.value > 0, "Amount must be greater than 0");
+
         // check if reward already exists
         if (totalRewardBalance > 0) {
             uint256 rewardBalanceAdjusted = (msg.value / totalStackingBalance) * totalRewardBalance;
