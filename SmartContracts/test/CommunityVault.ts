@@ -3,6 +3,7 @@ import { expect } from 'chai';
 import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 import { BigNumber } from 'bignumber.js';
+import { anyValue } from '@nomicfoundation/hardhat-chai-matchers/withArgs';
 
 describe('CommunityVault', function () {
 
@@ -105,7 +106,7 @@ describe('CommunityVault', function () {
 
   describe('Widthdraw', function () {
 
-    it('Should withdraw the correct amounts and emit the right events', async function () {
+    it.only('Should withdraw the correct amounts and emit the right events', async function () {
       const { communityVault, addr1 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the owner to check the fee later
@@ -137,28 +138,38 @@ describe('CommunityVault', function () {
       // Check emitted events
       await expect(tx0).to.emit(communityVault, 'DepositEvent').withArgs(addr1.address, amountToSend);
 
+      // Check totalStackingBalance
+      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend);
+
+      // Check getStackingBalance
+      const stackingBalance = await communityVault.getStackingBalance(addr1.address);
+      expect(stackingBalance).to.equal(amountToSend);
+
+      // Check getReward
+      const reward = await communityVault.getRewardBalance(addr1.address);
+      expect(reward).to.equal(0);
+
       // Withdraw
-      // const tx1: ContractTransactionResponse = await communityVault.connect(addr1).withdrawAccount();
-      // const receipt1 = await tx1.wait();
+      const tx1: ContractTransactionResponse = await communityVault.connect(addr1).withdrawAccount();
+      const receipt1 = await tx1.wait();
 
-      // if (!receipt1) {
-      //   throw new Error('No receipt');
-      // }
+      if (!receipt1) {
+        throw new Error('No receipt');
+      }
 
-      // await expect(tx1).to.emit(communityVault, 'WithdrawEvent').withArgs(addr1.address, amountToSend);
+      // Check totalStackingBalance after withdraw
+      const stackingBalanceAfterWithdraw = await communityVault.getStackingBalance(addr1.address);
+      expect(stackingBalanceAfterWithdraw).to.equal(0);
 
+      // Check events
+      await expect(tx1).to.emit(communityVault, 'WithdrawEvent').withArgs(addr1.address, amountToSend);
+      
+      // Getting final balances
+      const tx1CostBigInt = calculateTxCost(receipt1, tx1);
+      const final1Addr1Balance: bigint = await ethers.provider.getBalance(addr1.address);
 
-
-      // const tx1CostBigInt = calculateTxCost(receipt1, tx1);
-
-      // // Getting final balances
-      // const final1Addr1Balance: bigint = await ethers.provider.getBalance(addr1.address);
-
-      // // Checking the balances
-      // expect(final1Addr1Balance).to.equal(initialAddr1Balance - tx0CostBigInt - tx1CostBigInt);
-
-
-
+      // Checking the balances
+      expect(final1Addr1Balance).to.equal(initialAddr1Balance - tx0CostBigInt - tx1CostBigInt);
     });
 
     // it('Should revert when withdrawing 0', async function () {

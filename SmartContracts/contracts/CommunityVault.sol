@@ -75,6 +75,9 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         // get reward amount
         uint256 rewardAmount = getRewardBalance(_msgSender());
 
+        // get withdraw amount
+        uint256 withdrawAmount = stackingAmount + rewardAmount;
+
         // update total values
         totalStackingBalance -= stackingAmount;
         totalRewardBalancesAdjusted -= rewardBalancesAdjusted[_msgSender()];
@@ -84,8 +87,8 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         rewardBalancesAdjusted[_msgSender()] = 0;
 
         // transfer the full amount
-        payable(_msgSender()).transfer(rewardAmount);
-        emit WithdrawEvent(_msgSender(), rewardAmount);
+        payable(_msgSender()).transfer(withdrawAmount);
+        emit WithdrawEvent(_msgSender(), withdrawAmount);
     }
 
     receive() external payable {
