@@ -48,10 +48,10 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
     function getRewardBalance(address user) public view returns (uint256) {
         if (rewardBalancesAdjusted[user] == 0) {
-            return (stackingBalances[user] / totalStackingBalance) * totalRewardBalance;
+            return (stackingBalances[user] * totalRewardBalance) / totalStackingBalance;
         } else {
             return
-                ((rewardBalancesAdjusted[user] + stackingBalances[user]) / totalStackingBalance) * totalRewardBalance;
+                ((rewardBalancesAdjusted[user] + stackingBalances[user]) * totalRewardBalance) / totalStackingBalance;
         }
     }
 
