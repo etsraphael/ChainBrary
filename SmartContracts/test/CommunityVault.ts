@@ -1,9 +1,8 @@
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
+import { BigNumber } from 'bignumber.js';
 import { expect } from 'chai';
 import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
-import { BigNumber } from 'bignumber.js';
-import { anyValue } from '@nomicfoundation/hardhat-chai-matchers/withArgs';
 
 describe('CommunityVault', function () {
 
@@ -103,10 +102,8 @@ describe('CommunityVault', function () {
     );
   });
 
-
   describe('Widthdraw', function () {
-
-    it.only('Should withdraw the correct amounts and emit the right events', async function () {
+    it('Should withdraw the correct amounts and emit the right events', async function () {
       const { communityVault, addr1 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the owner to check the fee later
@@ -172,15 +169,14 @@ describe('CommunityVault', function () {
       expect(final1Addr1Balance).to.equal(initialAddr1Balance - tx0CostBigInt - tx1CostBigInt);
     });
 
-    // it('Should revert when withdrawing 0', async function () {
-    //   const { communityVault, addr1 } = await loadFixture(deployContractFixture);
+    it('Should revert when withdrawing without depositing', async function () {
+      const { communityVault, addr1 } = await loadFixture(deployContractFixture);
 
-    //   // Sender sends the fund, instead of the owner
-    //   const amountToSend: bigint = ethers.parseEther('0');
-    //   await expect(communityVault.connect(addr1).deposit({ value: amountToSend.toString() })).to.be.revertedWith(
-    //     'Amount must be greater than 0'
-    //   );
-    // });
+      // Withdraw without depositing
+      await expect(communityVault.connect(addr1).withdrawAccount()).to.be.revertedWith(
+        'Amount must be greater than 0'
+      );
+    });
 
   });
 
