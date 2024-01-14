@@ -262,6 +262,9 @@ describe('CommunityVault', function () {
       expect(await communityVault.getRewardBalance(addr1)).to.equal(0);
       expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1);
 
+      // check if totalRewardBalancesAdjusted is at 0
+      expect(await communityVault.totalRewardBalancesAdjusted()).to.equal(0);
+
       // second deposit
       const amountToSend3: bigint = ethers.parseEther('50');
 
@@ -282,9 +285,12 @@ describe('CommunityVault', function () {
       expect(await communityVault.getStackingBalance(addr4.address)).to.equal(amountToSend3);
       expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend3 + amountToSend1 + amountToSend2);
 
+      // check if totalRewardBalancesAdjusted is superior to 0
+      expect(await communityVault.totalRewardBalancesAdjusted()).to.be.above(0);
+
       // check reward balance for addr4
-      // const rewardBalance4 = await communityVault.getRewardBalance(addr4.address);
-      // console.log('rewardBalance4', rewardBalance4.toString());
+      const result = await communityVault.getRewardBalance(addr4.address);
+      console.log('result', result.toString());
     });
   });
 });
