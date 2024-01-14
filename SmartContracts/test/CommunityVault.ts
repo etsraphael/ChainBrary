@@ -15,8 +15,8 @@ describe('CommunityVault', function () {
   async function deployContractFixture() {
     const CommunityVault = await ethers.getContractFactory('CommunityVault');
     const communityVault = await CommunityVault.deploy();
-    const [owner, addr1, addr2, addr3] = await ethers.getSigners();
-    return { communityVault, owner, addr1, addr2, addr3 };
+    const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+    return { communityVault, owner, addr1, addr2, addr3, addr4 };
   }
 
   describe('Deployment', function () {
@@ -175,9 +175,8 @@ describe('CommunityVault', function () {
   });
 
   describe('Reward', function () {
-    // TODO: Withdraw reward after 3 deposits and injections of rewards
-    it('Should withdraw the correct amounts and emit the right events', async function () {
-      const { communityVault, owner, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
+    it.only('Should withdraw the correct amounts and emit the right events', async function () {
+      const { communityVault, owner, addr1, addr2, addr3, addr4 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the users to check the fee later
       const initialAddr1Balance1: bigint = await ethers.provider.getBalance(addr1.address);
@@ -239,7 +238,7 @@ describe('CommunityVault', function () {
       const rewardBalance1 = await communityVault.getRewardBalance(addr1.address);
       expect(rewardBalance1).to.equal(ethers.parseEther('1')); // because address 1 has 50% of the stacking pool
 
-      // // Withdraw reward for account 1
+      // Withdraw reward for account 1
       const tx4: ContractTransactionResponse = await communityVault.connect(addr1).withdrawAccount();
       const receipt4 = await tx4.wait();
       if (!receipt4) {
@@ -247,15 +246,45 @@ describe('CommunityVault', function () {
       }
 
       // Event for withdraw reward
-      await expect(tx4).to.emit(communityVault, 'WithdrawEvent').withArgs(addr1.address, stackingBalance1 + rewardBalance1);
+      await expect(tx4)
+        .to.emit(communityVault, 'WithdrawEvent')
+        .withArgs(addr1.address, stackingBalance1 + rewardBalance1);
 
       // Check final balance for addr1
       const finalAddr1Balance1: bigint = await ethers.provider.getBalance(addr1.address);
-      
+
       const tx0CostBigInt = calculateTxCost(receipt0, tx0);
       const tx4CostBigInt = calculateTxCost(receipt4, tx4);
 
+      // Checking the balances
       expect(finalAddr1Balance1).to.equal(initialAddr1Balance1 - (tx0CostBigInt + tx4CostBigInt) + rewardBalance1);
+      expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend1 + amountToSend2);
+      expect(await communityVault.getRewardBalance(addr1)).to.equal(0);
+      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1);
+
+      // second deposit
+      const amountToSend3: bigint = ethers.parseEther('50');
+
+      // Sender sends the fund
+      const tx3: ContractTransactionResponse = await communityVault
+        .connect(addr4)
+        .deposit({ value: amountToSend3.toString() });
+      const receipt5 = await tx3.wait();
+
+      if (!receipt5) {
+        throw new Error('No receipt');
+      }
+
+      // check events
+      await expect(tx3).to.emit(communityVault, 'DepositEvent').withArgs(addr4.address, amountToSend3);
+
+      // get balances after second deposit
+      expect(await communityVault.getStackingBalance(addr4.address)).to.equal(amountToSend3);
+      expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend3 + amountToSend1 + amountToSend2);
+
+      // check reward balance for addr4
+      // const rewardBalance4 = await communityVault.getRewardBalance(addr4.address);
+      // console.log('rewardBalance4', rewardBalance4.toString());
     });
   });
 });

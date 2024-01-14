@@ -47,16 +47,18 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getRewardBalance(address user) public view returns (uint256) {
-        if (rewardBalancesAdjusted[user] == 0) {
-            return (stackingBalances[user] * totalRewardBalance) / totalStackingBalance;
-        } else {
-            return
-                ((rewardBalancesAdjusted[user] + stackingBalances[user]) * totalRewardBalance) / totalStackingBalance;
+        uint256 rewardForStacking = (stackingBalances[user] * totalRewardBalance) / totalStackingBalance;
+        uint256 rewardForAdjusted = 0;
+
+        if (rewardBalancesAdjusted[user] > 0) {
+            return rewardForAdjusted = (rewardBalancesAdjusted[user] * totalRewardBalance) / totalRewardBalancesAdjusted;
         }
+
+        return rewardForStacking;
     }
 
     function getTotalStackingBalance() public view returns (uint256) {
-        return totalStackingBalance;
+        return totalStackingBalance + totalRewardBalancesAdjusted;
     }
 
     function getContractBalance() public view returns (uint256) {
@@ -81,6 +83,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         // update total values
         totalStackingBalance -= stackingAmount;
         totalRewardBalancesAdjusted -= rewardBalancesAdjusted[_msgSender()];
+        totalRewardBalance -= rewardAmount;
 
         // Update the stacking and reward balances
         stackingBalances[_msgSender()] = 0;
