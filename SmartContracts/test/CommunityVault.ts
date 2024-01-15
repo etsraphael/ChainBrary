@@ -237,6 +237,8 @@ describe('CommunityVault', function () {
       // check reward balance for addr1
       const rewardBalance1 = await communityVault.getRewardBalance(addr1.address);
       expect(rewardBalance1).to.equal(ethers.parseEther('1')); // because address 1 has 50% of the stacking pool
+      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward);
+
 
       // Withdraw reward for account 1
       const tx4: ContractTransactionResponse = await communityVault.connect(addr1).withdrawAccount();
@@ -284,13 +286,29 @@ describe('CommunityVault', function () {
       // get balances after second deposit
       expect(await communityVault.getStackingBalance(addr4.address)).to.equal(amountToSend3);
       expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend3 + amountToSend1 + amountToSend2);
-
-      // check if totalRewardBalancesAdjusted is superior to 0
+      expect(await communityVault.getRewardBalance(addr4.address)).to.equal(0);
       expect(await communityVault.totalRewardBalancesAdjusted()).to.be.above(0);
 
-      // check reward balance for addr4
-      const result = await communityVault.getRewardBalance(addr4.address);
-      console.log('result', result.toString());
+      // send some rewards to the contract
+      const generatedReward1: bigint = ethers.parseEther('10');
+      const rewardTransaction1 = await owner.sendTransaction({ to: contractAddress, value: generatedReward1.toString() });
+      const receipt6 = await rewardTransaction1.wait();
+
+      if (!receipt6) {
+        throw new Error('No receipt');
+      }
+
+      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1 + generatedReward1);
+
+
+      // getTotalRewardBalance()
+      // const result = await communityVault.getTotalRewardBalance();
+      // console.log('result', result.toString());
+
+      // expect(await communityVault.getRewardBalance(addr4.address)).to.equal(5); // it's not working, communityVault.getRewardBalance(addr4.address) should be 50% of 10
+
+
+
     });
   });
 });
