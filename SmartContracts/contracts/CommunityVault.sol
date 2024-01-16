@@ -10,9 +10,9 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     mapping(address => uint256) public stackingBalances;
     mapping(address => uint256) public rewardBalancesAdjusted;
 
-    uint256 public totalStackingBalance;
-    uint256 public totalRewardBalancesAdjusted;
-    uint256 public totalRewardBalance;
+    uint256 public totalStackingBalance = 0;
+    uint256 public totalRewardBalancesAdjusted = 0;
+    uint256 public totalRewardBalance = 0;
 
     constructor() Ownable(_msgSender()) {}
 
@@ -24,7 +24,16 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
         // check if reward already exists
         if (totalRewardBalance > 0) {
-            uint256 rewardBalanceAdjusted = (msg.value / totalStackingBalance) * totalRewardBalance;
+            // stackingAmount is wrong 
+            // uint256 rewardBalanceAdjusted = (msg.value / (totalStackingBalance + msg.value)) * totalRewardBalance; // 50 / 100 * 1
+            // uint256 rewardBalanceAdjusted = uint256(0.5 * 1e18); // find a real way to calculate rewardBalanceAdjusted // = (50 / 100);
+            // uint256 rewardBalanceAdjusted = (50 / 100);
+
+            uint256 scaleFactor = 1e18;
+            uint256 scaledDivision = (msg.value * scaleFactor) / (totalStackingBalance + msg.value);
+            uint256 rewardBalanceAdjusted = (scaledDivision * totalRewardBalance) / scaleFactor;
+
+
             uint256 stackingAmount = msg.value - rewardBalanceAdjusted;
 
             rewardBalancesAdjusted[_msgSender()] += rewardBalanceAdjusted;
@@ -42,7 +51,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         emit DepositEvent(_msgSender(), msg.value);
     }
 
-    function getStackingBalance(address user) public view returns (uint256) {
+    function getDepositAmount(address user) public view returns (uint256) {
         return stackingBalances[user] + rewardBalancesAdjusted[user];
     }
 
@@ -51,7 +60,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
         if (rewardBalancesAdjusted[user] > 0) {
             return
-                (getStackingBalance(user) / totalStackingBalance) *
+                (getDepositAmount(user) / totalStackingBalance) *
                 (rewardBalancesAdjusted[user] + totalRewardBalancesAdjusted);
         }
 

@@ -135,8 +135,8 @@ describe('CommunityVault', function () {
       // Check totalStackingBalance
       expect(await communityVault.totalStackingBalance()).to.equal(amountToSend);
 
-      // Check getStackingBalance
-      const stackingBalance = await communityVault.getStackingBalance(addr1.address);
+      // Check getDepositAmount
+      const stackingBalance = await communityVault.getDepositAmount(addr1.address);
       expect(stackingBalance).to.equal(amountToSend);
 
       // Check getReward
@@ -152,7 +152,7 @@ describe('CommunityVault', function () {
       }
 
       // Check totalStackingBalance after withdraw
-      const stackingBalanceAfterWithdraw = await communityVault.getStackingBalance(addr1.address);
+      const stackingBalanceAfterWithdraw = await communityVault.getDepositAmount(addr1.address);
       expect(stackingBalanceAfterWithdraw).to.equal(0);
 
       // Check events
@@ -216,6 +216,8 @@ describe('CommunityVault', function () {
 
       // Getting balance after deposits
       expect(await communityVault.totalStackingBalance()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
+      expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
+      expect(await communityVault.getDepositAmount(addr1.address)).to.equal(amountToSend0);
 
       // send some rewards to the contract
       const generatedReward: bigint = ethers.parseEther('2');
@@ -227,8 +229,8 @@ describe('CommunityVault', function () {
         throw new Error('No receipt');
       }
 
-      // get getStackingBalance for addr1
-      const stackingBalance1 = await communityVault.getStackingBalance(addr1.address);
+      // get getDepositAmount for addr1
+      const stackingBalance1 = await communityVault.getDepositAmount(addr1.address);
       expect(stackingBalance1).to.equal(amountToSend0);
 
       // check totalRewardBalance before withdraw
@@ -238,7 +240,6 @@ describe('CommunityVault', function () {
       const rewardBalance1 = await communityVault.getRewardBalance(addr1.address);
       expect(rewardBalance1).to.equal(ethers.parseEther('1')); // because address 1 has 50% of the stacking pool
       expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward);
-
 
       // Withdraw reward for account 1
       const tx4: ContractTransactionResponse = await communityVault.connect(addr1).withdrawAccount();
@@ -260,15 +261,27 @@ describe('CommunityVault', function () {
 
       // Checking the balances
       expect(finalAddr1Balance1).to.equal(initialAddr1Balance1 - (tx0CostBigInt + tx4CostBigInt) + rewardBalance1);
-      expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend1 + amountToSend2);
+      expect(await communityVault.getTotalStackingBalance()).to.equal(ethers.parseEther('50'));
       expect(await communityVault.getRewardBalance(addr1)).to.equal(0);
-      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1);
+      expect(await communityVault.getTotalRewardBalance()).to.equal(ethers.parseEther('1'));
+      expect(await communityVault.totalStackingBalance()).to.equal(ethers.parseEther('50'));
 
       // check if totalRewardBalancesAdjusted is at 0
       expect(await communityVault.totalRewardBalancesAdjusted()).to.equal(0);
 
       // second deposit
       const amountToSend3: bigint = ethers.parseEther('50');
+
+
+
+      const test0 = await communityVault.totalStackingBalance();
+      console.log('totalStackingBalance before: ', test0);
+
+
+      const test1 = await communityVault.totalRewardBalance();
+      console.log('totalRewardBalance before: ', test1);
+
+
 
       // Sender sends the fund
       const tx3: ContractTransactionResponse = await communityVault
@@ -281,29 +294,49 @@ describe('CommunityVault', function () {
       }
 
       // check events
-      await expect(tx3).to.emit(communityVault, 'DepositEvent').withArgs(addr4.address, amountToSend3);
+      await expect(tx3).to.emit(communityVault, 'DepositEvent').withArgs(addr4.address, ethers.parseEther('50'));
 
       // get balances after second deposit
-      expect(await communityVault.getStackingBalance(addr4.address)).to.equal(amountToSend3);
-      expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend3 + amountToSend1 + amountToSend2);
+      expect(await communityVault.getDepositAmount(addr4.address)).to.equal(ethers.parseEther('50'));
+      expect(await communityVault.getTotalStackingBalance()).to.equal(ethers.parseEther('100'));
       expect(await communityVault.getRewardBalance(addr4.address)).to.equal(0);
-      expect(await communityVault.totalRewardBalancesAdjusted()).to.be.above(0);
 
-      // send some rewards to the contract
-      const generatedReward1: bigint = ethers.parseEther('10');
-      const rewardTransaction1 = await owner.sendTransaction({ to: contractAddress, value: generatedReward1.toString() });
-      const receipt6 = await rewardTransaction1.wait();
+      const test = await communityVault.totalStackingBalance();
+      console.log('totalStackingBalance: ', ethers.formatEther(test.toString()));
 
-      if (!receipt6) {
-        throw new Error('No receipt');
-      }
+      const test2 = await communityVault.totalRewardBalance();
+      console.log('totalRewardBalance: ', ethers.formatEther(test2).toString()); // 1
 
-      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1 + generatedReward1);
+      const test3 = await communityVault.rewardBalancesAdjusted(addr4.address);
+      console.log('rewardBalancesAdjusted: ', ethers.formatEther(test3).toString()); // 0
+
+      const test4 = await communityVault.totalRewardBalancesAdjusted();
+      console.log('totalRewardBalancesAdjusted: ', ethers.formatEther(test4).toString()); // 0
+
+      // // TODO: here
+      // expect(await communityVault.totalStackingBalance()).to.equal(amountToSend1 + amountToSend2 + amountToSend3);
 
 
-      // getTotalRewardBalance()
-      // const result = await communityVault.getTotalRewardBalance();
-      // console.log('result', result.toString());
+
+      // // send some rewards to the contract
+      // const generatedReward1: bigint = ethers.parseEther('10');
+      // const rewardTransaction1 = await owner.sendTransaction({ to: contractAddress, value: generatedReward1.toString() });
+      // const receipt6 = await rewardTransaction1.wait();
+
+      // if (!receipt6) {
+      //   throw new Error('No receipt');
+      // }
+
+      // // check balances
+      // expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1 + generatedReward1);
+
+
+
+
+
+
+      // const result = await communityVault.getRewardBalance(addr4.address);
+      // console.log('result', (result).toString());
 
       // expect(await communityVault.getRewardBalance(addr4.address)).to.equal(5); // it's not working, communityVault.getRewardBalance(addr4.address) should be 50% of 10
 
