@@ -24,16 +24,9 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
         // check if reward already exists
         if (totalRewardBalance > 0) {
-            // stackingAmount is wrong 
-            // uint256 rewardBalanceAdjusted = (msg.value / (totalStackingBalance + msg.value)) * totalRewardBalance; // 50 / 100 * 1
-            // uint256 rewardBalanceAdjusted = uint256(0.5 * 1e18); // find a real way to calculate rewardBalanceAdjusted // = (50 / 100);
-            // uint256 rewardBalanceAdjusted = (50 / 100);
-
             uint256 scaleFactor = 1e18;
             uint256 scaledDivision = (msg.value * scaleFactor) / (totalStackingBalance + msg.value);
             uint256 rewardBalanceAdjusted = (scaledDivision * totalRewardBalance) / scaleFactor;
-
-
             uint256 stackingAmount = msg.value - rewardBalanceAdjusted;
 
             rewardBalancesAdjusted[_msgSender()] += rewardBalanceAdjusted;
