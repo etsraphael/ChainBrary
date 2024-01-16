@@ -53,8 +53,8 @@ describe('CommunityVault', function () {
       // Checking the balances
       expect(finalAddr1Balance).to.equal(initialAddr1Balance - amountToSend - txCostBigInt);
 
-      // Check totalStackingBalance
-      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend);
+      // Check TSB
+      expect(await communityVault.TSB()).to.equal(amountToSend);
 
       // Check emitted events
       await expect(tx).to.emit(communityVault, 'DepositEvent').withArgs(addr1.address, amountToSend);
@@ -70,7 +70,7 @@ describe('CommunityVault', function () {
       );
     });
 
-    it('Should have the totalStackingBalance after 3 different deposits', async function () {
+    it('Should have the TSB after 3 different deposits', async function () {
       const { communityVault, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
 
       // Amounts to send
@@ -94,8 +94,8 @@ describe('CommunityVault', function () {
         .deposit({ value: amountToSend2.toString() });
       await tx2.wait();
 
-      // Checking the totalStackingBalance
-      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
+      // Checking the TSB
+      expect(await communityVault.TSB()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
     });
   });
 
@@ -126,14 +126,14 @@ describe('CommunityVault', function () {
       // Checking the balances
       expect(final0Addr1Balance).to.equal(initialAddr1Balance - amountToSend - tx0CostBigInt);
 
-      // Check totalStackingBalance
-      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend);
+      // Check TSB
+      expect(await communityVault.TSB()).to.equal(amountToSend);
 
       // Check emitted events
       await expect(tx0).to.emit(communityVault, 'DepositEvent').withArgs(addr1.address, amountToSend);
 
-      // Check totalStackingBalance
-      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend);
+      // Check TSB
+      expect(await communityVault.TSB()).to.equal(amountToSend);
 
       // Check getDepositAmount
       const stackingBalance = await communityVault.getDepositAmount(addr1.address);
@@ -151,7 +151,7 @@ describe('CommunityVault', function () {
         throw new Error('No receipt');
       }
 
-      // Check totalStackingBalance after withdraw
+      // Check TSB after withdraw
       const stackingBalanceAfterWithdraw = await communityVault.getDepositAmount(addr1.address);
       expect(stackingBalanceAfterWithdraw).to.equal(0);
 
@@ -175,7 +175,7 @@ describe('CommunityVault', function () {
   });
 
   describe('Reward', function () {
-    it.only('Should withdraw the correct amounts and emit the right events', async function () {
+    it('Should withdraw the correct amounts and emit the right events', async function () {
       const { communityVault, owner, addr1, addr2, addr3, addr4 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the users to check the fee later
@@ -215,7 +215,7 @@ describe('CommunityVault', function () {
       }
 
       // Getting balance after deposits
-      expect(await communityVault.totalStackingBalance()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
+      expect(await communityVault.TSB()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
       expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
       expect(await communityVault.getDepositAmount(addr1.address)).to.equal(amountToSend0);
 
@@ -264,24 +264,13 @@ describe('CommunityVault', function () {
       expect(await communityVault.getTotalStackingBalance()).to.equal(ethers.parseEther('50'));
       expect(await communityVault.getRewardBalance(addr1)).to.equal(0);
       expect(await communityVault.getTotalRewardBalance()).to.equal(ethers.parseEther('1'));
-      expect(await communityVault.totalStackingBalance()).to.equal(ethers.parseEther('50'));
+      expect(await communityVault.TSB()).to.equal(ethers.parseEther('50'));
 
       // check if totalRewardBalancesAdjusted is at 0
       expect(await communityVault.totalRewardBalancesAdjusted()).to.equal(0);
 
       // second deposit
       const amountToSend3: bigint = ethers.parseEther('50');
-
-
-
-      const test0 = await communityVault.totalStackingBalance();
-      console.log('totalStackingBalance before: ', test0);
-
-
-      const test1 = await communityVault.totalRewardBalance();
-      console.log('totalRewardBalance before: ', test1);
-
-
 
       // Sender sends the fund
       const tx3: ContractTransactionResponse = await communityVault
@@ -301,34 +290,32 @@ describe('CommunityVault', function () {
       expect(await communityVault.getTotalStackingBalance()).to.equal(ethers.parseEther('100'));
       expect(await communityVault.getRewardBalance(addr4.address)).to.equal(0);
 
-      const test = await communityVault.totalStackingBalance();
-      console.log('totalStackingBalance: ', ethers.formatEther(test.toString()));
+      // const test = await communityVault.TSB();
+      // console.log('TSB: ', ethers.formatEther(test.toString()));
 
-      const test2 = await communityVault.totalRewardBalance();
-      console.log('totalRewardBalance: ', ethers.formatEther(test2).toString()); // 1
+      // const test2 = await communityVault.totalRewardBalance();
+      // console.log('totalRewardBalance: ', ethers.formatEther(test2).toString()); // 1
 
-      const test3 = await communityVault.rewardBalancesAdjusted(addr4.address);
-      console.log('rewardBalancesAdjusted: ', ethers.formatEther(test3).toString()); // 0
+      // const test3 = await communityVault.rewardBalancesAdjusted(addr4.address);
+      // console.log('rewardBalancesAdjusted: ', ethers.formatEther(test3).toString()); // 0
 
-      const test4 = await communityVault.totalRewardBalancesAdjusted();
-      console.log('totalRewardBalancesAdjusted: ', ethers.formatEther(test4).toString()); // 0
+      // const test4 = await communityVault.totalRewardBalancesAdjusted();
+      // console.log('totalRewardBalancesAdjusted: ', ethers.formatEther(test4).toString()); // 0
 
-      // // TODO: here
-      // expect(await communityVault.totalStackingBalance()).to.equal(amountToSend1 + amountToSend2 + amountToSend3);
+      // TODO: here
+      expect(await communityVault.getTotalStackingBalance()).to.equal(amountToSend1 + amountToSend2 + amountToSend3);
 
+      // send some rewards to the contract
+      const generatedReward1: bigint = ethers.parseEther('10');
+      const rewardTransaction1 = await owner.sendTransaction({ to: contractAddress, value: generatedReward1.toString() });
+      const receipt6 = await rewardTransaction1.wait();
 
+      if (!receipt6) {
+        throw new Error('No receipt');
+      }
 
-      // // send some rewards to the contract
-      // const generatedReward1: bigint = ethers.parseEther('10');
-      // const rewardTransaction1 = await owner.sendTransaction({ to: contractAddress, value: generatedReward1.toString() });
-      // const receipt6 = await rewardTransaction1.wait();
-
-      // if (!receipt6) {
-      //   throw new Error('No receipt');
-      // }
-
-      // // check balances
-      // expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1 + generatedReward1);
+      // check balances
+      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1 + generatedReward1);
 
 
 

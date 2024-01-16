@@ -10,7 +10,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     mapping(address => uint256) public stackingBalances;
     mapping(address => uint256) public rewardBalancesAdjusted;
 
-    uint256 public totalStackingBalance = 0;
+    uint256 public TSB = 0; // Total Stacking Balance
     uint256 public totalRewardBalancesAdjusted = 0;
     uint256 public totalRewardBalance = 0;
 
@@ -25,20 +25,20 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         // check if reward already exists
         if (totalRewardBalance > 0) {
             uint256 scaleFactor = 1e18;
-            uint256 scaledDivision = (msg.value * scaleFactor) / (totalStackingBalance + msg.value);
+            uint256 scaledDivision = (msg.value * scaleFactor) / (TSB + msg.value);
             uint256 rewardBalanceAdjusted = (scaledDivision * totalRewardBalance) / scaleFactor;
             uint256 stackingAmount = msg.value - rewardBalanceAdjusted;
 
             rewardBalancesAdjusted[_msgSender()] += rewardBalanceAdjusted;
             stackingBalances[_msgSender()] += stackingAmount;
 
-            totalStackingBalance += stackingAmount;
+            TSB += stackingAmount;
             totalRewardBalancesAdjusted += rewardBalanceAdjusted;
         }
         // if not, add to stacking balance
         else {
             stackingBalances[_msgSender()] += msg.value;
-            totalStackingBalance += msg.value;
+            TSB += msg.value;
         }
 
         emit DepositEvent(_msgSender(), msg.value);
@@ -49,11 +49,11 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getRewardBalance(address user) public view returns (uint256) {
-        uint256 rewardForStacking = (stackingBalances[user] * totalRewardBalance) / totalStackingBalance;
+        uint256 rewardForStacking = (stackingBalances[user] * totalRewardBalance) / TSB;
 
         if (rewardBalancesAdjusted[user] > 0) {
             return
-                (getDepositAmount(user) / totalStackingBalance) *
+                (getDepositAmount(user) / TSB) *
                 (rewardBalancesAdjusted[user] + totalRewardBalancesAdjusted);
         }
 
@@ -61,7 +61,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getTotalStackingBalance() public view returns (uint256) {
-        return totalStackingBalance + totalRewardBalancesAdjusted;
+        return TSB + totalRewardBalancesAdjusted;
     }
 
     function getContractBalance() public view returns (uint256) {
@@ -69,7 +69,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getTotalRewardBalance() public view returns (uint256) {
-        return address(this).balance - totalRewardBalancesAdjusted - totalStackingBalance;
+        return address(this).balance - totalRewardBalancesAdjusted - TSB;
     }
 
     function withdrawAccount() public nonReentrant {
@@ -84,7 +84,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         uint256 withdrawAmount = stackingAmount + rewardAmount;
 
         // update total values
-        totalStackingBalance -= stackingAmount;
+        TSB -= stackingAmount;
         totalRewardBalancesAdjusted -= rewardBalancesAdjusted[_msgSender()];
         totalRewardBalance -= rewardAmount;
 
