@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract CommunityVault is Ownable, ReentrancyGuard {
-    mapping(address => uint256) public stackingBalances;
-    mapping(address => uint256) public rewardBalancesAdjusted;
+    mapping(address => uint256) public SBList; // Stacking Balance List
+    mapping(address => uint256) public RBAList; // Reward Balance Adjusted List
 
     uint256 public TSB = 0; // Total Stacking Balance
-    uint256 public totalRewardBalancesAdjusted = 0;
-    uint256 public totalRewardBalance = 0;
+    uint256 public TRBA = 0; // Total Reward Balance Adjusted
+    uint256 public TRB = 0; // Total Reward Balance
 
     constructor() Ownable(_msgSender()) {}
 
@@ -23,21 +23,21 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         require(msg.value > 0, "Amount must be greater than 0");
 
         // check if reward already exists
-        if (totalRewardBalance > 0) {
+        if (TRB > 0) {
             uint256 scaleFactor = 1e18;
             uint256 scaledDivision = (msg.value * scaleFactor) / (TSB + msg.value);
-            uint256 rewardBalanceAdjusted = (scaledDivision * totalRewardBalance) / scaleFactor;
+            uint256 rewardBalanceAdjusted = (scaledDivision * TRB) / scaleFactor;
             uint256 stackingAmount = msg.value - rewardBalanceAdjusted;
 
-            rewardBalancesAdjusted[_msgSender()] += rewardBalanceAdjusted;
-            stackingBalances[_msgSender()] += stackingAmount;
+            RBAList[_msgSender()] += rewardBalanceAdjusted;
+            SBList[_msgSender()] += stackingAmount;
 
             TSB += stackingAmount;
-            totalRewardBalancesAdjusted += rewardBalanceAdjusted;
+            TRBA += rewardBalanceAdjusted;
         }
         // if not, add to stacking balance
         else {
-            stackingBalances[_msgSender()] += msg.value;
+            SBList[_msgSender()] += msg.value;
             TSB += msg.value;
         }
 
@@ -45,23 +45,23 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getDepositAmount(address user) public view returns (uint256) {
-        return stackingBalances[user] + rewardBalancesAdjusted[user];
+        return SBList[user] + RBAList[user];
     }
 
     function getRewardBalance(address user) public view returns (uint256) {
-        uint256 rewardForStacking = (stackingBalances[user] * totalRewardBalance) / TSB;
+        uint256 rewardForStacking = (SBList[user] * TRB) / TSB;
 
-        if (rewardBalancesAdjusted[user] > 0) {
+        if (RBAList[user] > 0) {
             return
                 (getDepositAmount(user) / TSB) *
-                (rewardBalancesAdjusted[user] + totalRewardBalancesAdjusted);
+                (RBAList[user] + TRBA);
         }
 
         return rewardForStacking;
     }
 
     function getTotalStackingBalance() public view returns (uint256) {
-        return TSB + totalRewardBalancesAdjusted;
+        return TSB + TRBA;
     }
 
     function getContractBalance() public view returns (uint256) {
@@ -69,12 +69,12 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getTotalRewardBalance() public view returns (uint256) {
-        return address(this).balance - totalRewardBalancesAdjusted - TSB;
+        return address(this).balance - TRBA - TSB;
     }
 
     function withdrawAccount() public nonReentrant {
         // get stacking amount
-        uint256 stackingAmount = stackingBalances[_msgSender()];
+        uint256 stackingAmount = SBList[_msgSender()];
         require(stackingAmount > 0, "Amount must be greater than 0");
 
         // get reward amount
@@ -85,12 +85,12 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
         // update total values
         TSB -= stackingAmount;
-        totalRewardBalancesAdjusted -= rewardBalancesAdjusted[_msgSender()];
-        totalRewardBalance -= rewardAmount;
+        TRBA -= RBAList[_msgSender()];
+        TRB -= rewardAmount;
 
         // Update the stacking and reward balances
-        stackingBalances[_msgSender()] = 0;
-        rewardBalancesAdjusted[_msgSender()] = 0;
+        SBList[_msgSender()] = 0;
+        RBAList[_msgSender()] = 0;
 
         // transfer the full amount
         payable(_msgSender()).transfer(withdrawAmount);
@@ -98,6 +98,6 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     receive() external payable {
-        totalRewardBalance += msg.value;
+        TRB += msg.value;
     }
 }
