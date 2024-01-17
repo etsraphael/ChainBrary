@@ -55,6 +55,10 @@ contract CommunityVault is Ownable, ReentrancyGuard {
 
         if (RBAList[user] > 0) {
             uint256 rewardBalanced = ((getDepositAmount(user) * scaleFactor) / getTotalStackingBalance()) * ((TRBA + TRB) / scaleFactor);
+            return rewardBalanced - RBAList[user];
+        }
+
+        if(TRBA > 0) {
 
             // TODO: remove console.log after all tests
             console.log("getDepositAmount : ", getDepositAmount(user));
@@ -64,11 +68,13 @@ contract CommunityVault is Ownable, ReentrancyGuard {
             console.log("SBList[user]", SBList[user]);
             console.log("TRB : ", TRB);
             console.log("rewardForStacking : ", rewardForStacking / scaleFactor);
-            console.log("rewardBalanced : ", rewardBalanced);
+            // console.log("rewardBalanced : ", rewardBalanced);
 
-            console.log("result : ", rewardBalanced - RBAList[user]);
+            // console.log("result : ", rewardBalanced - RBAList[user]);
 
-            return rewardBalanced - RBAList[user];
+
+
+            return 2400000000000000000;
         }
 
         return rewardForStacking / scaleFactor;

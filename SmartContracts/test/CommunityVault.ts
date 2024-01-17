@@ -175,7 +175,7 @@ describe('CommunityVault', function () {
   });
 
   describe('Reward', function () {
-    it('Should withdraw the correct amounts and emit the right events', async function () {
+    it.only('Should withdraw the correct amounts and emit the right events', async function () {
       const { communityVault, owner, addr1, addr2, addr3, addr4 } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the users to check the fee later
@@ -265,6 +265,12 @@ describe('CommunityVault', function () {
       expect(await communityVault.getRewardBalance(addr1)).to.equal(0);
       expect(await communityVault.getTotalRewardBalance()).to.equal(ethers.parseEther('1'));
       expect(await communityVault.TSB()).to.equal(ethers.parseEther('50'));
+
+      // check other reward's accounts
+      expect(await communityVault.getDepositAmount(addr2.address)).to.equal(amountToSend1);
+      expect(await communityVault.getRewardBalance(addr2.address)).to.equal(ethers.parseEther('0.6'));
+      expect(await communityVault.getDepositAmount(addr3.address)).to.equal(amountToSend2);
+      expect(await communityVault.getRewardBalance(addr3.address)).to.equal(ethers.parseEther('0.4'));
 
       // check if Total Reward Balance Adjusted is at 0
       expect(await communityVault.TRBA()).to.equal(0);
