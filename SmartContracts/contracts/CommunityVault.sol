@@ -5,6 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
+import "hardhat/console.sol";
 
 contract CommunityVault is Ownable, ReentrancyGuard {
     mapping(address => uint256) public SBList; // Stacking Balance List
@@ -49,15 +50,28 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     function getRewardBalance(address user) public view returns (uint256) {
-        uint256 rewardForStacking = (SBList[user] * TRB) / TSB;
+        uint256 scaleFactor = 1e18;
+        uint256 rewardForStacking = (SBList[user] * scaleFactor * TRB) / TSB;
 
         if (RBAList[user] > 0) {
-            return
-                (getDepositAmount(user) / TSB) *
-                (RBAList[user] + TRBA);
+            uint256 rewardBalanced = ((getDepositAmount(user) * scaleFactor) / getTotalStackingBalance()) * ((TRBA + TRB) / scaleFactor);
+
+            // TODO: remove console.log after all tests
+            console.log("getDepositAmount : ", getDepositAmount(user));
+            console.log("TSB : ", TSB);
+            console.log("RBAList[user] : ", RBAList[user]);
+            console.log("TRBA : ", TRBA);
+            console.log("SBList[user]", SBList[user]);
+            console.log("TRB : ", TRB);
+            console.log("rewardForStacking : ", rewardForStacking / scaleFactor);
+            console.log("rewardBalanced : ", rewardBalanced);
+
+            console.log("result : ", rewardBalanced - RBAList[user]);
+
+            return rewardBalanced - RBAList[user];
         }
 
-        return rewardForStacking;
+        return rewardForStacking / scaleFactor;
     }
 
     function getTotalStackingBalance() public view returns (uint256) {

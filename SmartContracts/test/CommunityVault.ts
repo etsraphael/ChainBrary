@@ -304,19 +304,8 @@ describe('CommunityVault', function () {
       }
 
       // check balances
-      expect(await communityVault.getTotalRewardBalance()).to.equal(generatedReward - rewardBalance1 + generatedReward1);
-
-
-
-
-
-
-      // const result = await communityVault.getRewardBalance(addr4.address);
-      // console.log('result', (result).toString());
-
-      // expect(await communityVault.getRewardBalance(addr4.address)).to.equal(5); // it's not working, communityVault.getRewardBalance(addr4.address) should be 50% of 10
-
-
+      expect(await communityVault.getTotalRewardBalance()).to.equal(ethers.parseEther('11'));
+      expect(await communityVault.getRewardBalance(addr4.address)).to.equal(ethers.parseEther('5'));
 
     });
   });
