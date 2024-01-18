@@ -313,6 +313,15 @@ describe('CommunityVault', function () {
       expect(await communityVault.getTotalRewardBalance()).to.equal(ethers.parseEther('11'));
       expect(await communityVault.getRewardBalance(addr4.address)).to.equal(ethers.parseEther('5'));
 
+
+      expect(await communityVault.getRewardBalance(addr3.address)).to.equal(ethers.parseEther('0.4') + ethers.parseEther('2'));
+
+      // const address2Reward = await communityVault.getRewardBalance(addr2.address);
+      // const address3Reward = await communityVault.getRewardBalance(addr3.address);
+      // const address4Reward = await communityVault.getRewardBalance(addr4.address);
+
+      // expect(await communityVault.getTotalRewardBalance()).to.equal(address2Reward + address3Reward + address4Reward);
+
     });
   });
 });
