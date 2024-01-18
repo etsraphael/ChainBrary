@@ -81,6 +81,6 @@ function deployDocumentLocker(m: any) {
 }
 
 function deployCommunityVault(m: any) {
-  const communityVault = m.contract('CommunityVault');
+  const communityVault = m.contract('CommunityVault0');
   return communityVault;
 }

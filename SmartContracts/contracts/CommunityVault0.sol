@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
 import "hardhat/console.sol";
 
-contract CommunityVault is Ownable, ReentrancyGuard {
+contract CommunityVault0 is Ownable, ReentrancyGuard {
     mapping(address => uint256) public SBList; // Stacking Balance List
     mapping(address => uint256) public RBAList; // Reward Balance Adjusted List
 
@@ -54,7 +54,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         uint256 rewardForStacking = (SBList[user] * scaleFactor * TRB) / TSB;
 
         if (RBAList[user] > 0) {
-            uint256 rewardBalanced = ((getDepositAmount(user) * scaleFactor) / getTotalStackingBalance()) *
+            uint256 rewardBalanced = ((getDepositAmount(user) * scaleFactor) / (getTotalStackingBalance())) *
                 ((TRBA + TRB) / scaleFactor);
             return rewardBalanced - RBAList[user];
         }
@@ -70,12 +70,11 @@ contract CommunityVault is Ownable, ReentrancyGuard {
             console.log("SBList[user]", SBList[user]);
             console.log("TRB : ", TRB);
             console.log("rewardForStacking : ", rewardForStacking / scaleFactor);
-            // console.log("rewardBalanced : ", rewardBalanced);
 
             // // console.log("result : ", rewardBalanced - RBAList[user]);
             console.log("rewardForStacking2 : ", rewardForStacking2 / scaleFactor);
 
-            return rewardForStacking2 / scaleFactor;
+            return  rewardForStacking2 / scaleFactor; // has to be 24
         }
 
         return rewardForStacking / scaleFactor;
