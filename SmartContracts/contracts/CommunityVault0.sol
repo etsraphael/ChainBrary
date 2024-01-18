@@ -74,7 +74,7 @@ contract CommunityVault0 is Ownable, ReentrancyGuard {
             // // console.log("result : ", rewardBalanced - RBAList[user]);
             console.log("rewardForStacking2 : ", rewardForStacking2 / scaleFactor);
 
-            return  rewardForStacking2 / scaleFactor; // has to be 24
+            return rewardForStacking2 / scaleFactor; // has to be 24
         }
 
         return rewardForStacking / scaleFactor;
