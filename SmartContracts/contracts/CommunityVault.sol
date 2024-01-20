@@ -1,86 +1,81 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
-import "@openzeppelin/contracts/utils/math/Math.sol";
 import "hardhat/console.sol";
 
-contract CommunityVault is Ownable, ReentrancyGuard {
-    struct Staker {
+contract CommunityVault {
+    struct User {
         uint256 amount; // Amount staked by the user
-        uint256 rewardDebt; // Reward debt (used to calculate correct reward)
+        uint256 rewardDebt; // Reward debt. This is used to track the user's share of deposited rewards.
     }
 
-    mapping(address => Staker) public stakers;
+    mapping(address => User) public users;
     uint256 public totalStaked;
-    uint256 public lastRewardTime;
-    uint256 public accRewardPerShare;
-    uint256 public rewardRate; // Reward per second for the entire pool
+    uint256 public accRewardPerShare; // Accumulated rewards per share, scaled to precision
 
-    constructor() Ownable(_msgSender()) {
-        lastRewardTime = block.timestamp;
+    uint256 private constant PRECISION = 1e18;
+
+    function getDepositByUser(address _user) public view returns (uint256) {
+        return users[_user].amount;
     }
 
-    // Update reward variables
-    function updatePool() internal {
-        if (block.timestamp <= lastRewardTime) {
-            return;
-        }
-        if (totalStaked == 0) {
-            lastRewardTime = block.timestamp;
-            return;
-        }
-
-        uint256 duration = block.timestamp - lastRewardTime;
-        uint256 reward = duration * rewardRate;
-        accRewardPerShare += reward / totalStaked;
-        lastRewardTime = block.timestamp;
+    function getBalance() public view returns (uint256) {
+        return address(this).balance;
     }
 
-    // Deposit tokens into the pool for staking
-    function deposit(uint256 _amount) public {
-        Staker storage user = stakers[msg.sender];
-        updatePool();
+    // Deposit Ether into the contract to be used as staking
+    function deposit() public payable {
+        User storage user = users[msg.sender];
 
-        // Handle pending rewards
+        // Update user rewards before changing their stake
         if (user.amount > 0) {
-            uint256 pending = user.amount * accRewardPerShare - user.rewardDebt;
+            uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
             payable(msg.sender).transfer(pending);
         }
 
-        user.amount += _amount;
-        user.rewardDebt = user.amount * accRewardPerShare;
-        totalStaked += _amount;
+        if (msg.value > 0) {
+            user.amount += msg.value;
+            totalStaked += msg.value;
+        }
+
+        user.rewardDebt = (user.amount * accRewardPerShare) / PRECISION;
     }
 
-    // Withdraw tokens from the pool
-    function withdraw(uint256 _amount) public {
-        Staker storage user = stakers[msg.sender];
-        require(user.amount >= _amount, "Withdraw: not good");
+    // Withdraw Ether from the contract
+    function withdraw() public {
+        User storage user = users[msg.sender];
+        require(user.amount > 0, "Not enough balance");
 
-        updatePool();
+        // Update user rewards before changing their stake
+        uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
 
-        uint256 pending = user.amount * accRewardPerShare - user.rewardDebt;
-        payable(msg.sender).transfer(pending);
+        console.log("pending: %s", pending);
+        console.log("amount: %s", user.amount);
+        console.log("result: %s", pending + user.amount);
 
-        user.amount -= _amount;
-        user.rewardDebt = user.amount * accRewardPerShare;
-        totalStaked -= _amount;
+        payable(msg.sender).transfer(pending + user.amount);
+
+        totalStaked -= user.amount;
+        user.amount = 0;
+        user.rewardDebt = 0;
     }
 
+    // View pending rewards of a user
+    function pendingReward(address _user) public view returns (uint256) {
+        if (totalStaked == 0) {
+            return 0;
+        }
 
-    // Function to add rewards to the pool (can be modified to accept external funding)
-    function addRewards(uint256 _amount) external payable {
-        require(msg.value == _amount, "Reward amount mismatch");
+        User storage user = users[_user];
+        uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
+
+        return pending;
     }
 
-    // Function to dynamically update the reward rate
-    function updateRewardRate(uint256 _newRate) external {
-        updatePool(); // Update the pool before changing the rate to ensure proper accounting
-        rewardRate = _newRate;
+    // Fallback function to accept incoming ETH as rewards
+    receive() external payable {
+        if (totalStaked > 0) {
+            accRewardPerShare += (msg.value * PRECISION) / totalStaked;
+        }
     }
 }
-
-// TODO: try this first
