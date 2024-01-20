@@ -8,8 +8,8 @@ describe('CommunityVault', function () {
   async function deployContractFixture() {
     const CommunityVault = await ethers.getContractFactory('CommunityVault');
     const communityVault = await CommunityVault.deploy();
-    const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
-    return { communityVault, owner, addr1, addr2, addr3, addr4 };
+    const [owner, addr1, addr2, addr3, addr4, addr5] = await ethers.getSigners();
+    return { communityVault, owner, addr1, addr2, addr3, addr4, addr5 };
   }
 
   // describe('Deployment', function () {
@@ -21,7 +21,7 @@ describe('CommunityVault', function () {
 
   describe('Reward', function () {
     it.only('Should distribute rewards proportionally to the amount staked', async function () {
-      const { communityVault, owner, addr1, addr2, addr3, addr4 } = await loadFixture(deployContractFixture);
+      const { communityVault, owner, addr1, addr2, addr3, addr4, addr5 } = await loadFixture(deployContractFixture);
 
       // get contract address
       const contractAddress = await communityVault.getAddress();
@@ -31,6 +31,7 @@ describe('CommunityVault', function () {
       const stakeAmount2: bigint = ethers.parseEther('20');
       const stakeAmount3: bigint = ethers.parseEther('40');
       const stakeAmount4: bigint = ethers.parseEther('10');
+      const stakeAmount5: bigint = ethers.parseEther('10');
   
       // Users stake their tokens
       await communityVault.connect(addr1).deposit({ value: stakeAmount1.toString()});
@@ -97,6 +98,15 @@ describe('CommunityVault', function () {
       // Send more rewards to the contract
       await owner.sendTransaction({ to: contractAddress, value: ethers.parseEther('10') });
       expect(await communityVault.pendingReward(addr4.address)).to.equal(ethers.parseEther('10'));
+
+      // new stacker
+      await communityVault.connect(addr5).deposit({ value: stakeAmount5.toString()});
+      expect(await communityVault.pendingReward(addr5.address)).to.equal(0);
+
+      // Send more rewards to the contract
+      await owner.sendTransaction({ to: contractAddress, value: ethers.parseEther('10') });
+      expect(await communityVault.pendingReward(addr5.address)).to.equal(ethers.parseEther('5'));
+      expect(await communityVault.pendingReward(addr4.address)).to.equal(ethers.parseEther('15'));
 
     });
 
