@@ -2,9 +2,11 @@
 pragma solidity ^0.8.0;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/math/Math.sol";
 import "hardhat/console.sol";
 
-contract CommunityVault is Ownable {
+contract CommunityVault is Ownable, ReentrancyGuard {
     struct User {
         uint256 amount; // Amount staked by the user
         uint256 rewardDebt; // Reward debt. This is used to track the user's share of deposited rewards.
@@ -32,12 +34,18 @@ contract CommunityVault is Ownable {
     function deposit() public payable {
         require(msg.value > 0, "Amount_must_be_greater_than_0");
 
-        User storage user = users[msg.sender];
+        User storage user = users[_msgSender()];
 
         // Update user rewards before changing their stake
         if (user.amount > 0) {
-            uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
-            payable(msg.sender).transfer(pending);
+            (bool mulSuccess, uint256 mulResult) = Math.tryMul(user.amount, accRewardPerShare);
+            require(mulSuccess, "Multiplication failed");
+
+            (bool divSuccess, uint256 divResult) = Math.tryDiv(mulResult, PRECISION);
+            require(divSuccess, "Division failed");
+
+            uint256 pending = divResult - user.rewardDebt;
+            payable(_msgSender()).transfer(pending);
         }
 
         if (msg.value > 0) {
@@ -45,20 +53,27 @@ contract CommunityVault is Ownable {
             totalStaked += msg.value;
         }
 
-        user.rewardDebt = (user.amount * accRewardPerShare) / PRECISION;
+        (, uint256 updatedRewardDebt) = Math.tryMul(user.amount, accRewardPerShare);
+        user.rewardDebt = updatedRewardDebt / PRECISION;
 
         emit DepositEvent(_msgSender(), msg.value);
     }
 
     // Withdraw Ether from the contract
-    function withdraw() public {
-        User storage user = users[msg.sender];
+    function withdraw() public nonReentrant {
+        User storage user = users[_msgSender()];
         require(user.amount > 0, "Not enough balance");
 
         // Update user rewards before changing their stake
-        uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
+        (bool mulSuccess, uint256 mulResult) = Math.tryMul(user.amount, accRewardPerShare);
+        require(mulSuccess, "Multiplication failed");
 
-        payable(msg.sender).transfer(pending + user.amount);
+        (bool divSuccess, uint256 divResult) = Math.tryDiv(mulResult, PRECISION);
+        require(divSuccess, "Division failed");
+
+        uint256 pending = divResult - user.rewardDebt;
+
+        payable(_msgSender()).transfer(pending + user.amount);
 
         totalStaked -= user.amount;
         user.amount = 0;
@@ -74,7 +89,14 @@ contract CommunityVault is Ownable {
         }
 
         User storage user = users[_user];
-        uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
+
+        (bool mulSuccess, uint256 mulResult) = Math.tryMul(user.amount, accRewardPerShare);
+        require(mulSuccess, "Multiplication failed");
+
+        (bool divSuccess, uint256 divResult) = Math.tryDiv(mulResult, PRECISION);
+        require(divSuccess, "Division failed");
+
+        uint256 pending = divResult - user.rewardDebt;
 
         return pending;
     }
@@ -82,7 +104,13 @@ contract CommunityVault is Ownable {
     // Fallback function to accept incoming ETH as rewards
     receive() external payable {
         if (totalStaked > 0) {
-            accRewardPerShare += (msg.value * PRECISION) / totalStaked;
+            (bool mulSuccess, uint256 mulResult) = Math.tryMul(msg.value, PRECISION);
+            require(mulSuccess, "Multiplication failed");
+
+            (bool divSuccess, uint256 divResult) = Math.tryDiv(mulResult, totalStaked);
+            require(divSuccess, "Division failed");
+
+            accRewardPerShare += divResult;
         }
     }
 }
