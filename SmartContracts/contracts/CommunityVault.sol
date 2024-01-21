@@ -1,9 +1,10 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "hardhat/console.sol";
 
-contract CommunityVault {
+contract CommunityVault is Ownable {
     struct User {
         uint256 amount; // Amount staked by the user
         uint256 rewardDebt; // Reward debt. This is used to track the user's share of deposited rewards.
@@ -12,8 +13,12 @@ contract CommunityVault {
     mapping(address => User) public users;
     uint256 public totalStaked;
     uint256 public accRewardPerShare; // Accumulated rewards per share, scaled to precision
-
     uint256 private constant PRECISION = 1e18;
+
+    event WithdrawEvent(address indexed to, uint256 value);
+    event DepositEvent(address indexed user, uint256 amount);
+
+    constructor() Ownable(_msgSender()) {}
 
     function getDepositByUser(address _user) public view returns (uint256) {
         return users[_user].amount;
@@ -25,6 +30,8 @@ contract CommunityVault {
 
     // Deposit Ether into the contract to be used as staking
     function deposit() public payable {
+        require(msg.value > 0, "Amount_must_be_greater_than_0");
+
         User storage user = users[msg.sender];
 
         // Update user rewards before changing their stake
@@ -39,6 +46,8 @@ contract CommunityVault {
         }
 
         user.rewardDebt = (user.amount * accRewardPerShare) / PRECISION;
+
+        emit DepositEvent(_msgSender(), msg.value);
     }
 
     // Withdraw Ether from the contract
@@ -49,15 +58,13 @@ contract CommunityVault {
         // Update user rewards before changing their stake
         uint256 pending = ((user.amount * accRewardPerShare) / PRECISION) - user.rewardDebt;
 
-        console.log("pending: %s", pending);
-        console.log("amount: %s", user.amount);
-        console.log("result: %s", pending + user.amount);
-
         payable(msg.sender).transfer(pending + user.amount);
 
         totalStaked -= user.amount;
         user.amount = 0;
         user.rewardDebt = 0;
+
+        emit WithdrawEvent(_msgSender(), pending + user.amount);
     }
 
     // View pending rewards of a user
