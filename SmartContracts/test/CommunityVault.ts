@@ -71,8 +71,7 @@ describe('CommunityVault', function () {
       const { communityVault, addr1 } = await loadFixture(deployContractFixture);
 
       // Sender sends the fund, instead of the owner
-      const amountToSend: bigint = ethers.parseEther('0');
-      await expect(communityVault.connect(addr1).deposit({ value: amountToSend.toString() })).to.be.revertedWith(
+      await expect(depositAmountByAddress(communityVault, addr1, 0)).to.be.revertedWith(
         'Amount_must_be_greater_than_0'
       );
     });
