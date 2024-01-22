@@ -80,28 +80,18 @@ describe('CommunityVault', function () {
       const { communityVault, addr1, addr2, addr3 } = await loadFixture(deployContractFixture);
 
       // Amounts to send
-      const amountToSend0: bigint = ethers.parseEther('10');
-      const amountToSend1: bigint = ethers.parseEther('20');
-      const amountToSend2: bigint = ethers.parseEther('30');
+      const amounts: number[] = [getRandomInt(1000), getRandomInt(1000), getRandomInt(1000)]; // Deposit amounts
+      let totalAmount: bigint = BigInt(0);
 
       // Sender sends the fund
-      const tx0: ContractTransactionResponse = await communityVault
-        .connect(addr1)
-        .deposit({ value: amountToSend0.toString() });
-      await tx0.wait();
-
-      const tx1: ContractTransactionResponse = await communityVault
-        .connect(addr2)
-        .deposit({ value: amountToSend1.toString() });
-      await tx1.wait();
-
-      const tx2: ContractTransactionResponse = await communityVault
-        .connect(addr3)
-        .deposit({ value: amountToSend2.toString() });
-      await tx2.wait();
-
+      for (const [index, addr] of [addr1, addr2, addr3].entries()) {
+        const tx = await depositAmountByAddress(communityVault, addr, amounts[index]);
+        await tx.wait();
+        totalAmount += ethers.parseEther(String(amounts[index]));
+      }
+    
       // Checking the Total Stacking Balance
-      expect(await communityVault.totalStaked()).to.equal(amountToSend0 + amountToSend1 + amountToSend2);
+      expect(await communityVault.totalStaked()).to.equal(totalAmount);
     });
   });
 
