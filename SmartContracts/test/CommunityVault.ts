@@ -3,6 +3,8 @@ import { BigNumber } from 'bignumber.js';
 import { expect } from 'chai';
 import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
+import { CommunityVault } from '../typechain-types';
+import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 
 describe('CommunityVault', function () {
   async function deployContractFixture() {
@@ -10,6 +12,18 @@ describe('CommunityVault', function () {
     const communityVault = await CommunityVault.deploy();
     const [owner, addr1, addr2, addr3, addr4, addr5] = await ethers.getSigners();
     return { communityVault, owner, addr1, addr2, addr3, addr4, addr5 };
+  }
+
+  async function depositAmountByAddress(
+    communityVault: CommunityVault,
+    addr: HardhatEthersSigner,
+    stakeAmount: number
+  ): Promise<ContractTransactionResponse> {
+    return await communityVault.connect(addr).deposit({ value: ethers.parseEther(String(stakeAmount)) });
+  }
+
+  function getRandomInt(max: number): number {
+    return Math.floor(Math.random() * max);
   }
 
   describe('Deployment', function () {
@@ -27,10 +41,10 @@ describe('CommunityVault', function () {
       const initialAddr1Balance: bigint = await ethers.provider.getBalance(addr1.address);
 
       // Sender sends the fund, instead of the owner
-      const amountToSend: bigint = ethers.parseEther('10');
-      const tx: ContractTransactionResponse = await communityVault
-        .connect(addr1)
-        .deposit({ value: amountToSend.toString() });
+      const amountToSendRaw: number = getRandomInt(1000);
+      const amountToSend: bigint = ethers.parseEther(String(amountToSendRaw));
+      const tx: ContractTransactionResponse = await depositAmountByAddress(communityVault, addr1, amountToSendRaw);
+
       const receipt: ContractTransactionReceipt | null = await tx.wait();
 
       if (!receipt) {
@@ -109,6 +123,7 @@ describe('CommunityVault', function () {
       // Users stake their tokens
       await communityVault.connect(addr1).deposit({ value: stakeAmount1.toString() });
       await communityVault.connect(addr2).deposit({ value: stakeAmount2.toString() });
+      // TODO: use a common code for deposit
 
       // Check deposit balances
       const depositBalance1 = await communityVault.getDepositByUser(addr1.address);
