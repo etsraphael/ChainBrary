@@ -9,6 +9,7 @@ export default buildModule('Apollo', (m) => {
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
   const documentLocker = deployDocumentLocker(m);
+  const communityVault = deployCommunityVault(m);
 
   return {
     rocketContract,
@@ -17,7 +18,8 @@ export default buildModule('Apollo', (m) => {
     priceFeed,
     erc20FixedSupply,
     bidContract,
-    documentLocker
+    documentLocker,
+    communityVault
   };
 });
 
@@ -76,4 +78,9 @@ function deployDocumentLocker(m: any) {
     'This is a private document, please do not share it with anyone else.'
   ]);
   return documentLocker;
+}
+
+function deployCommunityVault(m: any) {
+  const communityVault = m.contract('CommunityVault');
+  return communityVault;
 }
