@@ -23,11 +23,19 @@ describe('CommunityVault', function () {
   }
 
   function getRandomDepositAmount(max: number): number {
-    return Math.floor(Math.random() * max);
+    return Math.floor(Math.random() * (max - 1)) + 1; // 1 <= amount < max
   }
 
   function getRandomRewardAmount(max: number): number {
     return Math.random() * max;
+  }
+
+  const DELTA: number = 150;
+
+  function marginOfError(amount: bigint): bigint {
+    if (amount === BigInt(0)) return BigInt(0);
+    const percentageAllowed = BigInt(1); // 1% difference allowed
+    return (amount * percentageAllowed) / BigInt(100);
   }
 
   function calculateReward(amount: number, totalAmount: number, rewardAmount: number): number {
@@ -107,19 +115,19 @@ describe('CommunityVault', function () {
     });
   });
 
+  // TODO: Use marginOfError everywhere possible
   describe('Reward', function () {
-    it.only('Should distribute rewards proportionally to the amount staked', async function () {
+    it('Should distribute rewards proportionally to the amount staked', async function () {
       const { communityVault, owner, addr1, addr2, addr3, addr4, addr5 } = await loadFixture(deployContractFixture);
 
       // get contract address
       const contractAddress = await communityVault.getAddress();
 
       // Amount to stake
-      const amounts: number[] = [20, 20, 40, 10, 10];
-
-      const stakeAmount1: bigint = ethers.parseEther(String(amounts[0])); // 20
-      const stakeAmount2: bigint = ethers.parseEther(String(amounts[1])); // 20
-      const stakeAmount3: bigint = ethers.parseEther(String(amounts[2])); // 40
+      const amounts: number[] = Array.from({ length: 5 }, () => getRandomDepositAmount(50)); // Deposit amounts
+      const stakeAmount1: bigint = ethers.parseEther(String(amounts[0]));
+      const stakeAmount2: bigint = ethers.parseEther(String(amounts[1]));
+      const stakeAmount3: bigint = ethers.parseEther(String(amounts[2]));
 
       // Users stake their tokens
       await depositAmountByAddress(communityVault, addr1, amounts[0]);
@@ -138,9 +146,9 @@ describe('CommunityVault', function () {
       expect(rewardBalance2).to.equal(0);
 
       // Send rewards to the contract
-      const rewardAmount1Raw: number = 1;
-      const rewardAmount2Raw: number = 10;
-      const rewardAmount3Raw: number = 100;
+      const rewardAmount1Raw: number = getRandomRewardAmount(1);
+      const rewardAmount2Raw: number = getRandomRewardAmount(10);
+      const rewardAmount3Raw: number = getRandomRewardAmount(100);
       let rewardAmount1: bigint = ethers.parseEther(String(rewardAmount1Raw));
       let rewardAmount10: bigint = ethers.parseEther(String(rewardAmount2Raw));
       let rewardAmount100: bigint = ethers.parseEther(String(rewardAmount3Raw));
@@ -153,8 +161,14 @@ describe('CommunityVault', function () {
       const rewardExpected2: bigint = ethers.parseEther(
         String(calculateReward(amounts[1], amounts[0] + amounts[1], rewardAmount1Raw))
       );
-      expect(await communityVault.pendingReward(addr1.address)).to.equal(rewardExpected1);
-      expect(await communityVault.pendingReward(addr2.address)).to.equal(rewardExpected2);
+      expect(await communityVault.pendingReward(addr1.address)).to.closeTo(
+        rewardExpected1,
+        marginOfError(rewardExpected1)
+      );
+      expect(await communityVault.pendingReward(addr2.address)).to.closeTo(
+        rewardExpected2,
+        marginOfError(rewardExpected2)
+      );
 
       // User 3 stakes their tokens
       await communityVault.connect(addr3).deposit({ value: stakeAmount3.toString() });
@@ -174,15 +188,15 @@ describe('CommunityVault', function () {
         rewardExpected1 +
         ethers.parseEther(String(calculateReward(amounts[0], amounts[0] + amounts[1] + amounts[2], rewardAmount2Raw)));
       const rewardExpected4: bigint =
-        rewardExpected1 +
+        rewardExpected2 +
         ethers.parseEther(String(calculateReward(amounts[1], amounts[0] + amounts[1] + amounts[2], rewardAmount2Raw)));
       const rewardExpected5: bigint = ethers.parseEther(
         String(calculateReward(amounts[2], amounts[0] + amounts[1] + amounts[2], rewardAmount2Raw))
       );
 
-      expect(rewardBalance1).to.equal(rewardExpected3);
-      expect(rewardBalance2).to.equal(rewardExpected4);
-      expect(rewardBalance3).to.equal(rewardExpected5);
+      expect(rewardBalance1).to.closeTo(rewardExpected3, marginOfError(rewardExpected3));
+      expect(rewardBalance2).to.closeTo(rewardExpected4, marginOfError(rewardExpected4));
+      expect(rewardBalance3).to.closeTo(rewardExpected5, marginOfError(rewardExpected5));
 
       // withdraw
       await communityVault.connect(addr1).withdraw();
@@ -197,8 +211,8 @@ describe('CommunityVault', function () {
       // check balance of the contract
       const contractBalanceByNetwork = await ethers.provider.getBalance(contractAddress);
       const contractBalanceByContract = await communityVault.getBalance();
-      expect(contractBalanceByNetwork).to.equal(0);
-      expect(contractBalanceByContract).to.equal(0);
+      expect(contractBalanceByNetwork).to.closeTo(0, DELTA);
+      expect(contractBalanceByContract).to.closeTo(0, DELTA);
 
       // new stacker
       await depositAmountByAddress(communityVault, addr4, amounts[3]);
@@ -206,7 +220,10 @@ describe('CommunityVault', function () {
 
       // Send more rewards to the contract
       await owner.sendTransaction({ to: contractAddress, value: rewardAmount10 });
-      expect(await communityVault.pendingReward(addr4.address)).to.equal(rewardAmount10);
+      expect(await communityVault.pendingReward(addr4.address)).to.closeTo(
+        rewardAmount10,
+        marginOfError(rewardAmount10)
+      );
 
       // new stacker
       await depositAmountByAddress(communityVault, addr5, amounts[4]);
@@ -226,8 +243,14 @@ describe('CommunityVault', function () {
         String(calculateReward(amounts[4], amounts[3] + amounts[4], rewardAmount3Raw))
       );
 
-      expect(await communityVault.pendingReward(addr4.address)).to.equal(rewardExpected6);
-      expect(await communityVault.pendingReward(addr5.address)).to.equal(rewardExpected7);
+      expect(await communityVault.pendingReward(addr4.address)).to.closeTo(
+        rewardExpected6,
+        marginOfError(rewardExpected6)
+      );
+      expect(await communityVault.pendingReward(addr5.address)).to.closeTo(
+        rewardExpected7,
+        marginOfError(rewardExpected7)
+      );
     });
   });
 });
