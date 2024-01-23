@@ -115,7 +115,6 @@ describe('CommunityVault', function () {
     });
   });
 
-  // TODO: Use marginOfError everywhere possible
   describe('Reward', function () {
     it('Should distribute rewards proportionally to the amount staked', async function () {
       const { communityVault, owner, addr1, addr2, addr3, addr4, addr5 } = await loadFixture(deployContractFixture);
