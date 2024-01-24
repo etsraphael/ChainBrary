@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<xliff version="1.2"
+  xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="4371414621292952954" datatype="html">
@@ -8,6 +9,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="166713648723495622" datatype="html">
+        <source> ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing users with a library of open-source and secure tools for building and interacting with blockchain applications. </source>
+        <target>ChainBrary est une plateforme qui vise à rendre la technologie blockchain plus accessible à tous en fournissant aux utilisateurs une bibliothèque d'outils open-source et sécurisés pour construire et interagir avec des applications blockchain</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">11,15</context>
         </context-group>
       </trans-unit>
     </body>
