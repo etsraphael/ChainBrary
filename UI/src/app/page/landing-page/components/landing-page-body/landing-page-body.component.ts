@@ -14,15 +14,13 @@ export class LandingPageBodyComponent {
       icon: 'bi-file-earmark-code'
     },
     {
-      title: 'Accessible',
-      description:
-        'Our platform is designed to be easy to use and accessible to all. With user-friendly interfaces and detailed documentation, anyone can take advantage of the power of our blockchain technology.',
+      title: $localize`:@@landingPage.accessible:Accessible`,
+      description: $localize`:@@landingPage.ourPlateformIsDesignedTo:Our platform is designed to be easy to use and accessible to all. With user-friendly interfaces and detailed documentation, anyone can take advantage of the power of our blockchain technology.`,
       icon: 'bi-universal-access'
     },
     {
-      title: 'Transparent',
-      description:
-        'Our platform is open source, allowing for a collaborative and transparent community of developers and users. This helps to ensure that our platform remains reliable and up-to-date.',
+      title: $localize`:@@landingPage.transparent:Transparent`,
+      description: $localize`:@@landingPage.ourPlateformIsOpenSource:Our platform is open source, allowing for a collaborative and transparent community of developers and users. This helps to ensure that our platform remains reliable and up-to-date.`,
       icon: 'bi-eye'
     }
   ];

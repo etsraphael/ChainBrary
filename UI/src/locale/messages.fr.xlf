@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="1.2"
-  xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="landingPage.openSource" datatype="html">
         <source>Open Source</source>
+        <target>Open Source</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">12</context>
@@ -18,9 +18,41 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="landingPage.accessible" datatype="html">
+        <source>Accessible</source>
+        <target>Accessible</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.ourPlateformIsDesignedTo" datatype="html">
+        <source>Our platform is designed to be easy to use and accessible to all. With user-friendly interfaces and detailed documentation, anyone can take advantage of the power of our blockchain technology.</source>
+        <target>Notre plateforme est conçue pour être facile à utiliser et accessible à tous. Avec des interfaces conviviales et une documentation détaillée, tout le monde peut profiter de la puissance de notre technologie blockchain.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.transparent" datatype="html">
+        <source>Transparent</source>
+        <target>Transparent</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.ourPlateformIsOpenSource" datatype="html">
+        <source>Our platform is open source, allowing for a collaborative and transparent community of developers and users. This helps to ensure that our platform remains reliable and up-to-date.</source>
+        <target>Notre plateforme est open source, permettant une communauté collaborative et transparente de développeurs et d'utilisateurs. Cela contribue à garantir que notre plateforme reste fiable et à jour.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="4371414621292952954" datatype="html">
         <source>Trust, Secure, Safe: Committing to Reliability.</source>
-        <target>Confiance, Sécurité, Sûreté : S'engager en faveur de la Fiabilité</target>
+        <target>Confiance, Sécurité, Sûreté: S'engager à la fiabilité.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">8</context>
@@ -32,6 +64,34 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">11,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8796421615214272364" datatype="html">
+        <source>Know us better</source>
+        <target>Connaissez-nous mieux</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3603629723179660571" datatype="html">
+        <source>Got questions? Reach us our social media</source>
+        <target>Vous avez des questions? Rejoignez-nous sur les réseaux sociaux</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4579496777570550463" datatype="html">
+        <source>Social</source>
+        <target>Social</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
     </body>
