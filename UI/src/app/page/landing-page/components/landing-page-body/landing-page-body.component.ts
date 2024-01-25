@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import '@angular/localize/init';
 
 @Component({
   selector: 'app-landing-page-body',
@@ -8,9 +9,8 @@ import { Component } from '@angular/core';
 export class LandingPageBodyComponent {
   cards: LandingPageCard[] = [
     {
-      title: 'Open Source',
-      description:
-        'Our platform uses blockchain technology to secure your assets and we employ regular audits to our system to protect the confidentiality and integrity of your information.',
+      title: $localize`:@@landingPage.openSource:Open Source`,
+      description: $localize`:@@landingPage.openSourceDesc:Our platform uses blockchain technology to secure your assets and we employ regular audits to our system to protect the confidentiality and integrity of your information.`,
       icon: 'bi-file-earmark-code'
     },
     {
