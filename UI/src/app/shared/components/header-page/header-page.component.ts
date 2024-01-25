@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { environment } from './../../../../environments/environment';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-header-page',
@@ -8,10 +9,15 @@ import { environment } from './../../../../environments/environment';
   styleUrls: ['./header-page.component.scss']
 })
 export class HeaderPageComponent implements OnInit {
+  language: string[] = ['en', 'fr'];
+  languageSelected = 'en';
   headerBtns: IHeaderBtn[] = [];
   environment = environment;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private location: Location
+  ) {}
 
   get headerButtons(): IHeaderBtn[] {
     return this.headerBtns.filter((btn) => btn.visible);
@@ -44,6 +50,24 @@ export class HeaderPageComponent implements OnInit {
   goToLinkOutsideApp(link: string): Window | null {
     return window.open(link, '_blank');
   }
+
+
+  switchLanguage(lang: string) {
+    // Save the selected language
+    this.languageSelected = lang;
+
+    // Replace the current URL with the new language prefix
+    const url = this.location.path().replace(/\/[a-z]{2}(\/|$)/, `/${lang}$1`);
+    if(url) {
+      window.location.href = url;
+    }
+    console.log(url);
+
+    // Alternatively, if you have a more complex setup or want to avoid a full page reload,
+    // you might need a different approach, like using a service to dynamically load and apply translations.
+  }
+
+
 }
 
 interface IHeaderBtn {

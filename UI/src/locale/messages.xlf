@@ -58,6 +58,62 @@
           <context context-type="linenumber">11,15</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="5901741591698884200" datatype="html">
+        <source>How to show a picture on the blockchain?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3742754064909943461" datatype="html">
+        <source> Files aren&apos;t stored on the blockchain to avoid high costs and network congestion; they&apos;re externally hosted and referenced for efficient, decentralized access. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">6,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8847837690960818708" datatype="html">
+        <source>URL invalid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5121164334040114579" datatype="html">
+        <source>How can I quickly host my file somewhere?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1457251910333381962" datatype="html">
+        <source>Image found!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7010298828580734548" datatype="html">
+        <source>The image was found on the blockchain and it&apos;s ready to be displayed.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3894950702316166331" datatype="html">
+        <source>Loading...</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3644217488386459799" datatype="html">
+        <source>The image is loading.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="8796421615214272364" datatype="html">
         <source>Know us better</source>
         <context-group purpose="location">

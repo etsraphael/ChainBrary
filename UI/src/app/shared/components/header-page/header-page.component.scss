@@ -27,3 +27,21 @@
 a {
   text-decoration: none;
 }
+
+::ng-deep app-header-page {
+  .mat-mdc-text-field-wrapper .mat-mdc-form-field-infix {
+    width: auto !important;
+  }
+
+  .mat-mdc-select-min-line {
+    padding-right: 1rem;
+  }
+
+  .mdc-line-ripple, .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent !important;
+  }
+}

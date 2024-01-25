@@ -19,17 +19,19 @@ RUN npm install
 # Create a symlink to replace the bundled Sentry CLI
 RUN ln -sf $(which sentry-cli) /app/node_modules/@sentry/webpack-plugin/node_modules/@sentry/cli/sentry-cli
 
-# Build the project
-RUN npm run build:test:localize
+# Build the project for every language
+RUN npm run build:localize
 
 # Stage 2: Setting up the server with nginx
 FROM nginx:alpine
 
-# Copy over the built version
-COPY --from=node /app/dist/chainbrary /usr/share/nginx/html
+# Copy over the built English version
+COPY --from=node /app/dist/chainbrary/en /usr/share/nginx/html/en
 
-# Check if all necessary MIME types are defined in the nginx configuration or in the server directive.
-# This could include ensuring that .woff files are served with the correct MIME type.
+# Copy over the built French version
+COPY --from=node /app/dist/chainbrary/fr /usr/share/nginx/html/fr
+
+# Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 CMD ["nginx", "-g", "daemon off;"]
