@@ -24,7 +24,7 @@
           />
         </div>
         <mat-form-field>
-          <mat-select [(value)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
+          <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
             <mat-option [value]="lang" *ngFor="let lang of language">
               {{ lang }}
             </mat-option>
