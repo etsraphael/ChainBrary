@@ -20,7 +20,7 @@ RUN npm install
 RUN ln -sf $(which sentry-cli) /app/node_modules/@sentry/webpack-plugin/node_modules/@sentry/cli/sentry-cli
 
 # Build the project for every language
-RUN npm run build:localize
+RUN npm run build:test:localize
 
 # Stage 2: Setting up the server with nginx
 FROM nginx:alpine
