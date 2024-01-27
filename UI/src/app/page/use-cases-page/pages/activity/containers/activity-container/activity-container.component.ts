@@ -24,8 +24,7 @@ export class ActivityContainerComponent implements OnInit, OnDestroy {
   headerPayload: IUseCasesHeader = {
     title: $localize`:@@recentTransactions:Recent Transactions`,
     goBackLink: '/use-cases/services',
-    description:
-      `:@@QuiclyViewYourRecentDesc: Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.`
+    description: `:@@QuiclyViewYourRecentDesc: Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.`
   };
 
   constructor(

@@ -110,13 +110,19 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
 
   submitAmount(): void {
     if (this.authStatus === AuthStatusCode.NotConnected) {
-      this.snackbar.open($localize`:@@CommonErrorMessage.ConnectYourWallet:Please connect your wallet` , '', { duration: 3000 });
+      this.snackbar.open($localize`:@@CommonErrorMessage.ConnectYourWallet:Please connect your wallet`, '', {
+        duration: 3000
+      });
       return;
     }
 
     this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid: boolean) => {
       if (!networkIsValid) {
-        this.snackbar.open($localize`@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet`, $localize`:@@commonWords:Close`, { duration: 3000 });
+        this.snackbar.open(
+          $localize`@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet`,
+          $localize`:@@commonWords:Close`,
+          { duration: 3000 }
+        );
         return;
       }
 

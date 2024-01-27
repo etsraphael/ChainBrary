@@ -10,15 +10,13 @@ export class DocumentLockerMenuComponent {
   headerPayload: IUseCasesHeader = {
     title: $localize`:@@useCasesDocumentLockerTitle:Document Locker`,
     goBackLink: '/use-cases/services',
-    description:
-      $localize`:@@useCasesDocumentLockerDescription:Explore the pinnacle of document security with our Document Locker. Utilizing cutting-edge blockchain technology, we offer an unparalleled level of protection and privacy for your valuable documents. This service is tailored for those who demand the highest standards of security and exclusive access.`
+    description: $localize`:@@useCasesDocumentLockerDescription:Explore the pinnacle of document security with our Document Locker. Utilizing cutting-edge blockchain technology, we offer an unparalleled level of protection and privacy for your valuable documents. This service is tailored for those who demand the highest standards of security and exclusive access.`
   };
 
   useCaseActionCardsPayload: IUseCasesActionCard[] = [
     {
       title: $localize`:@@lockDocumentTitle:Lock a document`,
-      descritpion:
-        $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
+      descritpion: $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
       routerLink: '/use-cases/document-locker/creation',
       buttonText: 'Start creation'
     }

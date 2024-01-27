@@ -8,7 +8,8 @@
       <div class="accordion mb-3">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button i18n
+            <button
+              i18n
               class="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
@@ -174,7 +175,9 @@
             <mat-spinner [diameter]="15"></mat-spinner>
           </div>
           <p class="ps-2 mb-0 pe-1">
-            <span i18n *ngIf="(bidderListIsLoading$ | async) === false"> Refreshing... {{ biddersCountdown }} seconds </span>
+            <span i18n *ngIf="(bidderListIsLoading$ | async) === false">
+              Refreshing... {{ biddersCountdown }} seconds
+            </span>
             <span i18n *ngIf="(bidderListIsLoading$ | async) === true"> Loading </span>
           </p>
         </div>

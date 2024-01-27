@@ -47,7 +47,9 @@ export class PaymentRequestReviewComponent {
   }
 
   clickCopyLinkEvent(): MatSnackBarRef<TextOnlySnackBar> {
-    return this.snackbar.open($localize`:@@CommonText.LinkCopiedToClipboard:Link copied to clipboard`, '', { duration: 3000 });
+    return this.snackbar.open($localize`:@@CommonText.LinkCopiedToClipboard:Link copied to clipboard`, '', {
+      duration: 3000
+    });
   }
 
   showQRCode(): MatDialogRef<QrCodeContainerModalComponent> {

@@ -6,7 +6,7 @@ export const CommonButtonText: ICommonButtonText = {
   Back: $localize`:@@commonButtonTextBack:Back`,
   Next: $localize`:@@commonButtonTextNext:Next`,
   Preview: $localize`:@@commonButtonTextPreview:Preview`
-}
+};
 
 export interface ICommonButtonText {
   Cancel: string;

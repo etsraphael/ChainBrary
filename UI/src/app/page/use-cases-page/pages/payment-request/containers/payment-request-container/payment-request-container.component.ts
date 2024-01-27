@@ -40,8 +40,7 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   readonly headerPayload: IUseCasesHeader = {
     title: $localize`:@@paymentRequestTitle:Payment Request`,
     goBackLink: '/use-cases/services',
-    description:
-      $localize`:@@paymentRequestDescription:Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.`
+    description: $localize`:@@paymentRequestDescription:Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.`
   };
 
   constructor(

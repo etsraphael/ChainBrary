@@ -92,7 +92,9 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
     if (match && (await this.isImageValid(finalUrl))) {
       this.urlImageFound = finalUrl;
     } else {
-      this.mainForm.get('url')?.setErrors({ invalidUrl: $localize`:@@ErrorMessagePictureNotAttached:The URL provided does not have any pictures attached` });
+      this.mainForm.get('url')?.setErrors({
+        invalidUrl: $localize`:@@ErrorMessagePictureNotAttached:The URL provided does not have any pictures attached`
+      });
     }
 
     this.imageIsLoading = false;

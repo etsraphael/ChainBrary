@@ -31,17 +31,17 @@ export class HeaderPageComponent implements OnInit {
   setUpNavButtons(): void {
     this.headerBtns = [
       {
-        text: 'Home',
+        text: $localize`:@@headerBtn.Home:Home`,
         action: (): Promise<boolean> => this.router.navigate(['/']),
         visible: this.router.url !== '/'
       },
       {
-        text: 'Github',
+        text: $localize`:@@headerBtn.Github:Github`,
         action: (): Window | null => this.goToLinkOutsideApp('https://github.com/etsraphael/ChainBrary'),
         visible: true
       },
       {
-        text: 'Discord',
+        text: $localize`:@@headerBtn.Discord:Discord`,
         action: (): Window | null => this.goToLinkOutsideApp('https://discord.gg/Y3pTujEsMe'),
         visible: true
       }

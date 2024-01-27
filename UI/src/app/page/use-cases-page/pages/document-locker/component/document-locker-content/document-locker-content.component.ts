@@ -87,7 +87,9 @@ export class DocumentLockerContentComponent implements OnInit, OnDestroy {
 
   get btnText(): string {
     const priceInfo = `${this.documentLockerContent.price} ${this.currentNetwork.nativeCurrency.symbol}`;
-    return this.alreadySold ? $localize`:@@ocumentLockerContent.AlreadySoldAt: Already sold at ${priceInfo}` : `Unlock (${priceInfo})`;
+    return this.alreadySold
+      ? $localize`:@@ocumentLockerContent.AlreadySoldAt: Already sold at ${priceInfo}`
+      : `Unlock (${priceInfo})`;
   }
 
   ngOnInit(): void {
