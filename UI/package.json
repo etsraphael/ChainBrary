@@ -9,6 +9,7 @@
     "build:test": "ng build --configuration test",
     "build:test:localize": "ng build --configuration test --localize",
     "build:prod": "ng build --configuration production",
+    "build:prod:localize": "ng build --configuration production --localize",
     "watch": "ng build --watch --configuration development",
     "lint": "ng lint",
     "prettier": "prettier --write .",

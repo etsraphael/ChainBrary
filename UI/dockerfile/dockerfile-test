@@ -10,7 +10,7 @@ RUN curl -sL https://sentry.io/get-cli/ | bash
 ARG SENTRY_AUTH_TOKEN
 
 # Setup the environment variable with the received argument
-ENV SENTRY_AUTH_TOKEN=6d5e541db4c1760222ed187fa1513647d8596c3dd6699a785b0ebcc7c2153ff0
+ENV SENTRY_AUTH_TOKEN=$SENTRY_AUTH_TOKEN
 
 # Install npm packages, including the @sentry/cli package
 RUN npm install @sentry/cli
