@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { QrCodeContainerModalComponent } from './../../../../../../shared/components/modal/qr-code-container-modal/qr-code-container-modal.component';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { IToken } from './../../../../../../shared/interfaces';
 
 @Component({
@@ -18,6 +19,7 @@ export class PaymentRequestReviewComponent {
   @Input() tokenSelected: IToken | null;
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
   protocolFee = 0.001;
+  commonButtonText = CommonButtonText;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -45,7 +47,7 @@ export class PaymentRequestReviewComponent {
   }
 
   clickCopyLinkEvent(): MatSnackBarRef<TextOnlySnackBar> {
-    return this.snackbar.open('Link copied to clipboard', '', { duration: 3000 });
+    return this.snackbar.open($localize`:@@CommonText.LinkCopiedToClipboard:Link copied to clipboard`, '', { duration: 3000 });
   }
 
   showQRCode(): MatDialogRef<QrCodeContainerModalComponent> {

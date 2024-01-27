@@ -171,7 +171,7 @@ export class BidEffects {
             formattedMessage = 'An error occured while placing your bid';
           }
 
-          return this.snackBar.open(formattedMessage, 'Close', {
+          return this.snackBar.open(formattedMessage, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
@@ -318,7 +318,7 @@ export class BidEffects {
       return this.actions$.pipe(
         ofType(BidActions.requestWithdrawFailure),
         map((action: { message: string }) => {
-          return this.snackBar.open(action.message, 'Close', {
+          return this.snackBar.open(action.message, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });

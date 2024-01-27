@@ -38,10 +38,10 @@ import {
 export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   readonly headerPayload: IUseCasesHeader = {
-    title: 'Payment Request',
+    title: $localize`:@@paymentRequestTitle:Payment Request`,
     goBackLink: '/use-cases/services',
     description:
-      'Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.'
+      $localize`:@@paymentRequestDescription:Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.`
   };
 
   constructor(

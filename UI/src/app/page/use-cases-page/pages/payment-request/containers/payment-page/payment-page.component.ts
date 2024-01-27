@@ -142,7 +142,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         take(1),
         switchMap((isInvalid: boolean) => {
           if (isInvalid) {
-            this._snackBar.open('Network not matching', 'Close', { duration: 2000 });
+            this._snackBar.open('Network not matching', $localize`:@@commonWords:Close`, { duration: 2000 });
             return EMPTY;
           }
           return this.web3LoginService.currentNetwork$;
@@ -152,7 +152,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
       )
       .subscribe((network: INetworkDetail) => {
         if (!environment.contracts.bridgeTransfer.networkSupported.includes(network.chainId)) {
-          this._snackBar.open('Network not supported', 'Close', { duration: 2000 });
+          this._snackBar.open('Network not supported', $localize`:@@commonWords:Close`, { duration: 2000 });
           return;
         }
         isSupportedAction();

@@ -18,7 +18,7 @@ import { selectDocumentLockerCreationError } from './../../../../../../store/doc
 })
 export class DocumentLockerMakerComponent implements OnInit {
   headerPayload: IUseCasesHeader = {
-    title: 'Create a locked document',
+    title: $localize`:@@documentLockerMakerTitle:Create a locked document`,
     goBackLink: '/use-cases/document-locker/services',
     description: null
   };

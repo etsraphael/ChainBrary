@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angu
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail, NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, combineLatest, distinctUntilChanged, filter, map, take, takeUntil } from 'rxjs';
-import { AuthStatusCode, TokenPair } from './../../../../../../shared/enum';
+import { AuthStatusCode, CommonButtonText, TokenPair } from './../../../../../../shared/enum';
 import { IToken } from './../../../../../../shared/interfaces';
 import { PriceFeedService } from './../../../../../../shared/services/price-feed/price-feed.service';
 import { WalletService } from './../../../../../../shared/services/wallet/wallet.service';
@@ -29,6 +29,7 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
   @Output() approveSmartContract = new EventEmitter<void>();
   tokenConversionRate: number;
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+  commonButtonText = CommonButtonText;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -109,13 +110,13 @@ export class PaymentRequestCardComponent implements OnInit, OnDestroy {
 
   submitAmount(): void {
     if (this.authStatus === AuthStatusCode.NotConnected) {
-      this.snackbar.open('Please connect your wallet', '', { duration: 3000 });
+      this.snackbar.open($localize`:@@CommonErrorMessage.ConnectYourWallet:Please connect your wallet` , '', { duration: 3000 });
       return;
     }
 
     this.walletService.networkIsMatching$.pipe(take(1)).subscribe((networkIsValid: boolean) => {
       if (!networkIsValid) {
-        this.snackbar.open('Network mismatch with wallet', 'Close', { duration: 3000 });
+        this.snackbar.open($localize`@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet`, $localize`:@@commonWords:Close`, { duration: 3000 });
         return;
       }
 

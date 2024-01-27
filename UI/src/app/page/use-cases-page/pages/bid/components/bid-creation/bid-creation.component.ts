@@ -32,7 +32,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   networkList: INetworkDetail[] = [];
 
   headerPayload: IUseCasesHeader = {
-    title: 'Bid creation',
+    title: $localize`:@@bidCreationHeaderTitle:Bid creation`,
     goBackLink: '/use-cases/bid/services',
     description: null
   };
@@ -132,7 +132,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
 
         // URL already exists
         if (this.imgList.includes(url)) {
-          this.snackBar.open('Image already added', 'Close', {
+          this.snackBar.open($localize`:@@bidCreation.ImageAlreadyAdded:Image already added`, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
@@ -169,7 +169,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.mainForm.invalid) return;
 
     if (this.imgList.length < 1) {
-      this.snackBar.open('Please add at least one image', 'Close', {
+      this.snackBar.open($localize`:@@bidCreation.PleaseAddAtLeastOneImage.:Please add at least one image`, $localize`:@@commonWords:Close`, {
         duration: 5000,
         panelClass: ['error-snackbar']
       });

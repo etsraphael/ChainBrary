@@ -6,7 +6,7 @@
         <div class="d-flex align-items-center">
           <p class="mb-0">
             <i class="bi bi-exclamation-triangle-fill"></i>
-            A connected wallet is required for conversion rates.
+            <span i18n>A connected wallet is required for conversion rates.</span>
           </p>
         </div>
       </div>
@@ -16,7 +16,7 @@
   <div class="row justify-content-center">
     <div class="col-12 col-lg-10 col-xl-9">
       <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Choose token</mat-label>
+        <mat-label i18n>Choose token</mat-label>
         <div formGroupName="token">
           <mat-select formControlName="tokenId">
             <ng-container *ngIf="currentNetworkObs | async">
@@ -45,7 +45,7 @@
         appearance="outline"
         [ngClass]="{ 'no-bottom': paymentConversionIsNotSupported === false }"
       >
-        <mat-label>Amount</mat-label>
+        <mat-label i18n>Amount</mat-label>
         <input formControlName="amount" type="number" class="ps-1" matInput />
         <div class="d-flex" matSuffix>
           <mat-spinner *ngIf="paymentConversion.conversionToken.loading" [diameter]="15"></mat-spinner>
@@ -63,15 +63,15 @@
       </div>
       <div class="col-12 col-lg-10 col-xl-9">
         <mat-form-field class="w-100 text-dark usd-fiat-price-container" appearance="outline">
-          <mat-label>Amount</mat-label>
+          <mat-label i18n>Amount</mat-label>
           <input formControlName="amountInUsd" type="number" class="ps-1" matInput />
           <div class="d-flex" matSuffix>
             <mat-spinner *ngIf="paymentConversion.conversionUSD.loading" [diameter]="15"></mat-spinner>
-            <h6 class="mb-0 px-3">$USD</h6>
+            <h6 i18n class="mb-0 px-3">$USD</h6>
           </div>
           <mat-hint>
             <mat-checkbox formControlName="valueLockedInUsd" color="primary">
-              Lock in USD value (0.1% fee)
+              <span i18n>Lock in USD value (0.1% fee)</span>
             </mat-checkbox>
           </mat-hint>
         </mat-form-field>
@@ -82,7 +82,7 @@
   <div class="row justify-content-center">
     <div class="col-12 col-lg-10 col-xl-9">
       <mat-form-field class="w-100 text-dark" appearance="outline">
-        <mat-label>Description</mat-label>
+        <mat-label i18n>Description</mat-label>
         <textarea
           formControlName="description"
           cdkTextareaAutosize
@@ -103,14 +103,14 @@
       <div class="col-12 col-lg-6 py-2 py-lg-0">
         <app-chainbrary-button
           [buttonClasses]="['btn-secondary-gradient', 'text-white']"
-          [buttonText]="'Back'"
+          [buttonText]="commonButtonText.Back"
           (callToAction)="goToPreviousPage.emit()"
         />
       </div>
       <div class="col-12 col-lg-6 py-2 py-lg-0">
         <app-chainbrary-button
           [buttonClasses]="['btn-info-gradient', 'text-white']"
-          [buttonText]="'Next'"
+          [buttonText]="commonButtonText.Next"
           (callToAction)="goToNextPage.emit()"
           data-id="submit-button"
         />

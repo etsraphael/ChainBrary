@@ -5,9 +5,9 @@
 <table class="w-100 shadow-sm bg-white" *ngIf="transactionsIsLoading && transactionsTable.length === 0">
   <thead>
     <tr class="skeleton-header px-4">
-      <th class="text-start py-3 ps-4">Action</th>
-      <th class="text-center py-3">Amount</th>
-      <th class="text-end py-3 pe-4">Date</th>
+      <th i18n class="text-start py-3 ps-4">Action</th>
+      <th i18n class="text-center py-3">Amount</th>
+      <th i18n class="text-end py-3 pe-4">Date</th>
     </tr>
   </thead>
   <tbody>
@@ -80,7 +80,7 @@
 >
   <div class="d-flex flex-column align-items-center justify-content-center">
     <i class="bi bi-database-slash text-secondary"></i>
-    <p class="text-center mt-3">No transactions found.</p>
+    <p i18n class="text-center mt-3">No transactions found.</p>
   </div>
 </div>
 
@@ -97,7 +97,7 @@
   <div class="d-flex flex-column align-items-center justify-content-center">
     <app-chainbrary-button
       [buttonClasses]="['btn-info-gradient', 'text-light']"
-      buttonText="Connect Wallet"
+      [buttonText]="commonButtonText.ConnectWallet"
       (callToAction)="web3LoginService.openLoginModal()"
       data-id="login-btn"
     />

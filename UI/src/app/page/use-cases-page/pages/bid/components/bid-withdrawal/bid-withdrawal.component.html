@@ -2,8 +2,8 @@
   <!-- Description -->
   <div class="row">
     <div class="col-12 text-start">
-      <h3 class="text-dark">Withdraw Bid</h3>
-      <p class="text-secondary">
+      <h3 i18n class="text-dark">Withdraw Bid</h3>
+      <p i18n class="text-secondary">
         You are about to withdraw your bid. Please review the details below carefully. Note that a withdrawal fee will
         be deducted from the total amount. This action cannot be undone.
       </p>
@@ -13,22 +13,22 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">Description</th>
-            <th scope="col">Amount</th>
+            <th i18n scope="col">Description</th>
+            <th i18n scope="col">Amount</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <th scope="row">Total Bid Amount</th>
-            <td class="text-end">{{ bidResult.total }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+            <th i18n scope="row">Total Bid Amount</th>
+            <td i18n class="text-end">{{ bidResult.total }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
           </tr>
           <tr>
-            <th scope="row">Withdrawal Fee (0.01%)</th>
-            <td class="text-end">{{ bidResult.fee }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+            <th i18n scope="row">Withdrawal Fee (0.01%)</th>
+            <td i18n class="text-end">{{ bidResult.fee }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
           </tr>
           <tr>
-            <th scope="row">Amount to Receive</th>
-            <td class="text-end">{{ bidResult.net }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+            <th i18n scope="row">Amount to Receive</th>
+            <td i18n class="text-end">{{ bidResult.net }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
           </tr>
         </tbody>
       </table>
@@ -39,7 +39,7 @@
         <div class="col-6">
           <app-chainbrary-button
             [buttonClasses]="['btn-secondary-gradient', 'text-light']"
-            buttonText="Cancel"
+            [buttonText]="commonButtonText.Cancel"
             (callToAction)="closeModal()"
           />
         </div>
@@ -47,7 +47,7 @@
           <app-chainbrary-button
             data-id="withdraw-bid"
             [buttonClasses]="['btn-success-gradient', 'text-light']"
-            buttonText="Withdraw Bid"
+            [buttonText]="withdrawBidText"
             (callToAction)="submit()"
           />
         </div>

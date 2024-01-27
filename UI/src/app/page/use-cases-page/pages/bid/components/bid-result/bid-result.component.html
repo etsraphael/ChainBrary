@@ -8,7 +8,7 @@
       <div class="accordion mb-3">
         <div class="accordion-item">
           <h2 class="accordion-header">
-            <button
+            <button i18n
               class="accordion-button collapsed"
               type="button"
               data-bs-toggle="collapse"
@@ -57,7 +57,7 @@
             data-bs-slide="prev"
           >
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
+            <span i18n class="visually-hidden">Previous</span>
           </button>
           <button
             class="carousel-control-next"
@@ -66,7 +66,7 @@
             data-bs-slide="next"
           >
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
+            <span i18n class="visually-hidden">Next</span>
           </button>
         </ng-container>
       </div>
@@ -88,10 +88,10 @@
               <i class="bi bi-dash-circle"></i>
             </button>
             <input matInput type="number" formControlName="highestBid" class="text-center no-spinners" />
-            <mat-error *ngIf="bidForm.get('highestBid')?.hasError('min')">
+            <mat-error i18n *ngIf="bidForm.get('highestBid')?.hasError('min')">
               Please enter a value higher than the current bid
             </mat-error>
-            <mat-hint>
+            <mat-hint i18n>
               The current bid is at <strong>{{ bid.highestBid }} {{ currentNetwork.nativeCurrency.symbol }}</strong>
             </mat-hint>
             <button matSuffix mat-icon-button type="button" (click)="incrementBid()">
@@ -105,12 +105,12 @@
         <div class="col-12">
           <div class="alert alert-warning" role="alert">
             <h4 class="alert-heading">Warning!</h4>
-            <p>
+            <p i18n>
               We are currently approchaing the end of the auction. Please make sure to submit your bid with a higher
               value of fee to ensure that your transaction will be processed in time.
             </p>
             <hr />
-            <p class="mb-0">
+            <p i18n class="mb-0">
               An extra of 10 minutes will be added to the auction if a bid is placed within the last 10 minutes of the
               auction.
             </p>
@@ -144,10 +144,10 @@
   <!-- Widthdrawal Receipt -->
   <ng-container *ngIf="(withdrawReceiptIsVisible$ | async) === true">
     <div class="alert alert-success" role="alert">
-      <h4 class="alert-heading">Withdrawal Successful!</h4>
-      <p>Your withdrawal request has been processed successfully. Below are the transaction details:</p>
+      <h4 i18n class="alert-heading">Withdrawal Successful!</h4>
+      <p i18n>Your withdrawal request has been processed successfully. Below are the transaction details:</p>
       <hr />
-      <div class="mb-0">
+      <div i18n class="mb-0">
         Transaction ID: <strong>{{ bid.conctractAddress }}</strong
         ><br />
         Amount Withdrawn: <strong>{{ bid.highestBid }} {{ currentNetwork.nativeCurrency.symbol }}</strong
@@ -160,7 +160,7 @@
   <ng-container *ngIf="(isWidthdrawing$ | async) === true">
     <div class="row justify-content-center">
       <div class="spinner-border text-primary" role="status">
-        <span class="visually-hidden">Loading...</span>
+        <span i18n class="visually-hidden">Loading...</span>
       </div>
     </div>
   </ng-container>
@@ -174,8 +174,8 @@
             <mat-spinner [diameter]="15"></mat-spinner>
           </div>
           <p class="ps-2 mb-0 pe-1">
-            <span *ngIf="(bidderListIsLoading$ | async) === false"> Refreshing... {{ biddersCountdown }} seconds </span>
-            <span *ngIf="(bidderListIsLoading$ | async) === true"> Loading </span>
+            <span i18n *ngIf="(bidderListIsLoading$ | async) === false"> Refreshing... {{ biddersCountdown }} seconds </span>
+            <span i18n *ngIf="(bidderListIsLoading$ | async) === true"> Loading </span>
           </p>
         </div>
       </div>
@@ -192,13 +192,13 @@
       <ng-container *ngIf="(bidEnded$ | async) === false">
         <div class="text-center py-4">
           <i class="bi bi-exclamation-circle text-secondary"></i>
-          <p>No bids have been placed yet. Be the first!</p>
+          <p i18n>No bids have been placed yet. Be the first!</p>
         </div>
       </ng-container>
       <ng-container *ngIf="(bidEnded$ | async) === true">
         <div class="text-center py-4">
           <i class="bi bi-exclamation-circle text-secondary"></i>
-          <p>Bidding has ended without any participation.</p>
+          <p i18n>Bidding has ended without any participation.</p>
         </div>
       </ng-container>
     </ng-template>

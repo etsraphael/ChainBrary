@@ -247,7 +247,7 @@ export class DocumentLockerEffects {
             formattedMessage = 'An error occured while processing your document. Please try again.';
           }
 
-          return this.snackBar.open(formattedMessage, 'Close', {
+          return this.snackBar.open(formattedMessage, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
