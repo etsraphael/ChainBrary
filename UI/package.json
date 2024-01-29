@@ -21,7 +21,8 @@
     "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "build:libs": "./scripts/build_libraries.sh",
     "publish:libs": "./scripts/publish_libraries.sh",
-    "extract-i18n": "ng extract-i18n --output-path src/locale"
+    "extract-i18n": "ng extract-i18n --output-path src/locale",
+    "translate": "node --loader ts-node/esm scripts/translation.ts"
   },
   "private": true,
   "dependencies": {
@@ -51,13 +52,16 @@
     "bignumber.js": "^9.1.2",
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.2",
+    "dotenv": "^16.4.1",
     "graphql": "^16.8.1",
     "ngx-device-detector": "^6.0.2",
     "ngx-markdown": "^16.0.0",
     "ngx-skeleton-loader": "^8.1.0",
+    "openai": "^4.26.0",
     "rxjs": "~7.8.1",
     "tslib": "^2.6.2",
     "web3": "^1.10.3",
+    "xml2js": "^0.6.2",
     "zone.js": "~0.13.3"
   },
   "devDependencies": {
@@ -74,11 +78,14 @@
     "@ngrx/eslint-plugin": "^17.0.1",
     "@sentry/webpack-plugin": "^1.20.0",
     "@types/jasmine": "~5.1.1",
+    "@types/node": "^20.11.10",
     "@types/qrcode": "^1.5.5",
+    "@types/xml2js": "^0.4.14",
     "@typescript-eslint/eslint-plugin": "^5.59.2",
     "@typescript-eslint/parser": "^5.62.0",
     "cypress": "^13.2.0",
     "eslint": "^8.39.0",
+    "esm": "^3.2.25",
     "jasmine-core": "~5.1.1",
     "karma": "~6.4.2",
     "karma-chrome-launcher": "~3.2.0",
@@ -88,6 +95,8 @@
     "ng-packagr": "^16.2.3",
     "prettier": "^3.1.1",
     "start-server-and-test": "^2.0.3",
+    "ts-node": "^10.9.2",
     "typescript": "~5.1.6"
-  }
+  },
+  "type": "module"
 }
