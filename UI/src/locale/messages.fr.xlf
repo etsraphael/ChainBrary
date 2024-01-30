@@ -1,5 +1,6 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff version="1.2"
+  xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="landingPage.openSource" datatype="html">
@@ -75,7 +76,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="3742754064909943461" datatype="html">
-        <source> Files aren&apos;t stored on the blockchain to avoid high costs and network congestion; they&apos;re externally hosted and referenced for efficient, decentralized access. </source>
+        <source> Files aren't stored on the blockchain to avoid high costs and network congestion; they're externally hosted and referenced for efficient, decentralized access. </source>
         <target>Les fichiers ne sont pas stockés sur la blockchain pour éviter des coûts élevés et la congestion du réseau ; ils sont hébergés externement et référencés pour un accès efficace et décentralisé.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
@@ -107,7 +108,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="7010298828580734548" datatype="html">
-        <source>The image was found on the blockchain and it&apos;s ready to be displayed.</source>
+        <source>The image was found on the blockchain and it's ready to be displayed.</source>
         <target>L'image a été trouvée sur la blockchain et est prête à être affichée.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
@@ -151,16 +152,16 @@
         </context-group>
       </trans-unit>
       <trans-unit id="googleDriveText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;
-2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;
+        <source>1. Go to &lt;a href="https://drive.google.com/drive/my-drive" target="_blank"&gt;Google Drive&lt;/a&gt;
+2. Click on "+ New" &gt; Then "New File"
 3. Upload your file
-4. Right click on the file &gt; &quot;Get shareable link&quot;
+4. Right click on the file &gt; "Get shareable link"
 5. Copy the link and paste it here
 6. Make sure the image will be accessible at anytime</source>
-        <target>1. Allez sur &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;
-2. Cliquez sur &quot;+ Nouveau&quot; &gt; Puis &quot;Nouveau Fichier&quot;
+        <target>1. Allez sur &lt;a href="https://drive.google.com/drive/my-drive" target="_blank"&gt;Google Drive&lt;/a&gt;
+2. Cliquez sur "+ Nouveau" &gt; Puis "Nouveau Fichier"
 3. Téléchargez votre fichier
-4. Faites un clic droit sur le fichier &gt; &quot;Obtenir un lien partageable&quot;
+4. Faites un clic droit sur le fichier &gt; "Obtenir un lien partageable"
 5. Copiez le lien et collez-le ici
 6. Assurez-vous que l'image sera accessible à tout moment</target>
         <context-group purpose="location">
@@ -177,15 +178,15 @@
         </context-group>
       </trans-unit>
       <trans-unit id="postImgText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt;
-2. Click on &quot;Choose images&quot;
+        <source>1. Go to &lt;a href="https://postimages.org/" target="_blank"&gt;Post Image&lt;/a&gt;
+2. Click on "Choose images"
 3. Upload your file
-4. Copy the &quot;Direct link&quot; and paste it here
+4. Copy the "Direct link" and paste it here
 5. Make sure the image will be accessible at anytime</source>
-        <target>1. Allez sur &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt;
-2. Cliquez sur &quot;Choisir des images&quot;
+        <target>1. Allez sur &lt;a href="https://postimages.org/" target="_blank"&gt;Post Image&lt;/a&gt;
+2. Cliquez sur "Choisir des images"
 3. Téléchargez votre fichier
-4. Copiez le &quot;Lien direct&quot; et collez-le ici
+4. Copiez le "Lien direct" et collez-le ici
 5. Assurez-vous que l'image sera accessible à tout moment
         </target>
         <context-group purpose="location">
@@ -550,8 +551,20 @@
         </context-group>
       </trans-unit>
       <trans-unit id="1800654063096960851" datatype="html">
-        <source> The current bid is at <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION"/> <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong"/></source>
-        <target>L'enchère actuelle est à <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION"/> <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong"/></target>
+        <source>
+           The current bid is at
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong"/>
+        </source>
+        <target>
+          L'enchère actuelle est à
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong"/>
+        </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">95,97</context>
@@ -590,16 +603,48 @@
         </context-group>
       </trans-unit>
       <trans-unit id="4147570005782466397" datatype="html">
-        <source> Transaction ID: <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="ss }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/> Amount Withdrawn: <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION_1"/> <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;&gt;"/>View on Etherscan<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
-        <target> ID de transaction : <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="ss }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/> Montant retiré : <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION_1"/> <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;&gt;"/>Voir sur Etherscan<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
+        <source>
+           Transaction ID:  Amount Withdrawn:  View on Etherscan
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="ss }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION_1"/>
+          <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
+        <target>
+           ID de transaction :  Montant retiré :  Voir sur Etherscan
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="ss }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION_1"/>
+          <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">151,158</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6887169880348244051" datatype="html">
-        <source> Refreshing... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> seconds </source>
-        <target> Actualisation... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> secondes </target>
+        <source>
+           Refreshing...  seconds
+          <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/>
+        </source>
+        <target>
+           Actualisation...  secondes
+          <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/>
+        </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">178,180</context>
@@ -694,8 +739,14 @@
         </context-group>
       </trans-unit>
       <trans-unit id="8968543130328972761" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="bidResult.total }}"/> <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/></source>
-        <target><x id="INTERPOLATION" equiv-text="bidResult.total }}"/> <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/></target>
+        <source>
+          <x id="INTERPOLATION" equiv-text="bidResult.total }}"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/>
+        </source>
+        <target>
+          <x id="INTERPOLATION" equiv-text="bidResult.total }}"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/>
+        </target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
           <context context-type="linenumber">23,24</context>
@@ -742,7 +793,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.description" datatype="html">
-        <source>Effortlessly initiate and propagate bids among your peers. This feature has been fine-tuned for the network&apos;s native tokens, ensuring seamless integration and reliability. Dive into the bidding process with enhanced transparency and full control, while catering to your specific requirements within the network&apos;s ecosystem.</source>
+        <source>Effortlessly initiate and propagate bids among your peers. This feature has been fine-tuned for the network's native tokens, ensuring seamless integration and reliability. Dive into the bidding process with enhanced transparency and full control, while catering to your specific requirements within the network's ecosystem.</source>
         <target>Lancez et propagez facilement des enchères parmi vos pairs. Cette fonctionnalité a été optimisée pour les jetons natifs du réseau, garantissant une intégration transparente et fiable. Plongez dans le processus d'enchère avec une transparence accrue et un contrôle total, tout en répondant à vos besoins spécifiques au sein de l'écosystème du réseau.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
@@ -758,11 +809,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.createBidDescription" datatype="html">
-        <source>Kickstart your bidding process with &apos;Create a Bid.&apos; Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.</source>
+        <source>Kickstart your bidding process with 'Create a Bid.' Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
           <context context-type="linenumber">19</context>
         </context-group>
+        <target>Lancez votre processus d'enchères avec 'Créez une offre'. Personnalisez votre offre en toute simplicité, en garantissant une configuration sécurisée et simple. Idéal pour diverses offres, cette fonctionnalité simplifie le lancement des enchères sur notre plateforme décentralisée.</target>
       </trans-unit>
       <trans-unit id="useCases.bid.joinBid" datatype="html">
         <source>Join a bid</source>
@@ -770,13 +822,15 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
           <context context-type="linenumber">24</context>
         </context-group>
+        <target>Rejoignez une enchère</target>
       </trans-unit>
       <trans-unit id="useCases.bid.joinBidDescription" datatype="html">
-        <source>Dive into existing bids with &apos;Join a Bid.&apos; Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.</source>
+        <source>Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
           <context context-type="linenumber">25</context>
         </context-group>
+        <target>Plongez dans les offres existantes avec 'Rejoindre une offre'. Trouvez et participez aux offres qui correspondent à vos intérêts. Notre plateforme offre un moyen simple et sécurisé pour s'engager avec la communauté d'enchères décentralisée.</target>
       </trans-unit>
       <trans-unit id="8279184784576934083" datatype="html">
         <source>A connected wallet is necessary to see the the progress of the bid.</source>
@@ -784,6 +838,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">9</context>
         </context-group>
+        <target>Un portefeuille connecté est nécessaire pour voir le progrès de l'offre.</target>
       </trans-unit>
       <trans-unit id="5362875351638477540" datatype="html">
         <source> Creating your bid... Please confirm the request on your wallet. This could take 5 minutes, please stay on this page. </source>
@@ -791,16 +846,26 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">28,31</context>
         </context-group>
+        <target>Création de votre offre... Veuillez confirmer la demande sur votre portefeuille. Cela pourrait prendre 5 minutes, veuillez rester sur cette page.</target>
       </trans-unit>
       <trans-unit id="3608373080967256145" datatype="html">
-        <source> The bid you are seeking cannot be found on this network. Please verify that you have entered the correct address and are on the appropriate network. Please check the URL or go back to the <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;&gt;"/>search<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> page. </source>
+        <source>
+           The bid you are seeking cannot be found on this network. Please verify that you have entered the correct address and are on the appropriate network. Please check the URL or go back to the search page.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">77,81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="900151136510105459" datatype="html">
-        <source> Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Thank you for your patience. </source>
+        <source>
+           Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: . Thank you for your patience.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;>"/>
+          <x id="INTERPOLATION" equiv-text="$ | async }}"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text=">"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">83,88</context>
@@ -812,13 +877,15 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
+        <target>Document Protégé</target>
       </trans-unit>
       <trans-unit id="6362446482375896189" datatype="html">
-        <source> This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security and integrity. Access to its content is exclusively reserved for the document&apos;s owner and the initial purchaser, reflecting a new standard in document privacy and ownership. </source>
+        <source> This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security and integrity. Access to its content is exclusively reserved for the document's owner and the initial purchaser, reflecting a new standard in document privacy and ownership. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">5,9</context>
         </context-group>
+        <target>Ce document est verrouillé de manière sécurisée et stocké en utilisant une technologie blockchain avancée, garantissant une sécurité et une intégrité inégalées. L'accès à son contenu est exclusivement réservé au propriétaire du document et à l'acheteur initial, reflétant une nouvelle norme en matière de confidentialité et de propriété des documents.</target>
       </trans-unit>
       <trans-unit id="8305010609335633188" datatype="html">
         <source>Already unlocked by an account</source>
@@ -826,6 +893,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">21</context>
         </context-group>
+        <target>Déjà déverrouillé par un compte</target>
       </trans-unit>
       <trans-unit id="3204095266434866558" datatype="html">
         <source>Document unlocked</source>
@@ -833,6 +901,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">29</context>
         </context-group>
+        <target>Document déverrouillé</target>
       </trans-unit>
       <trans-unit id="6837890927238901672" datatype="html">
         <source> This document has already been unlocked by another user. This means that the content of this document is only accessible to the owner of the document and the user who unlocked it first. </source>
@@ -840,6 +909,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">36,39</context>
         </context-group>
+        <target>Ce document a déjà été déverrouillé par un autre utilisateur. Cela signifie que le contenu de ce document n'est accessible qu'au propriétaire du document et à l'utilisateur qui l'a déverrouillé en premier.</target>
       </trans-unit>
       <trans-unit id="7898632869036538763" datatype="html">
         <source> This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded </source>
@@ -851,6 +921,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">54,57</context>
         </context-group>
+        <target>Cette description n'est visible que pour le propriétaire du document et le premier acheteur. Assurez-vous que votre écran n'est pas enregistré.</target>
       </trans-unit>
       <trans-unit id="1030764705504048600" datatype="html">
         <source> This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded. </source>
@@ -858,6 +929,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">64,67</context>
         </context-group>
+        <target>Cette description n'est visible que pour le propriétaire du document et le premier acheteur. Assurez-vous que votre écran n'est pas enregistré.</target>
       </trans-unit>
       <trans-unit id="5147420690514910748" datatype="html">
         <source> The detailed description of this document remains securely locked. Full access to this content will be granted upon completion of the contract payment, ensuring exclusive access for authorized parties. </source>
@@ -865,9 +937,14 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">76,79</context>
         </context-group>
+        <target>La description détaillée de ce document reste sécurisée et verrouillée. L'accès complet à ce contenu sera accordé à la fin du paiement du contrat, garantissant un accès exclusif aux parties autorisées.</target>
       </trans-unit>
       <trans-unit id="2416307778914933359" datatype="html">
-        <source> As the owner of this document, this is currently unlocked for you. You can see the full content of this by clicking here. Make sure your screen is not shared with anyone else. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;&gt;"/>Unlock here<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <source>
+           As the owner of this document, this is currently unlocked for you. You can see the full content of this by clicking here. Make sure your screen is not shared with anyone else. Unlock here
+          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;>"/>
+          <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">95,98</context>
@@ -879,6 +956,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">102,105</context>
         </context-group>
+        <target>Le paiement est en cours de traitement et peut prendre quelques minutes. Une fois confirmé depuis votre portefeuille, actualisez pour déverrouiller le document. Si des problèmes surviennent, la transaction sera annulée.</target>
       </trans-unit>
       <trans-unit id="2126091035409486953" datatype="html">
         <source>Hide card</source>
@@ -886,9 +964,13 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">114</context>
         </context-group>
+        <target>Masquer la carte</target>
       </trans-unit>
       <trans-unit id="ocumentLockerContent.AlreadySoldAt" datatype="html">
-        <source> Already sold at <x id="PH" equiv-text="priceInfo"/></source>
+        <source>
+           Already sold at
+          <x id="PH" equiv-text="priceInfo"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.ts</context>
           <context context-type="linenumber">91</context>
@@ -900,6 +982,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
+        <target>Nom du document</target>
       </trans-unit>
       <trans-unit id="6155091458396218652" datatype="html">
         <source> Document name is required </source>
@@ -911,6 +994,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">18,20</context>
         </context-group>
+        <target>Le nom du document est requis</target>
       </trans-unit>
       <trans-unit id="464221014065088612" datatype="html">
         <source>Document created by</source>
@@ -918,6 +1002,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
+        <target>Document créé par</target>
       </trans-unit>
       <trans-unit id="5098159087618580951" datatype="html">
         <source> Network is not matching with wallet</source>
@@ -925,6 +1010,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">33</context>
         </context-group>
+        <target>Le réseau ne correspond pas au portefeuille</target>
       </trans-unit>
       <trans-unit id="765221008193972426" datatype="html">
         <source>Unlocking amount</source>
@@ -932,6 +1018,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">46</context>
         </context-group>
+        <target>Déblocage du montant</target>
       </trans-unit>
       <trans-unit id="6243916962387560750" datatype="html">
         <source> Price is required </source>
@@ -939,6 +1026,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">48</context>
         </context-group>
+        <target>Le prix est requis</target>
       </trans-unit>
       <trans-unit id="2486509369524484491" datatype="html">
         <source> Price has to be greater than 0 </source>
@@ -946,9 +1034,14 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">49</context>
         </context-group>
+        <target>Le prix doit être supérieur à 0</target>
       </trans-unit>
       <trans-unit id="360586526427198849" datatype="html">
-        <source> Accept <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. 0.1% of community fee will be deducted from the final transaction. </source>
+        <source>
+           Accept terms and conditions. 0.1% of community fee will be deducted from the final transaction.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">71,75</context>
@@ -960,6 +1053,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">79,81</context>
         </context-group>
+        <target>Vous devez accepter les termes et conditions.</target>
       </trans-unit>
       <trans-unit id="documentLockerGenerateDocumentBtnText" datatype="html">
         <source>Generate Document</source>
@@ -967,6 +1061,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.ts</context>
           <context context-type="linenumber">21</context>
         </context-group>
+        <target>Générer le Document</target>
       </trans-unit>
       <trans-unit id="useCasesDocumentLockerTitle" datatype="html">
         <source>Document Locker</source>
@@ -974,6 +1069,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
           <context context-type="linenumber">11</context>
         </context-group>
+        <target>Verrou de Document</target>
       </trans-unit>
       <trans-unit id="useCasesDocumentLockerDescription" datatype="html">
         <source>Explore the pinnacle of document security with our Document Locker. Utilizing cutting-edge blockchain technology, we offer an unparalleled level of protection and privacy for your valuable documents. This service is tailored for those who demand the highest standards of security and exclusive access.</source>
@@ -981,6 +1077,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
           <context context-type="linenumber">13</context>
         </context-group>
+        <target>Explorez le summum de la sécurité des documents avec notre Coffre de Documents. Utilisant une technologie blockchain de pointe, nous offrons un niveau de protection et de confidentialité inégalé pour vos documents précieux. Ce service est adapté pour ceux qui exigent les normes les plus élevées de sécurité et un accès exclusif.</target>
       </trans-unit>
       <trans-unit id="lockDocumentTitle" datatype="html">
         <source>Lock a document</source>
@@ -988,6 +1085,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
           <context context-type="linenumber">18</context>
         </context-group>
+        <target>Verrouiller un document</target>
       </trans-unit>
       <trans-unit id="lockDocumentDescription" datatype="html">
         <source>Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.</source>
@@ -995,6 +1093,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
           <context context-type="linenumber">19</context>
         </context-group>
+        <target>Protégez vos documents avec notre Coffre à Documents basé sur la blockchain, garantissant un accès exclusif et une confidentialité maximale.</target>
       </trans-unit>
       <trans-unit id="3874221906143763852" datatype="html">
         <source>Searching document locked</source>
@@ -1002,6 +1101,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/containers/document-locker-found/document-locker-found.component.html</context>
           <context context-type="linenumber">41</context>
         </context-group>
+        <target>Recherche de document verrouillé</target>
       </trans-unit>
       <trans-unit id="documentLockerFoundTitle" datatype="html">
         <source>Document Locked</source>
@@ -1009,6 +1109,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/containers/document-locker-found/document-locker-found.component.ts</context>
           <context context-type="linenumber">44</context>
         </context-group>
+        <target>Document Verrouillé</target>
       </trans-unit>
       <trans-unit id="documentLockerMakerTitle" datatype="html">
         <source>Create a locked document</source>
@@ -1016,6 +1117,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/containers/document-locker-maker/document-locker-maker.component.ts</context>
           <context context-type="linenumber">21</context>
         </context-group>
+        <target>Créez un document verrouillé</target>
       </trans-unit>
       <trans-unit id="6811901802533648897" datatype="html">
         <source>N/A</source>
@@ -1023,6 +1125,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">37</context>
         </context-group>
+        <target>S/O</target>
       </trans-unit>
       <trans-unit id="4241281336435708069" datatype="html">
         <source> To retrieve the current conversion rate, ensure the appropriate network is selected in your wallet </source>
@@ -1030,6 +1133,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">39,41</context>
         </context-group>
+        <target>Pour récupérer le taux de conversion actuel, assurez-vous que le réseau approprié est sélectionné dans votre portefeuille</target>
       </trans-unit>
       <trans-unit id="1142017936680420194" datatype="html">
         <source>Payment Expired</source>
@@ -1037,9 +1141,14 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">96</context>
         </context-group>
+        <target>Paiement Expiré</target>
       </trans-unit>
       <trans-unit id="5715712979751449266" datatype="html">
-        <source> Powered by <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/>ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <source>
+           Powered by ChainBrary
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;['/']&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">106,108</context>
@@ -1055,6 +1164,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
           <context context-type="linenumber">113</context>
         </context-group>
+        <target>Veuillez connecter votre portefeuille</target>
       </trans-unit>
       <trans-unit id="4112850117898161412" datatype="html">
         <source>@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet</source>
@@ -1062,9 +1172,14 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
           <context context-type="linenumber">122</context>
         </context-group>
+        <target>@@CommonErrorMessage.NetworkMismatch:Décalage de réseau avec le portefeuille</target>
       </trans-unit>
       <trans-unit id="7799133836890831347" datatype="html">
-        <source> Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. </source>
+        <source>
+           Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on Discord.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
           <context context-type="linenumber">7,11</context>
@@ -1076,6 +1191,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
           <context context-type="linenumber">35</context>
         </context-group>
+        <target>Détails de l'Utilisateur</target>
       </trans-unit>
       <trans-unit id="5233548361040336324" datatype="html">
         <source>Review &amp; Confirm</source>
@@ -1083,6 +1199,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
           <context context-type="linenumber">52</context>
         </context-group>
+        <target>Vérifier &amp; Confirmer</target>
       </trans-unit>
       <trans-unit id="4567472610129948905" datatype="html">
         <source>A connected wallet is required for conversion rates.</source>
@@ -1090,6 +1207,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">9</context>
         </context-group>
+        <target>Un portefeuille connecté est requis pour les taux de conversion.</target>
       </trans-unit>
       <trans-unit id="8594720254866711271" datatype="html">
         <source>Choose token</source>
@@ -1097,6 +1215,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">19</context>
         </context-group>
+        <target>Choisir un jeton</target>
       </trans-unit>
       <trans-unit id="436473593501677616" datatype="html">
         <source>$USD</source>
@@ -1104,6 +1223,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">70</context>
         </context-group>
+        <target>$USD</target>
       </trans-unit>
       <trans-unit id="2376758992024201726" datatype="html">
         <source>Lock in USD value (0.1% fee)</source>
@@ -1111,6 +1231,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">74</context>
         </context-group>
+        <target>Verrouiller la valeur en USD (frais de 0,1%)</target>
       </trans-unit>
       <trans-unit id="3479439260272663944" datatype="html">
         <source>Wallet Address</source>
@@ -1118,6 +1239,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
+        <target>Adresse du Portefeuille</target>
       </trans-unit>
       <trans-unit id="8842979419223449260" datatype="html">
         <source> A wallet address must start with 0x </source>
@@ -1125,6 +1247,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">16,18</context>
         </context-group>
+        <target>Une adresse de portefeuille doit commencer par 0x</target>
       </trans-unit>
       <trans-unit id="2653855312577235883" datatype="html">
         <source>Link an avatar (Optional)</source>
@@ -1132,6 +1255,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">29</context>
         </context-group>
+        <target>Liez un avatar (Facultatif)</target>
       </trans-unit>
       <trans-unit id="8953033926734869941" datatype="html">
         <source>Name</source>
@@ -1139,6 +1263,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">40</context>
         </context-group>
+        <target>Nom</target>
       </trans-unit>
       <trans-unit id="8554234730084811933" datatype="html">
         <source> Name must be less than 20 characters </source>
@@ -1146,6 +1271,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">42,44</context>
         </context-group>
+        <target>Le nom doit contenir moins de 20 caractères</target>
       </trans-unit>
       <trans-unit id="2503622792148307607" datatype="html">
         <source> Enter your wallet address to receive funds </source>
@@ -1153,10 +1279,16 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">51,53</context>
         </context-group>
+        <target>Entrez votre adresse de portefeuille pour recevoir des fonds</target>
       </trans-unit>
       <trans-unit id="661279433040764999" datatype="html">
-        <source> You&apos;re requesting <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong
-        &gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Rest assured, the transaction will be initiated to precisely match this amount, irrespective of any token volatility. </source>
+        <source>
+           You're requesting $USD .  Rest assured, the transaction will be initiated to precisely match this amount, irrespective of any token volatility.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&#xA;        >"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">4,10</context>
@@ -1168,9 +1300,13 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">14</context>
         </context-group>
+        <target>Nom du destinataire</target>
       </trans-unit>
       <trans-unit id="2399487698306392686" datatype="html">
-        <source>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</source>
+        <source>
+          ($USD )
+          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">21</context>
@@ -1186,16 +1322,24 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
+        <target>Frais de protocole (0,1%)</target>
       </trans-unit>
       <trans-unit id="2583197000088136437" datatype="html">
-        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Receiving Amount<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></source>
+        <source>
+          Receiving Amount
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8519270983879897918" datatype="html">
-        <source>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</source>
+        <source>
+          (USD$ )
+          <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">40</context>
@@ -1207,6 +1351,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">73</context>
         </context-group>
+        <target>Lien généré</target>
       </trans-unit>
       <trans-unit id="4026403231403048088" datatype="html">
         <source>Show QR Code</source>
@@ -1214,6 +1359,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">90</context>
         </context-group>
+        <target>Afficher le Code QR</target>
       </trans-unit>
       <trans-unit id="CommonText.LinkCopiedToClipboard" datatype="html">
         <source>Link copied to clipboard</source>
@@ -1221,6 +1367,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.ts</context>
           <context context-type="linenumber">50</context>
         </context-group>
+        <target>Lien copié dans le presse-papiers</target>
       </trans-unit>
       <trans-unit id="2711460010464843071" datatype="html">
         <source>Attention: This is a preview of your request. Avoid the mistake of self-payment.</source>
@@ -1228,6 +1375,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">6</context>
         </context-group>
+        <target>Attention: Ceci est un aperçu de votre demande. Évitez l'erreur de l'auto-paiement.</target>
       </trans-unit>
       <trans-unit id="6236714119050776000" datatype="html">
         <source>Payment Request</source>
@@ -1235,23 +1383,40 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">15</context>
         </context-group>
+        <target>Demande de Paiement</target>
       </trans-unit>
       <trans-unit id="4403433136208247804" datatype="html">
-        <source> You&apos;ve reached ChainBrary&apos;s secure payment portal. Fast, secure, and reliable cryptocurrency transactions start here. Verify, confirm, and go! </source>
+        <source> You've reached ChainBrary's secure payment portal. Fast, secure, and reliable cryptocurrency transactions start here. Verify, confirm, and go! </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">23,26</context>
         </context-group>
+        <target>Vous avez atteint le portail de paiement sécurisé de ChainBrary. Les transactions de cryptomonnaie rapides, sécurisées et fiables commencent ici. Vérifiez, confirmez et allez-y!</target>
       </trans-unit>
       <trans-unit id="6417299265220958493" datatype="html">
-        <source> Please be connected on the <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="async)?.name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> network to use this feature. </source>
+        <source>
+           Please be connected on the  network to use this feature.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="async)?.name }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">59,62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7306017679756660793" datatype="html">
-        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> is requesting a sum equivalent to <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> To ensure accuracy, the transaction will be precisely calculated to match this amount in <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> prior to processing the payment. </source>
+        <source>
+           is requesting a sum equivalent to $ USD.  To ensure accuracy, the transaction will be precisely calculated to match this amount in  prior to processing the payment.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
+          <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">97,102</context>
@@ -1263,6 +1428,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
           <context context-type="linenumber">41</context>
         </context-group>
+        <target>Demande de Paiement</target>
       </trans-unit>
       <trans-unit id="paymentRequestDescription" datatype="html">
         <source>Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.</source>
@@ -1270,6 +1436,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
           <context context-type="linenumber">43</context>
         </context-group>
+        <target>Générez et partagez facilement des demandes de paiement via URL ou code QR. Cette fonctionnalité se concentre principalement sur la création de demandes de paiement, permettant aux utilisateurs de verrouiller les prix en USD, garantissant ainsi l'exactitude malgré les fluctuations de la valeur des tokens. Une variété de tokens est disponible pour répondre à divers besoins.</target>
       </trans-unit>
       <trans-unit id="8796421615214272364" datatype="html">
         <source>Know us better</source>
@@ -1281,6 +1448,7 @@
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
           <context context-type="linenumber">10</context>
         </context-group>
+        <target>Connaissez-nous mieux</target>
       </trans-unit>
       <trans-unit id="3603629723179660571" datatype="html">
         <source>Got questions? Reach us our social media</source>
@@ -1288,6 +1456,7 @@
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
           <context context-type="linenumber">13</context>
         </context-group>
+        <target>Des questions ? Contactez-nous sur nos réseaux sociaux.</target>
       </trans-unit>
       <trans-unit id="4579496777570550463" datatype="html">
         <source>Social</source>
@@ -1295,6 +1464,7 @@
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
           <context context-type="linenumber">18</context>
         </context-group>
+        <target>Social</target>
       </trans-unit>
       <trans-unit id="5048936242025669992" datatype="html">
         <source>Developer Playground: Enter the Matrix of Code!</source>
@@ -1302,6 +1472,7 @@
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.html</context>
           <context context-type="linenumber">5</context>
         </context-group>
+        <target>Aire de Jeux du Développeur: Entrez dans la Matrice du Code !</target>
       </trans-unit>
       <trans-unit id="headerBtn.Home" datatype="html">
         <source>Home</source>
@@ -1309,6 +1480,7 @@
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
           <context context-type="linenumber">34</context>
         </context-group>
+        <target>Accueil</target>
       </trans-unit>
       <trans-unit id="headerBtn.Github" datatype="html">
         <source>Github</source>
@@ -1316,6 +1488,7 @@
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
           <context context-type="linenumber">39</context>
         </context-group>
+        <target>Github</target>
       </trans-unit>
       <trans-unit id="headerBtn.Discord" datatype="html">
         <source>Discord</source>
@@ -1323,6 +1496,7 @@
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
           <context context-type="linenumber">44</context>
         </context-group>
+        <target>Discorde</target>
       </trans-unit>
       <trans-unit id="8505691224260767503" datatype="html">
         <source>Term and condition</source>
@@ -1330,9 +1504,14 @@
           <context context-type="sourcefile">src/app/shared/components/term-and-cond-modal/term-and-cond-modal.component.html</context>
           <context context-type="linenumber">4</context>
         </context-group>
+        <target>Termes et conditions</target>
       </trans-unit>
       <trans-unit id="8752869079658836635" datatype="html">
-        <source> Your transaction has been sent and is processing on the blockchain. Thank you for choosing our reliable and secure platform. Check its status by clicking <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;&gt;"/>here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <source>
+           Your transaction has been sent and is processing on the blockchain. Thank you for choosing our reliable and secure platform. Check its status by clicking here
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
           <context context-type="linenumber">4,6</context>
@@ -1344,6 +1523,7 @@
           <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar-header/use-cases-sidebar-header.component.html</context>
           <context context-type="linenumber">36</context>
         </context-group>
+        <target>Se déconnecter</target>
       </trans-unit>
       <trans-unit id="5874499849802990855" datatype="html">
         <source>Wrong network</source>
@@ -1351,6 +1531,7 @@
           <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar/use-cases-sidebar.component.html</context>
           <context context-type="linenumber">7</context>
         </context-group>
+        <target>Réseau incorrect</target>
       </trans-unit>
       <trans-unit id="5158254825592648580" datatype="html">
         <source>Your wallet does not match with the current selected network.</source>
@@ -1358,6 +1539,7 @@
           <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar/use-cases-sidebar.component.html</context>
           <context context-type="linenumber">8</context>
         </context-group>
+        <target>Votre portefeuille ne correspond pas au réseau actuellement sélectionné.</target>
       </trans-unit>
       <trans-unit id="bidTermAndCond" datatype="html">
         <source>
@@ -1370,7 +1552,7 @@ By participating in this auction, you agree to be bound by these Terms. All bidd
 Participants must be of legal age and capable of entering into legally binding contracts. By bidding, you confirm that you meet these requirements.
 
 ## 3. Auction Process
-- The auction starts with the smart contract&apos;s deployment and continues until the end time.
+- The auction starts with the smart contract's deployment and continues until the end time.
 - Bids must be in specified increments.
 - The highest bid at the end, meeting any reserve price, is the winning bid.
 
@@ -1388,10 +1570,10 @@ Ownership transfers upon full settlement of the winning bid.
 ## 7. Withdrawals
 - Withdrawal of the auction amount is permitted post-auction with at least one bidder.
 - A 0.1% withdrawal fee applies.
-- Withdrawals are allowed only after the auction&apos;s official end.
+- Withdrawals are allowed only after the auction's official end.
 
 ## 8. Role of Chainbrary
-Chainbrary facilitates the auction interface but does not control the smart contract. It&apos;s not responsible for any errors or bugs.
+Chainbrary facilitates the auction interface but does not control the smart contract. It's not responsible for any errors or bugs.
 
 ## 9. Liability
 The platform is not liable for issues like network downtime or user input errors.
@@ -1403,11 +1585,54 @@ Terms may be modified without notice. Continued use implies agreement to new ter
 For inquiries, reach out on [Discord](https://discord.gg/H3hFVuCrXN).
 
 By bidding, you affirm understanding and agreement with these Terms and Conditions.
-</source>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
           <context context-type="linenumber">1,44</context>
         </context-group>
+        <target>Avant de procéder aux enchères, veuillez lire attentivement les conditions générales suivantes :
+
+## 1. Accord des Conditions
+En participant à cette vente aux enchères, vous acceptez d'être lié par ces Conditions. Tous les enchérisseurs sont soumis à ces termes, et la participation signifie l'acceptation.
+
+## 2. Éligibilité
+Les participants doivent être en âge légal et capables de contracter des contrats juridiquement contraignants. En enchérissant, vous confirmez que vous répondez à ces exigences.
+
+## 3. Processus de la Vente aux Enchères
+- La vente aux enchères commence avec le déploiement du contrat intelligent et se poursuit jusqu'à la fin.
+- Les enchères doivent être faites par incréments spécifiés.
+- L'enchère la plus élevée à la fin, respectant tout prix de réserve, est l'enchère gagnante.
+
+## 4. Soumissions des Enchères
+- Les enchères sont définitives et contraignantes. Aucune rétraction n'est permise.
+- Les enchères dans les 10 dernières minutes prolongent la vente aux enchères de 10 minutes.
+- L'enchère la plus élevée prend le dessus après confirmation de la transaction.
+- Les enchères tardives sont retournées.
+- Le plus haut enchérisseur ne peut pas se rétracter ni surenchérir sur lui-même.
+- Les nouvelles enchères remboursent automatiquement le précédent enchérisseur le plus élevé.
+
+## 6. Transfert de Propriété
+Le transfert de propriété s'effectue à la réception complète de l'enchère gagnante.
+
+## 7. Retraits
+- Le retrait du montant de l'enchère est permis après l'enchère avec au moins un enchérisseur.
+- Des frais de retrait de 0,1% s'appliquent.
+- Les retraits ne sont autorisés qu'après la fin officielle de l'enchère.
+
+## 8. Rôle de Chainbrary
+Chainbrary facilite l'interface de la vente aux enchères, mais ne contrôle pas le contrat intelligent. Elle n'est pas responsable des erreurs ou des bugs.
+
+## 9. Responsabilité
+La plateforme n'est pas responsable des problèmes tels que les temps d'arrêt du réseau ou les erreurs de saisie de l'utilisateur.
+
+## 10. Modifications
+Les termes peuvent être modifiés sans préavis. L'utilisation continue implique l'accord avec les nouveaux termes.
+
+## 11. Nous Contacter
+Pour toute demande de renseignements, contactez-nous sur [Discord](https://discord.gg/H3hFVuCrXN).
+
+En enchérissant, vous confirmez avoir compris et accepter ces Conditions Générales.
+        </target>
       </trans-unit>
       <trans-unit id="documentLockerTermAndCond" datatype="html">
         <source>
@@ -1434,7 +1659,7 @@ Participants must be of legal age and capable of entering into legally binding c
 - Once unlocked, the document is solely accessible to the owner and the buyer and cannot be shared or accessed by others, ensuring exclusive and private use.
 
 ## 6. Transaction and Payments
-- Upon purchase, 99.9% of the funds are transferred directly to the document&apos;s owner, and 0.1% is contributed to the community.
+- Upon purchase, 99.9% of the funds are transferred directly to the document's owner, and 0.1% is contributed to the community.
 - There are no withdrawals or refunds once a purchase is made. The transaction is final and binding.
 
 ## 7. Role of Platform
@@ -1450,11 +1675,50 @@ Terms may be modified without notice. Continued use implies agreement to new ter
 For inquiries or assistance, reach out through our support channel.
 
 By using the Document Locker, you affirm understanding and agreement with these Terms and Conditions.
-</source>
+        </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
           <context context-type="linenumber">46,86</context>
         </context-group>
+        <target>Avant d'utiliser notre Coffre à Documents, veuillez lire attentivement les termes et conditions suivants :
+
+## 1. Accord des Termes
+En utilisant le Coffre à Documents, vous acceptez d'être lié par ces conditions. Tous les utilisateurs sont soumis à ces termes, et l'utilisation signifie l'acceptation.
+
+## 2. Éligibilité
+Les participants doivent être majeurs et capables de conclure des contrats juridiquement contraignants. En utilisant ce service, vous confirmez que vous remplissez ces exigences.
+
+## 3. Processus d'Utilisation
+- Les documents sont cryptés et stockés dès leur chargement.
+- L'accès aux documents est exclusivement accordé à l'acheteur et au propriétaire du contrat intelligent.
+- Une fois qu'un document est déverrouillé, il est définitivement crypté sur la blockchain, assurant qu'il ne peut pas être partagé ou accessible par d'autres parties.
+
+## 4. Soumissions de Documents
+- Tous les documents téléchargés restent la propriété intellectuelle du propriétaire d'origine.
+- Les utilisateurs doivent avoir le droit ou l'autorité de sécuriser les documents téléchargés.
+- La plateforme ne peut pas être utilisée pour des activités illégales ou le stockage de contenu interdit.
+
+## 5. Confidentialité et Sécurité
+- Nous employons des mesures de cryptage et de sécurité robustes pour protéger les documents.
+- Une fois déverrouillé, le document est uniquement accessible au propriétaire et à l'acheteur et ne peut être partagé ou accessible par d'autres, assurant une utilisation exclusive et privée.
+
+## 6. Transactions et Paiements
+- Lors de l'achat, 99,9% des fonds sont transférés directement au propriétaire du document, et 0,1% est contribué à la communauté.
+- Il n'y a pas de retraits ou de remboursements une fois un achat effectué. La transaction est définitive et contraignante.
+
+## 7. Rôle de la Plateforme
+Nous fournissons un environnement sécurisé pour le stockage de documents mais ne sommes pas responsables du contenu des documents ou des actions des utilisateurs.
+
+## 8. Responsabilité
+La plateforme n'est pas responsable des problèmes tels que l'accès non autorisé dû à la négligence de l'utilisateur ou à des failles de sécurité imprévues.
+
+## 9. Modifications
+Les termes peuvent être modifiés sans préavis. L'utilisation continue implique l'accord avec les nouveaux termes.
+
+## 10. Contactez-nous
+Pour toute demande ou assistance, contactez-nous via notre canal de support.
+
+En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Termes et Conditions.</target>
       </trans-unit>
       <trans-unit id="commonButtonTextCancel" datatype="html">
         <source>Cancel</source>
@@ -1462,6 +1726,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">2</context>
         </context-group>
+        <target>Annuler</target>
       </trans-unit>
       <trans-unit id="commonButtonTextConnectWallet" datatype="html">
         <source>Connect Wallet</source>
@@ -1469,6 +1734,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">3</context>
         </context-group>
+        <target>Connecter le Portefeuille</target>
       </trans-unit>
       <trans-unit id="commonButtonTextConfirm" datatype="html">
         <source>Confirm</source>
@@ -1476,6 +1742,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">4</context>
         </context-group>
+        <target>Confirmer</target>
       </trans-unit>
       <trans-unit id="commonButtonTextSubmit" datatype="html">
         <source>Submit</source>
@@ -1483,6 +1750,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">5</context>
         </context-group>
+        <target>Soumettre</target>
       </trans-unit>
       <trans-unit id="commonButtonTextBack" datatype="html">
         <source>Back</source>
@@ -1490,6 +1758,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">6</context>
         </context-group>
+        <target>Arrière</target>
       </trans-unit>
       <trans-unit id="commonButtonTextNext" datatype="html">
         <source>Next</source>
@@ -1497,6 +1766,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">7</context>
         </context-group>
+        <target>Prochain</target>
       </trans-unit>
       <trans-unit id="commonButtonTextPreview" datatype="html">
         <source>Preview</source>
@@ -1504,6 +1774,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
           <context context-type="linenumber">8</context>
         </context-group>
+        <target>Aperçu</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.TransactionIsProcessing" datatype="html">
         <source>Transaction is processing</source>
@@ -1515,6 +1786,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
           <context context-type="linenumber">415</context>
         </context-group>
+        <target>La transaction est en cours de traitement</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
         <source>Network is updated</source>
@@ -1522,6 +1794,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
           <context context-type="linenumber">82</context>
         </context-group>
+        <target>Le réseau est mis à jour</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.AnUnexpectedErrorOccurred" datatype="html">
         <source>An unexpected error occurred</source>
@@ -1533,6 +1806,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
           <context context-type="linenumber">140</context>
         </context-group>
+        <target>Une erreur inattendue s'est produite</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.auctionNotOngoing" datatype="html">
         <source>This auction is not ongoing</source>
@@ -1540,6 +1814,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">21</context>
         </context-group>
+        <target>Cette enchère n'est pas en cours</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.alreadyHighestBidder" datatype="html">
         <source>You are already the highest bidder</source>
@@ -1547,6 +1822,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">22</context>
         </context-group>
+        <target>Vous êtes déjà le plus haut enchérisseur</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.bidAmountNotHighEnough" datatype="html">
         <source>Your bid amount is not high enough</source>
@@ -1554,6 +1830,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">23</context>
         </context-group>
+        <target>Votre montant d'offre n'est pas assez élevé.</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhilePlacingYourBid" datatype="html">
         <source>An error occured while placing your bid</source>
@@ -1561,6 +1838,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">171</context>
         </context-group>
+        <target>Une erreur s'est produite lors de la soumission de votre enchère</target>
       </trans-unit>
       <trans-unit id="BidResponse.Success.BidPlacedSuccessfully" datatype="html">
         <source>Bid placed successfully</source>
@@ -1568,6 +1846,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">189</context>
         </context-group>
+        <target>Offre placée avec succès</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.PleaseConnectYourWalletToCreateABid" datatype="html">
         <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
@@ -1575,6 +1854,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">213</context>
         </context-group>
+        <target>Portefeuille non connecté. Veuillez connecter votre portefeuille et réessayer. Si vous n'avez pas de portefeuille, veuillez en créer un.</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhileCreatingYourBid" datatype="html">
         <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.</source>
@@ -1582,6 +1862,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">240</context>
         </context-group>
+        <target>Une erreur s'est produite avec votre portefeuille. Veuillez vous assurer que vous utilisez la bonne adresse et le bon réseau. De plus, vérifiez que vous avez suffisamment de fonds disponibles pour le déploiement de l'enchère sur la blockchain.</target>
       </trans-unit>
       <trans-unit id="BidResponse.BidCreatedSuccessfully" datatype="html">
         <source>Bid created successfully</source>
@@ -1589,6 +1870,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">254</context>
         </context-group>
+        <target>Offre créée avec succès</target>
       </trans-unit>
       <trans-unit id="BidResponse.WithdrawRequestSentSuccessfully" datatype="html">
         <source>Withdraw request sent successfully</source>
@@ -1596,6 +1878,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">305</context>
         </context-group>
+        <target>Demande de retrait envoyée avec succès</target>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhileSearchingForYourBid" datatype="html">
         <source>This address is not associated with any bids that have been created. Please make sure the network is correct and try again.</source>
@@ -1603,6 +1886,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">351</context>
         </context-group>
+        <target>Cette adresse n'est associée à aucune offre qui a été créée. Veuillez vous assurer que le réseau est correct et réessayez.</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.notEnoughFunds" datatype="html">
         <source>Not enough funds</source>
@@ -1610,6 +1894,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">20</context>
         </context-group>
+        <target>Fonds insuffisants</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.calculationError" datatype="html">
         <source>Calculation error</source>
@@ -1617,6 +1902,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">21</context>
         </context-group>
+        <target>Erreur de calcul</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.noAccess" datatype="html">
         <source>No access</source>
@@ -1624,6 +1910,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">22</context>
         </context-group>
+        <target>Aucun accès</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.notFound" datatype="html">
         <source>Not found</source>
@@ -1631,6 +1918,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">23</context>
         </context-group>
+        <target>Non trouvé</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.contractCreationError" datatype="html">
         <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.</source>
@@ -1638,6 +1926,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">56</context>
         </context-group>
+        <target>Une erreur est survenue avec votre portefeuille. Veuillez vous assurer que vous utilisez la bonne adresse et le bon réseau. De plus, vérifiez que vous avez suffisamment de fonds disponibles pour le déploiement du document sur la blockchain.</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.unknownError" datatype="html">
         <source>An error occured while processing your document. Please try again.</source>
@@ -1645,6 +1934,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">247</context>
         </context-group>
+        <target>Une erreur est survenue lors du traitement de votre document. Veuillez réessayer.</target>
       </trans-unit>
       <trans-unit id="DocumentResponse.ContractUnlockingInProcess" datatype="html">
         <source>Contract unlocking in process</source>
@@ -1652,6 +1942,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">265</context>
         </context-group>
+        <target>Processus de déverrouillage du contrat en cours</target>
       </trans-unit>
       <trans-unit id="documentLockerErrors.walletNotConnected" datatype="html">
         <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
@@ -1659,6 +1950,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">288</context>
         </context-group>
+        <target>Portefeuille non connecté. Veuillez connecter votre portefeuille et réessayer. Si vous n'avez pas de portefeuille, veuillez en créer un.</target>
       </trans-unit>
       <trans-unit id="DocumentResponse.LockingDocumentCreatedSuccessfully" datatype="html">
         <source>Locking document created successfully</source>
@@ -1666,6 +1958,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
           <context context-type="linenumber">299</context>
         </context-group>
+        <target>Document verrouillé créé avec succès</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.TokenAddressNotFound" datatype="html">
         <source>Token address not found!</source>
@@ -1677,6 +1970,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
           <context context-type="linenumber">171</context>
         </context-group>
+        <target>Adresse du jeton introuvable !</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorApprovingToken" datatype="html">
         <source>Error approving token</source>
@@ -1684,6 +1978,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
           <context context-type="linenumber">259</context>
         </context-group>
+        <target>Erreur d'approbation de jeton</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
         <source>Error retreiving data from the blockchain</source>
@@ -1691,6 +1986,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
           <context context-type="linenumber">344</context>
         </context-group>
+        <target>Erreur lors de la récupération des données de la blockchain</target>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
         <source>Error decoding payment request</source>
@@ -1702,6 +1998,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
           <context context-type="linenumber">390</context>
         </context-group>
+        <target>Erreur lors du décodage de la demande de paiement</target>
       </trans-unit>
       <trans-unit id="transaction.payment.title" datatype="html">
         <source>Transaction sent successfully</source>
@@ -1709,6 +2006,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
           <context context-type="linenumber">32</context>
         </context-group>
+        <target>Transaction envoyée avec succès</target>
       </trans-unit>
       <trans-unit id="transaction.WalletIsNotConnected" datatype="html">
         <source>Wallet is not connected</source>
@@ -1716,6 +2014,7 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
           <context context-type="linenumber">52</context>
         </context-group>
+        <target>Le portefeuille n'est pas connecté</target>
       </trans-unit>
     </body>
   </file>

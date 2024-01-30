@@ -1,34 +1,31 @@
 import { parseStringPromise, Builder } from 'xml2js';
 import { readFileSync, writeFileSync } from 'fs';
-// import { Configuration, OpenAIApi } from 'openai';
-// import OpenAI from 'openai';
+import OpenAI from 'openai';
 
-// const configuration = new Configuration({
-//   apiKey: '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',
-// });
+const openai = new OpenAI({
+  apiKey: process.env['OPENAI_API_KEY'] // This is the default and can be omitted
+});
 
-// const openai = new OpenAIApi(configuration);
+const languageList: KeyAndValue[] = [
+  {
+    key: 'fr',
+    value: 'French'
+  }
+];
 
-// const translateText = async (text: string, targetLanguage: string): string => {
-
-const translateText = (text: string, targetLanguage: string): string => {
-  console.log('text', text);
-  console.log('targetLanguage', targetLanguage);
-  console.log('--------------------------------');
-  return 'boum';
-  // console.log('targetLanguage', targetLanguage);
-  // try {
-  //     const response = await openai.createTranslation({
-  //         model: "translation-model", // Replace with the specific translation model you intend to use
-  //         input: text,
-  //         source_language: "en", // Set the source language
-  //         target_language: targetLanguage,
-  //     });
-  //     return response.data.data[0].text;
-  // } catch (error) {
-  //     console.error("Error in translation:", error);
-  //     return null;
-  // }
+const translateText = async (text: string, targetLanguage: string): Promise<string> => {
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4',
+      messages: [
+        { role: 'system', content: 'You are a translation model for a blockchain app.' },
+        { role: 'user', content: `Translate this English text to ${targetLanguage}: ${text}` }
+      ]
+    });
+    return response.choices[0].message.content as string;
+  } catch (error) {
+    throw new Error('Failed to translate text. Please check the console for more details.');
+  }
 };
 
 const updateTranslations = async () => {
@@ -37,6 +34,7 @@ const updateTranslations = async () => {
 
   const originalXml = await parseStringPromise(originalContent);
   const translationXml = await parseStringPromise(translationContent);
+  const targetLanguage: string = languageList.find((l: KeyAndValue) => l.key === 'fr')?.value as string;
 
   for (const unit of originalXml.xliff.file[0].body[0]['trans-unit']) {
     const id = unit.$.id;
@@ -46,11 +44,23 @@ const updateTranslations = async () => {
       (u: { $: { id: string } }) => u.$.id === id
     );
 
+    // If it's just a string
     if (typeof sourceText === 'string') {
       if (translationUnit && translationUnit.target === undefined) {
-        translationUnit.target = [await translateText(sourceText, 'fr')];
+        try {
+          const translatedText = await translateText(sourceText, targetLanguage);
+          translationUnit.target = [translatedText];
+        } catch (error) {
+          throw new Error(`id: ${id}. Failed to translate text.`);
+        }
       }
     }
+
+    // // If it's an object
+    //   if (unit.source[0].x) {
+    //     console.log('unit.source[0].x', unit.source[0].x);
+    //     console.log('-----------------')
+    //   }
   }
 
   const builder = new Builder();
@@ -60,21 +70,7 @@ const updateTranslations = async () => {
 
 updateTranslations();
 
-// if object includes a x tag
-// if (unit.source[0].x) {
-//   console.log('unit.source[0].x', unit.source[0].x);
-//   console.log('-----------------')
-// }
-
-// if (!translationUnit || translationUnit.source[0] !== sourceText) {
-// const translatedText = await translateText(sourceText, 'fr');
-// if (translatedText) {
-//     if (translationUnit) {
-//         translationUnit.target[0] = translatedText;
-//     } else {
-//         // Handle the addition of new translation units
-//     }
-// }
-// }
-
-// writeFileSync('path/to/messages.fr.xlf', updatedXml);
+interface KeyAndValue {
+  key: string;
+  value: string;
+}
