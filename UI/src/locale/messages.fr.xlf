@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<xliff version="1.2"
-  xmlns="urn:oasis:names:tc:xliff:document:1.2">
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
       <trans-unit id="landingPage.openSource" datatype="html">
@@ -858,6 +857,11 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">77,81</context>
         </context-group>
+        <target>
+        L'offre que vous recherchez ne peut être trouvée sur ce réseau. Veuillez vérifier que vous avez entré la bonne adresse et que vous êtes sur le réseau approprié. Veuillez vérifier l'URL ou revenir à la page de recherche.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </target>
       </trans-unit>
       <trans-unit id="900151136510105459" datatype="html">
         <source>
@@ -870,6 +874,12 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">83,88</context>
         </context-group>
+        <target>
+        Veuillez noter que les temps de confirmation pour les offres récentes peuvent varier en raison des conditions du réseau. Pour le dernier statut, veuillez actualiser cette page. Si votre transaction est toujours en cours de traitement, vous pouvez la suivre ici : . Merci pour votre patience.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;>"/>
+          <x id="INTERPOLATION" equiv-text="$ | async }}"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text=">"/>
+        </target>
       </trans-unit>
       <trans-unit id="1133800758878907591" datatype="html">
         <source>Protected Document</source>
@@ -949,6 +959,11 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">95,98</context>
         </context-group>
+        <target>
+        En tant que propriétaire de ce document, il est actuellement déverrouillé pour vous. Vous pouvez voir le contenu complet de celui-ci en cliquant ici. Assurez-vous que votre écran n'est pas partagé avec d'autres personnes. Déverrouiller ici
+          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;>"/>
+          <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
+        </target>
       </trans-unit>
       <trans-unit id="3906114694097528014" datatype="html">
         <source> Payment is processing and may take a few minutes. Once confirmed from your wallet, refresh to unlock the document. If there are any issues, the transaction will be reverted. </source>
@@ -975,6 +990,10 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.ts</context>
           <context context-type="linenumber">91</context>
         </context-group>
+        <target>
+           Déjà vendu à 
+          <x id="PH" equiv-text="priceInfo"/>
+        </target>
       </trans-unit>
       <trans-unit id="5737197851349495875" datatype="html">
         <source>Document name</source>
@@ -1046,6 +1065,11 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">71,75</context>
         </context-group>
+        <target>
+        Acceptez les termes et conditions. 0,1% de frais communautaires seront déduits de la transaction finale.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </target>
       </trans-unit>
       <trans-unit id="6755765577650828224" datatype="html">
         <source> You must accept the terms and conditions. </source>
@@ -1157,6 +1181,11 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">39,42</context>
         </context-group>
+        <target>
+          Alimenté par ChainBrary
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;['/']&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </target>
       </trans-unit>
       <trans-unit id="CommonErrorMessage.ConnectYourWallet" datatype="html">
         <source>Please connect your wallet</source>
@@ -1184,6 +1213,11 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
           <context context-type="linenumber">7,11</context>
         </context-group>
+        <target>
+        Votre réseau actuel n'est pas pris en charge. Veuillez passer à un réseau compatible. Pour obtenir de l'aide ou partager vos suggestions avec notre communauté, rejoignez-nous sur Discord.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </target>
       </trans-unit>
       <trans-unit id="8296640497525814291" datatype="html">
         <source>User Details</source>
@@ -1293,6 +1327,13 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">4,10</context>
         </context-group>
+        <target>
+        Vous demandez $USD. Soyez assuré que la transaction sera initiée pour correspondre exactement à ce montant, indépendamment de toute volatilité de jeton.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&#xA;        >"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
+        </target>
       </trans-unit>
       <trans-unit id="5773154799247678156" datatype="html">
         <source>Receiver Name</source>
@@ -1315,6 +1356,10 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">29</context>
         </context-group>
+        <target>
+          ($USD )
+          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
+        </target>
       </trans-unit>
       <trans-unit id="2899790821846500123" datatype="html">
         <source>Protocol Fee (0.1%)</source>
@@ -1334,6 +1379,11 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">34</context>
         </context-group>
+        <target>
+          Montant Reçu
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+        </target>
       </trans-unit>
       <trans-unit id="8519270983879897918" datatype="html">
         <source>
@@ -1344,6 +1394,10 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">40</context>
         </context-group>
+        <target>
+          (USD$ )
+          <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>
+        </target>
       </trans-unit>
       <trans-unit id="1099954563952253687" datatype="html">
         <source>Link generated</source>
@@ -1404,6 +1458,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">59,62</context>
         </context-group>
+        <target>Veuillez être connecté au réseau pour utiliser cette fonctionnalité. &lt;x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/&gt;&lt;x id="INTERPOLATION" ctype="" equiv-text="async)?.name }}"/&gt;&lt;x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="réseau"/&gt;</target>
       </trans-unit>
       <trans-unit id="7306017679756660793" datatype="html">
         <source>
@@ -1421,6 +1476,17 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">97,102</context>
         </context-group>
+        <target>
+           demande une somme équivalente à $ USD. Pour assurer l'exactitude, la transaction sera calculée précisément pour correspondre à ce montant en  avant de traiter le paiement.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
+          <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/>
+        </target>
       </trans-unit>
       <trans-unit id="paymentRequestTitle" datatype="html">
         <source>Payment Request</source>
@@ -1516,6 +1582,11 @@
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
           <context context-type="linenumber">4,6</context>
         </context-group>
+        <target>
+        Votre transaction a été envoyée et est en cours de traitement sur la blockchain. Merci d'avoir choisi notre plateforme fiable et sécurisée. Vérifiez son statut en cliquant ici
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </target>
       </trans-unit>
       <trans-unit id="7507948636555938109" datatype="html">
         <source>Log out</source>
@@ -1544,18 +1615,14 @@
       <trans-unit id="bidTermAndCond" datatype="html">
         <source>
 Before you proceed with bidding, please carefully read the following terms and conditions:
-
 ## 1. Agreement to Terms
 By participating in this auction, you agree to be bound by these Terms. All bidders are subject to these terms, and participation signifies acceptance.
-
 ## 2. Eligibility
 Participants must be of legal age and capable of entering into legally binding contracts. By bidding, you confirm that you meet these requirements.
-
 ## 3. Auction Process
 - The auction starts with the smart contract's deployment and continues until the end time.
 - Bids must be in specified increments.
 - The highest bid at the end, meeting any reserve price, is the winning bid.
-
 ## 4. Bid Submissions
 - Bids are final and binding. No retraction is permitted.
 - Bids within the final 10 minutes extend the auction by 10 minutes.
@@ -1563,27 +1630,20 @@ Participants must be of legal age and capable of entering into legally binding c
 - Late bids are returned.
 - The highest bidder cannot retract or outbid themselves.
 - New bids automatically refund the previous highest bidder.
-
 ## 6. Transfer of Ownership
 Ownership transfers upon full settlement of the winning bid.
-
 ## 7. Withdrawals
 - Withdrawal of the auction amount is permitted post-auction with at least one bidder.
 - A 0.1% withdrawal fee applies.
 - Withdrawals are allowed only after the auction's official end.
-
 ## 8. Role of Chainbrary
 Chainbrary facilitates the auction interface but does not control the smart contract. It's not responsible for any errors or bugs.
-
 ## 9. Liability
 The platform is not liable for issues like network downtime or user input errors.
-
 ## 10. Amendments
 Terms may be modified without notice. Continued use implies agreement to new terms.
-
 ## 11. Contact Us
 For inquiries, reach out on [Discord](https://discord.gg/H3hFVuCrXN).
-
 By bidding, you affirm understanding and agreement with these Terms and Conditions.
         </source>
         <context-group purpose="location">
@@ -1591,18 +1651,14 @@ By bidding, you affirm understanding and agreement with these Terms and Conditio
           <context context-type="linenumber">1,44</context>
         </context-group>
         <target>Avant de procéder aux enchères, veuillez lire attentivement les conditions générales suivantes :
-
 ## 1. Accord des Conditions
 En participant à cette vente aux enchères, vous acceptez d'être lié par ces Conditions. Tous les enchérisseurs sont soumis à ces termes, et la participation signifie l'acceptation.
-
 ## 2. Éligibilité
 Les participants doivent être en âge légal et capables de contracter des contrats juridiquement contraignants. En enchérissant, vous confirmez que vous répondez à ces exigences.
-
 ## 3. Processus de la Vente aux Enchères
 - La vente aux enchères commence avec le déploiement du contrat intelligent et se poursuit jusqu'à la fin.
 - Les enchères doivent être faites par incréments spécifiés.
 - L'enchère la plus élevée à la fin, respectant tout prix de réserve, est l'enchère gagnante.
-
 ## 4. Soumissions des Enchères
 - Les enchères sont définitives et contraignantes. Aucune rétraction n'est permise.
 - Les enchères dans les 10 dernières minutes prolongent la vente aux enchères de 10 minutes.
@@ -1610,70 +1666,52 @@ Les participants doivent être en âge légal et capables de contracter des cont
 - Les enchères tardives sont retournées.
 - Le plus haut enchérisseur ne peut pas se rétracter ni surenchérir sur lui-même.
 - Les nouvelles enchères remboursent automatiquement le précédent enchérisseur le plus élevé.
-
 ## 6. Transfert de Propriété
 Le transfert de propriété s'effectue à la réception complète de l'enchère gagnante.
-
 ## 7. Retraits
 - Le retrait du montant de l'enchère est permis après l'enchère avec au moins un enchérisseur.
 - Des frais de retrait de 0,1% s'appliquent.
 - Les retraits ne sont autorisés qu'après la fin officielle de l'enchère.
-
 ## 8. Rôle de Chainbrary
 Chainbrary facilite l'interface de la vente aux enchères, mais ne contrôle pas le contrat intelligent. Elle n'est pas responsable des erreurs ou des bugs.
-
 ## 9. Responsabilité
 La plateforme n'est pas responsable des problèmes tels que les temps d'arrêt du réseau ou les erreurs de saisie de l'utilisateur.
-
 ## 10. Modifications
 Les termes peuvent être modifiés sans préavis. L'utilisation continue implique l'accord avec les nouveaux termes.
-
 ## 11. Nous Contacter
 Pour toute demande de renseignements, contactez-nous sur [Discord](https://discord.gg/H3hFVuCrXN).
-
 En enchérissant, vous confirmez avoir compris et accepter ces Conditions Générales.
         </target>
       </trans-unit>
       <trans-unit id="documentLockerTermAndCond" datatype="html">
         <source>
 Before utilizing our Document Locker, please carefully read the following terms and conditions:
-
 ## 1. Agreement to Terms
 By using the Document Locker, you agree to be bound by these Terms. All users are subject to these terms, and usage signifies acceptance.
-
 ## 2. Eligibility
 Participants must be of legal age and capable of entering into legally binding contracts. By using this service, you confirm that you meet these requirements.
-
 ## 3. Usage Process
 - Documents are encrypted and stored upon upload.
 - Access to documents is exclusively granted to the buyer and the owner of the smart contract.
 - Once a document is unlocked, it is permanently encrypted on the blockchain, ensuring it cannot be shared or accessed by any other parties.
-
 ## 4. Document Submissions
 - All documents uploaded remain the intellectual property of the original owner.
 - Users must have the right or authority to secure documents uploaded.
 - The platform may not be used for illegal activities or storing prohibited content.
-
 ## 5. Confidentiality and Security
 - We employ robust encryption and security measures to protect the documents.
 - Once unlocked, the document is solely accessible to the owner and the buyer and cannot be shared or accessed by others, ensuring exclusive and private use.
-
 ## 6. Transaction and Payments
 - Upon purchase, 99.9% of the funds are transferred directly to the document's owner, and 0.1% is contributed to the community.
 - There are no withdrawals or refunds once a purchase is made. The transaction is final and binding.
-
 ## 7. Role of Platform
 We provide a secure environment for document storage but are not responsible for the contents of the documents or the actions of users.
-
 ## 8. Liability
 The platform is not liable for issues like unauthorized access due to user negligence or unforeseen security breaches.
-
 ## 9. Amendments
 Terms may be modified without notice. Continued use implies agreement to new terms.
-
 ## 10. Contact Us
 For inquiries or assistance, reach out through our support channel.
-
 By using the Document Locker, you affirm understanding and agreement with these Terms and Conditions.
         </source>
         <context-group purpose="location">
@@ -1681,43 +1719,32 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="linenumber">46,86</context>
         </context-group>
         <target>Avant d'utiliser notre Coffre à Documents, veuillez lire attentivement les termes et conditions suivants :
-
 ## 1. Accord des Termes
 En utilisant le Coffre à Documents, vous acceptez d'être lié par ces conditions. Tous les utilisateurs sont soumis à ces termes, et l'utilisation signifie l'acceptation.
-
 ## 2. Éligibilité
 Les participants doivent être majeurs et capables de conclure des contrats juridiquement contraignants. En utilisant ce service, vous confirmez que vous remplissez ces exigences.
-
 ## 3. Processus d'Utilisation
 - Les documents sont cryptés et stockés dès leur chargement.
 - L'accès aux documents est exclusivement accordé à l'acheteur et au propriétaire du contrat intelligent.
 - Une fois qu'un document est déverrouillé, il est définitivement crypté sur la blockchain, assurant qu'il ne peut pas être partagé ou accessible par d'autres parties.
-
 ## 4. Soumissions de Documents
 - Tous les documents téléchargés restent la propriété intellectuelle du propriétaire d'origine.
 - Les utilisateurs doivent avoir le droit ou l'autorité de sécuriser les documents téléchargés.
 - La plateforme ne peut pas être utilisée pour des activités illégales ou le stockage de contenu interdit.
-
 ## 5. Confidentialité et Sécurité
 - Nous employons des mesures de cryptage et de sécurité robustes pour protéger les documents.
 - Une fois déverrouillé, le document est uniquement accessible au propriétaire et à l'acheteur et ne peut être partagé ou accessible par d'autres, assurant une utilisation exclusive et privée.
-
 ## 6. Transactions et Paiements
 - Lors de l'achat, 99,9% des fonds sont transférés directement au propriétaire du document, et 0,1% est contribué à la communauté.
 - Il n'y a pas de retraits ou de remboursements une fois un achat effectué. La transaction est définitive et contraignante.
-
 ## 7. Rôle de la Plateforme
 Nous fournissons un environnement sécurisé pour le stockage de documents mais ne sommes pas responsables du contenu des documents ou des actions des utilisateurs.
-
 ## 8. Responsabilité
 La plateforme n'est pas responsable des problèmes tels que l'accès non autorisé dû à la négligence de l'utilisateur ou à des failles de sécurité imprévues.
-
 ## 9. Modifications
 Les termes peuvent être modifiés sans préavis. L'utilisation continue implique l'accord avec les nouveaux termes.
-
 ## 10. Contactez-nous
 Pour toute demande ou assistance, contactez-nous via notre canal de support.
-
 En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Termes et Conditions.</target>
       </trans-unit>
       <trans-unit id="commonButtonTextCancel" datatype="html">
