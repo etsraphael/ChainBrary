@@ -550,24 +550,12 @@
         </context-group>
       </trans-unit>
       <trans-unit id="1800654063096960851" datatype="html">
-        <source>
-           The current bid is at
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong"/>
-        </source>
-        <target>
-          L'enchère actuelle est à
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong"/>
-        </target>
+        <source> The current bid is at <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION"/> <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">95,97</context>
         </context-group>
+        <target>L'enchère actuelle est à <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/> <x id="INTERPOLATION"/> <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/> <x id="CLOSE_TAG_STRONG" ctype="x-strong"/></target>
       </trans-unit>
       <trans-unit id="8051380604729908211" datatype="html">
         <source> We are currently approchaing the end of the auction. Please make sure to submit your bid with a higher value of fee to ensure that your transaction will be processed in time. </source>
@@ -602,52 +590,20 @@
         </context-group>
       </trans-unit>
       <trans-unit id="4147570005782466397" datatype="html">
-        <source>
-           Transaction ID:  Amount Withdrawn:  View on Etherscan
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION" equiv-text="ss }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION_1"/>
-          <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </source>
-        <target>
-           ID de transaction :  Montant retiré :  Voir sur Etherscan
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION" equiv-text="ss }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION_1"/>
-          <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/>
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/>
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </target>
+        <source>Transaction ID: <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="ss }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/> Amount Withdrawn: <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION_1"/> <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;&gt;"/>View on Etherscan<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">151,158</context>
         </context-group>
+        <target>ID de transaction : <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="ss }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/> Montant retiré : <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION_1"/> <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;&gt;"/>Voir sur Etherscan<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
       </trans-unit>
       <trans-unit id="6887169880348244051" datatype="html">
-        <source>
-           Refreshing...  seconds
-          <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/>
-        </source>
-        <target>
-           Actualisation...  secondes
-          <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/>
-        </target>
+        <source>Refreshing... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> seconds </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">178,180</context>
         </context-group>
+        <target>Actualisation... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> secondes</target>
       </trans-unit>
       <trans-unit id="3102779920122732727" datatype="html">
         <source> Loading </source>
@@ -738,14 +694,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="8968543130328972761" datatype="html">
-        <source>
-          <x id="INTERPOLATION" equiv-text="bidResult.total }}"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/>
-        </source>
-        <target>
-          <x id="INTERPOLATION" equiv-text="bidResult.total }}"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/>
-        </target>
+        <source><x id="INTERPOLATION" equiv-text="bidResult.total }}"/> <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
           <context context-type="linenumber">23,24</context>
@@ -758,6 +707,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
           <context context-type="linenumber">31,32</context>
         </context-group>
+        <target><x id="INTERPOLATION" equiv-text="bidResult.total }}"/> <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/></target>
       </trans-unit>
       <trans-unit id="2399301267677654105" datatype="html">
         <source>Withdrawal Fee (0.01%)</source>
@@ -848,38 +798,20 @@
         <target>Création de votre offre... Veuillez confirmer la demande sur votre portefeuille. Cela pourrait prendre 5 minutes, veuillez rester sur cette page.</target>
       </trans-unit>
       <trans-unit id="3608373080967256145" datatype="html">
-        <source>
-           The bid you are seeking cannot be found on this network. Please verify that you have entered the correct address and are on the appropriate network. Please check the URL or go back to the search page.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </source>
+        <source> The bid you are seeking cannot be found on this network. Please verify that you have entered the correct address and are on the appropriate network. Please check the URL or go back to the <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;&gt;"/>search<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> page. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">77,81</context>
         </context-group>
-        <target>
-        L'offre que vous recherchez ne peut être trouvée sur ce réseau. Veuillez vérifier que vous avez entré la bonne adresse et que vous êtes sur le réseau approprié. Veuillez vérifier l'URL ou revenir à la page de recherche.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </target>
+        <target>L'offre que vous recherchez ne peut pas être trouvée sur ce réseau. Veuillez vérifier que vous avez entré la bonne adresse et que vous êtes sur le réseau approprié. Veuillez vérifier l'URL ou revenir à la page de <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;&gt;"/>recherche<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</target>
       </trans-unit>
       <trans-unit id="900151136510105459" datatype="html">
-        <source>
-           Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: . Thank you for your patience.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;>"/>
-          <x id="INTERPOLATION" equiv-text="$ | async }}"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text=">"/>
-        </source>
+        <source> Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Thank you for your patience. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">83,88</context>
         </context-group>
-        <target>
-        Veuillez noter que les temps de confirmation pour les offres récentes peuvent varier en raison des conditions du réseau. Pour le dernier statut, veuillez actualiser cette page. Si votre transaction est toujours en cours de traitement, vous pouvez la suivre ici : . Merci pour votre patience.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;>"/>
-          <x id="INTERPOLATION" equiv-text="$ | async }}"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text=">"/>
-        </target>
+        <target>Veuillez noter que les temps de confirmation pour les offres récentes peuvent varier en raison des conditions du réseau. Pour le statut le plus récent, veuillez rafraîchir cette page. Si votre transaction est encore en cours de traitement, vous pouvez la suivre ici : <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Merci de votre patience. </target>
       </trans-unit>
       <trans-unit id="1133800758878907591" datatype="html">
         <source>Protected Document</source>
@@ -950,20 +882,12 @@
         <target>La description détaillée de ce document reste sécurisée et verrouillée. L'accès complet à ce contenu sera accordé à la fin du paiement du contrat, garantissant un accès exclusif aux parties autorisées.</target>
       </trans-unit>
       <trans-unit id="2416307778914933359" datatype="html">
-        <source>
-           As the owner of this document, this is currently unlocked for you. You can see the full content of this by clicking here. Make sure your screen is not shared with anyone else. Unlock here
-          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;>"/>
-          <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
-        </source>
+        <source> As the owner of this document, this is currently unlocked for you. You can see the full content of this by clicking here. Make sure your screen is not shared with anyone else. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;&gt;"/>Unlock here<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">95,98</context>
         </context-group>
-        <target>
-        En tant que propriétaire de ce document, il est actuellement déverrouillé pour vous. Vous pouvez voir le contenu complet de celui-ci en cliquant ici. Assurez-vous que votre écran n'est pas partagé avec d'autres personnes. Déverrouiller ici
-          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;>"/>
-          <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span>"/>
-        </target>
+        <target>En tant que propriétaire de ce document, celui-ci est actuellement déverrouillé pour vous. Vous pouvez voir le contenu complet de celui-ci en cliquant ici. Assurez-vous que votre écran n'est partagé avec personne d'autre. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;&gt;"/>Déverrouiller ici<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
       </trans-unit>
       <trans-unit id="3906114694097528014" datatype="html">
         <source> Payment is processing and may take a few minutes. Once confirmed from your wallet, refresh to unlock the document. If there are any issues, the transaction will be reverted. </source>
@@ -982,18 +906,12 @@
         <target>Masquer la carte</target>
       </trans-unit>
       <trans-unit id="ocumentLockerContent.AlreadySoldAt" datatype="html">
-        <source>
-           Already sold at
-          <x id="PH" equiv-text="priceInfo"/>
-        </source>
+        <source> Already sold at <x id="PH" equiv-text="priceInfo"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.ts</context>
           <context context-type="linenumber">91</context>
         </context-group>
-        <target>
-           Déjà vendu à 
-          <x id="PH" equiv-text="priceInfo"/>
-        </target>
+        <target>Vendu à <x id="PH" equiv-text="priceInfo"/></target>
       </trans-unit>
       <trans-unit id="5737197851349495875" datatype="html">
         <source>Document name</source>
@@ -1056,20 +974,12 @@
         <target>Le prix doit être supérieur à 0</target>
       </trans-unit>
       <trans-unit id="360586526427198849" datatype="html">
-        <source>
-           Accept terms and conditions. 0.1% of community fee will be deducted from the final transaction.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </source>
+        <source> Accept <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. 0.1% of community fee will be deducted from the final transaction. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">71,75</context>
         </context-group>
-        <target>
-        Acceptez les termes et conditions. 0,1% de frais communautaires seront déduits de la transaction finale.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </target>
+        <target>Accepter les <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>conditions générales<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. 0,1% de frais communautaires seront déduits de la transaction finale.</target>
       </trans-unit>
       <trans-unit id="6755765577650828224" datatype="html">
         <source> You must accept the terms and conditions. </source>
@@ -1168,11 +1078,7 @@
         <target>Paiement Expiré</target>
       </trans-unit>
       <trans-unit id="5715712979751449266" datatype="html">
-        <source>
-           Powered by ChainBrary
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;['/']&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </source>
+        <source> Powered by <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/>ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">106,108</context>
@@ -1181,11 +1087,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">39,42</context>
         </context-group>
-        <target>
-          Alimenté par ChainBrary
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;['/']&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </target>
+        <target>Propulsé par <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/>ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
       </trans-unit>
       <trans-unit id="CommonErrorMessage.ConnectYourWallet" datatype="html">
         <source>Please connect your wallet</source>
@@ -1204,20 +1106,12 @@
         <target>@@CommonErrorMessage.NetworkMismatch:Décalage de réseau avec le portefeuille</target>
       </trans-unit>
       <trans-unit id="7799133836890831347" datatype="html">
-        <source>
-           Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on Discord.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </source>
+        <source> Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
           <context context-type="linenumber">7,11</context>
         </context-group>
-        <target>
-        Votre réseau actuel n'est pas pris en charge. Veuillez passer à un réseau compatible. Pour obtenir de l'aide ou partager vos suggestions avec notre communauté, rejoignez-nous sur Discord.
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </target>
+        <target>Votre réseau actuel n'est pas pris en charge. Veuillez passer à un réseau compatible. Pour obtenir de l'aide ou partager vos suggestions avec notre communauté, rejoignez-nous sur <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</target>
       </trans-unit>
       <trans-unit id="8296640497525814291" datatype="html">
         <source>User Details</source>
@@ -1344,10 +1238,7 @@
         <target>Nom du destinataire</target>
       </trans-unit>
       <trans-unit id="2399487698306392686" datatype="html">
-        <source>
-          ($USD )
-          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
-        </source>
+        <source>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">21</context>
@@ -1356,10 +1247,7 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">29</context>
         </context-group>
-        <target>
-          ($USD )
-          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
-        </target>
+        <target>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</target>
       </trans-unit>
       <trans-unit id="2899790821846500123" datatype="html">
         <source>Protocol Fee (0.1%)</source>
@@ -1370,34 +1258,20 @@
         <target>Frais de protocole (0,1%)</target>
       </trans-unit>
       <trans-unit id="2583197000088136437" datatype="html">
-        <source>
-          Receiving Amount
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
-        </source>
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Receiving Amount<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">34</context>
         </context-group>
-        <target>
-          Montant Reçu
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
-        </target>
+        <target><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Montant à recevoir<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></target>
       </trans-unit>
       <trans-unit id="8519270983879897918" datatype="html">
-        <source>
-          (USD$ )
-          <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>
-        </source>
+        <source>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">40</context>
         </context-group>
-        <target>
-          (USD$ )
-          <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>
-        </target>
+        <target>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</target>
       </trans-unit>
       <trans-unit id="1099954563952253687" datatype="html">
         <source>Link generated</source>
@@ -1448,45 +1322,20 @@
         <target>Vous avez atteint le portail de paiement sécurisé de ChainBrary. Les transactions de cryptomonnaie rapides, sécurisées et fiables commencent ici. Vérifiez, confirmez et allez-y!</target>
       </trans-unit>
       <trans-unit id="6417299265220958493" datatype="html">
-        <source>
-           Please be connected on the  network to use this feature.
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION" equiv-text="async)?.name }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/>
-        </source>
+        <source> Please be connected on the <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="async)?.name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> network to use this feature. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">59,62</context>
         </context-group>
-        <target>Veuillez être connecté au réseau pour utiliser cette fonctionnalité. &lt;x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/&gt;&lt;x id="INTERPOLATION" ctype="" equiv-text="async)?.name }}"/&gt;&lt;x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="réseau"/&gt;</target>
+        <target>Veuillez être connecté sur le réseau <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="async)?.name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> pour utiliser cette fonctionnalité.</target>
       </trans-unit>
       <trans-unit id="7306017679756660793" datatype="html">
-        <source>
-           is requesting a sum equivalent to $ USD.  To ensure accuracy, the transaction will be precisely calculated to match this amount in  prior to processing the payment.
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
-          <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/>
-        </source>
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> is requesting a sum equivalent to <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> To ensure accuracy, the transaction will be precisely calculated to match this amount in <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> prior to processing the payment. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">97,102</context>
         </context-group>
-        <target>
-           demande une somme équivalente à $ USD. Pour assurer l'exactitude, la transaction sera calculée précisément pour correspondre à ce montant en  avant de traiter le paiement.
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
-          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/>
-          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong>"/>
-          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
-          <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/>
-        </target>
+        <target><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> demande une somme équivalente à <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Pour garantir la précision, la transaction sera calculée avec précision pour correspondre à ce montant en <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> avant de traiter le paiement. </target>
       </trans-unit>
       <trans-unit id="paymentRequestTitle" datatype="html">
         <source>Payment Request</source>
@@ -1573,20 +1422,12 @@
         <target>Termes et conditions</target>
       </trans-unit>
       <trans-unit id="8752869079658836635" datatype="html">
-        <source>
-           Your transaction has been sent and is processing on the blockchain. Thank you for choosing our reliable and secure platform. Check its status by clicking here
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </source>
+        <source> Your transaction has been sent and is processing on the blockchain. Thank you for choosing our reliable and secure platform. Check its status by clicking <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;&gt;"/>here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
           <context context-type="linenumber">4,6</context>
         </context-group>
-        <target>
-        Votre transaction a été envoyée et est en cours de traitement sur la blockchain. Merci d'avoir choisi notre plateforme fiable et sécurisée. Vérifiez son statut en cliquant ici
-          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;>"/>
-          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
-        </target>
+        <target>Votre transaction a été envoyée et est en cours de traitement sur la blockchain. Merci d'avoir choisi notre plateforme fiable et sécurisée. Vérifiez son statut en cliquant <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;&gt;"/>ici<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
       </trans-unit>
       <trans-unit id="7507948636555938109" datatype="html">
         <source>Log out</source>
