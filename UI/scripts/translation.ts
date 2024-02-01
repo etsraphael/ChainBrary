@@ -3,7 +3,7 @@ import { readFileSync, writeFileSync } from 'fs';
 import OpenAI from 'openai';
 
 const openai = new OpenAI({
-  apiKey: process.env['OPENAI_API_KEY'] // This is the default and can be omitted
+  apiKey: process.env['OPENAI_API_KEY']
 });
 
 const languageList: KeyAndValue[] = [
@@ -70,6 +70,28 @@ const translateTextAndValues = async (source: string, targetLanguage: string): P
   }
 };
 
+const createTranslationUnit = async (sourceUnit:any, targetLanguage: string) => {
+  const newUnit: any = {
+    $: { id: sourceUnit.$.id },
+    source: sourceUnit['source'],
+    target: [],
+    'context-group': sourceUnit['context-group']
+  };
+
+  if (typeof sourceUnit.source[0] === 'string') {
+    // Translate simple text
+    newUnit.target = [await translateText(sourceUnit.source[0], targetLanguage)];
+  } else if (sourceUnit.source[0].x) {
+    // Translate complex text with placeholders
+    const translatedTextJson = await translateTextAndValues(JSON.stringify(sourceUnit.source[0]), targetLanguage);
+    const xmlString = transformJsonToXml(translatedTextJson);
+    newUnit.target = [xmlString];
+  }
+
+  return newUnit;
+};
+
+
 const updateTranslations = async () => {
   const originalContent = readFileSync('src/locale/messages.xlf', 'utf8');
   const translationContent = readFileSync('src/locale/messages.fr.xlf', 'utf8');
@@ -85,13 +107,22 @@ const updateTranslations = async () => {
       (u: { $: { id: string } }) => u.$.id === id
     );
 
+    // If it's a new value
+    if (translationUnit === undefined) {
+      try {
+        const newtranslationUnit = await createTranslationUnit(unit, targetLanguage);
+        translationXml.xliff.file[0].body[0]['trans-unit'].push(newtranslationUnit);
+      } catch (error) {
+        throw new Error(`id: ${id}. Failed to translate text.`);
+      }
+    }
+
     // If it's just a string
     if (typeof unit.source[0] === 'string') {
       if (translationUnit && translationUnit.target === undefined) {
         try {
-          console.log(unit.source[0])
-          // const translatedText = await translateText(unit.source[0], targetLanguage);
-          // translationUnit.target = [translatedText];
+          const translatedText = await translateText(unit.source[0], targetLanguage);
+          translationUnit.target = [translatedText];
         } catch (error) {
           throw new Error(`id: ${id}. Failed to translate text.`);
         }
@@ -102,7 +133,6 @@ const updateTranslations = async () => {
     if (unit.source[0].x) {
       if (translationUnit && translationUnit.target === undefined) {
         try {
-          console.log(unit.source[0])
           // const translatedTextJson: string = await translateTextAndValues(JSON.stringify(unit.source[0]), targetLanguage);
           // const xmlString: string = transformJsonToXml(translatedTextJson);
           // translationUnit.target = [xmlString];

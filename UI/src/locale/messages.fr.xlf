@@ -1884,6 +1884,70 @@ En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Te
         </context-group>
         <target>Le portefeuille n'est pas connecté</target>
       </trans-unit>
+      <trans-unit id="servicePage.sharePaymentTitle">
+        <source>Share Payment</source>
+        <target>Demande de Paiement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.sharePaymentDesc">
+        <source>Share payment requests fast and safely via link/QR code</source>
+        <target>Partagez rapidement et en toute sécurité les demandes de paiement via un lien/code QR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.startABidTitle">
+        <source>Start a Bid</source>
+        <target>Commencer une Enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.startABidDesc">
+        <source> Easily manage transparent bids with complete control</source>
+        <target>Gérez facilement les offres transparentes avec un contrôle total</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.documentLockerTitle">
+        <source>Document Locker</source>
+        <target>Verrou de Document</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.documentLockerDesc">
+        <source>Securely store and share documents with anyone</source>
+        <target>Stockez et partagez sécurisément des documents avec n'importe qui</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.PayTogetherTitle">
+        <source>Pay Together</source>
+        <target>Payer Ensemble</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.PayTogetherDesc">
+        <source>Facilitate group payments easily, ideal for shared expenses and gifts</source>
+        <target>Facilitez les paiements de groupe facilement, idéal pour les dépenses partagées et les cadeaux</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

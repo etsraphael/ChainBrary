@@ -134,11 +134,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="googleDriveText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;
-2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;
-3. Upload your file
-4. Right click on the file &gt; &quot;Get shareable link&quot;
-5. Copy the link and paste it here
+        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;  
+2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;  
+3. Upload your file 
+4. Right click on the file &gt; &quot;Get shareable link&quot;  
+5. Copy the link and paste it here 
 6. Make sure the image will be accessible at anytime</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
@@ -153,10 +153,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="postImgText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt;
-2. Click on &quot;Choose images&quot;
-3. Upload your file
-4. Copy the &quot;Direct link&quot; and paste it here
+        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt; 
+2. Click on &quot;Choose images&quot;  
+3. Upload your file 
+4. Copy the &quot;Direct link&quot; and paste it here 
 5. Make sure the image will be accessible at anytime</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
@@ -167,7 +167,7 @@
         <source>The URL provided does not have any pictures attached</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
-          <context context-type="linenumber">98</context>
+          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7143579180750436311" datatype="html">
@@ -448,15 +448,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">180</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">321</context>
+          <context context-type="linenumber">329</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">250</context>
+          <context context-type="linenumber">249</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/notification-store/state/effects.ts</context>
@@ -1366,6 +1366,62 @@ By using the Document Locker, you affirm understanding and agreement with these 
           <context context-type="linenumber">46,86</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="servicePage.sharePaymentTitle" datatype="html">
+        <source>Share Payment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.sharePaymentDesc" datatype="html">
+        <source>Share payment requests fast and safely via link/QR code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.startABidTitle" datatype="html">
+        <source>Start a Bid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.startABidDesc" datatype="html">
+        <source> Easily manage transparent bids with complete control</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.documentLockerTitle" datatype="html">
+        <source>Document Locker</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.documentLockerDesc" datatype="html">
+        <source>Securely store and share documents with anyone</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.PayTogetherTitle" datatype="html">
+        <source>Pay Together</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.PayTogetherDesc" datatype="html">
+        <source>Facilitate group payments easily, ideal for shared expenses and gifts</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="commonButtonTextCancel" datatype="html">
         <source>Cancel</source>
         <context-group purpose="location">
@@ -1419,29 +1475,29 @@ By using the Document Locker, you affirm understanding and agreement with these 
         <source>Transaction is processing</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">74</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">415</context>
+          <context context-type="linenumber">423</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
         <source>Network is updated</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">82</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.AnUnexpectedErrorOccurred" datatype="html">
         <source>An unexpected error occurred</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">117</context>
+          <context context-type="linenumber">123</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">140</context>
+          <context context-type="linenumber">148</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.auctionNotOngoing" datatype="html">
@@ -1455,63 +1511,63 @@ By using the Document Locker, you affirm understanding and agreement with these 
         <source>You are already the highest bidder</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.bidAmountNotHighEnough" datatype="html">
         <source>Your bid amount is not high enough</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhilePlacingYourBid" datatype="html">
         <source>An error occured while placing your bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">171</context>
+          <context context-type="linenumber">177</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BidResponse.Success.BidPlacedSuccessfully" datatype="html">
         <source>Bid placed successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">195</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.PleaseConnectYourWalletToCreateABid" datatype="html">
         <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">213</context>
+          <context context-type="linenumber">218</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhileCreatingYourBid" datatype="html">
         <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">240</context>
+          <context context-type="linenumber">244</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BidResponse.BidCreatedSuccessfully" datatype="html">
         <source>Bid created successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">254</context>
+          <context context-type="linenumber">258</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BidResponse.WithdrawRequestSentSuccessfully" datatype="html">
         <source>Withdraw request sent successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">305</context>
+          <context context-type="linenumber">310</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhileSearchingForYourBid" datatype="html">
         <source>This address is not associated with any bids that have been created. Please make sure the network is correct and try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">351</context>
+          <context context-type="linenumber">358</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.notEnoughFunds" datatype="html">
@@ -1546,14 +1602,14 @@ By using the Document Locker, you affirm understanding and agreement with these 
         <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">56</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.unknownError" datatype="html">
         <source>An error occured while processing your document. Please try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">247</context>
+          <context context-type="linenumber">246</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DocumentResponse.ContractUnlockingInProcess" datatype="html">
@@ -1567,50 +1623,50 @@ By using the Document Locker, you affirm understanding and agreement with these 
         <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">288</context>
+          <context context-type="linenumber">290</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DocumentResponse.LockingDocumentCreatedSuccessfully" datatype="html">
         <source>Locking document created successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">299</context>
+          <context context-type="linenumber">302</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.TokenAddressNotFound" datatype="html">
         <source>Token address not found!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">113</context>
+          <context context-type="linenumber">114</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">171</context>
+          <context context-type="linenumber">174</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorApprovingToken" datatype="html">
         <source>Error approving token</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">259</context>
+          <context context-type="linenumber">264</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
         <source>Error retreiving data from the blockchain</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">344</context>
+          <context context-type="linenumber">350</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
         <source>Error decoding payment request</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">383</context>
+          <context context-type="linenumber">389</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">390</context>
+          <context context-type="linenumber">396</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.payment.title" datatype="html">
