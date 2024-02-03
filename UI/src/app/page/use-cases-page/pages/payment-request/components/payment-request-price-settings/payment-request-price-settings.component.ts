@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Observable, ReplaySubject, filter, map, takeUntil } from 'rxjs';
 import { tokenList } from './../../../../../../shared/data/tokenList';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { IToken, ITokenContract, PriceSettingsForm, TokenChoiceMakerForm } from './../../../../../../shared/interfaces';
 import { DataConversionStore } from './../../../../../../store/payment-request-store/state/selectors';
 
@@ -22,6 +23,7 @@ export class PaymentRequestPriceSettingsComponent implements OnInit, OnDestroy {
 
   tokenList: IToken[] = [];
   tokenGroup: IToken[] = tokenList.filter((token: IToken) => token.nativeToChainId !== undefined);
+  commonButtonText = CommonButtonText;
 
   get tokenChoiceForm(): FormGroup<TokenChoiceMakerForm> {
     return this.priceForm.get('token') as FormGroup<TokenChoiceMakerForm>;

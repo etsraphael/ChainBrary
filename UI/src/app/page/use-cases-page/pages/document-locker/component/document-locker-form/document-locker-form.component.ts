@@ -18,6 +18,7 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
   @Input() errorMessage: string | null;
   @Output() submitDocumentForm = new EventEmitter<IDocumentLockerCreation>();
   networkSupported: NetworkChainId[] = environment.contracts.documentLocker.networkSupported;
+  generateDocumentBtnText = $localize`:@@documentLockerGenerateDocumentBtnText:Generate Document`;
 
   constructor(
     public web3LoginService: Web3LoginService,

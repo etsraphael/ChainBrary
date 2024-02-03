@@ -164,7 +164,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
               const distance = endTime.getTime() - now.getTime();
 
               if (distance < 0) {
-                this.timeRemaining = 'Auction ended';
+                this.timeRemaining = $localize`:@@bidResult.AuctionEnded:Auction ended`;
                 this.tenMinutesLeft = false;
                 return;
               }

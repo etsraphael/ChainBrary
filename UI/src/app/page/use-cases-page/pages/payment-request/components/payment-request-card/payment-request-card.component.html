@@ -34,9 +34,9 @@
             <span class="conversionValue">(${{ paymentRequest.payment.data.amount }} USD)</span>
           </h4>
           <h4 *ngIf="usdIsEnabled && !tokenConversionRate">
-            <span class="blur-text">N/A</span> {{ paymentToken.symbol }}
+            <span i18n class="blur-text">N/A</span> {{ paymentToken.symbol }}
             <br />
-            <h6 class="text-secondary pt-3">
+            <h6 i18n class="text-secondary pt-3">
               To retrieve the current conversion rate, ensure the appropriate network is selected in your wallet
             </h6>
           </h4>
@@ -59,7 +59,7 @@
             >
               <app-chainbrary-button
                 [buttonClasses]="['btn-info-gradient', 'text-light']"
-                buttonText="Connect Wallet"
+                [buttonText]="commonButtonText.ConnectWallet"
                 (callToAction)="openLoginModal.emit()"
               />
             </div>
@@ -78,8 +78,8 @@
               <app-chainbrary-button
                 [isDisabled]="conversionRateHasError || !canTransfer"
                 [buttonClasses]="['btn-success-gradient', 'text-light']"
-                [buttonText]="'Confirm'"
-                [buttonType]="'submit'"
+                [buttonText]="commonButtonText.Confirm"
+                [buttonType]="commonButtonText.Submit"
                 (callToAction)="submitAmount()"
               />
             </div>
@@ -93,7 +93,7 @@
     <div class="card-body my-3">
       <div class="row text-center">
         <div class="col-12">
-          <h4 class="card-title text-danger">Payment Expired</h4>
+          <h4 i18n class="card-title text-danger">Payment Expired</h4>
           <p class="text-muted text-center">{{ paymentRequest.payment.error }}</p>
         </div>
       </div>
@@ -103,7 +103,7 @@
 <!-- Powered by ChainBrary message -->
 <div class="container">
   <div class="row text-end mt-2">
-    <h6 class="text-muted">
+    <h6 i18n class="text-muted">
       Powered by
       <a [routerLink]="['/']">ChainBrary</a>
     </h6>

@@ -18,9 +18,15 @@ import { selectBidContractAddress, selectBidRefreshCheck, selectBlockNumber } fr
 @Injectable()
 export class BidEffects {
   readonly errorMessage: KeyAndLabel[] = [
-    { key: 'auction_not_ongoing', label: 'Auction not ongoing' },
-    { key: 'already_highest_bidder', label: 'You are already the highest bidder' },
-    { key: 'bid_amount_not_high_enough', label: 'Bid amount is not high enough' }
+    { key: 'auction_not_ongoing', label: $localize`:@@bidErrorMessage.auctionNotOngoing:This auction is not ongoing` },
+    {
+      key: 'already_highest_bidder',
+      label: $localize`:@@bidErrorMessage.alreadyHighestBidder:You are already the highest bidder`
+    },
+    {
+      key: 'bid_amount_not_high_enough',
+      label: $localize`:@@bidErrorMessage.bidAmountNotHighEnough:Your bid amount is not high enough`
+    }
   ];
 
   constructor(
@@ -168,10 +174,10 @@ export class BidEffects {
           });
 
           if (!isErrorKnown) {
-            formattedMessage = 'An error occured while placing your bid';
+            formattedMessage = $localize`:@@bidErrorMessage.AnErrorOccuredWhilePlacingYourBid:An error occured while placing your bid`;
           }
 
-          return this.snackBar.open(formattedMessage, 'Close', {
+          return this.snackBar.open(formattedMessage, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
@@ -186,7 +192,7 @@ export class BidEffects {
       return this.actions$.pipe(
         ofType(BidActions.placeBidSuccess),
         tap(() =>
-          this.snackBar.open('Bid placed successfully', '', {
+          this.snackBar.open($localize`:@@BidResponse.Success.BidPlacedSuccessfully:Bid placed successfully`, '', {
             duration: 5000,
             panelClass: ['success-snackbar']
           })
@@ -209,8 +215,7 @@ export class BidEffects {
       tap(() => this.web3LoginService.openLoginModal()),
       map(() => {
         return BidActions.createBidFailure({
-          message:
-            'Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.'
+          message: $localize`:@@bidErrorMessage.PleaseConnectYourWalletToCreateABid:Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.`
         });
       })
     );
@@ -236,8 +241,7 @@ export class BidEffects {
           catchError(() =>
             of(
               BidActions.createBidFailure({
-                message:
-                  'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.'
+                message: $localize`:@@bidErrorMessage.AnErrorOccuredWhileCreatingYourBid:An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.`
               })
             )
           )
@@ -251,7 +255,7 @@ export class BidEffects {
       return this.actions$.pipe(
         ofType(BidActions.createBidSuccess),
         tap(() => {
-          this.snackBar.open('Bid created successfully', '', {
+          this.snackBar.open($localize`:@@BidResponse.BidCreatedSuccessfully:Bid created successfully`, '', {
             duration: 5000,
             panelClass: ['success-snackbar']
           });
@@ -302,10 +306,14 @@ export class BidEffects {
         return from(this.bidService.requestWithdraw(action[1], action[2], action[3])).pipe(
           map((response: IReceiptTransaction) => BidActions.requestWithdrawSuccess({ txn: response.transactionHash })),
           tap(() => {
-            this.snackBar.open('Withdraw request sent successfully', '', {
-              duration: 5000,
-              panelClass: ['success-snackbar']
-            });
+            this.snackBar.open(
+              $localize`:@@BidResponse.WithdrawRequestSentSuccessfully:Withdraw request sent successfully`,
+              '',
+              {
+                duration: 5000,
+                panelClass: ['success-snackbar']
+              }
+            );
           }),
           catchError((error: { message: string }) => of(BidActions.requestWithdrawFailure({ message: error.message })))
         );
@@ -318,7 +326,7 @@ export class BidEffects {
       return this.actions$.pipe(
         ofType(BidActions.requestWithdrawFailure),
         map((action: { message: string }) => {
-          return this.snackBar.open(action.message, 'Close', {
+          return this.snackBar.open(action.message, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
@@ -347,8 +355,7 @@ export class BidEffects {
           catchError(() =>
             of(
               BidActions.searchBidFailure({
-                message:
-                  'This address is not associated with any bids that have been created. Please make sure the network is correct and try again.'
+                message: $localize`:@@bidErrorMessage.AnErrorOccuredWhileSearchingForYourBid:This address is not associated with any bids that have been created. Please make sure the network is correct and try again.`
               })
             )
           )

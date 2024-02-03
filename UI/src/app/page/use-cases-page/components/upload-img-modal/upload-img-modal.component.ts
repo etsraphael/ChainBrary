@@ -13,13 +13,13 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
   storageProviders: IStorageProvider[] = [
     {
       key: 'googleDrive',
-      label: 'Google Drive',
-      text: '1. Go to <a href="https://drive.google.com/drive/my-drive" target="_blank">Google Drive</a>  \n2. Click on "+ New" > Then "New File"  \n3. Upload your file \n4. Right click on the file > "Get shareable link"  \n5. Copy the link and paste it here \n6. Make sure the image will be accessible at anytime'
+      label: $localize`:@@googleDriveLabel:Google Drive`,
+      text: $localize`:@@googleDriveText:1. Go to <a href="https://drive.google.com/drive/my-drive" target="_blank">Google Drive</a>  \n2. Click on "+ New" > Then "New File"  \n3. Upload your file \n4. Right click on the file > "Get shareable link"  \n5. Copy the link and paste it here \n6. Make sure the image will be accessible at anytime`
     },
     {
       key: 'PostImg',
-      label: 'PostImg',
-      text: '1. Go to <a href="https://postimages.org/" target="_blank">Post Image</a> \n2. Click on "Choose images"  \n3. Upload your file \n4. Copy the "Direct link" and paste it here \n5. Make sure the image will be accessible at anytime'
+      label: $localize`:@@postImgLabel:PostImg`,
+      text: $localize`:@@postImgText:1. Go to <a href="https://postimages.org/" target="_blank">Post Image</a> \n2. Click on "Choose images"  \n3. Upload your file \n4. Copy the "Direct link" and paste it here \n5. Make sure the image will be accessible at anytime`
     }
   ];
   providerSelected: 'googleDrive' | 'PostImg' = 'googleDrive';
@@ -92,7 +92,9 @@ export class UploadImgModalComponent implements OnInit, OnDestroy {
     if (match && (await this.isImageValid(finalUrl))) {
       this.urlImageFound = finalUrl;
     } else {
-      this.mainForm.get('url')?.setErrors({ invalidUrl: 'The URL provided does not have any pictures attached' });
+      this.mainForm.get('url')?.setErrors({
+        invalidUrl: $localize`:@@ErrorMessagePictureNotAttached:The URL provided does not have any pictures attached`
+      });
     }
 
     this.imageIsLoading = false;

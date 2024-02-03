@@ -4,7 +4,7 @@
       <ng-container *ngSwitchCase="authStatusCodeTypes.NotConnected">
         <app-chainbrary-button
           [buttonClasses]="['btn-primary-gradient', 'border-0', 'text-white']"
-          buttonText="Connect Wallet"
+          [buttonText]="commonButtonText.ConnectWallet"
           (callToAction)="openLoginModal()"
           data-id="login-btn"
         />
@@ -33,7 +33,7 @@
                     {{ item.shortName }}
                   </button>
                 </mat-menu>
-                <p class="text-muted my-auto btn-logout" (click)="logOut()">Log out</p>
+                <p i18n class="text-muted my-auto btn-logout" (click)="logOut()">Log out</p>
               </div>
             </div>
           </div>
