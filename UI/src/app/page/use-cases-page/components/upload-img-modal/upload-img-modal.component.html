@@ -2,8 +2,8 @@
   <!-- Description -->
   <div class="row" [hidden]="urlImageFound || imageIsLoading">
     <div class="col-12 text-start">
-      <h3 class="text-dark">How to show a picture on the blockchain?</h3>
-      <p class="text-secondary">
+      <h3 i18n class="text-dark">How to show a picture on the blockchain?</h3>
+      <p i18n class="text-secondary">
         Files aren't stored on the blockchain to avoid high costs and network congestion; they're externally hosted and
         referenced for efficient, decentralized access.
       </p>
@@ -15,7 +15,7 @@
           class="text-end"
           *ngIf="mainForm.get('url')?.hasError('required') || mainForm.get('url')?.hasError('pattern')"
         >
-          URL invalid
+          <span i18n>URL invalid</span>
         </mat-error>
       </mat-form-field>
       <mat-error class="text-end mb-2" *ngIf="mainForm.get('url')?.hasError('invalidUrl')">
@@ -23,7 +23,7 @@
       </mat-error>
     </form>
     <div class="col-12 text-start">
-      <h6 class="text-dark">How can I quickly host my file somewhere?</h6>
+      <h6 i18n class="text-dark">How can I quickly host my file somewhere?</h6>
       <mat-button-toggle-group
         class="my-2"
         appearance="legacy"
@@ -40,8 +40,8 @@
   <!-- Image found -->
   <div class="row" *ngIf="urlImageFound && !imageIsLoading">
     <div class="col-12 text-start">
-      <h3 class="text-dark">Image found!</h3>
-      <p class="text-secondary">The image was found on the blockchain and it's ready to be displayed.</p>
+      <h3 i18n class="text-dark">Image found!</h3>
+      <p i18n class="text-secondary">The image was found on the blockchain and it's ready to be displayed.</p>
     </div>
     <div class="col-12 img-container">
       <img [src]="urlImageFound" class="img-fluid" />
@@ -69,8 +69,8 @@
   <!-- Loading animation -->
   <div class="row" *ngIf="imageIsLoading">
     <div class="col-12 text-start">
-      <h3 class="text-dark">Loading...</h3>
-      <p class="text-secondary">The image is loading.</p>
+      <h3 i18n class="text-dark">Loading...</h3>
+      <p i18n class="text-secondary">The image is loading.</p>
     </div>
     <div class="col-12">
       <mat-progress-bar mode="indeterminate"></mat-progress-bar>

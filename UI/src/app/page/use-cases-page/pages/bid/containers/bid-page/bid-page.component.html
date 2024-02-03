@@ -6,10 +6,10 @@
   <div class="d-flex flex-column align-items-center justify-content-center pt-5">
     <div class="d-flex flex-column align-items-center justify-content-center">
       <i class="bi bi-wallet2 text-secondary"></i>
-      <p class="text-center mt-3">A connected wallet is necessary to see the the progress of the bid.</p>
+      <p i18n class="text-center mt-3">A connected wallet is necessary to see the the progress of the bid.</p>
       <app-chainbrary-button
         [buttonClasses]="['btn-info-gradient', 'text-light']"
-        buttonText="Connect Wallet"
+        [buttonText]="commonButtonText.ConnectWallet"
         (callToAction)="web3LoginService.openLoginModal()"
         data-id="login-btn"
       />
@@ -25,7 +25,7 @@
         <div class="d-flex flex-column align-items-center pt-5">
           <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
           <p class="mt-3 text-secondary text-center">
-            <span>
+            <span i18n>
               Creating your bid... Please confirm the request on your wallet. This could take 5 minutes, please stay on
               this page.
             </span>
@@ -41,7 +41,7 @@
       <div class="col-12">
         <div class="d-flex justify-content-center pt-5">
           <div class="spinner-border text-primary">
-            <span class="visually-hidden">Loading...</span>
+            <span i18n class="visually-hidden">Loading...</span>
           </div>
         </div>
       </div>
@@ -74,13 +74,13 @@
           <div class="d-flex justify-content-center">
             <div class="alert alert-danger border-0" role="alert">
               <h4 class="alert-heading">Bid not found</h4>
-              <p>
+              <p i18n>
                 The bid you are seeking cannot be found on this network. Please verify that you have entered the correct
                 address and are on the appropriate network. Please check the URL or go back to the
                 <a routerLink="/use-cases/search">search</a> page.
               </p>
               <hr />
-              <p>
+              <p i18n>
                 Please be aware that confirmation times for recent bids can vary due to network conditions. For the
                 latest status, kindly refresh this page. If your transaction is still processing, you can track it here:
                 <a target="_blank" [href]="txnLink$ | async">{{ txnFormatted$ | async }}</a

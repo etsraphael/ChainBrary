@@ -30,6 +30,7 @@ import {
   selectSearchDocumentLocked,
   selectUnlockProcess
 } from './../../../../../../store/document-locker-store/state/selectors';
+import { CommonButtonText } from './../../../../../../shared/enum';
 
 @Component({
   selector: 'app-document-locker-found',
@@ -40,10 +41,11 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   headerPayload: IUseCasesHeader = {
-    title: 'Document Locked',
+    title: $localize`:@@documentLockerFoundTitle:Document Locked`,
     goBackLink: '/use-cases/document-locker/services',
     description: null
   };
+  commonButtonText = CommonButtonText;
 
   constructor(
     public web3LoginService: Web3LoginService,

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
+import '@angular/localize/init';
+
 declare global {
   interface Window {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

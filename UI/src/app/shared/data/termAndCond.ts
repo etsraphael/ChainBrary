@@ -1,4 +1,4 @@
-export const bidTermAndCond = `
+export const bidTermAndCond = $localize`:@@bidTermAndCond:
 Before you proceed with bidding, please carefully read the following terms and conditions:
 
 ## 1. Agreement to Terms
@@ -43,7 +43,7 @@ For inquiries, reach out on [Discord](https://discord.gg/H3hFVuCrXN).
 By bidding, you affirm understanding and agreement with these Terms and Conditions.
 `;
 
-export const documentLockerTermAndCond = `
+export const documentLockerTermAndCond = $localize`:@@documentLockerTermAndCond:
 Before utilizing our Document Locker, please carefully read the following terms and conditions:
 
 ## 1. Agreement to Terms

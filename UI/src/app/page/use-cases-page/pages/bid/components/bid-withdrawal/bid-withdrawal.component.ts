@@ -6,6 +6,7 @@ import { Observable, filter, map, take } from 'rxjs';
 import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 import { requestWithdraw } from './../../../../../../store/bid-store/state/actions';
 import { selectHighestBid } from './../../../../../../store/bid-store/state/selectors';
+import { CommonButtonText, ICommonButtonText } from './../../../../../../shared/enum/button-text';
 
 @Component({
   selector: 'app-bid-withdrawal',
@@ -21,6 +22,8 @@ export class BidWithdrawalComponent implements OnInit {
   highestBid$: Observable<number | null> = this.store.select(selectHighestBid);
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
   bidResult: IBidWithdrawalAmount;
+  commonButtonText: ICommonButtonText = CommonButtonText;
+  withdrawBidText: string = $localize`:@@withdrawBidText:Withdraw bid`;
 
   ngOnInit(): void {
     this.highestBid$

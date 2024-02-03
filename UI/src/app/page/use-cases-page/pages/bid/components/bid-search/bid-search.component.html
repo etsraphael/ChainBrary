@@ -6,10 +6,10 @@
     <div class="col-12">
       <form [formGroup]="mainForm">
         <mat-form-field class="w-100" appearance="outline">
-          <mat-label>Bid address</mat-label>
+          <mat-label i18n>Bid address</mat-label>
           <input formControlName="address" matInput data-id="bid-txn-input" type="text" placeholder="0x" />
-          <mat-error *ngIf="mainForm.get('address')?.hasError('required')"> Bid name is required </mat-error>
-          <mat-error *ngIf="mainForm.get('address')?.hasError('pattern')">
+          <mat-error i18n *ngIf="mainForm.get('address')?.hasError('required')"> Bid name is required </mat-error>
+          <mat-error i18n *ngIf="mainForm.get('address')?.hasError('pattern')">
             Bid address must be a valid address
           </mat-error>
         </mat-form-field>

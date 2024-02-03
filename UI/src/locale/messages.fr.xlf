@@ -1,0 +1,1953 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="landingPage.openSource" datatype="html">
+        <source>Open Source</source>
+        <target>Open Source</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.openSourceDesc" datatype="html">
+        <source>Our platform uses blockchain technology to secure your assets and we employ regular audits to our system to protect the confidentiality and integrity of your information.</source>
+        <target>Notre plateforme utilise la technologie blockchain pour sécuriser vos actifs et nous effectuons régulièrement des audits de notre système pour protéger la confidentialité et l'intégrité de vos informations.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.accessible" datatype="html">
+        <source>Accessible</source>
+        <target>Accessible</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.ourPlateformIsDesignedTo" datatype="html">
+        <source>Our platform is designed to be easy to use and accessible to all. With user-friendly interfaces and detailed documentation, anyone can take advantage of the power of our blockchain technology.</source>
+        <target>Notre plateforme est conçue pour être facile à utiliser et accessible à tous. Avec des interfaces conviviales et une documentation détaillée, n'importe qui peut profiter de la puissance de notre technologie blockchain.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.transparent" datatype="html">
+        <source>Transparent</source>
+        <target>Transparent</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.ourPlateformIsOpenSource" datatype="html">
+        <source>Our platform is open source, allowing for a collaborative and transparent community of developers and users. This helps to ensure that our platform remains reliable and up-to-date.</source>
+        <target>Notre plateforme est open source, permettant une communauté de développeurs et d'utilisateurs collaborative et transparente. Cela aide à garantir que notre plateforme reste fiable et à jour.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4371414621292952954" datatype="html">
+        <source>Trust, Secure, Safe: Committing to Reliability.</source>
+        <target>Confiance, Sécurité, Protection : S'engager pour la Fiabilité.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="166713648723495622" datatype="html">
+        <source> ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing users with a library of open-source and secure tools for building and interacting with blockchain applications. </source>
+        <target>ChainBrary est une plateforme qui vise à rendre la technologie blockchain plus accessible à tous en fournissant aux utilisateurs une bibliothèque d'outils open-source et sécurisés pour construire et interagir avec des applications blockchain.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">11,15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5901741591698884200" datatype="html">
+        <source>How to show a picture on the blockchain?</source>
+        <target>Comment afficher une image sur la blockchain ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3742754064909943461" datatype="html">
+        <source> Files aren't stored on the blockchain to avoid high costs and network congestion; they're externally hosted and referenced for efficient, decentralized access. </source>
+        <target>Les fichiers ne sont pas stockés sur la blockchain pour éviter des coûts élevés et la congestion du réseau ; ils sont hébergés externement et référencés pour un accès efficace et décentralisé.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">6,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8847837690960818708" datatype="html">
+        <source>URL invalid</source>
+        <target>URL invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5121164334040114579" datatype="html">
+        <source>How can I quickly host my file somewhere?</source>
+        <target>Comment puis-je rapidement héberger mon fichier quelque part ?</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1457251910333381962" datatype="html">
+        <source>Image found!</source>
+        <target>Image trouvée !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7010298828580734548" datatype="html">
+        <source>The image was found on the blockchain and it's ready to be displayed.</source>
+        <target>L'image a été trouvée sur la blockchain et est prête à être affichée.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3894950702316166331" datatype="html">
+        <source>Loading...</source>
+        <target>Chargement...</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">164</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">84</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3644217488386459799" datatype="html">
+        <source>The image is loading.</source>
+        <target>L'image est en cours de chargement.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="googleDriveLabel" datatype="html">
+        <source>Google Drive</source>
+        <target>Google Drive</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="googleDriveText" datatype="html">
+        <source>1. Go to &lt;a href="https://drive.google.com/drive/my-drive" target="_blank"&gt;Google Drive&lt;/a&gt;
+2. Click on "+ New" &gt; Then "New File"
+3. Upload your file
+4. Right click on the file &gt; "Get shareable link"
+5. Copy the link and paste it here
+6. Make sure the image will be accessible at anytime</source>
+        <target>1. Allez sur &lt;a href="https://drive.google.com/drive/my-drive" target="_blank"&gt;Google Drive&lt;/a&gt;
+2. Cliquez sur "+ Nouveau" &gt; Puis "Nouveau Fichier"
+3. Téléchargez votre fichier
+4. Faites un clic droit sur le fichier &gt; "Obtenir un lien partageable"
+5. Copiez le lien et collez-le ici
+6. Assurez-vous que l'image sera accessible à tout moment</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="postImgLabel" datatype="html">
+        <source>PostImg</source>
+        <target>PostImg</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="postImgText" datatype="html">
+        <source>1. Go to &lt;a href="https://postimages.org/" target="_blank"&gt;Post Image&lt;/a&gt;
+2. Click on "Choose images"
+3. Upload your file
+4. Copy the "Direct link" and paste it here
+5. Make sure the image will be accessible at anytime</source>
+        <target>1. Allez sur &lt;a href="https://postimages.org/" target="_blank"&gt;Post Image&lt;/a&gt;
+2. Cliquez sur "Choisir des images"
+3. Téléchargez votre fichier
+4. Copiez le "Lien direct" et collez-le ici
+5. Assurez-vous que l'image sera accessible à tout moment
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessagePictureNotAttached" datatype="html">
+        <source>The URL provided does not have any pictures attached</source>
+        <target>L'URL fournie ne contient aucune image attachée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7143579180750436311" datatype="html">
+        <source>Services</source>
+        <target>Services</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/use-cases-list/use-cases-list.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8422772910410640296" datatype="html">
+        <source> Discover Chainbrary: Your Safe, User-Friendly Blockchain Starter Kit. Begin with ease, backed by our commitment to your security. </source>
+        <target>Découvrez Chainbrary : Votre Kit de Démarrage Blockchain Sûr et Facile à Utiliser. Commencez en toute simplicité, soutenu par notre engagement pour votre sécurité.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/components/use-cases-list/use-cases-list.component.html</context>
+          <context context-type="linenumber">8,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9216117865911519658" datatype="html">
+        <source>Action</source>
+        <target>Action</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6533918067030990396" datatype="html">
+        <source>Amount</source>
+        <target>Montant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3973931101896534797" datatype="html">
+        <source>Date</source>
+        <target>Date</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7823410862017570733" datatype="html">
+        <source>No transactions found.</source>
+        <target>Aucune transaction trouvée.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentTransactions" datatype="html">
+        <source>Recent Transactions</source>
+        <target>Transactions Récentes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4343607357044932591" datatype="html">
+        <source>Creating your bid... Please confirm the request on your wallet.</source>
+        <target>Création de votre enchère... Veuillez confirmer la demande sur votre portefeuille.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="588284100849805066" datatype="html">
+        <source>Product name</source>
+        <target>Nom du produit</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1113901831127827755" datatype="html">
+        <source> Product name is required </source>
+        <target> Le nom du produit est requis </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5186415291002480081" datatype="html">
+        <source>Owner name</source>
+        <target>Nom du propriétaire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4400676864758421575" datatype="html">
+        <source> Owner name is required </source>
+        <target> Le nom du propriétaire est requis </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4902817035128594900" datatype="html">
+        <source>Description</source>
+        <target>Description</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2955929752241859415" datatype="html">
+        <source> Description is required </source>
+        <target> La description est requise </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">40,42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1354625054283722441" datatype="html">
+        <source>Duration (minutes)</source>
+        <target>Durée (minutes)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3524388198354932185" datatype="html">
+        <source> Duration is required </source>
+        <target> La durée est requise </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1415060111017347427" datatype="html">
+        <source>Network</source>
+        <target>Réseau</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5398122505197829352" datatype="html">
+        <source> Network is required </source>
+        <target> Le réseau est requis </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">60,62</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1061254547793367784" datatype="html">
+        <source> Network is not matching with wallet </source>
+        <target> Le réseau ne correspond pas au portefeuille </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4872911599332294310" datatype="html">
+        <source>(Login)</source>
+        <target>(Connexion)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7062684881712121764" datatype="html">
+        <source> Network is not supported, please change from wallet</source>
+        <target> Le réseau n'est pas pris en charge, veuillez changer de portefeuille</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">74,75</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4810178850535668850" datatype="html">
+        <source>Remove image</source>
+        <target>Supprimer l'image</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="671512205135893869" datatype="html">
+        <source>Link images</source>
+        <target>Lier les images</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">116</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4452427314943113135" datatype="html">
+        <source>Previous</source>
+        <target>Précédent</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">130</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3885497195825665706" datatype="html">
+        <source>Next</source>
+        <target>Suivant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8905995985388209337" datatype="html">
+        <source>Accept</source>
+        <target>Accepter</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8631100528026989634" datatype="html">
+        <source>terms and conditions</source>
+        <target>conditions générales</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">149</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2699053709476277130" datatype="html">
+        <source> You must accept the terms and conditions </source>
+        <target> Vous devez accepter les conditions générales </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">154,156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bidCreationHeaderTitle" datatype="html">
+        <source>Bid creation</source>
+        <target>Création d'enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bidCreation.ImageAlreadyAdded" datatype="html">
+        <source>Image already added</source>
+        <target>L'image a déjà été ajoutée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.ts</context>
+          <context context-type="linenumber">136</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonWords" datatype="html">
+        <source>Close</source>
+        <target>Fermer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.ts</context>
+          <context context-type="linenumber">137</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.ts</context>
+          <context context-type="linenumber">178</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.ts</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.ts</context>
+          <context context-type="linenumber">155</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">174</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">321</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">250</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/notification-store/state/effects.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bidCreation.PleaseAddAtLeastOneImage." datatype="html">
+        <source>Please add at least one image</source>
+        <target>Veuillez ajouter au moins une image</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.ts</context>
+          <context context-type="linenumber">177</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3563823504206575540" datatype="html">
+        <source> Description </source>
+        <target> Description </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">19,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8208210529508718658" datatype="html">
+        <source> Please enter a value higher than the current bid </source>
+        <target> Veuillez saisir une valeur supérieure à l'enchère actuelle </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">92,94</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1800654063096960851" datatype="html">
+        <source> The current bid is at <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION"/> <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">95,97</context>
+        </context-group>
+        <target>L'enchère actuelle est à <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/> <x id="INTERPOLATION"/> <x id="INTERPOLATION_1" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/> <x id="CLOSE_TAG_STRONG" ctype="x-strong"/></target>
+      </trans-unit>
+      <trans-unit id="8051380604729908211" datatype="html">
+        <source> We are currently approchaing the end of the auction. Please make sure to submit your bid with a higher value of fee to ensure that your transaction will be processed in time. </source>
+        <target>Nous approchons actuellement de la fin de l'enchère. Veuillez vous assurer de soumettre votre enchère avec une valeur de frais plus élevée pour garantir que votre transaction sera traitée à temps.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">109,112</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3074939948814010202" datatype="html">
+        <source> An extra of 10 minutes will be added to the auction if a bid is placed within the last 10 minutes of the auction. </source>
+        <target>Un supplément de 10 minutes sera ajouté à l'enchère si une offre est placée dans les 10 dernières minutes de l'enchère.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">114,117</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1917100160961011964" datatype="html">
+        <source>Withdrawal Successful!</source>
+        <target>Retrait Réussi !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">148</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9128920864110575379" datatype="html">
+        <source>Your withdrawal request has been processed successfully. Below are the transaction details:</source>
+        <target>Votre demande de retrait a été traitée avec succès. Voici les détails de la transaction :</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">149</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4147570005782466397" datatype="html">
+        <source>Transaction ID: <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="ss }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/> Amount Withdrawn: <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION_1"/> <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;&gt;"/>View on Etherscan<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">151,158</context>
+        </context-group>
+        <target>ID de transaction : <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="ss }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/> Montant retiré : <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION_1"/> <x id="INTERPOLATION_2" equiv-text="{{ currentNetwork.nativeCurrency.symbol }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;b"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;a [hr"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a [href]=&quot;explorerLink$ | async&quot; target=&quot;_blank&quot; class=&quot;btn btn-primary mt-3&quot;&gt;"/>Voir sur Etherscan<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
+      </trans-unit>
+      <trans-unit id="6887169880348244051" datatype="html">
+        <source>Refreshing... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> seconds </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">178,180</context>
+        </context-group>
+        <target>Actualisation... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> secondes</target>
+      </trans-unit>
+      <trans-unit id="3102779920122732727" datatype="html">
+        <source> Loading </source>
+        <target> Chargement </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">181</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4811210964884227807" datatype="html">
+        <source>No bids have been placed yet. Be the first!</source>
+        <target>Aucune offre n'a encore été placée. Soyez le premier !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">198</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1301951622136807684" datatype="html">
+        <source>Bidding has ended without any participation.</source>
+        <target>L'enchère s'est terminée sans aucune participation.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
+          <context context-type="linenumber">204</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bidResult.AuctionEnded" datatype="html">
+        <source>Auction ended</source>
+        <target>Enchère terminée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.ts</context>
+          <context context-type="linenumber">167</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7439885234895906954" datatype="html">
+        <source>Bid address</source>
+        <target>Adresse de l'enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-search/bid-search.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2672148692007685520" datatype="html">
+        <source> Bid name is required </source>
+        <target> Le nom de l'enchère est requis </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-search/bid-search.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8094993489193090328" datatype="html">
+        <source> Bid address must be a valid address </source>
+        <target> L'adresse de l'enchère doit être une adresse valide </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-search/bid-search.component.html</context>
+          <context context-type="linenumber">12,14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="bidSearchTitle" datatype="html">
+        <source>Join a bid</source>
+        <target>Rejoindre une enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-search/bid-search.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7137698570686115830" datatype="html">
+        <source>Withdraw Bid</source>
+        <target>Retirer l'enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3597467999465468775" datatype="html">
+        <source> You are about to withdraw your bid. Please review the details below carefully. Note that a withdrawal fee will be deducted from the total amount. This action cannot be undone. </source>
+        <target>Vous êtes sur le point de retirer votre enchère. Veuillez examiner attentivement les détails ci-dessous. Notez qu'une commission de retrait sera déduite du montant total. Cette action est irréversible.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">6,9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7359402418621608550" datatype="html">
+        <source>Total Bid Amount</source>
+        <target>Montant total de l'enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8968543130328972761" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="bidResult.total }}"/> <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">23,24</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">27,28</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">31,32</context>
+        </context-group>
+        <target><x id="INTERPOLATION" equiv-text="bidResult.total }}"/> <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/></target>
+      </trans-unit>
+      <trans-unit id="2399301267677654105" datatype="html">
+        <source>Withdrawal Fee (0.01%)</source>
+        <target>Frais de retrait (0,01 %)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="257111130178722688" datatype="html">
+        <source>Amount to Receive</source>
+        <target>Montant à recevoir</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="withdrawBidText" datatype="html">
+        <source>Withdraw bid</source>
+        <target>Retirer l'enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCases.bid.title" datatype="html">
+        <source>Bid</source>
+        <target>Enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCases.bid.description" datatype="html">
+        <source>Effortlessly initiate and propagate bids among your peers. This feature has been fine-tuned for the network's native tokens, ensuring seamless integration and reliability. Dive into the bidding process with enhanced transparency and full control, while catering to your specific requirements within the network's ecosystem.</source>
+        <target>Lancez et propagez facilement des enchères parmi vos pairs. Cette fonctionnalité a été optimisée pour les jetons natifs du réseau, garantissant une intégration transparente et fiable. Plongez dans le processus d'enchère avec une transparence accrue et un contrôle total, tout en répondant à vos besoins spécifiques au sein de l'écosystème du réseau.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCases.bid.createBid" datatype="html">
+        <source>Create a bid</source>
+        <target>Créer une enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCases.bid.createBidDescription" datatype="html">
+        <source>Kickstart your bidding process with 'Create a Bid.' Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <target>Lancez votre processus d'enchères avec 'Créez une offre'. Personnalisez votre offre en toute simplicité, en garantissant une configuration sécurisée et simple. Idéal pour diverses offres, cette fonctionnalité simplifie le lancement des enchères sur notre plateforme décentralisée.</target>
+      </trans-unit>
+      <trans-unit id="useCases.bid.joinBid" datatype="html">
+        <source>Join a bid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+        <target>Rejoignez une enchère</target>
+      </trans-unit>
+      <trans-unit id="useCases.bid.joinBidDescription" datatype="html">
+        <source>Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <target>Plongez dans les offres existantes avec 'Rejoindre une offre'. Trouvez et participez aux offres qui correspondent à vos intérêts. Notre plateforme offre un moyen simple et sécurisé pour s'engager avec la communauté d'enchères décentralisée.</target>
+      </trans-unit>
+      <trans-unit id="8279184784576934083" datatype="html">
+        <source>A connected wallet is necessary to see the the progress of the bid.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <target>Un portefeuille connecté est nécessaire pour voir le progrès de l'offre.</target>
+      </trans-unit>
+      <trans-unit id="5362875351638477540" datatype="html">
+        <source> Creating your bid... Please confirm the request on your wallet. This could take 5 minutes, please stay on this page. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
+          <context context-type="linenumber">28,31</context>
+        </context-group>
+        <target>Création de votre offre... Veuillez confirmer la demande sur votre portefeuille. Cela pourrait prendre 5 minutes, veuillez rester sur cette page.</target>
+      </trans-unit>
+      <trans-unit id="3608373080967256145" datatype="html">
+        <source> The bid you are seeking cannot be found on this network. Please verify that you have entered the correct address and are on the appropriate network. Please check the URL or go back to the <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;&gt;"/>search<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/> page. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
+          <context context-type="linenumber">77,81</context>
+        </context-group>
+        <target>L'offre que vous recherchez ne peut pas être trouvée sur ce réseau. Veuillez vérifier que vous avez entré la bonne adresse et que vous êtes sur le réseau approprié. Veuillez vérifier l'URL ou revenir à la page de <x id="START_LINK" ctype="x-a" equiv-text="&lt;a routerLink=&quot;/use-cases/search&quot;&gt;"/>recherche<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</target>
+      </trans-unit>
+      <trans-unit id="900151136510105459" datatype="html">
+        <source> Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Thank you for your patience. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
+          <context context-type="linenumber">83,88</context>
+        </context-group>
+        <target>Veuillez noter que les temps de confirmation pour les offres récentes peuvent varier en raison des conditions du réseau. Pour le statut le plus récent, veuillez rafraîchir cette page. Si votre transaction est encore en cours de traitement, vous pouvez la suivre ici : <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Merci de votre patience. </target>
+      </trans-unit>
+      <trans-unit id="1133800758878907591" datatype="html">
+        <source>Protected Document</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <target>Document Protégé</target>
+      </trans-unit>
+      <trans-unit id="6362446482375896189" datatype="html">
+        <source> This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security and integrity. Access to its content is exclusively reserved for the document's owner and the initial purchaser, reflecting a new standard in document privacy and ownership. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">5,9</context>
+        </context-group>
+        <target>Ce document est verrouillé de manière sécurisée et stocké en utilisant une technologie blockchain avancée, garantissant une sécurité et une intégrité inégalées. L'accès à son contenu est exclusivement réservé au propriétaire du document et à l'acheteur initial, reflétant une nouvelle norme en matière de confidentialité et de propriété des documents.</target>
+      </trans-unit>
+      <trans-unit id="8305010609335633188" datatype="html">
+        <source>Already unlocked by an account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <target>Déjà déverrouillé par un compte</target>
+      </trans-unit>
+      <trans-unit id="3204095266434866558" datatype="html">
+        <source>Document unlocked</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <target>Document déverrouillé</target>
+      </trans-unit>
+      <trans-unit id="6837890927238901672" datatype="html">
+        <source> This document has already been unlocked by another user. This means that the content of this document is only accessible to the owner of the document and the user who unlocked it first. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">36,39</context>
+        </context-group>
+        <target>Ce document a déjà été déverrouillé par un autre utilisateur. Cela signifie que le contenu de ce document n'est accessible qu'au propriétaire du document et à l'utilisateur qui l'a déverrouillé en premier.</target>
+      </trans-unit>
+      <trans-unit id="7898632869036538763" datatype="html">
+        <source> This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">45,48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">54,57</context>
+        </context-group>
+        <target>Cette description n'est visible que pour le propriétaire du document et le premier acheteur. Assurez-vous que votre écran n'est pas enregistré.</target>
+      </trans-unit>
+      <trans-unit id="1030764705504048600" datatype="html">
+        <source> This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">64,67</context>
+        </context-group>
+        <target>Cette description n'est visible que pour le propriétaire du document et le premier acheteur. Assurez-vous que votre écran n'est pas enregistré.</target>
+      </trans-unit>
+      <trans-unit id="5147420690514910748" datatype="html">
+        <source> The detailed description of this document remains securely locked. Full access to this content will be granted upon completion of the contract payment, ensuring exclusive access for authorized parties. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">76,79</context>
+        </context-group>
+        <target>La description détaillée de ce document reste sécurisée et verrouillée. L'accès complet à ce contenu sera accordé à la fin du paiement du contrat, garantissant un accès exclusif aux parties autorisées.</target>
+      </trans-unit>
+      <trans-unit id="2416307778914933359" datatype="html">
+        <source> As the owner of this document, this is currently unlocked for you. You can see the full content of this by clicking here. Make sure your screen is not shared with anyone else. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;&gt;"/>Unlock here<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">95,98</context>
+        </context-group>
+        <target>En tant que propriétaire de ce document, celui-ci est actuellement déverrouillé pour vous. Vous pouvez voir le contenu complet de celui-ci en cliquant ici. Assurez-vous que votre écran n'est partagé avec personne d'autre. <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;unlock-btn&quot; (click)=&quot;unlockDocument.emit({ hasAccess: true })&quot;&gt;"/>Déverrouiller ici<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/></target>
+      </trans-unit>
+      <trans-unit id="3906114694097528014" datatype="html">
+        <source> Payment is processing and may take a few minutes. Once confirmed from your wallet, refresh to unlock the document. If there are any issues, the transaction will be reverted. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">102,105</context>
+        </context-group>
+        <target>Le paiement est en cours de traitement et peut prendre quelques minutes. Une fois confirmé depuis votre portefeuille, actualisez pour déverrouiller le document. Si des problèmes surviennent, la transaction sera annulée.</target>
+      </trans-unit>
+      <trans-unit id="2126091035409486953" datatype="html">
+        <source>Hide card</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+        <target>Masquer la carte</target>
+      </trans-unit>
+      <trans-unit id="ocumentLockerContent.AlreadySoldAt" datatype="html">
+        <source> Already sold at <x id="PH" equiv-text="priceInfo"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.ts</context>
+          <context context-type="linenumber">91</context>
+        </context-group>
+        <target>Vendu à <x id="PH" equiv-text="priceInfo"/></target>
+      </trans-unit>
+      <trans-unit id="5737197851349495875" datatype="html">
+        <source>Document name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <target>Nom du document</target>
+      </trans-unit>
+      <trans-unit id="6155091458396218652" datatype="html">
+        <source> Document name is required </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">9,11</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">18,20</context>
+        </context-group>
+        <target>Le nom du document est requis</target>
+      </trans-unit>
+      <trans-unit id="464221014065088612" datatype="html">
+        <source>Document created by</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <target>Document créé par</target>
+      </trans-unit>
+      <trans-unit id="5098159087618580951" datatype="html">
+        <source> Network is not matching with wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <target>Le réseau ne correspond pas au portefeuille</target>
+      </trans-unit>
+      <trans-unit id="765221008193972426" datatype="html">
+        <source>Unlocking amount</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+        <target>Déblocage du montant</target>
+      </trans-unit>
+      <trans-unit id="6243916962387560750" datatype="html">
+        <source> Price is required </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <target>Le prix est requis</target>
+      </trans-unit>
+      <trans-unit id="2486509369524484491" datatype="html">
+        <source> Price has to be greater than 0 </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+        <target>Le prix doit être supérieur à 0</target>
+      </trans-unit>
+      <trans-unit id="360586526427198849" datatype="html">
+        <source> Accept <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. 0.1% of community fee will be deducted from the final transaction. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">71,75</context>
+        </context-group>
+        <target>Accepter les <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>conditions générales<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. 0,1% de frais communautaires seront déduits de la transaction finale.</target>
+      </trans-unit>
+      <trans-unit id="6755765577650828224" datatype="html">
+        <source> You must accept the terms and conditions. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
+          <context context-type="linenumber">79,81</context>
+        </context-group>
+        <target>Vous devez accepter les termes et conditions.</target>
+      </trans-unit>
+      <trans-unit id="documentLockerGenerateDocumentBtnText" datatype="html">
+        <source>Generate Document</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <target>Générer le Document</target>
+      </trans-unit>
+      <trans-unit id="useCasesDocumentLockerTitle" datatype="html">
+        <source>Document Locker</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+        <target>Verrou de Document</target>
+      </trans-unit>
+      <trans-unit id="useCasesDocumentLockerDescription" datatype="html">
+        <source>Explore the pinnacle of document security with our Document Locker. Utilizing cutting-edge blockchain technology, we offer an unparalleled level of protection and privacy for your valuable documents. This service is tailored for those who demand the highest standards of security and exclusive access.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <target>Explorez le summum de la sécurité des documents avec notre Coffre de Documents. Utilisant une technologie blockchain de pointe, nous offrons un niveau de protection et de confidentialité inégalé pour vos documents précieux. Ce service est adapté pour ceux qui exigent les normes les plus élevées de sécurité et un accès exclusif.</target>
+      </trans-unit>
+      <trans-unit id="lockDocumentTitle" datatype="html">
+        <source>Lock a document</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <target>Verrouiller un document</target>
+      </trans-unit>
+      <trans-unit id="lockDocumentDescription" datatype="html">
+        <source>Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <target>Protégez vos documents avec notre Coffre à Documents basé sur la blockchain, garantissant un accès exclusif et une confidentialité maximale.</target>
+      </trans-unit>
+      <trans-unit id="3874221906143763852" datatype="html">
+        <source>Searching document locked</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/containers/document-locker-found/document-locker-found.component.html</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <target>Recherche de document verrouillé</target>
+      </trans-unit>
+      <trans-unit id="documentLockerFoundTitle" datatype="html">
+        <source>Document Locked</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/containers/document-locker-found/document-locker-found.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <target>Document Verrouillé</target>
+      </trans-unit>
+      <trans-unit id="documentLockerMakerTitle" datatype="html">
+        <source>Create a locked document</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/containers/document-locker-maker/document-locker-maker.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <target>Créez un document verrouillé</target>
+      </trans-unit>
+      <trans-unit id="6811901802533648897" datatype="html">
+        <source>N/A</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <target>S/O</target>
+      </trans-unit>
+      <trans-unit id="4241281336435708069" datatype="html">
+        <source> To retrieve the current conversion rate, ensure the appropriate network is selected in your wallet </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
+          <context context-type="linenumber">39,41</context>
+        </context-group>
+        <target>Pour récupérer le taux de conversion actuel, assurez-vous que le réseau approprié est sélectionné dans votre portefeuille</target>
+      </trans-unit>
+      <trans-unit id="1142017936680420194" datatype="html">
+        <source>Payment Expired</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
+          <context context-type="linenumber">96</context>
+        </context-group>
+        <target>Paiement Expiré</target>
+      </trans-unit>
+      <trans-unit id="5715712979751449266" datatype="html">
+        <source> Powered by <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/>ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
+          <context context-type="linenumber">106,108</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">39,42</context>
+        </context-group>
+        <target>Propulsé par <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/>ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
+      </trans-unit>
+      <trans-unit id="CommonErrorMessage.ConnectYourWallet" datatype="html">
+        <source>Please connect your wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <target>Veuillez connecter votre portefeuille</target>
+      </trans-unit>
+      <trans-unit id="4112850117898161412" datatype="html">
+        <source>@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
+          <context context-type="linenumber">122</context>
+        </context-group>
+        <target>@@CommonErrorMessage.NetworkMismatch:Décalage de réseau avec le portefeuille</target>
+      </trans-unit>
+      <trans-unit id="7799133836890831347" datatype="html">
+        <source> Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
+          <context context-type="linenumber">7,11</context>
+        </context-group>
+        <target>Votre réseau actuel n'est pas pris en charge. Veuillez passer à un réseau compatible. Pour obtenir de l'aide ou partager vos suggestions avec notre communauté, rejoignez-nous sur <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</target>
+      </trans-unit>
+      <trans-unit id="8296640497525814291" datatype="html">
+        <source>User Details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+        <target>Détails de l'Utilisateur</target>
+      </trans-unit>
+      <trans-unit id="5233548361040336324" datatype="html">
+        <source>Review &amp; Confirm</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <target>Vérifier &amp; Confirmer</target>
+      </trans-unit>
+      <trans-unit id="4567472610129948905" datatype="html">
+        <source>A connected wallet is required for conversion rates.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <target>Un portefeuille connecté est requis pour les taux de conversion.</target>
+      </trans-unit>
+      <trans-unit id="8594720254866711271" datatype="html">
+        <source>Choose token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <target>Choisir un jeton</target>
+      </trans-unit>
+      <trans-unit id="436473593501677616" datatype="html">
+        <source>$USD</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">70</context>
+        </context-group>
+        <target>$USD</target>
+      </trans-unit>
+      <trans-unit id="2376758992024201726" datatype="html">
+        <source>Lock in USD value (0.1% fee)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">74</context>
+        </context-group>
+        <target>Verrouiller la valeur en USD (frais de 0,1%)</target>
+      </trans-unit>
+      <trans-unit id="3479439260272663944" datatype="html">
+        <source>Wallet Address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <target>Adresse du Portefeuille</target>
+      </trans-unit>
+      <trans-unit id="8842979419223449260" datatype="html">
+        <source> A wallet address must start with 0x </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
+          <context context-type="linenumber">16,18</context>
+        </context-group>
+        <target>Une adresse de portefeuille doit commencer par 0x</target>
+      </trans-unit>
+      <trans-unit id="2653855312577235883" datatype="html">
+        <source>Link an avatar (Optional)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <target>Liez un avatar (Facultatif)</target>
+      </trans-unit>
+      <trans-unit id="8953033926734869941" datatype="html">
+        <source>Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <target>Nom</target>
+      </trans-unit>
+      <trans-unit id="8554234730084811933" datatype="html">
+        <source> Name must be less than 20 characters </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
+          <context context-type="linenumber">42,44</context>
+        </context-group>
+        <target>Le nom doit contenir moins de 20 caractères</target>
+      </trans-unit>
+      <trans-unit id="2503622792148307607" datatype="html">
+        <source> Enter your wallet address to receive funds </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
+          <context context-type="linenumber">51,53</context>
+        </context-group>
+        <target>Entrez votre adresse de portefeuille pour recevoir des fonds</target>
+      </trans-unit>
+      <trans-unit id="661279433040764999" datatype="html">
+        <source>
+           You're requesting $USD .  Rest assured, the transaction will be initiated to precisely match this amount, irrespective of any token volatility.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&#xA;        >"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">4,10</context>
+        </context-group>
+        <target>
+        Vous demandez $USD. Soyez assuré que la transaction sera initiée pour correspondre exactement à ce montant, indépendamment de toute volatilité de jeton.
+          <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong>"/>
+          <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>
+          <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&#xA;        >"/>
+          <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br />"/>
+        </target>
+      </trans-unit>
+      <trans-unit id="5773154799247678156" datatype="html">
+        <source>Receiver Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+        <target>Nom du destinataire</target>
+      </trans-unit>
+      <trans-unit id="2399487698306392686" datatype="html">
+        <source>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <target>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</target>
+      </trans-unit>
+      <trans-unit id="2899790821846500123" datatype="html">
+        <source>Protocol Fee (0.1%)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <target>Frais de protocole (0,1%)</target>
+      </trans-unit>
+      <trans-unit id="2583197000088136437" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Receiving Amount<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <target><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>Montant à recevoir<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></target>
+      </trans-unit>
+      <trans-unit id="8519270983879897918" datatype="html">
+        <source>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+        <target>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</target>
+      </trans-unit>
+      <trans-unit id="1099954563952253687" datatype="html">
+        <source>Link generated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+        <target>Lien généré</target>
+      </trans-unit>
+      <trans-unit id="4026403231403048088" datatype="html">
+        <source>Show QR Code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+        <target>Afficher le Code QR</target>
+      </trans-unit>
+      <trans-unit id="CommonText.LinkCopiedToClipboard" datatype="html">
+        <source>Link copied to clipboard</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <target>Lien copié dans le presse-papiers</target>
+      </trans-unit>
+      <trans-unit id="2711460010464843071" datatype="html">
+        <source>Attention: This is a preview of your request. Avoid the mistake of self-payment.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <target>Attention: Ceci est un aperçu de votre demande. Évitez l'erreur de l'auto-paiement.</target>
+      </trans-unit>
+      <trans-unit id="6236714119050776000" datatype="html">
+        <source>Payment Request</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <target>Demande de Paiement</target>
+      </trans-unit>
+      <trans-unit id="4403433136208247804" datatype="html">
+        <source> You've reached ChainBrary's secure payment portal. Fast, secure, and reliable cryptocurrency transactions start here. Verify, confirm, and go! </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">23,26</context>
+        </context-group>
+        <target>Vous avez atteint le portail de paiement sécurisé de ChainBrary. Les transactions de cryptomonnaie rapides, sécurisées et fiables commencent ici. Vérifiez, confirmez et allez-y!</target>
+      </trans-unit>
+      <trans-unit id="6417299265220958493" datatype="html">
+        <source> Please be connected on the <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="async)?.name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> network to use this feature. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">59,62</context>
+        </context-group>
+        <target>Veuillez être connecté sur le réseau <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="async)?.name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> pour utiliser cette fonctionnalité.</target>
+      </trans-unit>
+      <trans-unit id="7306017679756660793" datatype="html">
+        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> is requesting a sum equivalent to <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> To ensure accuracy, the transaction will be precisely calculated to match this amount in <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> prior to processing the payment. </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
+          <context context-type="linenumber">97,102</context>
+        </context-group>
+        <target><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> demande une somme équivalente à <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Pour garantir la précision, la transaction sera calculée avec précision pour correspondre à ce montant en <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> avant de traiter le paiement. </target>
+      </trans-unit>
+      <trans-unit id="paymentRequestTitle" datatype="html">
+        <source>Payment Request</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+        <target>Demande de Paiement</target>
+      </trans-unit>
+      <trans-unit id="paymentRequestDescription" datatype="html">
+        <source>Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <target>Générez et partagez facilement des demandes de paiement via URL ou code QR. Cette fonctionnalité se concentre principalement sur la création de demandes de paiement, permettant aux utilisateurs de verrouiller les prix en USD, garantissant ainsi l'exactitude malgré les fluctuations de la valeur des tokens. Une variété de tokens est disponible pour répondre à divers besoins.</target>
+      </trans-unit>
+      <trans-unit id="8796421615214272364" datatype="html">
+        <source>Know us better</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">10</context>
+        </context-group>
+        <target>Connaissez-nous mieux</target>
+      </trans-unit>
+      <trans-unit id="3603629723179660571" datatype="html">
+        <source>Got questions? Reach us our social media</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+        <target>Des questions ? Contactez-nous sur nos réseaux sociaux.</target>
+      </trans-unit>
+      <trans-unit id="4579496777570550463" datatype="html">
+        <source>Social</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <target>Social</target>
+      </trans-unit>
+      <trans-unit id="5048936242025669992" datatype="html">
+        <source>Developer Playground: Enter the Matrix of Code!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <target>Aire de Jeux du Développeur: Entrez dans la Matrice du Code !</target>
+      </trans-unit>
+      <trans-unit id="headerBtn.Home" datatype="html">
+        <source>Home</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+        <target>Accueil</target>
+      </trans-unit>
+      <trans-unit id="headerBtn.Github" datatype="html">
+        <source>Github</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+        <target>Github</target>
+      </trans-unit>
+      <trans-unit id="headerBtn.Discord" datatype="html">
+        <source>Discord</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <target>Discorde</target>
+      </trans-unit>
+      <trans-unit id="8505691224260767503" datatype="html">
+        <source>Term and condition</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/term-and-cond-modal/term-and-cond-modal.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <target>Termes et conditions</target>
+      </trans-unit>
+      <trans-unit id="8752869079658836635" datatype="html">
+        <source> Your transaction has been sent and is processing on the blockchain. Thank you for choosing our reliable and secure platform. Check its status by clicking <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;&gt;"/>here<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
+          <context context-type="linenumber">4,6</context>
+        </context-group>
+        <target>Votre transaction a été envoyée et est en cours de traitement sur la blockchain. Merci d'avoir choisi notre plateforme fiable et sécurisée. Vérifiez son statut en cliquant <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashExplorer()&quot;&gt;"/>ici<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
+      </trans-unit>
+      <trans-unit id="7507948636555938109" datatype="html">
+        <source>Log out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar-header/use-cases-sidebar-header.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+        <target>Se déconnecter</target>
+      </trans-unit>
+      <trans-unit id="5874499849802990855" datatype="html">
+        <source>Wrong network</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar/use-cases-sidebar.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <target>Réseau incorrect</target>
+      </trans-unit>
+      <trans-unit id="5158254825592648580" datatype="html">
+        <source>Your wallet does not match with the current selected network.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar/use-cases-sidebar.component.html</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <target>Votre portefeuille ne correspond pas au réseau actuellement sélectionné.</target>
+      </trans-unit>
+      <trans-unit id="bidTermAndCond" datatype="html">
+        <source>
+Before you proceed with bidding, please carefully read the following terms and conditions:
+## 1. Agreement to Terms
+By participating in this auction, you agree to be bound by these Terms. All bidders are subject to these terms, and participation signifies acceptance.
+## 2. Eligibility
+Participants must be of legal age and capable of entering into legally binding contracts. By bidding, you confirm that you meet these requirements.
+## 3. Auction Process
+- The auction starts with the smart contract's deployment and continues until the end time.
+- Bids must be in specified increments.
+- The highest bid at the end, meeting any reserve price, is the winning bid.
+## 4. Bid Submissions
+- Bids are final and binding. No retraction is permitted.
+- Bids within the final 10 minutes extend the auction by 10 minutes.
+- The higher bid takes precedence after transaction confirmation.
+- Late bids are returned.
+- The highest bidder cannot retract or outbid themselves.
+- New bids automatically refund the previous highest bidder.
+## 6. Transfer of Ownership
+Ownership transfers upon full settlement of the winning bid.
+## 7. Withdrawals
+- Withdrawal of the auction amount is permitted post-auction with at least one bidder.
+- A 0.1% withdrawal fee applies.
+- Withdrawals are allowed only after the auction's official end.
+## 8. Role of Chainbrary
+Chainbrary facilitates the auction interface but does not control the smart contract. It's not responsible for any errors or bugs.
+## 9. Liability
+The platform is not liable for issues like network downtime or user input errors.
+## 10. Amendments
+Terms may be modified without notice. Continued use implies agreement to new terms.
+## 11. Contact Us
+For inquiries, reach out on [Discord](https://discord.gg/H3hFVuCrXN).
+By bidding, you affirm understanding and agreement with these Terms and Conditions.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
+          <context context-type="linenumber">1,44</context>
+        </context-group>
+        <target>Avant de procéder aux enchères, veuillez lire attentivement les conditions générales suivantes :
+## 1. Accord des Conditions
+En participant à cette vente aux enchères, vous acceptez d'être lié par ces Conditions. Tous les enchérisseurs sont soumis à ces termes, et la participation signifie l'acceptation.
+## 2. Éligibilité
+Les participants doivent être en âge légal et capables de contracter des contrats juridiquement contraignants. En enchérissant, vous confirmez que vous répondez à ces exigences.
+## 3. Processus de la Vente aux Enchères
+- La vente aux enchères commence avec le déploiement du contrat intelligent et se poursuit jusqu'à la fin.
+- Les enchères doivent être faites par incréments spécifiés.
+- L'enchère la plus élevée à la fin, respectant tout prix de réserve, est l'enchère gagnante.
+## 4. Soumissions des Enchères
+- Les enchères sont définitives et contraignantes. Aucune rétraction n'est permise.
+- Les enchères dans les 10 dernières minutes prolongent la vente aux enchères de 10 minutes.
+- L'enchère la plus élevée prend le dessus après confirmation de la transaction.
+- Les enchères tardives sont retournées.
+- Le plus haut enchérisseur ne peut pas se rétracter ni surenchérir sur lui-même.
+- Les nouvelles enchères remboursent automatiquement le précédent enchérisseur le plus élevé.
+## 6. Transfert de Propriété
+Le transfert de propriété s'effectue à la réception complète de l'enchère gagnante.
+## 7. Retraits
+- Le retrait du montant de l'enchère est permis après l'enchère avec au moins un enchérisseur.
+- Des frais de retrait de 0,1% s'appliquent.
+- Les retraits ne sont autorisés qu'après la fin officielle de l'enchère.
+## 8. Rôle de Chainbrary
+Chainbrary facilite l'interface de la vente aux enchères, mais ne contrôle pas le contrat intelligent. Elle n'est pas responsable des erreurs ou des bugs.
+## 9. Responsabilité
+La plateforme n'est pas responsable des problèmes tels que les temps d'arrêt du réseau ou les erreurs de saisie de l'utilisateur.
+## 10. Modifications
+Les termes peuvent être modifiés sans préavis. L'utilisation continue implique l'accord avec les nouveaux termes.
+## 11. Nous Contacter
+Pour toute demande de renseignements, contactez-nous sur [Discord](https://discord.gg/H3hFVuCrXN).
+En enchérissant, vous confirmez avoir compris et accepter ces Conditions Générales.
+        </target>
+      </trans-unit>
+      <trans-unit id="documentLockerTermAndCond" datatype="html">
+        <source>
+Before utilizing our Document Locker, please carefully read the following terms and conditions:
+## 1. Agreement to Terms
+By using the Document Locker, you agree to be bound by these Terms. All users are subject to these terms, and usage signifies acceptance.
+## 2. Eligibility
+Participants must be of legal age and capable of entering into legally binding contracts. By using this service, you confirm that you meet these requirements.
+## 3. Usage Process
+- Documents are encrypted and stored upon upload.
+- Access to documents is exclusively granted to the buyer and the owner of the smart contract.
+- Once a document is unlocked, it is permanently encrypted on the blockchain, ensuring it cannot be shared or accessed by any other parties.
+## 4. Document Submissions
+- All documents uploaded remain the intellectual property of the original owner.
+- Users must have the right or authority to secure documents uploaded.
+- The platform may not be used for illegal activities or storing prohibited content.
+## 5. Confidentiality and Security
+- We employ robust encryption and security measures to protect the documents.
+- Once unlocked, the document is solely accessible to the owner and the buyer and cannot be shared or accessed by others, ensuring exclusive and private use.
+## 6. Transaction and Payments
+- Upon purchase, 99.9% of the funds are transferred directly to the document's owner, and 0.1% is contributed to the community.
+- There are no withdrawals or refunds once a purchase is made. The transaction is final and binding.
+## 7. Role of Platform
+We provide a secure environment for document storage but are not responsible for the contents of the documents or the actions of users.
+## 8. Liability
+The platform is not liable for issues like unauthorized access due to user negligence or unforeseen security breaches.
+## 9. Amendments
+Terms may be modified without notice. Continued use implies agreement to new terms.
+## 10. Contact Us
+For inquiries or assistance, reach out through our support channel.
+By using the Document Locker, you affirm understanding and agreement with these Terms and Conditions.
+        </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
+          <context context-type="linenumber">46,86</context>
+        </context-group>
+        <target>Avant d'utiliser notre Coffre à Documents, veuillez lire attentivement les termes et conditions suivants :
+## 1. Accord des Termes
+En utilisant le Coffre à Documents, vous acceptez d'être lié par ces conditions. Tous les utilisateurs sont soumis à ces termes, et l'utilisation signifie l'acceptation.
+## 2. Éligibilité
+Les participants doivent être majeurs et capables de conclure des contrats juridiquement contraignants. En utilisant ce service, vous confirmez que vous remplissez ces exigences.
+## 3. Processus d'Utilisation
+- Les documents sont cryptés et stockés dès leur chargement.
+- L'accès aux documents est exclusivement accordé à l'acheteur et au propriétaire du contrat intelligent.
+- Une fois qu'un document est déverrouillé, il est définitivement crypté sur la blockchain, assurant qu'il ne peut pas être partagé ou accessible par d'autres parties.
+## 4. Soumissions de Documents
+- Tous les documents téléchargés restent la propriété intellectuelle du propriétaire d'origine.
+- Les utilisateurs doivent avoir le droit ou l'autorité de sécuriser les documents téléchargés.
+- La plateforme ne peut pas être utilisée pour des activités illégales ou le stockage de contenu interdit.
+## 5. Confidentialité et Sécurité
+- Nous employons des mesures de cryptage et de sécurité robustes pour protéger les documents.
+- Une fois déverrouillé, le document est uniquement accessible au propriétaire et à l'acheteur et ne peut être partagé ou accessible par d'autres, assurant une utilisation exclusive et privée.
+## 6. Transactions et Paiements
+- Lors de l'achat, 99,9% des fonds sont transférés directement au propriétaire du document, et 0,1% est contribué à la communauté.
+- Il n'y a pas de retraits ou de remboursements une fois un achat effectué. La transaction est définitive et contraignante.
+## 7. Rôle de la Plateforme
+Nous fournissons un environnement sécurisé pour le stockage de documents mais ne sommes pas responsables du contenu des documents ou des actions des utilisateurs.
+## 8. Responsabilité
+La plateforme n'est pas responsable des problèmes tels que l'accès non autorisé dû à la négligence de l'utilisateur ou à des failles de sécurité imprévues.
+## 9. Modifications
+Les termes peuvent être modifiés sans préavis. L'utilisation continue implique l'accord avec les nouveaux termes.
+## 10. Contactez-nous
+Pour toute demande ou assistance, contactez-nous via notre canal de support.
+En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Termes et Conditions.</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextCancel" datatype="html">
+        <source>Cancel</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">2</context>
+        </context-group>
+        <target>Annuler</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextConnectWallet" datatype="html">
+        <source>Connect Wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">3</context>
+        </context-group>
+        <target>Connecter le Portefeuille</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextConfirm" datatype="html">
+        <source>Confirm</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+        <target>Confirmer</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextSubmit" datatype="html">
+        <source>Submit</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+        <target>Soumettre</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextBack" datatype="html">
+        <source>Back</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+        <target>Retour</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextNext" datatype="html">
+        <source>Next</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+        <target>Prochain</target>
+      </trans-unit>
+      <trans-unit id="commonButtonTextPreview" datatype="html">
+        <source>Preview</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">8</context>
+        </context-group>
+        <target>Aperçu</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.TransactionIsProcessing" datatype="html">
+        <source>Transaction is processing</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
+          <context context-type="linenumber">72</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">415</context>
+        </context-group>
+        <target>La transaction est en cours de traitement</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
+        <source>Network is updated</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
+          <context context-type="linenumber">82</context>
+        </context-group>
+        <target>Le réseau est mis à jour</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.AnUnexpectedErrorOccurred" datatype="html">
+        <source>An unexpected error occurred</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
+          <context context-type="linenumber">117</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+        <target>Une erreur inattendue s'est produite</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.auctionNotOngoing" datatype="html">
+        <source>This auction is not ongoing</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <target>Cette enchère n'est pas en cours</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.alreadyHighestBidder" datatype="html">
+        <source>You are already the highest bidder</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <target>Vous êtes déjà le plus haut enchérisseur</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.bidAmountNotHighEnough" datatype="html">
+        <source>Your bid amount is not high enough</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <target>Votre montant d'offre n'est pas assez élevé.</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.AnErrorOccuredWhilePlacingYourBid" datatype="html">
+        <source>An error occured while placing your bid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+        <target>Une erreur s'est produite lors de la soumission de votre enchère</target>
+      </trans-unit>
+      <trans-unit id="BidResponse.Success.BidPlacedSuccessfully" datatype="html">
+        <source>Bid placed successfully</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">189</context>
+        </context-group>
+        <target>Offre placée avec succès</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.PleaseConnectYourWalletToCreateABid" datatype="html">
+        <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">213</context>
+        </context-group>
+        <target>Portefeuille non connecté. Veuillez connecter votre portefeuille et réessayer. Si vous n'avez pas de portefeuille, veuillez en créer un.</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.AnErrorOccuredWhileCreatingYourBid" datatype="html">
+        <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">240</context>
+        </context-group>
+        <target>Une erreur s'est produite avec votre portefeuille. Veuillez vous assurer que vous utilisez la bonne adresse et le bon réseau. De plus, vérifiez que vous avez suffisamment de fonds disponibles pour le déploiement de l'enchère sur la blockchain.</target>
+      </trans-unit>
+      <trans-unit id="BidResponse.BidCreatedSuccessfully" datatype="html">
+        <source>Bid created successfully</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">254</context>
+        </context-group>
+        <target>Offre créée avec succès</target>
+      </trans-unit>
+      <trans-unit id="BidResponse.WithdrawRequestSentSuccessfully" datatype="html">
+        <source>Withdraw request sent successfully</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">305</context>
+        </context-group>
+        <target>Demande de retrait envoyée avec succès</target>
+      </trans-unit>
+      <trans-unit id="bidErrorMessage.AnErrorOccuredWhileSearchingForYourBid" datatype="html">
+        <source>This address is not associated with any bids that have been created. Please make sure the network is correct and try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
+          <context context-type="linenumber">351</context>
+        </context-group>
+        <target>Cette adresse n'est associée à aucune offre qui a été créée. Veuillez vous assurer que le réseau est correct et réessayez.</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.notEnoughFunds" datatype="html">
+        <source>Not enough funds</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <target>Fonds insuffisants</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.calculationError" datatype="html">
+        <source>Calculation error</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <target>Erreur de calcul</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.noAccess" datatype="html">
+        <source>No access</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <target>Aucun accès</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.notFound" datatype="html">
+        <source>Not found</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <target>Non trouvé</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.contractCreationError" datatype="html">
+        <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+        <target>Une erreur est survenue avec votre portefeuille. Veuillez vous assurer que vous utilisez la bonne adresse et le bon réseau. De plus, vérifiez que vous avez suffisamment de fonds disponibles pour le déploiement du document sur la blockchain.</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.unknownError" datatype="html">
+        <source>An error occured while processing your document. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">247</context>
+        </context-group>
+        <target>Une erreur est survenue lors du traitement de votre document. Veuillez réessayer.</target>
+      </trans-unit>
+      <trans-unit id="DocumentResponse.ContractUnlockingInProcess" datatype="html">
+        <source>Contract unlocking in process</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">265</context>
+        </context-group>
+        <target>Processus de déverrouillage du contrat en cours</target>
+      </trans-unit>
+      <trans-unit id="documentLockerErrors.walletNotConnected" datatype="html">
+        <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">288</context>
+        </context-group>
+        <target>Portefeuille non connecté. Veuillez connecter votre portefeuille et réessayer. Si vous n'avez pas de portefeuille, veuillez en créer un.</target>
+      </trans-unit>
+      <trans-unit id="DocumentResponse.LockingDocumentCreatedSuccessfully" datatype="html">
+        <source>Locking document created successfully</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
+          <context context-type="linenumber">299</context>
+        </context-group>
+        <target>Document verrouillé créé avec succès</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.TokenAddressNotFound" datatype="html">
+        <source>Token address not found!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">171</context>
+        </context-group>
+        <target>Adresse du jeton introuvable !</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.ErrorApprovingToken" datatype="html">
+        <source>Error approving token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">259</context>
+        </context-group>
+        <target>Erreur d'approbation de jeton</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
+        <source>Error retreiving data from the blockchain</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">344</context>
+        </context-group>
+        <target>Erreur lors de la récupération des données de la blockchain</target>
+      </trans-unit>
+      <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
+        <source>Error decoding payment request</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">383</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">390</context>
+        </context-group>
+        <target>Erreur lors du décodage de la demande de paiement</target>
+      </trans-unit>
+      <trans-unit id="transaction.payment.title" datatype="html">
+        <source>Transaction sent successfully</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+        <target>Transaction envoyée avec succès</target>
+      </trans-unit>
+      <trans-unit id="transaction.WalletIsNotConnected" datatype="html">
+        <source>Wallet is not connected</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <target>Le portefeuille n'est pas connecté</target>
+      </trans-unit>
+      <trans-unit id="servicePage.sharePaymentTitle">
+        <source>Share Payment</source>
+        <target>Demande de Paiement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.sharePaymentDesc">
+        <source>Share payment requests fast and safely via link/QR code</source>
+        <target>Partagez rapidement et en toute sécurité les demandes de paiement via un lien/code QR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.startABidTitle">
+        <source>Start a Bid</source>
+        <target>Commencer une Enchère</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.startABidDesc">
+        <source> Easily manage transparent bids with complete control</source>
+        <target>Gérez facilement les offres transparentes avec un contrôle total</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.documentLockerTitle">
+        <source>Document Locker</source>
+        <target>Verrou de Document</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.documentLockerDesc">
+        <source>Securely store and share documents with anyone</source>
+        <target>Stockez et partagez sécurisément des documents avec n'importe qui</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.PayTogetherTitle">
+        <source>Pay Together</source>
+        <target>Payer Ensemble</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.PayTogetherDesc">
+        <source>Facilitate group payments easily, ideal for shared expenses and gifts</source>
+        <target>Facilitez les paiements de groupe facilement, idéal pour les dépenses partagées et les cadeaux</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
