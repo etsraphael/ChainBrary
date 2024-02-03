@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { TranslationService } from '../../services/translation/translation.service';
 import { environment } from './../../../../environments/environment';
+import '@angular/localize/init';
 
 @Component({
   selector: 'app-header-page',

@@ -34,19 +34,21 @@ const transformJsonToXml = (jsonString: string): string => {
 
   // Check if the expected properties exist
   if (!jsonObj) {
-      throw new Error("Invalid JSON structure: 'target' property is missing.");
+    throw new Error("Invalid JSON structure: 'target' property is missing.");
   }
 
   // Extract the text and x elements
-  const text = jsonObj["_"] || "";
+  const text = jsonObj['_'] || '';
   const xElements = jsonObj.x || [];
 
   // Construct the XML string
   let xmlString = text;
-  xElements.forEach((element: {$: Placeholder }) => {
-      if (element && element.$) {
-          xmlString += `<x id="${element.$.id || ''}" ctype="${element.$.ctype || ''}" equiv-text="${element.$['equiv-text'] || ''}"/>`;
-      }
+  xElements.forEach((element: { $: Placeholder }) => {
+    if (element && element.$) {
+      xmlString += `<x id="${element.$.id || ''}" ctype="${element.$.ctype || ''}" equiv-text="${
+        element.$['equiv-text'] || ''
+      }"/>`;
+    }
   });
 
   return xmlString;
@@ -70,7 +72,7 @@ const translateTextAndValues = async (source: string, targetLanguage: string): P
   }
 };
 
-const createTranslationUnit = async (sourceUnit:any, targetLanguage: string) => {
+const createTranslationUnit = async (sourceUnit: any, targetLanguage: string) => {
   const newUnit: any = {
     $: { id: sourceUnit.$.id },
     source: sourceUnit['source'],
@@ -90,7 +92,6 @@ const createTranslationUnit = async (sourceUnit:any, targetLanguage: string) => 
 
   return newUnit;
 };
-
 
 const updateTranslations = async () => {
   const originalContent = readFileSync('src/locale/messages.xlf', 'utf8');
@@ -145,7 +146,7 @@ const updateTranslations = async () => {
   }
 
   const builder = new Builder({
-    renderOpts: { 'pretty': true, 'indent': '  ', 'newline': '\n' } // Adjust these options as needed
+    renderOpts: { pretty: true, indent: '  ', newline: '\n' } // Adjust these options as needed
   });
 
   let updatedXml = builder.buildObject(translationXml);

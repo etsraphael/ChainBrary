@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideAnimations } from '@angular/platform-browser/animations';
 import { RouterTestingModule } from '@angular/router/testing';
 import { LandingPageBodyComponent } from '../../components/landing-page-body/landing-page-body.component';
 import { LandingPageHeaderPageComponent } from '../../components/landing-page-header/landing-page-header.component';
@@ -13,7 +14,8 @@ describe('LandingPageContainerComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MaterialModule, SharedComponentsModule, RouterTestingModule],
-      declarations: [LandingPageContainerComponent, LandingPageHeaderPageComponent, LandingPageBodyComponent]
+      declarations: [LandingPageContainerComponent, LandingPageHeaderPageComponent, LandingPageBodyComponent],
+      providers: [provideAnimations()]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LandingPageContainerComponent);

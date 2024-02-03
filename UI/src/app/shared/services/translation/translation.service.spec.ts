@@ -11,7 +11,7 @@ describe('TranslationService', () => {
       imports: [SharedTestModule],
       providers: [
         { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
       ]
     });
     service = TestBed.inject(TranslationService);

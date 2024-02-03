@@ -5,22 +5,18 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   providedIn: 'root'
 })
 export class TranslationService {
-
-  constructor(
-    private _snackBar: MatSnackBar,
-  ) { }
+  constructor(private _snackBar: MatSnackBar) {}
 
   switchLanguage(lg: string): void {
-
     localStorage.setItem('userLanguage', lg);
 
     if (this.getLanguageFromUrl() === lg) {
       return; // Exit if no change is needed
     }
 
-    if(isDevMode()) {
+    if (isDevMode()) {
       this._snackBar.open(`Language is not avalaible in dev`, 'Close', {
-        duration: 2000,
+        duration: 2000
       });
       return;
     }
@@ -54,12 +50,11 @@ export class TranslationService {
   }
 
   initLanguage(): void {
-    if(isDevMode()) return;
+    if (isDevMode()) return;
 
     const savedLanguage: string | null = localStorage.getItem('userLanguage');
     const languageFromUrl: string = this.getLanguageFromUrl();
     const languageFromBrowser: string = this.getLanguageFromBrowser();
-
 
     let language = 'en'; // default to 'en' if no other language is found
     if (savedLanguage) {
