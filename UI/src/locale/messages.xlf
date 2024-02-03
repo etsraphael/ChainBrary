@@ -58,6 +58,13 @@
           <context context-type="linenumber">11,15</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="2918365309871770766" datatype="html">
+        <source>Explore solutions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="5901741591698884200" datatype="html">
         <source>How to show a picture on the blockchain?</source>
         <context-group purpose="location">
@@ -1217,21 +1224,21 @@
         <source>Home</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headerBtn.Github" datatype="html">
         <source>Github</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">39</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headerBtn.Discord" datatype="html">
         <source>Discord</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8505691224260767503" datatype="html">
