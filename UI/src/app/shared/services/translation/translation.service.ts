@@ -1,10 +1,30 @@
-import { Injectable } from '@angular/core';
+import { Injectable, isDevMode } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TranslationService {
+
+  constructor(
+    private _snackBar: MatSnackBar,
+  ) { }
+
   switchLanguage(lg: string): void {
+
+    localStorage.setItem('userLanguage', lg);
+
+    if (this.getLanguageFromUrl() === lg) {
+      return; // Exit if no change is needed
+    }
+
+    if(isDevMode()) {
+      this._snackBar.open(`Language is not avalaible in dev`, 'Close', {
+        duration: 2000,
+      });
+      return;
+    }
+
     let newUrl: string;
     const languageSegment = `/${lg}`;
     const languageRegex = /\/[a-z]{2}(\/|$)/;
@@ -27,5 +47,29 @@ export class TranslationService {
     const match: RegExpExecArray | null = languageRegex.exec(window.location.href);
 
     return match ? match[1] : 'en';
+  }
+
+  getLanguageFromBrowser(): string {
+    return navigator.language.split('-')[0];
+  }
+
+  initLanguage(): void {
+    if(isDevMode()) return;
+
+    const savedLanguage: string | null = localStorage.getItem('userLanguage');
+    const languageFromUrl: string = this.getLanguageFromUrl();
+    const languageFromBrowser: string = this.getLanguageFromBrowser();
+
+
+    let language = 'en'; // default to 'en' if no other language is found
+    if (savedLanguage) {
+      language = savedLanguage;
+    } else if (languageFromUrl !== 'en') {
+      language = languageFromUrl;
+    } else {
+      language = languageFromBrowser;
+    }
+
+    return this.switchLanguage(language);
   }
 }

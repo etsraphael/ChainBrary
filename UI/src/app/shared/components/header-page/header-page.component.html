@@ -23,7 +23,7 @@
             (callToAction)="item.action()"
           />
         </div>
-        <mat-form-field>
+        <mat-form-field class="my-auto">
           <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
             <mat-option [value]="lang" *ngFor="let lang of language">
               {{ lang }}
