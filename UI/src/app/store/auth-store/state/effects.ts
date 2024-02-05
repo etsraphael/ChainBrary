@@ -69,7 +69,11 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
       filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
-      map(() => showSuccessNotification({ message: 'Transaction is processing' }))
+      map(() =>
+        showSuccessNotification({
+          message: $localize`:@@ResponseMessage.TransactionIsProcessing:Transaction is processing`
+        })
+      )
     );
   });
 
@@ -79,7 +83,7 @@ export class AuthEffects {
       tap((action: ReturnType<typeof AuthActions.networkChangeSuccess>) => {
         this.authService.savechainId(action.network.chainId);
       }),
-      map(() => showSuccessNotification({ message: 'Network is updated' }))
+      map(() => showSuccessNotification({ message: $localize`:@@ResponseMessage.NetworkIsUpdated:Network is updated` }))
     );
   });
 
@@ -114,7 +118,9 @@ export class AuthEffects {
         } catch (error: unknown) {
           const errorPayload = error as { code: number; message: string };
           return AuthActions.addNetworkToWalletFailure({
-            message: errorPayload.message || 'An unexpected error occurred'
+            message:
+              errorPayload.message ||
+              $localize`:@@ResponseMessage.AnUnexpectedErrorOccurred:An unexpected error occurred`
           });
         }
       })
@@ -137,7 +143,9 @@ export class AuthEffects {
             return AuthActions.addNetworkToWallet({ network: action.network });
           } else {
             return AuthActions.networkChangeFailure({
-              message: errorPayload.message || 'An unexpected error occurred'
+              message:
+                errorPayload.message ||
+                $localize`:@@ResponseMessage.AnUnexpectedErrorOccurred:An unexpected error occurred`
             });
           }
         }

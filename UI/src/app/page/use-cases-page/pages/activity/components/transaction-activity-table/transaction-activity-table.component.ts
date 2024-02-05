@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ITransactionLog, TransactionRole } from '@chainbrary/transaction-search';
 import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 
 @Component({
@@ -16,6 +17,7 @@ export class TransactionActivityTableComponent {
   @Input() userIsConnected: boolean;
   displayedColumns: string[] = ['action', 'amount', 'date'];
   role = TransactionRole;
+  commonButtonText = CommonButtonText;
 
   constructor(
     public formatService: FormatService,

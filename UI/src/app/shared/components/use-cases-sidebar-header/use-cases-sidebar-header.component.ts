@@ -3,7 +3,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { AuthStatusCode } from '../../enum';
+import { AuthStatusCode, CommonButtonText } from '../../enum';
 import { IProfileAdded } from '../../interfaces';
 import { FormatService } from '../../services/format/format.service';
 import { environment } from './../../../../environments/environment';
@@ -29,6 +29,7 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
   verifiedAccount$: Observable<IProfileAdded | null>;
   networkList: INetworkDetail[] = [];
   modalSub: Subscription;
+  commonButtonText = CommonButtonText;
 
   constructor(
     private store: Store,

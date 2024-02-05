@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
@@ -30,7 +30,7 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     QrCodeContainerModalComponent,
     TermAndCondModalComponent
   ],
-  imports: [CommonModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
+  imports: [CommonModule, FormsModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
     FooterPageComponent,
     HeaderPageComponent,

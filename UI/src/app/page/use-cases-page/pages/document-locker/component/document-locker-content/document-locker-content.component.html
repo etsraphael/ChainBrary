@@ -1,8 +1,8 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
-      <h4>Protected Document</h4>
-      <p class="text-secondary">
+      <h4 i18n>Protected Document</h4>
+      <p i18n class="text-secondary">
         This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security
         and integrity. Access to its content is exclusively reserved for the document's owner and the initial purchaser,
         reflecting a new standard in document privacy and ownership.
@@ -18,7 +18,7 @@
               <i class="bi bi-shield-lock"></i>
             </div>
             <div *ngIf="alreadySold" class="text-center mb-2">
-              <span class="badge bg-secondary">Already unlocked by an account</span>
+              <span i18n class="badge bg-secondary">Already unlocked by an account</span>
             </div>
           </div>
         </ng-container>
@@ -26,14 +26,14 @@
           <div class="card-header d-flex justify-content-start py-2 px-lg-5 px-4 bg-dark-subtle align-items-center">
             <i class="bi bi-unlock px-3"></i>
             <div>
-              <h5 class="mb-0">Document unlocked</h5>
+              <h5 i18n class="mb-0">Document unlocked</h5>
             </div>
           </div>
         </ng-template>
         <div class="card-body">
           <ng-container [ngSwitch]="documentLockerStatus">
             <ng-container *ngSwitchCase="documentLockerStatusTypes.UNLOCKED_BY_OTHER_USER">
-              <p class="card-text text-danger">
+              <p i18n class="card-text text-danger">
                 This document has already been unlocked by another user. This means that the content of this document is
                 only accessible to the owner of the document and the user who unlocked it first.
               </p>
@@ -42,7 +42,7 @@
               <p class="card-text text-secondary">
                 {{ documentLockerContent.desc }}
               </p>
-              <div class="alert alert-warning" role="alert">
+              <div i18n class="alert alert-warning" role="alert">
                 This description is only visible for the owner of the document and the first buyer. Make sure your
                 screen is not recorded
               </div>
@@ -51,7 +51,7 @@
               <p class="card-text text-secondary">
                 {{ documentLockerContent.desc }}
               </p>
-              <div class="alert alert-warning" role="alert">
+              <div i18n class="alert alert-warning" role="alert">
                 This description is only visible for the owner of the document and the first buyer. Make sure your
                 screen is not recorded
               </div>
@@ -61,7 +61,7 @@
               <p class="card-text text-secondary">
                 {{ documentLockerContent.desc }}
               </p>
-              <div class="alert alert-warning" role="alert">
+              <div i18n class="alert alert-warning" role="alert">
                 This description is only visible for the owner of the document and the first buyer. Make sure your
                 screen is not recorded.
               </div>
@@ -73,7 +73,7 @@
             </ng-container>
             <ng-container *ngSwitchDefault>
               <h5 class="card-title">{{ documentLockerContent.documentName }}</h5>
-              <p class="card-text text-secondary">
+              <p i18n class="card-text text-secondary">
                 The detailed description of this document remains securely locked. Full access to this content will be
                 granted upon completion of the contract payment, ensuring exclusive access for authorized parties.
               </p>
@@ -92,14 +92,14 @@
       />
     </div>
     <div class="col-12 my-3" *ngIf="ownerUnlockingCardVisible">
-      <div class="alert alert-warning" role="alert">
+      <div i18n class="alert alert-warning" role="alert">
         As the owner of this document, this is currently unlocked for you. You can see the full content of this by
         clicking here. Make sure your screen is not shared with anyone else.
         <span class="unlock-btn" (click)="unlockDocument.emit({ hasAccess: true })">Unlock here</span>
       </div>
     </div>
     <div class="col-12 my-3" *ngIf="paymentSuccessful">
-      <div class="alert alert-info" role="alert">
+      <div i18n class="alert alert-info" role="alert">
         Payment is processing and may take a few minutes. Once confirmed from your wallet, refresh to unlock the
         document. If there are any issues, the transaction will be reverted.
       </div>
@@ -111,7 +111,7 @@
         documentLockerStatus === documentLockerStatusTypes.UNLOCKED_BY_OWNER
       "
     >
-      <span class="unlock-btn" (click)="lockDocumentOnScreen.emit()">Hide card</span>
+      <span i18n class="unlock-btn" (click)="lockDocumentOnScreen.emit()">Hide card</span>
     </div>
   </div>
 </div>

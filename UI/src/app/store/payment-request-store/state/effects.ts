@@ -110,7 +110,9 @@ export class PaymentRequestEffects {
             ?.networkSupport.find((support) => support.chainId === action[4].chainId);
 
           if (!tokenAddress) {
-            return PaymentRequestActions.smartContractCanTransferFailure({ message: 'Token address not found!' });
+            return PaymentRequestActions.smartContractCanTransferFailure({
+              message: $localize`:@@ResponseMessage.TokenAddressNotFound:Token address not found!`
+            });
           }
 
           const payload: TransactionTokenBridgePayload = {
@@ -168,7 +170,9 @@ export class PaymentRequestEffects {
             ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);
 
           if (!tokenAddress) {
-            return PaymentRequestActions.smartContractCanTransferFailure({ message: 'Token address not found!' });
+            return PaymentRequestActions.smartContractCanTransferFailure({
+              message: $localize`:@@ResponseMessage.TokenAddressNotFound:Token address not found!`
+            });
           }
 
           const payload: TransactionTokenBridgePayload = {
@@ -256,7 +260,9 @@ export class PaymentRequestEffects {
           map((result: boolean) =>
             result
               ? PaymentRequestActions.approveTokenAllowanceSuccess()
-              : PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: 'Error approving token' })
+              : PaymentRequestActions.approveTokenAllowanceFailure({
+                  errorMessage: $localize`:@@ResponseMessage.ErrorApprovingToken:Error approving token`
+                })
           ),
           catchError((error: Error) =>
             of(PaymentRequestActions.approveTokenAllowanceFailure({ errorMessage: error.message }))
@@ -341,7 +347,7 @@ export class PaymentRequestEffects {
       catchError(() =>
         of(
           PaymentRequestActions.applyConversionTokenFailure({
-            errorMessage: 'Error retreiving data from the blockchain',
+            errorMessage: $localize`:@@ResponseMessage.ErrorRetreivingDataFromTheBlockchain:Error retreiving data from the blockchain`,
             amountInUsd: false
           })
         )
@@ -380,14 +386,14 @@ export class PaymentRequestEffects {
           });
         } else {
           return PaymentRequestActions.generatePaymentRequestFailure({
-            errorMessage: 'Error decoding payment request'
+            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
           });
         }
       }),
       catchError(() =>
         of(
           PaymentRequestActions.generatePaymentRequestFailure({
-            errorMessage: 'Error decoding payment request'
+            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
           })
         )
       )
@@ -412,7 +418,11 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.amountSentSuccess),
       filter((action: ReturnType<typeof PaymentRequestActions.amountSentSuccess>) => action.numberConfirmation == 1),
-      map(() => showSuccessNotification({ message: 'Transaction is processing' }))
+      map(() =>
+        showSuccessNotification({
+          message: $localize`:@@ResponseMessage.TransactionIsProcessing:Transaction is processing`
+        })
+      )
     );
   });
 

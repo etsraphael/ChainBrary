@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Web3LoginService } from '@chainbrary/web3-login';
 import { Subscription } from 'rxjs';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { ProfileForm } from './../../../../../../shared/interfaces';
 
 @Component({
@@ -15,6 +16,7 @@ import { ProfileForm } from './../../../../../../shared/interfaces';
 export class PaymentRequestProfileSettingsComponent {
   @Input() profileForm: FormGroup<ProfileForm>;
   @Output() goToNextPage = new EventEmitter<void>();
+  commonButtonText = CommonButtonText;
 
   constructor(
     private snackbar: MatSnackBar,
@@ -26,7 +28,7 @@ export class PaymentRequestProfileSettingsComponent {
     this.profileForm.markAllAsTouched();
 
     if (this.profileForm.invalid) {
-      this.snackbar.open('Please fill in all the required fields', 'Close', { duration: 3000 });
+      this.snackbar.open('Please fill in all the required fields', $localize`:@@commonWords:Close`, { duration: 3000 });
       return;
     }
 

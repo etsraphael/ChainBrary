@@ -31,7 +31,7 @@ export class NotificationEffects {
       return this.actions$.pipe(
         ofType(NotificationActions.showErrorNotification),
         map((action: ReturnType<typeof NotificationActions.showErrorNotification>) =>
-          this._snackBar.open(action.message, 'Close', {
+          this._snackBar.open(action.message, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           })

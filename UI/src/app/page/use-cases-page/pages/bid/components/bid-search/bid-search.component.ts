@@ -15,7 +15,7 @@ import { selectSearchBid } from './../../../../../../store/bid-store/state/selec
 })
 export class BidSearchComponent implements OnInit {
   headerPayload: IUseCasesHeader = {
-    title: 'Join a bid',
+    title: $localize`:@@bidSearchTitle:Join a bid`,
     goBackLink: '/use-cases/bid/services',
     description: null
   };

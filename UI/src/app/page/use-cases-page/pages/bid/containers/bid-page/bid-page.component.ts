@@ -8,6 +8,7 @@ import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { BidWithdrawalComponent } from '../../components/bid-withdrawal/bid-withdrawal.component';
 import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
@@ -62,6 +63,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
   bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing);
   currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
   bidCreationIsLoading$: Observable<boolean> = this.store.select(selectBidCreationIsLoading);
+  commonButtonText = CommonButtonText;
 
   get isOwner$(): Observable<boolean> {
     return this.bid$.pipe(

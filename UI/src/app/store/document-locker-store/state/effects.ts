@@ -17,10 +17,10 @@ import { selectDocumentLockerRefreshCheck, selectSearchDocumentLockedData } from
 @Injectable()
 export class DocumentLockerEffects {
   readonly errorMessage: KeyAndLabel[] = [
-    { key: 'not_enough_funds', label: 'Not enough funds' },
-    { key: 'calculation_error', label: 'Calculation error' },
-    { key: 'no_access', label: 'No access' },
-    { key: 'not_found', label: 'Not found' }
+    { key: 'not_enough_funds', label: $localize`:@@documentLockerErrors.notEnoughFunds:Not enough funds` },
+    { key: 'calculation_error', label: $localize`:@@documentLockerErrors.calculationError:Calculation error` },
+    { key: 'no_access', label: $localize`:@@documentLockerErrors.noAccess:No access` },
+    { key: 'not_found', label: $localize`:@@documentLockerErrors.notFound:Not found` }
   ];
 
   constructor(
@@ -52,8 +52,7 @@ export class DocumentLockerEffects {
           catchError(() =>
             of(
               DLActions.createDocumentLockerFailure({
-                message:
-                  'An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.'
+                message: $localize`:@@documentLockerErrors.contractCreationError:An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.`
               })
             )
           )
@@ -244,10 +243,10 @@ export class DocumentLockerEffects {
           });
 
           if (!isErrorKnown) {
-            formattedMessage = 'An error occured while processing your document. Please try again.';
+            formattedMessage = $localize`:@@documentLockerErrors.unknownError:An error occured while processing your document. Please try again.`;
           }
 
-          return this.snackBar.open(formattedMessage, 'Close', {
+          return this.snackBar.open(formattedMessage, $localize`:@@commonWords:Close`, {
             duration: 5000,
             panelClass: ['error-snackbar']
           });
@@ -262,10 +261,14 @@ export class DocumentLockerEffects {
       return this.actions$.pipe(
         ofType(DLActions.unlockDocumentSuccess),
         tap(() =>
-          this.snackBar.open('Contract unlocking in process', '', {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          })
+          this.snackBar.open(
+            $localize`:@@DocumentResponse.ContractUnlockingInProcess:Contract unlocking in process`,
+            '',
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar']
+            }
+          )
         )
       );
     },
@@ -284,8 +287,7 @@ export class DocumentLockerEffects {
       tap(() => this.web3LoginService.openLoginModal()),
       map(() => {
         return DLActions.createDocumentLockerFailure({
-          message:
-            'Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.'
+          message: $localize`:@@documentLockerErrors.walletNotConnected:Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.`
         });
       })
     );
@@ -296,10 +298,14 @@ export class DocumentLockerEffects {
       return this.actions$.pipe(
         ofType(DLActions.createDocumentLockerSuccess),
         tap(() => {
-          this.snackBar.open('Locking document created successfully', '', {
-            duration: 5000,
-            panelClass: ['success-snackbar']
-          });
+          this.snackBar.open(
+            $localize`:@@DocumentResponse.LockingDocumentCreatedSuccessfully:Locking document created successfully`,
+            '',
+            {
+              duration: 5000,
+              panelClass: ['success-snackbar']
+            }
+          );
         })
       );
     },

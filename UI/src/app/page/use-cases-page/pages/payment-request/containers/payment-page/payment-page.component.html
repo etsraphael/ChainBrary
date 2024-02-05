@@ -3,7 +3,7 @@
   <div class="w-100">
     <h6 class="mb-0">
       <i class="bi bi-exclamation-triangle me-2"></i>
-      <span>Attention: This is a preview of your request. Avoid the mistake of self-payment.</span>
+      <span i18n>Attention: This is a preview of your request. Avoid the mistake of self-payment.</span>
     </h6>
   </div>
 </div>
@@ -12,7 +12,7 @@
   <!-- Title container -->
   <div class="row justify-content-center mt-3">
     <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 text-start">
-      <h3 class="text-dark">Payment Request</h3>
+      <h3 i18n class="text-dark">Payment Request</h3>
       <hr />
     </div>
   </div>
@@ -20,7 +20,7 @@
   <!-- Description -->
   <div class="row justify-content-center">
     <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 text-start">
-      <p class="text-muted">
+      <p i18n class="text-muted">
         You've reached ChainBrary's secure payment portal. Fast, secure, and reliable cryptocurrency transactions start
         here. Verify, confirm, and go!
       </p>
@@ -36,7 +36,7 @@
     </div>
     <div class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4 pe-3">
-        <h6 class="text-muted text-end">
+        <h6 i18n class="text-muted text-end">
           Powered by
           <a [routerLink]="['/']">ChainBrary</a>
         </h6>
@@ -56,7 +56,7 @@
               (callToAction)="changeNetwork()"
             />
           </div>
-          <p class="mb-md-0">
+          <p i18n class="mb-md-0">
             Please be connected on the <strong>{{ (paymentNetwork$ | async)?.name }}</strong> network to use this
             feature.
           </p>
@@ -81,7 +81,7 @@
       >
         <div class="d-flex justify-content-center">
           <div class="spinner-container spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
+            <span i18n class="visually-hidden">Loading...</span>
           </div>
         </div>
       </div>
@@ -93,7 +93,7 @@
             class="card shadow-sm border-0 mt-2"
           >
             <div class="card-body">
-              <p class="text-dark mb-0 px-2" data-id="mathing-amount-message">
+              <p i18n class="text-dark mb-0 px-2" data-id="mathing-amount-message">
                 <strong>{{ (selectPaymentRequestState$ | async)?.profile?.username }}</strong> is requesting a sum
                 equivalent to <strong>${{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }} USD</strong>.
                 <br />

@@ -29,7 +29,7 @@ export class TransactionEffects {
       map((action: ReturnType<typeof amountSent>) => {
         return localTransactionSentSuccessfully({
           card: {
-            title: 'Transaction sent successfully',
+            title: $localize`:@@transaction.payment.title:Transaction sent successfully`,
             type: 'success',
             hash: action.hash,
             component: 'PaymentPageComponent',
@@ -49,7 +49,7 @@ export class TransactionEffects {
       ),
       map(() =>
         loadTransactionsFromBridgeTransferFailure({
-          error: 'Wallet is not connected'
+          error: $localize`:@@transaction.WalletIsNotConnected:Wallet is not connected`
         })
       )
     );
