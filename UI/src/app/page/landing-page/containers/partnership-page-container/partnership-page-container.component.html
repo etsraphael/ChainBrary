@@ -1,1 +1,39 @@
-<p>partnership-page-container works!</p>
+<div class="bg-container w-100">
+  <div class="row justify-content-center py-5 bg-container-1">
+    <div class="col-10 header-container">
+      <div class="d-flex flex-column justify-content-center align-items-center text-center">
+        <h1 class="text-dark">Partner with Chainbrary</h1>
+        <p class="text-secondary">
+          Join our platform and get support for your projects with Chainbrary's amazing finance services.
+        </p>
+        <app-chainbrary-button [buttonClasses]="['btn-primary-gradient', 'text-light']" buttonText="Contact Us" />
+        <div class="ellpipse-container">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-6 text-center">
+        <h1 class="text-dark">We Offer</h1>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-11 text-center">
+        <p class="text-secondary">
+          ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing
+          users with a library of open-source and secure tools for building and interacting with blockchain
+          applications.
+        </p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-4 my-2" *ngFor="let c of landingPageCards">
+          <app-landing-page-card [card]="c"></app-landing-page-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

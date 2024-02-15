@@ -7,6 +7,7 @@ import { LandingPageContainerComponent } from './containers/landing-page-contain
 import { PartnershipPageContainerComponent } from './containers/partnership-page-container/partnership-page-container.component';
 import { LandingPageRoutingModule } from './landing-page-routing.module';
 import { LandingHomePageContainerComponent } from './containers/landing-home-page-container/landing-home-page-container.component';
+import { LandingPageCardComponent } from './components/landing-page-card/landing-page-card.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { LandingHomePageContainerComponent } from './containers/landing-home-pag
     LandingPageContainerComponent,
     LandingPageBodyComponent,
     PartnershipPageContainerComponent,
-    LandingHomePageContainerComponent
+    LandingHomePageContainerComponent,
+    LandingPageCardComponent
   ],
   imports: [CommonModule, LandingPageRoutingModule, SharedComponentsModule]
 })
