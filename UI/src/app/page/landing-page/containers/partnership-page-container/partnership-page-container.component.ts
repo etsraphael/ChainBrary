@@ -9,34 +9,34 @@ import { ILandingPageCard } from '../../components/landing-page-card/landing-pag
 export class PartnershipPageContainerComponent {
   landingPageCards: ILandingPageCard[] = [
     {
-      icon: 'icon1',
-      title: 'Title 1',
-      description: 'Description 1'
+      icon: 'bi-app',
+      title: 'Services',
+      description: '1. Receive payments in tokens. 2. Lock your confidential files. 3. Lock a document'
     },
     {
-      icon: 'icon2',
-      title: 'Title 2',
-      description: 'Description 2'
+      icon: 'bi-arrows-move',
+      title: 'Extend Community',
+      description: 'Use and exchange your tokens on the platform and keep growing.'
     },
     {
-      icon: 'icon3',
-      title: 'Title 3',
-      description: 'Description 3'
+      icon: 'bi-gear',
+      title: 'Maintenance',
+      description: 'We constantly maintain for the expansion and improvement of our features.'
     },
     {
-      icon: 'icon4',
-      title: 'Title 4',
-      description: 'Description 4'
+      icon: 'bi-safe2',
+      title: 'Community Vault',
+      description: 'A vault that earns you benefits. Be the first one to be a part of it.'
     },
     {
-      icon: 'icon5',
-      title: 'Title 5',
-      description: 'Description 5'
+      icon: 'bi-book',
+      title: 'Open Source',
+      description: 'Our application is an open source, transparent to all.'
     },
     {
-      icon: 'icon6',
-      title: 'Title 6',
-      description: 'Description 6'
+      icon: 'bi-shield-check',
+      title: 'Security',
+      description: 'We keep performing Audits to have that high-level secure transactions always.'
     }
   ];
 
