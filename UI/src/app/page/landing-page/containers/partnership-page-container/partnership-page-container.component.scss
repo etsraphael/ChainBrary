@@ -18,9 +18,14 @@
 
 .ellpipse-container {
   width: 100%;
-  height: 11rem;
+  height: 8.5rem;
   background: url('./../../../../../assets/bg/light/landing-page-cover.svg') no-repeat center center;
   background-size: contain;
+
+  @include media-breakpoint-up(md) {
+    height: 15rem;
+  }
+
 
   @include media-breakpoint-up(lg) {
     height: 20rem;
