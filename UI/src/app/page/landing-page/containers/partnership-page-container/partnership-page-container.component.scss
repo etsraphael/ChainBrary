@@ -30,3 +30,17 @@
     height: 22rem;
   }
 }
+
+.vertical-bar {
+  width: 2px;
+  background-color: #000;
+}
+
+.icon {
+  font-size: 1.5rem;
+}
+
+/* Positioning icons */
+.icon:nth-child(1) { top: -7px; } /* adjust the top value as needed */
+.icon:nth-child(2) { top: 93px; } /* adjust the top value as needed */
+.icon:nth-child(3) { top: 188px; } /* adjust the top value as needed */
