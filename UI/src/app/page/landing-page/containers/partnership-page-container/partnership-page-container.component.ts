@@ -58,6 +58,14 @@ export class PartnershipPageContainerComponent {
     }
   ];
 
+  projectsList: IProjectIcons[] = [
+    { id: 'bnb', icon: 'bnb-icon.svg' },
+    { id: 'atom', icon: 'atom-icon.svg' },
+    { id: 'dot', icon: 'dot-icon.svg' },
+    { id: 'eth', icon: 'eth-icon.svg' },
+    { id: 'usdc', icon: 'usdc-icon.svg' }
+  ];
+
   currentSection: string;
   progressHeights: { [key: string]: string } = {};
 
@@ -87,10 +95,30 @@ export class PartnershipPageContainerComponent {
       }
     }
   }
+
+  getIconStyle(index: number): { [key: string]: string } {
+    const totalIcons = this.projectsList.length;
+    const arcAngle = 250; // degrees, adjust if you want a wider or narrower arc
+    const angleStep = arcAngle / (totalIcons - 1);
+    const angle = angleStep * index - arcAngle / 2;
+    const radians = (angle * Math.PI) / 180;
+
+    const translateY = -Math.cos(radians) * 100; // radius of the arc, adjust as needed
+    const translateX = Math.sin(radians) * 100; // radius of the arc, adjust as needed
+
+    return {
+      transform: `translateX(${translateX}px) translateY(${translateY}px)`
+    };
+  }
 }
 
 interface ISectionAndDescription {
   id: string;
   title: string;
   desc: string;
+}
+
+interface IProjectIcons {
+  id: string;
+  icon: string;
 }
