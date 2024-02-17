@@ -38,9 +38,9 @@
 
 .icon {
   font-size: 1.5rem;
+  transition: transform 0.5s ease;
 }
 
-/* Positioning icons */
-.icon:nth-child(1) { top: -7px; } /* adjust the top value as needed */
-.icon:nth-child(2) { top: 93px; } /* adjust the top value as needed */
-.icon:nth-child(3) { top: 188px; } /* adjust the top value as needed */
+.highlight {
+  transform: scale(1.5);
+}
