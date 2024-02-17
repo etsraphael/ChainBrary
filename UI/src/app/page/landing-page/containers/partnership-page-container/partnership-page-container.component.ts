@@ -59,9 +59,17 @@ export class PartnershipPageContainerComponent {
   ];
 
   currentSection: string;
+  progressHeights: { [key: string]: string } = {};
+
+  constructor() {
+    // Initialize progressHeights with 0% for each section
+    for (const section of this.sectionsAndDescriptions) {
+      this.progressHeights[section.id] = '0%';
+    }
+  }
 
   @HostListener('window:scroll', ['$event'])
-  onWindowScroll() {
+  onWindowScroll(): void {
     // Loop through each section to determine which is in view
     for (const section of this.sectionsAndDescriptions) {
       const element = document.getElementById(section.id);
@@ -70,9 +78,13 @@ export class PartnershipPageContainerComponent {
 
       if (position && position.top <= offset && position.bottom >= offset) {
         this.currentSection = section.id;
-        break;
+        this.progressHeights[section.id] = '100%';
       }
-
+      if (position && position.bottom < offset) {
+        this.progressHeights[section.id] = '100%';
+      } else {
+        this.progressHeights[section.id] = '0%';
+      }
     }
   }
 }

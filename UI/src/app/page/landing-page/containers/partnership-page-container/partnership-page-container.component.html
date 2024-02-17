@@ -51,10 +51,12 @@
           <div class="container">
             <div class="row" *ngFor="let s of sectionsAndDescriptions; let isLast = last">
               <div class="col-2 d-flex flex-column align-items-center">
-                <div class="icon" [ngClass]="{'highlight': currentSection === s.id}">
+                <div class="icon" [ngClass]="{ highlight: currentSection === s.id }">
                   <i class="bi bi-patch-check"></i>
                 </div>
-                <div *ngIf="!isLast" class="vertical-bar h-100"></div>
+                <div *ngIf="!isLast" class="vertical-bar h-100">
+                  <div class="progress-indicator" [ngStyle]="{ height: progressHeights[s.id] }"></div>
+                </div>
               </div>
               <div class="col-10 pb-5" [id]="s.id">
                 <h5>{{ s.title }}</h5>

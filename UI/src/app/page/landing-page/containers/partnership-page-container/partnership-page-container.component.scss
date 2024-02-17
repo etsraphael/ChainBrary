@@ -33,7 +33,16 @@
 
 .vertical-bar {
   width: 2px;
-  background-color: #000;
+  background-color: #ccc; /* Gray background for the bar */
+  position: relative;
+}
+
+.progress-indicator {
+  width: 100%;
+  background-color: #000; /* Black color for progress */
+  position: absolute;
+  top: 0; /* Start from the bottom */
+  transition: height 0.5s ease; /* Smooth transition for height change */
 }
 
 .icon {
