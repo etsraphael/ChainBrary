@@ -1,4 +1,4 @@
-<div class="container">
+<!-- <div class="container">
   <div class="py-4 py-sm-4 py-md-5"></div>
   <div class="row text-center d-block d-sm-none">
     <h2 i18n class="text-primary">Know us better</h2>
@@ -24,4 +24,50 @@
     </div>
   </div>
   <div class="py-4 py-sm-4 py-md-5"></div>
+</div> -->
+<div class="container">
+  <div class="py-4 py-sm-4 py-md-5"></div>
+  <div class="row text-center d-block d-sm-none">
+    <h2 i18n class="text-primary">Know us better</h2>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-6 col-lg-4 d-flex flex-column">
+      <a routerLink="/landing-page/home" (click)="scrollToTop()">
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init']" buttonText="Home" />
+      </a>
+      <a routerLink="/landing-page/partnership">
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init']" buttonText="Partnership" />
+      </a>
+      <a routerLink="/use-cases/services">
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init']" buttonText="Services" />
+      </a>
+    </div>
+    <div class="col-md-6 col-lg-4 d-flex align-items-center">
+      <div class="container">
+        <div class="title-container d-flex mb-md-5 my-3 justify-content-md-end">
+          <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto theme-assets-wrapper" />
+          <h3 class="my-auto text-dark">ChainBrary</h3>
+        </div>
+        <div class="row">
+          <p i18n class="text-secondary">
+            <span class="text-primary">Know us better</span>
+            Got questions? Reach us our social media
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+  <div class="row container-footer-btn mt-md-2 pb-3">
+    <div class="col-12 col-md-7 d-inline-block mb-3 mb-md-0">
+      <a [href]="item.url" target="_blank" class="btn btn-light text-dark mx-2" *ngFor="let item of footerBtns">
+        <i class="bi" [ngClass]="item.icon"></i>
+      </a>
+    </div>
+    <div class="col-12 col-md-5 copy-right-container my-auto">
+      <p class="text-secondary mb-0 text-md-end">
+        <span i18n>Copyright © 2023 All Rights Reserved</span>
+      </p>
+    </div>
+  </div>
 </div>

@@ -28,9 +28,7 @@ export class HeaderPageComponent implements OnInit {
     }
   ];
 
-  constructor(
-    private translationService: TranslationService
-  ) {}
+  constructor(private translationService: TranslationService) {}
 
   ngOnInit(): void {
     this.languageSelected = this.translationService.getLanguageFromUrl();
