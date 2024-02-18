@@ -6,8 +6,8 @@
     </h6>
   </div>
 </div>
-<div class="row nav-bar-container px-4 py-3 mx-0 bg-light">
-  <div class="col-9 col-sm-5 col-md-6 col-lg-7 col-xl-9 my-auto">
+<div class="row nav-bar-container px-4 pt-3 mx-0 bg-light">
+  <div class="col-9 col-sm-5 col-md-6 col-lg-7 col-xl-9">
     <a class="title-container d-flex" [routerLink]="['/']">
       <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto theme-assets-wrapper" />
       <h3 class="my-auto text-dark">ChainBrary</h3>
@@ -16,12 +16,14 @@
   <div class="d-none d-sm-block col-sm-7 col-md-6 col-lg-5 col-xl-3">
     <div class="row">
       <div class="d-flex justify-content-center">
-        <div class="btn-container my-auto mx-2" *ngFor="let item of headerBtns">
+        <div class="btn-container my-auto mx-2 pb-2" routerLinkActive="active" *ngFor="let item of headerBtns">
           <a [routerLink]="item.url">
-            <button class="btn btn-light" routerLinkActive="active">{{ item.title }}</button>
+            <button class="btn btn-light" >
+              <span>{{ item.title }}</span>
+            </button>
           </a>
         </div>
-        <mat-form-field class="my-auto">
+        <mat-form-field class="my-auto pb-2">
           <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
             <mat-option [value]="lang" *ngFor="let lang of language">
               {{ lang }}
