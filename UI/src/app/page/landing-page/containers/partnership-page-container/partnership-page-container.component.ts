@@ -11,50 +11,50 @@ export class PartnershipPageContainerComponent {
     {
       icon: 'bi-app',
       title: 'Services',
-      description: '1. Receive payments in tokens. 2. Lock your confidential files. 3. Lock a document'
+      description: 'Explore our multifaceted services: process token payments, secure sensitive files, and utilize our document locker for enhanced privacy.'
     },
     {
       icon: 'bi-arrows-move',
       title: 'Extend Community',
-      description: 'Use and exchange your tokens on the platform and keep growing.'
+      description: 'Grow with us by engaging in our token-based ecosystem, fostering continuous exchange and community expansion.'
     },
     {
       icon: 'bi-gear',
       title: 'Maintenance',
-      description: 'We constantly maintain for the expansion and improvement of our features.'
+      description: 'Benefit from our commitment to regular updates and enhancements, ensuring state-of-the-art features for our users.'
     },
     {
       icon: 'bi-safe2',
       title: 'Community Vault',
-      description: 'A vault that earns you benefits. Be the first one to be a part of it.'
+      description: 'Join our Community Vault for mutual benefits. Be among the pioneers in this innovative financial tool.'
     },
     {
       icon: 'bi-book',
       title: 'Open Source',
-      description: 'Our application is an open source, transparent to all.'
+      description: 'Our platform is transparent and open source, inviting collaboration and trust from our users.'
     },
     {
       icon: 'bi-shield-check',
       title: 'Security',
-      description: 'We keep performing Audits to have that high-level secure transactions always.'
+      description: 'Security is our priority. Rely on our advanced measures to safeguard your blockchain interactions.'
     }
   ];
 
   sectionsAndDescriptions: ISectionAndDescription[] = [
     {
       id: 'section1',
-      title: 'Connect with us on Discord',
-      desc: 'Discord is the chat community where we talk about our product all the time.'
+      title: 'Join Our Discord Hub',
+      desc: "Discover Chainbrary's blockchain world on Discord. Connect, learn, and share insights in our community."
     },
     {
       id: 'section2',
-      title: 'Project Introduction',
-      desc: 'Explain about your project and clarify all doubts and have discuss.'
+      title: 'Explore Chainbrary',
+      desc: 'Learn how Chainbrary demystifies blockchain, making it accessible and relevant for everyday use.'
     },
     {
       id: 'section3',
-      title: 'Integration',
-      desc: 'Get the project onboard and processed by us in no time.'
+      title: 'Easy Integration',
+      desc: "Quickly integrate Chainbrary's user-friendly blockchain solutions into your projects."
     }
   ];
 
