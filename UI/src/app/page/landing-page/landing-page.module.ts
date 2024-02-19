@@ -4,10 +4,20 @@ import { SharedComponentsModule } from '../../shared/components/shared-component
 import { LandingPageBodyComponent } from './components/landing-page-body/landing-page-body.component';
 import { LandingPageHeaderPageComponent } from './components/landing-page-header/landing-page-header.component';
 import { LandingPageContainerComponent } from './containers/landing-page-container/landing-page-container.component';
+import { PartnershipPageContainerComponent } from './containers/partnership-page-container/partnership-page-container.component';
 import { LandingPageRoutingModule } from './landing-page-routing.module';
+import { LandingHomePageContainerComponent } from './containers/landing-home-page-container/landing-home-page-container.component';
+import { LandingPageCardComponent } from './components/landing-page-card/landing-page-card.component';
 
 @NgModule({
-  declarations: [LandingPageHeaderPageComponent, LandingPageContainerComponent, LandingPageBodyComponent],
+  declarations: [
+    LandingPageHeaderPageComponent,
+    LandingPageContainerComponent,
+    LandingPageBodyComponent,
+    PartnershipPageContainerComponent,
+    LandingHomePageContainerComponent,
+    LandingPageCardComponent
+  ],
   imports: [CommonModule, LandingPageRoutingModule, SharedComponentsModule]
 })
 export class LandingPageModule {}

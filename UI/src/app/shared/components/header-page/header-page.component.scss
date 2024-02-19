@@ -59,3 +59,13 @@ a {
     min-height: 30px;
   }
 }
+
+.active button {
+  span {
+    color: var(--bs-primary);
+  }
+}
+
+.active {
+  border-bottom: 2px solid var(--bs-primary);
+}

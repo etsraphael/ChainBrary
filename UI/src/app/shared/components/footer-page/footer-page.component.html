@@ -1,27 +1,36 @@
 <div class="container">
-  <div class="py-4 py-sm-4 py-md-5"></div>
-  <div class="row text-center d-block d-sm-none">
-    <h2 i18n class="text-primary">Know us better</h2>
-  </div>
-  <div class="row justify-content-center">
-    <div class="col-6 col-lg-4 d-flex align-items-center">
+  <div class="row justify-content-center pt-3">
+    <div class="col-md-6 col-lg-4 d-flex flex-column">
+      <a [routerLink]="item.url" (click)="scrollToTop()" *ngFor="let item of footerList">
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init']" [buttonText]="item.title" />
+      </a>
+    </div>
+    <div class="col-md-6 col-lg-4 d-flex align-items-center">
       <div class="container">
-        <div class="row d-none d-sm-block">
-          <h2 i18n class="text-primary">Know us better</h2>
+        <div class="title-container d-flex mb-md-5 my-3 justify-content-md-end">
+          <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto theme-assets-wrapper" />
+          <h3 class="my-auto text-dark">ChainBrary</h3>
         </div>
         <div class="row">
-          <p i18n class="text-secondary">Got questions? Reach us our social media</p>
+          <p i18n class="text-secondary">
+            <span class="text-primary">Know us better</span>
+            Got questions? Reach us our social media
+          </p>
         </div>
       </div>
     </div>
-    <div class="col-5 col-lg-4 offset-md-1 offset-lg-2">
-      <h3 i18n class="ps-2 d-none d-sm-block text-dark">Social</h3>
-      <div *ngFor="let item of footerBtns">
-        <a [href]="item.url" target="_blank">
-          <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init']" [buttonText]="item.text" />
-        </a>
-      </div>
+  </div>
+  <hr />
+  <div class="row container-footer-btn mt-md-2 pb-3">
+    <div class="col-12 col-md-7 d-inline-block mb-3 mb-md-0">
+      <a [href]="item.url" target="_blank" class="btn btn-light text-dark mx-2" *ngFor="let item of footerBtns">
+        <i class="bi" [ngClass]="item.icon"></i>
+      </a>
+    </div>
+    <div class="col-12 col-md-5 copy-right-container my-auto">
+      <p class="text-secondary mb-0 text-md-end">
+        <span i18n>Copyright © 2023 All Rights Reserved</span>
+      </p>
     </div>
   </div>
-  <div class="py-4 py-sm-4 py-md-5"></div>
 </div>
