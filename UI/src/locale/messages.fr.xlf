@@ -1956,6 +1956,236 @@ En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Te
           <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="6683893851495057135">
+        <source>Partner with Chainbrary</source>
+        <target>Partenaire avec Chainbrary</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5387207834911850380">
+        <source> Join our platform and get support for your projects with Chainbrary's amazing blockchain services. </source>
+        <target>Rejoignez notre plateforme et obtenez du soutien pour vos projets avec les incroyables services blockchain de Chainbrary.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
+          <context context-type="linenumber">6,8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5953792149580561280">
+        <source>We Offer</source>
+        <target>Nous Offrons</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4559438270496542403">
+        <source>Join the Chainbrary Team Today!</source>
+        <target>Rejoignez l'équipe Chainbrary aujourd'hui !</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
+          <context context-type="linenumber">53</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6698102052016577530">
+        <source> At Chainbrary, we're excited about the amazing projects we can accomplish together. Don't miss your chance to be a part of something extraordinary. Join us now! </source>
+        <target>Chez Chainbrary, nous sommes enthousiastes à l'idée des projets incroyables que nous pouvons réaliser ensemble. Ne manquez pas votre chance de faire partie de quelque chose d'extraordinaire. Rejoignez-nous maintenant!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
+          <context context-type="linenumber">54,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Services">
+        <source>Services</source>
+        <target>Services</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Services">
+        <source>Explore our multifaceted services: process token payments, secure sensitive files, and utilize our document locker for enhanced privacy.</source>
+        <target>Explorez nos services multifacettes : traitez les paiements de jetons, sécurisez les fichiers sensibles et utilisez notre casier de documents pour une confidentialité accrue.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Extend-Community">
+        <source>Extend Community</source>
+        <target>Étendre la Communauté</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Extend-Community">
+        <source>Grow with us by engaging in our token-based ecosystem, fostering continuous exchange and community expansion.</source>
+        <target>Développez-vous avec nous en vous engageant dans notre écosystème basé sur des jetons, favorisant un échange continu et l'expansion de la communauté.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Maintenance">
+        <source>Maintenance</source>
+        <target>Entretien</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Maintenance">
+        <source>Benefit from our commitment to regular updates and enhancements, ensuring state-of-the-art features for our users.</source>
+        <target>Bénéficiez de notre engagement à effectuer des mises à jour et des améliorations régulières, garantissant des fonctionnalités à la pointe de la technologie pour nos utilisateurs.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Community-Vault">
+        <source>Community Vault</source>
+        <target>Coffre de la Communauté</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Community-Vault">
+        <source>Join our Community Vault for mutual benefits. Be among the pioneers in this innovative financial tool.</source>
+        <target>Rejoignez notre Coffre Communautaire pour des avantages mutuels. Soyez parmi les pionniers de cet outil financier innovant.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Open-Source">
+        <source>Our platform is transparent and open source, inviting collaboration and trust from our users.</source>
+        <target>Notre plateforme est transparente et open source, invitant à la collaboration et à la confiance de nos utilisateurs.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">34</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Security">
+        <source>Security</source>
+        <target>Sécurité</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Security">
+        <source>Security is our priority. Rely on our advanced measures to safeguard your blockchain interactions.</source>
+        <target>La sécurité est notre priorité. Comptez sur nos mesures avancées pour protéger vos interactions blockchain.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Join-Our-Discord-Hub">
+        <source>Join Our Discord Hub</source>
+        <target>Rejoignez Notre Hub Discord</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Join-Our-Discord-Hub">
+        <source>Discover Chainbrary's blockchain world on Discord. Connect, learn, and share insights in our community.</source>
+        <target>Découvrez le monde blockchain de Chainbrary sur Discord. Connectez-vous, apprenez et partagez vos connaissances dans notre communauté.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">47</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Explore-Chainbrary">
+        <source>Explore Chainbrary</source>
+        <target>Explorez Chainbrary</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Explore-Chainbrary">
+        <source>Learn how Chainbrary demystifies blockchain, making it accessible and relevant for everyday use.</source>
+        <target>Apprenez comment Chainbrary démystifie la blockchain, la rendant accessible et pertinente pour une utilisation quotidienne.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Title.Easy-Integration">
+        <source>Easy Integration</source>
+        <target>Intégration Facile</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PartnershipPage.Desc.Easy-Integration">
+        <source>Quickly integrate Chainbrary's user-friendly blockchain solutions into your projects.</source>
+        <target>Intégrez rapidement les solutions blockchain conviviales de Chainbrary dans vos projets.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="109261978612666226">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Know us better<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Got questions? Reach us our social media </source>
+        <target>
+          <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Apprenez à nous connaître<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Vous avez des questions? Contactez-nous sur nos réseaux sociaux
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">16,18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5486643322139519195">
+        <source>Copyright © 2023 All Rights Reserved</source>
+        <target>Droit d'auteur © 2023 Tous droits réservés</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="headerBtn.Title.Home">
+        <source>Home</source>
+        <target>Accueil</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="headerBtn.Title.Partnership">
+        <source>Partnership</source>
+        <target>Partenariat</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="headerBtn.Title.Services">
+        <source>Services</source>
+        <target>Services</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>

@@ -1,0 +1,89 @@
+<div class="bg-container w-100">
+  <div class="row justify-content-center pt-5 bg-container-1 mx-0">
+    <div class="col-10 header-container">
+      <div class="d-flex flex-column justify-content-center align-items-center text-center mb-3 mb-md-0">
+        <h1 i18n class="text-dark">Partner with Chainbrary</h1>
+        <p i18n class="text-secondary">
+          Join our platform and get support for your projects with Chainbrary's amazing blockchain services.
+        </p>
+        <app-chainbrary-button
+          [buttonClasses]="['btn-primary-gradient', 'text-light', 'px-3']"
+          buttonText="Contact Us"
+        />
+      </div>
+    </div>
+    <div class="ellpipse-container">
+      <div class="d-flex justify-content-center icons-container">
+        <div *ngFor="let p of projectsList; let i = index" class="container-project-icon" [ngStyle]="getIconStyle(i)">
+          <img [src]="'./../../../../../assets/icons/tokens/' + p.icon" [alt]="p.icon" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-6 text-center">
+        <h1 i18n class="text-dark">We Offer</h1>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-11 text-center">
+        <p i18n class="text-secondary">
+          ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing
+          users with a library of open-source and secure tools for building and interacting with blockchain
+          applications.
+        </p>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 col-md-4 my-2" *ngFor="let c of landingPageCards">
+          <app-landing-page-card [card]="c"></app-landing-page-card>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="bg-container-2">
+    <div class="container py-5">
+      <div class="row">
+        <div class="col-12 col-md-6">
+          <div class="container">
+            <div class="row justify-content-center">
+              <div class="col-11 text-dark">
+                <h4 i18n>Join the Chainbrary Team Today!</h4>
+                <p i18n>
+                  At Chainbrary, we're excited about the amazing projects we can accomplish together. Don't miss your
+                  chance to be a part of something extraordinary. Join us now!
+                </p>
+                <div class="d-flex my-4">
+                  <app-chainbrary-button
+                    [buttonClasses]="['btn-primary-gradient', 'text-light', 'px-3']"
+                    buttonText="Join on Discord"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 col-md-6 mt-5 mt-md-0">
+          <div class="container">
+            <div class="row" *ngFor="let s of sectionsAndDescriptions; let isLast = last">
+              <div class="col-2 d-flex flex-column align-items-center">
+                <div class="icon" [ngClass]="{ highlight: currentSection === s.id }">
+                  <i class="bi bi-patch-check"></i>
+                </div>
+                <div *ngIf="!isLast" class="vertical-bar h-100">
+                  <div class="progress-indicator" [ngStyle]="{ height: progressHeights[s.id] }"></div>
+                </div>
+              </div>
+              <div class="col-10 pb-5" [id]="s.id">
+                <h5>{{ s.title }}</h5>
+                <p>{{ s.desc }}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
