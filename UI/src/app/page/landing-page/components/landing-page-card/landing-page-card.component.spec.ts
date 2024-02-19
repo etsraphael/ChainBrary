@@ -12,6 +12,11 @@ describe('LandingPageCardComponent', () => {
     });
     fixture = TestBed.createComponent(LandingPageCardComponent);
     component = fixture.componentInstance;
+    component.card = {
+      icon: 'icon',
+      title: 'title',
+      description: 'description'
+    };
     fixture.detectChanges();
   });
 
