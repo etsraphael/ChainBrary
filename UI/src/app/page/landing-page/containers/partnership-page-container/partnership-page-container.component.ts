@@ -10,51 +10,51 @@ export class PartnershipPageContainerComponent {
   landingPageCards: ILandingPageCard[] = [
     {
       icon: 'bi-app',
-      title: 'Services',
-      description: 'Explore our multifaceted services: process token payments, secure sensitive files, and utilize our document locker for enhanced privacy.'
+      title: $localize`:@@PartnershipPage.Title.Services:Services`,
+      description: $localize`:@@PartnershipPage.Desc.Services:Explore our multifaceted services: process token payments, secure sensitive files, and utilize our document locker for enhanced privacy.`
     },
     {
       icon: 'bi-arrows-move',
-      title: 'Extend Community',
-      description: 'Grow with us by engaging in our token-based ecosystem, fostering continuous exchange and community expansion.'
+      title: $localize`:@@PartnershipPage.Title.Extend-Community:Extend Community`,
+      description: $localize`:@@PartnershipPage.Desc.Extend-Community:Grow with us by engaging in our token-based ecosystem, fostering continuous exchange and community expansion.`
     },
     {
       icon: 'bi-gear',
-      title: 'Maintenance',
-      description: 'Benefit from our commitment to regular updates and enhancements, ensuring state-of-the-art features for our users.'
+      title: $localize`:@@PartnershipPage.Title.Maintenance:Maintenance`,
+      description: $localize`:@@PartnershipPage.Desc.Maintenance:Benefit from our commitment to regular updates and enhancements, ensuring state-of-the-art features for our users.`
     },
     {
       icon: 'bi-safe2',
-      title: 'Community Vault',
-      description: 'Join our Community Vault for mutual benefits. Be among the pioneers in this innovative financial tool.'
+      title: $localize`:@@PartnershipPage.Title.Community-Vault:Community Vault`,
+      description: $localize`:@@PartnershipPage.Desc.Community-Vault:Join our Community Vault for mutual benefits. Be among the pioneers in this innovative financial tool.`
     },
     {
       icon: 'bi-book',
-      title: 'Open Source',
-      description: 'Our platform is transparent and open source, inviting collaboration and trust from our users.'
+      title: $localize`:@@landingPage.openSource:Open Source`,
+      description: $localize`:@@PartnershipPage.Desc.Open-Source:Our platform is transparent and open source, inviting collaboration and trust from our users.`
     },
     {
       icon: 'bi-shield-check',
-      title: 'Security',
-      description: 'Security is our priority. Rely on our advanced measures to safeguard your blockchain interactions.'
+      title: $localize`:@@PartnershipPage.Title.Security:Security`,
+      description: $localize`:@@PartnershipPage.Desc.Security:Security is our priority. Rely on our advanced measures to safeguard your blockchain interactions.`
     }
   ];
 
   sectionsAndDescriptions: ISectionAndDescription[] = [
     {
       id: 'section1',
-      title: 'Join Our Discord Hub',
-      desc: "Discover Chainbrary's blockchain world on Discord. Connect, learn, and share insights in our community."
+      title: $localize`:@@PartnershipPage.Title.Join-Our-Discord-Hub:Join Our Discord Hub`,
+      desc: $localize`:@@PartnershipPage.Desc.Join-Our-Discord-Hub:Discover Chainbrary's blockchain world on Discord. Connect, learn, and share insights in our community.`
     },
     {
       id: 'section2',
-      title: 'Explore Chainbrary',
-      desc: 'Learn how Chainbrary demystifies blockchain, making it accessible and relevant for everyday use.'
+      title: $localize`:@@PartnershipPage.Title.Explore-Chainbrary:Explore Chainbrary`,
+      desc: $localize`:@@PartnershipPage.Desc.Explore-Chainbrary:Learn how Chainbrary demystifies blockchain, making it accessible and relevant for everyday use.`
     },
     {
       id: 'section3',
-      title: 'Easy Integration',
-      desc: "Quickly integrate Chainbrary's user-friendly blockchain solutions into your projects."
+      title: $localize`:@@PartnershipPage.Title.Easy-Integration:Easy Integration`,
+      desc: $localize`:@@PartnershipPage.Desc.Easy-Integration:Quickly integrate Chainbrary's user-friendly blockchain solutions into your projects.`
     }
   ];
 

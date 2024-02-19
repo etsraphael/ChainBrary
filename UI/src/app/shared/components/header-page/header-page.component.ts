@@ -15,15 +15,15 @@ export class HeaderPageComponent implements OnInit {
 
   headerBtns: IHeaderBtn[] = [
     {
-      title: 'Home',
+      title: $localize`:@@headerBtn.Title.Home:Home`,
       url: '/landing-page/home'
     },
     {
-      title: 'Partnership',
+      title: $localize`:@@headerBtn.Title.Partnership:Partnership`,
       url: '/landing-page/partnership'
     },
     {
-      title: 'Services',
+      title: $localize`:@@headerBtn.Title.Services:Services`,
       url: '/use-cases/services'
     }
   ];
