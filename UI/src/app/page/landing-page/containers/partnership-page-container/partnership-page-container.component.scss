@@ -1,0 +1,95 @@
+@import './../../../../../../node_modules/bootstrap/scss/mixins';
+@import './../../../../../../node_modules/bootstrap/scss/functions';
+@import './../../../../../../node_modules/bootstrap/scss/variables';
+
+.bg-container-1 {
+  position: relative;
+  background: #fcf1f7;
+}
+
+.bg-container-2 {
+  background-image: url('./../../../../../assets/bg/light/mask.svg');
+  background-size: cover;
+}
+
+.header-container {
+  z-index: 1;
+}
+
+.icons-container {
+  position: relative;
+  bottom: -21%;
+  scale: 0.45;
+
+  @include media-breakpoint-up(sm) {
+    bottom: -30%;
+    scale: 0.5;
+  }
+
+  @include media-breakpoint-up(md) {
+    bottom: -41%;
+    scale: 0.8;
+  }
+}
+
+.ellpipse-container {
+  position: relative;
+  width: 100%;
+  height: 8.5rem;
+  background: url('./../../../../../assets/bg/light/landing-page-cover.svg') no-repeat center center;
+  background-size: contain;
+
+  @include media-breakpoint-up(md) {
+    height: 15rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    height: 20rem;
+  }
+
+  @include media-breakpoint-up(xl) {
+    height: 22rem;
+  }
+}
+
+.vertical-bar {
+  width: 2px;
+  background-color: #ccc;
+  position: relative;
+}
+
+.progress-indicator {
+  width: 100%;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  transition: height 0.5s ease;
+}
+
+.icon {
+  font-size: 1.5rem;
+  transition: transform 0.5s ease;
+}
+
+.highlight {
+  transform: scale(1.5);
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.container-project-icon img {
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.container-project-icon:hover img {
+  animation: pulse 1s ease-in-out;
+}

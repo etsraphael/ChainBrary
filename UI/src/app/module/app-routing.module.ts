@@ -4,7 +4,7 @@ import { PaymentPageComponent } from '../page/use-cases-page/pages/payment-reque
 
 const routes: Routes = [
   {
-    path: '',
+    path: 'landing-page',
     loadChildren: () => import('../page/landing-page/landing-page.module').then((m) => m.LandingPageModule)
   },
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'landing-page',
     pathMatch: 'full'
   }
 ];
