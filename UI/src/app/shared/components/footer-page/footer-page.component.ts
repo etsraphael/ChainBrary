@@ -65,6 +65,8 @@ export class FooterPageComponent {
     }
   ];
 
+  whitePaperText = $localize`:@@footerBtn.Title.WhitePaper:White Paper`;
+
   scrollToTop(): void {
     return window.scrollTo({ top: 0, behavior: 'smooth' });
   }
