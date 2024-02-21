@@ -9,6 +9,7 @@ import { LandingHomePageContainerComponent } from './containers/landing-home-pag
 import { LandingPageContainerComponent } from './containers/landing-page-container/landing-page-container.component';
 import { PartnershipPageContainerComponent } from './containers/partnership-page-container/partnership-page-container.component';
 import { PrivacyPolicyPageContainerComponent } from './containers/privacy-policy-page-container/privacy-policy-page-container.component';
+import { TermsAndCondPageContainerComponent } from './containers/terms-and-cond-page-container/terms-and-cond-page-container.component';
 import { LandingPageRoutingModule } from './landing-page-routing.module';
 
 @NgModule({
@@ -19,7 +20,8 @@ import { LandingPageRoutingModule } from './landing-page-routing.module';
     PartnershipPageContainerComponent,
     LandingHomePageContainerComponent,
     LandingPageCardComponent,
-    PrivacyPolicyPageContainerComponent
+    PrivacyPolicyPageContainerComponent,
+    TermsAndCondPageContainerComponent
   ],
   imports: [CommonModule, LandingPageRoutingModule, SharedComponentsModule, MarkdownModule.forChild()]
 })

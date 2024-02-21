@@ -39,7 +39,7 @@ export class FooterPageComponent {
     }
   ];
 
-  footerList: IFooterItem[] = [
+  footerList0: IFooterItem[] = [
     {
       title: $localize`:@@headerBtn.Title.Home:Home`,
       url: '/landing-page/home'
@@ -51,6 +51,17 @@ export class FooterPageComponent {
     {
       title: $localize`:@@headerBtn.Title.Services:Services`,
       url: '/use-cases/services'
+    }
+  ];
+
+  footerList1: IFooterItem[] = [
+    {
+      title: $localize`:@@footerBtn.Title.TermAndCond:Terms and Conditions`,
+      url: '/landing-page/terms-and-conditions'
+    },
+    {
+      title: $localize`:@@footerBtn.Title.TermAndCond:Privacy Policy`,
+      url: '/landing-page/privacy-policy'
     }
   ];
 

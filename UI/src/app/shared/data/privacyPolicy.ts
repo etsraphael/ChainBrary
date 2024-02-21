@@ -1,4 +1,4 @@
-export const privacyAndPolicy = $localize`:@@privacyAndPolicy:# Chainbrary Privacy Policy
+export const privacyAndPolicy = $localize`:@@privacyAndPolicy.File:# Chainbrary Privacy Policy
 
 _Last Updated: 21st Feb 2024_
 

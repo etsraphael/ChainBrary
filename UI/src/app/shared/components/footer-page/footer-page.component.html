@@ -1,8 +1,19 @@
 <div class="container">
   <div class="row justify-content-center pt-3">
-    <div class="col-md-6 col-lg-4 d-flex flex-column">
-      <a [routerLink]="item.url" (click)="scrollToTop()" *ngFor="let item of footerList">
-        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init']" [buttonText]="item.title" />
+    <div class="col-md-3 col-lg-4 d-flex flex-column">
+      <a [routerLink]="item.url" (click)="scrollToTop()" *ngFor="let item of footerList0">
+        <app-chainbrary-button
+          [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
+          [buttonText]="item.title"
+        />
+      </a>
+    </div>
+    <div class="col-md-3 col-lg-4 d-flex flex-column">
+      <a [routerLink]="item.url" (click)="scrollToTop()" *ngFor="let item of footerList1">
+        <app-chainbrary-button
+          [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
+          [buttonText]="item.title"
+        />
       </a>
     </div>
     <div class="col-md-6 col-lg-4 d-flex align-items-center">

@@ -84,3 +84,9 @@ For inquiries or assistance, reach out through our support channel.
 
 By using the Document Locker, you affirm understanding and agreement with these Terms and Conditions.
 `;
+
+export const termsAndCondGlobal = $localize`:@@termsAndCondGlobal:
+
+
+
+`;
