@@ -60,7 +60,7 @@ export class FooterPageComponent {
       url: '/landing-page/terms-and-conditions'
     },
     {
-      title: $localize`:@@footerBtn.Title.TermAndCond:Privacy Policy`,
+      title: $localize`:@@footerBtn.Title.PrivacyPolicy:Privacy Policy`,
       url: '/landing-page/privacy-policy'
     }
   ];
