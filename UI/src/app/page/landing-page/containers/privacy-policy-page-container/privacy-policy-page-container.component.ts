@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './privacy-policy-page-container.component.html',
   styleUrls: ['./privacy-policy-page-container.component.scss']
 })
-export class PrivacyPolicyPageContainerComponent {
-
-}
+export class PrivacyPolicyPageContainerComponent {}
