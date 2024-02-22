@@ -39,7 +39,7 @@ export class FooterPageComponent {
     }
   ];
 
-  footerList: IFooterItem[] = [
+  footerList0: IFooterItem[] = [
     {
       title: $localize`:@@headerBtn.Title.Home:Home`,
       url: '/landing-page/home'
@@ -53,6 +53,19 @@ export class FooterPageComponent {
       url: '/use-cases/services'
     }
   ];
+
+  footerList1: IFooterItem[] = [
+    {
+      title: $localize`:@@footerBtn.Title.TermAndCond:Terms and Conditions`,
+      url: '/landing-page/terms-and-conditions'
+    },
+    {
+      title: $localize`:@@footerBtn.Title.PrivacyPolicy:Privacy Policy`,
+      url: '/landing-page/privacy-policy'
+    }
+  ];
+
+  whitePaperText = $localize`:@@footerBtn.Title.WhitePaper:White Paper`;
 
   scrollToTop(): void {
     return window.scrollTo({ top: 0, behavior: 'smooth' });
