@@ -5,7 +5,6 @@ export const AUTH_FEATURE_KEY = 'auth';
 
 export interface IAuthState {
   publicAddress: string | null;
-  verifiedAccount: boolean;
   connectedUser: boolean;
   userAccount: StoreState<IProfileAdded | null>;
   organization: IOrganization | null;

@@ -9,9 +9,7 @@
           data-id="login-btn"
         />
       </ng-container>
-      <ng-container
-        *ngSwitchCase="authStatusCodeTypes.NotVerifiedAndConnected || authStatusCodeTypes.VerifiedAndConnected"
-      >
+      <ng-container *ngSwitchCase="authStatusCodeTypes.Connected">
         <div class="container">
           <div class="row align-items-center">
             <div class="container-user-icon col-2 d-flex justify-content-center align-items-center">

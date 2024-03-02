@@ -6,11 +6,6 @@ import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 
 export const selectAuth = createFeatureSelector<IAuthState>(AUTH_FEATURE_KEY);
 
-export const selectVerifiedAccount: MemoizedSelector<object, boolean> = createSelector(
-  selectAuth,
-  (s) => s.verifiedAccount
-);
-
 export const selectCurrentNetwork: MemoizedSelector<object, INetworkDetail | null> = createSelector(selectAuth, (s) =>
   s.network ? s.network : null
 );
@@ -56,21 +51,9 @@ export const selectDailyPrice: MemoizedSelector<object, number | undefined> = cr
   (s) => s.organization?.pricePerDay
 );
 
-export const selectAuthStatus: MemoizedSelector<object, AuthStatusCode> = createSelector(selectAuth, (s) => {
-  const isVerified = s.verifiedAccount;
-  const isAuth = s.connectedUser;
-
-  switch (true) {
-    case !isVerified && !isAuth:
-      return AuthStatusCode.NotConnected;
-    case !isVerified && isAuth:
-      return AuthStatusCode.NotVerifiedAndConnected;
-    case isVerified && isAuth:
-      return AuthStatusCode.VerifiedAndConnected;
-    default:
-      return AuthStatusCode.NotConnected;
-  }
-});
+export const selectAuthStatus: MemoizedSelector<object, AuthStatusCode> = createSelector(selectAuth, (s) =>
+  s.connectedUser ? AuthStatusCode.Connected : AuthStatusCode.NotConnected
+);
 
 export const selectUserAccountIsLoading: MemoizedSelector<object, boolean> = createSelector(
   selectAuth,
