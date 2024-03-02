@@ -60,14 +60,14 @@ export class AuthEffects {
 
   errorAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
+      ofType(AuthActions.deleteAccountFailure),
       map((action: { message: string }) => showErrorNotification({ message: action.message }))
     );
   });
 
   successAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
+      ofType(AuthActions.deleteAccountSuccess),
       filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
       map(() =>
         showSuccessNotification({
