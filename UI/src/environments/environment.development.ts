@@ -90,6 +90,19 @@ export const environment = {
       ],
       maxAttempt: 5,
       attemptTimeout: 0.5 // minute
+    },
+    communityVault: {
+      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.LOCALHOST],
+      contracts: [
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x6f1F1e0b86143964D4E78abD68867e045314187A'
+        },
+        {
+          chainId: NetworkChainId.LOCALHOST,
+          address: '0xf5059a5D33d5853360D16C683c16e67980206f36'
+        }
+      ]
     }
   },
   organizationName: 'chainbrary0',
