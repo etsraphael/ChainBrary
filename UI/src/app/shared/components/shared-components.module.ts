@@ -8,6 +8,7 @@ import { QRCodeModule } from 'angularx-qrcode';
 import { MarkdownModule } from 'ngx-markdown';
 import { web3LoginConfig } from './../../data/web3LoginConfig.data';
 import { MaterialModule } from './../../module/material.module';
+import { AuthBannerComponent } from './auth-banner/auth-banner.component';
 import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';
 import { FooterPageComponent } from './footer-page/footer-page.component';
 import { HeaderBodyPageComponent } from './header-body-page/header-body-page.component';
@@ -30,7 +31,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent,
     TermAndCondModalComponent,
-    HeaderBodyPageComponent
+    HeaderBodyPageComponent,
+    AuthBannerComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
@@ -43,7 +45,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent,
     TermAndCondModalComponent,
-    HeaderBodyPageComponent
+    HeaderBodyPageComponent,
+    AuthBannerComponent
   ]
 })
 export class SharedComponentsModule {}
