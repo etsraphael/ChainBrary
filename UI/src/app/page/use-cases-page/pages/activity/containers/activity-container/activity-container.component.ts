@@ -4,7 +4,7 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, skip, takeUntil } from 'rxjs';
-import { IUseCasesHeader } from '../../../../components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectCurrentNetwork, selectIsConnected } from './../../../../../../store/auth-store/state/selectors';
 import { loadTransactionsFromBridgeTransfer } from './../../../../../../store/transaction-store/state/actions';
@@ -21,7 +21,7 @@ import {
 })
 export class ActivityContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
-  headerPayload: IUseCasesHeader = {
+  headerPayload: IHeaderBodyPage = {
     title: $localize`:@@recentTransactions:Recent Transactions`,
     goBackLink: '/use-cases/services',
     description: `:@@QuiclyViewYourRecentDesc: Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.`

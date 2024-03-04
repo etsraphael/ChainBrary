@@ -3,7 +3,7 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
 import { Observable, ReplaySubject, Subscription, filter, take, takeUntil } from 'rxjs';
-import { IUseCasesHeader } from '../../../../components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
 import { IProfileAdded, IToken } from './../../../../../../shared/interfaces';
 import {
@@ -37,7 +37,7 @@ import {
 })
 export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
-  readonly headerPayload: IUseCasesHeader = {
+  readonly headerPayload: IHeaderBodyPage = {
     title: $localize`:@@paymentRequestTitle:Payment Request`,
     goBackLink: '/use-cases/services',
     description: $localize`:@@paymentRequestDescription:Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.`

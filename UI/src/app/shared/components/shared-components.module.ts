@@ -10,6 +10,7 @@ import { web3LoginConfig } from './../../data/web3LoginConfig.data';
 import { MaterialModule } from './../../module/material.module';
 import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';
 import { FooterPageComponent } from './footer-page/footer-page.component';
+import { HeaderBodyPageComponent } from './header-body-page/header-body-page.component';
 import { HeaderPageComponent } from './header-page/header-page.component';
 import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/qr-code-container-modal.component';
 import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
@@ -28,7 +29,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     TransactionCardComponent,
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent,
-    TermAndCondModalComponent
+    TermAndCondModalComponent,
+    HeaderBodyPageComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
@@ -40,7 +42,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     TransactionCardComponent,
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent,
-    TermAndCondModalComponent
+    TermAndCondModalComponent,
+    HeaderBodyPageComponent
   ]
 })
 export class SharedComponentsModule {}
