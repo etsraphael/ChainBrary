@@ -12,7 +12,7 @@ import { web3LoginConfig } from './data/web3LoginConfig.data';
 import { AppRoutingModule } from './module/app-routing.module';
 import { GraphQLModule } from './module/graphql.module';
 import { MaterialModule } from './module/material.module';
-import { CommunityVaultsPageModule } from './page/community-vaults-page/community-vaults-page/community-vaults-page.module';
+import { CommunityVaultsPageModule } from './page/community-vaults-page/community-vaults-page.module';
 import { LandingPageModule } from './page/landing-page/landing-page.module';
 import { UseCasesPageModule } from './page/use-cases-page/use-cases-page.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
