@@ -1,4 +1,4 @@
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 
 export interface Vault {
   network: NetworkVault;
@@ -8,4 +8,11 @@ export interface Vault {
 export interface NetworkVault {
   contractAddress: string;
   networkDetail: INetworkDetail;
+}
+
+export interface VaultSupported {
+  contractAddress: string;
+  name: string;
+  chainId: NetworkChainId;
+  rpcUrl: string;
 }
