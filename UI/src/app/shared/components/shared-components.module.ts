@@ -16,7 +16,6 @@ import { HeaderPageComponent } from './header-page/header-page.component';
 import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/qr-code-container-modal.component';
 import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
-import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header/use-cases-sidebar-header.component';
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 
@@ -25,7 +24,6 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     FooterPageComponent,
     HeaderPageComponent,
     UserAvatarComponent,
-    UseCasesSidebarHeaderComponent,
     UseCasesSidebarComponent,
     TransactionCardComponent,
     ChainbraryButtonComponent,
@@ -39,7 +37,6 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     FooterPageComponent,
     HeaderPageComponent,
     UserAvatarComponent,
-    UseCasesSidebarHeaderComponent,
     UseCasesSidebarComponent,
     TransactionCardComponent,
     ChainbraryButtonComponent,

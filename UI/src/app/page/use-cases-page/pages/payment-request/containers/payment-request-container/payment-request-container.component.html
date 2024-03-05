@@ -5,7 +5,7 @@
       <app-header-body-page [header]="headerPayload"></app-header-body-page>
       <!-- Login controls -->
       <ng-container *ngIf="selectIsConnected$ | async">
-        <app-use-cases-sidebar-header> </app-use-cases-sidebar-header>
+        <app-auth-banner> </app-auth-banner>
       </ng-container>
       <!-- Payment request maker -->
       <div class="mt-5">
