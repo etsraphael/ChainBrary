@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { MarkdownModule } from 'ngx-markdown';
+import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { SharedComponentsModule } from './../../shared/components/shared-components.module';
 import { CommunityVaultPageRoutingModule } from './community-vaults-page-routing.module';
 import { CommunityVaultCardComponent } from './components/community-vault-card/community-vault-card.component';
@@ -15,6 +16,12 @@ import { CommunityVaultsListPageContainerComponent } from './containers/communit
     CommunityVaultsListPageContainerComponent,
     CommunityVaultCardComponent
   ],
-  imports: [CommonModule, CommunityVaultPageRoutingModule, SharedComponentsModule, MarkdownModule.forChild()]
+  imports: [
+    CommonModule,
+    CommunityVaultPageRoutingModule,
+    SharedComponentsModule,
+    MarkdownModule.forChild(),
+    NgxSkeletonLoaderModule
+  ]
 })
 export class CommunityVaultsPageModule {}
