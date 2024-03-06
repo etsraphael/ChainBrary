@@ -112,4 +112,10 @@ contract CommunityVault is Ownable, ReentrancyGuard {
             accRewardPerShare += divResult;
         }
     }
+
+    // get CommunityVault metadata
+    function getCommunityVaultMetadata() public view returns (uint256, uint256, uint256) {
+        return (totalStaked, accRewardPerShare, address(this).balance);
+    }
+    
 }

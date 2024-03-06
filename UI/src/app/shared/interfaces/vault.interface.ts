@@ -11,7 +11,7 @@ export interface NetworkVault {
 }
 
 export interface VaultSupported {
-  contractAddress: string;
+  txnHash: string;
   name: string;
   chainId: NetworkChainId;
   rpcUrl: string;

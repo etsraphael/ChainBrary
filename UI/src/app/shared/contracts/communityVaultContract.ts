@@ -1,15 +1,11 @@
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { AbiItem } from 'web3-utils';
-import { TokenPair } from '../enum';
 import { IContract } from '../interfaces';
 import { environment } from './../../../environments/environment';
 import { BaseContract } from './baseContract';
 
 export class CommunityVaultContract extends BaseContract {
-  constructor(
-    public chainId: NetworkChainId,
-    public pair: TokenPair
-  ) {
+  constructor(public chainId: NetworkChainId) {
     super();
   }
 
@@ -112,72 +108,8 @@ export class CommunityVaultContract extends BaseContract {
         type: 'event'
       },
       {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address'
-          }
-        ],
-        name: 'RBAList',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address'
-          }
-        ],
-        name: 'SBList',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
         inputs: [],
-        name: 'TRB',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'TRBA',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'TSB',
+        name: 'accRewardPerShare',
         outputs: [
           {
             internalType: 'uint256',
@@ -197,8 +129,31 @@ export class CommunityVaultContract extends BaseContract {
       },
       {
         inputs: [],
-        name: 'getContractBalance',
+        name: 'getBalance',
         outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'getCommunityVaultMetadata',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
           {
             internalType: 'uint256',
             name: '',
@@ -212,56 +167,11 @@ export class CommunityVaultContract extends BaseContract {
         inputs: [
           {
             internalType: 'address',
-            name: 'user',
+            name: '_user',
             type: 'address'
           }
         ],
-        name: 'getDepositAmount',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'user',
-            type: 'address'
-          }
-        ],
-        name: 'getRewardBalance',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'getTotalRewardBalance',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'getTotalStackingBalance',
+        name: 'getDepositByUser',
         outputs: [
           {
             internalType: 'uint256',
@@ -286,10 +196,42 @@ export class CommunityVaultContract extends BaseContract {
         type: 'function'
       },
       {
+        inputs: [
+          {
+            internalType: 'address',
+            name: '_user',
+            type: 'address'
+          }
+        ],
+        name: 'pendingReward',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
         inputs: [],
         name: 'renounceOwnership',
         outputs: [],
         stateMutability: 'nonpayable',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'totalStaked',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
         type: 'function'
       },
       {
@@ -306,8 +248,32 @@ export class CommunityVaultContract extends BaseContract {
         type: 'function'
       },
       {
+        inputs: [
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address'
+          }
+        ],
+        name: 'users',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: 'amount',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'rewardDebt',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
         inputs: [],
-        name: 'withdrawAccount',
+        name: 'withdraw',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function'

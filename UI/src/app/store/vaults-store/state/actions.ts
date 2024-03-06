@@ -4,7 +4,10 @@ import { Vault } from '../../../shared/interfaces';
 
 export const loadVaults = createAction('[Vaults] Load Vaults');
 
-export const loadVaultById = createAction('[Vaults] Load Vault By Id', props<{ chainId: NetworkChainId }>());
+export const loadVaultById = createAction(
+  '[Vaults] Load Vault By Id',
+  props<{ chainId: NetworkChainId; txnHash: string }>()
+);
 export const loadVaultByNetworkSuccess = createAction(
   '[Vaults] Load Vault By Network Success',
   props<{ vault: Vault }>()

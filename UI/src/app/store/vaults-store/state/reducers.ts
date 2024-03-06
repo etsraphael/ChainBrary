@@ -16,7 +16,7 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
         error: null
       }
     })
-  ),
+  )
 );
 
 export function reducer(state: IVaultsState = initialState, action: Action): IVaultsState {
