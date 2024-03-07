@@ -114,8 +114,34 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     // get CommunityVault metadata
-    function getCommunityVaultMetadata() public view returns (uint256, uint256, uint256) {
-        return (totalStaked, accRewardPerShare, address(this).balance);
+    function getCommunityVaultMetadata(
+        address _user
+    )
+        public
+        view
+        returns (
+            uint256 totalStaked_,
+            uint256 accRewardPerShare_,
+            uint256 contractBalance_,
+            uint256 fullNetworkReward_,
+            uint256 userStaked_,
+            uint256 userReward_
+        )
+    {
+        totalStaked_ = totalStaked; // Total staked
+        accRewardPerShare_ = accRewardPerShare; // Accumulated rewards per share, scaled to precision
+        contractBalance_ = address(this).balance; // Contract's total balance
+
+        // Calculate full network reward
+        fullNetworkReward_ = contractBalance_ > totalStaked_ ? contractBalance_ - totalStaked_ : 0;
+
+        // Calculate user specific values
+        User storage user = users[_user];
+        userStaked_ = user.amount;
+
+        // Calculate user's reward
+        // This calculation assumes that the reward is not yet withdrawn and still pending
+        uint256 pendingReward_ = (user.amount * accRewardPerShare_) / PRECISION - user.rewardDebt;
+        userReward_ = pendingReward_;
     }
-    
 }

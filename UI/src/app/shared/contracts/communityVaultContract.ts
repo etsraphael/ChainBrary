@@ -141,22 +141,43 @@ export class CommunityVaultContract extends BaseContract {
         type: 'function'
       },
       {
-        inputs: [],
+        inputs: [
+          {
+            internalType: 'address',
+            name: '_user',
+            type: 'address'
+          }
+        ],
         name: 'getCommunityVaultMetadata',
         outputs: [
           {
             internalType: 'uint256',
-            name: '',
+            name: 'totalStaked_',
             type: 'uint256'
           },
           {
             internalType: 'uint256',
-            name: '',
+            name: 'accRewardPerShare_',
             type: 'uint256'
           },
           {
             internalType: 'uint256',
-            name: '',
+            name: 'contractBalance_',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'fullNetworkReward_',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'userStaked_',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: 'userReward_',
             type: 'uint256'
           }
         ],

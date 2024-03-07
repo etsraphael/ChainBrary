@@ -9,7 +9,7 @@ export const communityVaults: VaultSupported[] = [
   //   rpcUrl: '**' // TODO: replace with actual RPC URL
   // },
   {
-    txnHash: '0x2b97bb35f81681716958aca7a3fe19a5d94b4707c26209f73de97a7add0b555e',
+    txnHash: '0x292fac4a2b7148610e24fab7ef81416590c517da0cda62407b5958b9a5ae12bc',
     name: 'LocalHost network',
     chainId: NetworkChainId.LOCALHOST,
     rpcUrl: 'http://127.0.0.1:8545'
