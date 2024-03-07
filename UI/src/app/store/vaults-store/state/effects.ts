@@ -29,14 +29,17 @@ export class VaultsEffects {
       ofType(VaultsActions.loadVaultById),
       mergeMap((action: ReturnType<typeof VaultsActions.loadVaultById>) =>
         from(
-          this.communityVaultsService.getBidFromTxnHash(
+          this.communityVaultsService.getCommunityVaultsFromTxnHash(
             WalletProvider.BRAVE_WALLET,
             action.txnHash,
             NetworkChainId.LOCALHOST
           )
         ).pipe(
           map((res: Vault) => VaultsActions.loadVaultByNetworkSuccess({ vault: res })),
-          catchError((error: string) => of(VaultsActions.loadVaultByNetworkFailure({ message: error })))
+          catchError((error: string) => {
+            console.log('error', error)
+            return of(VaultsActions.loadVaultByNetworkFailure({ message: error }))
+          })
         )
       )
     );

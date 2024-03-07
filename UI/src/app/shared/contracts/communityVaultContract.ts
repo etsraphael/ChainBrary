@@ -141,13 +141,7 @@ export class CommunityVaultContract extends BaseContract {
         type: 'function'
       },
       {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '_user',
-            type: 'address'
-          }
-        ],
+        inputs: [],
         name: 'getCommunityVaultMetadata',
         outputs: [
           {

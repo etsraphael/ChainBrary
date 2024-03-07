@@ -114,9 +114,7 @@ contract CommunityVault is Ownable, ReentrancyGuard {
     }
 
     // get CommunityVault metadata
-    function getCommunityVaultMetadata(
-        address _user
-    )
+    function getCommunityVaultMetadata()
         public
         view
         returns (
@@ -136,11 +134,10 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         fullNetworkReward_ = contractBalance_ > totalStaked_ ? contractBalance_ - totalStaked_ : 0;
 
         // Calculate user specific values
-        User storage user = users[_user];
+        User storage user = users[_msgSender()];
         userStaked_ = user.amount;
 
         // Calculate user's reward
-        // This calculation assumes that the reward is not yet withdrawn and still pending
         uint256 pendingReward_ = (user.amount * accRewardPerShare_) / PRECISION - user.rewardDebt;
         userReward_ = pendingReward_;
     }

@@ -14,7 +14,7 @@ import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 export class CommunityVaultsService {
   constructor(private web3ProviderService: Web3ProviderService) {}
 
-  async getBidFromTxnHash(w: WalletProvider, txnHash: string, chainId: NetworkChainId): Promise<Vault> {
+  async getCommunityVaultsFromTxnHash(w: WalletProvider, txnHash: string, chainId: NetworkChainId): Promise<Vault> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const communityVaultContract = new CommunityVaultContract(chainId);
 
@@ -23,28 +23,36 @@ export class CommunityVaultsService {
         communityVaultContract.getAbi() as AbiItem[],
         receipt.contractAddress
       );
-      return (
-        contract.methods
-          .getCommunityVaultMetadata()
-          .call()
-          // .then((res) => {
-          //   return {
-          //     conctractAddress: receipt.contractAddress,
-          //     blockNumber: String(receipt.blockNumber),
-          //     imgLists: res[0],
-          //     bidName: res[1],
-          //     owner: res[2],
-          //     auctionStartTime: new Date(parseInt(res[3]) * 1000),
-          //     auctionEndTime: new Date(parseInt(res[4]) * 1000),
-          //     extendTimeInMinutes: Number(res[5]),
-          //     ownerName: res[6],
-          //     description: res[7],
-          //     highestBid: Number(web3.utils.fromWei(String(res[8]), 'ether')),
-          //     auctionAmountWithdrawn: res[9]
-          //   } as Vault;
-          // })
-          .catch((error: string) => Promise.reject(error))
-      );
+      return contract.methods
+      .getCommunityVaultMetadata()
+      .call()
+      .then((res: any) => {
+        // // Assuming res is an array [totalStaked, accRewardPerShare, contractBalance]
+        // const totalStaked = res[0];
+        // const accRewardPerShare = res[1];
+        // const contractBalance = res[2];
+
+        console.log('res', res)
+
+        return res;
+
+      })
+      .catch((error: Error) => {
+        console.log('Error getting community vault metadata:', error);
+        return Promise.reject(error);
+      });
     });
   }
+
+  // private calculateTotalRewards(totalStaked: string, contractBalance): number {
+  //   // Convert from wei to Ether for human-readable numbers, if necessary
+  //   const totalStakedInEth = web3.utils.fromWei(totalStaked, 'ether');
+  //   const contractBalanceInEth = web3.utils.fromWei(contractBalance, 'ether');
+
+  //   // Calculate total rewards
+  //   const totalRewardsInEth = contractBalanceInEth - totalStakedInEth;
+
+  //   return totalRewardsInEth; // This value is in Ether
+  // }
+
 }
