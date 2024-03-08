@@ -2,11 +2,13 @@ import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 
 export interface Vault {
   network: NetworkVault;
-  TVL: number;
-  TVS: number;
-  fullNetworkReward: number;
-  userStaked: number;
-  userReward: number;
+  data: {
+    TVL: number;
+    TVS: number;
+    fullNetworkReward: number;
+    userStaked: number;
+    userReward: number;
+  } | null;
 }
 
 export interface NetworkVault {

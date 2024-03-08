@@ -44,11 +44,13 @@ export class CommunityVaultsService {
               contractAddress: receipt.contractAddress,
               networkDetail: this.web3LoginService.getNetworkDetailByChainId(chainId)
             },
-            TVL: Number(res[0]),
-            TVS: Number(res[1]),
-            fullNetworkReward: Number(res[3]),
-            userStaked: Number(res[4]),
-            userReward: Number(res[5])
+            data: {
+              TVL: Number(res[0]),
+              TVS: Number(res[1]),
+              fullNetworkReward: Number(res[3]),
+              userStaked: Number(res[4]),
+              userReward: Number(res[5])
+            }
           })
         )
         .catch((error: Error) => Promise.reject(error));

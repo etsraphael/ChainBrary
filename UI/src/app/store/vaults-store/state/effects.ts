@@ -1,26 +1,30 @@
 import { Injectable } from '@angular/core';
+import { NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, from, map, mergeMap, of } from 'rxjs';
 import { communityVaults } from './../../../data/communityVaults.data';
 import { Vault, VaultSupported } from './../../../shared/interfaces';
 import { CommunityVaultsService } from './../../../shared/services/community-vaults/community-vaults.service';
 import * as VaultsActions from './actions';
-import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 
 @Injectable()
 export class VaultsEffects {
   constructor(
-    private readonly store: Store,
     private actions$: Actions,
-    private communityVaultsService: CommunityVaultsService
+    private communityVaultsService: CommunityVaultsService,
+    private web3LoginService: Web3LoginService
   ) {}
 
   loadCommunityVaults$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(VaultsActions.loadVaults),
       mergeMap(() => from(communityVaults)),
-      map((vault: VaultSupported) => VaultsActions.loadVaultById({ txnHash: vault.txnHash, chainId: vault.chainId }))
+      map((vault: VaultSupported) =>
+        VaultsActions.loadVaultById({
+          txnHash: vault.txnHash,
+          networkDetail: this.web3LoginService.getNetworkDetailByChainId(vault.chainId)
+        })
+      )
     );
   });
 
