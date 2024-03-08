@@ -15,14 +15,21 @@
     </div>
     <form>
       <div class="container py-2">
-        <mat-form-field class="w-100 text-dark" appearance="outline">
-          <mat-label>Amount</mat-label>
-          <input type="number" class="ps-1" matInput />
-          <div class="d-flex" matSuffix>
-            <h6 class="mb-0 px-3">ETH</h6>
+        <div class="row">
+          <div class="col-10">
+            <mat-form-field class="w-100 text-dark" appearance="outline">
+              <mat-label>Amount</mat-label>
+              <input type="number" class="ps-1" matInput />
+              <div class="d-flex" matSuffix>
+                <h6 class="mb-0 px-3">ETH</h6>
+              </div>
+              <mat-hint>USD: $150.00</mat-hint>
+            </mat-form-field>
           </div>
-          <mat-hint>USD: $150.00</mat-hint>
-        </mat-form-field>
+          <div class="col-2 my-auto pb-4">
+            <button class="w-100 btn btn-outline-primary" type="button">Max</button>
+          </div>
+        </div>
         <mat-checkbox class="py-2" formControlName="termsAndCond" color="primary">
           <span class="checkbox-label">
             <span>Accept</span>
