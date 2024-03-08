@@ -40,10 +40,9 @@ export class VaultsEffects {
           )
         ).pipe(
           map((res: Vault) => VaultsActions.loadVaultByNetworkSuccess({ vault: res })),
-          catchError((error: string) => {
-            console.log('error', error);
-            return of(VaultsActions.loadVaultByNetworkFailure({ message: error }));
-          })
+          catchError((error: string) =>
+            of(VaultsActions.loadVaultByNetworkFailure({ chainId: action.networkDetail.chainId, message: error }))
+          )
         )
       )
     );

@@ -1,4 +1,4 @@
-import { INetworkDetail } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import { StoreState, Vault } from './../../../shared/interfaces';
 import * as VaultsActions from './actions';
@@ -46,7 +46,31 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
       ...state,
       vaultList: updatedList
     };
-  })
+  }),
+  on(
+    VaultsActions.loadVaultByNetworkFailure,
+    (state, action: { chainId: NetworkChainId; message: string }): IVaultsState => {
+      const updatedList = state.vaultList.map((vault: StoreState<Vault | null>) => {
+        if (vault.data?.network.networkDetail.chainId === action.chainId) {
+          return {
+            ...vault,
+            data: {
+              ...vault.data,
+              data: null
+            },
+            loading: false,
+            error: action.message
+          };
+        } else {
+          return vault;
+        }
+      });
+      return {
+        ...state,
+        vaultList: updatedList
+      };
+    }
+  )
 );
 
 export function reducer(state: IVaultsState = initialState, action: Action): IVaultsState {
