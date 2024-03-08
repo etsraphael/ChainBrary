@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
+import { NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import Web3 from 'web3';
 import { TransactionReceipt } from 'web3-core';
 import { Contract } from 'web3-eth-contract';
@@ -12,7 +12,10 @@ import { Web3ProviderService } from '../web3-provider/web3-provider.service';
   providedIn: 'root'
 })
 export class CommunityVaultsService {
-  constructor(private web3ProviderService: Web3ProviderService) {}
+  constructor(
+    private web3ProviderService: Web3ProviderService,
+    private web3LoginService: Web3LoginService
+  ) {}
 
   async getCommunityVaultsFromTxnHash(w: WalletProvider, txnHash: string, chainId: NetworkChainId): Promise<Vault> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
@@ -24,23 +27,31 @@ export class CommunityVaultsService {
         receipt.contractAddress
       );
       return contract.methods
-      .getCommunityVaultMetadata()
-      .call()
-      .then((res: any) => {
-        // // Assuming res is an array [totalStaked, accRewardPerShare, contractBalance]
-        // const totalStaked = res[0];
-        // const accRewardPerShare = res[1];
-        // const contractBalance = res[2];
-
-        console.log('res', res)
-
-        return res;
-
-      })
-      .catch((error: Error) => {
-        console.log('Error getting community vault metadata:', error);
-        return Promise.reject(error);
-      });
+        .getCommunityVaultMetadata()
+        .call()
+        .then(
+          (
+            res: [bigint, bigint, bigint, bigint, bigint, bigint] & {
+              totalStaked_: bigint;
+              accRewardPerShare_: bigint;
+              contractBalance_: bigint;
+              fullNetworkReward_: bigint;
+              userStaked_: bigint;
+              userReward_: bigint;
+            }
+          ) => ({
+            network: {
+              contractAddress: receipt.contractAddress,
+              networkDetail: this.web3LoginService.getNetworkDetailByChainId(chainId)
+            },
+            TVL: Number(res[0]),
+            TVS: Number(res[1]),
+            fullNetworkReward: Number(res[3]),
+            userStaked: Number(res[4]),
+            userReward: Number(res[5])
+          })
+        )
+        .catch((error: Error) => Promise.reject(error));
     });
   }
 
@@ -54,5 +65,4 @@ export class CommunityVaultsService {
 
   //   return totalRewardsInEth; // This value is in Ether
   // }
-
 }

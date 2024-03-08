@@ -37,8 +37,8 @@ export class VaultsEffects {
         ).pipe(
           map((res: Vault) => VaultsActions.loadVaultByNetworkSuccess({ vault: res })),
           catchError((error: string) => {
-            console.log('error', error)
-            return of(VaultsActions.loadVaultByNetworkFailure({ message: error }))
+            console.log('error', error);
+            return of(VaultsActions.loadVaultByNetworkFailure({ message: error }));
           })
         )
       )

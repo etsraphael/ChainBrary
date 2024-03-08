@@ -3,7 +3,7 @@ import { StoreState, Vault } from '../../../shared/interfaces';
 export const VAULTS_FEATURE_KEY = 'vaults';
 
 export interface IVaultsState {
-  vaultList: StoreState<Vault[]>;
+  vaultList: (StoreState<Vault|null>)[];
   errorMessage: string | null;
 }
 

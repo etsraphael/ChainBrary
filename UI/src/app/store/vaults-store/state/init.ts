@@ -1,10 +1,6 @@
 import { IVaultsState } from './interfaces';
 
 export const initialState: IVaultsState = {
-  vaultList: {
-    data: [],
-    loading: false,
-    error: null
-  },
+  vaultList: [],
   errorMessage: null
 };
