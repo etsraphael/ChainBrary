@@ -4,7 +4,7 @@ import { IVaultsState, VAULTS_FEATURE_KEY } from './interfaces';
 
 export const selectVaultState = createFeatureSelector<IVaultsState>(VAULTS_FEATURE_KEY);
 
-export const selectVaults: MemoizedSelector<object, StoreState<Vault[]>> = createSelector(
+export const selectVaults: MemoizedSelector<object, StoreState<Vault | null>[]> = createSelector(
   selectVaultState,
   (s: IVaultsState) => s.vaultList
 );

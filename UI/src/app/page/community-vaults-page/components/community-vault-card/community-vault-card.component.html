@@ -1,16 +1,18 @@
-<ng-container *ngIf="true">
+<ng-container *ngIf="vault.loading === false">
   <div class="card border-0 my-2 shadow-sm p-3">
     <div class="card-header bg-body border-0">
       <div class="row">
         <div class="col-12">
           <div class="d-flex align-items-center img-container-network">
             <img src="./../../../../../assets/icons/tokens/dot-icon.svg" alt="coin-icon" class="img-fluid" />
-            <h6 class="ms-2">Polkadot network</h6>
+            <h6 class="ms-2">{{ vault.data?.network?.networkDetail?.name }} network</h6>
           </div>
         </div>
         <div class="col-12 text-end">
           <p class="mb-0">Total value locked</p>
-          <h4 class="text-secondary">20 ETH</h4>
+          <h4 class="text-secondary">
+            {{ vault.data?.data?.TVL }} {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+          </h4>
         </div>
         <div class="card-body bg-primary-subtle mb-3">
           <div class="container-fluid">
@@ -20,7 +22,10 @@
                   <p>Total amount stacked</p>
                 </div>
                 <div>
-                  <h6 class="text-secondary mb-0"><strong>18</strong> ETH</h6>
+                  <h6 class="text-secondary mb-0">
+                    <strong>{{ vault.data?.data?.TVS }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
                 </div>
               </div>
               <div class="col-6 d-flex flex-column justify-content-between">
@@ -28,7 +33,10 @@
                   <p>Network reward</p>
                 </div>
                 <div>
-                  <h6 class="text-success mb-0"><strong>20</strong> ETH</h6>
+                  <h6 class="text-success mb-0">
+                    <strong>{{ vault.data?.data?.fullNetworkReward }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -39,7 +47,10 @@
                   <p>My amount staked</p>
                 </div>
                 <div>
-                  <h6 class="text-secondary"><strong>3.6</strong> ETH</h6>
+                  <h6 class="text-secondary">
+                    <strong>{{ vault.data?.data?.userStaked }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
                 </div>
               </div>
               <div class="col-6 d-flex flex-column justify-content-between">
@@ -47,7 +58,10 @@
                   <p>Network share</p>
                 </div>
                 <div>
-                  <h6 class="text-secondary">20%=<strong>0.4</strong> ETH</h6>
+                  <h6 class="text-secondary">
+                    <strong>{{ vault.data?.data?.userReward }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
                 </div>
               </div>
             </div>
@@ -69,7 +83,7 @@
 </ng-container>
 
 <!-- Skeleton version -->
-<ng-container *ngIf="false">
+<ng-container *ngIf="vault.loading === true">
   <div class="card border-0 my-2 shadow-sm p-3">
     <div class="card-header bg-body border-0">
       <div class="row">

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
+import { StoreState, Vault } from './../../../../shared/interfaces';
 import { loadVaults } from './../../../../store/vaults-store/state/actions';
+import { selectVaults } from './../../../../store/vaults-store/state/selectors';
 
 @Component({
   selector: 'app-community-vaults-list-page-container',
@@ -16,6 +19,8 @@ export class CommunityVaultsListPageContainerComponent implements OnInit {
   };
 
   constructor(private readonly store: Store) {}
+
+  communityVaults$: Observable<StoreState<Vault | null>[]> = this.store.select(selectVaults);
 
   ngOnInit(): void {
     this.store.dispatch(loadVaults());
