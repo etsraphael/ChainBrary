@@ -1,0 +1,45 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <div class="d-flex justify-content-between my-2 px-md-2">
+      <div>
+        <h5>Enter Amount</h5>
+      </div>
+      <div>
+        <h4>
+          <span class="badge text-bg-primary">
+            <i class="bi bi-wallet2 me-2"></i>
+            20 ETH
+          </span>
+        </h4>
+      </div>
+    </div>
+    <form>
+      <div class="container py-2">
+        <mat-form-field class="w-100 text-dark" appearance="outline">
+          <mat-label>Amount</mat-label>
+          <input type="number" class="ps-1" matInput />
+          <div class="d-flex" matSuffix>
+            <h6 class="mb-0 px-3">ETH</h6>
+          </div>
+          <mat-hint>USD: $150.00</mat-hint>
+        </mat-form-field>
+        <mat-checkbox class="py-2" formControlName="termsAndCond" color="primary">
+          <span class="checkbox-label">
+            <span>Accept</span>
+            <a class="terms-link ps-2">terms and conditions</a>
+          </span>
+          <!-- <mat-error
+        i18n
+        *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched"
+      >
+        You must accept the terms and conditions
+      </mat-error> -->
+        </mat-checkbox>
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">Add To Vault</button>
+        <button routerLink="./../../list" class="btn btn-outline-secondary" type="button">Back</button>
+      </div>
+    </form>
+  </div>
+</div>
