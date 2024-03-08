@@ -6,6 +6,7 @@ import { SharedComponentsModule } from './../../shared/components/shared-compone
 import { CommunityVaultPageRoutingModule } from './community-vaults-page-routing.module';
 import { CommunityVaultCardComponent } from './components/community-vault-card/community-vault-card.component';
 import { CommunityVaultsListComponent } from './components/community-vaults-list/community-vaults-list.component';
+import { AddTokenPageContainerComponent } from './containers/add-token-page-container/add-token-page-container.component';
 import { CommunityVaultsHomePageContainerComponent } from './containers/community-vaults-home-page-container/community-vaults-home-page-container.component';
 import { CommunityVaultsListPageContainerComponent } from './containers/community-vaults-list-page-container/community-vaults-list-page-container.component';
 
@@ -14,7 +15,8 @@ import { CommunityVaultsListPageContainerComponent } from './containers/communit
     CommunityVaultsHomePageContainerComponent,
     CommunityVaultsListComponent,
     CommunityVaultsListPageContainerComponent,
-    CommunityVaultCardComponent
+    CommunityVaultCardComponent,
+    AddTokenPageContainerComponent
   ],
   imports: [
     CommonModule,
