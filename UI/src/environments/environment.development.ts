@@ -110,5 +110,9 @@ export const environment = {
   bid: {
     biddersCountdown: 60
   },
-  communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
+  communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
+  rpcKeys: {
+    sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
+    polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49'
+  }
 };

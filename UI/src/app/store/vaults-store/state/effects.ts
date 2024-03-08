@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import { Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, from, map, mergeMap, of } from 'rxjs';
 import { communityVaults } from './../../../data/communityVaults.data';
@@ -22,7 +22,8 @@ export class VaultsEffects {
       map((vault: VaultSupported) =>
         VaultsActions.loadVaultById({
           txnHash: vault.txnHash,
-          networkDetail: this.web3LoginService.getNetworkDetailByChainId(vault.chainId)
+          networkDetail: this.web3LoginService.getNetworkDetailByChainId(vault.chainId),
+          rpcUrl: vault.rpcUrl
         })
       )
     );
@@ -34,9 +35,9 @@ export class VaultsEffects {
       mergeMap((action: ReturnType<typeof VaultsActions.loadVaultById>) =>
         from(
           this.communityVaultsService.getCommunityVaultsFromTxnHash(
-            WalletProvider.BRAVE_WALLET,
+            action.rpcUrl,
             action.txnHash,
-            NetworkChainId.LOCALHOST
+            action.networkDetail.chainId
           )
         ).pipe(
           map((res: Vault) => VaultsActions.loadVaultByNetworkSuccess({ vault: res })),

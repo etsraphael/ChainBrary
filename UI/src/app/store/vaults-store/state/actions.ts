@@ -6,7 +6,7 @@ export const loadVaults = createAction('[Vaults] Load Vaults');
 
 export const loadVaultById = createAction(
   '[Vaults] Load Vault By Id',
-  props<{ networkDetail: INetworkDetail; txnHash: string }>()
+  props<{ networkDetail: INetworkDetail; txnHash: string; rpcUrl: string }>()
 );
 export const loadVaultByNetworkSuccess = createAction(
   '[Vaults] Load Vault By Network Success',
