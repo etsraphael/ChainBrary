@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
 import { StoreState, Vault } from './../../../../shared/interfaces';
 import { loadVaults } from './../../../../store/vaults-store/state/actions';
@@ -21,6 +21,10 @@ export class CommunityVaultsListPageContainerComponent implements OnInit {
   constructor(private readonly store: Store) {}
 
   communityVaults$: Observable<StoreState<Vault | null>[]> = this.store.select(selectVaults);
+
+  get communityVaultsWithoutError$(): Observable<StoreState<Vault | null>[]> {
+    return this.communityVaults$.pipe(map((vaults) => vaults.filter((vault) => vault.error === null)));
+  }
 
   ngOnInit(): void {
     this.store.dispatch(loadVaults());
