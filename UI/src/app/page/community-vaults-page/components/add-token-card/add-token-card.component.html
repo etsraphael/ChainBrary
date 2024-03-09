@@ -16,7 +16,7 @@
     <form>
       <div class="container py-2">
         <div class="row">
-          <div class="col-10">
+          <div class="col-8 col-md-10">
             <mat-form-field class="w-100 text-dark" appearance="outline">
               <mat-label>Amount</mat-label>
               <input type="number" class="ps-1" matInput />
@@ -26,7 +26,7 @@
               <mat-hint>USD: $150.00</mat-hint>
             </mat-form-field>
           </div>
-          <div class="col-2 my-auto pb-4">
+          <div class="col-4 col-md-2 my-auto pb-4">
             <button class="w-100 btn btn-outline-primary" type="button">Max</button>
           </div>
         </div>
@@ -42,10 +42,14 @@
         You must accept the terms and conditions
       </mat-error> -->
         </mat-checkbox>
-      </div>
-      <div class="d-grid gap-2">
-        <button class="btn btn-primary" type="submit">Add To Vault</button>
-        <button routerLink="./../../list" class="btn btn-outline-secondary" type="button">Back</button>
+        <div class="row">
+          <div class="col-md-6 my-2">
+            <button routerLink="./../../list" class="btn btn-outline-secondary w-100" type="button">Back</button>
+          </div>
+          <div class="col-md-6 my-2">
+            <button class="btn btn-primary w-100" type="submit">Add To Vault</button>
+          </div>
+        </div>
       </div>
     </form>
   </div>
