@@ -7,6 +7,7 @@ export const setAuthPublicAddress = createAction(
   props<{ publicAddress: string; network: INetworkDetail; wallet: WalletProvider }>()
 );
 export const addressChecking = createAction('[Auth] Address Checking');
+export const saveBalance = createAction('[Auth] Save Balance', props<{ balance: string }>());
 
 export const loadAuth = createAction('[Auth] Load Auth');
 export const loadAuthSuccess = createAction('[Auth] Load Auth Success', props<{ auth: IProfileAdded }>());

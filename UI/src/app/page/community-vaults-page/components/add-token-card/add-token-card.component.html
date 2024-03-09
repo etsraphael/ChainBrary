@@ -5,10 +5,10 @@
         <h5>Enter Amount</h5>
       </div>
       <div>
-        <h4>
+        <h4 *ngIf="userBalance$ | async; let b">
           <span class="badge text-bg-primary">
             <i class="bi bi-wallet2 me-2"></i>
-            20 ETH
+            {{ b }} ETH
           </span>
         </h4>
       </div>

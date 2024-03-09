@@ -9,6 +9,10 @@ export interface IAuthState {
   userAccount: StoreState<IProfileAdded | null>;
   organization: IOrganization | null;
   network: INetworkDetail | null;
+  balance: {
+    full: number;
+    short: string;
+  } | null;
 }
 
 export interface AuthState {

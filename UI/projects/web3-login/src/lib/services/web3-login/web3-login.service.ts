@@ -91,4 +91,13 @@ export class Web3LoginService {
         return;
     }
   }
+
+  getCurrentBalance(wallet: WalletProvider): Observable<string> {
+    switch (wallet) {
+      case WalletProvider.METAMASK:
+        return this.metamaskProviderService.getCurrentBalance();
+      case WalletProvider.BRAVE_WALLET:
+        return this.braveWalletProviderService.getCurrentBalance();
+    }
+  }
 }

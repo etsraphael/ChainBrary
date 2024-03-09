@@ -1,8 +1,8 @@
+import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { IProfileAdded } from '../../../shared/interfaces';
 import { AuthStatusCode } from './../../../../app/shared/enum';
 import { AUTH_FEATURE_KEY, IAuthState } from './interfaces';
-import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 
 export const selectAuth = createFeatureSelector<IAuthState>(AUTH_FEATURE_KEY);
 
@@ -58,4 +58,9 @@ export const selectAuthStatus: MemoizedSelector<object, AuthStatusCode> = create
 export const selectUserAccountIsLoading: MemoizedSelector<object, boolean> = createSelector(
   selectAuth,
   (s) => s.userAccount.loading
+);
+
+export const selectShortBalance: MemoizedSelector<object, string | null> = createSelector(
+  selectAuth,
+  (s) => s.balance?.short ?? null
 );

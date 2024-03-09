@@ -14,22 +14,25 @@ export class AuthEffects {
     private web3LoginService: Web3LoginService
   ) {}
 
-  setAuthPublicAddress$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(AuthActions.setAuthPublicAddress),
-        tap((action: ReturnType<typeof AuthActions.setAuthPublicAddress>) => {
-          this.authService.saveWalletConnected({
-            publicAddress: action.publicAddress,
-            network: action.network,
-            walletProvider: action.wallet
-          });
-          this.web3LoginService.closeLoginModal();
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  setAuthPublicAddress$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.setAuthPublicAddress),
+      tap((action: ReturnType<typeof AuthActions.setAuthPublicAddress>) => {
+        this.authService.saveWalletConnected({
+          publicAddress: action.publicAddress,
+          network: action.network,
+          walletProvider: action.wallet
+        });
+        this.web3LoginService.closeLoginModal();
+      }),
+      switchMap(() => {
+        const recentWallet = this.authService.getRecentWallet() as WalletProvider;
+        return this.web3LoginService
+          .getCurrentBalance(recentWallet)
+          .pipe(map((response: string) => AuthActions.saveBalance({ balance: response })));
+      })
+    );
+  });
 
   addressChecking$ = createEffect(
     () => {
