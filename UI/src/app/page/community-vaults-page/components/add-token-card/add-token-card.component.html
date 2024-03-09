@@ -8,7 +8,7 @@
         <h4 *ngIf="balance !== null">
           <span class="badge text-bg-primary">
             <i class="bi bi-wallet2 me-2"></i>
-            {{ balance.short }} ETH
+            {{ balance.short }} {{ network.nativeCurrency.symbol }}
           </span>
         </h4>
       </div>
@@ -21,9 +21,10 @@
               <mat-label>Amount</mat-label>
               <input formControlName="amount" type="number" class="ps-1" matInput />
               <div class="d-flex" matSuffix>
-                <h6 class="mb-0 px-3">ETH</h6>
+                <h6 class="mb-0 px-3">{{ network.nativeCurrency.symbol }}</h6>
               </div>
               <mat-hint>USD: $150.00</mat-hint>
+              <mat-error *ngIf="mainForm.get('amount')?.hasError('min')"> Value has to be greater than 0 </mat-error>
             </mat-form-field>
           </div>
           <div class="col-4 col-md-2 my-auto pb-4">
@@ -35,19 +36,21 @@
             <span>Accept</span>
             <a class="terms-link ps-2">terms and conditions</a>
           </span>
-          <!-- <mat-error
-        i18n
-        *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched"
-      >
-        You must accept the terms and conditions
-      </mat-error> -->
+          <mat-error
+            i18n
+            *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched"
+          >
+            You must accept the terms and conditions
+          </mat-error>
         </mat-checkbox>
         <div class="row">
           <div class="col-md-6 my-2">
             <button routerLink="./../../list" class="btn btn-outline-secondary w-100" type="button">Back</button>
           </div>
           <div class="col-md-6 my-2">
-            <button class="btn btn-primary w-100" type="submit" (click)="submitForm()">Add To Vault</button>
+            <button class="btn btn-primary w-100" type="submit" [disabled]="submitDisabled()" (click)="submitForm()">
+              Add To Vault
+            </button>
           </div>
         </div>
       </div>
