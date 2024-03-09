@@ -11,6 +11,7 @@ import { CommunityVaultsListComponent } from './components/community-vaults-list
 import { AddTokenPageContainerComponent } from './containers/add-token-page-container/add-token-page-container.component';
 import { CommunityVaultsHomePageContainerComponent } from './containers/community-vaults-home-page-container/community-vaults-home-page-container.component';
 import { CommunityVaultsListPageContainerComponent } from './containers/community-vaults-list-page-container/community-vaults-list-page-container.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { CommunityVaultsListPageContainerComponent } from './containers/communit
     SharedComponentsModule,
     MarkdownModule.forChild(),
     NgxSkeletonLoaderModule,
-    MaterialModule
+    MaterialModule,
+    ReactiveFormsModule
   ]
 })
 export class CommunityVaultsPageModule {}

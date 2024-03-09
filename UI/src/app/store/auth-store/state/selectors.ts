@@ -1,6 +1,6 @@
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { IProfileAdded } from '../../../shared/interfaces';
+import { FullAndShortNumber, IProfileAdded } from '../../../shared/interfaces';
 import { AuthStatusCode } from './../../../../app/shared/enum';
 import { AUTH_FEATURE_KEY, IAuthState } from './interfaces';
 
@@ -60,7 +60,7 @@ export const selectUserAccountIsLoading: MemoizedSelector<object, boolean> = cre
   (s) => s.userAccount.loading
 );
 
-export const selectShortBalance: MemoizedSelector<object, string | null> = createSelector(
+export const selectBalance: MemoizedSelector<object, FullAndShortNumber | null> = createSelector(
   selectAuth,
-  (s) => s.balance?.short ?? null
+  (s) => s.balance
 );

@@ -9,7 +9,7 @@
       <app-auth-banner></app-auth-banner>
       <div class="container py-3">
         <div class="row">
-          <app-add-token-card></app-add-token-card>
+          <app-add-token-card [balance]="(userBalance$ | async)!"></app-add-token-card>
         </div>
       </div>
     </div>
