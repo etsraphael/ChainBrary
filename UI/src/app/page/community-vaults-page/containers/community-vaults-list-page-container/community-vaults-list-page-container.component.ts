@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable, map } from 'rxjs';
+import { Observable, filter, map, mergeMap, take } from 'rxjs';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
 import { StoreState, Vault } from './../../../../shared/interfaces';
 import { loadVaults } from './../../../../store/vaults-store/state/actions';
-import { selectVaults } from './../../../../store/vaults-store/state/selectors';
+import { selectIsVaultsLoaded, selectVaults } from './../../../../store/vaults-store/state/selectors';
 
 @Component({
   selector: 'app-community-vaults-list-page-container',
@@ -21,12 +21,23 @@ export class CommunityVaultsListPageContainerComponent implements OnInit {
   constructor(private readonly store: Store) {}
 
   communityVaults$: Observable<StoreState<Vault | null>[]> = this.store.select(selectVaults);
+  isVaultsLoaded$: Observable<boolean> = this.store.select(selectIsVaultsLoaded);
 
   get communityVaultsWithoutError$(): Observable<StoreState<Vault | null>[]> {
     return this.communityVaults$.pipe(map((vaults) => vaults.filter((vault) => vault.error === null)));
   }
 
   ngOnInit(): void {
-    this.store.dispatch(loadVaults());
+    this.loadVaults();
+  }
+
+  loadVaults(): void {
+    this.communityVaultsWithoutError$
+      .pipe(
+        mergeMap(() => this.isVaultsLoaded$),
+        filter((isLoaded) => isLoaded === false),
+        take(1)
+      )
+      .subscribe(() => this.store.dispatch(loadVaults()));
   }
 }

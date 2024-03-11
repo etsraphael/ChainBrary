@@ -8,3 +8,9 @@ export const selectVaults: MemoizedSelector<object, StoreState<Vault | null>[]> 
   selectVaultState,
   (s: IVaultsState) => s.vaultList
 );
+
+export const selectIsVaultsLoaded: MemoizedSelector<object, boolean> = createSelector(
+  selectVaults,
+  (s: StoreState<Vault | null>[]) =>
+    s.some((vault: StoreState<Vault | null>) => vault.loading === false && vault.data !== null)
+);
