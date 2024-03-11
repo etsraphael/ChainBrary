@@ -17,4 +17,17 @@ export const loadVaultByNetworkFailure = createAction(
   props<{ chainId: NetworkChainId; message: string }>()
 );
 
+export const addTokensToVault = createAction(
+  '[Vaults] Add Tokens To Vault',
+  props<{ amount: number; chainId: NetworkChainId }>()
+);
+export const addTokensToVaultSuccess = createAction(
+  '[Vaults] Add Tokens To Vault Success',
+  props<{ chainId: NetworkChainId; txnHash: string }>()
+);
+export const addTokensToVaultFailure = createAction(
+  '[Vaults] Add Tokens To Vault Failure',
+  props<{ chainId: NetworkChainId; message: string }>()
+);
+
 export const resetVaults = createAction('[Vaults] Reset Vaults');
