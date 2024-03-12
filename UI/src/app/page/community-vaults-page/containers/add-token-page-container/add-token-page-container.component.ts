@@ -6,6 +6,7 @@ import { Observable, ReplaySubject, Subscription, combineLatest, filter, map, ta
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
 import { FullAndShortNumber } from './../../../../shared/interfaces';
 import { selectBalance, selectCurrentNetwork } from './../../../../store/auth-store/state/selectors';
+import { addTokensToVault } from './../../../../store/vaults-store/state/actions';
 
 @Component({
   selector: 'app-add-token-page-container',
@@ -53,6 +54,11 @@ export class AddTokenPageContainerComponent implements OnInit, OnDestroy {
       .subscribe(
         (params: Params) => (this.urlNetworkFound = this.web3LoginService.getNetworkDetailByChainId(params['chainId']))
       );
+  }
+
+  // TODO: Try this one with localhost
+  addTokenToVault(amount: number): void {
+    return this.store.dispatch(addTokensToVault({ amount, chainId: (this.urlNetworkFound as INetworkDetail).chainId }));
   }
 
   ngOnDestroy(): void {

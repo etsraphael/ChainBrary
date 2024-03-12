@@ -10,7 +10,11 @@
       <div class="container py-3">
         <div class="row">
           <ng-container *ngIf="(isWrongNetwork | async) === false && urlNetworkFound !== null">
-            <app-add-token-card [balance]="(userBalance$ | async)!" [network]="urlNetworkFound"></app-add-token-card>
+            <app-add-token-card
+              [balance]="(userBalance$ | async)!"
+              [network]="urlNetworkFound"
+              (addToken)="addTokenToVault($event.amount)"
+            ></app-add-token-card>
           </ng-container>
           <ng-container *ngIf="(isWrongNetwork | async) === true"> Wrong network </ng-container>
         </div>

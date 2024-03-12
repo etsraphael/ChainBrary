@@ -39,7 +39,7 @@ export class AuthEffects {
         const recentWallet: WalletProvider = this.authService.getRecentWallet() as WalletProvider;
         return this.web3LoginService
           .getCurrentBalance(recentWallet)
-          .pipe(map((response: string) => AuthActions.saveBalance({ balance: response })));
+          .pipe(map((response: number) => AuthActions.saveBalance({ balance: response })));
       })
     );
   });

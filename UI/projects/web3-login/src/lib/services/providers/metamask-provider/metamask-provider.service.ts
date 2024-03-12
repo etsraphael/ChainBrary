@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import BigNumber from 'bignumber.js';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { EMPTY, Observable, defer, of } from 'rxjs';
 import Web3 from 'web3';
@@ -123,10 +124,10 @@ export class MetamaskProviderService extends BaseProviderService {
     }
   }
 
-  getCurrentBalance(): Observable<string> {
+  getCurrentBalance(): Observable<number> {
     return defer(() => {
-      if (typeof window?.ethereum === 'undefined') return of('0');
-      return new Observable<string>((subscriber) => {
+      if (typeof window?.ethereum === 'undefined') return of(0);
+      return new Observable<number>((subscriber) => {
         window.ethereum
           .request({ method: 'eth_requestAccounts' })
           .then((accounts: string[]) => {
@@ -137,16 +138,18 @@ export class MetamaskProviderService extends BaseProviderService {
               })
               .then((balance: string) => {
                 const web3 = new Web3();
-                subscriber.next(String(web3.utils.toBN(balance)));
+                const formattedBalance = new BigNumber(balance).toFixed();
+                const etherBalance = web3.utils.fromWei(formattedBalance, 'ether');
+                subscriber.next(parseFloat(etherBalance));
               })
               .catch((error: Error) => {
                 this.errorHandlerService.showSnackBar(error.message);
-                subscriber.next('0');
+                subscriber.next(0);
               });
           })
           .catch((error: Error) => {
             this.errorHandlerService.showSnackBar(error.message);
-            subscriber.next('0');
+            subscriber.next(0);
           });
       });
     });

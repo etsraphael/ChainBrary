@@ -92,7 +92,7 @@ export class Web3LoginService {
     }
   }
 
-  getCurrentBalance(wallet: WalletProvider): Observable<string> {
+  getCurrentBalance(wallet: WalletProvider): Observable<number> {
     switch (wallet) {
       case WalletProvider.METAMASK:
         return this.metamaskProviderService.getCurrentBalance();

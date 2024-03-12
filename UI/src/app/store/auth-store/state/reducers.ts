@@ -1,5 +1,4 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import web3 from 'web3';
 import * as AuthActions from './actions';
 import { initialState } from './init';
 import { IAuthState } from './interfaces';
@@ -18,15 +17,11 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
     })
   ),
   on(AuthActions.saveBalance, (state, action): IAuthState => {
-    const balanceInEther = web3.utils.fromWei(action.balance, 'ether');
-    const truncatedBalance = balanceInEther.includes('.')
-      ? balanceInEther.substring(0, balanceInEther.indexOf('.') + 5)
-      : balanceInEther;
     return {
       ...state,
       balance: {
-        full: Number(action.balance),
-        short: truncatedBalance
+        full: action.balance,
+        short: parseFloat(action.balance.toFixed(5))
       }
     };
   }),

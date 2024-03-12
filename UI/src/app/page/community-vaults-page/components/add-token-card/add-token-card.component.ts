@@ -1,8 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import web3 from 'web3';
-import { FullAndShortNumber } from './../../../../shared/interfaces';
 import { INetworkDetail } from '@chainbrary/web3-login';
+import { FullAndShortNumber } from './../../../../shared/interfaces';
 
 @Component({
   selector: 'app-add-token-card[balance][network]',
@@ -12,6 +11,7 @@ import { INetworkDetail } from '@chainbrary/web3-login';
 export class AddTokenCardComponent {
   @Input() balance: FullAndShortNumber | null;
   @Input() network: INetworkDetail;
+  @Output() addToken = new EventEmitter<{ amount: number }>();
 
   mainForm = new FormGroup<IAddTokenForm>({
     amount: new FormControl<number | null>(0, [Validators.required, Validators.min(0.000001)]),
@@ -22,23 +22,19 @@ export class AddTokenCardComponent {
     if (!this.balance) {
       return true;
     }
-    return Number(web3.utils.fromWei(String(this.balance.full), 'ether')) === 0;
+    return this.balance.full === 0;
   }
 
   setUpMaxAmount(): void {
     if (this.balance) {
-      const amount = Number(web3.utils.fromWei(String(this.balance.full), 'ether'));
-      this.mainForm.patchValue({ amount: amount });
+      this.mainForm.patchValue({ amount: this.balance.full });
     }
   }
 
   submitForm(): void {
     this.mainForm.markAllAsTouched();
-    console.log(this.mainForm);
-
-    // if (this.mainForm.valid) {
-    //   console.log(this.mainForm.value);
-    // }
+    if (this.mainForm.invalid) return;
+    return this.addToken.emit({ amount: this.mainForm.get('amount')?.value as number });
   }
 }
 

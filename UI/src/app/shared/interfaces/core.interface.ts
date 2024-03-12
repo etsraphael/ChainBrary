@@ -5,5 +5,5 @@ export interface KeyAndLabel {
 
 export interface FullAndShortNumber {
   full: number;
-  short: string;
+  short: number;
 }
