@@ -56,7 +56,6 @@ export class AddTokenPageContainerComponent implements OnInit, OnDestroy {
       );
   }
 
-  // TODO: Try this one with localhost
   addTokenToVault(amount: number): void {
     return this.store.dispatch(addTokensToVault({ amount, chainId: (this.urlNetworkFound as INetworkDetail).chainId }));
   }

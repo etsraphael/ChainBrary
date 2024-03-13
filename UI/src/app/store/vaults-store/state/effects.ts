@@ -25,7 +25,7 @@ export class VaultsEffects {
       mergeMap(() => from(communityVaults)),
       map((vault: VaultSupported) =>
         VaultsActions.loadVaultById({
-          txnHash: vault.txnHash,
+          contractAddress: vault.contractAddress,
           networkDetail: this.web3LoginService.getNetworkDetailByChainId(vault.chainId),
           rpcUrl: vault.rpcUrl
         })
@@ -37,13 +37,7 @@ export class VaultsEffects {
     return this.actions$.pipe(
       ofType(VaultsActions.loadVaultById),
       mergeMap((action: ReturnType<typeof VaultsActions.loadVaultById>) =>
-        from(
-          this.communityVaultsService.getCommunityVaultsFromTxnHash(
-            action.rpcUrl,
-            action.txnHash,
-            action.networkDetail.chainId
-          )
-        ).pipe(
+        from(this.communityVaultsService.getCommunityVaultByChainId(action.rpcUrl, action.networkDetail.chainId)).pipe(
           map((res: Vault) => VaultsActions.loadVaultByNetworkSuccess({ vault: res })),
           catchError((error: string) =>
             of(VaultsActions.loadVaultByNetworkFailure({ chainId: action.networkDetail.chainId, message: error }))

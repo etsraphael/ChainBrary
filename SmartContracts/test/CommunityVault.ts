@@ -81,6 +81,10 @@ describe('CommunityVault', function () {
 
       // Check emitted events
       await expect(tx).to.emit(communityVault, 'DepositEvent').withArgs(addr1.address, amountToSend);
+
+      // getCommunityVaultMetadata()
+      const metadata = await communityVault.connect(addr1).getCommunityVaultMetadata();
+      expect(metadata.totalStaked_).to.equal(amountToSend);
     });
 
     it('Should revert when depositing 0', async function () {
