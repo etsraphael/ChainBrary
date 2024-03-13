@@ -4,6 +4,11 @@
       <app-header-body-page [header]="headerPayload"></app-header-body-page>
     </div>
   </div>
+  <div *ngIf="(transactionCards$ | async)?.length! > 0" class="d-flex justify-content-center pt-4">
+    <div class="col-12 col-md-10 col-lg-8">
+      <app-transaction-card [cardContent]="(transactionCards$ | async)![0]"></app-transaction-card>
+    </div>
+  </div>
   <div class="d-flex justify-content-center pt-4">
     <div class="col-12 col-md-10 col-lg-8">
       <app-auth-banner></app-auth-banner>

@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, filter, map, mergeMap, take } from 'rxjs';
+import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
-import { StoreState, Vault } from './../../../../shared/interfaces';
+import { ITransactionCard, StoreState, Vault } from './../../../../shared/interfaces';
 import { loadVaults } from './../../../../store/vaults-store/state/actions';
 import { selectIsVaultsLoaded, selectVaults } from './../../../../store/vaults-store/state/selectors';
 
@@ -22,6 +23,9 @@ export class CommunityVaultsListPageContainerComponent implements OnInit {
 
   communityVaults$: Observable<StoreState<Vault | null>[]> = this.store.select(selectVaults);
   isVaultsLoaded$: Observable<boolean> = this.store.select(selectIsVaultsLoaded);
+  readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
+    selectRecentTransactionsByComponent('CommunityVaultsListPageContainerComponent')
+  );
 
   get communityVaultsWithoutError$(): Observable<StoreState<Vault | null>[]> {
     return this.communityVaults$.pipe(map((vaults) => vaults.filter((vault) => vault.error === null)));

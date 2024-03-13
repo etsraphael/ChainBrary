@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { communityVaults } from './../../../data/communityVaults.data';
@@ -16,7 +17,8 @@ export class VaultsEffects {
     private actions$: Actions,
     private communityVaultsService: CommunityVaultsService,
     private web3LoginService: Web3LoginService,
-    private readonly store: Store
+    private readonly store: Store,
+    private router: Router
   ) {}
 
   loadCommunityVaults$ = createEffect(() => {
@@ -64,8 +66,9 @@ export class VaultsEffects {
           this.communityVaultsService.addTokensToVault(action[1], action[0].chainId, action[0].amount, action[2])
         ).pipe(
           map((response: IReceiptTransaction) =>
-            VaultsActions.addTokensToVaultSuccess({ txnHash: response.transactionHash, chainId: action[0].chainId })
+            VaultsActions.addTokensToVaultSuccess({ hash: response.transactionHash, chainId: action[0].chainId })
           ),
+          tap(() => this.router.navigate(['/community-vaults/list'])),
           catchError((error: string) =>
             of(VaultsActions.addTokensToVaultFailure({ message: error, chainId: action[0].chainId }))
           )

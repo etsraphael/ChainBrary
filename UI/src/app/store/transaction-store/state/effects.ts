@@ -7,6 +7,7 @@ import { catchError, concatMap, filter, from, map, of } from 'rxjs';
 import Web3 from 'web3';
 import { selectCurrentChainId, selectPublicAddress } from '../../auth-store/state/selectors';
 import { amountSent } from '../../payment-request-store/state/actions';
+import { addTokensToVaultSuccess } from '../../vaults-store/state/actions';
 import { environment } from './../../../../environments/environment';
 import {
   loadTransactionsFromBridgeTransfer,
@@ -33,6 +34,23 @@ export class TransactionEffects {
             type: 'success',
             hash: action.hash,
             component: 'PaymentPageComponent',
+            chainId: action.chainId
+          }
+        });
+      })
+    );
+  });
+
+  addTokenSent$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(addTokensToVaultSuccess),
+      map((action: ReturnType<typeof addTokensToVaultSuccess>) => {
+        return localTransactionSentSuccessfully({
+          card: {
+            title: $localize`:@@transaction.payment.title:Transaction sent successfully`,
+            type: 'success',
+            hash: action.hash,
+            component: 'CommunityVaultsListPageContainerComponent',
             chainId: action.chainId
           }
         });

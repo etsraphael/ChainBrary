@@ -23,7 +23,7 @@ export const addTokensToVault = createAction(
 );
 export const addTokensToVaultSuccess = createAction(
   '[Vaults] Add Tokens To Vault Success',
-  props<{ chainId: NetworkChainId; txnHash: string }>()
+  props<{ chainId: NetworkChainId; hash: string }>()
 );
 export const addTokensToVaultFailure = createAction(
   '[Vaults] Add Tokens To Vault Failure',
