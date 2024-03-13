@@ -43,11 +43,11 @@ export class CommunityVaultsService {
             networkDetail: this.web3LoginService.getNetworkDetailByChainId(chainId)
           },
           data: {
-            TVL: Number(res[0]),
-            TVS: Number(res[1]),
-            fullNetworkReward: Number(res[3]),
-            userStaked: Number(res[4]),
-            userReward: Number(res[5])
+            TVL: Number(web3.utils.fromWei(String(res[2]), 'ether')),
+            TVS: Number(web3.utils.fromWei(String(res[0]), 'ether')),
+            fullNetworkReward: Number(web3.utils.fromWei(String(res[3]), 'ether')),
+            userStaked: Number(web3.utils.fromWei(String(res[4]), 'ether')),
+            userReward: Number(web3.utils.fromWei(String(res[5]), 'ether'))
           }
         })
       )
