@@ -16,7 +16,7 @@ export class CommunityVaultsService {
     private web3ProviderService: Web3ProviderService
   ) {}
 
-  async getCommunityVaultByChainId(rpcUrl: string, chainId: NetworkChainId): Promise<Vault> {
+  async getCommunityVaultByChainId(rpcUrl: string, chainId: NetworkChainId, from: string | null): Promise<Vault> {
     const web3: Web3 = new Web3(rpcUrl);
     const communityVaultContract = new CommunityVaultContract(chainId);
 
@@ -26,7 +26,7 @@ export class CommunityVaultsService {
     );
     return contract.methods
       .getCommunityVaultMetadata()
-      .call()
+      .call({ from: from || '0x0000000000000000000000000000000000000000' })
       .then(
         (
           res: [bigint, bigint, bigint, bigint, bigint, bigint] & {

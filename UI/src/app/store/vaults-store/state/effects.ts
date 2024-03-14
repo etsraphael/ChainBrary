@@ -35,14 +35,21 @@ export class VaultsEffects {
     );
   });
 
-  loadCommunityVaultByTxnHash$ = createEffect(() => {
+  loadCommunityVaultByChainId$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(VaultsActions.loadVaultById),
-      mergeMap((action: ReturnType<typeof VaultsActions.loadVaultById>) =>
-        from(this.communityVaultsService.getCommunityVaultByChainId(action.rpcUrl, action.networkDetail.chainId)).pipe(
+      concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
+      mergeMap((action: [ReturnType<typeof VaultsActions.loadVaultById>, string | null]) =>
+        from(
+          this.communityVaultsService.getCommunityVaultByChainId(
+            action[0].rpcUrl,
+            action[0].networkDetail.chainId,
+            action[1]
+          )
+        ).pipe(
           map((res: Vault) => VaultsActions.loadVaultByNetworkSuccess({ vault: res })),
           catchError((error: string) =>
-            of(VaultsActions.loadVaultByNetworkFailure({ chainId: action.networkDetail.chainId, message: error }))
+            of(VaultsActions.loadVaultByNetworkFailure({ chainId: action[0].networkDetail.chainId, message: error }))
           )
         )
       )

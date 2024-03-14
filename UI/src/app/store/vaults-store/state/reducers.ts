@@ -13,18 +13,25 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
     (state, action: { networkDetail: INetworkDetail; contractAddress: string }): IVaultsState => {
       const newList: StoreState<Vault | null>[] = [...state.vaultList];
 
-      // Add the new vault to the list
-      newList.push({
-        data: {
-          network: {
-            contractAddress: action.contractAddress,
-            networkDetail: action.networkDetail
+      // Check if the vault with the same contractAddress already exists
+      const exists = newList.some(
+        (vault: StoreState<Vault | null>) => vault.data?.network.networkDetail.chainId === action.networkDetail.chainId
+      );
+
+      // Add the new vault to the list only if it doesn't already exist
+      if (!exists) {
+        newList.push({
+          data: {
+            network: {
+              contractAddress: action.contractAddress,
+              networkDetail: action.networkDetail
+            },
+            data: null
           },
-          data: null
-        },
-        loading: true,
-        error: null
-      });
+          loading: true,
+          error: null
+        });
+      }
 
       // Add the new vault to the list
       return {
