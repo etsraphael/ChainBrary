@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { MarkdownModule } from 'ngx-markdown';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { MaterialModule } from './../../module/material.module';
@@ -11,7 +12,7 @@ import { CommunityVaultsListComponent } from './components/community-vaults-list
 import { AddTokenPageContainerComponent } from './containers/add-token-page-container/add-token-page-container.component';
 import { CommunityVaultsHomePageContainerComponent } from './containers/community-vaults-home-page-container/community-vaults-home-page-container.component';
 import { CommunityVaultsListPageContainerComponent } from './containers/community-vaults-list-page-container/community-vaults-list-page-container.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { WithdrawTokenPageContainerComponent } from './containers/withdraw-token-page-container/withdraw-token-page-container.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ReactiveFormsModule } from '@angular/forms';
     CommunityVaultsListPageContainerComponent,
     CommunityVaultCardComponent,
     AddTokenPageContainerComponent,
-    AddTokenCardComponent
+    AddTokenCardComponent,
+    WithdrawTokenPageContainerComponent
   ],
   imports: [
     CommonModule,

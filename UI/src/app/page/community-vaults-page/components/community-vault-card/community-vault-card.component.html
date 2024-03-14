@@ -70,7 +70,9 @@
         <div class="card-footer border-0 bg-body">
           <div class="row">
             <div class="col-6">
-              <button class="btn btn-outline-primary w-100">Withdraw</button>
+              <a [routerLink]="'./../withdraw-vault/' + vault.data?.network?.networkDetail?.chainId">
+                <button class="btn btn-outline-primary w-100">Withdraw</button>
+              </a>
             </div>
             <div class="col-6">
               <a [routerLink]="'./../add-token/' + vault.data?.network?.networkDetail?.chainId">
