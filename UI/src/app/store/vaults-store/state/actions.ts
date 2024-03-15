@@ -30,4 +30,16 @@ export const addTokensToVaultFailure = createAction(
   props<{ chainId: NetworkChainId; message: string }>()
 );
 
+export const withdrawTokensFromVault = createAction(
+  '[Vaults] Withdraw Tokens From Vault'
+);
+export const withdrawTokensFromVaultSuccess = createAction(
+  '[Vaults] Withdraw Tokens From Vault Success',
+  props<{ chainId: NetworkChainId; hash: string }>()
+);
+export const withdrawTokensFromVaultFailure = createAction(
+  '[Vaults] Withdraw Tokens From Vault Failure',
+  props<{ chainId: NetworkChainId; message: string }>()
+);
+
 export const resetVaults = createAction('[Vaults] Reset Vaults');

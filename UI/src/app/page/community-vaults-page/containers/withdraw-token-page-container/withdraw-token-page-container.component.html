@@ -10,7 +10,7 @@
       <div class="container py-3">
         <div class="row">
           <ng-container *ngIf="(isWrongNetwork | async) === false && urlNetworkFound !== null">
-            <app-withdraw-token-card [vaultObs]="vaultSelected"></app-withdraw-token-card>
+            <app-withdraw-token-card [vaultObs]="vaultSelected" (withdrawToken)="withdrawToken()"></app-withdraw-token-card>
           </ng-container>
           <ng-container *ngIf="(isWrongNetwork | async) === true"> Wrong network </ng-container>
         </div>

@@ -9,7 +9,7 @@ import { IHeaderBodyPage } from './../../../../shared/components/header-body-pag
 import { FullAndShortNumber, StoreState, Vault, VaultSupported } from './../../../../shared/interfaces';
 import { setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
 import { selectBalance, selectCurrentNetwork } from './../../../../store/auth-store/state/selectors';
-import { loadVaultById } from './../../../../store/vaults-store/state/actions';
+import { loadVaultById, withdrawTokensFromVault } from './../../../../store/vaults-store/state/actions';
 import { selectVaultByChainId } from './../../../../store/vaults-store/state/selectors';
 
 @Component({
@@ -56,6 +56,10 @@ export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
     this.getNetworkDetail();
     this.loadVaultSelectedIfNull();
     this.loginListener();
+  }
+
+  withdrawToken(): void {
+    return this.store.dispatch(withdrawTokensFromVault());
   }
 
   private loadVaultSelectedIfNull(): void {

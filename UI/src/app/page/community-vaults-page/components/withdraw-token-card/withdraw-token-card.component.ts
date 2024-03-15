@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Observable, map } from 'rxjs';
 import { StoreState, Vault } from './../../../../shared/interfaces';
@@ -10,6 +10,7 @@ import { StoreState, Vault } from './../../../../shared/interfaces';
 })
 export class WithdrawTokenCardComponent {
   @Input() vaultObs: Observable<StoreState<Vault | null> | null>;
+  @Output() withdrawToken = new EventEmitter<void>();
 
   get vaultData$(): Observable<Vault | null> {
     return this.vaultObs.pipe(map((vault: StoreState<Vault | null> | null) => vault?.data || null));
