@@ -31,7 +31,8 @@ export const addTokensToVaultFailure = createAction(
 );
 
 export const withdrawTokensFromVault = createAction(
-  '[Vaults] Withdraw Tokens From Vault'
+  '[Vaults] Withdraw Tokens From Vault',
+  props<{ chainId: NetworkChainId }>()
 );
 export const withdrawTokensFromVaultSuccess = createAction(
   '[Vaults] Withdraw Tokens From Vault Success',

@@ -83,4 +83,30 @@ export class VaultsEffects {
       })
     );
   });
+
+  withdrawTokensFromVault$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(VaultsActions.withdrawTokensFromVault),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter(
+        (payload: [ReturnType<typeof VaultsActions.withdrawTokensFromVault>, WalletProvider | null, string | null]) =>
+          payload[1] !== null && payload[2] !== null
+      ),
+      map(
+        (payload: [ReturnType<typeof VaultsActions.withdrawTokensFromVault>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof VaultsActions.withdrawTokensFromVault>, WalletProvider, string]
+      ),
+      switchMap((action: [ReturnType<typeof VaultsActions.withdrawTokensFromVault>, WalletProvider, string]) => {
+        return from(this.communityVaultsService.withdrawTokensFromVault(action[1], action[0].chainId, action[2])).pipe(
+          map((response: IReceiptTransaction) =>
+            VaultsActions.withdrawTokensFromVaultSuccess({ hash: response.transactionHash, chainId: action[0].chainId })
+          ),
+          tap(() => this.router.navigate(['/community-vaults/list'])),
+          catchError((error: string) =>
+            of(VaultsActions.withdrawTokensFromVaultFailure({ message: error, chainId: action[0].chainId }))
+          )
+        );
+      })
+    );
+  });
 }

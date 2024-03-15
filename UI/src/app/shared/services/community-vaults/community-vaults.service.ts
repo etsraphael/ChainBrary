@@ -78,4 +78,27 @@ export class CommunityVaultsService {
       return Promise.reject(error as string);
     }
   }
+
+  async withdrawTokensFromVault(
+    w: WalletProvider,
+    chainId: NetworkChainId,
+    from: string
+  ): Promise<IReceiptTransaction> {
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const communityVaultContract = new CommunityVaultContract(chainId);
+
+    const contract: Contract = new web3.eth.Contract(
+      communityVaultContract.getAbi() as AbiItem[],
+      communityVaultContract.getAddress()
+    );
+
+    try {
+      const gas: number = await contract.methods.withdraw().estimateGas({ from });
+      const receipt: IReceiptTransaction = contract.methods.withdraw().send({ from, gas });
+
+      return receipt;
+    } catch (error) {
+      return Promise.reject(error as string);
+    }
+  }
 }

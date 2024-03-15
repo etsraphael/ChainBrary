@@ -59,7 +59,7 @@ export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
   }
 
   withdrawToken(): void {
-    return this.store.dispatch(withdrawTokensFromVault());
+    return this.store.dispatch(withdrawTokensFromVault({ chainId: this.route.snapshot.params['chainId'] }));
   }
 
   private loadVaultSelectedIfNull(): void {
