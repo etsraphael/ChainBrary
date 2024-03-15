@@ -34,4 +34,13 @@ export class WithdrawTokenCardComponent {
       })
     );
   }
+
+  get totalAmount$(): Observable<number> {
+    return this.vaultData$.pipe(
+      map((vault: Vault | null) => {
+        const { userStaked, userReward } = vault?.data ?? {};
+        return (userStaked || 0) + (userReward || 0);
+      })
+    );
+  }
 }

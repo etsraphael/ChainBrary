@@ -73,7 +73,7 @@
               <div class="row">
                 <div class="col-12 d-flex justify-content-between">
                   <div class="d-flex">
-                    <h4 class="mb-0">{{ (vaultData$ | async)?.data?.userReward }}</h4>
+                    <h4 class="mb-0">{{ totalAmount$ | async }}</h4>
                     <span class="mt-auto mx-2">{{ (networkDetail$ | async)?.nativeCurrency?.symbol }}</span>
                   </div>
                   <div>

@@ -1,11 +1,13 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Params } from '@angular/router';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, Subscription, combineLatest, filter, map, switchMap, take, takeUntil } from 'rxjs';
 import { communityVaults } from './../../../../data/communityVaults.data';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
 import { FullAndShortNumber, StoreState, Vault, VaultSupported } from './../../../../shared/interfaces';
+import { setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
 import { selectBalance, selectCurrentNetwork } from './../../../../store/auth-store/state/selectors';
 import { loadVaultById } from './../../../../store/vaults-store/state/actions';
 import { selectVaultByChainId } from './../../../../store/vaults-store/state/selectors';
@@ -27,7 +29,8 @@ export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
   constructor(
     private readonly store: Store,
     private route: ActivatedRoute,
-    private web3LoginService: Web3LoginService
+    private web3LoginService: Web3LoginService,
+    private actions$: Actions
   ) {}
 
   readonly userBalance$: Observable<FullAndShortNumber | null> = this.store.select(selectBalance);
@@ -52,29 +55,19 @@ export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getNetworkDetail();
     this.loadVaultSelectedIfNull();
+    this.loginListener();
   }
 
-  loadVaultSelectedIfNull(): void {
+  private loadVaultSelectedIfNull(): void {
     this.vaultSelected
       .pipe(
         filter((vault: StoreState<Vault | null> | null) => vault?.loading === true || !vault),
         take(1)
       )
-      .subscribe(() => {
-        const vaultConfig: VaultSupported = communityVaults.filter(
-          (vault: VaultSupported) => vault.chainId === this.route.snapshot.params['chainId']
-        )[0];
-        this.store.dispatch(
-          loadVaultById({
-            networkDetail: this.web3LoginService.getNetworkDetailByChainId(vaultConfig.chainId),
-            contractAddress: vaultConfig.contractAddress,
-            rpcUrl: vaultConfig.rpcUrl
-          })
-        );
-      });
+      .subscribe(() => this.loadVaultByChainId());
   }
 
-  getNetworkDetail(): Subscription {
+  private getNetworkDetail(): Subscription {
     return this.route.params
       .pipe(
         filter((params: Params) => !!params['chainId']),
@@ -83,6 +76,25 @@ export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
       .subscribe(
         (params: Params) => (this.urlNetworkFound = this.web3LoginService.getNetworkDetailByChainId(params['chainId']))
       );
+  }
+
+  private loginListener(): void {
+    this.actions$
+      .pipe(ofType(setAuthPublicAddress), takeUntil(this.destroyed$))
+      .subscribe(() => this.loadVaultByChainId());
+  }
+
+  private loadVaultByChainId(): void {
+    const vaultConfig: VaultSupported = communityVaults.filter(
+      (vault: VaultSupported) => vault.chainId === this.route.snapshot.params['chainId']
+    )[0];
+    this.store.dispatch(
+      loadVaultById({
+        networkDetail: this.web3LoginService.getNetworkDetailByChainId(vaultConfig.chainId),
+        contractAddress: vaultConfig.contractAddress,
+        rpcUrl: vaultConfig.rpcUrl
+      })
+    );
   }
 
   ngOnDestroy(): void {
