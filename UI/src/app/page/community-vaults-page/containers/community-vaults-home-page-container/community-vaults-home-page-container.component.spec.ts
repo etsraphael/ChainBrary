@@ -3,6 +3,7 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { StoreModule } from '@ngrx/store';
 import { SharedTestModule } from './../../../../shared/components/shared-components.module';
 import { initialState as authInitialState } from './../../../../store/auth-store/state/init';
+import { initialState as vaultInitialState } from './../../../../store/vaults-store/state/init';
 import { CommunityVaultsHomePageContainerComponent } from './community-vaults-home-page-container.component';
 
 describe('CommunityVaultsHomePageContainerComponent', () => {
@@ -15,7 +16,8 @@ describe('CommunityVaultsHomePageContainerComponent', () => {
         SharedTestModule,
         RouterTestingModule,
         StoreModule.forRoot({
-          auth: () => authInitialState
+          auth: () => authInitialState,
+          vaults: () => vaultInitialState
         })
       ],
       declarations: [CommunityVaultsHomePageContainerComponent]
