@@ -23,7 +23,6 @@
               <div class="d-flex" matSuffix>
                 <h6 class="mb-0 px-3">{{ network.nativeCurrency.symbol }}</h6>
               </div>
-              <mat-hint>USD: $150.00</mat-hint>
               <mat-error *ngIf="mainForm.get('amount')?.hasError('min')"> Value has to be greater than 0 </mat-error>
             </mat-form-field>
           </div>

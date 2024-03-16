@@ -3,6 +3,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, mergeMap, take, takeUntil } from 'rxjs';
 import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
+import { communityVaults } from './../../../../data/communityVaults.data';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
 import { ITransactionCard, StoreState, Vault } from './../../../../shared/interfaces';
 import { setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
@@ -27,8 +28,8 @@ export class CommunityVaultsListPageContainerComponent implements OnInit, OnDest
     private actions$: Actions
   ) {}
 
-  communityVaults$: Observable<StoreState<Vault | null>[]> = this.store.select(selectVaults);
-  isVaultsLoaded$: Observable<boolean> = this.store.select(selectIsVaultsLoaded);
+  readonly communityVaults$: Observable<StoreState<Vault | null>[]> = this.store.select(selectVaults);
+  readonly isVaultsLoaded$: Observable<boolean> = this.store.select(selectIsVaultsLoaded);
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('CommunityVaultsListPageContainerComponent')
   );
@@ -51,8 +52,11 @@ export class CommunityVaultsListPageContainerComponent implements OnInit, OnDest
   loadVaults(): void {
     this.communityVaultsWithoutError$
       .pipe(
-        mergeMap(() => this.isVaultsLoaded$),
-        filter((isLoaded) => isLoaded === false),
+        mergeMap((vaults) => {
+          const shouldLoadMoreVaults: boolean = vaults.length < communityVaults.length;
+          return this.isVaultsLoaded$.pipe(map((isLoaded) => ({ isLoaded, shouldLoadMoreVaults })));
+        }),
+        filter(({ isLoaded, shouldLoadMoreVaults }) => !isLoaded || shouldLoadMoreVaults),
         take(1)
       )
       .subscribe(() => this.store.dispatch(loadVaults()));

@@ -18,13 +18,13 @@ export const communityVaults: VaultSupported[] = [
     name: 'Polygon network',
     chainId: NetworkChainId.POLYGON,
     rpcUrl: environment.rpcKeys.polygon
-  },
-  {
-    contractAddress: environment.contracts.communityVault.contracts.find(
-      (contract) => contract.chainId === NetworkChainId.LOCALHOST
-    )?.address as string,
-    name: 'LocalHost network',
-    chainId: NetworkChainId.LOCALHOST,
-    rpcUrl: 'http://127.0.0.1:8545'
   }
+  // {
+  //   contractAddress: environment.contracts.communityVault.contracts.find(
+  //     (contract) => contract.chainId === NetworkChainId.LOCALHOST
+  //   )?.address as string,
+  //   name: 'LocalHost network',
+  //   chainId: NetworkChainId.LOCALHOST,
+  //   rpcUrl: 'http://127.0.0.1:8545'
+  // }
 ];

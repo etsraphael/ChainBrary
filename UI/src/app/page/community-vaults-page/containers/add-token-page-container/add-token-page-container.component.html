@@ -16,7 +16,11 @@
               (addToken)="addTokenToVault($event.amount)"
             ></app-add-token-card>
           </ng-container>
-          <ng-container *ngIf="(isWrongNetwork | async) === true"> Wrong network </ng-container>
+          <ng-container *ngIf="(isWrongNetwork | async) === true">
+            <div class="alert alert-danger text-center border-0" role="alert">
+              Wrong network found in the wallet. Please switch to the right network.
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
