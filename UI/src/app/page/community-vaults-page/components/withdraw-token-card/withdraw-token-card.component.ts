@@ -5,12 +5,13 @@ import { StoreState, Vault } from './../../../../shared/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-withdraw-token-card[vaultObs]',
+  selector: 'app-withdraw-token-card[vaultObs][errorMessage]',
   templateUrl: './withdraw-token-card.component.html',
   styleUrls: ['./withdraw-token-card.component.scss']
 })
 export class WithdrawTokenCardComponent {
   @Input() vaultObs: Observable<StoreState<Vault | null> | null>;
+  @Input() errorMessage: string | null;
   @Output() withdrawToken = new EventEmitter<void>();
 
   get vaultData$(): Observable<Vault | null> {

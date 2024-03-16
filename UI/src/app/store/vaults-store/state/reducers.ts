@@ -54,7 +54,8 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
     });
     return {
       ...state,
-      vaultList: updatedList
+      vaultList: updatedList,
+      errorMessage: initialState.errorMessage
     };
   }),
   on(
@@ -78,6 +79,48 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
       return {
         ...state,
         vaultList: updatedList
+      };
+    }
+  ),
+  on(VaultsActions.addTokensToVault, (state): IVaultsState => {
+    return {
+      ...state,
+      errorMessage: {
+        ...state.errorMessage,
+        staking: null
+      }
+    };
+  }),
+  on(
+    VaultsActions.addTokensToVaultFailure,
+    (state, action: { chainId: NetworkChainId; message: string }): IVaultsState => {
+      return {
+        ...state,
+        errorMessage: {
+          ...state.errorMessage,
+          staking: action.message
+        }
+      };
+    }
+  ),
+  on(VaultsActions.withdrawTokensFromVault, (state): IVaultsState => {
+    return {
+      ...state,
+      errorMessage: {
+        ...state.errorMessage,
+        withdrawing: null
+      }
+    };
+  }),
+  on(
+    VaultsActions.withdrawTokensFromVaultFailure,
+    (state, action: { chainId: NetworkChainId; message: string }): IVaultsState => {
+      return {
+        ...state,
+        errorMessage: {
+          ...state.errorMessage,
+          withdrawing: action.message
+        }
       };
     }
   )

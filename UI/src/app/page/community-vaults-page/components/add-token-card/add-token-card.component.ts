@@ -5,13 +5,14 @@ import { FullAndShortNumber } from './../../../../shared/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
-  selector: 'app-add-token-card[balance][network]',
+  selector: 'app-add-token-card[balance][network][errorMessage]',
   templateUrl: './add-token-card.component.html',
   styleUrls: ['./add-token-card.component.scss']
 })
 export class AddTokenCardComponent {
   @Input() balance: FullAndShortNumber | null;
   @Input() network: INetworkDetail;
+  @Input() errorMessage: string | null;
   @Output() addToken = new EventEmitter<{ amount: number }>();
 
   mainForm = new FormGroup<IAddTokenForm>({

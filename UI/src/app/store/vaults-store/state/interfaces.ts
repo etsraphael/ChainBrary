@@ -4,7 +4,10 @@ export const VAULTS_FEATURE_KEY = 'vaults';
 
 export interface IVaultsState {
   vaultList: StoreState<Vault | null>[];
-  errorMessage: string | null;
+  errorMessage: {
+    withdrawing: string | null;
+    staking: string | null;
+  };
 }
 
 export interface VaultState {

@@ -7,6 +7,7 @@ import { IHeaderBodyPage } from './../../../../shared/components/header-body-pag
 import { FullAndShortNumber } from './../../../../shared/interfaces';
 import { selectBalance, selectCurrentNetwork } from './../../../../store/auth-store/state/selectors';
 import { addTokensToVault } from './../../../../store/vaults-store/state/actions';
+import { selectStakingErrorMessage } from './../../../../store/vaults-store/state/selectors';
 
 @Component({
   selector: 'app-add-token-page-container',
@@ -30,6 +31,7 @@ export class AddTokenPageContainerComponent implements OnInit, OnDestroy {
 
   readonly userBalance$: Observable<FullAndShortNumber | null> = this.store.select(selectBalance);
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly stakingErrorMessage$: Observable<string | null> = this.store.select(selectStakingErrorMessage);
 
   get isWrongNetwork(): Observable<boolean> {
     return combineLatest([this.route.params, this.currentNetwork$]).pipe(

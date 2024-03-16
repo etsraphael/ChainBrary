@@ -13,6 +13,7 @@
             <app-add-token-card
               [balance]="(userBalance$ | async)!"
               [network]="urlNetworkFound"
+              [errorMessage]="stakingErrorMessage$ | async"
               (addToken)="addTokenToVault($event.amount)"
             ></app-add-token-card>
           </ng-container>

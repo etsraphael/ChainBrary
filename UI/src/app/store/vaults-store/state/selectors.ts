@@ -24,3 +24,13 @@ export const selectVaultByChainId = (
     (s: StoreState<Vault | null>[]) =>
       s.find((vault: StoreState<Vault | null>) => vault.data?.network.networkDetail.chainId === chainId) || null
   );
+
+export const selectStakingErrorMessage: MemoizedSelector<object, string | null> = createSelector(
+  selectVaultState,
+  (s: IVaultsState) => s.errorMessage.staking
+);
+
+export const selectWithdrawingErrorMessage: MemoizedSelector<object, string | null> = createSelector(
+  selectVaultState,
+  (s: IVaultsState) => s.errorMessage.withdrawing
+);

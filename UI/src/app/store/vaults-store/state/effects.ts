@@ -76,8 +76,8 @@ export class VaultsEffects {
             VaultsActions.addTokensToVaultSuccess({ hash: response.transactionHash, chainId: action[0].chainId })
           ),
           tap(() => this.router.navigate(['/community-vaults/list'])),
-          catchError((error: string) =>
-            of(VaultsActions.addTokensToVaultFailure({ message: error, chainId: action[0].chainId }))
+          catchError((error: { message: string }) =>
+            of(VaultsActions.addTokensToVaultFailure({ message: error.message, chainId: action[0].chainId }))
           )
         );
       })
@@ -102,8 +102,8 @@ export class VaultsEffects {
             VaultsActions.withdrawTokensFromVaultSuccess({ hash: response.transactionHash, chainId: action[0].chainId })
           ),
           tap(() => this.router.navigate(['/community-vaults/list'])),
-          catchError((error: string) =>
-            of(VaultsActions.withdrawTokensFromVaultFailure({ message: error, chainId: action[0].chainId }))
+          catchError((error: { message: string }) =>
+            of(VaultsActions.withdrawTokensFromVaultFailure({ message: error.message, chainId: action[0].chainId }))
           )
         );
       })

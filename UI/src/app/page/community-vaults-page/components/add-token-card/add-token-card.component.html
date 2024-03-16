@@ -50,6 +50,9 @@
             <button class="btn btn-primary w-100" type="submit" (click)="submitForm()">Add To Vault</button>
           </div>
         </div>
+        <div class="d-flex justify-content-end" *ngIf="errorMessage">
+          <div class="alert alert-danger text-center border-0" role="alert">{{ errorMessage }}</div>
+        </div>
       </div>
     </form>
   </div>

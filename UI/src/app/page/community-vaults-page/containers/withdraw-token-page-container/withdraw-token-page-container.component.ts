@@ -10,7 +10,7 @@ import { FullAndShortNumber, StoreState, Vault, VaultSupported } from './../../.
 import { setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
 import { selectBalance, selectCurrentNetwork } from './../../../../store/auth-store/state/selectors';
 import { loadVaultById, withdrawTokensFromVault } from './../../../../store/vaults-store/state/actions';
-import { selectVaultByChainId } from './../../../../store/vaults-store/state/selectors';
+import { selectVaultByChainId, selectWithdrawingErrorMessage } from './../../../../store/vaults-store/state/selectors';
 
 @Component({
   selector: 'app-withdraw-token-page-container',
@@ -35,6 +35,7 @@ export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
 
   readonly userBalance$: Observable<FullAndShortNumber | null> = this.store.select(selectBalance);
   readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly withdrawingErrorMessage$: Observable<string | null> = this.store.select(selectWithdrawingErrorMessage);
 
   get vaultSelected(): Observable<StoreState<Vault | null> | null> {
     return this.route.params.pipe(
