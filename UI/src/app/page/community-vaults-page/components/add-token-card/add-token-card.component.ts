@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { FullAndShortNumber } from './../../../../shared/interfaces';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-add-token-card[balance][network]',
@@ -18,12 +19,7 @@ export class AddTokenCardComponent {
     termsAndCond: new FormControl<boolean | null>(false, [Validators.requiredTrue])
   });
 
-  submitDisabled(): boolean {
-    if (!this.balance) {
-      return true;
-    }
-    return this.balance.full === 0;
-  }
+  constructor(private snackbar: MatSnackBar) {}
 
   setUpMaxAmount(): void {
     if (this.balance) {
@@ -34,6 +30,14 @@ export class AddTokenCardComponent {
   submitForm(): void {
     this.mainForm.markAllAsTouched();
     if (this.mainForm.invalid) return;
+
+    if (this.balance && (this.mainForm.get('amount')?.value as number) > this.balance?.full) {
+      this.snackbar.open('Insufficient balance', '', {
+        duration: 3000
+      });
+      return;
+    }
+
     return this.addToken.emit({ amount: this.mainForm.get('amount')?.value as number });
   }
 }

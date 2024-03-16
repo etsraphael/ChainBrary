@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
-import { Observable, map } from 'rxjs';
+import { Observable, Subscription, map, take } from 'rxjs';
 import { StoreState, Vault } from './../../../../shared/interfaces';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-withdraw-token-card[vaultObs]',
@@ -43,5 +44,19 @@ export class WithdrawTokenCardComponent {
         return (userStaked || 0) + (userReward || 0);
       })
     );
+  }
+
+  constructor(private snackbar: MatSnackBar) {}
+
+  withdrawTokenClicked(): Subscription {
+    return this.totalAmount$.pipe(take(1)).subscribe((amount) => {
+      if (amount === 0) {
+        this.snackbar.open('Insufficient balance', '', {
+          duration: 3000
+        });
+        return;
+      }
+      return this.withdrawToken.emit();
+    });
   }
 }
