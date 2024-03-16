@@ -1,10 +1,9 @@
+import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
-import { BigNumber } from 'bignumber.js';
 import { expect } from 'chai';
 import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 import { CommunityVault } from '../typechain-types';
-import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 
 describe('CommunityVault', function () {
   async function deployContractFixture() {
