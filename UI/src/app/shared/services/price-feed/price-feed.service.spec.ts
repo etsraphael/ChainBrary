@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { PriceFeedService } from './price-feed.service';
 
 describe('PriceFeedService', () => {
