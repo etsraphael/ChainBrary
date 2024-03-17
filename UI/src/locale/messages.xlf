@@ -2,6 +2,17 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="2699053709476277130" datatype="html">
+        <source> You must accept the terms and conditions </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">41,43</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">154,156</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="landingPage.openSource" datatype="html">
         <source>Open Source</source>
         <context-group purpose="location">
@@ -71,6 +82,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1302931627910546086" datatype="html">
+        <source>Community Vaults</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6683893851495057135" datatype="html">
@@ -285,7 +303,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3644217488386459799" datatype="html">
@@ -303,11 +321,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="googleDriveText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;  
-2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;  
-3. Upload your file 
-4. Right click on the file &gt; &quot;Get shareable link&quot;  
-5. Copy the link and paste it here 
+        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;
+2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;
+3. Upload your file
+4. Right click on the file &gt; &quot;Get shareable link&quot;
+5. Copy the link and paste it here
 6. Make sure the image will be accessible at anytime</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
@@ -322,10 +340,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="postImgText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt; 
-2. Click on &quot;Choose images&quot;  
-3. Upload your file 
-4. Copy the &quot;Direct link&quot; and paste it here 
+        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt;
+2. Click on &quot;Choose images&quot;
+3. Upload your file
+4. Copy the &quot;Direct link&quot; and paste it here
 5. Make sure the image will be accessible at anytime</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
@@ -393,11 +411,18 @@
           <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="recentTransactions" datatype="html">
+      <trans-unit id="recentTransactions.Title" datatype="html">
         <source>Recent Transactions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
           <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentTransactions.Desc" datatype="html">
+        <source>Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4343607357044932591" datatype="html">
@@ -566,13 +591,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
           <context context-type="linenumber">149</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="2699053709476277130" datatype="html">
-        <source> You must accept the terms and conditions </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
-          <context context-type="linenumber">154,156</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidCreationHeaderTitle" datatype="html">
@@ -1333,7 +1351,7 @@
         <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> is requesting a sum equivalent to <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> To ensure accuracy, the transaction will be precisely calculated to match this amount in <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> prior to processing the payment. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">97,102</context>
+          <context context-type="linenumber">94,99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="paymentRequestTitle" datatype="html">
@@ -1348,6 +1366,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4030991508483039728" datatype="html">
+        <source>Connect wallet to see Vault balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/auth-banner/auth-banner.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7507948636555938109" datatype="html">
+        <source>Log out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/auth-banner/auth-banner.component.html</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="109261978612666226" datatype="html">
@@ -1437,13 +1469,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
           <context context-type="linenumber">4,6</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="7507948636555938109" datatype="html">
-        <source>Log out</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar-header/use-cases-sidebar-header.component.html</context>
-          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5874499849802990855" datatype="html">
@@ -2170,7 +2195,7 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
         <source>Transaction is processing</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
@@ -2181,18 +2206,18 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
         <source>Network is updated</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.AnUnexpectedErrorOccurred" datatype="html">
         <source>An unexpected error occurred</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">136</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.auctionNotOngoing" datatype="html">
@@ -2368,14 +2393,22 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
         <source>Transaction sent successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.WalletIsNotConnected" datatype="html">
         <source>Wallet is not connected</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
     </body>
