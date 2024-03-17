@@ -22,9 +22,9 @@ import {
 export class ActivityContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   headerPayload: IHeaderBodyPage = {
-    title: $localize`:@@recentTransactions:Recent Transactions`,
+    title: $localize`:@@recentTransactions.Title:Recent Transactions`,
     goBackLink: '/use-cases/services',
-    description: `:@@QuiclyViewYourRecentDesc: Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.`
+    description: $localize`:@@recentTransactions.Desc:Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.`
   };
 
   constructor(
