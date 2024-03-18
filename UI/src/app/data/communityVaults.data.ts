@@ -9,7 +9,8 @@ export const communityVaults: VaultSupported[] = [
     )?.address as string,
     name: 'Sepolia network',
     chainId: NetworkChainId.SEPOLIA,
-    rpcUrl: environment.rpcKeys.sepolia
+    rpcUrl: environment.rpcKeys.sepolia,
+    icon: 'eth-icon.svg'
   },
   {
     contractAddress: environment.contracts.communityVault.contracts.find(
@@ -17,7 +18,8 @@ export const communityVaults: VaultSupported[] = [
     )?.address as string,
     name: 'Polygon network',
     chainId: NetworkChainId.POLYGON,
-    rpcUrl: environment.rpcKeys.polygon
+    rpcUrl: environment.rpcKeys.polygon,
+    icon: 'matic-icon.svg'
   }
   // {
   //   contractAddress: environment.contracts.communityVault.contracts.find(
@@ -25,6 +27,7 @@ export const communityVaults: VaultSupported[] = [
   //   )?.address as string,
   //   name: 'LocalHost network',
   //   chainId: NetworkChainId.LOCALHOST,
-  //   rpcUrl: 'http://127.0.0.1:8545'
+  //   rpcUrl: 'http://127.0.0.1:8545',
+  //   icon: 'eth-icon.svg'
   // }
 ];

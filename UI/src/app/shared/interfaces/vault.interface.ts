@@ -12,12 +12,14 @@ export interface Vault {
 }
 
 export interface NetworkVault {
+  icon: string;
   contractAddress: string;
   networkDetail: INetworkDetail;
 }
 
 export interface VaultSupported {
   contractAddress: string;
+  icon: string;
   name: string;
   chainId: NetworkChainId;
   rpcUrl: string;

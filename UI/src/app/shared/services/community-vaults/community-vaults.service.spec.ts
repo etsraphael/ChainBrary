@@ -9,14 +9,12 @@ describe('CommunityVaultsService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [
-        SharedTestModule,
-      ],
+      imports: [SharedTestModule],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
       ]
     });
     service = TestBed.inject(CommunityVaultsService);

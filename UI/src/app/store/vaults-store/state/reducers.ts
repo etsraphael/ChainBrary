@@ -4,6 +4,7 @@ import { StoreState, Vault } from './../../../shared/interfaces';
 import * as VaultsActions from './actions';
 import { initialState } from './init';
 import { IVaultsState } from './interfaces';
+import { communityVaults } from './../../../data/communityVaults.data';
 
 export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
   initialState,
@@ -18,11 +19,17 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
         (vault: StoreState<Vault | null>) => vault.data?.network.networkDetail.chainId === action.networkDetail.chainId
       );
 
+      const icon: string = communityVaults.find((vault) => vault.contractAddress === action.contractAddress)
+        ?.icon as string;
+
+      console.log('icon', icon);
+
       // Add the new vault to the list only if it doesn't already exist
       if (!exists) {
         newList.push({
           data: {
             network: {
+              icon: icon,
               contractAddress: action.contractAddress,
               networkDetail: action.networkDetail
             },
@@ -41,11 +48,14 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
     }
   ),
   on(VaultsActions.loadVaultByNetworkSuccess, (state, action: { vault: Vault }): IVaultsState => {
-    const updatedList = state.vaultList.map((vault: StoreState<Vault | null>) => {
+    const updatedList: StoreState<Vault | null>[] = state.vaultList.map((vault: StoreState<Vault | null>) => {
       if (vault.data?.network.networkDetail.chainId === action.vault.network.networkDetail.chainId) {
         return {
           ...vault,
-          data: action.vault,
+          data: {
+            ...vault.data,
+            data: action.vault.data
+          },
           loading: false
         };
       } else {

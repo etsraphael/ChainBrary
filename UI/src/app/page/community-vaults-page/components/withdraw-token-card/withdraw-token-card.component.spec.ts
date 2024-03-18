@@ -7,7 +7,6 @@ import { SharedTestModule } from './../../../../shared/components/shared-compone
 import { StoreState, Vault } from './../../../../shared/interfaces';
 import { WithdrawTokenCardComponent } from './withdraw-token-card.component';
 
-
 describe('WithdrawTokenCardComponent', () => {
   let component: WithdrawTokenCardComponent;
   let fixture: ComponentFixture<WithdrawTokenCardComponent>;
@@ -50,13 +49,13 @@ describe('WithdrawTokenCardComponent', () => {
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} },
         { provide: MatSnackBarRef, useValue: {} },
-        { provide: MAT_SNACK_BAR_DATA, useValue: {} },
+        { provide: MAT_SNACK_BAR_DATA, useValue: {} }
       ]
     });
     fixture = TestBed.createComponent(WithdrawTokenCardComponent);
     component = fixture.componentInstance;
-    component.vaultObs = of(vaultObs)
-    component.errorMessage = null
+    component.vaultObs = of(vaultObs);
+    component.errorMessage = null;
     fixture.detectChanges();
   });
 
