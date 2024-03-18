@@ -1707,7 +1707,7 @@ En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Te
 <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
 <context context-type="linenumber">3</context>
 </context-group>
-<target>Connecter le Portefeuille</target>
+<target>Connecter le portefeuille</target>
 </trans-unit>
 <trans-unit id="commonButtonTextConfirm" datatype="html">
 <source>Confirm</source>
@@ -2819,6 +2819,232 @@ Chainbrary s'engage à améliorer continuellement ses services. Les utilisateurs
 <context context-type="linenumber">88,321</context>
 </context-group>
 </trans-unit>
-</body>
-</file>
+      <trans-unit id="3803288465179862078">
+        <source>Enter Amount</source>
+        <target>Entrer le montant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1810538832819454412">
+        <source> Value has to be greater than 0 </source>
+        <target>La valeur doit être supérieure à 0</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3667949571823271511">
+        <source>Max</source>
+        <target>Max</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7656866871196066634">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>Accept<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;terms-link ps-2&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <target>
+        <x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>Acceptez<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;terms-link ps-2&quot;&gt;"/> les terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>
+        </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4019999394145787248">
+        <source>Add To Vault</source>
+        <target>Ajouter Au Coffre-fort</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessage.Insufficient-balance">
+        <source>Insufficient balance</source>
+        <target>Solde insuffisant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3864560168095156058">
+        <source><x id="INTERPOLATION" equiv-text="{{ vault.data?.network?.networkDetail?.name }}"/> network</source>
+        <target> Réseau de <x id="INTERPOLATION" equiv-text="{{ vault.data?.network?.networkDetail?.name }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="459395347792320431">
+        <source>Total value locked</source>
+        <target>Valeur totale verrouillée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7956125705938505892">
+        <source>Total amount stacked</source>
+        <target>Montant total empilé</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="612307263367985041">
+        <source>Network reward</source>
+        <target>Récompense du réseau</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2689785512504893020">
+        <source>My amount staked</source>
+        <target>Ma quantité mise en jeu</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6296019452799956336">
+        <source>Network share</source>
+        <target>Part de réseau</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7924912164252500969">
+        <source>Withdraw</source>
+        <target>Retirer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3364983331710639883">
+        <source>Add Tokens</source>
+        <target>Ajouter des jetons</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8747971835530189027">
+        <source>Withdrawal Details</source>
+        <target>Détails de Retrait</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5552614718654397904">
+        <source>Wrong network found in the wallet. Please switch to the right network.</source>
+        <target>Réseau incorrect trouvé dans le portefeuille. Veuillez passer au bon réseau.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/add-token-page-container/add-token-page-container.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/withdraw-token-page-container/withdraw-token-page-container.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommunityVault.Title">
+        <source>Community Vault</source>
+        <target>Coffre de la Communauté</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/add-token-page-container/add-token-page-container.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/community-vaults-list-page-container/community-vaults-list-page-container.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommunityVault.Desc">
+        <source>Community Vault mechanism, a cornerstone feature of the Chainbrary ecosystem. It intricately details how the Community Vault functions as a dynamic system for distributing rewards, ensuring that each member's contribution to the network is recognized and fairly compensated.</source>
+        <target>Mécanisme du Coffre Communautaire, une caractéristique fondamentale de l'écosystème Chainbrary. Il détaille de manière complexe comment le Coffre Communautaire fonctionne comme un système dynamique pour distribuer les récompenses, garantissant que chaque contribution des membres au réseau est reconnue et compensée équitablement.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/community-vaults-list-page-container/community-vaults-list-page-container.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommunityVaultWithdraw.Title">
+        <source>Withdraw</source>
+        <target>Retrait</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/withdraw-token-page-container/withdraw-token-page-container.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1302931627910546086">
+        <source>Community Vaults</source>
+        <target>Coffres de la Communauté</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentTransactions.Title">
+        <source>Recent Transactions</source>
+        <target>Transactions Récentes</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentTransactions.Desc">
+        <source>Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.</source>
+        <target>Visualisez rapidement vos transactions récentes sur votre portefeuille. Ceci ne fonctionne actuellement que pour les jetons natifs du réseau.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4030991508483039728">
+        <source>Connect wallet to see Vault balance</source>
+        <target>Connectez le portefeuille pour voir le solde du coffre-fort</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/auth-banner/auth-banner.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonButtonTextWithdraw">
+        <source>Withdraw</source>
+        <target>Retrait</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+    </body>
+  </file>
 </xliff>
