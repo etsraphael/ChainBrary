@@ -9,11 +9,11 @@
               alt="coin-icon"
               class="img-fluid"
             />
-            <h6 class="ms-2">{{ vault.data?.network?.networkDetail?.name }} network</h6>
+            <h6 i18n class="ms-2">{{ vault.data?.network?.networkDetail?.name }} network</h6>
           </div>
         </div>
         <div class="col-12 text-end">
-          <p class="mb-0">Total value locked</p>
+          <p i18n class="mb-0">Total value locked</p>
           <h4 class="text-secondary">
             {{ vault.data?.data?.TVL }} {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
           </h4>
@@ -23,7 +23,7 @@
             <div class="row">
               <div class="col-6 d-flex flex-column justify-content-between">
                 <div>
-                  <p>Total amount stacked</p>
+                  <p i18n>Total amount stacked</p>
                 </div>
                 <div>
                   <h6 class="text-secondary mb-0">
@@ -34,7 +34,7 @@
               </div>
               <div class="col-6 d-flex flex-column justify-content-between">
                 <div>
-                  <p>Network reward</p>
+                  <p i18n>Network reward</p>
                 </div>
                 <div>
                   <h6 class="text-success mb-0">
@@ -48,7 +48,7 @@
             <div class="row">
               <div class="col-6 d-flex flex-column justify-content-between">
                 <div>
-                  <p>My amount staked</p>
+                  <p i18n>My amount staked</p>
                 </div>
                 <div>
                   <h6 class="text-secondary">
@@ -59,7 +59,7 @@
               </div>
               <div class="col-6 d-flex flex-column justify-content-between">
                 <div>
-                  <p>Network share</p>
+                  <p i18n>Network share</p>
                 </div>
                 <div>
                   <h6 class="text-secondary">
@@ -74,12 +74,16 @@
           <div class="row">
             <div class="col-6">
               <a [routerLink]="'./../withdraw-vault/' + vault.data?.network?.networkDetail?.chainId">
-                <button class="btn btn-outline-primary w-100">Withdraw</button>
+                <button class="btn btn-outline-primary w-100">
+                  <span i18n>Withdraw</span>
+                </button>
               </a>
             </div>
             <div class="col-6">
               <a [routerLink]="'./../add-token/' + vault.data?.network?.networkDetail?.chainId">
-                <button class="btn btn-primary w-100">Add Tokens</button>
+                <button class="btn btn-primary w-100">
+                  <span i18n>Add Tokens</span>
+                </button>
               </a>
             </div>
           </div>

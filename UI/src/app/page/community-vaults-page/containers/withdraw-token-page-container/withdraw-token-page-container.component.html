@@ -19,7 +19,7 @@
           </ng-container>
           <ng-container *ngIf="(isWrongNetwork | async) === true">
             <div class="alert alert-danger text-center border-0" role="alert">
-              Wrong network found in the wallet. Please switch to the right network.
+              <span i18n>Wrong network found in the wallet. Please switch to the right network.</span>
             </div>
           </ng-container>
         </div>

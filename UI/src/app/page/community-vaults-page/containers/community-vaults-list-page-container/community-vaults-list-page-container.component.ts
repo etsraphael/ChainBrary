@@ -18,9 +18,9 @@ import { selectIsVaultsLoaded, selectVaults } from './../../../../store/vaults-s
 export class CommunityVaultsListPageContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   headerPayload: IHeaderBodyPage = {
-    title: `Community Vault`,
+    title: $localize`:@@CommunityVault.Title:Community Vault`,
     goBackLink: null,
-    description: `Community Vault mechanism, a cornerstone feature of the Chainbrary ecosystem. It intricately details how the Community Vault functions as a dynamic system for distributing rewards, ensuring that each member's contribution to the network is recognized and fairly compensated.`
+    description: $localize`:@@CommunityVault.Desc:Community Vault mechanism, a cornerstone feature of the Chainbrary ecosystem. It intricately details how the Community Vault functions as a dynamic system for distributing rewards, ensuring that each member's contribution to the network is recognized and fairly compensated.`
   };
 
   constructor(

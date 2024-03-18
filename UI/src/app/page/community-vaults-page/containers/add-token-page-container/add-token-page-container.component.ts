@@ -17,7 +17,7 @@ import { selectStakingErrorMessage } from './../../../../store/vaults-store/stat
 export class AddTokenPageContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   headerPayload: IHeaderBodyPage = {
-    title: `Community Vault`,
+    title: $localize`:@@CommunityVault.Title:Community Vault`,
     goBackLink: '/community-vaults/list',
     description: null
   };

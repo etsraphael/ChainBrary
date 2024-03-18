@@ -15,6 +15,7 @@ describe('WithdrawTokenCardComponent', () => {
     data: {
       network: {
         contractAddress: '0x',
+        icon: 'eth-icon.svg',
         networkDetail: {
           chainId: NetworkChainId.ETHEREUM,
           networkVersion: NetworkVersion.ETHEREUM,

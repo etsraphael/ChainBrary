@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { INetworkDetail } from '@chainbrary/web3-login';
-import { FullAndShortNumber } from './../../../../shared/interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { INetworkDetail } from '@chainbrary/web3-login';
+import { CommonButtonText } from './../../../../shared/enum';
+import { FullAndShortNumber } from './../../../../shared/interfaces';
 
 @Component({
   selector: 'app-add-token-card[balance][network][errorMessage]',
@@ -19,6 +20,7 @@ export class AddTokenCardComponent {
     amount: new FormControl<number | null>(0, [Validators.required, Validators.min(0.000001)]),
     termsAndCond: new FormControl<boolean | null>(false, [Validators.requiredTrue])
   });
+  commonButtonText = CommonButtonText;
 
   constructor(private snackbar: MatSnackBar) {}
 
@@ -33,7 +35,7 @@ export class AddTokenCardComponent {
     if (this.mainForm.invalid) return;
 
     if (this.balance && (this.mainForm.get('amount')?.value as number) > this.balance?.full) {
-      this.snackbar.open('Insufficient balance', '', {
+      this.snackbar.open($localize`:@@ErrorMessage.Insufficient-balance:Insufficient balance`, '', {
         duration: 3000
       });
       return;

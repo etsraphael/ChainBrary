@@ -20,7 +20,7 @@ import { selectVaultByChainId, selectWithdrawingErrorMessage } from './../../../
 export class WithdrawTokenPageContainerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   headerPayload: IHeaderBodyPage = {
-    title: `Withdraw`,
+    title: $localize`:@@CommunityVaultWithdraw.Title:Withdraw`,
     goBackLink: '/community-vaults/list',
     description: null
   };

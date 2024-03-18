@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Observable, Subscription, map, take } from 'rxjs';
+import { CommonButtonText } from './../../../../shared/enum';
 import { StoreState, Vault } from './../../../../shared/interfaces';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-withdraw-token-card[vaultObs][errorMessage]',
@@ -13,6 +14,7 @@ export class WithdrawTokenCardComponent {
   @Input() vaultObs: Observable<StoreState<Vault | null> | null>;
   @Input() errorMessage: string | null;
   @Output() withdrawToken = new EventEmitter<void>();
+  commonButtonText = CommonButtonText;
 
   get vaultData$(): Observable<Vault | null> {
     return this.vaultObs.pipe(map((vault: StoreState<Vault | null> | null) => vault?.data || null));
@@ -52,7 +54,7 @@ export class WithdrawTokenCardComponent {
   withdrawTokenClicked(): Subscription {
     return this.totalAmount$.pipe(take(1)).subscribe((amount) => {
       if (amount === 0) {
-        this.snackbar.open('Insufficient balance', '', {
+        this.snackbar.open($localize`:@@ErrorMessage.Insufficient-balance:Insufficient balance`, '', {
           duration: 3000
         });
         return;

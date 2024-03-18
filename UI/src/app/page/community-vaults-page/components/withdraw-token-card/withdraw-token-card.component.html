@@ -3,19 +3,19 @@
     <div class="card-header bg-body border-0">
       <div class="row">
         <div class="col-12 text-end">
-          <p class="mb-0">Total value locked</p>
+          <p i18n class="mb-0">Total value locked</p>
           <h4 class="text-secondary">{{ (vaultData$ | async)?.data?.TVL }}</h4>
         </div>
         <div class="container">
           <div class="col-12 text-start">
-            <h5 class="text-secondary">Withdrawal Details</h5>
+            <h5 i18n class="text-secondary">Withdrawal Details</h5>
           </div>
           <div class="card-body bg-primary-subtle mb-3">
             <div class="container-fluid">
               <div class="row">
                 <div class="col-6 d-flex flex-column justify-content-between">
                   <div>
-                    <p>Total amount stacked</p>
+                    <p i18n>Total amount stacked</p>
                   </div>
                   <div>
                     <h6 class="text-secondary mb-0">
@@ -26,7 +26,7 @@
                 </div>
                 <div class="col-6 d-flex flex-column justify-content-between">
                   <div>
-                    <p>Network reward</p>
+                    <p i18n>Network reward</p>
                   </div>
                   <div>
                     <h6 class="text-success mb-0">
@@ -40,7 +40,7 @@
               <div class="row">
                 <div class="col-6 d-flex flex-column justify-content-between">
                   <div>
-                    <p>My amount staked</p>
+                    <p i18n>My amount staked</p>
                   </div>
                   <div>
                     <h6 class="text-secondary">
@@ -51,7 +51,7 @@
                 </div>
                 <div class="col-6 d-flex flex-column justify-content-between">
                   <div>
-                    <p>Network share</p>
+                    <p i18n>Network share</p>
                   </div>
                   <div>
                     <h6 class="text-secondary">
@@ -66,7 +66,7 @@
         </div>
         <div class="container">
           <div class="col-12 text-start">
-            <h5 class="text-secondary">Amount</h5>
+            <h5 i18n class="text-secondary">Amount</h5>
           </div>
           <div class="card-body bg-primary-subtle mb-3">
             <div class="container-fluid">
@@ -85,10 +85,14 @@
         <div class="card-footer border-0 bg-body">
           <div class="row">
             <div class="col-6">
-              <button routerLink="./../../list" class="btn btn-outline-primary w-100">Back</button>
+              <button routerLink="./../../list" class="btn btn-outline-primary w-100">
+                {{ commonButtonText.Back }}
+              </button>
             </div>
             <div class="col-6">
-              <button class="btn btn-primary w-100" (click)="withdrawTokenClicked()">Withdraw</button>
+              <button class="btn btn-primary w-100" (click)="withdrawTokenClicked()">
+                {{ commonButtonText.Withdraw }}
+              </button>
             </div>
           </div>
           <div class="d-flex justify-content-end mt-2" *ngIf="errorMessage">
