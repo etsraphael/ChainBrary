@@ -6,12 +6,13 @@ import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers'
 
 describe('TransactionBridge', function () {
   async function deployContractFixture() {
+    const vaultAddress = '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0';
     const TransactionBridge = await ethers.getContractFactory('TransactionBridge');
     const Token = await ethers.getContractFactory('ERC20FixedSupply');
-    const transactionBridge = await TransactionBridge.deploy();
+    const transactionBridge = await TransactionBridge.deploy(vaultAddress);
     const token = await Token.deploy();
     const [owner, addr1, addr2] = await ethers.getSigners();
-    return { transactionBridge, owner, addr1, addr2, token };
+    return { transactionBridge, owner, addr1, addr2, token, vaultAddress };
   }
 
   const calculateCommunityFee = (bidAmount: bigint) => {
@@ -34,10 +35,10 @@ describe('TransactionBridge', function () {
 
   describe('transferFund', function () {
     it('Should transfer the correct amounts and emit the right events', async function () {
-      const { transactionBridge, owner, addr1, addr2 } = await loadFixture(deployContractFixture);
+      const { transactionBridge, owner, addr1, addr2, vaultAddress } = await loadFixture(deployContractFixture);
 
       // Getting initial balance of the owner to check the fee later
-      const initialOwnerBalance: bigint = await ethers.provider.getBalance(owner.address);
+      const initialVaultBalance: bigint = await ethers.provider.getBalance(vaultAddress);
       const initialAddr1Balance: bigint = await ethers.provider.getBalance(addr1.address);
       const initialAddr2Balance: bigint = await ethers.provider.getBalance(addr2.address);
 
@@ -57,17 +58,17 @@ describe('TransactionBridge', function () {
       const communityFeeBigInt: bigint = BigInt(communityFee.toString());
 
       // Getting final balances
-      const finalOwnerBalance: bigint = await ethers.provider.getBalance(owner.address);
+      const finalVaultBalance: bigint = await ethers.provider.getBalance(vaultAddress);
       const finalAddr1Balance: bigint = await ethers.provider.getBalance(addr1.address);
       const finalAddr2Balance: bigint = await ethers.provider.getBalance(addr2.address);
 
       // Expected balances
-      const expectedOwnerBalance = initialOwnerBalance + communityFeeBigInt;
+      const expectedOwnerBalance = initialVaultBalance + communityFeeBigInt;
       const expectedAddr1Balance = initialAddr1Balance - (amountToSend + txCostBigInt);
       const expectedAddr2Balance = initialAddr2Balance + amountToSend - communityFeeBigInt;
 
       // Check balances
-      expect(expectedOwnerBalance).to.equal(finalOwnerBalance);
+      expect(expectedOwnerBalance).to.equal(finalVaultBalance);
       expect(expectedAddr1Balance).to.equal(finalAddr1Balance);
       expect(expectedAddr2Balance).to.equal(finalAddr2Balance);
 
