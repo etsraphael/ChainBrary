@@ -121,6 +121,10 @@ export class TokensService {
     const amount = new BigNumber(payload.amount);
     const amountFormat = amount.decimalPlaces(0, BigNumber.ROUND_HALF_UP).toString(10);
 
+    console.log('amountFormat', amountFormat);
+    console.log('payload=', payload); // TODO: try on REMIX
+    console.log('transactionContract', transactionContract.getAddress()); // TODO: try on REMIX
+
     try {
       const gas: number = await contract.methods
         .transferFund(payload.to)
