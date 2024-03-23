@@ -20,7 +20,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.POLYGON,
-          address: '0xc4E84da25fc7450c53919031B5a98e790F38F4d0'
+          address: '0x4dB7CA9e714B9B9fd30CFFc876E15ac1436C6d7A'
         },
         {
           chainId: NetworkChainId.BNB,
