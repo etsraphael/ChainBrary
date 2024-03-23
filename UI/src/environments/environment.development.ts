@@ -16,7 +16,7 @@ export const environment = {
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
-          address: '0xd51a091B5A4F85A6001519043dEDDD4890905ff4'
+          address: '0x243f69f4045c0E316f7c5A1D7dEE9f4b5A40Af62'
         },
         {
           chainId: NetworkChainId.POLYGON,
@@ -96,7 +96,7 @@ export const environment = {
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
-          address: '0x5FA183D3cf73110AFf38d30fe1cA0C8ff9ecc0b6'
+          address: '0x9807D0e3EC6FC5Ba7889a7D10207D53BF39B4D0A'
         },
         {
           chainId: NetworkChainId.POLYGON,

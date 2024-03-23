@@ -129,19 +129,6 @@ contract CommunityVault is Ownable, ReentrancyGuard {
         userReward_ = pendingReward_;
     }
 
-    function processReceivedEther(uint256 amount) external payable {
-        // The same logic as in the receive() function
-        if (totalStaked > 0) {
-            (bool mulSuccess, uint256 mulResult) = Math.tryMul(amount, PRECISION);
-            require(mulSuccess, "Multiplication failed");
-
-            (bool divSuccess, uint256 divResult) = Math.tryDiv(mulResult, totalStaked);
-            require(divSuccess, "Division failed");
-
-            accRewardPerShare += divResult;
-        }
-    }
-
     // Fallback function to accept incoming ETH as rewards
     receive() external payable {
         if (totalStaked > 0) {

@@ -5,14 +5,13 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/utils/math/Math.sol";
-import "./CommunityVault.sol";
 
 contract TransactionBridge is Ownable, ReentrancyGuard {
     uint256 public constant FEE_PERCENT = 1; // 0.1% is represented as 1 / 1000
-    CommunityVault public communityVault;
+    address public communityVault;
 
     constructor(address _communityVaultAddress) Ownable(_msgSender()) {
-        communityVault = CommunityVault(payable(_communityVaultAddress));
+        communityVault = _communityVaultAddress;
     }
 
     event Transfer(address indexed from, address indexed to, uint256 value, uint256 fee);
@@ -34,8 +33,9 @@ contract TransactionBridge is Ownable, ReentrancyGuard {
         (bool totalAmountSuccess, uint256 totalAmount) = Math.trySub(msg.value, fee);
         require(totalAmountSuccess, "TransactionBridge: Subtraction underflow");
 
-        // Accumulate fee
-        communityVault.processReceivedEther(fee);
+        // Send fee to community
+        (bool sentSuccess, ) = communityVault.call{value: fee}("");
+        require(sentSuccess, "Failed to send Ether");
 
         // Transfer total amount to recipient
         recipient.transfer(totalAmount);
@@ -70,6 +70,6 @@ contract TransactionBridge is Ownable, ReentrancyGuard {
 
     function updateCommunityFeeAddress(address payable _newAddress) external onlyOwner {
         require(_newAddress != address(0), "TransactionBridge: new address is the zero address");
-        communityVault = CommunityVault(_newAddress);
+        communityVault = _newAddress;
     }
 }
