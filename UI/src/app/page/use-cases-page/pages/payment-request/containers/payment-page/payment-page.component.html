@@ -66,11 +66,8 @@
     <!-- Connected view header -->
     <div class="d-flex justify-content-center">
       <div class="col-10 col-md-8 col-lg-6 col-xl-5 col-xxl-4">
-        <app-use-cases-sidebar-header
-          [networkFrozen]="true"
-          *ngIf="AuthStatusCodeTypes.NotConnected !== (authStatus$ | async)"
-        >
-        </app-use-cases-sidebar-header>
+        <app-auth-banner [networkFrozen]="true" *ngIf="AuthStatusCodeTypes.NotConnected !== (authStatus$ | async)">
+        </app-auth-banner>
       </div>
     </div>
     <div class="d-flex justify-content-center">

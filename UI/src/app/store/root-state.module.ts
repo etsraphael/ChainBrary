@@ -10,6 +10,7 @@ import { GlobalStoreModule } from './global-store';
 import { NotificationStoreModule } from './notification-store';
 import { PaymentRequestStoreModule } from './payment-request-store';
 import { TransactionStoreModule } from './transaction-store';
+import { VaultsStoreModule } from './vaults-store';
 
 @NgModule({
   declarations: [],
@@ -24,6 +25,7 @@ import { TransactionStoreModule } from './transaction-store';
     TransactionStoreModule,
     BidStoreModule,
     DocumentLockerStoreModule,
+    VaultsStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() })
   ]
 })

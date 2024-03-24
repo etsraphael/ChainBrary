@@ -15,7 +15,7 @@ import {
   withLatestFrom
 } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
-import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
@@ -52,7 +52,7 @@ export class BidResultComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   private timerSubscription: Subscription | null = null;
 
-  get header$(): Observable<IUseCasesHeader> {
+  get header$(): Observable<IHeaderBodyPage> {
     return this.bidObs.pipe(
       map((bid: IBid) => ({
         title: bid.bidName,

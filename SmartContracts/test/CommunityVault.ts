@@ -1,10 +1,9 @@
+import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
-import { BigNumber } from 'bignumber.js';
 import { expect } from 'chai';
 import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers';
 import { ethers } from 'hardhat';
 import { CommunityVault } from '../typechain-types';
-import { HardhatEthersSigner } from '@nomicfoundation/hardhat-ethers/signers';
 
 describe('CommunityVault', function () {
   async function deployContractFixture() {
@@ -81,6 +80,10 @@ describe('CommunityVault', function () {
 
       // Check emitted events
       await expect(tx).to.emit(communityVault, 'DepositEvent').withArgs(addr1.address, amountToSend);
+
+      // getCommunityVaultMetadata()
+      const metadata = await communityVault.connect(addr1).getCommunityVaultMetadata();
+      expect(metadata.totalStaked_).to.equal(amountToSend);
     });
 
     it('Should revert when depositing 0', async function () {

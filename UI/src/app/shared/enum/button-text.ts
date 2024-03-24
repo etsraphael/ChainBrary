@@ -5,7 +5,8 @@ export const CommonButtonText: ICommonButtonText = {
   Submit: $localize`:@@commonButtonTextSubmit:Submit`,
   Back: $localize`:@@commonButtonTextBack:Back`,
   Next: $localize`:@@commonButtonTextNext:Next`,
-  Preview: $localize`:@@commonButtonTextPreview:Preview`
+  Preview: $localize`:@@commonButtonTextPreview:Preview`,
+  Withdraw: $localize`:@@commonButtonTextWithdraw:Withdraw`
 };
 
 export interface ICommonButtonText {
@@ -16,4 +17,5 @@ export interface ICommonButtonText {
   Back: string;
   Next: string;
   Preview: string;
+  Withdraw: string;
 }

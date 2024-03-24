@@ -18,7 +18,13 @@ export class TransactionBridgeContract extends BaseContract {
   getAbi(): (AbiItem | object)[] {
     return [
       {
-        inputs: [],
+        inputs: [
+          {
+            internalType: 'address payable',
+            name: '_communityFeeAddress',
+            type: 'address'
+          }
+        ],
         stateMutability: 'nonpayable',
         type: 'constructor'
       },
@@ -179,6 +185,19 @@ export class TransactionBridgeContract extends BaseContract {
       },
       {
         inputs: [],
+        name: 'communityFeeAddress',
+        outputs: [
+          {
+            internalType: 'address payable',
+            name: '',
+            type: 'address'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
         name: 'owner',
         outputs: [
           {
@@ -242,6 +261,19 @@ export class TransactionBridgeContract extends BaseContract {
           }
         ],
         name: 'transferTokenFund',
+        outputs: [],
+        stateMutability: 'nonpayable',
+        type: 'function'
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address payable',
+            name: '_newAddress',
+            type: 'address'
+          }
+        ],
+        name: 'updateCommunityFeeAddress',
         outputs: [],
         stateMutability: 'nonpayable',
         type: 'function'

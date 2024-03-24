@@ -1,0 +1,67 @@
+<div class="card border-0 shadow-sm">
+  <div class="card-body">
+    <div class="d-flex justify-content-between my-2 px-md-2">
+      <div>
+        <h5 i18n>Enter Amount</h5>
+      </div>
+      <div>
+        <h4 *ngIf="balance !== null">
+          <span class="badge text-bg-primary">
+            <i class="bi bi-wallet2 me-2"></i>
+            {{ balance.short }} {{ network.nativeCurrency.symbol }}
+          </span>
+        </h4>
+      </div>
+    </div>
+    <form [formGroup]="mainForm">
+      <div class="container py-2">
+        <div class="row">
+          <div class="col-8 col-md-10">
+            <mat-form-field class="w-100 text-dark" appearance="outline">
+              <mat-label i18n>Amount</mat-label>
+              <input formControlName="amount" type="number" class="ps-1" matInput />
+              <div class="d-flex" matSuffix>
+                <h6 class="mb-0 px-3">{{ network.nativeCurrency.symbol }}</h6>
+              </div>
+              <mat-error i18n *ngIf="mainForm.get('amount')?.hasError('min')">
+                Value has to be greater than 0
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-4 col-md-2 my-auto pb-4">
+            <button class="w-100 btn btn-outline-primary" type="button" (click)="setUpMaxAmount()">
+              <span i18n>Max</span>
+            </button>
+          </div>
+        </div>
+        <mat-checkbox class="py-2" formControlName="termsAndCond" color="primary">
+          <span i18n class="checkbox-label">
+            <span>Accept</span>
+            <a class="terms-link ps-2" (click)="openTermAndCond($event)">terms and conditions</a>
+          </span>
+          <mat-error
+            i18n
+            *ngIf="mainForm.get('termsAndCond')?.hasError('required') && mainForm.get('termsAndCond')?.touched"
+          >
+            You must accept the terms and conditions
+          </mat-error>
+        </mat-checkbox>
+        <div class="row">
+          <div class="col-md-6 my-2">
+            <button routerLink="./../../list" class="btn btn-outline-secondary w-100" type="button">
+              {{ commonButtonText.Back }}
+            </button>
+          </div>
+          <div class="col-md-6 my-2">
+            <button class="btn btn-primary w-100" type="submit" (click)="submitForm()">
+              <span i18n>Add To Vault</span>
+            </button>
+          </div>
+        </div>
+        <div class="col-12" *ngIf="errorMessage">
+          <div class="alert alert-danger text-center border-0" role="alert">{{ errorMessage }}</div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

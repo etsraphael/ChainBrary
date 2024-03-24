@@ -3,28 +3,27 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StoreModule } from '@ngrx/store';
 import { SharedTestModule } from '../shared-components.module';
 import { initialState as authInitialState } from './../../../store/auth-store/state/init';
-import { UseCasesSidebarHeaderComponent } from './use-cases-sidebar-header.component';
+import { AuthBannerComponent } from './auth-banner.component';
 
-describe('UseCasesSidebarHeaderComponent', () => {
-  let component: UseCasesSidebarHeaderComponent;
-  let fixture: ComponentFixture<UseCasesSidebarHeaderComponent>;
+describe('AuthBannerComponent', () => {
+  let component: AuthBannerComponent;
+  let fixture: ComponentFixture<AuthBannerComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(() => {
+    TestBed.configureTestingModule({
       imports: [
         StoreModule.forRoot({
           auth: () => authInitialState
         }),
         SharedTestModule
       ],
-      declarations: [UseCasesSidebarHeaderComponent],
+      declarations: [AuthBannerComponent],
       providers: [
         { provide: MatDialogRef, useValue: {} },
         { provide: MAT_DIALOG_DATA, useValue: {} }
       ]
-    }).compileComponents();
-
-    fixture = TestBed.createComponent(UseCasesSidebarHeaderComponent);
+    });
+    fixture = TestBed.createComponent(AuthBannerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
