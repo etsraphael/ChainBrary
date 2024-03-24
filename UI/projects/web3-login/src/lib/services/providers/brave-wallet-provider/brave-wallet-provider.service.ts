@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import BigNumber from 'bignumber.js';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { EMPTY, Observable, defer, of } from 'rxjs';
+import Web3 from 'web3';
 import { INetworkDetail, WalletProvider } from '../../../interfaces';
 import { ErrorHandlerService } from '../../error-handler/error-handler.service';
 import { PrivateGlobalValuesService } from '../../global-values/private-global-values.service';
@@ -110,6 +112,37 @@ export class BraveWalletProviderService extends BaseProviderService {
       }, 1000);
       return;
     }
+  }
+
+  getCurrentBalance(): Observable<number> {
+    return defer(() => {
+      if (typeof window?.ethereum === 'undefined') return of(0);
+      return new Observable<number>((subscriber) => {
+        window.ethereum
+          .request({ method: 'eth_requestAccounts' })
+          .then((accounts: string[]) => {
+            window.ethereum
+              .request({
+                method: 'eth_getBalance',
+                params: [accounts[0], 'latest']
+              })
+              .then((balance: string) => {
+                const web3 = new Web3();
+                const formattedBalance = new BigNumber(balance).toFixed();
+                const etherBalance = web3.utils.fromWei(formattedBalance, 'ether');
+                subscriber.next(parseFloat(etherBalance));
+              })
+              .catch((error: Error) => {
+                this.errorHandlerService.showSnackBar(error.message);
+                subscriber.next(0);
+              });
+          })
+          .catch((error: Error) => {
+            this.errorHandlerService.showSnackBar(error.message);
+            subscriber.next(0);
+          });
+      });
+    });
   }
 
   private requestEthAccount(): void {

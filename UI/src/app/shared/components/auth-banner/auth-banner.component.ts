@@ -16,17 +16,13 @@ import {
 } from './../../../store/auth-store/state/selectors';
 
 @Component({
-  selector: 'app-use-cases-sidebar-header',
-  templateUrl: './use-cases-sidebar-header.component.html',
-  styleUrls: ['./use-cases-sidebar-header.component.scss']
+  selector: 'app-auth-banner',
+  templateUrl: './auth-banner.component.html',
+  styleUrls: ['./auth-banner.component.scss']
 })
-export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
+export class AuthBannerComponent implements OnInit, OnDestroy {
   @Input() networkFrozen = false;
   authStatusCodeTypes = AuthStatusCode;
-  sidebarMode$: Observable<AuthStatusCode>;
-  publicAddress$: Observable<string | null>;
-  networkName$: Observable<string | null>;
-  verifiedAccount$: Observable<IProfileAdded | null>;
   networkList: INetworkDetail[] = [];
   modalSub: Subscription;
   commonButtonText = CommonButtonText;
@@ -37,8 +33,12 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
     private web3LoginService: Web3LoginService
   ) {}
 
+  authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+  publicAddress$: Observable<string | null> = this.store.select(selectPublicAddress);
+  networkName$: Observable<string | null> = this.store.select(selectNetworkName);
+  verifiedAccount$: Observable<IProfileAdded | null> = this.store.select(selectAccount);
+
   ngOnInit(): void {
-    this.generateObs();
     this.networkSetUp();
   }
 
@@ -46,13 +46,6 @@ export class UseCasesSidebarHeaderComponent implements OnInit, OnDestroy {
     this.networkList = this.web3LoginService
       .getNetworkDetailList()
       .filter(({ chainId }: INetworkDetail) => environment.contracts.bridgeTransfer.networkSupported.includes(chainId));
-  }
-
-  generateObs(): void {
-    this.sidebarMode$ = this.store.select(selectAuthStatus);
-    this.publicAddress$ = this.store.select(selectPublicAddress);
-    this.verifiedAccount$ = this.store.select(selectAccount);
-    this.networkName$ = this.store.select(selectNetworkName);
   }
 
   ngOnDestroy(): void {

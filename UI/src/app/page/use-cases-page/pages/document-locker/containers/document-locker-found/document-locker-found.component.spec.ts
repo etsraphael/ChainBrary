@@ -3,7 +3,6 @@ import { StoreModule } from '@ngrx/store';
 import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
 import { initialState as authInitialState } from './../../../../../../store/auth-store/state/init';
 import { initialState as documentLockerInitialState } from './../../../../../../store/document-locker-store/state/init';
-import { UseCasesHeaderComponent } from './../../../../components/use-cases-header/use-cases-header.component';
 import { DocumentLockerFoundComponent } from './document-locker-found.component';
 
 describe('DocumentLockerFoundComponent', () => {
@@ -19,7 +18,7 @@ describe('DocumentLockerFoundComponent', () => {
           documentLocker: () => documentLockerInitialState
         })
       ],
-      declarations: [DocumentLockerFoundComponent, UseCasesHeaderComponent]
+      declarations: [DocumentLockerFoundComponent]
     });
     fixture = TestBed.createComponent(DocumentLockerFoundComponent);
     component = fixture.componentInstance;

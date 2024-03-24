@@ -31,6 +31,19 @@ export class AuthEffects {
     { dispatch: false }
   );
 
+  balanceChecking = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.setAuthPublicAddress, AuthActions.networkChangeSuccess, AuthActions.accountChanged),
+      filter(() => !!this.authService.getRecentWallet()),
+      switchMap(() => {
+        const recentWallet: WalletProvider = this.authService.getRecentWallet() as WalletProvider;
+        return this.web3LoginService
+          .getCurrentBalance(recentWallet)
+          .pipe(map((response: number) => AuthActions.saveBalance({ balance: response })));
+      })
+    );
+  });
+
   addressChecking$ = createEffect(
     () => {
       return this.actions$.pipe(
@@ -60,14 +73,14 @@ export class AuthEffects {
 
   errorAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.addAccountFailure, AuthActions.deleteAccountFailure),
+      ofType(AuthActions.deleteAccountFailure),
       map((action: { message: string }) => showErrorNotification({ message: action.message }))
     );
   });
 
   successAccountTransactions$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(AuthActions.addAccountSuccess, AuthActions.deleteAccountSuccess),
+      ofType(AuthActions.deleteAccountSuccess),
       filter((action: { numberConfirmation: number }) => action.numberConfirmation == 1),
       map(() =>
         showSuccessNotification({

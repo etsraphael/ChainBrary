@@ -10,11 +10,11 @@ export const environment = {
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
-          address: '0x87a3bfc5f321Dad77A0829eae8e69BF66877a9a7'
+          address: '0x243f69f4045c0E316f7c5A1D7dEE9f4b5A40Af62'
         },
         {
           chainId: NetworkChainId.POLYGON,
-          address: '0x537339ca0A52A79CD1509eE340113a10B25AB2B0'
+          address: '0x4dB7CA9e714B9B9fd30CFFc876E15ac1436C6d7A'
         },
         {
           chainId: NetworkChainId.BNB,
@@ -80,6 +80,23 @@ export const environment = {
       ],
       maxAttempt: 5,
       attemptTimeout: 2 // minutes
+    },
+    communityVault: {
+      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.LOCALHOST],
+      contracts: [
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x9807D0e3EC6FC5Ba7889a7D10207D53BF39B4D0A'
+        },
+        {
+          chainId: NetworkChainId.POLYGON,
+          address: '0x4c247344842A248cD01538881E3e7600c1f2e22f'
+        },
+        {
+          chainId: NetworkChainId.LOCALHOST,
+          address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+        }
+      ]
     }
   },
   organizationName: 'chainbrary0',
@@ -87,5 +104,9 @@ export const environment = {
   bid: {
     biddersCountdown: 15
   },
-  communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24'
+  communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
+  rpcKeys: {
+    sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
+    polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49'
+  }
 };

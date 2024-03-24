@@ -1,5 +1,5 @@
 <!-- Login Header -->
-<app-use-cases-sidebar-header *ngIf="userIsConnected"> </app-use-cases-sidebar-header>
+<app-auth-banner *ngIf="userIsConnected"> </app-auth-banner>
 
 <!-- Loading view -->
 <table class="w-100 shadow-sm bg-white" *ngIf="transactionsIsLoading && transactionsTable.length === 0">

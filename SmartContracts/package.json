@@ -11,17 +11,17 @@
     "graphgen": "npx hardhat run scripts/deploy-graph.ts"
   },
   "devDependencies": {
-    "@nomicfoundation/hardhat-ignition": "^0.13.2",
+    "@nomicfoundation/hardhat-ignition": "^0.14.0",
     "@nomicfoundation/hardhat-toolbox": "^4.0.0",
-    "hardhat": "^2.19.5",
+    "hardhat": "^2.20.1",
     "hardhat-abi-exporter": "^2.10.1",
-    "prettier": "^3.2.4",
+    "prettier": "^3.2.5",
     "prettier-plugin-solidity": "^1.3.1"
   },
   "dependencies": {
     "@chainlink/contracts": "^0.8.0",
-    "@graphprotocol/graph-cli": "^0.67.3",
-    "@openzeppelin/contracts": "^5.0.1",
+    "@graphprotocol/graph-cli": "^0.69.0",
+    "@openzeppelin/contracts": "^5.0.2",
     "bignumber.js": "^9.1.2"
   }
 }

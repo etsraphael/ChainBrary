@@ -7,7 +7,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { BidWithdrawalComponent } from '../../components/bid-withdrawal/bid-withdrawal.component';
-import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { CommonButtonText } from './../../../../../../shared/enum';
 import { ActionStoreProcessing, StoreState } from './../../../../../../shared/interfaces';
 import { IBid, IBidOffer } from './../../../../../../shared/interfaces/bid.interface';
@@ -102,7 +102,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  get failureHeader(): IUseCasesHeader {
+  get failureHeader(): IHeaderBodyPage {
     return {
       title: 'Bid not found',
       goBackLink: '/use-cases/bid/search',
@@ -110,7 +110,7 @@ export class BidPageComponent implements OnInit, OnDestroy {
     };
   }
 
-  get loginHeader(): IUseCasesHeader {
+  get loginHeader(): IHeaderBodyPage {
     return {
       title: 'Bid page',
       goBackLink: '/use-cases/bid/search',

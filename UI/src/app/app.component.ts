@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AnalyticsService } from './shared/services/analytics/analytics.service';
 import '@angular/localize/init';
+import { AnalyticsService } from './shared/services/analytics/analytics.service';
 
 declare global {
   interface Window {

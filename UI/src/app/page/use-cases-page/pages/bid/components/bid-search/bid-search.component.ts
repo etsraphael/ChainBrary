@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable, map } from 'rxjs';
-import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { StoreState } from './../../../../../../shared/interfaces';
 import { IBid } from './../../../../../../shared/interfaces/bid.interface';
 import { resetBid, searchBid } from './../../../../../../store/bid-store/state/actions';
@@ -14,7 +14,7 @@ import { selectSearchBid } from './../../../../../../store/bid-store/state/selec
   styleUrls: ['./bid-search.component.scss']
 })
 export class BidSearchComponent implements OnInit {
-  headerPayload: IUseCasesHeader = {
+  headerPayload: IHeaderBodyPage = {
     title: $localize`:@@bidSearchTitle:Join a bid`,
     goBackLink: '/use-cases/bid/services',
     description: null

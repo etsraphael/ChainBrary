@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { IDocumentLockerCreation } from './../../../../../../shared/interfaces';
 import { selectCurrentNetwork } from './../../../../../../store/auth-store/state/selectors';
 import {
@@ -17,7 +17,7 @@ import { selectDocumentLockerCreationError } from './../../../../../../store/doc
   styleUrls: ['./document-locker-maker.component.scss']
 })
 export class DocumentLockerMakerComponent implements OnInit {
-  headerPayload: IUseCasesHeader = {
+  headerPayload: IHeaderBodyPage = {
     title: $localize`:@@documentLockerMakerTitle:Create a locked document`,
     goBackLink: '/use-cases/document-locker/services',
     description: null

@@ -2,6 +2,209 @@
 <xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
   <file source-language="en" datatype="plaintext" original="ng2.template">
     <body>
+      <trans-unit id="3803288465179862078" datatype="html">
+        <source>Enter Amount</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6533918067030990396" datatype="html">
+        <source>Amount</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
+          <context context-type="linenumber">66</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1810538832819454412" datatype="html">
+        <source> Value has to be greater than 0 </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">26,28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3667949571823271511" datatype="html">
+        <source>Max</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7656866871196066634" datatype="html">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>Accept<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;terms-link ps-2&quot; (click)=&quot;openTermAndCond($event)&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">39,40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2699053709476277130" datatype="html">
+        <source> You must accept the terms and conditions </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">45,47</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
+          <context context-type="linenumber">154,156</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4019999394145787248" datatype="html">
+        <source>Add To Vault</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessage.Insufficient-balance" datatype="html">
+        <source>Insufficient balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.ts</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3864560168095156058" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="{{ vault.data?.network?.networkDetail?.name }}"/> network</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="459395347792320431" datatype="html">
+        <source>Total value locked</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7956125705938505892" datatype="html">
+        <source>Total amount stacked</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="612307263367985041" datatype="html">
+        <source>Network reward</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2689785512504893020" datatype="html">
+        <source>My amount staked</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6296019452799956336" datatype="html">
+        <source>Network share</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7924912164252500969" datatype="html">
+        <source>Withdraw</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3364983331710639883" datatype="html">
+        <source>Add Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
+          <context context-type="linenumber">85</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8747971835530189027" datatype="html">
+        <source>Withdrawal Details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.html</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5552614718654397904" datatype="html">
+        <source>Wrong network found in the wallet. Please switch to the right network.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/add-token-page-container/add-token-page-container.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/withdraw-token-page-container/withdraw-token-page-container.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommunityVault.Title" datatype="html">
+        <source>Community Vault</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/add-token-page-container/add-token-page-container.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/community-vaults-list-page-container/community-vaults-list-page-container.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommunityVault.Desc" datatype="html">
+        <source>Community Vault mechanism, a cornerstone feature of the Chainbrary ecosystem. It intricately details how the Community Vault functions as a dynamic system for distributing rewards, ensuring that each member&apos;s contribution to the network is recognized and fairly compensated.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/community-vaults-list-page-container/community-vaults-list-page-container.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommunityVaultWithdraw.Title" datatype="html">
+        <source>Withdraw</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/community-vaults-page/containers/withdraw-token-page-container/withdraw-token-page-container.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="landingPage.openSource" datatype="html">
         <source>Open Source</source>
         <context-group purpose="location">
@@ -71,6 +274,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1302931627910546086" datatype="html">
+        <source>Community Vaults</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6683893851495057135" datatype="html">
@@ -285,7 +495,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">84</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3644217488386459799" datatype="html">
@@ -360,25 +570,6 @@
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6533918067030990396" datatype="html">
-        <source>Amount</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
-          <context context-type="linenumber">17</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
-          <context context-type="linenumber">48</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
-          <context context-type="linenumber">66</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="3973931101896534797" datatype="html">
         <source>Date</source>
         <context-group purpose="location">
@@ -393,11 +584,18 @@
           <context context-type="linenumber">83</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="recentTransactions" datatype="html">
+      <trans-unit id="recentTransactions.Title" datatype="html">
         <source>Recent Transactions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
           <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="recentTransactions.Desc" datatype="html">
+        <source>Quickly view your recent transactions on your wallet. This is working only for the native tokens of the network currently.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/containers/activity-container/activity-container.component.ts</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4343607357044932591" datatype="html">
@@ -568,13 +766,6 @@
           <context context-type="linenumber">149</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2699053709476277130" datatype="html">
-        <source> You must accept the terms and conditions </source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
-          <context context-type="linenumber">154,156</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="bidCreationHeaderTitle" datatype="html">
         <source>Bid creation</source>
         <context-group purpose="location">
@@ -629,7 +820,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/notification-store/state/effects.ts</context>
-          <context context-type="linenumber">34</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidCreation.PleaseAddAtLeastOneImage." datatype="html">
@@ -1333,7 +1524,7 @@
         <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> is requesting a sum equivalent to <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> To ensure accuracy, the transaction will be precisely calculated to match this amount in <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> prior to processing the payment. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">97,102</context>
+          <context context-type="linenumber">94,99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="paymentRequestTitle" datatype="html">
@@ -1348,6 +1539,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4030991508483039728" datatype="html">
+        <source>Connect wallet to see Vault balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/auth-banner/auth-banner.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7507948636555938109" datatype="html">
+        <source>Log out</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/auth-banner/auth-banner.component.html</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="109261978612666226" datatype="html">
@@ -1437,13 +1642,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
           <context context-type="linenumber">4,6</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="7507948636555938109" datatype="html">
-        <source>Log out</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar-header/use-cases-sidebar-header.component.html</context>
-          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5874499849802990855" datatype="html">
@@ -2061,6 +2259,66 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
           <context context-type="linenumber">88,321</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="vaultTermAndCond" datatype="html">
+        <source>
+
+# Community Vault Token Addition Terms and Conditions
+
+_Last Updated: 24th March 2024_
+
+### Introduction
+
+**Welcome to the Community Vault Token Addition Feature.** This document outlines the Terms and Conditions specifically for adding tokens to the Community Vault via our smart contract. By engaging with this feature, you agree to abide by these terms, ensuring a transparent and responsible token addition process.
+
+### Acceptance of Terms
+
+1. **Agreement:** By adding tokens to the Community Vault, you are agreeing to these Terms and Conditions.
+2. **Eligibility:** You must be of legal age and capable of entering into legally binding contracts. By adding tokens, you confirm compliance with this requirement.
+
+### Process of Token Addition
+
+1. **Deposit Method:** Tokens are added via a direct transfer to the smart contract.
+2. **Token Types:** Ensure the tokens you are adding are compatible with the smart contract.
+3. **Responsibility for Tokens:** Once added, tokens are under the control of the smart contract, subject to its rules and operations.
+
+### User Responsibilities
+
+1. **Compliance:** Adhere to all applicable laws and regulations in your jurisdiction related to cryptocurrency transactions.
+2. **Awareness:** Understand the risks involved in digital token transactions, including potential loss.
+3. **Verification:** Ensure the correctness of the amount and type of tokens added.
+
+### Security
+
+1. **Wallet Security:** You are solely responsible for the security of your blockchain wallet.
+2. **Smart Contract Reliance:** Recognize that the token addition is reliant on the security and functionality of the smart contract.
+
+### Risk Acknowledgement
+
+1. **Volatility and Risk:** Acknowledge the inherent risks in cryptocurrency transactions, including market volatility and technology risks.
+2. **No Insurance:** Tokens added to the Community Vault are not insured. In the event of loss, there is no recourse for recovery of value.
+
+### Changes to Terms
+
+1. **Modification Rights:** These Terms and Conditions may be modified periodically to reflect changes in services, legal requirements, or advancements in technology.
+2. **Continued Use:** Continued use of the token addition feature after changes indicates acceptance of the new terms.
+
+### Liability Limitations
+
+1. **Disclaimer:** We are not liable for any direct or indirect losses incurred due to market volatility, technical failures, or other factors beyond our control.
+2. **Indemnification:** You agree to indemnify and hold us harmless against any claims or losses related to the use of the Community Vault token addition feature.
+
+### Contact and Support
+
+- For inquiries or support, please reach out through our designated channels.
+
+### Final Acknowledgement
+
+By adding tokens to the Community Vault, you affirm your understanding and agreement to these Terms and Conditions, effective as of 24th March 2024.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
+          <context context-type="linenumber">323,376</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="servicePage.sharePaymentTitle" datatype="html">
         <source>Share Payment</source>
         <context-group purpose="location">
@@ -2166,11 +2424,18 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
           <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="commonButtonTextWithdraw" datatype="html">
+        <source>Withdraw</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/enum/button-text.ts</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="ResponseMessage.TransactionIsProcessing" datatype="html">
         <source>Transaction is processing</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">74</context>
+          <context context-type="linenumber">87</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
@@ -2181,18 +2446,18 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
         <source>Network is updated</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">99</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.AnUnexpectedErrorOccurred" datatype="html">
         <source>An unexpected error occurred</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">123</context>
+          <context context-type="linenumber">136</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">148</context>
+          <context context-type="linenumber">161</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.auctionNotOngoing" datatype="html">
@@ -2368,14 +2633,22 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
         <source>Transaction sent successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">32</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.WalletIsNotConnected" datatype="html">
         <source>Wallet is not connected</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">87</context>
         </context-group>
       </trans-unit>
     </body>
