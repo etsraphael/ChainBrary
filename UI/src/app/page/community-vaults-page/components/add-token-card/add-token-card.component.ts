@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { INetworkDetail } from '@chainbrary/web3-login';
+import { TermAndCondModalComponent } from './../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
+import { vaultTermAndCond } from './../../../../shared/data/termAndCond';
 import { CommonButtonText } from './../../../../shared/enum';
 import { FullAndShortNumber } from './../../../../shared/interfaces';
 
@@ -22,7 +25,10 @@ export class AddTokenCardComponent {
   });
   commonButtonText = CommonButtonText;
 
-  constructor(private snackbar: MatSnackBar) {}
+  constructor(
+    private snackbar: MatSnackBar,
+    private dialog: MatDialog
+  ) {}
 
   setUpMaxAmount(): void {
     if (this.balance) {
@@ -42,6 +48,18 @@ export class AddTokenCardComponent {
     }
 
     return this.addToken.emit({ amount: this.mainForm.get('amount')?.value as number });
+  }
+
+  openTermAndCond(event: MouseEvent): MatDialogRef<TermAndCondModalComponent> {
+    event.preventDefault();
+
+    return this.dialog.open(TermAndCondModalComponent, {
+      enterAnimationDuration: '200ms',
+      exitAnimationDuration: '200ms',
+      panelClass: ['col-12', 'col-md-6', 'col-lg-8'],
+      data: vaultTermAndCond,
+      autoFocus: false
+    });
   }
 }
 

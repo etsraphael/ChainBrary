@@ -37,7 +37,7 @@
         <mat-checkbox class="py-2" formControlName="termsAndCond" color="primary">
           <span i18n class="checkbox-label">
             <span>Accept</span>
-            <a class="terms-link ps-2">terms and conditions</a>
+            <a class="terms-link ps-2" (click)="openTermAndCond($event)">terms and conditions</a>
           </span>
           <mat-error
             i18n

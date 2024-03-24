@@ -3045,6 +3045,75 @@ Chainbrary s'engage à améliorer continuellement ses services. Les utilisateurs
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="vaultTermAndCond">
+        <source>
+# Community Vault Token Addition Terms and Conditions
+_Last Updated: 24th March 2024_
+### Introduction
+**Welcome to the Community Vault Token Addition Feature.** This document outlines the Terms and Conditions specifically for adding tokens to the Community Vault via our smart contract. By engaging with this feature, you agree to abide by these terms, ensuring a transparent and responsible token addition process.
+### Acceptance of Terms
+1. **Agreement:** By adding tokens to the Community Vault, you are agreeing to these Terms and Conditions.
+2. **Eligibility:** You must be of legal age and capable of entering into legally binding contracts. By adding tokens, you confirm compliance with this requirement.
+### Process of Token Addition
+1. **Deposit Method:** Tokens are added via a direct transfer to the smart contract.
+2. **Token Types:** Ensure the tokens you are adding are compatible with the smart contract.
+3. **Responsibility for Tokens:** Once added, tokens are under the control of the smart contract, subject to its rules and operations.
+### User Responsibilities
+1. **Compliance:** Adhere to all applicable laws and regulations in your jurisdiction related to cryptocurrency transactions.
+2. **Awareness:** Understand the risks involved in digital token transactions, including potential loss.
+3. **Verification:** Ensure the correctness of the amount and type of tokens added.
+### Security
+1. **Wallet Security:** You are solely responsible for the security of your blockchain wallet.
+2. **Smart Contract Reliance:** Recognize that the token addition is reliant on the security and functionality of the smart contract.
+### Risk Acknowledgement
+1. **Volatility and Risk:** Acknowledge the inherent risks in cryptocurrency transactions, including market volatility and technology risks.
+2. **No Insurance:** Tokens added to the Community Vault are not insured. In the event of loss, there is no recourse for recovery of value.
+### Changes to Terms
+1. **Modification Rights:** These Terms and Conditions may be modified periodically to reflect changes in services, legal requirements, or advancements in technology.
+2. **Continued Use:** Continued use of the token addition feature after changes indicates acceptance of the new terms.
+### Liability Limitations
+1. **Disclaimer:** We are not liable for any direct or indirect losses incurred due to market volatility, technical failures, or other factors beyond our control.
+2. **Indemnification:** You agree to indemnify and hold us harmless against any claims or losses related to the use of the Community Vault token addition feature.
+### Contact and Support
+- For inquiries or support, please reach out through our designated channels.
+### Final Acknowledgement
+By adding tokens to the Community Vault, you affirm your understanding and agreement to these Terms and Conditions, effective as of 24th March 2024.</source>
+        <target># Conditions Générales d'Ajout de Tokens au Coffre de la Communauté
+_Dernière mise à jour : 24 mars 2024_
+### Introduction
+**Bienvenue sur la fonction d'Ajout de Tokens au Coffre de la Communauté.** Ce document décrit les Conditions Générales spécifiquement pour l'ajout de tokens au Coffre de la Communauté via notre contrat intelligent. En utilisant cette fonctionnalité, vous acceptez de respecter ces termes, assurant un processus d'ajout de tokens transparent et responsable.
+### Acceptation des Termes
+1. **Accord :** En ajoutant des tokens au Coffre de la Communauté, vous acceptez ces Conditions Générales.
+2. **Éligibilité :** Vous devez être majeur et capable de conclure des contrats juridiquement contraignants. En ajoutant des tokens, vous confirmez la conformité avec cette exigence.
+### Processus d'Ajout de Tokens
+1. **Méthode de Dépôt :** Les tokens sont ajoutés via un transfert direct au contrat intelligent.
+2. **Types de Tokens :** Assurez-vous que les tokens que vous ajoutez sont compatibles avec le contrat intelligent.
+3. **Responsabilité des Tokens :** Une fois ajoutés, les tokens sont sous le contrôle du contrat intelligent, soumis à ses règles et opérations.
+### Responsabilités de l'Utilisateur
+1. **Conformité :** Respectez toutes les lois et régulations applicables dans votre juridiction relatives aux transactions de cryptomonnaie.
+2. **Conscience :** Comprenez les risques impliqués dans les transactions de tokens numériques, y compris la perte potentielle.
+3. **Vérification :** Assurez-vous de l'exactitude du montant et du type de tokens ajoutés.
+### Sécurité
+1. **Sécurité du Portefeuille :** Vous êtes seul responsable de la sécurité de votre portefeuille blockchain.
+2. **Dépendance au Contrat Intelligent :** Reconnaissez que l'ajout de tokens dépend de la sécurité et de la fonctionnalité du contrat intelligent.
+### Reconnaissance des Risques
+1. **Volatilité et Risque :** Reconnaissez les risques inhérents aux transactions de cryptomonnaie, y compris la volatilité du marché et les risques liés à la technologie.
+2. **Aucune Assurance :** Les tokens ajoutés au Coffre de la Communauté ne sont pas assurés. En cas de perte, il n'y a aucun recours pour récupérer la valeur.
+### Modifications des Termes
+1. **Droits de Modification :** Les présentes Conditions Générales peuvent être modifiées périodiquement pour refléter les changements dans les services, les exigences légales, ou les avancées technologiques.
+2. **Usage Continu :** L'utilisation continue de la fonctionnalité d'ajout de tokens après les modifications indique l'acceptation des nouveaux termes.
+### Limites de Responsabilité
+1. **Avertissement :** Nous ne sommes pas responsables des pertes directes ou indirectes subies en raison de la volatilité du marché, des défaillances techniques, ou d'autres facteurs hors de notre contrôle.
+2. **Indemnisation :** Vous acceptez de nous indemniser et de nous dégager de toute responsabilité en cas de réclamations ou de pertes liées à l'utilisation de la fonctionnalité d'ajout de tokens au Coffre de la Communauté.
+### Contact et Support
+- Pour toute demande ou besoin d'assistance, merci de nous contacter via nos canaux désignés.
+### Droits Additionels
+En ajoutant des tokens au Coffre de la Communauté, vous confirmez votre compréhension et votre accord à ces Conditions Générales, effectives à partir du 24 mars 2024.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
+          <context context-type="linenumber">323,376</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
