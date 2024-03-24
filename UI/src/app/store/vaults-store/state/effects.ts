@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
+import { hideLoadingScreen, showLoadingScreen } from '../../notification-store/state/actions';
 import { communityVaults } from './../../../data/communityVaults.data';
 import { IReceiptTransaction, Vault, VaultSupported } from './../../../shared/interfaces';
 import { CommunityVaultsService } from './../../../shared/services/community-vaults/community-vaults.service';
@@ -107,6 +108,25 @@ export class VaultsEffects {
           )
         );
       })
+    );
+  });
+
+  showLoadingAnimation$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(VaultsActions.addTokensToVault, VaultsActions.withdrawTokensFromVault),
+      map(() => showLoadingScreen())
+    );
+  });
+
+  hideLoadingAnimation$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(
+        VaultsActions.addTokensToVaultSuccess,
+        VaultsActions.addTokensToVaultFailure,
+        VaultsActions.withdrawTokensFromVaultSuccess,
+        VaultsActions.withdrawTokensFromVaultFailure
+      ),
+      map(() => hideLoadingScreen())
     );
   });
 }

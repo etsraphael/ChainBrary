@@ -13,6 +13,7 @@ import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button
 import { FooterPageComponent } from './footer-page/footer-page.component';
 import { HeaderBodyPageComponent } from './header-body-page/header-body-page.component';
 import { HeaderPageComponent } from './header-page/header-page.component';
+import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/qr-code-container-modal.component';
 import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
@@ -30,7 +31,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     QrCodeContainerModalComponent,
     TermAndCondModalComponent,
     HeaderBodyPageComponent,
-    AuthBannerComponent
+    AuthBannerComponent,
+    LoadingScreenComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
@@ -43,7 +45,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     QrCodeContainerModalComponent,
     TermAndCondModalComponent,
     HeaderBodyPageComponent,
-    AuthBannerComponent
+    AuthBannerComponent,
+    LoadingScreenComponent
   ]
 })
 export class SharedComponentsModule {}

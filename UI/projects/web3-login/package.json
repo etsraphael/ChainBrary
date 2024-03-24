@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/web3-login",
-  "version": "16.0.25",
+  "version": "16.0.26",
   "peerDependencies": {
     "@angular/common": "^16.2.12",
     "@angular/core": "^16.2.12",
