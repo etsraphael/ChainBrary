@@ -7,7 +7,7 @@
   <div class="d-flex justify-content-center pt-4">
     <div class="col-12 col-md-10 col-lg-8">
       <app-auth-banner></app-auth-banner>
-      <div class="container py-3">
+      <div class="container py-3 px-0">
         <div class="row">
           <ng-container *ngIf="(isWrongNetwork | async) === false && urlNetworkFound !== null">
             <app-add-token-card
