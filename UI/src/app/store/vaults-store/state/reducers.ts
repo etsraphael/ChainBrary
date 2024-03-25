@@ -22,8 +22,6 @@ export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
       const icon: string = communityVaults.find((vault) => vault.contractAddress === action.contractAddress)
         ?.icon as string;
 
-      console.log('icon', icon);
-
       // Add the new vault to the list only if it doesn't already exist
       if (!exists) {
         newList.push({
