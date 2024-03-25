@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import '@angular/localize/init';
+import { NavService } from '../../services/nav/nav.service';
 import { TranslationService } from '../../services/translation/translation.service';
 import { environment } from './../../../../environments/environment';
 
@@ -28,7 +29,10 @@ export class HeaderPageComponent implements OnInit {
     }
   ];
 
-  constructor(private translationService: TranslationService) {}
+  constructor(
+    private translationService: TranslationService,
+    public navService: NavService
+  ) {}
 
   ngOnInit(): void {
     this.languageSelected = this.translationService.getLanguageFromUrl();
