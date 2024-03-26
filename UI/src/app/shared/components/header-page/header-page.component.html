@@ -16,20 +16,29 @@
   <div class="d-none d-sm-block col-sm-8">
     <div class="row">
       <div class="d-flex justify-content-end">
-        <div class="btn-container my-auto mx-2 pb-2" routerLinkActive="active" *ngFor="let item of headerBtns">
+        <div class="my-auto pb-2" routerLinkActive="active" *ngFor="let item of headerBtns">
           <a [routerLink]="item.url">
             <button class="btn btn-light">
               <span>{{ item.title }}</span>
             </button>
           </a>
         </div>
-        <mat-form-field class="my-auto pb-2">
+
+        <a routerLink="./../community-vaults">
+          <button type="button" class="mx-2 btn btn-outline-primary" routerLinkActive="btn-primary text-light">
+            <i class="bi bi-safe2 pe-2"></i>
+            Community Vault
+          </button>
+        </a>
+
+        <!-- TODO: Move to footer -->
+        <!-- <mat-form-field class="my-auto pb-2">
           <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
             <mat-option [value]="lang" *ngFor="let lang of language">
               {{ lang }}
             </mat-option>
           </mat-select>
-        </mat-form-field>
+        </mat-form-field> -->
       </div>
     </div>
   </div>
