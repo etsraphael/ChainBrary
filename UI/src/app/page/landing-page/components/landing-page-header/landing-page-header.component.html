@@ -42,9 +42,29 @@
         </div>
       </div>
     </div>
-    <div class="row justify-content-center">
+    <div class="row justify-content-center my-2">
       <div class="col-8 text-center">
         <span class="text-secondary">Building trust among various crypto users by supporting different tokens</span>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center mt-4">
+    <div class="col-12 text-center">
+      <!-- Wrapper div -->
+      <div class="icon-wrapper">
+        <!-- Container for icons -->
+        <div class="icon-container">
+          <!-- Original set of icons -->
+          <div *ngFor="let item of [0,1,2,3,4]">
+            <img src="./../../../../../assets/icons/tokens-name/avalanche-brand.svg" alt="icon"
+              class="icon-content px-4" />
+          </div>
+          <!-- Duplicate set of icons -->
+          <div *ngFor="let item of [0,1,2,3,4]">
+            <img src="./../../../../../assets/icons/tokens-name/avalanche-brand.svg" alt="icon"
+              class="icon-content px-4" />
+          </div>
+        </div>
       </div>
     </div>
   </div>

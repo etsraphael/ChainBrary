@@ -8,3 +8,24 @@
 .container-title h1 {
   font-weight: 700;
 }
+
+.icon-wrapper {
+  overflow-x: hidden;
+  white-space: nowrap;
+}
+
+.icon-container {
+  display: inline-flex;
+  animation: slideRight 60s linear infinite;
+}
+
+@keyframes slideRight {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.icon-content {
+  vertical-align: middle;
+  margin-right: 10px;
+  filter: grayscale(100%);
+}
