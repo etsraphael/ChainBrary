@@ -3,6 +3,7 @@ import '@angular/localize/init';
 import { NavService } from '../../services/nav/nav.service';
 import { TranslationService } from '../../services/translation/translation.service';
 import { environment } from './../../../../environments/environment';
+import { IHeaderBtn } from '../../interfaces';
 
 @Component({
   selector: 'app-header-page',
@@ -41,9 +42,4 @@ export class HeaderPageComponent implements OnInit {
   switchLanguage(lang: string): void {
     return this.translationService.switchLanguage(lang);
   }
-}
-
-interface IHeaderBtn {
-  title: string;
-  url: string;
 }

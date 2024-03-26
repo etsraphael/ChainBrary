@@ -1,10 +1,30 @@
-<div class="container">
-  <div class="d-flex justify-content-between py-3 px-2">
+<div class="container-fluid px-0">
+  <div class="d-flex justify-content-between py-3 px-4">
     <div class="branding-img-container my-auto">
       <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto theme-assets-wrapper" />
     </div>
     <div class="my-auto">
       <i class="bi bi-x" (click)="navService.closedDrawer()"></i>
+    </div>
+  </div>
+  <ul class="list-group list-group-flush">
+    <a
+      routerLinkActive="active"
+      *ngFor="let item of headerBtns"
+      [routerLink]="item.url"
+      (click)="navService.closedDrawer()"
+    >
+      <li class="list-group-item">{{ item.title }}</li>
+    </a>
+  </ul>
+  <div class="container py-3">
+    <div class="px-2 d-flex">
+      <a routerLink="./../../community-vaults" (click)="navService.closedDrawer()">
+        <button type="button" class="btn btn-outline-primary">
+          <i class="bi bi-safe2 px-2"></i>
+          Community Vault
+        </button>
+      </a>
     </div>
   </div>
 </div>
