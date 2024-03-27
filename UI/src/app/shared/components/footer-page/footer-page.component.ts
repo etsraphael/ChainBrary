@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { SocialMediaCardItem } from '../../interfaces';
+import { footerListData } from './../../../data/socialMediaCard.data';
 
 @Component({
   selector: 'app-footer-page',
@@ -6,38 +8,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./footer-page.component.scss']
 })
 export class FooterPageComponent {
-  footerBtns: IFooterBtn[] = [
-    {
-      text: 'Discord',
-      url: 'https://discord.gg/YPzkt2dM6C',
-      icon: 'bi-discord'
-    },
-    {
-      text: 'Twitter',
-      url: 'https://twitter.com/chainbrary',
-      icon: 'bi-twitter-x'
-    },
-    {
-      text: 'Github',
-      url: 'https://github.com/etsraphael/ChainBrary',
-      icon: 'bi-github'
-    },
-    {
-      text: 'Medium',
-      url: 'https://iamraphaelsalei.medium.com',
-      icon: 'bi-medium'
-    },
-    {
-      text: 'Facebook',
-      url: 'https://www.facebook.com/profile.php?id=61555823715468',
-      icon: 'bi-facebook'
-    },
-    {
-      text: 'Instagram',
-      url: 'https://www.instagram.com/chainbrary',
-      icon: 'bi-instagram'
-    }
-  ];
+  footerBtns: SocialMediaCardItem[] = footerListData;
 
   footerList0: IFooterItem[] = [
     {
@@ -74,12 +45,6 @@ export class FooterPageComponent {
   goToLinkOutsideApp(link: string): Window | null {
     return window.open(link, '_blank');
   }
-}
-
-interface IFooterBtn {
-  text: string;
-  url: string;
-  icon: string;
 }
 
 interface IFooterItem {

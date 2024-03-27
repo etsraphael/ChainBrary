@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { footerListData } from './../../../../data/socialMediaCard.data';
 import { IServiceCard } from './../../../../shared/components/service-card/service-card.component';
+import { SocialMediaCardItem } from './../../../../shared/interfaces';
 
 @Component({
   selector: 'app-landing-page-body',
@@ -7,6 +9,8 @@ import { IServiceCard } from './../../../../shared/components/service-card/servi
   styleUrls: ['./landing-page-body.component.scss']
 })
 export class LandingPageBodyComponent {
+  socialMediaList: SocialMediaCardItem[] = footerListData;
+
   cards: IServiceCard[] = [
     {
       title: $localize`:@@landingPage.paymentServiceTitle:Payment Request`,
