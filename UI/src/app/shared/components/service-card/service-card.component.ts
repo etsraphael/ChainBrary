@@ -13,4 +13,5 @@ export interface IServiceCard {
   title: string;
   description: string;
   img: string;
+  routerUrl: string;
 }
