@@ -50,19 +50,13 @@
   </div>
   <div class="row justify-content-center mt-4">
     <div class="col-12 text-center">
-      <!-- Wrapper div -->
       <div class="icon-wrapper">
-        <!-- Container for icons -->
         <div class="icon-container">
-          <!-- Original set of icons -->
           <div *ngFor="let item of iconList">
-            <img [src]="'./../../../../../assets/icons/tokens-name/' + item.url" alt="icon"
-              class="icon-content px-4" />
+            <img [src]="'./../../../../../assets/icons/tokens-name/' + item.url" alt="icon" class="icon-content px-4" />
           </div>
-          <!-- Duplicate set of icons -->
           <div *ngFor="let item of iconList">
-            <img [src]="'./../../../../../assets/icons/tokens-name/' + item.url" alt="icon"
-              class="icon-content px-4" />
+            <img [src]="'./../../../../../assets/icons/tokens-name/' + item.url" alt="icon" class="icon-content px-4" />
           </div>
         </div>
       </div>

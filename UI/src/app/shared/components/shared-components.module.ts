@@ -16,6 +16,7 @@ import { HeaderBodyPageComponent } from './header-body-page/header-body-page.com
 import { HeaderPageComponent } from './header-page/header-page.component';
 import { LoadingScreenComponent } from './loading-screen/loading-screen.component';
 import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/qr-code-container-modal.component';
+import { ServiceCardComponent } from './service-card/service-card.component';
 import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
 import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
@@ -34,7 +35,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     HeaderBodyPageComponent,
     AuthBannerComponent,
     LoadingScreenComponent,
-    DrawerSidebarComponent
+    DrawerSidebarComponent,
+    ServiceCardComponent
   ],
   imports: [CommonModule, FormsModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
   exports: [
@@ -49,7 +51,8 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     HeaderBodyPageComponent,
     AuthBannerComponent,
     LoadingScreenComponent,
-    DrawerSidebarComponent
+    DrawerSidebarComponent,
+    ServiceCardComponent
   ]
 })
 export class SharedComponentsModule {}
