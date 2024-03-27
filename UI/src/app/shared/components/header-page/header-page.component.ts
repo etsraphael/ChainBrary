@@ -1,16 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import '@angular/localize/init';
-import { NavService } from '../../services/nav/nav.service';
-import { TranslationService } from '../../services/translation/translation.service';
-import { environment } from './../../../../environments/environment';
 import { IHeaderBtn } from '../../interfaces';
+import { NavService } from '../../services/nav/nav.service';
+import { environment } from './../../../../environments/environment';
 
 @Component({
   selector: 'app-header-page',
   templateUrl: './header-page.component.html',
   styleUrls: ['./header-page.component.scss']
 })
-export class HeaderPageComponent implements OnInit {
+export class HeaderPageComponent {
   language: string[] = ['en', 'fr'];
   languageSelected: string;
   environment = environment;
@@ -31,15 +30,6 @@ export class HeaderPageComponent implements OnInit {
   ];
 
   constructor(
-    private translationService: TranslationService,
     public navService: NavService
   ) {}
-
-  ngOnInit(): void {
-    this.languageSelected = this.translationService.getLanguageFromUrl();
-  }
-
-  switchLanguage(lang: string): void {
-    return this.translationService.switchLanguage(lang);
-  }
 }

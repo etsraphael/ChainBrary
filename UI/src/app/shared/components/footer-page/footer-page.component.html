@@ -2,28 +2,35 @@
   <div class="row justify-content-center pt-3">
     <div class="col-md-3 col-lg-4 d-flex flex-column">
       <a [routerLink]="item.url" (click)="scrollToTop()" *ngFor="let item of footerList0">
-        <app-chainbrary-button
-          [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
-          [buttonText]="item.title"
-        />
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
+          [buttonText]="item.title" />
       </a>
     </div>
     <div class="col-md-3 col-lg-4 d-flex flex-column">
       <a [routerLink]="item.url" (click)="scrollToTop()" *ngFor="let item of footerList1">
-        <app-chainbrary-button
-          [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
-          [buttonText]="item.title"
-        />
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
+          [buttonText]="item.title" />
       </a>
       <a href="https://drive.google.com/file/d/1FM7arri6cVBlOYSu2cLoII5oL69dUxRb/view?usp=sharing" target="_blank">
-        <app-chainbrary-button
-          [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
-          [buttonText]="whitePaperText"
-        />
+        <app-chainbrary-button [buttonClasses]="['btn-block', 'text-secondary', 'w-init', 'text-start']"
+          [buttonText]="whitePaperText" />
       </a>
     </div>
     <div class="col-md-6 col-lg-4 d-flex align-items-center">
       <div class="container">
+
+        <div class="d-none d-md-block">
+          <div class="d-flex justify-content-end">
+            <mat-form-field class="my-auto pb-2" appearance="outline">
+              <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
+                <mat-option [value]="lang" *ngFor="let lang of language">
+                  {{ lang }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+
         <div class="title-container d-flex mb-md-5 my-3 justify-content-md-end">
           <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto theme-assets-wrapper" />
           <h3 class="my-auto text-dark">ChainBrary</h3>
@@ -33,6 +40,17 @@
             <span class="text-primary">Know us better</span>
             Got questions? Reach us our social media
           </p>
+        </div>
+        <div class="d-block d-md-none">
+          <div class="d-flex justify-content-start">
+            <mat-form-field class="my-auto pb-2" appearance="outline">
+              <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
+                <mat-option [value]="lang" *ngFor="let lang of language">
+                  {{ lang }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
         </div>
       </div>
     </div>

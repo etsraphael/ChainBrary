@@ -1,13 +1,15 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SocialMediaCardItem } from '../../interfaces';
 import { footerListData } from './../../../data/socialMediaCard.data';
+import { environment } from './../../../../environments/environment';
+import { TranslationService } from '../../services/translation/translation.service';
 
 @Component({
   selector: 'app-footer-page',
   templateUrl: './footer-page.component.html',
   styleUrls: ['./footer-page.component.scss']
 })
-export class FooterPageComponent {
+export class FooterPageComponent implements OnInit {
   footerBtns: SocialMediaCardItem[] = footerListData;
 
   footerList0: IFooterItem[] = [
@@ -37,6 +39,13 @@ export class FooterPageComponent {
   ];
 
   whitePaperText = $localize`:@@footerBtn.Title.WhitePaper:White Paper`;
+  language: string[] = ['en', 'fr'];
+  languageSelected: string;
+  environment = environment;
+
+  constructor(
+    private translationService: TranslationService
+  ) {}
 
   scrollToTop(): void {
     return window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -44,6 +53,14 @@ export class FooterPageComponent {
 
   goToLinkOutsideApp(link: string): Window | null {
     return window.open(link, '_blank');
+  }
+
+  ngOnInit(): void {
+    this.languageSelected = this.translationService.getLanguageFromUrl();
+  }
+
+  switchLanguage(lang: string): void {
+    return this.translationService.switchLanguage(lang);
   }
 }
 
