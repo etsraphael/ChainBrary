@@ -35,6 +35,10 @@ export class FooterPageComponent implements OnInit {
     {
       title: $localize`:@@footerBtn.Title.PrivacyPolicy:Privacy Policy`,
       url: '/landing-page/privacy-policy'
+    },
+    {
+      title: $localize`:@@footerBtn.Title.BountyProgram:Bounty Program`,
+      url: '/landing-page/bounty-program'
     }
   ];
 

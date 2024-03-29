@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BountyPageContainerComponent } from './containers/bounty-page-container/bounty-page-container.component';
 import { LandingHomePageContainerComponent } from './containers/landing-home-page-container/landing-home-page-container.component';
 import { LandingPageContainerComponent } from './containers/landing-page-container/landing-page-container.component';
 import { PartnershipPageContainerComponent } from './containers/partnership-page-container/partnership-page-container.component';
@@ -26,6 +27,10 @@ const routes: Routes = [
       {
         path: 'terms-and-conditions',
         component: TermsAndCondPageContainerComponent
+      },
+      {
+        path: 'bounty-program',
+        component: BountyPageContainerComponent
       },
       {
         path: '**',

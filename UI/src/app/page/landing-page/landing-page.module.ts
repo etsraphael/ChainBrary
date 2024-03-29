@@ -5,6 +5,7 @@ import { SharedComponentsModule } from '../../shared/components/shared-component
 import { LandingPageBodyComponent } from './components/landing-page-body/landing-page-body.component';
 import { LandingPageCardComponent } from './components/landing-page-card/landing-page-card.component';
 import { LandingPageHeaderPageComponent } from './components/landing-page-header/landing-page-header.component';
+import { BountyPageContainerComponent } from './containers/bounty-page-container/bounty-page-container.component';
 import { LandingHomePageContainerComponent } from './containers/landing-home-page-container/landing-home-page-container.component';
 import { LandingPageContainerComponent } from './containers/landing-page-container/landing-page-container.component';
 import { PartnershipPageContainerComponent } from './containers/partnership-page-container/partnership-page-container.component';
@@ -21,7 +22,8 @@ import { LandingPageRoutingModule } from './landing-page-routing.module';
     LandingHomePageContainerComponent,
     LandingPageCardComponent,
     PrivacyPolicyPageContainerComponent,
-    TermsAndCondPageContainerComponent
+    TermsAndCondPageContainerComponent,
+    BountyPageContainerComponent
   ],
   imports: [CommonModule, LandingPageRoutingModule, SharedComponentsModule, MarkdownModule.forChild()]
 })
