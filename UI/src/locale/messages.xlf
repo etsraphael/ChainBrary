@@ -283,6 +283,154 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="3614889482961320399" datatype="html">
+        <source>Scope of the Program</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5960699326837049917" datatype="html">
+        <source>
+        This program is specifically designed for our websites and applications. We prioritize the detection and prevention of incidents that may lead to:
+
+        - Direct unauthorized access to or draining of locked user funds.
+        - Social engineering attacks that could result in users inadvertently authorizing transactions or being redirected to malicious sites.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">6,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4925061034446572205" datatype="html">
+        <source>Eligibility Criteria</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3777346097407733447" datatype="html">
+        <source>
+        To participate in the Chainbrary Bug Bounty Program, you must:
+
+        1. Identify a previously unreported and non-public vulnerability. The vulnerability should be unknown to our team and fall within the program&apos;s defined scope.
+        2. Be at least 18 years of age. Participants below 18 must have consent from a parent or guardian.
+        3. Provide comprehensive details to enable our engineering team to reproduce, understand, and address the vulnerability.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">15,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2528942312139055862" datatype="html">
+        <source>Reward Tiers</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4558525115953383608" datatype="html">
+        <source>Our reward system is categorized based on the severity of the vulnerability discovered:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="599942181076100146" datatype="html">
+        <source>Severity Level</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4994167736732177124" datatype="html">
+        <source>Reward Amount</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2437478124199610198" datatype="html">
+        <source>Critical</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5982496808088686844" datatype="html">
+        <source>Medium</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="802458941707537739" datatype="html">
+        <source>Low</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="664573589261423471" datatype="html">
+        <source>Terms and Conditions</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2696674911538130667" datatype="html">
+        <source>
+        - Submissions must include a Proof of Concept (PoC) demonstrating the vulnerability&apos;s exploitability. This could be in the form of a smart contract or a transaction.
+        - XSS (Cross-Site Scripting) reports are limited to those that potentially induce users to authorize transactions or cause redirects.
+        - Our team reserves the right to evaluate the impact and authenticity of the reported vulnerability.
+      </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">53,57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8659270738304106783" datatype="html">
+        <source>Submission Process</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7794605266967996033" datatype="html">
+        <source>To submit a report, please email us at <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;chainbrary@outlook.com&quot;&gt;"/>chainbrary@outlook.com<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. Ensure your report is detailed and includes the necessary evidence for validation.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4573119090244860505" datatype="html">
+        <source>Our Commitment</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7635326736340417636" datatype="html">
+        <source>Chainbrary is dedicated to maintaining the highest security standards and protecting our community. We value your contributions and strive to make our platform safe for all users.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BugBountyProgram.Title" datatype="html">
+        <source>Bug Bounty Program</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="BugBountyProgram.Desc" datatype="html">
+        <source>Welcome to the Chainbrary Bug Bounty Program. Our commitment is to provide a secure and reliable platform for our users. We encourage responsible disclosure of vulnerabilities and invite security researchers to participate in this program. Our focus is predominantly on safeguarding user funds against unauthorized access and fraudulent activities.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6683893851495057135" datatype="html">
         <source>Partner with Chainbrary</source>
         <context-group purpose="location">
@@ -1616,11 +1764,18 @@
           <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="footerBtn.Title.BountyProgram" datatype="html">
+        <source>Bounty Program</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="footerBtn.Title.WhitePaper" datatype="html">
         <source>White Paper</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">68</context>
+          <context context-type="linenumber">72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5048936242025669992" datatype="html">
