@@ -3,6 +3,6 @@ describe('Landing page', () => {
     cy.visit(`${Cypress.env('baseUrl')}/`);
     cy.get('.row.container-title')
       .find('h1.text-dark')
-      .should('have.text', 'Trust, Secure, Safe: Committing to Reliability.');
+      .should('have.text', 'Trust, Secure, Safe Committing to Reliability. ');
   });
 });
