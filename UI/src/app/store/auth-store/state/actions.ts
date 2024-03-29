@@ -1,5 +1,4 @@
 import { createAction, props } from '@ngrx/store';
-import { ProfileCreation } from '../../../shared/creations/profileCreation';
 import { IOrganization, IProfileAdded } from '../../../shared/interfaces';
 import { INetworkDetail, WalletProvider } from '@chainbrary/web3-login';
 
@@ -8,20 +7,11 @@ export const setAuthPublicAddress = createAction(
   props<{ publicAddress: string; network: INetworkDetail; wallet: WalletProvider }>()
 );
 export const addressChecking = createAction('[Auth] Address Checking');
+export const saveBalance = createAction('[Auth] Save Balance', props<{ balance: number }>());
 
 export const loadAuth = createAction('[Auth] Load Auth');
 export const loadAuthSuccess = createAction('[Auth] Load Auth Success', props<{ auth: IProfileAdded }>());
 export const loadAuthFailure = createAction('[Auth] Load Auth Failure', props<{ message: string }>());
-
-export const addAccountSent = createAction(
-  '[Auth] Add Account Sent',
-  props<{ account: ProfileCreation; hash: string; chainId: number }>()
-);
-export const addAccountSuccess = createAction(
-  '[Auth] Add Account Success',
-  props<{ hash: string; numberConfirmation: number }>()
-);
-export const addAccountFailure = createAction('[Auth] Add Account Failure', props<{ message: string }>());
 
 export const deleteAccountSent = createAction('[Auth] Delete Account Sent', props<{ hash: string; chainId: number }>());
 export const deleteAccountSuccess = createAction(

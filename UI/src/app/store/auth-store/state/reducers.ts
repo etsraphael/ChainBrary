@@ -16,12 +16,20 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
       }
     })
   ),
+  on(AuthActions.saveBalance, (state, action): IAuthState => {
+    return {
+      ...state,
+      balance: {
+        full: action.balance,
+        short: parseFloat(action.balance.toFixed(5))
+      }
+    };
+  }),
   on(
     AuthActions.loadAuthSuccess,
     (state, { auth }): IAuthState => ({
       ...state,
       publicAddress: auth.userAddress,
-      verifiedAccount: true,
       connectedUser: true,
       userAccount: {
         error: null,
@@ -69,8 +77,7 @@ export const authReducer: ActionReducer<IAuthState, Action> = createReducer(
       ...state,
       publicAddress: publicAddress,
       userAccount: initialState.userAccount,
-      organization: initialState.organization,
-      verifiedAccount: false
+      organization: initialState.organization
     })
   ),
   on(

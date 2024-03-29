@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () => import('../page/use-cases-page/use-cases-page.module').then((m) => m.UseCasesPageModule)
   },
   {
+    path: 'community-vaults',
+    loadChildren: () =>
+      import('../page/community-vaults-page/community-vaults-page.module').then((m) => m.CommunityVaultsPageModule)
+  },
+  {
     path: 'payment-page/:id',
     component: PaymentPageComponent,
     title: 'Payment Request'

@@ -319,3 +319,58 @@ Chainbrary is committed to the continuous enhancement of its services. Users sho
 - As we navigate the dynamic and innovative realm of blockchain technology, Chainbrary pledges to be a responsible and forward-thinking leader in this space. Our mission is to provide a platform that not only leverages the benefits of blockchain but also ensures a safe, respectful, and empowering environment for all our users.
 
 `;
+
+export const vaultTermAndCond = $localize`:@@vaultTermAndCond:
+
+# Community Vault Token Addition Terms and Conditions
+
+_Last Updated: 24th March 2024_
+
+### Introduction
+
+**Welcome to the Community Vault Token Addition Feature.** This document outlines the Terms and Conditions specifically for adding tokens to the Community Vault via our smart contract. By engaging with this feature, you agree to abide by these terms, ensuring a transparent and responsible token addition process.
+
+### Acceptance of Terms
+
+1. **Agreement:** By adding tokens to the Community Vault, you are agreeing to these Terms and Conditions.
+2. **Eligibility:** You must be of legal age and capable of entering into legally binding contracts. By adding tokens, you confirm compliance with this requirement.
+
+### Process of Token Addition
+
+1. **Deposit Method:** Tokens are added via a direct transfer to the smart contract.
+2. **Token Types:** Ensure the tokens you are adding are compatible with the smart contract.
+3. **Responsibility for Tokens:** Once added, tokens are under the control of the smart contract, subject to its rules and operations.
+
+### User Responsibilities
+
+1. **Compliance:** Adhere to all applicable laws and regulations in your jurisdiction related to cryptocurrency transactions.
+2. **Awareness:** Understand the risks involved in digital token transactions, including potential loss.
+3. **Verification:** Ensure the correctness of the amount and type of tokens added.
+
+### Security
+
+1. **Wallet Security:** You are solely responsible for the security of your blockchain wallet.
+2. **Smart Contract Reliance:** Recognize that the token addition is reliant on the security and functionality of the smart contract.
+
+### Risk Acknowledgement
+
+1. **Volatility and Risk:** Acknowledge the inherent risks in cryptocurrency transactions, including market volatility and technology risks.
+2. **No Insurance:** Tokens added to the Community Vault are not insured. In the event of loss, there is no recourse for recovery of value.
+
+### Changes to Terms
+
+1. **Modification Rights:** These Terms and Conditions may be modified periodically to reflect changes in services, legal requirements, or advancements in technology.
+2. **Continued Use:** Continued use of the token addition feature after changes indicates acceptance of the new terms.
+
+### Liability Limitations
+
+1. **Disclaimer:** We are not liable for any direct or indirect losses incurred due to market volatility, technical failures, or other factors beyond our control.
+2. **Indemnification:** You agree to indemnify and hold us harmless against any claims or losses related to the use of the Community Vault token addition feature.
+
+### Contact and Support
+
+- For inquiries or support, please reach out through our designated channels.
+
+### Final Acknowledgement
+
+By adding tokens to the Community Vault, you affirm your understanding and agreement to these Terms and Conditions, effective as of 24th March 2024.`;

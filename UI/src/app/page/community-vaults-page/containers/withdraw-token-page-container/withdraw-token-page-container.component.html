@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="d-flex justify-content-center pt-4">
+    <div class="col-12 col-md-10 col-lg-8">
+      <app-header-body-page [header]="headerPayload"></app-header-body-page>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center pt-4">
+    <div class="col-12 col-md-10 col-lg-8">
+      <app-auth-banner></app-auth-banner>
+      <div class="container py-3 px-0">
+        <div class="row">
+          <ng-container *ngIf="(isWrongNetwork | async) === false && urlNetworkFound !== null">
+            <app-withdraw-token-card
+              [vaultObs]="vaultSelected"
+              (withdrawToken)="withdrawToken()"
+              [errorMessage]="withdrawingErrorMessage$ | async"
+            >
+            </app-withdraw-token-card>
+          </ng-container>
+          <ng-container *ngIf="(isWrongNetwork | async) === true">
+            <div class="alert alert-danger text-center border-0" role="alert">
+              <span i18n>Wrong network found in the wallet. Please switch to the right network.</span>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

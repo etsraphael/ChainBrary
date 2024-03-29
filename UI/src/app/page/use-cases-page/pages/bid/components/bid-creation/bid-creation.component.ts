@@ -7,7 +7,7 @@ import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, distinctUntilChanged, filter, map, takeUntil, withLatestFrom } from 'rxjs';
 import { environment } from './../../../../../../../environments/environment';
 import { UploadImgModalComponent } from './../../../../../../page/use-cases-page/components/upload-img-modal/upload-img-modal.component';
-import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { TermAndCondModalComponent } from './../../../../../../shared/components/term-and-cond-modal/term-and-cond-modal.component';
 import { bidTermAndCond } from './../../../../../../shared/data/termAndCond';
 import { StoreState } from './../../../../../../shared/interfaces';
@@ -31,7 +31,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
   networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.networkSupported;
   networkList: INetworkDetail[] = [];
 
-  headerPayload: IUseCasesHeader = {
+  headerPayload: IHeaderBodyPage = {
     title: $localize`:@@bidCreationHeaderTitle:Bid creation`,
     goBackLink: '/use-cases/bid/services',
     description: null

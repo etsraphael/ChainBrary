@@ -4,7 +4,7 @@ import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, takeUntil, withLatestFrom } from 'rxjs';
-import { IUseCasesHeader } from './../../../../../../page/use-cases-page/components/use-cases-header/use-cases-header.component';
+import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import {
   ActionStoreProcessing,
   DocumentLockerRole,
@@ -40,7 +40,7 @@ import { CommonButtonText } from './../../../../../../shared/enum';
 export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
-  headerPayload: IUseCasesHeader = {
+  headerPayload: IHeaderBodyPage = {
     title: $localize`:@@documentLockerFoundTitle:Document Locked`,
     goBackLink: '/use-cases/document-locker/services',
     description: null

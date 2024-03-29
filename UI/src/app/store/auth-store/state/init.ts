@@ -2,7 +2,6 @@ import { IAuthState } from './interfaces';
 
 export const initialState: IAuthState = {
   publicAddress: null,
-  verifiedAccount: false,
   connectedUser: false,
   userAccount: {
     loading: false,
@@ -10,5 +9,6 @@ export const initialState: IAuthState = {
     data: null
   },
   organization: null,
-  network: null
+  network: null,
+  balance: null
 };

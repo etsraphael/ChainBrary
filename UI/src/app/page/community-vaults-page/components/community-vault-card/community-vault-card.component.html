@@ -1,0 +1,138 @@
+<ng-container *ngIf="vault.loading === false">
+  <div class="card border-0 my-2 shadow-sm p-3">
+    <div class="card-header bg-body border-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex align-items-center img-container-network">
+            <img
+              [src]="'./../../../../../assets/icons/tokens/' + vault.data?.network?.icon"
+              alt="coin-icon"
+              class="img-fluid"
+            />
+            <h6 i18n class="ms-2">{{ vault.data?.network?.networkDetail?.name }} network</h6>
+          </div>
+        </div>
+        <div class="col-12 text-end">
+          <p i18n class="mb-0">Total value locked</p>
+          <h4 class="text-secondary">
+            {{ vault.data?.data?.TVL }} {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+          </h4>
+        </div>
+        <div class="card-body bg-primary-subtle mb-3">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-6 d-flex flex-column justify-content-between">
+                <div>
+                  <p i18n>Total amount stacked</p>
+                </div>
+                <div>
+                  <h6 class="text-secondary mb-0">
+                    <strong>{{ vault.data?.data?.TVS }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
+                </div>
+              </div>
+              <div class="col-6 d-flex flex-column justify-content-between">
+                <div>
+                  <p i18n>Network reward</p>
+                </div>
+                <div>
+                  <h6 class="text-success mb-0">
+                    <strong>{{ vault.data?.data?.fullNetworkReward }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
+                </div>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-6 d-flex flex-column justify-content-between">
+                <div>
+                  <p i18n>My amount staked</p>
+                </div>
+                <div>
+                  <h6 class="text-secondary">
+                    <strong>{{ vault.data?.data?.userStaked }}</strong>
+                    {{ vault.data?.network?.networkDetail?.nativeCurrency?.symbol }}
+                  </h6>
+                </div>
+              </div>
+              <div class="col-6 d-flex flex-column justify-content-between">
+                <div>
+                  <p i18n>Network share</p>
+                </div>
+                <div>
+                  <h6 class="text-secondary">
+                    <strong>{{ networkShareToken }}</strong>
+                  </h6>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer border-0 bg-body">
+          <div class="row">
+            <div class="col-6">
+              <a [routerLink]="'./../withdraw-vault/' + vault.data?.network?.networkDetail?.chainId">
+                <button class="btn btn-outline-primary w-100">
+                  <span i18n>Withdraw</span>
+                </button>
+              </a>
+            </div>
+            <div class="col-6">
+              <a [routerLink]="'./../add-token/' + vault.data?.network?.networkDetail?.chainId">
+                <button class="btn btn-primary w-100">
+                  <span i18n>Add Tokens</span>
+                </button>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<!-- Skeleton version -->
+<ng-container *ngIf="vault.loading === true">
+  <div class="card border-0 my-2 shadow-sm p-3">
+    <div class="card-header bg-body border-0">
+      <div class="row">
+        <div class="col-12">
+          <div class="d-flex align-items-center img-container-network">
+            <ngx-skeleton-loader count="1" appearance="circle" size="sm"></ngx-skeleton-loader>
+            <ngx-skeleton-loader count="1" appearance="line" size="sm" style="margin-left: 8px"></ngx-skeleton-loader>
+          </div>
+        </div>
+        <div class="col-12 text-end">
+          <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+          <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+        </div>
+        <div class="card-body bg-primary-subtle mb-3">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-6 d-flex flex-column justify-content-between">
+                <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+                <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+              </div>
+            </div>
+            <hr />
+            <div class="row">
+              <div class="col-6 d-flex flex-column justify-content-between">
+                <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+                <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer border-0 bg-body">
+          <div class="row">
+            <div class="col-6">
+              <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

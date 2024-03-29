@@ -1,7 +1,7 @@
 <!-- Login -->
 <ng-container *ngIf="(userIsConnected$ | async) === false; else loggedInTemplate">
   <!-- Header -->
-  <app-use-cases-header [header]="loginHeader"></app-use-cases-header>
+  <app-header-body-page [header]="loginHeader"></app-header-body-page>
   <!-- Body -->
   <div class="d-flex flex-column align-items-center justify-content-center pt-5">
     <div class="d-flex flex-column align-items-center justify-content-center">
@@ -67,7 +67,7 @@
 
   <!-- Bid not found -->
   <ng-container *ngIf="(bidError$ | async) !== null">
-    <app-use-cases-header [header]="failureHeader"></app-use-cases-header>
+    <app-header-body-page [header]="failureHeader"></app-header-body-page>
     <div class="container">
       <div class="row">
         <div class="col-12">

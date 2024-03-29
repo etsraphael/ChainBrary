@@ -38,10 +38,6 @@ a {
 
 // Modals
 
-.mat-mdc-select-panel {
-  border-radius: 10px !important;
-}
-
 .qr-code-container-modal {
   .mat-mdc-dialog-surface {
     background: transparent !important;
@@ -49,8 +45,13 @@ a {
   }
 }
 
-.mat-mdc-dialog-container .mdc-dialog__surface {
+.web3-login-container .mat-mdc-dialog-container .mdc-dialog__surface {
   --mdc-dialog-container-shape: 1rem;
+}
+
+.fullscreen-dialog .mat-mdc-dialog-container .mdc-dialog__surface {
+  --mdc-dialog-container-shape: 0;
+  background: #f9f9f9cc;
 }
 
 .mat-mdc-snack-bar-container.success-snackbar {
