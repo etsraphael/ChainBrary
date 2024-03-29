@@ -205,64 +205,81 @@
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="landingPage.openSource" datatype="html">
-        <source>Open Source</source>
+      <trans-unit id="7936654424328059424" datatype="html">
+        <source>Tailored Solutions at Your Fingertips</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">11</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
+          <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="landingPage.openSourceDesc" datatype="html">
-        <source>Our platform uses blockchain technology to secure your assets and we employ regular audits to our system to protect the confidentiality and integrity of your information.</source>
+      <trans-unit id="8174954276157192699" datatype="html">
+        <source>Achieving Wide Range Recognition</source>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="landingPage.accessible" datatype="html">
-        <source>Accessible</source>
+      <trans-unit id="6278195405450989869" datatype="html">
+        <source>Join Our Community</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.paymentServiceTitle" datatype="html">
+        <source>Payment Request</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="landingPage.ourPlateformIsDesignedTo" datatype="html">
-        <source>Our platform is designed to be easy to use and accessible to all. With user-friendly interfaces and detailed documentation, anyone can take advantage of the power of our blockchain technology.</source>
+      <trans-unit id="landingPage.paymentServiceDesc" datatype="html">
+        <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="landingPage.transparent" datatype="html">
-        <source>Transparent</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">21</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="landingPage.ourPlateformIsOpenSource" datatype="html">
-        <source>Our platform is open source, allowing for a collaborative and transparent community of developers and users. This helps to ensure that our platform remains reliable and up-to-date.</source>
+      <trans-unit id="landingPage.bidServiceTitle" datatype="html">
+        <source>Start a Bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4371414621292952954" datatype="html">
-        <source>Trust, Secure, Safe: Committing to Reliability.</source>
+      <trans-unit id="landingPage.bidServiceDesc" datatype="html">
+        <source>Upload an item, set time limit and start bidding with tokens.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.documentLockerTitle" datatype="html">
+        <source>Document Locker</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.documentLockerDesc" datatype="html">
+        <source>Lock confidential information and open only with tokens.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6127137645635869561" datatype="html">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Trust, Secure, Safe<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Committing to Reliability. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">8</context>
+          <context context-type="linenumber">9,12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="166713648723495622" datatype="html">
         <source> ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing users with a library of open-source and secure tools for building and interacting with blockchain applications. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">11,15</context>
+          <context context-type="linenumber">15,19</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
@@ -273,14 +290,21 @@
         <source>Explore solutions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1302931627910546086" datatype="html">
         <source>Community Vaults</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6990955688134532612" datatype="html">
+        <source>Building trust among various crypto users by supporting different tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3614889482961320399" datatype="html">
@@ -520,6 +544,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
           <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.openSource" datatype="html">
+        <source>Open Source</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.ts</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PartnershipPage.Desc.Open-Source" datatype="html">
@@ -1703,79 +1734,91 @@
           <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="headerBtn.Title.Home" datatype="html">
+        <source>Home</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/drawer-sidebar/drawer-sidebar.component.ts</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="headerBtn.Title.Partnership" datatype="html">
+        <source>Partnership</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/drawer-sidebar/drawer-sidebar.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="headerBtn.Title.Services" datatype="html">
+        <source>Services</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/drawer-sidebar/drawer-sidebar.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="109261978612666226" datatype="html">
         <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Know us better<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Got questions? Reach us our social media </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
-          <context context-type="linenumber">33,35</context>
+          <context context-type="linenumber">40,42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5486643322139519195" datatype="html">
         <source>Copyright © 2023 All Rights Reserved</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
-          <context context-type="linenumber">49</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="headerBtn.Title.Home" datatype="html">
-        <source>Home</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">44</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">18</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="headerBtn.Title.Partnership" datatype="html">
-        <source>Partnership</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">48</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="headerBtn.Title.Services" datatype="html">
-        <source>Services</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">52</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.TermAndCond" datatype="html">
         <source>Terms and Conditions</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">32</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.PrivacyPolicy" datatype="html">
         <source>Privacy Policy</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">63</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.BountyProgram" datatype="html">
         <source>Bounty Program</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.WhitePaper" datatype="html">
         <source>White Paper</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5048936242025669992" datatype="html">
