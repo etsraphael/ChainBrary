@@ -47,9 +47,7 @@ export class FooterPageComponent implements OnInit {
   languageSelected: string;
   environment = environment;
 
-  constructor(
-    private translationService: TranslationService
-  ) {}
+  constructor(private translationService: TranslationService) {}
 
   scrollToTop(): void {
     return window.scrollTo({ top: 0, behavior: 'smooth' });
