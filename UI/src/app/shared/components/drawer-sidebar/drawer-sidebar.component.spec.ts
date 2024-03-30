@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { SharedTestModule } from '../shared-components.module';
 import { DrawerSidebarComponent } from './drawer-sidebar.component';
 
 describe('DrawerSidebarComponent', () => {
@@ -8,7 +8,8 @@ describe('DrawerSidebarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [DrawerSidebarComponent]
+      declarations: [DrawerSidebarComponent],
+      imports: [SharedTestModule]
     });
     fixture = TestBed.createComponent(DrawerSidebarComponent);
     component = fixture.componentInstance;

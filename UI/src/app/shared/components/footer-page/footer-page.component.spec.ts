@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedComponentsModule } from './../../../shared/components/shared-components.module';
-import { FooterPageComponent } from './footer-page.component';
 import { RouterTestingModule } from '@angular/router/testing';
+import { SharedTestModule } from './../../../shared/components/shared-components.module';
+import { FooterPageComponent } from './footer-page.component';
 
 describe('FooterPageComponent', () => {
   let component: FooterPageComponent;
@@ -9,7 +9,7 @@ describe('FooterPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedComponentsModule, RouterTestingModule],
+      imports: [SharedTestModule, RouterTestingModule],
       declarations: [FooterPageComponent]
     }).compileComponents();
 

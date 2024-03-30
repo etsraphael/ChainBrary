@@ -1,14 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { LandingPageBodyComponent, LandingPageCard } from './landing-page-body.component';
+import { IServiceCard } from './../../../../shared/components/service-card/service-card.component';
+import { SharedTestModule } from './../../../../shared/components/shared-components.module';
+import { LandingPageBodyComponent } from './landing-page-body.component';
 
 describe('LandingPageBodyComponent', () => {
   let component: LandingPageBodyComponent = new LandingPageBodyComponent();
   let fixture: ComponentFixture<LandingPageBodyComponent>;
-  const cards: LandingPageCard[] = component.cards;
+  const cards: IServiceCard[] = component.cards;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [LandingPageBodyComponent]
+      declarations: [LandingPageBodyComponent],
+      imports: [SharedTestModule]
     }).compileComponents();
 
     fixture = TestBed.createComponent(LandingPageBodyComponent);
@@ -20,33 +23,26 @@ describe('LandingPageBodyComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have cards with title property', () => {
-    const titles = ['Open Source', 'Accessible', 'Transparent'];
-
-    cards.forEach((card: LandingPageCard, index: number) => {
-      expect(card.title).toBeDefined();
-      expect(typeof card.title).toEqual('string');
-      expect(card.title.length).toBeGreaterThan(0);
-      expect(card.title).toEqual(titles[index]);
-    });
-  });
-
   it('should have cards with description property', () => {
-    cards.forEach((card: LandingPageCard) => {
+    cards.forEach((card: IServiceCard) => {
       expect(card.description).toBeDefined();
       expect(typeof card.description).toEqual('string');
       expect(card.description.length).toBeGreaterThan(0);
     });
   });
 
-  it('should have cards with icon property', () => {
-    const icons = ['bi-file-earmark-code', 'bi-universal-access', 'bi-eye'];
+  it('should have cards with image property', () => {
+    const icons = [
+      './../../../../assets/bg/light/payment-service.svg',
+      './../../../../assets/bg/light/bid-service.svg',
+      './../../../../assets/bg/light/document-service.svg'
+    ];
 
-    cards.forEach((card: LandingPageCard, index: number) => {
-      expect(card.icon).toBeDefined();
-      expect(typeof card.icon).toEqual('string');
-      expect(card.icon.length).toBeGreaterThan(0);
-      expect(card.icon).toEqual(icons[index]);
+    cards.forEach((card: IServiceCard, index: number) => {
+      expect(card.img).toBeDefined();
+      expect(typeof card.img).toEqual('string');
+      expect(card.img.length).toBeGreaterThan(0);
+      expect(card.img).toEqual(icons[index]);
     });
   });
 
@@ -55,33 +51,11 @@ describe('LandingPageBodyComponent', () => {
     expect(Array.isArray(cards)).toBeTruthy();
   });
 
-  it('should have cards with title property', () => {
-    const titles = ['Open Source', 'Accessible', 'Transparent'];
-
-    cards.forEach((card: LandingPageCard, index: number) => {
-      expect(card.title).toBeDefined();
-      expect(typeof card.title).toEqual('string');
-      expect(card.title.length).toBeGreaterThan(0);
-      expect(card.title).toEqual(titles[index]);
-    });
-  });
-
   it('should have cards with description property', () => {
-    cards.forEach((card: LandingPageCard) => {
+    cards.forEach((card: IServiceCard) => {
       expect(card.description).toBeDefined();
       expect(typeof card.description).toEqual('string');
       expect(card.description.length).toBeGreaterThan(0);
-    });
-  });
-
-  it('should have cards with icon property', () => {
-    const icons = ['bi-file-earmark-code', 'bi-universal-access', 'bi-eye'];
-
-    cards.forEach((card: LandingPageCard, index: number) => {
-      expect(card.icon).toBeDefined();
-      expect(typeof card.icon).toEqual('string');
-      expect(card.icon.length).toBeGreaterThan(0);
-      expect(card.icon).toEqual(icons[index]);
     });
   });
 });
