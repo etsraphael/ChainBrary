@@ -1,43 +1,30 @@
 .container-page {
-  background-image: url('./../../../../../assets/bg/light/mask2.svg');
+  background-image: url('./../../../../../assets/bg/light/bg-header-2.svg');
   background-repeat: no-repeat;
   background-position: initial;
   background-size: cover;
   overflow: hidden;
 }
 
-.card {
-  border: 0;
-  box-shadow: 1px 1px 1.875rem rgba(216, 125, 251, 0.42);
+.map-container {
+  background-image: url('./../../../../../assets/bg/light/bg-header-3.svg');
+  background-repeat: no-repeat;
+  background-position: initial;
+  background-size: cover;
+  overflow: hidden;
+}
+.social-madia-card-container {
+  background: linear-gradient(257deg, #f0ecff 2.65%, #fff 85.85%);
+
+  i {
+    font-size: 1.5rem;
+  }
 }
 
-.container-icon-card {
-  i {
-    font-size: 7rem;
-  }
+a {
+  text-decoration: none;
+}
 
-  .bi-file-earmark-code,
-  .bi-inboxes-fill-code {
-    background: -webkit-linear-gradient(top, #e72c83 0%, #a742c6 100%);
-    background: linear-gradient(to bottom, #e72c83 0%, #a742c6 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-  }
-
-  .bi-universal-access {
-    background: -webkit-linear-gradient(to top, #904e95, #e96443);
-    background: linear-gradient(to top, #904e95, #e96443);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-  }
-
-  .bi-eye {
-    background: -webkit-linear-gradient(to left, #e100ff, #7f00ff);
-    background: linear-gradient(to left, #e100ff, #7f00ff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    display: inline-block;
-  }
+.social-madia-card-container.card:hover {
+  background: linear-gradient(257deg, #f0ecff 2.65%, #f2f2f254 85.85%);
 }

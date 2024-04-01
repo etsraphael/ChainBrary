@@ -1,0 +1,28 @@
+.branding-img-container img {
+  width: 3rem;
+}
+
+.bi-x {
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+a {
+  text-decoration: none;
+}
+
+.active {
+  border-left: 3px solid var(--bs-primary);
+
+  .list-group-item {
+    background-color: #f8f9fa;
+  }
+}

@@ -1,18 +1,14 @@
 import { Component } from '@angular/core';
-import '@angular/localize/init';
-import { IHeaderBtn } from '../../interfaces';
 import { NavService } from '../../services/nav/nav.service';
-import { environment } from './../../../../environments/environment';
+import { IHeaderBtn } from '../../interfaces';
 
 @Component({
-  selector: 'app-header-page',
-  templateUrl: './header-page.component.html',
-  styleUrls: ['./header-page.component.scss']
+  selector: 'app-drawer-sidebar',
+  templateUrl: './drawer-sidebar.component.html',
+  styleUrls: ['./drawer-sidebar.component.scss']
 })
-export class HeaderPageComponent {
-  language: string[] = ['en', 'fr'];
-  languageSelected: string;
-  environment = environment;
+export class DrawerSidebarComponent {
+  constructor(public navService: NavService) {}
 
   headerBtns: IHeaderBtn[] = [
     {
@@ -28,6 +24,4 @@ export class HeaderPageComponent {
       url: '/use-cases/services'
     }
   ];
-
-  constructor(public navService: NavService) {}
 }
