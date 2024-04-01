@@ -41,7 +41,7 @@ describe('Log an user with MetaMask', () => {
     cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
 
     // check is address is visible
-    cy.get('app-auth-banner [data-id="address-id"]').should('be.visible');
+    cy.get('app-auth-banner [data-id="address-id"]').scrollIntoView().should('be.visible');
 
     cy.window().its('ethereum.isMetaMask').should('be.true');
   });

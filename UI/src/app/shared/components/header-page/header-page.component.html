@@ -16,44 +16,29 @@
   <div class="d-none d-sm-block col-sm-8">
     <div class="row">
       <div class="d-flex justify-content-end">
-        <div class="btn-container my-auto mx-2 pb-2" routerLinkActive="active" *ngFor="let item of headerBtns">
+        <div class="my-auto pb-2" routerLinkActive="active" *ngFor="let item of headerBtns">
           <a [routerLink]="item.url">
             <button class="btn btn-light">
               <span>{{ item.title }}</span>
             </button>
           </a>
         </div>
-        <mat-form-field class="my-auto pb-2">
-          <mat-select [(ngModel)]="languageSelected" (selectionChange)="switchLanguage($event.value)">
-            <mat-option [value]="lang" *ngFor="let lang of language">
-              {{ lang }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
+
+        <a routerLink="./../community-vaults">
+          <button type="button" class="mx-2 btn btn-outline-primary" routerLinkActive="btn-primary text-light">
+            <i class="bi bi-safe2 pe-2"></i>
+            Community Vault
+          </button>
+        </a>
       </div>
     </div>
   </div>
   <div class="container-menu-icon col-3 d-block d-sm-none d-flex justify-content-end">
     <app-chainbrary-button
       [buttonClasses]="['border-0', 'bg-transparent', 'w-init']"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarToggleExternalContent"
-      aria-controls="navbarToggleExternalContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
+      (callToAction)="navService.toggleDrawer()"
     >
       <i class="bi bi-list d-flex justify-content-end text-dark"></i>
     </app-chainbrary-button>
-  </div>
-  <div class="d-block d-sm-none px-0 bg-light">
-    <div class="collapse" id="navbarToggleExternalContent">
-      <ul class="list-group list-group-flush">
-        <li class="list-group-item bg-light text-dark" *ngFor="let item of headerBtns">
-          <a [routerLink]="item.url">
-            <button class="btn btn-light">{{ item.title }}</button>
-          </a>
-        </li>
-      </ul>
-    </div>
   </div>
 </div>

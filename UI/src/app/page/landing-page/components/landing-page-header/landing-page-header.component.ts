@@ -5,4 +5,16 @@ import { Component } from '@angular/core';
   templateUrl: './landing-page-header.component.html',
   styleUrls: ['./landing-page-header.component.scss']
 })
-export class LandingPageHeaderPageComponent {}
+export class LandingPageHeaderPageComponent {
+  iconList: IconsBranding[] = [
+    { url: 'avalanche-brand.svg' },
+    { url: 'binance-brand.svg' },
+    { url: 'ethereum-brand.svg' },
+    { url: 'polkadot-brand.svg' },
+    { url: 'polygon-brand.svg' }
+  ];
+}
+
+interface IconsBranding {
+  url: string;
+}

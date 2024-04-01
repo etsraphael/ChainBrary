@@ -1,25 +1,48 @@
 <div class="container-page border-bottom">
-  <div class="py-sm-4 py-md-5"></div>
-  <div class="container">
+  <div class="container py-4">
+    <div class="row justify-content-center">
+      <div class="col-10 text-center py-4">
+        <h2 i18n class="text-dark">Tailored Solutions at Your Fingertips</h2>
+      </div>
+    </div>
     <div class="row justify-content-center">
       <div class="col-12 col-sm-8 col-lg-4 my-2 my-lg-0" *ngFor="let item of cards">
-        <div class="card p-3 pl-4 h-100">
-          <div class="container container-icon-card">
-            <div class="row">
-              <div class="col">
-                <i class="bi" [ngClass]="item.icon"></i>
-              </div>
-            </div>
-          </div>
-          <div class="card-body text-dark">
-            <h3 class="mb-3">{{ item.title }}</h3>
-            <p>
-              {{ item.description }}
-            </p>
-          </div>
-        </div>
+        <app-service-card [card]="item"></app-service-card>
       </div>
     </div>
   </div>
   <div class="py-sm-5"></div>
+</div>
+<div class="map-container pb-4">
+  <div class="row justify-content-center">
+    <div class="col-10 text-center py-4">
+      <h2 i18n class="text-dark">Achieving Wide Range Recognition</h2>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <img class="col-10 col-md-6" src="./../../../../../assets/images/landing-page-world-map.png" alt="" />
+  </div>
+</div>
+<div class="container community-container py-4">
+  <div class="row justify-content-center">
+    <div class="col-10 text-center py-4">
+      <h2 i18n class="text-dark">Join Our Community</h2>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row justify-content-center">
+      <div *ngFor="let item of socialMediaList" class="col-5 col-md-4 col-lg-2 my-2">
+        <a [href]="item.url" target="_blank">
+          <div class="social-madia-card-container card border-0 shadow-sm p-2 h-100">
+            <h5 class="text-primary ps-1">{{ item.text }}</h5>
+            <div class="d-flex justify-content-end">
+              <a target="_blank" class="text-dark mx-2">
+                <i class="bi" [ngClass]="item.icon"></i>
+              </a>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
 </div>
