@@ -51,14 +51,6 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4371414621292952954" datatype="html">
-        <source>Trust, Secure, Safe: Committing to Reliability.</source>
-        <target>Confiance, Sécurité, Protection : S'engager pour la Fiabilité.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">8</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="166713648723495622" datatype="html">
         <source> ChainBrary is a platform that aims to make blockchain technology more accessible to everyone by providing users with a library of open-source and secure tools for building and interacting with blockchain applications. </source>
         <target>ChainBrary est une plateforme qui vise à rendre la technologie blockchain plus accessible à tous en fournissant aux utilisateurs une bibliothèque d'outils open-source et sécurisés pour construire et interagir avec des applications blockchain.</target>
@@ -3294,6 +3286,94 @@ En ajoutant des tokens au Coffre de la Communauté, vous confirmez votre compré
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.ts</context>
           <context context-type="linenumber">67</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7936654424328059424">
+        <source>Tailored Solutions at Your Fingertips</source>
+        <target>Des solutions sur-mesure à votre portée</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8174954276157192699">
+        <source>Achieving Wide Range Recognition</source>
+        <target>Atteindre une Reconnaissance à Grande Échelle</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6278195405450989869">
+        <source>Join Our Community</source>
+        <target>Rejoignez Notre Communauté</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.paymentServiceTitle">
+        <source>Payment Request</source>
+        <target>Demande de Paiement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.paymentServiceDesc">
+        <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
+        <target>Connectez votre portefeuille, créez un ID ou un QRcode et utilisez-le pour recevoir des paiements.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.bidServiceTitle">
+        <source>Start a Bid</source>
+        <target>Commencer une Offre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.bidServiceDesc">
+        <source>Upload an item, set time limit and start bidding with tokens.</source>
+        <target>Téléchargez un article, définissez une limite de temps et commencez à enchérir avec des jetons.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.documentLockerTitle">
+        <source>Document Locker</source>
+        <target>Casier de Documents</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.documentLockerDesc">
+        <source>Lock confidential information and open only with tokens.</source>
+        <target>Verrouillez les informations confidentielles et ouvrez uniquement avec des jetons.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6127137645635869561">
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Trust, Secure, Safe<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Committing to Reliability. </source>
+        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Confiance, Sécurité, <x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/>Engagement envers la Fiabilité.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">9,12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6990955688134532612">
+        <source>Building trust among various crypto users by supporting different tokens</source>
+        <target>Construire la confiance parmi divers utilisateurs de crypto en soutenant différents tokens</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
+          <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
     </body>

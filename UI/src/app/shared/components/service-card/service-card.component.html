@@ -1,0 +1,12 @@
+<div class="card border-0 shadow h-100">
+  <img class="img-fluid" [src]="card.img" />
+  <div class="container h-100 p-3">
+    <h4 class="text-dark">{{ card.title }}</h4>
+    <p class="text-secondary">{{ card.description }}</p>
+  </div>
+  <div class="container mt-auto py-3">
+    <a [routerLink]="card.routerUrl">
+      <button class="btn btn-outline-primary w-100">Learn more</button>
+    </a>
+  </div>
+</div>

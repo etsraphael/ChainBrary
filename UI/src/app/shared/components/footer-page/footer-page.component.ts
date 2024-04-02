@@ -1,43 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { SocialMediaCardItem } from '../../interfaces';
+import { footerListData } from './../../../data/socialMediaCard.data';
+import { environment } from './../../../../environments/environment';
+import { TranslationService } from '../../services/translation/translation.service';
 
 @Component({
   selector: 'app-footer-page',
   templateUrl: './footer-page.component.html',
   styleUrls: ['./footer-page.component.scss']
 })
-export class FooterPageComponent {
-  footerBtns: IFooterBtn[] = [
-    {
-      text: 'Discord',
-      url: 'https://discord.gg/YPzkt2dM6C',
-      icon: 'bi-discord'
-    },
-    {
-      text: 'Twitter',
-      url: 'https://twitter.com/chainbrary',
-      icon: 'bi-twitter-x'
-    },
-    {
-      text: 'Github',
-      url: 'https://github.com/etsraphael/ChainBrary',
-      icon: 'bi-github'
-    },
-    {
-      text: 'Medium',
-      url: 'https://iamraphaelsalei.medium.com',
-      icon: 'bi-medium'
-    },
-    {
-      text: 'Facebook',
-      url: 'https://www.facebook.com/profile.php?id=61555823715468',
-      icon: 'bi-facebook'
-    },
-    {
-      text: 'Instagram',
-      url: 'https://www.instagram.com/chainbrary',
-      icon: 'bi-instagram'
-    }
-  ];
+export class FooterPageComponent implements OnInit {
+  footerBtns: SocialMediaCardItem[] = footerListData;
 
   footerList0: IFooterItem[] = [
     {
@@ -70,6 +43,11 @@ export class FooterPageComponent {
   ];
 
   whitePaperText = $localize`:@@footerBtn.Title.WhitePaper:White Paper`;
+  language: string[] = ['en', 'fr'];
+  languageSelected: string;
+  environment = environment;
+
+  constructor(private translationService: TranslationService) {}
 
   scrollToTop(): void {
     return window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -78,12 +56,14 @@ export class FooterPageComponent {
   goToLinkOutsideApp(link: string): Window | null {
     return window.open(link, '_blank');
   }
-}
 
-interface IFooterBtn {
-  text: string;
-  url: string;
-  icon: string;
+  ngOnInit(): void {
+    this.languageSelected = this.translationService.getLanguageFromUrl();
+  }
+
+  switchLanguage(lang: string): void {
+    return this.translationService.switchLanguage(lang);
+  }
 }
 
 interface IFooterItem {

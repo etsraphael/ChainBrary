@@ -5,3 +5,40 @@
 .container-footer-btn i {
   font-size: 1.5rem;
 }
+
+::ng-deep app-footer-page {
+  .mat-mdc-text-field-wrapper .mat-mdc-form-field-infix {
+    width: auto !important;
+  }
+
+  .mat-mdc-select-min-line {
+    padding-right: 1rem;
+  }
+
+  .mdc-line-ripple,
+  .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  .mat-mdc-form-field-focus-overlay {
+    display: none;
+  }
+
+  .mdc-text-field--filled:not(.mdc-text-field--disabled) {
+    background-color: transparent !important;
+  }
+
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
+    padding-top: 1px;
+    padding-bottom: 0px;
+  }
+
+  .mat-mdc-form-field-infix {
+    min-height: 30px;
+  }
+
+  .mat-mdc-text-field-wrapper.mdc-text-field--outlined .mat-mdc-form-field-infix {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
+}
