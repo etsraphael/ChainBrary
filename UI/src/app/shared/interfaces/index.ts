@@ -1,7 +1,6 @@
 export * from './core.interface';
 export * from './document-locker.interface';
 export * from './payment.interface';
-export * from './sidebar-route.interface';
 export * from './token.interface';
 export * from './transaction-card.interface';
 export * from './user.interface';

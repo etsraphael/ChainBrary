@@ -1,8 +1,6 @@
 import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { routeAnimations } from './../../../assets/animations/routeAnimations';
-import useCaseRoutes from './../../shared/data/useCaseRoutes';
-import { ServiceItemMenu } from './../../shared/interfaces';
 
 @Component({
   selector: 'app-use-cases-page',
@@ -11,7 +9,6 @@ import { ServiceItemMenu } from './../../shared/interfaces';
   animations: [routeAnimations]
 })
 export class UseCasesPageComponent implements AfterViewInit {
-  useCaseRoutes: ServiceItemMenu[] = useCaseRoutes;
 
   constructor(private cdRef: ChangeDetectorRef) {}
 

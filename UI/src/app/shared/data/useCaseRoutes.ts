@@ -1,34 +1,24 @@
-import { ServiceItemMenu } from '../interfaces';
+import { IServiceCard } from "../components/service-card/service-card.component";
 
-const useCaseRoutes: ServiceItemMenu[] = [
+const serviceCards: IServiceCard[] = [
   {
-    title: $localize`:@@servicePage.sharePaymentTitle:Share Payment`,
-    path: '/payment-request',
-    icon: 'bi-credit-card-2-back',
-    enabled: true,
-    description: $localize`:@@servicePage.sharePaymentDesc:Share payment requests fast and safely via link/QR code`
+    title: $localize`:@@landingPage.paymentServiceTitle:Payment Request`,
+    description: $localize`:@@landingPage.paymentServiceDesc:Connect you wallet, Create an ID or QRcode and use it to receive payments.`,
+    img: './../../../../assets/bg/light/payment-service.svg',
+    routerUrl: './../../use-cases/payment-request'
   },
   {
-    title: $localize`:@@servicePage.startABidTitle:Start a Bid`,
-    path: '/bid',
-    icon: 'bi-alarm',
-    enabled: true,
-    description: $localize`:@@servicePage.startABidDesc: Easily manage transparent bids with complete control`
+    title: $localize`:@@landingPage.bidServiceTitle:Start a Bid`,
+    description: $localize`:@@landingPage.bidServiceDesc:Upload an item, set time limit and start bidding with tokens.`,
+    img: './../../../../assets/bg/light/bid-service.svg',
+    routerUrl: './../../use-cases/bid/services'
   },
   {
-    title: $localize`:@@servicePage.documentLockerTitle:Document Locker`,
-    path: '/document-locker',
-    icon: 'bi-file-lock',
-    enabled: true,
-    description: $localize`:@@servicePage.documentLockerDesc:Securely store and share documents with anyone`
-  },
-  {
-    title: $localize`:@@servicePage.PayTogetherTitle:Pay Together`,
-    path: '/',
-    icon: 'bi-people-fill',
-    enabled: false,
-    description: $localize`:@@servicePage.PayTogetherDesc:Facilitate group payments easily, ideal for shared expenses and gifts`
+    title: $localize`:@@landingPage.documentLockerTitle:Document Locker`,
+    description: $localize`:@@landingPage.documentLockerDesc:Lock confidential information and open only with tokens.`,
+    img: './../../../../assets/bg/light/document-service.svg',
+    routerUrl: './../../use-cases/document-locker/services'
   }
 ];
 
-export default useCaseRoutes;
+export default serviceCards;
