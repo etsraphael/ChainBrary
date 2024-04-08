@@ -9,7 +9,6 @@ import { routeAnimations } from './../../../assets/animations/routeAnimations';
   animations: [routeAnimations]
 })
 export class UseCasesPageComponent implements AfterViewInit {
-
   constructor(private cdRef: ChangeDetectorRef) {}
 
   ngAfterViewInit() {

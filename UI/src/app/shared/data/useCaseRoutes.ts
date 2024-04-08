@@ -1,4 +1,4 @@
-import { IServiceCard } from "../components/service-card/service-card.component";
+import { IServiceCard } from '../components/service-card/service-card.component';
 
 const serviceCards: IServiceCard[] = [
   {

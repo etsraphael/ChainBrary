@@ -19,7 +19,6 @@ import { QrCodeContainerModalComponent } from './modal/qr-code-container-modal/q
 import { ServiceCardComponent } from './service-card/service-card.component';
 import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
-import { UseCasesSidebarComponent } from './use-cases-sidebar/use-cases-sidebar.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 
 @NgModule({
@@ -27,7 +26,6 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     FooterPageComponent,
     HeaderPageComponent,
     UserAvatarComponent,
-    UseCasesSidebarComponent,
     TransactionCardComponent,
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent,
@@ -43,7 +41,6 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     FooterPageComponent,
     HeaderPageComponent,
     UserAvatarComponent,
-    UseCasesSidebarComponent,
     TransactionCardComponent,
     ChainbraryButtonComponent,
     QrCodeContainerModalComponent,
