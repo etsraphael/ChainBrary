@@ -49,21 +49,21 @@ export class BidPageComponent implements OnInit, OnDestroy {
     private formatService: FormatService
   ) {}
 
-  searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
-  bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
-  userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
-  startBidderCountdownTrigger$: Observable<ReturnType<typeof bidRefreshCheckSuccess>> = this.actions$.pipe(
+  readonly searchBidStore$: Observable<StoreState<IBid | null>> = this.store.select(selectSearchBid);
+  readonly bidderListStore$: Observable<StoreState<IBidOffer[]>> = this.store.select(selectBidders);
+  readonly userIsConnected$: Observable<boolean> = this.store.select(selectIsConnected);
+  readonly startBidderCountdownTrigger$: Observable<ReturnType<typeof bidRefreshCheckSuccess>> = this.actions$.pipe(
     ofType(bidRefreshCheckSuccess),
     takeUntil(this.destroyed$)
   );
-  requestWithdrawSuccess$: Observable<ReturnType<typeof requestWithdrawSuccess>> = this.actions$.pipe(
+  readonly requestWithdrawSuccess$: Observable<ReturnType<typeof requestWithdrawSuccess>> = this.actions$.pipe(
     ofType(requestWithdrawSuccess),
     takeUntil(this.destroyed$)
   );
-  bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing);
-  currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
-  bidCreationIsLoading$: Observable<boolean> = this.store.select(selectBidCreationIsLoading);
-  commonButtonText = CommonButtonText;
+  readonly bidWidthdrawing$: Observable<ActionStoreProcessing> = this.store.select(selectBidWidthdrawing);
+  readonly currentNetwork$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
+  readonly bidCreationIsLoading$: Observable<boolean> = this.store.select(selectBidCreationIsLoading);
+  readonly commonButtonText = CommonButtonText;
 
   get isOwner$(): Observable<boolean> {
     return this.bid$.pipe(
@@ -144,26 +144,6 @@ export class BidPageComponent implements OnInit, OnDestroy {
     return this.store.dispatch(placeBid({ amount: event.amount }));
   }
 
-  listenNetworkChanged(): void {
-    this.actions$.pipe(ofType(networkChangeSuccess), takeUntil(this.destroyed$)).subscribe(() => this.getBid());
-  }
-
-  callActions(): void {
-    // load bid when user is connected
-    this.actions$
-      .pipe(
-        ofType(setAuthPublicAddress),
-        filter(
-          (event: { publicAddress: string }) =>
-            this.route.snapshot.paramMap.get('id') !== null && event.publicAddress !== null
-        ),
-        withLatestFrom(this.bidCreationIsLoading$),
-        filter(([, isLoading]) => !isLoading),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe(() => this.getBid());
-  }
-
   refreshBidderList(): void {
     return this.store.dispatch(bidRefreshCheck());
   }
@@ -183,6 +163,26 @@ export class BidPageComponent implements OnInit, OnDestroy {
 
   private getBid(): void {
     return this.store.dispatch(getBidByTxn({ txn: this.route.snapshot.paramMap.get('id') as string }));
+  }
+
+  private listenNetworkChanged(): void {
+    this.actions$.pipe(ofType(networkChangeSuccess), takeUntil(this.destroyed$)).subscribe(() => this.getBid());
+  }
+
+  private callActions(): void {
+    // load bid when user is connected
+    this.actions$
+      .pipe(
+        ofType(setAuthPublicAddress),
+        filter(
+          (event: { publicAddress: string }) =>
+            this.route.snapshot.paramMap.get('id') !== null && event.publicAddress !== null
+        ),
+        withLatestFrom(this.bidCreationIsLoading$),
+        filter(([, isLoading]) => !isLoading),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe(() => this.getBid());
   }
 }
 
