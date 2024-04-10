@@ -26,7 +26,7 @@ export class HomeBidMenuComponent {
       descritpion: $localize`:@@useCases.bid.joinBidDescription:Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.`,
       routerLink: '/use-cases/bid/search',
       buttonText: 'Start joining',
-      imgSrc: './../../../../assets/bg/light/bid-service.svg' // TODO: Change image
+      imgSrc: './../../../../assets/services/bid-service-0.svg'
     }
   ];
 }
