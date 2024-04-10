@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import useCaseRoutes from './../../../../shared/data/useCaseRoutes';
-import { ServiceItemMenu } from './../../../../shared/interfaces';
+import { IServiceCard } from './../../../../shared/components/service-card/service-card.component';
+import serviceCards from './../../../../shared/data/useCaseRoutes';
 
 @Component({
   selector: 'app-use-cases-list',
@@ -8,5 +8,5 @@ import { ServiceItemMenu } from './../../../../shared/interfaces';
   styleUrls: ['./use-cases-list.component.scss']
 })
 export class UseCasesListComponent {
-  useCaseRoutes: ServiceItemMenu[] = useCaseRoutes;
+  cards: IServiceCard[] = serviceCards;
 }
