@@ -1,4 +1,5 @@
 <app-header-page></app-header-page>
-<div [@routeAnimations]="prepareRoute(outlet)">
-  <router-outlet #outlet="outlet"></router-outlet>
+<router-outlet></router-outlet>
+<div class="pt-3">
+  <app-footer-page></app-footer-page>
 </div>

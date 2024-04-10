@@ -3376,6 +3376,102 @@ En ajoutant des tokens au Coffre de la Communauté, vous confirmez votre compré
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="819996403327805209">
+        <source>Learn more</source>
+        <target>En savoir plus</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/service-card/service-card.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4789735819534327004">
+        <source>Coming soon..</source>
+        <target>Bientôt disponible..</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/service-card/service-card.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.payTogetherServiceTitle">
+        <source>Pay Together</source>
+        <target>Payer Ensemble</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.payTogetherServiceDesc">
+        <source> Create a payment link and share it with your friends to pay together.</source>
+        <target>Créez un lien de paiement et partagez-le avec vos amis pour payer ensemble.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.anonymousVoteServiceTitle">
+        <source>Anonymous Vote</source>
+        <target>Vote Anonyme</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.anonymousVoteServiceDesc">
+        <source>Create a vote and share it with your friends to vote anonymously</source>
+        <target>Créez un vote et partagez-le avec vos amis pour voter anonymement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.createTokenServiceTitle">
+        <source> Create Token</source>
+        <target>Créer un token</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.createTokenServiceDesc">
+        <source> Create a token and share it with your friends to use it as a currency.</source>
+        <target>Créez un token et partagez-le avec vos amis pour l'utiliser comme une monnaie.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.networkBridgeServiceTitle">
+        <source> Network Bridge</source>
+        <target>Pont Réseau</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.networkBridgeServiceDesc">
+        <source> Connect two different networks and transfer tokens between them.</source>
+        <target>Connectez deux réseaux différents et transférez des tokens entre eux.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.tokenSwapServiceTitle">
+        <source> Token Swap</source>
+        <target>Échange de Tokens</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.tokenSwapServiceDesc">
+        <source> Swap tokens for another token on the same network.</source>
+        <target>Échangez des tokens entre eux dans le même réseau. </target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">52</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
