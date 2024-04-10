@@ -49,7 +49,7 @@ const serviceCards: IServiceCard[] = [
   },
   {
     title: $localize`:@@servicePage.tokenSwapServiceTitle: Token Swap`,
-    description: $localize`:@@servicePage.tokenSwapServiceDesc: Swap tokens between two different networks.`,
+    description: $localize`:@@servicePage.tokenSwapServiceDesc: Swap tokens for another token on the same network.`,
     img: './../../../../assets/services/swap-token.svg',
     routerUrl: null,
     isDisabled: true
