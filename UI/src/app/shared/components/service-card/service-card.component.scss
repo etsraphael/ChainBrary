@@ -1,3 +1,12 @@
 .card {
   overflow: hidden;
 }
+
+.imgDisabled {
+  filter: grayscale(50%) brightness(60%) contrast(120%);
+}
+
+.border-dashed {
+  border: 1px dashed;
+}
+
