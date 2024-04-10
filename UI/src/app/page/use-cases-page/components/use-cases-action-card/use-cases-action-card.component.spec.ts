@@ -18,7 +18,8 @@ describe('UseCasesActionCardComponent', () => {
       title: '',
       descritpion: '',
       routerLink: '',
-      buttonText: ''
+      buttonText: '',
+      imgSrc: ''
     };
     fixture.detectChanges();
   });
