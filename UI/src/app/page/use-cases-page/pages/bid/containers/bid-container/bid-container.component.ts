@@ -1,21 +1,8 @@
-import { AfterViewInit, ChangeDetectorRef, Component } from '@angular/core';
-import { routeAnimations } from './../../../../../../../assets/animations/routeAnimations';
-import { RouterOutlet } from '@angular/router';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-bid-container',
   templateUrl: './bid-container.component.html',
-  styleUrls: ['./bid-container.component.scss'],
-  animations: [routeAnimations]
+  styleUrls: ['./bid-container.component.scss']
 })
-export class BidContainerComponent implements AfterViewInit {
-  constructor(private cdRef: ChangeDetectorRef) {}
-
-  ngAfterViewInit() {
-    this.cdRef.detectChanges();
-  }
-
-  prepareRoute(outlet: RouterOutlet) {
-    return outlet && outlet.activatedRouteData && outlet.activatedRouteData['animation'];
-  }
-}
+export class BidContainerComponent {}

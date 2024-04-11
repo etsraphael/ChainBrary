@@ -14,4 +14,5 @@ export interface IUseCasesActionCard {
   descritpion: string;
   routerLink: string;
   buttonText: string;
+  imgSrc: string;
 }

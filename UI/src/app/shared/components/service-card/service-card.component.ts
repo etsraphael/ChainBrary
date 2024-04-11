@@ -13,5 +13,6 @@ export interface IServiceCard {
   title: string;
   description: string;
   img: string;
-  routerUrl: string;
+  routerUrl: string | null;
+  isDisabled?: boolean;
 }

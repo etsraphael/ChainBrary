@@ -232,12 +232,20 @@
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">16</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">5</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="landingPage.paymentServiceDesc" datatype="html">
         <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.bidServiceTitle" datatype="html">
@@ -246,12 +254,20 @@
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">22</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="landingPage.bidServiceDesc" datatype="html">
         <source>Upload an item, set time limit and start bidding with tokens.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.documentLockerTitle" datatype="html">
@@ -260,6 +276,10 @@
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">28</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">17</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="landingPage.documentLockerDesc" datatype="html">
         <source>Lock confidential information and open only with tokens.</source>
@@ -267,9 +287,13 @@
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">29</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="6127137645635869561" datatype="html">
-        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Trust, Secure, Safe<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Committing to Reliability.</source>
+        <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Trust, Secure, Safe<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Committing to Reliability. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">9,12</context>
@@ -304,7 +328,7 @@
         <source>Building trust among various crypto users by supporting different tokens</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">47</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3614889482961320399" datatype="html">
@@ -1217,14 +1241,14 @@
         <source>Join a bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.joinBidDescription" datatype="html">
         <source>Dive into existing bids with &apos;Join a Bid.&apos; Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8279184784576934083" datatype="html">
@@ -1783,14 +1807,14 @@
         <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Know us better<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Got questions? Reach us our social media </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
-          <context context-type="linenumber">40,42</context>
+          <context context-type="linenumber">45,47</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5486643322139519195" datatype="html">
         <source>Copyright © 2023 All Rights Reserved</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.TermAndCond" datatype="html">
@@ -1828,6 +1852,20 @@
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="819996403327805209" datatype="html">
+        <source>Learn more</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/service-card/service-card.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4789735819534327004" datatype="html">
+        <source>Coming soon..</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/service-card/service-card.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="8505691224260767503" datatype="html">
         <source>Term and condition</source>
         <context-group purpose="location">
@@ -1840,20 +1878,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
           <context context-type="linenumber">4,6</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="5874499849802990855" datatype="html">
-        <source>Wrong network</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar/use-cases-sidebar.component.html</context>
-          <context context-type="linenumber">7</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="5158254825592648580" datatype="html">
-        <source>Your wallet does not match with the current selected network.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/components/use-cases-sidebar/use-cases-sidebar.component.html</context>
-          <context context-type="linenumber">8</context>
         </context-group>
       </trans-unit>
       <trans-unit id="privacyAndPolicy.File" datatype="html">
@@ -2517,60 +2541,74 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
           <context context-type="linenumber">323,376</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="servicePage.sharePaymentTitle" datatype="html">
-        <source>Share Payment</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">5</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.sharePaymentDesc" datatype="html">
-        <source>Share payment requests fast and safely via link/QR code</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">9</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.startABidTitle" datatype="html">
-        <source>Start a Bid</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">12</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.startABidDesc" datatype="html">
-        <source> Easily manage transparent bids with complete control</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.documentLockerTitle" datatype="html">
-        <source>Document Locker</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">19</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.documentLockerDesc" datatype="html">
-        <source>Securely store and share documents with anyone</source>
+      <trans-unit id="servicePage.payTogetherServiceTitle" datatype="html">
+        <source>Pay Together</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="servicePage.PayTogetherTitle" datatype="html">
-        <source>Pay Together</source>
+      <trans-unit id="servicePage.payTogetherServiceDesc" datatype="html">
+        <source> Create a payment link and share it with your friends to pay together.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="servicePage.PayTogetherDesc" datatype="html">
-        <source>Facilitate group payments easily, ideal for shared expenses and gifts</source>
+      <trans-unit id="servicePage.anonymousVoteServiceTitle" datatype="html">
+        <source>Anonymous Vote</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
           <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.anonymousVoteServiceDesc" datatype="html">
+        <source>Create a vote and share it with your friends to vote anonymously</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.createTokenServiceTitle" datatype="html">
+        <source> Create Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.createTokenServiceDesc" datatype="html">
+        <source> Create a token and share it with your friends to use it as a currency.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.networkBridgeServiceTitle" datatype="html">
+        <source> Network Bridge</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.networkBridgeServiceDesc" datatype="html">
+        <source> Connect two different networks and transfer tokens between them.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.tokenSwapServiceTitle" datatype="html">
+        <source> Token Swap</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.tokenSwapServiceDesc" datatype="html">
+        <source> Swap tokens for another token on the same network.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonButtonTextCancel" datatype="html">

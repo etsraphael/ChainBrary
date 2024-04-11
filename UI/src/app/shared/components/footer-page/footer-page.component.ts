@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SocialMediaCardItem } from '../../interfaces';
-import { footerListData } from './../../../data/socialMediaCard.data';
-import { environment } from './../../../../environments/environment';
 import { TranslationService } from '../../services/translation/translation.service';
+import { environment } from './../../../../environments/environment';
+import { footerListData } from './../../../data/socialMediaCard.data';
 
 @Component({
   selector: 'app-footer-page',
