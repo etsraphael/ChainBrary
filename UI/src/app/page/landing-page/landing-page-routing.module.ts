@@ -13,22 +13,27 @@ const routes: Routes = [
     component: LandingHomePageContainerComponent,
     children: [
       {
+        title: 'Home',
         path: 'home',
         component: LandingPageContainerComponent
       },
       {
+        title: 'Partnership',
         path: 'partnership',
         component: PartnershipPageContainerComponent
       },
       {
+        title: 'Privacy Policy',
         path: 'privacy-policy',
         component: PrivacyPolicyPageContainerComponent
       },
       {
+        title: 'Terms and Conditions',
         path: 'terms-and-conditions',
         component: TermsAndCondPageContainerComponent
       },
       {
+        title: 'Bounty Program',
         path: 'bounty-program',
         component: BountyPageContainerComponent
       },

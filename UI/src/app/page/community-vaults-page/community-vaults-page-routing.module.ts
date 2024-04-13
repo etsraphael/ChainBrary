@@ -7,6 +7,7 @@ import { WithdrawTokenPageContainerComponent } from './containers/withdraw-token
 
 const routes: Routes = [
   {
+    title: 'Community Vaults',
     path: '',
     component: CommunityVaultsHomePageContainerComponent,
     children: [
