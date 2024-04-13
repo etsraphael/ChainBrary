@@ -13,27 +13,32 @@ const routes: Routes = [
     canActivate: [AuthCheckingGuard],
     children: [
       {
+        title: 'Services',
         path: 'services',
         component: UseCasesListComponent,
         data: { animation: 'services' }
       },
       {
+        title: 'Payment Request',
         path: 'payment-request',
         component: PaymentRequestContainerComponent,
         data: { animation: 'payment-request' }
       },
       {
+        title: 'Bid',
         path: 'bid',
         loadChildren: () => import('./pages/bid/bid.module').then((m) => m.BidModule),
         data: { animation: 'bid' }
       },
       {
+        title: 'Document Locker',
         path: 'document-locker',
         loadChildren: () =>
           import('./pages/document-locker/document-locker.module').then((m) => m.DocumentLockerModule),
         data: { animation: 'document-locker' }
       },
       {
+        title: 'Activity',
         path: 'activity',
         component: ActivityContainerComponent,
         data: { animation: 'activity' }
