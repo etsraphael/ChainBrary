@@ -17,9 +17,9 @@ const routes: Routes = [
       import('../page/community-vaults-page/community-vaults-page.module').then((m) => m.CommunityVaultsPageModule)
   },
   {
+    title: 'Payment Request',
     path: 'payment-page/:id',
-    component: PaymentPageComponent,
-    title: 'Payment Request'
+    component: PaymentPageComponent
   },
   {
     path: '**',
