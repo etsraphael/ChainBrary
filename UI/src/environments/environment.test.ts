@@ -18,11 +18,11 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.BNB,
-          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+          address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: '0xC959D6388058a326c59508e2beAB8Be12de4E0C3'
+          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
         }
       ]
     },
