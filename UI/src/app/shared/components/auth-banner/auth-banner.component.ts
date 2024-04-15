@@ -45,7 +45,9 @@ export class AuthBannerComponent implements OnInit, OnDestroy {
   networkSetUp(): void {
     this.networkList = this.web3LoginService
       .getNetworkDetailList()
-      .filter(({ chainId }: INetworkDetail) => environment.contracts.bridgeTransfer.networkSupported.includes(chainId));
+      .filter(({ chainId }: INetworkDetail) =>
+        environment.contracts.bridgeTransfer.contracts.map((x) => x.chainId).includes(chainId)
+      );
   }
 
   ngOnDestroy(): void {
