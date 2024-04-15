@@ -28,7 +28,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   imgList: string[] = [];
   imgLimit = 5;
-  networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.networkSupported;
+  networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.contracts.map((x) => x.chainId);
   networkList: INetworkDetail[] = [];
 
   headerPayload: IHeaderBodyPage = {
