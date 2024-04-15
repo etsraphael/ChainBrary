@@ -151,7 +151,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
         map((network: INetworkDetail | null) => network as INetworkDetail)
       )
       .subscribe((network: INetworkDetail) => {
-        if (!environment.contracts.bridgeTransfer.networkSupported.includes(network.chainId)) {
+        if (!environment.contracts.bridgeTransfer.contracts.map(x => x.chainId).includes(network.chainId)) {
           this._snackBar.open('Network not supported', $localize`:@@commonWords:Close`, { duration: 2000 });
           return;
         }

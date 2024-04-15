@@ -6,7 +6,6 @@ export const environment = {
   contracts: {
     bridgeTransfer: {
       defaultNetwork: NetworkChainId.POLYGON,
-      networkSupported: [NetworkChainId.POLYGON, NetworkChainId.BNB, NetworkChainId.SEPOLIA, NetworkChainId.AVALANCHE],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
@@ -31,13 +30,6 @@ export const environment = {
       ]
     },
     priceFeed: {
-      networkSupported: [
-        NetworkChainId.SEPOLIA,
-        NetworkChainId.BNB,
-        NetworkChainId.POLYGON,
-        NetworkChainId.AVALANCHE,
-        NetworkChainId.ETHEREUM
-      ],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
