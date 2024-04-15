@@ -25,11 +25,11 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.BNB,
-          address: '' // TODO: Update this address
+          address: '0x4Bd4E452d53817fCdeBbDB5a0943d384141AE162'
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: '' // TODO: Update this address
+          address: '0x5e946601261ab9c447086727a5d7Ed9474F523f0'
         },
         {
           chainId: NetworkChainId.LOCALHOST,
@@ -93,6 +93,7 @@ export const environment = {
       attemptTimeout: 0.5 // minute
     },
     communityVault: {
+      // TODO: delete networkSupported
       networkSupported: [
         NetworkChainId.SEPOLIA,
         NetworkChainId.POLYGON,

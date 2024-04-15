@@ -18,11 +18,15 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.BNB,
-          address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
+          address: '0x4Bd4E452d53817fCdeBbDB5a0943d384141AE162'
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
+          address: '0x5e946601261ab9c447086727a5d7Ed9474F523f0'
+        },
+        {
+          chainId: NetworkChainId.LOCALHOST,
+          address: '0x959922bE3CAee4b8Cd9a407cc3ac1C251C2007B1'
         }
       ]
     },
@@ -93,8 +97,12 @@ export const environment = {
           address: '0x4c247344842A248cD01538881E3e7600c1f2e22f'
         },
         {
-          chainId: NetworkChainId.LOCALHOST,
-          address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+          chainId: NetworkChainId.BNB,
+          address: '0x9839e975d9ab1b18f9708DeBAc5bfCD75Cff2684'
+        },
+        {
+          chainId: NetworkChainId.AVALANCHE,
+          address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
         }
       ]
     }
