@@ -78,13 +78,6 @@ export const environment = {
       attemptTimeout: 0.5 // minute
     },
     communityVault: {
-      // TODO: delete networkSupported
-      networkSupported: [
-        NetworkChainId.SEPOLIA,
-        NetworkChainId.POLYGON,
-        NetworkChainId.AVALANCHE,
-        NetworkChainId.LOCALHOST
-      ],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,

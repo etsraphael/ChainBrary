@@ -87,7 +87,9 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   get currentNetworkIsNotSupported$(): Observable<boolean> {
     return this.currentNetworkObs.pipe(
       map((currentNetwork: INetworkDetail | null) =>
-        currentNetwork ? !environment.contracts.bridgeTransfer.contracts.map(x => x.chainId).includes(currentNetwork.chainId) : false
+        currentNetwork
+          ? !environment.contracts.bridgeTransfer.contracts.map((x) => x.chainId).includes(currentNetwork.chainId)
+          : false
       )
     );
   }

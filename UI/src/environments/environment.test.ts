@@ -78,7 +78,6 @@ export const environment = {
       attemptTimeout: 2 // minutes
     },
     communityVault: {
-      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.LOCALHOST],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
