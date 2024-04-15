@@ -6,6 +6,7 @@ export const environment = {
   contracts: {
     bridgeTransfer: {
       defaultNetwork: NetworkChainId.SEPOLIA,
+      // TODO: delete networkSupported
       networkSupported: [
         NetworkChainId.POLYGON,
         NetworkChainId.BNB,
@@ -24,11 +25,11 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.BNB,
-          address: '0x0C28A863fd9D5bBf4ac48b156e736D3a200E4403'
+          address: '' // TODO: Update this address
         },
         {
           chainId: NetworkChainId.AVALANCHE,
-          address: '0xD24B2117886eCBCDEfa7D229d3401e859bDF96F0'
+          address: '' // TODO: Update this address
         },
         {
           chainId: NetworkChainId.LOCALHOST,
@@ -92,7 +93,12 @@ export const environment = {
       attemptTimeout: 0.5 // minute
     },
     communityVault: {
-      networkSupported: [NetworkChainId.SEPOLIA, NetworkChainId.LOCALHOST],
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.LOCALHOST
+      ],
       contracts: [
         {
           chainId: NetworkChainId.SEPOLIA,
@@ -101,6 +107,14 @@ export const environment = {
         {
           chainId: NetworkChainId.POLYGON,
           address: '0x4c247344842A248cD01538881E3e7600c1f2e22f'
+        },
+        {
+          chainId: NetworkChainId.BNB,
+          address: '0x9839e975d9ab1b18f9708DeBAc5bfCD75Cff2684'
+        },
+        {
+          chainId: NetworkChainId.AVALANCHE,
+          address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
         },
         {
           chainId: NetworkChainId.LOCALHOST,
@@ -117,6 +131,8 @@ export const environment = {
   communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
   rpcKeys: {
     sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
-    polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49'
+    polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49',
+    avalanche: 'https://avax-mainnet.rpc.grove.city/v1/2501ba49',
+    bnb: 'https://bsc-mainnet.rpc.grove.city/v1/2501ba49'
   }
 };
