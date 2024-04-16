@@ -20,6 +20,24 @@ export const communityVaults: VaultSupported[] = [
     chainId: NetworkChainId.POLYGON,
     rpcUrl: environment.rpcKeys.polygon,
     icon: 'matic-icon.svg'
+  },
+  {
+    contractAddress: environment.contracts.communityVault.contracts.find(
+      (contract) => contract.chainId === NetworkChainId.AVALANCHE
+    )?.address as string,
+    name: 'Avalanche network',
+    chainId: NetworkChainId.AVALANCHE,
+    rpcUrl: environment.rpcKeys.avalanche,
+    icon: 'avax-icon.svg'
+  },
+  {
+    contractAddress: environment.contracts.communityVault.contracts.find(
+      (contract) => contract.chainId === NetworkChainId.BNB
+    )?.address as string,
+    name: 'Binance network',
+    chainId: NetworkChainId.BNB,
+    rpcUrl: environment.rpcKeys.bnb,
+    icon: 'bnb-icon.svg'
   }
   // {
   //   contractAddress: environment.contracts.communityVault.contracts.find(
