@@ -1,3 +1,30 @@
 .bi-arrow-left {
   cursor: pointer;
 }
+
+.bg-container {
+  background: linear-gradient(136deg, #9a7efb 0%, #6040c7 100%);
+  background: -webkit-linear-gradient(136deg, #9a7efb 0%, #6040c7 100%);
+}
+
+.qr-scanner {
+  overflow: hidden;
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.title-container img {
+  width: 3rem;
+}
+
+::ng-deep ngx-scanner-qrcode video {
+  display: block;
+  border-radius: 19px;
+  overflow: hidden;
+}

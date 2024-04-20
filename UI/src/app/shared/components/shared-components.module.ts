@@ -21,6 +21,10 @@ import { ServiceCardComponent } from './service-card/service-card.component';
 import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-modal.component';
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
+import { LOAD_WASM, NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
+
+// Necessary to solve the problem of losing internet connection
+LOAD_WASM().subscribe();
 
 @NgModule({
   declarations: [
@@ -38,7 +42,15 @@ import { UserAvatarComponent } from './user-avatar/user-avatar.component';
     ServiceCardComponent,
     QrCodeScanningPageComponent
   ],
-  imports: [CommonModule, FormsModule, RouterModule, QRCodeModule, MaterialModule, MarkdownModule.forRoot()],
+  imports: [
+    CommonModule,
+    FormsModule,
+    RouterModule,
+    QRCodeModule,
+    MaterialModule,
+    MarkdownModule.forRoot(),
+    NgxScannerQrcodeModule
+  ],
   exports: [
     FooterPageComponent,
     HeaderPageComponent,
