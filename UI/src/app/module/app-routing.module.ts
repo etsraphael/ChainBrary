@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { PaymentPageComponent } from '../page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component';
+import { QrCodeScanningPageComponent } from '../shared/components/qr-code-scanning-page/qr-code-scanning-page.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,11 @@ const routes: Routes = [
     path: 'community-vaults',
     loadChildren: () =>
       import('../page/community-vaults-page/community-vaults-page.module').then((m) => m.CommunityVaultsPageModule)
+  },
+  {
+    title: 'Scanning QR Code',
+    path: 'qr-code-scanning',
+    component: QrCodeScanningPageComponent
   },
   {
     title: 'Payment Request',
