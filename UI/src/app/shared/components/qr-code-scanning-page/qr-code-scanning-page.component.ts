@@ -28,7 +28,7 @@ export class QrCodeScanningPageComponent implements OnInit {
     navigator.mediaDevices
       ?.getUserMedia({ video: true, audio: false })
       .then((stream) => {
-        // stream.getTracks().forEach((track: MediaStreamTrack) => track.stop());
+        // stream.getTracks().forEach((track: MediaStreamTrack) => track.stop()); // TODO: redirect the user to the new payment page
         this.scanner.start();
       })
       .catch((err) => {
