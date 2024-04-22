@@ -8,5 +8,4 @@ import { Location } from '@angular/common';
 })
 export class PayNowPageComponent {
   constructor(public location: Location) {}
-
 }
