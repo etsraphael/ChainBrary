@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
-import { NgxScannerQrcodeComponent, ScannerQRCodeConfig } from 'ngx-scanner-qrcode';
+import { NgxScannerQrcodeComponent, ScannerQRCodeConfig, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 @Component({
   selector: 'app-qr-code-scanning-page',
   templateUrl: './qr-code-scanning-page.component.html',
@@ -9,7 +9,7 @@ import { NgxScannerQrcodeComponent, ScannerQRCodeConfig } from 'ngx-scanner-qrco
 export class QrCodeScanningPageComponent implements OnInit {
   @ViewChild(NgxScannerQrcodeComponent) scanner: NgxScannerQrcodeComponent;
   scannerConfig: ScannerQRCodeConfig = {
-    // square video
+    // TODO: This has to be uncommented to keep the scanner working
     constraints: {
       video: {
         width: {
@@ -27,12 +27,16 @@ export class QrCodeScanningPageComponent implements OnInit {
   ngOnInit(): void {
     navigator.mediaDevices
       ?.getUserMedia({ video: true, audio: false })
-      .then((stream) => {
-        // stream.getTracks().forEach((track: MediaStreamTrack) => track.stop()); // TODO: redirect the user to the new payment page
+      .then(() => {
         this.scanner.start();
+
+        this.scanner?.event.subscribe((result: ScannerQRCodeResult[]) => {
+          // TODO: Redirect to the page with the scanned QR code
+          console.log('Scanned QR code:', result);
+          this.scanner?.stop();
+        });
       })
       .catch((err) => {
-        alert('oh');
         console.error('Error on get user media:', err);
       });
   }
