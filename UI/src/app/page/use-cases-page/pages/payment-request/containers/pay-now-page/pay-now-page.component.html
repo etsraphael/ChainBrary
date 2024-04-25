@@ -8,8 +8,34 @@
         </h3>
       </div>
     </div>
-    <div>
-      <p>pay-now-page works!</p>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 card">
+          <div class="row">
+            <div class="col-3 my-auto">
+              <div class="icon-wrapper d-flex justify-content-center text-center">
+                <i class="bi bi-shop-window"></i>
+              </div>
+            </div>
+            <div class="col-9 my-auto pt-3">
+              <h3 class="mb-0">Coffee Bear</h3>
+              <p>0x88291058212495....ghrds</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-3">
+        <div class="col-12 px-0">
+          <mat-form-field class="w-100">
+            <mat-label i18n>Network</mat-label>
+            <mat-select formControlName="networkChainId">
+              <mat-option *ngFor="let item of [1, 2, 3, 4]" [value]="item">
+                {{ item }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+      </div>
     </div>
     <div class="row">
       <div class="col-12">
