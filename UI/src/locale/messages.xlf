@@ -479,8 +479,8 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6683893851495057135" datatype="html">
-        <source>Partner with Chainbrary</source>
+      <trans-unit id="8506584090336652657" datatype="html">
+        <source>Be a part of Chainbrary</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
           <context context-type="linenumber">5</context>
@@ -716,11 +716,11 @@
         </context-group>
       </trans-unit>
       <trans-unit id="googleDriveText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;
-2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;
-3. Upload your file
-4. Right click on the file &gt; &quot;Get shareable link&quot;
-5. Copy the link and paste it here
+        <source>1. Go to &lt;a href=&quot;https://drive.google.com/drive/my-drive&quot; target=&quot;_blank&quot;&gt;Google Drive&lt;/a&gt;  
+2. Click on &quot;+ New&quot; &gt; Then &quot;New File&quot;  
+3. Upload your file 
+4. Right click on the file &gt; &quot;Get shareable link&quot;  
+5. Copy the link and paste it here 
 6. Make sure the image will be accessible at anytime</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
@@ -735,10 +735,10 @@
         </context-group>
       </trans-unit>
       <trans-unit id="postImgText" datatype="html">
-        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt;
-2. Click on &quot;Choose images&quot;
-3. Upload your file
-4. Copy the &quot;Direct link&quot; and paste it here
+        <source>1. Go to &lt;a href=&quot;https://postimages.org/&quot; target=&quot;_blank&quot;&gt;Post Image&lt;/a&gt; 
+2. Click on &quot;Choose images&quot;  
+3. Upload your file 
+4. Copy the &quot;Direct link&quot; and paste it here 
 5. Make sure the image will be accessible at anytime</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
@@ -756,14 +756,14 @@
         <source>Services</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/use-cases-list/use-cases-list.component.html</context>
-          <context context-type="linenumber">6</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8422772910410640296" datatype="html">
         <source> Discover Chainbrary: Your Safe, User-Friendly Blockchain Starter Kit. Begin with ease, backed by our commitment to your security. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/use-cases-list/use-cases-list.component.html</context>
-          <context context-type="linenumber">8,11</context>
+          <context context-type="linenumber">9,12</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9216117865911519658" datatype="html">
