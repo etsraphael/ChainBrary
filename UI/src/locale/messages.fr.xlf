@@ -2053,9 +2053,9 @@ En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Te
 <context context-type="linenumber">21</context>
 </context-group>
 </trans-unit>
-<trans-unit id="6683893851495057135">
-<source>Partner with Chainbrary</source>
-<target>Partenaire avec Chainbrary</target>
+<trans-unit id="8506584090336652657">
+<source>Be a part of Chainbrary</source>
+<target>Soyez une partie de Chainbrary</target>
 <context-group purpose="location">
 <context context-type="sourcefile">src/app/page/landing-page/containers/partnership-page-container/partnership-page-container.component.html</context>
 <context context-type="linenumber">5</context>
