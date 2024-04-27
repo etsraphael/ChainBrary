@@ -1,10 +1,10 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { debounceTime, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
@@ -27,7 +27,9 @@ interface ITokenForm {
   templateUrl: './pay-now-page.component.html',
   styleUrls: ['./pay-now-page.component.scss']
 })
-export class PayNowPageComponent implements OnInit {
+export class PayNowPageComponent implements OnInit, OnDestroy {
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
+
   mainForm = new FormGroup<ITokenForm>({
     amount: new FormControl<number | null>(10, [Validators.required, Validators.min(0)]),
     tokenId: new FormControl<TokenId | null>(null, [Validators.required])
@@ -95,6 +97,7 @@ export class PayNowPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.callActions();
+    this.listenFormChanges();
   }
 
   networkSaved(val: NetworkChainId): void {
@@ -110,5 +113,23 @@ export class PayNowPageComponent implements OnInit {
 
   private callActions(): void {
     this.store.dispatch(decryptRawPaymentRequest({ encodedRequest: this.routeId }));
+  }
+
+  private listenFormChanges(): void {
+    this.mainForm.valueChanges.pipe(takeUntil(this.destroyed$), debounceTime(500)).subscribe(
+      (
+        val: Partial<{
+          amount: number | null;
+          tokenId: TokenId | null;
+        }>
+      ) => {
+        console.log(val);
+      }
+    );
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.unsubscribe();
   }
 }

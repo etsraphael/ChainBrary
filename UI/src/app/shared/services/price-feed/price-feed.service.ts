@@ -53,4 +53,23 @@ export class PriceFeedService {
 
     return this.getCurrentPrice(pair, chainId, w);
   }
+
+  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId, rpcUrl: string): Promise<number> {
+    const web3: Web3 = new Web3(rpcUrl);
+    const transactionContract = new PriceFeedContract(chainId, pair);
+
+    if (!transactionContract.getPairAddress()) {
+      return Promise.reject('Pair not found');
+    }
+
+    const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+
+    return contract.methods
+      .getLatestDataFrom(transactionContract.getPairAddress())
+      .call()
+      .then((result: { answer: string; startedAt: string }) => {
+        const convertedNum = Number(result.answer) / Math.pow(10, 8);
+        return convertedNum.toFixed(2);
+      });
+  }
 }
