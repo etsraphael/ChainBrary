@@ -4,12 +4,16 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { debounceTime, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { debounceTime, filter, map, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { decryptRawPaymentRequest } from './../../../../../../store/payment-request-store/state/actions';
+import {
+  applyConversionTokenFromPayNow,
+  decryptRawPaymentRequest
+} from './../../../../../../store/payment-request-store/state/actions';
 import { selectRawPaymentRequest } from './../../../../../../store/payment-request-store/state/selectors';
+import { TokenPair } from 'src/app/shared/enum';
 
 interface NetworkGroup {
   networkName: string;
@@ -35,6 +39,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     tokenId: new FormControl<TokenId | null>(null, [Validators.required])
   });
 
+  // TODO: Has to be fix, undefined feed USD as to be removed
   tokensAvailable: NetworkGroup[] = [
     {
       networkName: 'Ethereum Network',
@@ -116,16 +121,25 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   }
 
   private listenFormChanges(): void {
-    this.mainForm.valueChanges.pipe(takeUntil(this.destroyed$), debounceTime(500)).subscribe(
-      (
-        val: Partial<{
-          amount: number | null;
-          tokenId: TokenId | null;
-        }>
-      ) => {
-        console.log(val);
-      }
-    );
+    this.mainForm.valueChanges
+      .pipe(
+        takeUntil(this.destroyed$),
+        debounceTime(500),
+        filter(() => this.mainForm.valid)
+      )
+      .subscribe(
+        (
+          val: Partial<{
+            amount: number | null;
+            tokenId: TokenId | null;
+          }>
+        ) => {
+          const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find((network) => network.chainId === this.networkSelected)?.priceFeed[0];
+          if(!feed) return;
+
+          this.store.dispatch(applyConversionTokenFromPayNow({ usdAmount: val.amount as number, pair: feed, chainId: this.networkSelected }));
+        }
+      );
   }
 
   ngOnDestroy(): void {
