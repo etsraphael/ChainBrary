@@ -1,65 +1,79 @@
 <div class="container-fluid bg-container h-100">
-  <div class="d-flex flex-column justify-content-between h-100">
-    <div class="row">
-      <div class="col-12 text-start">
-        <h3 class="text-dark p-3">
-          <i (click)="location.back()" class="bi bi-arrow-left me-3 text-light"></i>
-          <span class="text-light">Pay Now</span>
-        </h3>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-12 card">
+  <div class="d-flex justify-content-center h-100">
+    <div class="col-12 col-md-6 col-lg-5">
+      <div class="d-flex flex-column justify-content-between h-100">
+        <div class="row">
+          <div class="col-12 text-start">
+            <h3 class="text-dark p-3">
+              <i (click)="location.back()" class="bi bi-arrow-left me-3 text-light"></i>
+              <span class="text-light">Pay Now</span>
+            </h3>
+          </div>
+        </div>
+        <div class="container">
           <div class="row">
-            <div class="col-3 my-auto">
-              <div class="icon-wrapper d-flex justify-content-center text-center">
-                <i class="bi bi-shop-window"></i>
+            <div class="col-12 card py-2">
+              <div class="row">
+                <div class="col-sm-2 col-3 col-md-3 col-lg-2 my-auto">
+                  <div class="icon-wrapper d-flex justify-content-center text-center">
+                    <i class="bi bi-shop-window"></i>
+                  </div>
+                </div>
+                <div class="col-9 my-auto pt-3">
+                  <h3 class="mb-0">Coffee Bear</h3>
+                  <p>0x88291058212495....ghrds</p>
+                </div>
               </div>
             </div>
-            <div class="col-9 my-auto pt-3">
-              <h3 class="mb-0">Coffee Bear</h3>
-              <p>0x88291058212495....ghrds</p>
+          </div>
+          <div class="row my-3">
+            <div class="col-12 px-0">
+              <mat-form-field class="w-100">
+                <mat-label i18n>Token</mat-label>
+                <mat-select formControlName="networkChainId">
+                  <mat-option *ngFor="let item of [1, 2, 3, 4]" [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 text-center">
+              <h4 class="text-light">Amount</h4>
+            </div>
+            <div class="col-12 text-center amount-container">
+              <mat-form-field>
+                <div matPrefix class="pt-2">
+                  <span class="text-light prefix-span">$</span>
+                </div>
+                <input class="text-center text-light" type="number" matInput value="1.00" />
+              </mat-form-field>
+            </div>
+            <div class="col-12 text-center pb-2">
+              <h6 class="text-light">(200 SEP)</h6>
+            </div>
+            <div class="col-12 my-2">
+              <button class="btn btn-light w-100">
+                <span class="text-primary">Pay Now</span>
+              </button>
+            </div>
+            <div class="col-12 my-2">
+              <button class="btn w-100">
+                <span class="text-light">Cancel</span>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <div class="title-container d-flex justify-content-center mb-5">
+              <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto" />
+              <h3 class="my-auto text-light">ChainBrary</h3>
             </div>
           </div>
         </div>
       </div>
-      <div class="row my-3">
-        <div class="col-12 px-0">
-          <mat-form-field class="w-100">
-            <mat-label i18n>Network</mat-label>
-            <mat-select formControlName="networkChainId">
-              <mat-option *ngFor="let item of [1, 2, 3, 4]" [value]="item">
-                {{ item }}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-12 text-center">
-          <h4 class="text-light">Amount</h4>
-        </div>
-        <div class="col-12 text-center amount-container">
-          <mat-form-field>
-            <div matPrefix class="pt-2">
-              <span class="text-light prefix-span">$</span>
-            </div>
-            <input class="text-center text-light" type="number" matInput value="1.00" />
-          </mat-form-field>
-        </div>
-        <div class="col-12 text-center">
-          <h6 class="text-light">(200 SEP)</h6>
-        </div>
-      </div>
     </div>
-    <div class="row">
-      <div class="col-12">
-        <div class="title-container d-flex justify-content-center mb-5">
-          <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto" />
-          <h3 class="my-auto text-light">ChainBrary</h3>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>
 </div>
