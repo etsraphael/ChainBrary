@@ -34,8 +34,11 @@
                     <mat-label i18n>Tokens</mat-label>
                     <mat-select formControlName="tokenId">
                       <mat-optgroup *ngFor="let group of tokensAvailable" [label]="group.networkName">
-                        <mat-option *ngFor="let tokens of group.tokens" [value]="tokens.tokenId"
-                          (click)="networkSaved(group.chainId)">
+                        <mat-option
+                          *ngFor="let tokens of group.tokens"
+                          [value]="tokens.tokenId"
+                          (click)="networkSaved(group.chainId)"
+                        >
                           {{ tokens.name }}
                         </mat-option>
                       </mat-optgroup>
@@ -61,8 +64,8 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div class="col-12 text-center pb-2">
-                  <h6 class="text-light">(200 SEP)</h6>
+                <div *ngIf="currentTokenUsed" class="col-12 text-center pb-2">
+                  <h6 class="text-light">(X {{ currentTokenUsed.symbol }})</h6>
                 </div>
                 <div class="col-12 my-2">
                   <button class="btn btn-light w-100" (click)="submitForm()">

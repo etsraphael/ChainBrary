@@ -2,7 +2,7 @@ import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
@@ -19,7 +19,7 @@ interface NetworkGroup {
 
 interface ITokenForm {
   amount: FormControl<number | null>;
-  tokenId: FormControl<string | null>;
+  tokenId: FormControl<TokenId | null>;
 }
 
 @Component({
@@ -30,7 +30,7 @@ interface ITokenForm {
 export class PayNowPageComponent implements OnInit {
   mainForm = new FormGroup<ITokenForm>({
     amount: new FormControl<number | null>(10, [Validators.required, Validators.min(0)]),
-    tokenId: new FormControl<string | null>(null, [Validators.required])
+    tokenId: new FormControl<TokenId | null>(null, [Validators.required])
   });
 
   tokensAvailable: NetworkGroup[] = [
@@ -84,9 +84,12 @@ export class PayNowPageComponent implements OnInit {
     return this.route.snapshot.params['id'];
   }
 
-  // get currentTokenSelected$(): IToken | undefined {
-  //   return this.mainForm.get('tokenId');
-  // }
+  get currentTokenUsed(): IToken | undefined {
+    return this.tokensAvailable
+      .map((network) => network.tokens)
+      .flat()
+      .find((token) => token.tokenId === (this.mainForm.get('tokenId')?.value as TokenId));
+  }
 
   readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
 
@@ -104,7 +107,6 @@ export class PayNowPageComponent implements OnInit {
 
     console.log(this.mainForm.value);
   }
-
 
   private callActions(): void {
     this.store.dispatch(decryptRawPaymentRequest({ encodedRequest: this.routeId }));
