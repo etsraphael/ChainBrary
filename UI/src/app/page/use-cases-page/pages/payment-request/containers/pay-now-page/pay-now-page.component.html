@@ -30,11 +30,13 @@
             <div class="row my-3">
               <div class="col-12 px-0">
                 <mat-form-field class="w-100">
-                  <mat-label i18n>Token</mat-label>
+                  <mat-label i18n>Tokens</mat-label>
                   <mat-select>
-                    <mat-option *ngFor="let item of [1, 2, 3, 4]" [value]="item">
-                      {{ item }}
-                    </mat-option>
+                    <mat-optgroup *ngFor="let group of tokensAvailable" [label]="group.name + ' Network'">
+                      <mat-option *ngFor="let tokens of group.tokens" [value]="tokens.name">
+                        {{ tokens.name }}
+                      </mat-option>
+                    </mat-optgroup>
                   </mat-select>
                 </mat-form-field>
               </div>
