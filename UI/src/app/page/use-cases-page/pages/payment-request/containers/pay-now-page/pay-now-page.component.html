@@ -12,61 +12,70 @@
             </div>
           </div>
           <div class="container" *ngIf="(rawRequest$ | async)?.data; let request">
-            <div class="row">
-              <div class="col-12 card py-2">
-                <div class="row">
-                  <div class="col-sm-2 col-3 col-md-3 col-lg-2 my-auto">
-                    <div class="icon-wrapper d-flex justify-content-center text-center">
-                      <i class="bi bi-shop-window"></i>
+            <form [formGroup]="mainForm">
+              <div class="row">
+                <div class="col-12 card py-2">
+                  <div class="row">
+                    <div class="col-sm-2 col-3 col-md-3 col-lg-2 my-auto">
+                      <div class="icon-wrapper d-flex justify-content-center text-center">
+                        <i class="bi bi-shop-window"></i>
+                      </div>
                     </div>
-                  </div>
-                  <div class="col-9 my-auto pt-3">
-                    <h3 class="mb-0">{{ request.name }}</h3>
-                    <p>{{ formatService.formatPublicAddress(request.publicAddress, 9) }}</p>
+                    <div class="col-9 my-auto pt-3">
+                      <h3 class="mb-0">{{ request.name }}</h3>
+                      <p>{{ formatService.formatPublicAddress(request.publicAddress, 9) }}</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="row my-3">
-              <div class="col-12 px-0">
-                <mat-form-field class="w-100">
-                  <mat-label i18n>Tokens</mat-label>
-                  <mat-select>
-                    <mat-optgroup *ngFor="let group of tokensAvailable" [label]="group.name + ' Network'">
-                      <mat-option *ngFor="let tokens of group.tokens" [value]="tokens.name">
-                        {{ tokens.name }}
-                      </mat-option>
-                    </mat-optgroup>
-                  </mat-select>
-                </mat-form-field>
+              <div class="row my-3">
+                <div class="col-12 px-0">
+                  <mat-form-field class="w-100">
+                    <mat-label i18n>Tokens</mat-label>
+                    <mat-select formControlName="tokenId">
+                      <mat-optgroup *ngFor="let group of tokensAvailable" [label]="group.networkName">
+                        <mat-option *ngFor="let tokens of group.tokens" [value]="tokens.tokenId"
+                          (click)="networkSaved(group.chainId)">
+                          {{ tokens.name }}
+                        </mat-option>
+                      </mat-optgroup>
+                    </mat-select>
+                    <mat-error class="text-light" i18n *ngIf="mainForm.get('tokenId')?.hasError('required')">
+                      Token is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <div class="col-12 text-center">
-                <h4 class="text-light">Amount</h4>
+              <div class="row">
+                <div class="col-12 text-center">
+                  <h4 class="text-light">Amount</h4>
+                </div>
+                <div class="col-12 text-center amount-container">
+                  <mat-form-field>
+                    <div matPrefix class="pt-2">
+                      <span class="text-light prefix-span">$</span>
+                    </div>
+                    <input formControlName="amount" class="text-center text-light" type="number" matInput />
+                    <mat-error class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">
+                      Amount has to be greater than 0
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div class="col-12 text-center pb-2">
+                  <h6 class="text-light">(200 SEP)</h6>
+                </div>
+                <div class="col-12 my-2">
+                  <button class="btn btn-light w-100" (click)="submitForm()">
+                    <span class="text-primary">Pay Now</span>
+                  </button>
+                </div>
+                <div class="col-12 my-2">
+                  <button class="btn w-100">
+                    <span class="text-light">Cancel</span>
+                  </button>
+                </div>
               </div>
-              <div class="col-12 text-center amount-container">
-                <mat-form-field>
-                  <div matPrefix class="pt-2">
-                    <span class="text-light prefix-span">$</span>
-                  </div>
-                  <input class="text-center text-light" type="number" matInput value="1.00" />
-                </mat-form-field>
-              </div>
-              <div class="col-12 text-center pb-2">
-                <h6 class="text-light">(200 SEP)</h6>
-              </div>
-              <div class="col-12 my-2">
-                <button class="btn btn-light w-100">
-                  <span class="text-primary">Pay Now</span>
-                </button>
-              </div>
-              <div class="col-12 my-2">
-                <button class="btn w-100">
-                  <span class="text-light">Cancel</span>
-                </button>
-              </div>
-            </div>
+            </form>
           </div>
           <div class="row">
             <div class="col-12">

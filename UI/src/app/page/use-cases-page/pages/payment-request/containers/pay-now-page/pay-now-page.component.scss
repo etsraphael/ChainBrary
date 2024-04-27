@@ -57,3 +57,8 @@
     }
   }
 }
+
+::ng-deep .mat-mdc-select-panel {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
