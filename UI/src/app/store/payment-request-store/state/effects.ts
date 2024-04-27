@@ -13,6 +13,7 @@ import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IPaymentRequest,
+  IPaymentRequestRaw,
   IReceiptTransaction,
   IToken,
   ITokenContract,
@@ -44,9 +45,15 @@ export class PaymentRequestEffects {
     private tokensService: TokensService
   ) {}
 
-  isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
+  private isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
     return (
       typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.amount === 'number'
+    );
+  }
+
+  private isRawIPaymentRequest(obj: IPaymentRequestRaw): obj is IPaymentRequestRaw {
+    return (
+      typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.name === 'string'
     );
   }
 
@@ -393,6 +400,35 @@ export class PaymentRequestEffects {
       catchError(() =>
         of(
           PaymentRequestActions.generatePaymentRequestFailure({
+            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
+          })
+        )
+      )
+    );
+  });
+
+  generateRawPayment$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.decryptRawPaymentRequest),
+      map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {
+        const decodedPayment = Buffer.from(
+          action.encodedRequest.replace('+', '-').replace('/', '_'),
+          'base64'
+        ).toString('utf-8');
+        const decodedPaymentRequest: IPaymentRequestRaw = JSON.parse(decodedPayment);
+        if (this.isRawIPaymentRequest(decodedPaymentRequest)) {
+          return PaymentRequestActions.decryptRawPaymentRequestSuccess({
+            rawRequest: decodedPaymentRequest
+          });
+        } else {
+          return PaymentRequestActions.decryptRawPaymentRequestFailure({
+            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
+          });
+        }
+      }),
+      catchError(() =>
+        of(
+          PaymentRequestActions.decryptRawPaymentRequestFailure({
             errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
           })
         )

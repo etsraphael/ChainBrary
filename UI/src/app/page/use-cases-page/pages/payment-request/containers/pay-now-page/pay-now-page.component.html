@@ -11,7 +11,7 @@
               </h3>
             </div>
           </div>
-          <div class="container">
+          <div class="container" *ngIf="(rawRequest$ | async)?.data; let request">
             <div class="row">
               <div class="col-12 card py-2">
                 <div class="row">
@@ -21,8 +21,8 @@
                     </div>
                   </div>
                   <div class="col-9 my-auto pt-3">
-                    <h3 class="mb-0">Coffee Bear</h3>
-                    <p>0x88291058212495....ghrds</p>
+                    <h3 class="mb-0">{{ request.name }}</h3>
+                    <p>{{ formatService.formatPublicAddress(request.publicAddress, 9) }}</p>
                   </div>
                 </div>
               </div>
@@ -31,7 +31,7 @@
               <div class="col-12 px-0">
                 <mat-form-field class="w-100">
                   <mat-label i18n>Token</mat-label>
-                  <mat-select formControlName="networkChainId">
+                  <mat-select>
                     <mat-option *ngFor="let item of [1, 2, 3, 4]" [value]="item">
                       {{ item }}
                     </mat-option>

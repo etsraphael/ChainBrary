@@ -1,6 +1,6 @@
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
-import { IPaymentRequest, IProfileAdded, IToken } from './../../../shared/interfaces';
+import { IPaymentRequest, IPaymentRequestRaw, IProfileAdded, IToken } from './../../../shared/interfaces';
 
 export const initPaymentRequestMaker = createAction('[Payment Request] Init Payment Request Maker');
 
@@ -76,5 +76,18 @@ export const approveTokenAllowance = createAction('[Payment Request] Approve Tok
 export const approveTokenAllowanceSuccess = createAction('[Payment Request] Approve Token Allowance Success');
 export const approveTokenAllowanceFailure = createAction(
   '[Payment Request] Approve Token Allowance Failure',
+  props<{ errorMessage: string }>()
+);
+
+export const decryptRawPaymentRequest = createAction(
+  '[Payment Request] Decrypt Raw Payment Request',
+  props<{ encodedRequest: string }>()
+);
+export const decryptRawPaymentRequestSuccess = createAction(
+  '[Payment Request] Decrypt Raw Payment Request Success',
+  props<{ rawRequest: IPaymentRequestRaw }>()
+);
+export const decryptRawPaymentRequestFailure = createAction(
+  '[Payment Request] Decrypt Raw Payment Request Failure',
   props<{ errorMessage: string }>()
 );

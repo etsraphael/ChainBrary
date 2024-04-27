@@ -176,6 +176,39 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
       conversionUSD: initialState.conversionUSD,
       conversionToken: initialState.conversionToken
     })
+  ),
+  on(
+    PaymentActions.decryptRawPaymentRequest,
+    (state): IPaymentRequestState => ({
+      ...state,
+      rawRequest: {
+        ...state.rawRequest,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.decryptRawPaymentRequestSuccess,
+    (state, { rawRequest }): IPaymentRequestState => ({
+      ...state,
+      rawRequest: {
+        loading: false,
+        error: null,
+        data: rawRequest
+      }
+    })
+  ),
+  on(
+    PaymentActions.decryptRawPaymentRequestFailure,
+    (state, { errorMessage }): IPaymentRequestState => ({
+      ...state,
+      rawRequest: {
+        loading: false,
+        error: errorMessage,
+        data: null
+      }
+    })
   )
 );
 
