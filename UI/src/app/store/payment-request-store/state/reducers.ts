@@ -209,6 +209,39 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         data: null
       }
     })
+  ),
+  on(
+    PaymentActions.applyConversionTokenFromPayNow,
+    (state): IPaymentRequestState => ({
+      ...state,
+      conversionToken: {
+        loading: true,
+        error: null,
+        data: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.applyConversionTokenFromPayNowSuccess,
+    (state, action): IPaymentRequestState => ({
+      ...state,
+      conversionToken: {
+        loading: true,
+        error: null,
+        data: action.tokenAmount
+      }
+    })
+  ),
+  on(
+    PaymentActions.applyConversionTokenFromPayNowFailure,
+    (state, action): IPaymentRequestState => ({
+      ...state,
+      conversionToken: {
+        loading: false,
+        error: action.errorMessage,
+        data: null
+      }
+    })
   )
 );
 

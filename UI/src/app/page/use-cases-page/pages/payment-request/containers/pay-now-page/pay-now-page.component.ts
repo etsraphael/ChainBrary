@@ -13,7 +13,10 @@ import {
   applyConversionTokenFromPayNow,
   decryptRawPaymentRequest
 } from './../../../../../../store/payment-request-store/state/actions';
-import { selectRawPaymentRequest } from './../../../../../../store/payment-request-store/state/selectors';
+import {
+  selectConversionToken,
+  selectRawPaymentRequest
+} from './../../../../../../store/payment-request-store/state/selectors';
 
 interface NetworkGroup {
   networkName: string;
@@ -102,6 +105,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   }
 
   readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
+  readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
 
   ngOnInit(): void {
     this.callActions();
@@ -141,19 +145,19 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             (network) => network.chainId === this.networkSelected
           )?.priceFeed[0];
 
-          const isNative: boolean = tokenList.some((token) => token.tokenId === val.tokenId && token.nativeToChainId === this.networkSelected);
+          const isNative: boolean = tokenList.some(
+            (token) => token.tokenId === val.tokenId && token.nativeToChainId === this.networkSelected
+          );
 
-          if(feed || isNative) {
+          if (feed || isNative) {
             return this.store.dispatch(
               applyConversionTokenFromPayNow({
                 usdAmount: val.amount as number,
                 chainId: this.networkSelected,
-                pair: isNative ? null : feed as TokenPair
+                pair: isNative ? null : (feed as TokenPair)
               })
             );
           }
-
-
         }
       );
   }

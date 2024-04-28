@@ -95,11 +95,11 @@ export const decryptRawPaymentRequestFailure = createAction(
 
 export const applyConversionTokenFromPayNow = createAction(
   '[Payment Request] Apply Conversion Token From PayNow',
-  props<{ usdAmount: number, chainId: NetworkChainId, pair: TokenPair | null }>()
+  props<{ usdAmount: number; chainId: NetworkChainId; pair: TokenPair | null }>()
 );
 export const applyConversionTokenFromPayNowSuccess = createAction(
   '[Payment Request] Apply Conversion Token From PayNow Success',
-  props<{ usdAmount: number, tokenAmount: number }>()
+  props<{ usdAmount: number; tokenAmount: number }>()
 );
 export const applyConversionTokenFromPayNowFailure = createAction(
   '[Payment Request] Apply Conversion Token From PayNow Failure',
