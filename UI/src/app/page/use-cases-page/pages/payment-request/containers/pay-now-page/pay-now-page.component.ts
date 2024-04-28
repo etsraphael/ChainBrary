@@ -4,8 +4,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { debounceTime, filter, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
+import { TokenPair } from 'src/app/shared/enum';
 import { IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import {
@@ -13,7 +14,6 @@ import {
   decryptRawPaymentRequest
 } from './../../../../../../store/payment-request-store/state/actions';
 import { selectRawPaymentRequest } from './../../../../../../store/payment-request-store/state/selectors';
-import { TokenPair } from 'src/app/shared/enum';
 
 interface NetworkGroup {
   networkName: string;
@@ -39,15 +39,15 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     tokenId: new FormControl<TokenId | null>(null, [Validators.required])
   });
 
-  // TODO: Has to be fix, undefined feed USD as to be removed
   tokensAvailable: NetworkGroup[] = [
     {
       networkName: 'Ethereum Network',
       chainId: NetworkChainId.ETHEREUM,
       tokens: tokenList.filter(
         (token: IToken) =>
-          token.networkSupport.some((network) => network.chainId === NetworkChainId.ETHEREUM) ||
-          token.nativeToChainId === NetworkChainId.ETHEREUM
+          token.networkSupport.some(
+            (network) => network.chainId === NetworkChainId.ETHEREUM && network.priceFeed.length > 0
+          ) || token.nativeToChainId === NetworkChainId.ETHEREUM
       )
     },
     {
@@ -55,8 +55,9 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
       chainId: NetworkChainId.BNB,
       tokens: tokenList.filter(
         (token: IToken) =>
-          token.networkSupport.some((network) => network.chainId === NetworkChainId.BNB) ||
-          token.nativeToChainId === NetworkChainId.BNB
+          token.networkSupport.some(
+            (network) => network.chainId === NetworkChainId.BNB && network.priceFeed.length > 0
+          ) || token.nativeToChainId === NetworkChainId.BNB
       )
     },
     {
@@ -64,8 +65,9 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
       chainId: NetworkChainId.AVALANCHE,
       tokens: tokenList.filter(
         (token: IToken) =>
-          token.networkSupport.some((network) => network.chainId === NetworkChainId.AVALANCHE) ||
-          token.nativeToChainId === NetworkChainId.AVALANCHE
+          token.networkSupport.some(
+            (network) => network.chainId === NetworkChainId.AVALANCHE && network.priceFeed.length > 0
+          ) || token.nativeToChainId === NetworkChainId.AVALANCHE
       )
     },
     {
@@ -73,8 +75,9 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
       chainId: NetworkChainId.POLYGON,
       tokens: tokenList.filter(
         (token: IToken) =>
-          token.networkSupport.some((network) => network.chainId === NetworkChainId.POLYGON) ||
-          token.nativeToChainId === NetworkChainId.POLYGON
+          token.networkSupport.some(
+            (network) => network.chainId === NetworkChainId.POLYGON && network.priceFeed.length > 0
+          ) || token.nativeToChainId === NetworkChainId.POLYGON
       )
     }
   ];
@@ -134,10 +137,23 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             tokenId: TokenId | null;
           }>
         ) => {
-          const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find((network) => network.chainId === this.networkSelected)?.priceFeed[0];
-          if(!feed) return;
+          const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find(
+            (network) => network.chainId === this.networkSelected
+          )?.priceFeed[0];
 
-          this.store.dispatch(applyConversionTokenFromPayNow({ usdAmount: val.amount as number, pair: feed, chainId: this.networkSelected }));
+          const isNative: boolean = tokenList.some((token) => token.tokenId === val.tokenId && token.nativeToChainId === this.networkSelected);
+
+          if(feed || isNative) {
+            return this.store.dispatch(
+              applyConversionTokenFromPayNow({
+                usdAmount: val.amount as number,
+                chainId: this.networkSelected,
+                pair: isNative ? null : feed as TokenPair
+              })
+            );
+          }
+
+
         }
       );
   }

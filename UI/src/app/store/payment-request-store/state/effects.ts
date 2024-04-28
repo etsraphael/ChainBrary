@@ -623,4 +623,31 @@ export class PaymentRequestEffects {
       })
     );
   });
+
+  applyConversionTokeFromNode$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.applyConversionTokenFromPayNow),
+      switchMap(async (payload: ReturnType<typeof PaymentRequestActions.applyConversionTokenFromPayNow>) => {
+        let price: number;
+
+        if (payload.pair) {
+          price = await this.priceFeedService.getCurrentPriceFromNode(payload.pair, payload.chainId);
+        } else {
+          price = await this.priceFeedService.getCurrentPriceOfNativeTokenFromNode(payload.chainId);
+        }
+
+        return PaymentRequestActions.applyConversionTokenFromPayNowSuccess({
+          usdAmount: payload.usdAmount,
+          tokenAmount: parseFloat((payload.usdAmount / price).toFixed(12))
+        });
+      }),
+      catchError(() =>
+        of(
+          PaymentRequestActions.applyConversionTokenFromPayNowFailure({
+            errorMessage: $localize`:@@ResponseMessage.ErrorRetreivingDataFromTheBlockchain:Error retreiving data from the blockchain`
+          })
+        )
+      )
+    );
+  });
 }

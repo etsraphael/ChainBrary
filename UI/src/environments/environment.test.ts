@@ -105,6 +105,7 @@ export const environment = {
   },
   communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
   rpcKeys: {
+    eth: 'https://eth-mainnet.rpc.grove.city/v1/2501ba49',
     sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
     polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49',
     avalanche: 'https://avax-mainnet.rpc.grove.city/v1/2501ba49',
