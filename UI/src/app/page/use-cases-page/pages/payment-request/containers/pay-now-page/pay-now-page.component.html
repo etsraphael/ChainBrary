@@ -64,8 +64,8 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div *ngIf="currentTokenUsed" class="col-12 text-center pb-2">
-                  <h6 class="text-light">( {{ (conversionToken$ | async)?.data }} {{ currentTokenUsed.symbol }})</h6>
+                <div *ngIf="tokenConversion$ | async; let tc" class="col-12 text-center pb-2">
+                  <h6 class="text-light">{{ tc }}</h6>
                 </div>
                 <div class="col-12 my-2">
                   <button class="btn btn-light w-100" (click)="submitForm()">

@@ -1,10 +1,11 @@
 import { Location } from '@angular/common';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { debounceTime, filter, map, Observable, ReplaySubject, takeUntil } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { TokenPair } from 'src/app/shared/enum';
 import { IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
@@ -90,7 +91,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     public location: Location,
     public formatService: FormatService,
     private readonly store: Store,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private snackbar: MatSnackBar
   ) {}
 
   get routeId(): string {
@@ -99,9 +101,16 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
   get currentTokenUsed(): IToken | undefined {
     return this.tokensAvailable
-      .map((network) => network.tokens)
+      .map((network: NetworkGroup) => network.tokens)
       .flat()
-      .find((token) => token.tokenId === (this.mainForm.get('tokenId')?.value as TokenId));
+      .find((token: IToken) => token.tokenId === (this.mainForm.get('tokenId')?.value as TokenId));
+  }
+
+  get tokenConversion$(): Observable<string> {
+    return this.conversionToken$.pipe(
+      filter((conversion: StoreState<number | null>) => conversion.data !== null && !!this.currentTokenUsed),
+      map((conversion: StoreState<number | null>) => (conversion.data as number) + ' ' + this.currentTokenUsed?.symbol)
+    );
   }
 
   readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
@@ -118,6 +127,13 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
   submitForm(): void {
     this.mainForm.markAllAsTouched();
+
+    if (this.mainForm.get('tokenId')?.invalid) {
+      this.snackbar.open('Please select a token', '', {
+        duration: 3000
+      });
+    }
+
     if (this.mainForm.invalid) return;
 
     console.log(this.mainForm.value);
