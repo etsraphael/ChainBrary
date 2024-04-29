@@ -12,7 +12,8 @@ import { IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shar
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import {
   applyConversionTokenFromPayNow,
-  decryptRawPaymentRequest
+  decryptRawPaymentRequest,
+  payNowTransaction
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
   selectConversionToken,
@@ -136,7 +137,11 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
     if (this.mainForm.invalid) return;
 
-    console.log(this.mainForm.value);
+    return this.store.dispatch(payNowTransaction({
+      amount: this.mainForm.get('amount')?.value as number,
+      chainId: this.networkSelected,
+      tokenId: this.currentTokenUsed?.tokenId as TokenId
+    }))
   }
 
   private callActions(): void {
