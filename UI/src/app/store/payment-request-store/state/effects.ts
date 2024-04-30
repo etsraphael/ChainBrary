@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
-import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { TransactionReceipt } from 'web3-core';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -36,6 +36,7 @@ import {
   selectPaymentToken,
   selectRawPaymentRequest
 } from './selectors';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -662,7 +663,7 @@ export class PaymentRequestEffects {
         this.store.select(selectConversionToken),
         this.store.select(selectPublicAddress)
       ]),
-      filter((payload) => !!payload[1]?.data?.publicAddress),
+      filter((payload) => !!payload[1]?.data?.publicAddress && !!payload[3]),
       switchMap(
         (
           action: [
@@ -698,4 +699,18 @@ export class PaymentRequestEffects {
       )
     );
   });
+
+  loginPopUp$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(PaymentRequestActions.payNowTransaction),
+        concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
+        filter(
+          (action: [ReturnType<typeof PaymentRequestActions.payNowTransaction>, string | null]) => action[1] === null
+        ),
+        tap(() => this.web3LoginService.openLoginModal())
+      );
+    },
+    { dispatch: false }
+  );
 }
