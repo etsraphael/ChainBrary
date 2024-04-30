@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletConnectedEvent, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
@@ -704,13 +704,23 @@ export class PaymentRequestEffects {
     () => {
       return this.actions$.pipe(
         ofType(PaymentRequestActions.payNowTransaction),
-        concatLatestFrom(() => [this.store.select(selectPublicAddress)]),
+        concatLatestFrom(() => this.store.select(selectPublicAddress)),
         filter(
-          (action: [ReturnType<typeof PaymentRequestActions.payNowTransaction>, string | null]) => action[1] === null
+          ([, publicAddress]: [ReturnType<typeof PaymentRequestActions.payNowTransaction>, string | null]) => publicAddress === null
         ),
-        tap(() => this.web3LoginService.openLoginModal())
+        tap(() => this.web3LoginService.openLoginModal()),
+        switchMap(() =>
+          this.web3LoginService.onWalletConnectedEvent$.pipe(
+            map((wallet: WalletConnectedEvent) => {
+              console.log('wallet', wallet);
+              // TODO: process to the transaction if it's the same chaindId
+
+            })
+          )
+        )
       );
     },
-    { dispatch: false }
+    { dispatch: false } // TODO: might be deleted soon
   );
+
 }
