@@ -108,7 +108,7 @@ export const applyConversionTokenFromPayNowFailure = createAction(
 
 export const payNowTransaction = createAction(
   '[Payment Request] Pay Now Transaction',
-  props<{ amount: number, chainId: NetworkChainId, tokenId: TokenId }>()
+  props<{ amount: number; chainId: NetworkChainId; tokenId: TokenId }>()
 );
 export const payNowTransactionSuccess = createAction(
   '[Payment Request] Pay Now Transaction Success',

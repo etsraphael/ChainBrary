@@ -137,11 +137,13 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
     if (this.mainForm.invalid) return;
 
-    return this.store.dispatch(payNowTransaction({
-      amount: this.mainForm.get('amount')?.value as number,
-      chainId: this.networkSelected,
-      tokenId: this.currentTokenUsed?.tokenId as TokenId
-    }))
+    return this.store.dispatch(
+      payNowTransaction({
+        amount: this.mainForm.get('amount')?.value as number,
+        chainId: this.networkSelected,
+        tokenId: this.currentTokenUsed?.tokenId as TokenId
+      })
+    );
   }
 
   private callActions(): void {

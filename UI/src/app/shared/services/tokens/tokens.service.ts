@@ -132,6 +132,7 @@ export class TokensService {
 
       return receipt;
     } catch (error) {
+      console.log('error', error);
       return Promise.reject((error as { message: string; code: number }) || error);
     }
   }
@@ -147,6 +148,7 @@ export class TokensService {
 
       return receipt;
     } catch (error) {
+      console.log('error', error);
       return Promise.reject((error as { message: string; code: number }) || error);
     }
   }

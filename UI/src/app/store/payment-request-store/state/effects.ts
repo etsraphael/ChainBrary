@@ -19,6 +19,7 @@ import {
   ITokenContract,
   SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
+  StoreState,
   TransactionTokenBridgePayload
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
@@ -27,11 +28,13 @@ import { WalletService } from './../../../shared/services/wallet/wallet.service'
 import * as PaymentRequestActions from './actions';
 import {
   DataConversionStore,
+  selectConversionToken,
   selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
   selectPaymentNetworkIsMathing,
-  selectPaymentToken
+  selectPaymentToken,
+  selectRawPaymentRequest
 } from './selectors';
 
 @Injectable()
@@ -647,6 +650,51 @@ export class PaymentRequestEffects {
             errorMessage: $localize`:@@ResponseMessage.ErrorRetreivingDataFromTheBlockchain:Error retreiving data from the blockchain`
           })
         )
+      )
+    );
+  });
+
+  processPayNowPayment$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.payNowTransaction),
+      concatLatestFrom(() => [
+        this.store.select(selectRawPaymentRequest),
+        this.store.select(selectConversionToken),
+        this.store.select(selectPublicAddress)
+      ]),
+      filter((payload) => !!payload[1]?.data?.publicAddress),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof PaymentRequestActions.payNowTransaction>,
+            StoreState<IPaymentRequestRaw | null>,
+            StoreState<number | null>,
+            string | null
+          ]
+        ) => {
+          const payload: SendNativeTokenPayload = {
+            to: action[1]?.data?.publicAddress as string,
+            amount: Number(action[2].data) * 10 ** 18,
+            chainId: action[0].chainId,
+            from: action[3] as string
+          };
+
+          return from(this.tokensService.transferNativeToken(payload)).pipe(
+            map((receipt: TransactionReceipt) =>
+              PaymentRequestActions.amountSent({
+                hash: receipt.transactionHash,
+                chainId: action[0].chainId as NetworkChainId
+              })
+            ),
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.payNowTransactionFailure({
+                  errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
+            )
+          );
+        }
       )
     );
   });
