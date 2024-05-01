@@ -663,10 +663,7 @@ export class PaymentRequestEffects {
         this.store.select(selectConversionToken),
         this.store.select(selectPublicAddress)
       ]),
-      filter(
-        (payload) =>
-          !!payload[1]?.data?.publicAddress && !!payload[3] && payload[0].chainId === payload[0].token.nativeToChainId
-      ),
+      filter((payload) => !!payload[1]?.data?.publicAddress && !!payload[3]),
       switchMap(
         (
           action: [
