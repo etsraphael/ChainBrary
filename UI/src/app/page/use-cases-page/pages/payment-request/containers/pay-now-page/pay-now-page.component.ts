@@ -3,15 +3,26 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  filter,
+  map,
+  Observable,
+  ReplaySubject,
+  Subscription,
+  take,
+  takeUntil
+} from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { TokenPair } from 'src/app/shared/enum';
 import { AuthStatusCode } from './../../../../../../shared/enum';
 import { ActionStoreProcessing, IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { selectAuthStatus } from './../../../../../../store/auth-store/state/selectors';
+import { networkChange } from './../../../../../../store/auth-store/state/actions';
+import { selectAuthStatus, selectCurrentChainId } from './../../../../../../store/auth-store/state/selectors';
 import {
   applyConversionTokenFromPayNow,
   decryptRawPaymentRequest,
@@ -118,10 +129,17 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get actionBtnText$(): Observable<string> {
+    return this.authStatus$.pipe(
+      map((status: AuthStatusCode) => (status === AuthStatusCode.NotConnected ? 'Connect Wallet' : 'Pay Now'))
+    );
+  }
+
   readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
   readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
   readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
-  private readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+  readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+  private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
 
   ngOnInit(): void {
     this.callActions();
@@ -132,7 +150,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     this.networkSelected = val;
   }
 
-  submitForm(): void {
+  submitForm(): void | Subscription {
     this.mainForm.markAllAsTouched();
 
     if (this.mainForm.get('tokenId')?.invalid) {
@@ -142,20 +160,29 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     }
 
     if (this.mainForm.invalid) return;
+    else return this.processPayment();
+  }
 
-    this.authStatus$.pipe(take(1)).subscribe((status: AuthStatusCode) => {
-      if (status === AuthStatusCode.NotConnected) {
-        this.web3LoginService.openLoginModal();
-      } else {
-        return this.store.dispatch(
-          payNowTransaction({
-            amount: this.mainForm.get('amount')?.value as number,
-            chainId: this.networkSelected,
-            tokenId: this.currentTokenUsed?.tokenId as TokenId
-          })
-        );
-      }
-    });
+  private processPayment(): Subscription {
+    return combineLatest([this.authStatus$, this.currentChainId$])
+      .pipe(take(1))
+      .subscribe(([status, chainId]) => {
+        if (status === AuthStatusCode.NotConnected) {
+          return this.web3LoginService.openLoginModal();
+        }
+        if (this.networkSelected !== chainId) {
+          const network: INetworkDetail = this.web3LoginService.getNetworkDetailByChainId(this.networkSelected);
+          return this.store.dispatch(networkChange({ network }));
+        } else {
+          return this.store.dispatch(
+            payNowTransaction({
+              amount: this.mainForm.get('amount')?.value as number,
+              chainId: chainId as NetworkChainId,
+              token: this.currentTokenUsed as IToken
+            })
+          );
+        }
+      });
   }
 
   private callActions(): void {

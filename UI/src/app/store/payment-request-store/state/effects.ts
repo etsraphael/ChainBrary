@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import {
-  INetworkDetail,
-  NetworkChainId,
-  WalletProvider,
-  Web3LoginService
-} from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
@@ -659,7 +654,8 @@ export class PaymentRequestEffects {
     );
   });
 
-  processPayNowPayment$ = createEffect(() => {
+  // TODO: Do the same but for not native token
+  processPayNowPaymentNative$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.payNowTransaction),
       concatLatestFrom(() => [
@@ -667,7 +663,10 @@ export class PaymentRequestEffects {
         this.store.select(selectConversionToken),
         this.store.select(selectPublicAddress)
       ]),
-      filter((payload) => !!payload[1]?.data?.publicAddress && !!payload[3]),
+      filter(
+        (payload) =>
+          !!payload[1]?.data?.publicAddress && !!payload[3] && payload[0].chainId === payload[0].token.nativeToChainId
+      ),
       switchMap(
         (
           action: [
@@ -679,7 +678,7 @@ export class PaymentRequestEffects {
         ) => {
           const payload: SendNativeTokenPayload = {
             to: action[1]?.data?.publicAddress as string,
-            amount: Number(action[2].data) * 10 ** 18,
+            amount: Number(action[2].data) * 10 ** action[0].token.decimals,
             chainId: action[0].chainId,
             from: action[3] as string
           };
