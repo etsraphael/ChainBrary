@@ -1,10 +1,15 @@
 import { Injectable } from '@angular/core';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, WalletConnectedEvent, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import {
+  INetworkDetail,
+  NetworkChainId,
+  WalletProvider,
+  Web3LoginService
+} from '@chainbrary/web3-login';
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
-import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
 import { TransactionReceipt } from 'web3-core';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -36,7 +41,6 @@ import {
   selectPaymentToken,
   selectRawPaymentRequest
 } from './selectors';
-import { MatDialogRef } from '@angular/material/dialog';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -699,28 +703,4 @@ export class PaymentRequestEffects {
       )
     );
   });
-
-  loginPopUp$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(PaymentRequestActions.payNowTransaction),
-        concatLatestFrom(() => this.store.select(selectPublicAddress)),
-        filter(
-          ([, publicAddress]: [ReturnType<typeof PaymentRequestActions.payNowTransaction>, string | null]) => publicAddress === null
-        ),
-        tap(() => this.web3LoginService.openLoginModal()),
-        switchMap(() =>
-          this.web3LoginService.onWalletConnectedEvent$.pipe(
-            map((wallet: WalletConnectedEvent) => {
-              console.log('wallet', wallet);
-              // TODO: process to the transaction if it's the same chaindId
-
-            })
-          )
-        )
-      );
-    },
-    { dispatch: false } // TODO: might be deleted soon
-  );
-
 }

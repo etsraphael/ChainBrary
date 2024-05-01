@@ -3,13 +3,15 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { debounceTime, filter, map, Observable, ReplaySubject, takeUntil } from 'rxjs';
+import { debounceTime, filter, map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { TokenPair } from 'src/app/shared/enum';
-import { IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
+import { AuthStatusCode } from './../../../../../../shared/enum';
+import { ActionStoreProcessing, IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { selectAuthStatus } from './../../../../../../store/auth-store/state/selectors';
 import {
   applyConversionTokenFromPayNow,
   decryptRawPaymentRequest,
@@ -17,6 +19,7 @@ import {
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
   selectConversionToken,
+  selectPayNowIsProcessing,
   selectRawPaymentRequest
 } from './../../../../../../store/payment-request-store/state/selectors';
 
@@ -93,7 +96,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     public formatService: FormatService,
     private readonly store: Store,
     private route: ActivatedRoute,
-    private snackbar: MatSnackBar
+    private snackbar: MatSnackBar,
+    private web3LoginService: Web3LoginService
   ) {}
 
   get routeId(): string {
@@ -116,6 +120,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
   readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
   readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
+  readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
+  private readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
 
   ngOnInit(): void {
     this.callActions();
@@ -137,13 +143,19 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
     if (this.mainForm.invalid) return;
 
-    return this.store.dispatch(
-      payNowTransaction({
-        amount: this.mainForm.get('amount')?.value as number,
-        chainId: this.networkSelected,
-        tokenId: this.currentTokenUsed?.tokenId as TokenId
-      })
-    );
+    this.authStatus$.pipe(take(1)).subscribe((status: AuthStatusCode) => {
+      if (status === AuthStatusCode.NotConnected) {
+        this.web3LoginService.openLoginModal();
+      } else {
+        return this.store.dispatch(
+          payNowTransaction({
+            amount: this.mainForm.get('amount')?.value as number,
+            chainId: this.networkSelected,
+            tokenId: this.currentTokenUsed?.tokenId as TokenId
+          })
+        );
+      }
+    });
   }
 
   private callActions(): void {

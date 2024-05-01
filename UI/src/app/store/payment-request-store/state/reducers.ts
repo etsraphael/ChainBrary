@@ -242,6 +242,26 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
         data: null
       }
     })
+  ),
+  on(
+    PaymentActions.payNowTransaction,
+    (state): IPaymentRequestState => ({
+      ...state,
+      payNowIsProcessing: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    PaymentActions.payNowTransactionFailure,
+    (state, action): IPaymentRequestState => ({
+      ...state,
+      payNowIsProcessing: {
+        isLoading: false,
+        errorMessage: action.errorMessage
+      }
+    })
   )
 );
 

@@ -1,4 +1,9 @@
-<ng-container *ngIf="(rawRequest$ | async)?.loading === false; else loadingView">
+<ng-container
+  *ngIf="
+    (rawRequest$ | async)?.loading === false && (selectPayNowIsProcessing$ | async)?.isLoading === false;
+    else loadingView
+  "
+>
   <div class="container-fluid bg-container h-100">
     <div class="d-flex justify-content-center h-100">
       <div class="col-12 col-md-6 col-lg-5">

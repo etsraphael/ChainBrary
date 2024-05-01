@@ -1,5 +1,12 @@
 import { INetworkDetail } from '@chainbrary/web3-login';
-import { IPaymentRequest, IPaymentRequestRaw, IProfilePayment, IToken, StoreState } from '../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  IPaymentRequest,
+  IPaymentRequestRaw,
+  IProfilePayment,
+  IToken,
+  StoreState
+} from '../../../shared/interfaces';
 
 export const PAYMENT_REQUEST_FEATURE_KEY = 'paymentRequest';
 
@@ -12,6 +19,7 @@ export interface IPaymentRequestState {
   profile: IProfilePayment;
   network: INetworkDetail | null;
   rawRequest: StoreState<IPaymentRequestRaw | null>;
+  payNowIsProcessing: ActionStoreProcessing;
 }
 
 export interface PaymentRequestState {
