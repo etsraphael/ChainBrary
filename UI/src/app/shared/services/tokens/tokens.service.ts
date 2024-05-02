@@ -170,4 +170,22 @@ export class TokensService {
       return Promise.reject((error as { message: string; code: number }) || error);
     }
   }
+
+  async transferNonNativeTokenForPayNow(payload: SendTransactionTokenBridgePayload): Promise<TransactionReceipt> {
+    const web3: Web3 = new Web3(window.ethereum);
+    const transactionContract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
+    const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
+
+    try {
+      const gas = await contract.methods
+        .transfer(payload.destinationAddress, new BigNumber(payload.amount).toString(10))
+        .estimateGas({ from: payload.ownerAdress });
+
+      return contract.methods
+        .transfer(payload.destinationAddress, new BigNumber(payload.amount).toString(10))
+        .send({ from: payload.ownerAdress, gas: gas });
+    } catch (error) {
+      return Promise.reject((error as { message: string; code: number }) || error);
+    }
+  }
 }
