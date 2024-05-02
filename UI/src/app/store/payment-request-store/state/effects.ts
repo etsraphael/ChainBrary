@@ -690,6 +690,9 @@ export class PaymentRequestEffects {
               of(
                 PaymentRequestActions.payNowTransactionFailure({
                   errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                }),
+                showErrorNotification({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
                 })
               )
             )
@@ -740,6 +743,9 @@ export class PaymentRequestEffects {
               of(
                 PaymentRequestActions.payNowTransactionFailure({
                   errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                }),
+                showErrorNotification({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
                 })
               )
             )
