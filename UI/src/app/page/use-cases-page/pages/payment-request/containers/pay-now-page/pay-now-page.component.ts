@@ -211,7 +211,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             (token) => token.tokenId === val.tokenId && token.nativeToChainId === this.networkSelected
           );
 
-          if (feed || isNative) {
+          if (feed !== undefined || isNative) {
             return this.store.dispatch(
               applyConversionTokenFromPayNow({
                 usdAmount: val.amount as number,
