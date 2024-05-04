@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { PayNowNotFoundPageComponent } from '../page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component';
 import { PayNowPageComponent } from '../page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component';
 import { PaymentPageComponent } from '../page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component';
 import { QrCodeScanningPageComponent } from '../shared/components/qr-code-scanning-page/qr-code-scanning-page.component';
@@ -22,6 +23,11 @@ const routes: Routes = [
     title: 'Pay Now',
     path: 'pay-now/:id',
     component: PayNowPageComponent
+  },
+  {
+    title: 'Payment Not Found',
+    path: 'payment-not-found',
+    component: PayNowNotFoundPageComponent
   },
   {
     title: 'Scanning QR Code',
