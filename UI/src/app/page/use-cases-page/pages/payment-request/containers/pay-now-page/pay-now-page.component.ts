@@ -53,7 +53,7 @@ interface ITokenForm {
 export class PayNowPageComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
-  mainForm = new FormGroup<ITokenForm>({
+  mainForm: FormGroup<ITokenForm> = new FormGroup<ITokenForm>({
     amount: new FormControl<number | null>(10, [Validators.required, Validators.min(0)]),
     tokenId: new FormControl<TokenId | null>(null, [Validators.required])
   });

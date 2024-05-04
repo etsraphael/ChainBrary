@@ -13,6 +13,7 @@ import { PaymentRequestProfileSettingsComponent } from './components/payment-req
 import { PaymentRequestReviewComponent } from './components/payment-request-review/payment-request-review.component';
 import { PayNowNotFoundPageComponent } from './containers/pay-now-not-found-page/pay-now-not-found-page.component';
 import { PayNowPageComponent } from './containers/pay-now-page/pay-now-page.component';
+import { PayNowSuccessfulPageComponent } from './containers/pay-now-successful-page/pay-now-successful-page.component';
 import { PaymentPageComponent } from './containers/payment-page/payment-page.component';
 import { PaymentRequestContainerComponent } from './containers/payment-request-container/payment-request-container.component';
 
@@ -26,7 +27,8 @@ import { PaymentRequestContainerComponent } from './containers/payment-request-c
     PaymentRequestPriceSettingsComponent,
     PaymentRequestProfileSettingsComponent,
     PayNowPageComponent,
-    PayNowNotFoundPageComponent
+    PayNowNotFoundPageComponent,
+    PayNowSuccessfulPageComponent
   ],
   imports: [
     CommonModule,
