@@ -48,6 +48,9 @@
                         </mat-option>
                       </mat-optgroup>
                     </mat-select>
+                    <mat-hint class="w-100 text-end">
+                      <span class="text-light">{{ networkNameSelected }}</span>
+                    </mat-hint>
                     <mat-error class="text-light" i18n *ngIf="mainForm.get('tokenId')?.hasError('required')">
                       Token is required
                     </mat-error>

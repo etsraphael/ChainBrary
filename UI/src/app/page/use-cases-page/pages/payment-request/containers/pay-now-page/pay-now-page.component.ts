@@ -135,6 +135,10 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get networkNameSelected(): string | undefined {
+    return this.tokensAvailable.find((network: NetworkGroup) => network.chainId === this.networkSelected)?.networkName;
+  }
+
   readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
   readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
   readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
