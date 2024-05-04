@@ -1,1 +1,33 @@
-<p>pay-now-not-found-page works!</p>
+<div class="container-fluid bg-container h-100">
+  <div class="d-flex justify-content-center h-100">
+    <div class="col-12 col-md-6 col-lg-5">
+      <div class="d-flex flex-column justify-content-between h-100">
+        <div class="row">
+          <div class="col-12 text-start">
+            <h3 class="text-dark p-3">
+              <i (click)="location.back()" class="bi bi-arrow-left me-3 text-light"></i>
+              <span class="text-light">Oops!</span>
+            </h3>
+          </div>
+        </div>
+        <div class="container text-center">
+          <h1 class="text-light not-found-title">4Ø4</h1>
+          <p class="text-light">The link is broken. Try again or choose a different QR.</p>
+        </div>
+        <div class="row">
+          <div class="col-8 mb-5 mx-auto">
+            <button class="btn btn-light w-100" [routerLink]="['./../qr-code-scanning']">
+              <span class="text-primary">Scan Again</span>
+            </button>
+          </div>
+          <div class="col-12">
+            <div class="title-container d-flex justify-content-center mb-5">
+              <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto" />
+              <h3 class="my-auto text-light">ChainBrary</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

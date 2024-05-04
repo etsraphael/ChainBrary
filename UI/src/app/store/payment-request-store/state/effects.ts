@@ -36,6 +36,7 @@ import {
   selectPaymentToken,
   selectRawPaymentRequest
 } from './selectors';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -45,7 +46,8 @@ export class PaymentRequestEffects {
     private store: Store,
     private priceFeedService: PriceFeedService,
     private walletService: WalletService,
-    private tokensService: TokensService
+    private tokensService: TokensService,
+    private router: Router
   ) {}
 
   private isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
@@ -438,6 +440,16 @@ export class PaymentRequestEffects {
       )
     );
   });
+
+  redirectionToNotFound$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(PaymentRequestActions.decryptRawPaymentRequestFailure),
+        map(() => this.router.navigate(['/payment-not-found']))
+      );
+    },
+    { dispatch: false }
+  );
 
   sendAmountTransactionsError$ = createEffect(() => {
     return this.actions$.pipe(
