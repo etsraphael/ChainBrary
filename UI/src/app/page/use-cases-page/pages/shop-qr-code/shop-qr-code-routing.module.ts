@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { ShopQrCodeHomeComponent } from './containers/shop-qr-code-home/shop-qr-code-home.component';
 import { ShopQrCodeMenuComponent } from './components/shop-qr-code-menu/shop-qr-code-menu.component';
+import { ShopQrCodeCreationPageComponent } from './containers/shop-qr-code-creation-page/shop-qr-code-creation-page.component';
+import { ShopQrCodeHomeComponent } from './containers/shop-qr-code-home/shop-qr-code-home.component';
 
 const routes: Routes = [
   {
@@ -12,6 +13,11 @@ const routes: Routes = [
         path: 'services',
         component: ShopQrCodeMenuComponent,
         data: { animation: 'shop-qr-code-services' }
+      },
+      {
+        path: 'qr-code-creation',
+        component: ShopQrCodeCreationPageComponent,
+        data: { animation: 'shop-qr-code-creation' }
       },
       {
         path: '',

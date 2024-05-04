@@ -18,7 +18,7 @@ export class ShopQrCodeMenuComponent {
     {
       title: $localize`:@@printQRCodeTitle:Print QR code`,
       descritpion: $localize`:@@printQRCodeDescription:Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.`,
-      routerLink: '/use-cases/document-locker/creation', // TODO: To be removed when component ready
+      routerLink: '/use-cases/qr-code-creation',
       buttonText: 'Start creation',
       imgSrc: './../../../../assets/services/qr-code-shop.svg'
     },
