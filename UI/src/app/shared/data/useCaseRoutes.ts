@@ -20,6 +20,12 @@ const serviceCards: IServiceCard[] = [
     routerUrl: './../../use-cases/document-locker/services'
   },
   {
+    title: $localize`:@@landingPage.myQRCodeTitle:My QR Code`,
+    description: $localize`:@@landingPage.myQRCodeDesc:Print a QR code for your business and let your customers pay in Cryptos.`,
+    img: './../../../../assets/services/qr-code-shop.svg',
+    routerUrl: './../../use-cases/shop-qr-code/services'
+  },
+  {
     title: $localize`:@@servicePage.payTogetherServiceTitle:Pay Together`,
     description: $localize`:@@servicePage.payTogetherServiceDesc: Create a payment link and share it with your friends to pay together.`,
     img: './../../../../assets/services/pay-together-0.svg',
