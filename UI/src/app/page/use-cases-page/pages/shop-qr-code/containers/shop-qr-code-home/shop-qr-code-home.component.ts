@@ -5,6 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './shop-qr-code-home.component.html',
   styleUrls: ['./shop-qr-code-home.component.scss']
 })
-export class ShopQrCodeHomeComponent {
-
-}
+export class ShopQrCodeHomeComponent {}

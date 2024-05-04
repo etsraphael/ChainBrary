@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
 import { NgxScannerQrcodeComponent, ScannerQRCodeConfig, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 @Component({
@@ -6,10 +6,9 @@ import { NgxScannerQrcodeComponent, ScannerQRCodeConfig, ScannerQRCodeResult } f
   templateUrl: './qr-code-scanning-page.component.html',
   styleUrls: ['./qr-code-scanning-page.component.scss']
 })
-export class QrCodeScanningPageComponent implements OnInit {
+export class QrCodeScanningPageComponent implements OnInit, OnDestroy {
   @ViewChild(NgxScannerQrcodeComponent) scanner: NgxScannerQrcodeComponent;
   scannerConfig: ScannerQRCodeConfig = {
-    // TODO: This has to be uncommented to keep the scanner working
     constraints: {
       video: {
         width: {
@@ -39,5 +38,9 @@ export class QrCodeScanningPageComponent implements OnInit {
       .catch((err) => {
         console.error('Error on get user media:', err);
       });
+  }
+
+  ngOnDestroy(): void {
+    this.scanner?.stop();
   }
 }

@@ -16,18 +16,18 @@ export class ShopQrCodeMenuComponent {
 
   useCaseActionCardsPayload: IUseCasesActionCard[] = [
     {
-      title: $localize`:@@lockDocumentTitle:Lock a document`,
-      descritpion: $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
-      routerLink: '/use-cases/document-locker/creation',
+      title: $localize`:@@printQRCodeTitle:Print QR code`,
+      descritpion: $localize`:@@printQRCodeDescription:Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.`,
+      routerLink: '/use-cases/document-locker/creation', // TODO: To be removed when component ready
       buttonText: 'Start creation',
-      imgSrc: './../../../../assets/bg/light/document-service.svg'
+      imgSrc: './../../../../assets/services/qr-code-shop.svg'
     },
     {
-      title: $localize`:@@lockDocumentTitle:Lock a document`,
-      descritpion: $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
-      routerLink: '/use-cases/document-locker/creation',
-      buttonText: 'Start creation',
-      imgSrc: './../../../../assets/bg/light/document-service.svg'
+      title: $localize`:@@scanQRToPayTitle:Scan QR to Pay`,
+      descritpion: $localize`:@@scanQRToPayDescription:Scan QR code at the vendors and pay with crypto currency`,
+      routerLink: './../../../qr-code-scanning',
+      buttonText: 'Scan Now',
+      imgSrc: './../../../../assets/services/qr-code-shop-2.svg'
     }
   ];
 }
