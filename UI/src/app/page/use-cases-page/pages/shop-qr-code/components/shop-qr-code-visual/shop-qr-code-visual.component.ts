@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import QRCode from 'qrcode';
 
 @Component({
   selector: 'app-shop-qr-code-visual[cardType][name]',
@@ -8,4 +10,22 @@ import { Component, Input } from '@angular/core';
 export class ShopQrCodeVisualComponent {
   @Input() cardType: number;
   @Input() name: string;
+
+  safeQrCodeSvg: SafeHtml;
+
+  constructor(private sanitizer: DomSanitizer) {
+    const url = 'https://yourwebsite.com';
+    this.generateQrCode(url).then(svg => {
+      this.safeQrCodeSvg = this.sanitizeSvg(svg);
+    });
+  }
+
+  generateQrCode(url: string): Promise<string> {
+    return QRCode.toString(url, { type: 'svg' });
+  }
+
+  private sanitizeSvg(svgString: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(svgString);
+  }
+
 }
