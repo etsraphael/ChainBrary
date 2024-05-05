@@ -12,7 +12,12 @@ import { ShopQRCodeRoutingModule } from './shop-qr-code-routing.module';
 import { ShopQrCodePrinterComponent } from './components/shop-qr-code-printer/shop-qr-code-printer.component';
 
 @NgModule({
-  declarations: [ShopQrCodeHomeComponent, ShopQrCodeMenuComponent, ShopQrCodeCreationPageComponent, ShopQrCodePrinterComponent],
+  declarations: [
+    ShopQrCodeHomeComponent,
+    ShopQrCodeMenuComponent,
+    ShopQrCodeCreationPageComponent,
+    ShopQrCodePrinterComponent
+  ],
   imports: [
     CommonModule,
     ShopQRCodeRoutingModule,
