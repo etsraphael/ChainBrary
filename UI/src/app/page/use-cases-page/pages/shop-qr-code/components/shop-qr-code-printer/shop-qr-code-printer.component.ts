@@ -25,4 +25,8 @@ export class ShopQrCodePrinterComponent {
   selectCard(index: number): void {
     this.cardSelected = index;
   }
+
+  print(): void {
+    return window.print();
+  }
 }
