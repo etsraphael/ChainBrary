@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12" [formGroup]="mainForm">
         <mat-form-field class="w-100" appearance="outline">
-          <input matInput type="text" formControlName="name" placeholder="Business Name" />
+          <input matInput type="text" formControlName="name" placeholder="Business Name" maxlength="19" />
         </mat-form-field>
       </div>
       <div class="col-12">
@@ -15,7 +15,7 @@
                 [ngClass]="{ 'selected-card': item === cardSelected }"
                 (click)="selectCard(item)"
               >
-                <app-shop-qr-code-visual [cardType]="item"></app-shop-qr-code-visual>
+                <app-shop-qr-code-visual [cardType]="item" [name]="nameValue"></app-shop-qr-code-visual>
               </div>
             </div>
           </div>

@@ -18,6 +18,10 @@ export class ShopQrCodePrinterComponent {
   cardTypes: number[] = [0, 1];
   cardSelected: null | number;
 
+  get nameValue(): string {
+    return this.mainForm.get('name')?.value || 'Business Name';
+  }
+
   selectCard(index: number): void {
     this.cardSelected = index;
   }
