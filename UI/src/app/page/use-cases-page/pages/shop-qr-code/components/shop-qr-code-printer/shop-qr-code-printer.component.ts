@@ -15,4 +15,10 @@ export class ShopQrCodePrinterComponent {
     name: new FormControl<string | null>(null, [Validators.required])
   });
   commonButtonText = CommonButtonText;
+  cardTypes: number[] = [0, 1];
+  cardSelected: null | number;
+
+  selectCard(index: number): void {
+    this.cardSelected = index;
+  }
 }

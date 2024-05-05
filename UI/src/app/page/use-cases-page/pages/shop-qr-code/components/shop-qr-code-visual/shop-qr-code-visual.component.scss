@@ -1,3 +1,26 @@
 .title-container img {
   width: 2rem;
 }
+
+.custom-bg-0 {
+  background-image: url('./../../../../../../../assets/bg/shop-qr-code/shop-qr-code-0.svg');
+}
+
+.custom-bg-1 {
+  background-image: url('./../../../../../../../assets/bg/shop-qr-code/shop-qr-code-1.svg');
+}
+
+.custom-bg {
+  background-repeat: no-repeat;
+  background-position: initial;
+  background-size: cover;
+  overflow: hidden;
+  aspect-ratio: 1/1.414;
+}
+
+.title-container {
+  width: 100%;
+  position: absolute;
+  top: 9%;
+  text-align: center;
+}

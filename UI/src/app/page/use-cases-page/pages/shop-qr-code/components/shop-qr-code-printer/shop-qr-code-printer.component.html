@@ -9,8 +9,14 @@
       <div class="col-12">
         <div class="container">
           <div class="row">
-            <div class="col-12 col-md-6" *ngFor="let item of [0, 1]">
-              <app-shop-qr-code-visual></app-shop-qr-code-visual>
+            <div class="col-12 col-md-6 my-2" *ngFor="let item of cardTypes">
+              <div
+                class="card sample-card shadow"
+                [ngClass]="{ 'selected-card': item === cardSelected }"
+                (click)="selectCard(item)"
+              >
+                <app-shop-qr-code-visual [cardType]="item"></app-shop-qr-code-visual>
+              </div>
             </div>
           </div>
         </div>

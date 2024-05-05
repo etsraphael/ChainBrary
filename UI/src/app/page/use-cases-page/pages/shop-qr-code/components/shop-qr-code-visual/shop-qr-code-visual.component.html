@@ -1,33 +1,6 @@
-<div class="container-fluid card pb-3">
-  <div class="d-flex justify-content-center">
-    <div class="title-container d-flex justify-content-center mb-3">
-      <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto" />
-      <h4 class="my-auto text-dark">ChainBrary</h4>
-    </div>
-  </div>
-  <div class="d-flex justify-content-center">
-    <div class="title-container d-flex justify-content-center mb-2">
-      <h4 class="my-auto text-dark">Business Name</h4>
-    </div>
-  </div>
-  <div class="d-flex justify-content-center">
-    <div class="title-container d-flex justify-content-center mb-2">
-      <p>Scan & Pay with Crypto tokens</p>
-    </div>
-  </div>
-  <div class="d-flex justify-content-center">
-    <qrcode
-      [qrdata]="'data.qrCodeValue'"
-      [allowEmptyString]="true"
-      [ariaLabel]="'QR Code image with the following content...'"
-      [cssClass]="'center'"
-      [colorDark]="'#000000ff'"
-      [colorLight]="'#ffffffff'"
-      elementType="url"
-      [errorCorrectionLevel]="'M'"
-      [scale]="1"
-      [title]="'A custom title attribute'"
-      [width]="200"
-    ></qrcode>
+<div class="custom-bg" [ngClass]="'custom-bg-' + cardType">
+  <div class="title-container">
+    <h4 class="mb-0 text-light">Business name</h4>
+    <p class="text-light">Scan & Pay with Crypto tokens</p>
   </div>
 </div>
