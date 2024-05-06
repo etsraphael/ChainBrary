@@ -14,7 +14,7 @@ export class ShopQrCodeVisualComponent {
   safeQrCodeSvg: SafeHtml;
 
   constructor(private sanitizer: DomSanitizer) {
-    const url = 'https://yourwebsite.com';
+    const url = 'http://localhost:4200/pay-now/ewogICJwdWJsaWNBZGRyZXNzIjoiMHhkMTc0YzlDMzFkZEE2RkZDNUUxMzM1NjY0Mzc0YzFFYkJFMjE0NGFmIiwKICAibmFtZSI6IkpvaG4gV2ljayIKfQ%3D%3D';
     this.generateQrCode(url).then(svg => {
       this.safeQrCodeSvg = this.sanitizeSvg(svg);
     });
