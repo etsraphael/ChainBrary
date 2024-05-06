@@ -28,6 +28,23 @@ export class ShopQrCodePrinterComponent {
 
   print(): void {
     const el = document.getElementById('shop-qr-code-visual-0') as HTMLElement;
-    console.log('el', el);
+    this.printService(el);
+  }
+
+  private printService(element: Element) {
+    const printWindow = window.open('', '_blank', 'width=1000,height=500');
+    if (printWindow) {
+      printWindow.document.write(
+        '<html><head><title>Printable</title><style>.code-container{width: 70%;position: absolute;left: 11.5%; bottom: 17.5%;text-align: center;padding: 1.5rem}</style></head><body>' +
+          element.outerHTML +
+          '</body></html>'
+      );
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+      setTimeout(() => {
+        printWindow.close();
+      }, 500);
+    }
   }
 }
