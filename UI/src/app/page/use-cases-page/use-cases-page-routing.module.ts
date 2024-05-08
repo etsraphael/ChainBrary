@@ -40,8 +40,7 @@ const routes: Routes = [
       {
         title: 'Shop QR Code',
         path: 'shop-qr-code',
-        loadChildren: () => import('./pages/shop-qr-code/shop-qr-code.module').then((m) => m.ShopQrCodeModule),
-        data: { animation: 'shop-qr-code' }
+        loadChildren: () => import('./pages/shop-qr-code/shop-qr-code.module').then((m) => m.ShopQrCodeModule)
       },
       {
         title: 'Activity',

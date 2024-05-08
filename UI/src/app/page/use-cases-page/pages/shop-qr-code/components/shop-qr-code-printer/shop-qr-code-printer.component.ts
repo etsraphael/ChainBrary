@@ -32,10 +32,9 @@ export class ShopQrCodePrinterComponent {
   }
 
   print(): void {
-
     this.mainForm.markAllAsTouched();
 
-    if(this.mainForm.invalid) {
+    if (this.mainForm.invalid) {
       this.snackbar.open('Please fill in all the required fields', $localize`:@@commonWords:Close`, { duration: 3000 });
       return;
     }

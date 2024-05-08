@@ -11,13 +11,11 @@ const routes: Routes = [
     children: [
       {
         path: 'services',
-        component: ShopQrCodeMenuComponent,
-        data: { animation: 'shop-qr-code-services' }
+        component: ShopQrCodeMenuComponent
       },
       {
         path: 'qr-code-creation',
-        component: ShopQrCodeCreationPageComponent,
-        data: { animation: 'shop-qr-code-creation' }
+        component: ShopQrCodeCreationPageComponent
       },
       {
         path: '',

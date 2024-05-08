@@ -12,18 +12,15 @@ const routes: Routes = [
     children: [
       {
         path: 'services',
-        component: DocumentLockerMenuComponent,
-        data: { animation: 'document-locker-services' }
+        component: DocumentLockerMenuComponent
       },
       {
         path: 'creation',
-        component: DocumentLockerMakerComponent,
-        data: { animation: 'document-locker-creation' }
+        component: DocumentLockerMakerComponent
       },
       {
         path: 'id/:id',
-        component: DocumentLockerFoundComponent,
-        data: { animation: 'document-locker-search' }
+        component: DocumentLockerFoundComponent
       },
       {
         path: '',
