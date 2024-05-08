@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonButtonText } from './../../../../../../shared/enum';
 
 interface QRCodeForm {
   name: FormControl<string | null>;
+  ownerAddress: FormControl<string | null>;
 }
 @Component({
   selector: 'app-shop-qr-code-printer',
@@ -12,11 +14,14 @@ interface QRCodeForm {
 })
 export class ShopQrCodePrinterComponent {
   mainForm: FormGroup<QRCodeForm> = new FormGroup({
+    ownerAddress: new FormControl<string | null>(null, [Validators.required, this.ethAddressValidator()]),
     name: new FormControl<string | null>(null, [Validators.required])
   });
   commonButtonText = CommonButtonText;
   cardTypes: number[] = [0, 1];
   cardSelected: null | number;
+
+  constructor(private snackbar: MatSnackBar) {}
 
   get nameValue(): string {
     return this.mainForm.get('name')?.value || 'Business Name';
@@ -27,7 +32,20 @@ export class ShopQrCodePrinterComponent {
   }
 
   print(): void {
-    const el = document.getElementById('shop-qr-code-visual-0') as HTMLElement;
+
+    this.mainForm.markAllAsTouched();
+
+    if(this.mainForm.invalid) {
+      this.snackbar.open('Please fill in all the required fields', $localize`:@@commonWords:Close`, { duration: 3000 });
+      return;
+    }
+
+    if (this.cardSelected == null) {
+      this.snackbar.open('Please select a template first', $localize`:@@commonWords:Close`, { duration: 3000 });
+      return;
+    }
+
+    const el = document.getElementById('shop-qr-code-visual-' + this.cardSelected) as HTMLElement;
     this.printService(el);
   }
 
@@ -46,5 +64,16 @@ export class ShopQrCodePrinterComponent {
         printWindow.close();
       }, 500);
     }
+  }
+
+  private ethAddressValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string;
+
+      if (!value) return null;
+
+      const isHex = /^0x[a-fA-F0-9]{40}$/.test(value);
+      return isHex ? null : { invalidAddress: true };
+    };
   }
 }

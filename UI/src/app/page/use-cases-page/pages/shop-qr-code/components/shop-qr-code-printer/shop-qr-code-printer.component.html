@@ -2,19 +2,34 @@
   <div class="container">
     <div class="row">
       <div class="col-12" [formGroup]="mainForm">
-        <mat-form-field class="w-100" appearance="outline">
-          <input matInput type="text" formControlName="name" placeholder="Business Name" maxlength="19" />
-        </mat-form-field>
+        <div class="row">
+          <div class="col-6">
+            <mat-form-field class="w-100" appearance="outline">
+              <input matInput type="text" formControlName="name" placeholder="Business Name" maxlength="19" />
+              <mat-error *ngIf="mainForm.get('name')?.hasError('required')">
+                <span i18n>URL invalid</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div class="col-6">
+            <mat-form-field class="w-100" appearance="outline">
+              <input matInput type="text" formControlName="ownerAddress" placeholder="Owner address" />
+              <mat-error *ngIf="mainForm.get('ownerAddress')?.hasError('required')">
+                <span i18n>Address invalid</span>
+              </mat-error>
+              <mat-error i18n *ngIf="mainForm.get('ownerAddress')?.hasError('invalidAddress')">
+                This address is invalid
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
       </div>
       <div class="col-12">
         <div class="container">
           <div class="row">
             <div class="col-12 col-md-6 my-2" *ngFor="let item of cardTypes">
-              <div
-                class="card sample-card shadow"
-                [ngClass]="{ 'selected-card': item === cardSelected }"
-                (click)="selectCard(item)"
-              >
+              <div class="card sample-card shadow" [ngClass]="{ 'selected-card': item === cardSelected }"
+                (click)="selectCard(item)">
                 <app-shop-qr-code-visual [cardType]="item" [name]="nameValue"></app-shop-qr-code-visual>
               </div>
             </div>
