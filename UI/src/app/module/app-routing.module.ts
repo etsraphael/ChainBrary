@@ -37,7 +37,7 @@ const routes: Routes = [
   },
   {
     title: 'Successful Payment',
-    path: 'successful-payment/:id/:amount/:currency/:network',
+    path: 'successful-payment',
     component: PayNowSuccessfulPageComponent
   },
   {

@@ -1,20 +1,22 @@
 import { Location } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Params } from '@angular/router';
+import { NetworkChainId } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ITransactionCard } from './../../../../../../shared/interfaces';
 import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
-import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Component({
   selector: 'app-pay-now-successful-page',
   templateUrl: './pay-now-successful-page.component.html',
   styleUrls: ['./pay-now-successful-page.component.scss']
 })
-export class PayNowSuccessfulPageComponent {
+export class PayNowSuccessfulPageComponent implements OnInit {
   constructor(
     public location: Location,
-    private readonly store: Store
+    private readonly store: Store,
+    private route: ActivatedRoute
   ) {}
 
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
@@ -29,4 +31,11 @@ export class PayNowSuccessfulPageComponent {
     component: 'PayNowSuccessfulPageComponent',
     chainId: NetworkChainId.ETHEREUM
   };
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: Params) => {
+      console.log('params', params);
+      // TODO: Keep going here
+    });
+  }
 }
