@@ -1,7 +1,6 @@
 import { Location } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { ITransactionCard } from './../../../../../../shared/interfaces';
@@ -12,7 +11,7 @@ import { selectRecentTransactionsByComponent } from './../../../../../../store/t
   templateUrl: './pay-now-successful-page.component.html',
   styleUrls: ['./pay-now-successful-page.component.scss']
 })
-export class PayNowSuccessfulPageComponent implements OnInit {
+export class PayNowSuccessfulPageComponent {
   constructor(
     public location: Location,
     private readonly store: Store,
@@ -23,19 +22,17 @@ export class PayNowSuccessfulPageComponent implements OnInit {
     selectRecentTransactionsByComponent('PaymentPageComponent')
   );
 
-  // TODO: Remove this test data
-  cardContentTest: ITransactionCard = {
-    title: 'Transaction successful!',
-    type: 'success',
-    hash: '0f9g34jhgf083hgfjf9jk2940fg8h24f9-pgh2',
-    component: 'PayNowSuccessfulPageComponent',
-    chainId: NetworkChainId.ETHEREUM
-  };
+  get cardContent(): ITransactionCard {
+    return {
+      title: 'Transaction successful!',
+      type: 'success',
+      hash: this.route.snapshot.queryParams['hash'],
+      component: 'PayNowSuccessfulPageComponent',
+      chainId: this.route.snapshot.queryParams['network']
+    };
+  }
 
-  ngOnInit(): void {
-    this.route.queryParams.subscribe((params: Params) => {
-      console.log('params', params);
-      // TODO: Keep going here
-    });
+  get price(): string {
+    return this.route.snapshot.queryParams['amount'] + ' ' + this.route.snapshot.queryParams['currency'];
   }
 }
