@@ -98,6 +98,16 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             (network) => network.chainId === NetworkChainId.POLYGON && network.priceFeed.length > 0
           ) || token.nativeToChainId === NetworkChainId.POLYGON
       )
+    },
+    {
+      networkName: 'Sepolia Network',
+      chainId: NetworkChainId.SEPOLIA,
+      tokens: tokenList.filter(
+        (token: IToken) =>
+          token.networkSupport.some(
+            (network) => network.chainId === NetworkChainId.SEPOLIA && network.priceFeed.length > 0
+          ) || token.nativeToChainId === NetworkChainId.SEPOLIA
+      )
     }
   ];
   networkSelected: NetworkChainId;

@@ -4,7 +4,7 @@ import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
-import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { TransactionReceipt } from 'web3-core';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -763,6 +763,27 @@ export class PaymentRequestEffects {
             )
           );
         }
+      )
+    );
+  });
+
+  payNowTransactionSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.payNowTransactionSuccess),
+      tap((action: ReturnType<typeof PaymentRequestActions.payNowTransactionSuccess>) =>
+        this.router.navigate(['/successful-payment'], {
+          queryParams: {
+            hash: action.transactionHash,
+            amount: action.amount,
+            currency: action.token.symbol,
+            network: action.chainId
+          }
+        })
+      ),
+      map(() =>
+        showSuccessNotification({
+          message: $localize`:@@ResponseMessage.TransactionIsProcessing:Transaction is processing`
+        })
       )
     );
   });
