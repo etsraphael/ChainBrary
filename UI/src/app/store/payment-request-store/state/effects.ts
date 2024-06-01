@@ -693,9 +693,11 @@ export class PaymentRequestEffects {
 
           return from(this.tokensService.transferNativeToken(payload)).pipe(
             map((receipt: TransactionReceipt) =>
-              PaymentRequestActions.amountSent({
-                hash: receipt.transactionHash,
-                chainId: action[0].chainId as NetworkChainId
+              PaymentRequestActions.payNowTransactionSuccess({
+                transactionHash: receipt.transactionHash,
+                chainId: action[0].chainId as NetworkChainId,
+                amount: Number(action[2].data),
+                token: action[0].token
               })
             ),
             catchError((error: { message: string; code: number }) =>
@@ -746,9 +748,11 @@ export class PaymentRequestEffects {
 
           return from(this.tokensService.transferNonNativeTokenForPayNow(payload)).pipe(
             map((receipt: TransactionReceipt) =>
-              PaymentRequestActions.amountSent({
-                hash: receipt.transactionHash,
-                chainId: action[0].chainId as NetworkChainId
+              PaymentRequestActions.payNowTransactionSuccess({
+                transactionHash: receipt.transactionHash,
+                chainId: action[0].chainId as NetworkChainId,
+                amount: Number(action[2].data),
+                token: action[0].token
               })
             ),
             catchError((error: { message: string; code: number }) =>
