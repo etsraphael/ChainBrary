@@ -5,7 +5,7 @@
     <p class="text-secondary">{{ card.description }}</p>
   </div>
   <div class="container mt-auto py-3">
-    <a [routerLink]="card.routerUrl" *ngIf="card.isDisabled === undefined" [attr.data-id]="'btn-' + card.id" >
+    <a [routerLink]="card.routerUrl" *ngIf="card.isDisabled === undefined" [attr.data-id]="'btn-' + card.id">
       <button i18n class="btn btn-outline-primary w-100">Learn more</button>
     </a>
     <ng-container *ngIf="card.isDisabled">

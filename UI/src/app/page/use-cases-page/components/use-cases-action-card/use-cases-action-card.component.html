@@ -7,7 +7,9 @@
     </div>
     <div class="mt-auto pt-3">
       <div class="text-end">
-        <a [routerLink]="payload.routerLink" class="btn btn-primary">{{ payload.buttonText }}</a>
+        <a [routerLink]="payload.routerLink" class="btn btn-primary" [attr.data-id]="'btn-' + payload.id">{{
+          payload.buttonText
+        }}</a>
       </div>
     </div>
   </div>

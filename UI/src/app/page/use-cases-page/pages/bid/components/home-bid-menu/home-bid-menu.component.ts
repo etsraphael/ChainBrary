@@ -15,6 +15,7 @@ export class HomeBidMenuComponent {
 
   useCaseActionCardsPayload: IUseCasesActionCard[] = [
     {
+      id: 'create-bid',
       title: $localize`:@@useCases.bid.createBid:Create a bid`,
       descritpion: $localize`:@@useCases.bid.createBidDescription:Kickstart your bidding process with 'Create a Bid.' Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.`,
       routerLink: '/use-cases/bid/creation',
@@ -22,6 +23,7 @@ export class HomeBidMenuComponent {
       imgSrc: './../../../../assets/bg/light/bid-service.svg'
     },
     {
+      id: 'join-bid',
       title: $localize`:@@useCases.bid.joinBid:Join a bid`,
       descritpion: $localize`:@@useCases.bid.joinBidDescription:Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.`,
       routerLink: '/use-cases/bid/search',

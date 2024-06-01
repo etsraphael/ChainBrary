@@ -16,6 +16,7 @@ export class ShopQrCodeMenuComponent {
 
   useCaseActionCardsPayload: IUseCasesActionCard[] = [
     {
+      id: 'print-qr-code',
       title: $localize`:@@printQRCodeTitle:Print QR code`,
       descritpion: $localize`:@@printQRCodeDescription:Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.`,
       routerLink: '/use-cases/shop-qr-code/qr-code-creation',
@@ -23,6 +24,7 @@ export class ShopQrCodeMenuComponent {
       imgSrc: './../../../../assets/services/qr-code-shop.svg'
     },
     {
+      id: 'scan-qr-to-pay',
       title: $localize`:@@scanQRToPayTitle:Scan QR to Pay`,
       descritpion: $localize`:@@scanQRToPayDescription:Scan QR code at the vendors and pay with crypto currency`,
       routerLink: './../../../qr-code-scanning',

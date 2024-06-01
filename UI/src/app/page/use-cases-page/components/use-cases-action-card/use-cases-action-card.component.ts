@@ -10,6 +10,7 @@ export class UseCasesActionCardComponent {
 }
 
 export interface IUseCasesActionCard {
+  id: string;
   title: string;
   descritpion: string;
   routerLink: string;
