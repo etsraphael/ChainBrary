@@ -112,7 +112,7 @@ export const payNowTransaction = createAction(
 );
 export const payNowTransactionSuccess = createAction(
   '[Payment Request] Pay Now Transaction Success',
-  props<{ transactionHash: string, amount: number; chainId: NetworkChainId; token: IToken }>()
+  props<{ transactionHash: string; amount: number; chainId: NetworkChainId; token: IToken }>()
 );
 export const payNowTransactionFailure = createAction(
   '[Payment Request] Pay Now Transaction Failure',
