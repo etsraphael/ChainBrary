@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { UserCasesSharedComponentsModule } from '../../../../components/user-cases-shared-components.module';
+import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
 import { ShopQrCodeHomeComponent } from './shop-qr-code-home.component';
 
 describe('ShopQrCodeHomeComponent', () => {
@@ -8,6 +9,7 @@ describe('ShopQrCodeHomeComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [SharedTestModule, UserCasesSharedComponentsModule],
       declarations: [ShopQrCodeHomeComponent]
     });
     fixture = TestBed.createComponent(ShopQrCodeHomeComponent);

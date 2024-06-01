@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
 import { QrCodeScanningPageComponent } from './qr-code-scanning-page.component';
 
 describe('QrCodeScanningPageComponent', () => {
@@ -8,6 +8,7 @@ describe('QrCodeScanningPageComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
+      imports: [NgxScannerQrcodeModule],
       declarations: [QrCodeScanningPageComponent]
     });
     fixture = TestBed.createComponent(QrCodeScanningPageComponent);
