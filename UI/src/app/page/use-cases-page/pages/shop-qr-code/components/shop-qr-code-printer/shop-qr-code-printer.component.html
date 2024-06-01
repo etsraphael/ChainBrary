@@ -5,7 +5,14 @@
         <div class="row">
           <div class="col-12">
             <mat-form-field class="w-100" appearance="outline">
-              <input matInput type="text" formControlName="name" placeholder="Business Name" maxlength="19" />
+              <input
+                matInput
+                type="text"
+                formControlName="name"
+                placeholder="Business Name"
+                maxlength="19"
+                data-id="business-name"
+              />
               <mat-error *ngIf="mainForm.get('name')?.hasError('required')">
                 <span i18n>URL invalid</span>
               </mat-error>
@@ -13,7 +20,13 @@
           </div>
           <div class="col-12">
             <mat-form-field class="w-100" appearance="outline">
-              <input matInput type="text" formControlName="ownerAddress" placeholder="Owner address" />
+              <input
+                matInput
+                type="text"
+                formControlName="ownerAddress"
+                placeholder="Owner address"
+                data-id="owner-address"
+              />
               <mat-error *ngIf="mainForm.get('ownerAddress')?.hasError('required')">
                 <span i18n>Address invalid</span>
               </mat-error>
@@ -46,7 +59,7 @@
               {{ commonButtonText.Back }}
             </button>
           </a>
-          <button class="btn btn-primary mx-2" (click)="print()">Print</button>
+          <button data-id="btn-print-qr-code" class="btn btn-primary mx-2" (click)="print()">Print</button>
         </div>
       </div>
     </div>
