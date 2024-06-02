@@ -10,7 +10,7 @@ describe('Create a QR code payment for shops', () => {
     cy.get('[data-id="btn-print-qr-code"]').click();
   });
 
-  it.only('Show error message', () => {
+  it('Show error message', () => {
     cy.get('[data-id="business-name"]').type('Test Business');
     cy.get('[data-id="btn-print-qr-code"]').click();
 
