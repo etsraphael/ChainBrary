@@ -72,7 +72,11 @@
                     </mat-error>
                   </mat-form-field>
                 </div>
-                <div *ngIf="tokenConversion$ | async; let tc" class="col-12 text-center pb-2">
+                <div
+                  data-id="pw-conversion-result"
+                  *ngIf="tokenConversion$ | async; let tc"
+                  class="col-12 text-center pb-2"
+                >
                   <h6 class="text-light">{{ tc }}</h6>
                 </div>
                 <div class="col-12 my-2">

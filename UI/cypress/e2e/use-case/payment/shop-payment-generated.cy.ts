@@ -1,8 +1,7 @@
 /// <reference types="cypress" />
 
 import '@angular/compiler';
-import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
-import { IPaymentRequest, IPaymentRequestRaw } from '../../../../src/app/shared/interfaces';
+import { IPaymentRequestRaw } from '../../../../src/app/shared/interfaces';
 
 class MockPaymentService {
   removeEmptyStringProperties<T>(obj: T): T {
@@ -32,9 +31,36 @@ describe('Check native payment generated', () => {
     .replace('+', '-')
     .replace('/', '_');
 
-  it('Generate payment without wallet', () => {
+  beforeEach(() => {
     cy.visit(`${Cypress.env('baseUrl')}/pay-now/${paymentRequestBase64}`);
+  });
+
+  it('Generate payment without wallet', () => {
     cy.get('[data-id=pn-header-container] h3').should('have.text', paymentRequest.name);
     cy.get('[data-id=pn-header-container] p').should('contain', paymentRequest.publicAddress.slice(-4));
+  });
+
+  it('Select random token', () => {
+    // Select 5 times a random token
+    for (let i = 0; i < 5; i++) {
+      cy.get('mat-select[formControlName="tokenId"]').click();
+
+      // Select a random token
+      cy.get('mat-option').then(($options) => {
+        const randomIndex = Math.floor(Math.random() * $options.length);
+        cy.wrap($options[randomIndex]).click();
+      });
+
+      // Verify the selection by checking the value of the selected option
+      cy.get('mat-select[formControlName="tokenId"]')
+        .invoke('text')
+        .then((selectedText) => {
+          expect(selectedText.trim()).to.not.be.empty;
+        });
+
+      cy.get('[data-id=pw-conversion-result]').within(() => {
+        cy.get('h6').should('have.class', 'text-light').and('not.be.empty');
+      });
+    }
   });
 });
