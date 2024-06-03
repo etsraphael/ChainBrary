@@ -1,5 +1,6 @@
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { Location } from '@angular/common';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { NgxScannerQrcodeComponent, ScannerQRCodeConfig, ScannerQRCodeResult } from 'ngx-scanner-qrcode';
 @Component({
   selector: 'app-qr-code-scanning-page',
@@ -21,7 +22,10 @@ export class QrCodeScanningPageComponent implements OnInit, OnDestroy {
     }
   };
 
-  constructor(public location: Location) {}
+  constructor(
+    public location: Location,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     navigator.mediaDevices
@@ -30,9 +34,8 @@ export class QrCodeScanningPageComponent implements OnInit, OnDestroy {
         this.scanner.start();
 
         this.scanner?.event.subscribe((result: ScannerQRCodeResult[]) => {
-          // TODO: Redirect to the page with the scanned QR code
-          console.log('Scanned QR code:', result);
           this.scanner?.stop();
+          this.router.navigate(['pay-now', result[0].value]);
         });
       })
       .catch((err) => {
