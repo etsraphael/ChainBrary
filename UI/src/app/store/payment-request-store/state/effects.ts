@@ -4,7 +4,7 @@ import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from
 import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
-import { catchError, filter, from, map, mergeMap, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { TransactionReceipt } from 'web3-core';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -13,11 +13,13 @@ import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IPaymentRequest,
+  IPaymentRequestRaw,
   IReceiptTransaction,
   IToken,
   ITokenContract,
   SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
+  StoreState,
   TransactionTokenBridgePayload
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
@@ -26,12 +28,15 @@ import { WalletService } from './../../../shared/services/wallet/wallet.service'
 import * as PaymentRequestActions from './actions';
 import {
   DataConversionStore,
+  selectConversionToken,
   selectIsNonNativeToken,
   selectPayment,
   selectPaymentConversion,
   selectPaymentNetworkIsMathing,
-  selectPaymentToken
+  selectPaymentToken,
+  selectRawPaymentRequest
 } from './selectors';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -41,12 +46,19 @@ export class PaymentRequestEffects {
     private store: Store,
     private priceFeedService: PriceFeedService,
     private walletService: WalletService,
-    private tokensService: TokensService
+    private tokensService: TokensService,
+    private router: Router
   ) {}
 
-  isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
+  private isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
     return (
       typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.amount === 'number'
+    );
+  }
+
+  private isRawIPaymentRequest(obj: IPaymentRequestRaw): obj is IPaymentRequestRaw {
+    return (
+      typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.name === 'string'
     );
   }
 
@@ -400,6 +412,45 @@ export class PaymentRequestEffects {
     );
   });
 
+  generateRawPayment$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.decryptRawPaymentRequest),
+      map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {
+        const decodedPayment = Buffer.from(
+          action.encodedRequest.replace('+', '-').replace('/', '_'),
+          'base64'
+        ).toString('utf-8');
+        const decodedPaymentRequest: IPaymentRequestRaw = JSON.parse(decodedPayment);
+        if (this.isRawIPaymentRequest(decodedPaymentRequest)) {
+          return PaymentRequestActions.decryptRawPaymentRequestSuccess({
+            rawRequest: decodedPaymentRequest
+          });
+        } else {
+          return PaymentRequestActions.decryptRawPaymentRequestFailure({
+            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
+          });
+        }
+      }),
+      catchError(() =>
+        of(
+          PaymentRequestActions.decryptRawPaymentRequestFailure({
+            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
+          })
+        )
+      )
+    );
+  });
+
+  redirectionToNotFound$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(PaymentRequestActions.decryptRawPaymentRequestFailure),
+        map(() => this.router.navigate(['/payment-not-found']))
+      );
+    },
+    { dispatch: false }
+  );
+
   sendAmountTransactionsError$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.amountSentFailure, PaymentRequestActions.smartContractCanTransferFailure),
@@ -585,6 +636,159 @@ export class PaymentRequestEffects {
           )
         );
       })
+    );
+  });
+
+  applyConversionTokeFromNode$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.applyConversionTokenFromPayNow),
+      switchMap(async (payload: ReturnType<typeof PaymentRequestActions.applyConversionTokenFromPayNow>) => {
+        let price: number;
+
+        if (payload.pair) {
+          price = await this.priceFeedService.getCurrentPriceFromNode(payload.pair, payload.chainId);
+        } else {
+          price = await this.priceFeedService.getCurrentPriceOfNativeTokenFromNode(payload.chainId);
+        }
+
+        return PaymentRequestActions.applyConversionTokenFromPayNowSuccess({
+          usdAmount: payload.usdAmount,
+          tokenAmount: parseFloat((payload.usdAmount / price).toFixed(12))
+        });
+      }),
+      catchError(() =>
+        of(
+          PaymentRequestActions.applyConversionTokenFromPayNowFailure({
+            errorMessage: $localize`:@@ResponseMessage.ErrorRetreivingDataFromTheBlockchain:Error retreiving data from the blockchain`
+          })
+        )
+      )
+    );
+  });
+
+  processPayNowPaymentNative$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.payNowTransaction),
+      concatLatestFrom(() => [
+        this.store.select(selectRawPaymentRequest),
+        this.store.select(selectConversionToken),
+        this.store.select(selectPublicAddress)
+      ]),
+      filter((payload) => !!payload[1]?.data?.publicAddress && !!payload[3] && !!payload[0].token.nativeToChainId),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof PaymentRequestActions.payNowTransaction>,
+            StoreState<IPaymentRequestRaw | null>,
+            StoreState<number | null>,
+            string | null
+          ]
+        ) => {
+          const payload: SendNativeTokenPayload = {
+            to: action[1]?.data?.publicAddress as string,
+            amount: Number(action[2].data) * 10 ** action[0].token.decimals,
+            chainId: action[0].chainId,
+            from: action[3] as string
+          };
+
+          return from(this.tokensService.transferNativeToken(payload)).pipe(
+            map((receipt: TransactionReceipt) =>
+              PaymentRequestActions.payNowTransactionSuccess({
+                transactionHash: receipt.transactionHash,
+                chainId: action[0].chainId as NetworkChainId,
+                amount: Number(action[2].data),
+                token: action[0].token
+              })
+            ),
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.payNowTransactionFailure({
+                  errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                }),
+                showErrorNotification({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
+            )
+          );
+        }
+      )
+    );
+  });
+
+  processPayNowPaymentNonNative$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.payNowTransaction),
+      concatLatestFrom(() => [
+        this.store.select(selectRawPaymentRequest),
+        this.store.select(selectConversionToken),
+        this.store.select(selectPublicAddress)
+      ]),
+      filter((payload) => !!payload[1]?.data?.publicAddress && !!payload[3] && !payload[0].token.nativeToChainId),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof PaymentRequestActions.payNowTransaction>,
+            StoreState<IPaymentRequestRaw | null>,
+            StoreState<number | null>,
+            string | null
+          ]
+        ) => {
+          const tokenAddress: string = action[0].token.networkSupport.find(
+            (support) => support.chainId === action[0].chainId
+          )?.address as string;
+
+          const payload: SendTransactionTokenBridgePayload = {
+            destinationAddress: action[1].data?.publicAddress as string,
+            amount: Number(action[2].data) * 10 ** action[0].token.decimals,
+            chainId: action[0].chainId,
+            ownerAdress: action[3] as string,
+            tokenAddress: tokenAddress
+          };
+
+          return from(this.tokensService.transferNonNativeTokenForPayNow(payload)).pipe(
+            map((receipt: TransactionReceipt) =>
+              PaymentRequestActions.payNowTransactionSuccess({
+                transactionHash: receipt.transactionHash,
+                chainId: action[0].chainId as NetworkChainId,
+                amount: Number(action[2].data),
+                token: action[0].token
+              })
+            ),
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.payNowTransactionFailure({
+                  errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                }),
+                showErrorNotification({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
+            )
+          );
+        }
+      )
+    );
+  });
+
+  payNowTransactionSuccess$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(PaymentRequestActions.payNowTransactionSuccess),
+      tap((action: ReturnType<typeof PaymentRequestActions.payNowTransactionSuccess>) =>
+        this.router.navigate(['/successful-payment'], {
+          queryParams: {
+            hash: action.transactionHash,
+            amount: action.amount,
+            currency: action.token.symbol,
+            network: action.chainId
+          }
+        })
+      ),
+      map(() =>
+        showSuccessNotification({
+          message: $localize`:@@ResponseMessage.TransactionIsProcessing:Transaction is processing`
+        })
+      )
     );
   });
 }

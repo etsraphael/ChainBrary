@@ -1,0 +1,9 @@
+.sample-card {
+  cursor: pointer;
+  border: 3px solid white;
+  overflow: hidden;
+}
+
+.selected-card {
+  border: 3px solid var(--bs-primary);
+}

@@ -84,6 +84,6 @@ export class PaymentRequestContainerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
-    this.destroyed$.unsubscribe();
+    this.destroyed$.complete();
   }
 }

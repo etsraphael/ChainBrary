@@ -38,6 +38,11 @@ const routes: Routes = [
         data: { animation: 'document-locker' }
       },
       {
+        title: 'Shop QR Code',
+        path: 'shop-qr-code',
+        loadChildren: () => import('./pages/shop-qr-code/shop-qr-code.module').then((m) => m.ShopQrCodeModule)
+      },
+      {
         title: 'Activity',
         path: 'activity',
         component: ActivityContainerComponent,
