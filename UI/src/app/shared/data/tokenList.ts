@@ -202,11 +202,6 @@ export const tokenList: IToken[] = [
         priceFeed: [TokenPair.AtomToUsd]
       },
       {
-        chainId: NetworkChainId.ETHEREUM,
-        address: '0x8D983cb9388EaC77af0474fA441C4815500Cb7BB',
-        priceFeed: [TokenPair.AtomToUsd]
-      },
-      {
         chainId: NetworkChainId.POLYGON,
         address: '0xac51C4c48Dc3116487eD4BC16542e27B5694Da1b',
         priceFeed: []

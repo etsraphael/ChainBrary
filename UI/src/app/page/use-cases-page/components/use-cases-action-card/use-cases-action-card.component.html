@@ -1,13 +1,15 @@
-<div class="card border-0 shadow-lg h-100">
+<div class="card border-0 shadow-lg h-100 d-flex flex-column">
   <img class="img-fluid" [src]="payload.imgSrc" />
-  <div class="card-body">
-    <div class="container">
+  <div class="card-body d-flex flex-column">
+    <div class="container flex-grow-1">
       <h5 class="card-title">{{ payload.title }}</h5>
       <p class="card-text">{{ payload.descritpion }}</p>
     </div>
     <div class="mt-auto pt-3">
       <div class="text-end">
-        <a [routerLink]="payload.routerLink" class="btn btn-primary">{{ payload.buttonText }}</a>
+        <a [routerLink]="payload.routerLink" class="btn btn-primary" [attr.data-id]="'btn-' + payload.id">{{
+          payload.buttonText
+        }}</a>
       </div>
     </div>
   </div>

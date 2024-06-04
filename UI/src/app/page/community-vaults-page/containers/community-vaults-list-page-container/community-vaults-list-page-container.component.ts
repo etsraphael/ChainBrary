@@ -64,6 +64,6 @@ export class CommunityVaultsListPageContainerComponent implements OnInit, OnDest
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
-    this.destroyed$.unsubscribe();
+    this.destroyed$.complete();
   }
 }

@@ -1,0 +1,64 @@
+.bg-container {
+  background: linear-gradient(136deg, #9a7efb 0%, #6040c7 100%);
+  background: -webkit-linear-gradient(136deg, #9a7efb 0%, #6040c7 100%);
+}
+
+.bi-arrow-left {
+  cursor: pointer;
+}
+
+.title-container img {
+  width: 3rem;
+}
+
+.card {
+  --bs-card-bg: #ffffffad;
+}
+
+.bi-shop-window {
+  font-size: 2rem;
+  color: var(--bs-primary);
+}
+
+.icon-wrapper {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 1;
+  border: 1px solid var(--bs-primary);
+  border-radius: 50%;
+}
+
+.bi-shop-window {
+  width: 100%;
+  height: auto;
+}
+
+.prefix-span {
+  font-size: 3rem;
+}
+
+::ng-deep app-pay-now-page {
+  .mat-mdc-text-field-wrapper.mdc-text-field {
+    border-radius: 0.75rem;
+  }
+
+  .amount-container {
+    .mat-mdc-input-element {
+      font-size: 3rem;
+    }
+
+    .mat-mdc-text-field-wrapper.mdc-text-field {
+      background: none;
+    }
+
+    .mdc-text-field--filled:not(.mdc-text-field--disabled) .mdc-line-ripple::before {
+      border-bottom-color: white;
+    }
+  }
+}
+
+::ng-deep .mat-mdc-select-panel {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
