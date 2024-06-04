@@ -19,7 +19,11 @@ export class ShopQrCodeVisualComponent implements OnInit, OnDestroy {
   constructor(private sanitizer: DomSanitizer) {}
 
   get name(): string {
-    return this.data.get('name')?.value || $localize`:@@CommonTextPlaceholder.Title:Business Name`;
+    return this.data.get('name')?.value || $localize`:@@CommonTextPlaceholder.Title.BusinessName:Business Name`;
+  }
+
+  get subtitleName(): string {
+    return $localize`:@@CommonTextPlaceholder.Title.ScanPay:Scan & Pay with Crypto tokens`;
   }
 
   ngOnInit(): void {
