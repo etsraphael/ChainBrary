@@ -6,13 +6,13 @@
           <div class="col-12 text-start">
             <h3 class="text-dark p-3">
               <i (click)="location.back()" class="bi bi-arrow-left me-3 text-light"></i>
-              <span class="text-light">Payment Status</span>
+              <span i18n class="text-light">Payment Status</span>
             </h3>
           </div>
           <div class="col-12">
             <app-transaction-card [cardContent]="cardContent"></app-transaction-card>
             <div class="text-center">
-              <p class="text-light">Amount:</p>
+              <p i18n class="text-light">Amount:</p>
               <h3 class="text-light">{{ price }}</h3>
             </div>
           </div>

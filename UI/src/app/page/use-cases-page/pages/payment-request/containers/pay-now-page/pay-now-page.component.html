@@ -12,7 +12,7 @@
             <div class="col-12 text-start">
               <h3 class="text-dark p-3">
                 <i (click)="location.back()" class="bi bi-arrow-left me-3 text-light"></i>
-                <span class="text-light">Pay Now</span>
+                <span i18n class="text-light">Pay Now</span>
               </h3>
             </div>
           </div>
@@ -51,7 +51,7 @@
                     <mat-hint class="w-100 text-end">
                       <span class="text-light">{{ networkNameSelected }}</span>
                     </mat-hint>
-                    <mat-error class="text-light" i18n *ngIf="mainForm.get('tokenId')?.hasError('required')">
+                    <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('tokenId')?.hasError('required')">
                       Token is required
                     </mat-error>
                   </mat-form-field>
@@ -59,7 +59,7 @@
               </div>
               <div class="row">
                 <div class="col-12 text-center">
-                  <h4 class="text-light">Amount (in USD)</h4>
+                  <h4 i18n class="text-light">Amount (in USD)</h4>
                 </div>
                 <div class="col-12 text-center amount-container">
                   <mat-form-field>
@@ -67,7 +67,7 @@
                       <span class="text-light prefix-span">$</span>
                     </div>
                     <input formControlName="amount" class="text-center text-light" type="number" matInput />
-                    <mat-error class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">
+                    <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">
                       Amount has to be greater than 0
                     </mat-error>
                   </mat-form-field>
@@ -86,7 +86,7 @@
                 </div>
                 <div class="col-12 my-2">
                   <button class="btn w-100">
-                    <span class="text-light">Cancel</span>
+                    <span i18n class="text-light">{{commonButtonText.Cancel}}</span>
                   </button>
                 </div>
               </div>

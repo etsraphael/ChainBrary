@@ -20,7 +20,7 @@ export class ShopQrCodeMenuComponent {
       title: $localize`:@@printQRCodeTitle:Print QR code`,
       descritpion: $localize`:@@printQRCodeDescription:Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.`,
       routerLink: '/use-cases/shop-qr-code/qr-code-creation',
-      buttonText: 'Start creation',
+      buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,
       imgSrc: './../../../../assets/services/qr-code-shop.svg'
     },
     {
@@ -28,7 +28,7 @@ export class ShopQrCodeMenuComponent {
       title: $localize`:@@scanQRToPayTitle:Scan QR to Pay`,
       descritpion: $localize`:@@scanQRToPayDescription:Scan QR code at the vendors and pay with crypto currency`,
       routerLink: './../../../qr-code-scanning',
-      buttonText: 'Scan Now',
+      buttonText: $localize`:@@commonTextScanNow:Scan Now`,
       imgSrc: './../../../../assets/services/qr-code-shop-2.svg'
     }
   ];

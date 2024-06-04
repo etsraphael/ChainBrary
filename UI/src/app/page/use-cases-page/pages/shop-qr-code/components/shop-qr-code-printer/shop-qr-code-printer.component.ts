@@ -24,7 +24,7 @@ export class ShopQrCodePrinterComponent {
   constructor(private snackbar: MatSnackBar) {}
 
   get nameValue(): string {
-    return this.mainForm.get('name')?.value || 'Business Name';
+    return this.mainForm.get('name')?.value || $localize`:@@CommonTextPlaceholder.Title:Business Name`;
   }
 
   selectCard(index: number): void {

@@ -10,6 +10,7 @@
                 type="text"
                 formControlName="name"
                 placeholder="Business Name"
+                i18n-placeholder
                 maxlength="19"
                 data-id="business-name"
               />
@@ -25,6 +26,7 @@
                 type="text"
                 formControlName="ownerAddress"
                 placeholder="Owner address"
+                i18n-placeholder
                 data-id="owner-address"
               />
               <mat-error *ngIf="mainForm.get('ownerAddress')?.hasError('required')">
@@ -59,7 +61,7 @@
               {{ commonButtonText.Back }}
             </button>
           </a>
-          <button data-id="btn-print-qr-code" class="btn btn-primary mx-2" (click)="print()">Print</button>
+          <button i18n data-id="btn-print-qr-code" class="btn btn-primary mx-2" (click)="print()">Print</button>
         </div>
       </div>
     </div>

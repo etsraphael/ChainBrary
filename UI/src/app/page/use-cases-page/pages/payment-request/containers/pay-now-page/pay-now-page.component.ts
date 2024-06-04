@@ -17,8 +17,7 @@ import {
   takeUntil
 } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
-import { TokenPair } from 'src/app/shared/enum';
-import { AuthStatusCode } from './../../../../../../shared/enum';
+import { AuthStatusCode, CommonButtonText, ICommonButtonText, TokenPair } from './../../../../../../shared/enum';
 import { ActionStoreProcessing, IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { networkChange } from './../../../../../../store/auth-store/state/actions';
@@ -111,6 +110,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     }
   ];
   networkSelected: NetworkChainId;
+  commonButtonText: ICommonButtonText = CommonButtonText;
 
   constructor(
     public location: Location,

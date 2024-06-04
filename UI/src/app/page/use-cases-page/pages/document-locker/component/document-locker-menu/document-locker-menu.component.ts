@@ -19,7 +19,7 @@ export class DocumentLockerMenuComponent {
       title: $localize`:@@lockDocumentTitle:Lock a document`,
       descritpion: $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
       routerLink: '/use-cases/document-locker/creation',
-      buttonText: 'Start creation',
+      buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,
       imgSrc: './../../../../assets/bg/light/document-service.svg'
     }
   ];
