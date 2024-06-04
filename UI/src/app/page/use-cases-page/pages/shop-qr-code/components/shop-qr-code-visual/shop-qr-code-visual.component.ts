@@ -38,7 +38,7 @@ export class ShopQrCodeVisualComponent implements OnInit, OnDestroy {
       (
         value: Partial<{
           name: string | null;
-          ownerAddress: string | null;
+          publicAddress: string | null;
         }>
       ) => {
         const url = `/pay-now/${btoa(JSON.stringify(value))}`;
@@ -52,7 +52,7 @@ export class ShopQrCodeVisualComponent implements OnInit, OnDestroy {
   private generateQrCode(path: string): Promise<string> {
     const url: URL = new URL(window.location.href);
     const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-    return QRCode.toString(origin + path, { type: 'svg' });
+    return QRCode.toString(origin + path.replace('+', '-').replace('/', '_'), { type: 'svg' });
   }
 
   private sanitizeSvg(svgString: string): SafeHtml {

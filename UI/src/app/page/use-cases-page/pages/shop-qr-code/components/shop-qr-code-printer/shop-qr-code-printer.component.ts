@@ -5,7 +5,7 @@ import { CommonButtonText } from './../../../../../../shared/enum';
 
 export interface QRCodeForm {
   name: FormControl<string | null>;
-  ownerAddress: FormControl<string | null>;
+  publicAddress: FormControl<string | null>;
 }
 @Component({
   selector: 'app-shop-qr-code-printer',
@@ -14,7 +14,7 @@ export interface QRCodeForm {
 })
 export class ShopQrCodePrinterComponent {
   mainForm: FormGroup<QRCodeForm> = new FormGroup({
-    ownerAddress: new FormControl<string | null>(null, [Validators.required, this.ethAddressValidator()]),
+    publicAddress: new FormControl<string | null>(null, [Validators.required, this.ethAddressValidator()]),
     name: new FormControl<string | null>(null, [Validators.required])
   });
   commonButtonText = CommonButtonText;
