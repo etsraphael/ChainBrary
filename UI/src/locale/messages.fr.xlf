@@ -3472,6 +3472,366 @@ En ajoutant des tokens au Coffre de la Communauté, vous confirmez votre compré
           <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="5453367173225236176">
+        <source>
+        This program is specifically designed for our websites and applications. We prioritize the detection and
+        prevention of incidents that may lead to: - Direct unauthorized access to or draining of locked user funds. -
+        Social engineering attacks that could result in users inadvertently authorizing transactions or being redirected
+        to malicious sites.
+      </source>
+        <target>Ce programme est spécifiquement conçu pour nos sites Web et applications. Nous priorisons la détection et
+la prévention des incidents qui pourraient conduire à : - Un accès non autorisé direct ou à un épuisement des fonds d'utilisateurs verrouillés. -
+Des attaques d'ingénierie sociale qui pourraient amener les utilisateurs à autoriser involontairement des transactions ou à être redirigés
+vers des sites malveillants.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">6,11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8856226464118258392">
+        <source>
+        To participate in the Chainbrary Bug Bounty Program, you must: 1. Identify a previously unreported and
+        non-public vulnerability. The vulnerability should be unknown to our team and fall within the program's defined
+        scope. 2. Be at least 18 years of age. Participants below 18 must have consent from a parent or guardian. 3.
+        Provide comprehensive details to enable our engineering team to reproduce, understand, and address the
+        vulnerability.
+      </source>
+        <target>Pour participer au Programme de primes pour la détection de bogues de Chainbrary, vous devez : 1. Identifier une vulnérabilité non signalée auparavant et non publique. La vulnérabilité doit être inconnue de notre équipe et relever du périmètre défini par le programme. 2. Avoir au moins 18 ans. Les participants de moins de 18 ans doivent obtenir le consentement d'un parent ou d'un tuteur. 3. Fournir des détails complets pour permettre à notre équipe d'ingénierie de reproduire, comprendre et traiter la vulnérabilité.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">15,21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6542869314342680122">
+        <source>
+        - Submissions must include a Proof of Concept (PoC) demonstrating the vulnerability's exploitability. This could
+        be in the form of a smart contract or a transaction. - XSS (Cross-Site Scripting) reports are limited to those
+        that potentially induce users to authorize transactions or cause redirects. - Our team reserves the right to
+        evaluate the impact and authenticity of the reported vulnerability.
+      </source>
+        <target>- Les soumissions doivent inclure une Preuve de Concept (PoC) démontrant l'exploitabilité de la vulnérabilité. Cela pourrait
+        être sous la forme d'un contrat intelligent ou d'une transaction. - Les rapports XSS (Cross-Site Scripting) sont limités à ceux
+        qui pourraient potentiellement amener les utilisateurs à autoriser des transactions ou à provoquer des redirections. - Notre équipe se réserve le droit d'évaluer
+        l'impact et l'authenticité de la vulnérabilité signalée.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">53,58</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1408738139206271318">
+        <source>
+           To submit a report, please email us at chainbrary@outlook.com. Ensure your report is detailed and includes the necessary evidence for validation.
+          <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;chainbrary@outlook.com&quot;>"/>
+          <x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a>"/>
+        </source>
+        <target> Pour soumettre un rapport, veuillez nous envoyer un courriel à chainbrary@outlook.com. Assurez-vous que votre rapport est détaillé et comprend les preuves nécessaires pour validation. &lt;x id="START_LINK" ctype="x-a" equiv-text="&lt;a href="chainbrary@outlook.com"&gt;"/&gt;&lt;x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/&gt;</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">62,65</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="333539848676335364">
+        <source> Chainbrary is dedicated to maintaining the highest security standards and protecting our community. We value your contributions and strive to make our platform safe for all users. </source>
+        <target>Chainbrary se consacre à maintenir les normes de sécurité les plus élevées et à protéger notre communauté. Nous apprécions vos contributions et nous nous efforçons de rendre notre plateforme sûre pour tous les utilisateurs.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
+          <context context-type="linenumber">69,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonButtonTextStartCreation">
+        <source>Start creation</source>
+        <target>Commencer la création</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonButtonTextStartJoining">
+        <source>Start joining</source>
+        <target>Commencez à rejoindre</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8766840274158243690">
+        <source>Oops!</source>
+        <target>Oups!</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4129439569390692843">
+        <source>4Ø4</source>
+        <target>4Ø4</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1877816060137394749">
+        <source>The link is broken. Try again or choose a different QR.</source>
+        <target>Le lien est cassé. Réessayez ou choisissez un autre QR.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3353693432826716953">
+        <source>Scan Again</source>
+        <target>Scanner à nouveau</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3746875819668943163">
+        <source>Pay Now</source>
+        <target>Payer Maintenant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4548722462586549001">
+        <source>Tokens</source>
+        <target>Jetons</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7552923737240989417">
+        <source> Token is required </source>
+        <target>Le jeton est requis</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">54,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6519199396137223409">
+        <source>Amount (in USD)</source>
+        <target>Montant (en USD)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9169235287547304268">
+        <source> Amount has to be greater than 0 </source>
+        <target>Le montant doit être supérieur à 0</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">70,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="187187500641108332">
+        <source>
+          <x id="INTERPOLATION" equiv-text="ommonButtonText.Cancel}}"/>
+        </source>
+        <target>&lt;x id="INTERPOLATION" ctype="" equiv-text="ommonButtonText.Annuler}}"/&gt;</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">89,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9126131107147614770">
+        <source>Payment Status</source>
+        <target>Statut de Paiement</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-successful-page/pay-now-successful-page.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3848605480008272419">
+        <source>Amount:</source>
+        <target>Montant:</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-successful-page/pay-now-successful-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCasesShopQrCodeTitle">
+        <source>My QR Code</source>
+        <target>Mon Code QR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCasesShopQrCodeDescription">
+        <source>By accepting cryptocurrencies, you open doors to a broader customer base. Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions. Embrace the future of finance and offer your clientele the convenience and security of paying with digital currencies.</source>
+        <target>En acceptant les cryptomonnaies, vous ouvrez les portes à une base de clients plus large. Améliorez les options de paiement de votre entreprise en imprimant un code QR, permettant à vos clients d'effectuer des transactions en cryptomonnaie en toute simplicité. Adoptez l'avenir de la finance et offrez à votre clientèle la commodité et la sécurité du paiement avec des monnaies numériques.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQRCodeTitle">
+        <source>Print QR code</source>
+        <target>Imprimer le code QR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQRCodeDescription">
+        <source>Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.</source>
+        <target>Améliorez les options de paiement de votre entreprise en imprimant un code QR, permettant à vos clients d'effectuer des transactions de cryptomonnaies en toute fluidité.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scanQRToPayTitle">
+        <source>Scan QR to Pay</source>
+        <target>Scannez le QR pour payer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scanQRToPayDescription">
+        <source>Scan QR code at the vendors and pay with crypto currency</source>
+        <target>Scannez le code QR chez les vendeurs et payez avec de la crypto-monnaie</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonTextScanNow">
+        <source>Scan Now</source>
+        <target>Scanner maintenant</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="393529961181797332">
+        <source>Business Name</source>
+        <target>Nom de l'Entreprise</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2524293976543780538">
+        <source>Owner address</source>
+        <target>Adresse du propriétaire</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4318829415671234690">
+        <source>Address invalid</source>
+        <target>Adresse invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7848627177129525188">
+        <source> This address is invalid </source>
+        <target>Cette adresse est invalide</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">35,37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7049887240439736400">
+        <source>Print</source>
+        <target>Imprimer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommonTextPlaceholder.Title">
+        <source>Business Name</source>
+        <target>Nom de l'Entreprise</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQrCodeMakerTitle">
+        <source>Print QR Code</source>
+        <target>Imprimer le Code QR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/containers/shop-qr-code-creation-page/shop-qr-code-creation-page.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQrCodeMakerDesc">
+        <source>By accepting cryptocurrencies, you open doors to a broader customer base. Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions. Embrace the future of finance and offer your clientele the convenience and security of paying with digital currencies.</source>
+        <target>En acceptant les cryptomonnaies, vous ouvrez les portes à une base de clients plus large. Améliorez les options de paiement de votre entreprise en imprimant un code QR, permettant à vos clients d'effectuer des transactions en cryptomonnaie de manière transparente. Adoptez l'avenir de la finance et offrez à votre clientèle la commodité et la sécurité de payer avec des monnaies numériques.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/containers/shop-qr-code-creation-page/shop-qr-code-creation-page.component.ts</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8849033796776988076">
+        <source>Scan QR to Pay</source>
+        <target>Scannez le QR pour Payer</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9002881166262081420">
+        <source>Scan QR code at the vendors and pay with crypto currency.</source>
+        <target>Scannez le code QR chez les vendeurs et payez avec de la crypto-monnaie.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4266776168169426904">
+        <source>Sorry for the inconvenience.</source>
+        <target>Désolé pour le dérangement.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8341593979198610736">
+        <source>Please use a mobile device to scan the QR code.</source>
+        <target>Veuillez utiliser un appareil mobile pour scanner le code QR.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.myQRCodeTitle">
+        <source>My QR Code</source>
+        <target>Mon Code QR</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.myQRCodeDesc">
+        <source>Print a QR code for your business and let your customers pay in Cryptos.</source>
+        <target>Imprimez un code QR pour votre entreprise et laissez vos clients payer en Cryptos.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
     </body>
   </file>
 </xliff>
