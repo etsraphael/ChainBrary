@@ -113,7 +113,7 @@ export class DocumentLockerFoundComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
-    this.destroyed$.unsubscribe();
+    this.destroyed$.complete();
   }
 
   unlockDocument(event: { hasAccess: boolean }): void {

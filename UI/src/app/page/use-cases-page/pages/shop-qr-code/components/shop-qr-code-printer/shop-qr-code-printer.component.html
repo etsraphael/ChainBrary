@@ -46,7 +46,7 @@
                 [ngClass]="{ 'selected-card': item === cardSelected }"
                 (click)="selectCard(item)"
               >
-                <app-shop-qr-code-visual [cardType]="item" [name]="nameValue"></app-shop-qr-code-visual>
+                <app-shop-qr-code-visual [cardType]="item" [data]="mainForm"></app-shop-qr-code-visual>
               </div>
             </div>
           </div>

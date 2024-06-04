@@ -3,7 +3,7 @@ import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn,
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CommonButtonText } from './../../../../../../shared/enum';
 
-interface QRCodeForm {
+export interface QRCodeForm {
   name: FormControl<string | null>;
   ownerAddress: FormControl<string | null>;
 }
@@ -59,10 +59,12 @@ export class ShopQrCodePrinterComponent {
       printWindow.document.close();
       printWindow.focus();
       printWindow.print();
-      setTimeout(() => {
-        printWindow.close();
-      }, 500);
+      this.closePrintWindow(printWindow);
     }
+  }
+
+  private closePrintWindow(printWindow: Window): void {
+    setTimeout(() => printWindow.close(), 500);
   }
 
   private ethAddressValidator(): ValidatorFn {

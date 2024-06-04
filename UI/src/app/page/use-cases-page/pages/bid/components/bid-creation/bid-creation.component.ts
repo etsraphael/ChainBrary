@@ -200,7 +200,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
 
   ngOnDestroy(): void {
     this.destroyed$.next(true);
-    this.destroyed$.unsubscribe();
+    this.destroyed$.complete();
   }
 }
 
