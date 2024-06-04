@@ -7,25 +7,50 @@
           <span>Scan QR to Pay</span>
         </h3>
       </div>
-      <div class="col-12 pt-4">
-        <p class="text-light px-3">Scan QR code at the vendors and pay with crypto currency.</p>
+      <div class="container">
+        <div class="d-flex justify-content-center">
+          <div class="col-12 col-md-6 pt-4">
+            <p class="text-light px-3">Scan QR code at the vendors and pay with crypto currency.</p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="row justify-content-center pb-5">
-      <div class="col-11 text-center position-relative">
-        <div class="qr-scanner p-4">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 352" fill="none">
-            <path
-              d="M88.7869 1H33C15.3269 1 1 15.3269 1 33V84.7705M88.7869 351H33C15.3269 351 1 336.673 1 319V262.066M272.393 1H319C336.673 1 351 15.3269 351 33V84.7705M272.393 351H319C336.673 351 351 336.673 351 319V262.066"
-              stroke="white"
-              stroke-width="2"
-            />
-          </svg>
-          <ngx-scanner-qrcode [config]="scannerConfig" #action="scanner"></ngx-scanner-qrcode>
-          <!-- <ngx-scanner-qrcode #action="scanner"></ngx-scanner-qrcode> -->
+      <div class="container" *ngIf="isDesktop; else scanningView">
+        <div class="d-flex justify-content-center">
+          <div class="col-11 col-md-6">
+            <div class="card">
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-4 my-auto text-center">
+                    <i class="bi bi-tablet text-muted"></i>
+                  </div>
+                  <div class="col-8 my-auto">
+                    <p class="text-muted">Sorry for the inconvenience.</p>
+                    <h5 class="text-dark">Please use a mobile device to scan the QR code.</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <ng-template #scanningView>
+      <div class="row justify-content-center pb-5">
+        <div class="col-11 text-center position-relative">
+          <div class="qr-scanner p-4">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 352 352" fill="none">
+              <path
+                d="M88.7869 1H33C15.3269 1 1 15.3269 1 33V84.7705M88.7869 351H33C15.3269 351 1 336.673 1 319V262.066M272.393 1H319C336.673 1 351 15.3269 351 33V84.7705M272.393 351H319C336.673 351 351 336.673 351 319V262.066"
+                stroke="white"
+                stroke-width="2"
+              />
+            </svg>
+            <ngx-scanner-qrcode [config]="scannerConfig" #action="scanner"></ngx-scanner-qrcode>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
     <div class="row">
       <div class="col-12">
         <div class="title-container d-flex justify-content-center mb-5">
