@@ -24,15 +24,15 @@
               <input
                 matInput
                 type="text"
-                formControlName="ownerAddress"
+                formControlName="publicAddress"
                 placeholder="Owner address"
                 i18n-placeholder
                 data-id="owner-address"
               />
-              <mat-error *ngIf="mainForm.get('ownerAddress')?.hasError('required')">
+              <mat-error *ngIf="mainForm.get('publicAddress')?.hasError('required')">
                 <span i18n>Address invalid</span>
               </mat-error>
-              <mat-error i18n *ngIf="mainForm.get('ownerAddress')?.hasError('invalidAddress')">
+              <mat-error i18n *ngIf="mainForm.get('publicAddress')?.hasError('invalidAddress')">
                 This address is invalid
               </mat-error>
             </mat-form-field>

@@ -1946,22 +1946,34 @@ En utilisant le Coffre à Documents, vous affirmez comprendre et accepter ces Te
 <target>Erreur d'approbation de jeton</target>
 </trans-unit>
 <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
-<source>Error retreiving data from the blockchain</source>
-<context-group purpose="location">
-<context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-<context context-type="linenumber">344</context>
-</context-group>
-<target>Erreur lors de la récupération des données de la blockchain</target>
+  <source>Error retreiving data from the blockchain</source>
+  <target>Erreur lors de la récupération des données de la blockchain</target>
+  <context-group purpose="location">
+    <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+    <context context-type="linenumber">362</context>
+  </context-group>
+  <context-group purpose="location">
+    <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+    <context context-type="linenumber">659</context>
+  </context-group>
 </trans-unit>
 <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
 <source>Error decoding payment request</source>
 <context-group purpose="location">
-<context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-<context context-type="linenumber">383</context>
+  <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+  <context context-type="linenumber">401</context>
 </context-group>
 <context-group purpose="location">
-<context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-<context context-type="linenumber">390</context>
+  <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+  <context context-type="linenumber">408</context>
+</context-group>
+<context-group purpose="location">
+  <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+  <context context-type="linenumber">427</context>
+</context-group>
+<context-group purpose="location">
+  <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+  <context context-type="linenumber">434</context>
 </context-group>
 <target>Erreur lors du décodage de la demande de paiement</target>
 </trans-unit>
@@ -3636,9 +3648,9 @@ vers des sites malveillants.</target>
       </trans-unit>
       <trans-unit id="187187500641108332">
         <source>
-          <x id="INTERPOLATION" equiv-text="ommonButtonText.Cancel}}"/>
+          <x id="INTERPOLATION" equiv-text="commonButtonText.Cancel }}"/>
         </source>
-        <target>&lt;x id="INTERPOLATION" ctype="" equiv-text="ommonButtonText.Annuler}}"/&gt;</target>
+        <target>&lt;x id="INTERPOLATION" ctype="" equiv-text="{{commonButtonText.Annuler}}"/&gt;</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
           <context context-type="linenumber">89,90</context>
@@ -3756,7 +3768,7 @@ vers des sites malveillants.</target>
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="CommonTextPlaceholder.Title">
+      <trans-unit id="CommonTextPlaceholder.Title.BusinessName" datatype="html">
         <source>Business Name</source>
         <target>Nom de l'Entreprise</target>
         <context-group purpose="location">
@@ -3766,6 +3778,14 @@ vers des sites malveillants.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
           <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommonTextPlaceholder.Title.ScanPay" datatype="html">
+        <source>Scan &amp; Pay with Crypto tokens</source>
+        <target>Scannez &amp; payez avec des tokens</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="printQrCodeMakerTitle">
