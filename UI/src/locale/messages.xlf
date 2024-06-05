@@ -1794,7 +1794,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="187187500641108332" datatype="html">
-        <source><x id="INTERPOLATION" equiv-text="ommonButtonText.Cancel}}"/></source>
+        <source><x id="INTERPOLATION" equiv-text="commonButtonText.Cancel }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
           <context context-type="linenumber">89,90</context>
@@ -1947,7 +1947,7 @@
           <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="CommonTextPlaceholder.Title" datatype="html">
+      <trans-unit id="CommonTextPlaceholder.Title.BusinessName" datatype="html">
         <source>Business Name</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.ts</context>
@@ -1956,6 +1956,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
           <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommonTextPlaceholder.Title.ScanPay" datatype="html">
+        <source>Scan &amp; Pay with Crypto tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="printQrCodeMakerTitle" datatype="html">
@@ -2945,11 +2952,11 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">474</context>
+          <context context-type="linenumber">471</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">789</context>
+          <context context-type="linenumber">786</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
@@ -3129,7 +3136,7 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">662</context>
+          <context context-type="linenumber">659</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
@@ -3144,11 +3151,11 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">430</context>
+          <context context-type="linenumber">427</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">437</context>
+          <context context-type="linenumber">434</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.payment.title" datatype="html">
