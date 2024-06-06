@@ -138,10 +138,9 @@
             "buildTarget": "ChainBrary:build",
             "format": "xlf",
             "includeContext": true,
+            "sort": "idAsc",
             "outputPath": "src/locale",
-            "targetFiles": [
-              "messages.fr.xlf"
-            ]
+            "targetFiles": ["messages.fr.xlf"]
           }
         },
         "test": {
