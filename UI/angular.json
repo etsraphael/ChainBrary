@@ -133,9 +133,15 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "browserTarget": "ChainBrary:build"
+            "buildTarget": "ChainBrary:build",
+            "format": "xlf",
+            "includeContext": true,
+            "outputPath": "src/locale",
+            "targetFiles": [
+              "messages.fr.xlf"
+            ]
           }
         },
         "test": {

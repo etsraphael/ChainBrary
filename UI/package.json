@@ -21,7 +21,7 @@
     "test-unit:ci": "ng test --watch=false --browsers=ChromeHeadless",
     "build:libs": "./scripts/build_libraries.sh",
     "publish:libs": "./scripts/publish_libraries.sh",
-    "extract-i18n": "ng extract-i18n --output-path src/locale",
+    "extract-i18n": "ng extract-i18n",
     "translate": "node --loader ts-node/esm scripts/translation.ts"
   },
   "private": true,
@@ -54,6 +54,7 @@
     "bootstrap-icons": "^1.11.3",
     "dotenv": "^16.4.1",
     "graphql": "^16.8.1",
+    "ng-extract-i18n-merge": "^2.12.0",
     "ngx-device-detector": "^6.0.2",
     "ngx-markdown": "^16.0.0",
     "ngx-scanner-qrcode": "^1.6.9",
