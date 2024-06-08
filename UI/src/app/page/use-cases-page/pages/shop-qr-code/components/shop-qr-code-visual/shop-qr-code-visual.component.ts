@@ -45,18 +45,18 @@ export class ShopQrCodeVisualComponent implements OnInit, OnDestroy {
           publicAddress: string | null;
         }>
       ) => {
-        const url = `/pay-now/${btoa(JSON.stringify(value))}`;
-        this.generateQrCode(url).then((svg) => {
+        const token = `${btoa(JSON.stringify(value))}`;
+        this.generateQrCode(token).then((svg) => {
           this.safeQrCodeSvg = this.sanitizeSvg(svg);
         });
       }
     );
   }
 
-  private generateQrCode(path: string): Promise<string> {
+  private generateQrCode(token: string): Promise<string> {
     const url: URL = new URL(window.location.href);
-    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-    return QRCode.toString(origin + path.replace('+', '-').replace('/', '_'), { type: 'svg' });
+    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}/pay-now/`;
+    return QRCode.toString(origin + token.replace('+', '-').replace('/', '_'), { type: 'svg' });
   }
 
   private sanitizeSvg(svgString: string): SafeHtml {
