@@ -140,7 +140,7 @@
             "includeContext": true,
             "sort": "idAsc",
             "outputPath": "src/locale",
-            "newTranslationTargetsBlank": "omit",
+            "newTranslationTargetsBlank": true,
             "targetFiles": ["messages.fr.xlf"]
           }
         },
