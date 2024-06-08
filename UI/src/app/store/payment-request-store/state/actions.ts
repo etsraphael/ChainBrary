@@ -1,6 +1,7 @@
 import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
-import { IPaymentRequest, IProfileAdded, IToken } from './../../../shared/interfaces';
+import { TokenPair } from './../../../shared/enum';
+import { IPaymentRequest, IPaymentRequestRaw, IProfileAdded, IToken } from './../../../shared/interfaces';
 
 export const initPaymentRequestMaker = createAction('[Payment Request] Init Payment Request Maker');
 
@@ -76,5 +77,44 @@ export const approveTokenAllowance = createAction('[Payment Request] Approve Tok
 export const approveTokenAllowanceSuccess = createAction('[Payment Request] Approve Token Allowance Success');
 export const approveTokenAllowanceFailure = createAction(
   '[Payment Request] Approve Token Allowance Failure',
+  props<{ errorMessage: string }>()
+);
+
+export const decryptRawPaymentRequest = createAction(
+  '[Payment Request] Decrypt Raw Payment Request',
+  props<{ encodedRequest: string }>()
+);
+export const decryptRawPaymentRequestSuccess = createAction(
+  '[Payment Request] Decrypt Raw Payment Request Success',
+  props<{ rawRequest: IPaymentRequestRaw }>()
+);
+export const decryptRawPaymentRequestFailure = createAction(
+  '[Payment Request] Decrypt Raw Payment Request Failure',
+  props<{ errorMessage: string }>()
+);
+
+export const applyConversionTokenFromPayNow = createAction(
+  '[Payment Request] Apply Conversion Token From PayNow',
+  props<{ usdAmount: number; chainId: NetworkChainId; pair: TokenPair | null }>()
+);
+export const applyConversionTokenFromPayNowSuccess = createAction(
+  '[Payment Request] Apply Conversion Token From PayNow Success',
+  props<{ usdAmount: number; tokenAmount: number }>()
+);
+export const applyConversionTokenFromPayNowFailure = createAction(
+  '[Payment Request] Apply Conversion Token From PayNow Failure',
+  props<{ errorMessage: string }>()
+);
+
+export const payNowTransaction = createAction(
+  '[Payment Request] Pay Now Transaction',
+  props<{ amount: number; chainId: NetworkChainId; token: IToken }>()
+);
+export const payNowTransactionSuccess = createAction(
+  '[Payment Request] Pay Now Transaction Success',
+  props<{ transactionHash: string; amount: number; chainId: NetworkChainId; token: IToken }>()
+);
+export const payNowTransactionFailure = createAction(
+  '[Payment Request] Pay Now Transaction Failure',
   props<{ errorMessage: string }>()
 );

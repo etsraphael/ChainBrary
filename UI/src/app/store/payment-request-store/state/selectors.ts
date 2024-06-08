@@ -1,7 +1,14 @@
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
-import { IPaymentRequest, IProfilePayment, IToken, StoreState } from './../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  IPaymentRequest,
+  IPaymentRequestRaw,
+  IProfilePayment,
+  IToken,
+  StoreState
+} from './../../../shared/interfaces';
 import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
@@ -41,6 +48,11 @@ export const selectPaymentConversion: MemoizedSelector<object, DataConversionSto
   (s) => ({ conversionToken: s.conversionToken, conversionUSD: s.conversionUSD })
 );
 
+export const selectConversionToken: MemoizedSelector<object, StoreState<number | null>> = createSelector(
+  selectPaymentRequest,
+  (s: IPaymentRequestState) => s.conversionToken
+);
+
 export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   (s) => s.payment.data?.tokenId !== s.network?.nativeCurrency.id
@@ -77,6 +89,16 @@ export const selectIsPaymentMaker: MemoizedSelector<object, boolean> = createSel
   selectPaymentRequest,
   selectPublicAddress,
   (s, adress) => adress?.toLowerCase() === s.profile?.publicAddress?.toLowerCase()
+);
+
+export const selectRawPaymentRequest: MemoizedSelector<object, StoreState<IPaymentRequestRaw | null>> = createSelector(
+  selectPaymentRequest,
+  (s: IPaymentRequestState) => s.rawRequest
+);
+
+export const selectPayNowIsProcessing: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
+  selectPaymentRequest,
+  (s) => s.payNowIsProcessing
 );
 
 export interface DataConversionStore {

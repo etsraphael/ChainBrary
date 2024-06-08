@@ -10,6 +10,7 @@ export class ServiceCardComponent {
 }
 
 export interface IServiceCard {
+  id: string;
   title: string;
   description: string;
   img: string;

@@ -107,10 +107,6 @@ export class PriceFeedContract extends BaseContract {
       {
         pair: TokenPair.GrtToUsd,
         address: '0x86cF33a451dE9dc61a2862FD94FF4ad4Bd65A5d2'
-      },
-      {
-        pair: TokenPair.AtomToUsd,
-        address: '0xDC4BDB458C6361093069Ca2aD30D74cc152EdC75'
       }
     ]
   };

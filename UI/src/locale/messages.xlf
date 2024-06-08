@@ -230,17 +230,6 @@
         <source>Payment Request</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">16</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">5</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="landingPage.paymentServiceDesc" datatype="html">
-        <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
           <context context-type="linenumber">17</context>
         </context-group>
         <context-group purpose="location">
@@ -248,48 +237,59 @@
           <context context-type="linenumber">6</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="landingPage.paymentServiceDesc" datatype="html">
+        <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="landingPage.bidServiceTitle" datatype="html">
         <source>Start a Bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">24</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">11</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.bidServiceDesc" datatype="html">
         <source>Upload an item, set time limit and start bidding with tokens.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">25</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">12</context>
+          <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.documentLockerTitle" datatype="html">
         <source>Document Locker</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">31</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">17</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.documentLockerDesc" datatype="html">
         <source>Lock confidential information and open only with tokens.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">32</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6127137645635869561" datatype="html">
@@ -338,12 +338,12 @@
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="5960699326837049917" datatype="html">
+      <trans-unit id="5453367173225236176" datatype="html">
         <source>
-        This program is specifically designed for our websites and applications. We prioritize the detection and prevention of incidents that may lead to:
-
-        - Direct unauthorized access to or draining of locked user funds.
-        - Social engineering attacks that could result in users inadvertently authorizing transactions or being redirected to malicious sites.
+        This program is specifically designed for our websites and applications. We prioritize the detection and
+        prevention of incidents that may lead to: - Direct unauthorized access to or draining of locked user funds. -
+        Social engineering attacks that could result in users inadvertently authorizing transactions or being redirected
+        to malicious sites.
       </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
@@ -357,13 +357,13 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="3777346097407733447" datatype="html">
+      <trans-unit id="8856226464118258392" datatype="html">
         <source>
-        To participate in the Chainbrary Bug Bounty Program, you must:
-
-        1. Identify a previously unreported and non-public vulnerability. The vulnerability should be unknown to our team and fall within the program&apos;s defined scope.
-        2. Be at least 18 years of age. Participants below 18 must have consent from a parent or guardian.
-        3. Provide comprehensive details to enable our engineering team to reproduce, understand, and address the vulnerability.
+        To participate in the Chainbrary Bug Bounty Program, you must: 1. Identify a previously unreported and
+        non-public vulnerability. The vulnerability should be unknown to our team and fall within the program&apos;s defined
+        scope. 2. Be at least 18 years of age. Participants below 18 must have consent from a parent or guardian. 3.
+        Provide comprehensive details to enable our engineering team to reproduce, understand, and address the
+        vulnerability.
       </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
@@ -426,43 +426,44 @@
           <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2696674911538130667" datatype="html">
+      <trans-unit id="6542869314342680122" datatype="html">
         <source>
-        - Submissions must include a Proof of Concept (PoC) demonstrating the vulnerability&apos;s exploitability. This could be in the form of a smart contract or a transaction.
-        - XSS (Cross-Site Scripting) reports are limited to those that potentially induce users to authorize transactions or cause redirects.
-        - Our team reserves the right to evaluate the impact and authenticity of the reported vulnerability.
+        - Submissions must include a Proof of Concept (PoC) demonstrating the vulnerability&apos;s exploitability. This could
+        be in the form of a smart contract or a transaction. - XSS (Cross-Site Scripting) reports are limited to those
+        that potentially induce users to authorize transactions or cause redirects. - Our team reserves the right to
+        evaluate the impact and authenticity of the reported vulnerability.
       </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
-          <context context-type="linenumber">53,57</context>
+          <context context-type="linenumber">53,58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8659270738304106783" datatype="html">
         <source>Submission Process</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
-          <context context-type="linenumber">60</context>
+          <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7794605266967996033" datatype="html">
-        <source>To submit a report, please email us at <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;chainbrary@outlook.com&quot;&gt;"/>chainbrary@outlook.com<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. Ensure your report is detailed and includes the necessary evidence for validation.</source>
+      <trans-unit id="1408738139206271318" datatype="html">
+        <source> To submit a report, please email us at <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;chainbrary@outlook.com&quot;&gt;"/>chainbrary@outlook.com<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. Ensure your report is detailed and includes the necessary evidence for validation. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
-          <context context-type="linenumber">61</context>
+          <context context-type="linenumber">62,65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4573119090244860505" datatype="html">
         <source>Our Commitment</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
-          <context context-type="linenumber">64</context>
+          <context context-type="linenumber">68</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="7635326736340417636" datatype="html">
-        <source>Chainbrary is dedicated to maintaining the highest security standards and protecting our community. We value your contributions and strive to make our platform safe for all users.</source>
+      <trans-unit id="333539848676335364" datatype="html">
+        <source> Chainbrary is dedicated to maintaining the highest security standards and protecting our community. We value your contributions and strive to make our platform safe for all users. </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">69,72</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BugBountyProgram.Title" datatype="html">
@@ -658,6 +659,10 @@
         <source>URL invalid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
           <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
@@ -1010,6 +1015,14 @@
           <context context-type="linenumber">155</context>
         </context-group>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.ts</context>
+          <context context-type="linenumber">38</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.ts</context>
+          <context context-type="linenumber">43</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
           <context context-type="linenumber">180</context>
         </context-group>
@@ -1227,28 +1240,50 @@
         <source>Create a bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.createBidDescription" datatype="html">
         <source>Kickstart your bidding process with &apos;Create a Bid.&apos; Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonButtonTextStartCreation" datatype="html">
+        <source>Start creation</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.joinBid" datatype="html">
         <source>Join a bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
-          <context context-type="linenumber">25</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.joinBidDescription" datatype="html">
         <source>Dive into existing bids with &apos;Join a Bid.&apos; Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
-          <context context-type="linenumber">26</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonButtonTextStartJoining" datatype="html">
+        <source>Start joining</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/home-bid-menu/home-bid-menu.component.ts</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8279184784576934083" datatype="html">
@@ -1459,14 +1494,14 @@
         <source>Lock a document</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
-          <context context-type="linenumber">18</context>
+          <context context-type="linenumber">19</context>
         </context-group>
       </trans-unit>
       <trans-unit id="lockDocumentDescription" datatype="html">
         <source>Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-menu/document-locker-menu.component.ts</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3874221906143763852" datatype="html">
@@ -1695,6 +1730,90 @@
           <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="8766840274158243690" datatype="html">
+        <source>Oops!</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4129439569390692843" datatype="html">
+        <source>4Ø4</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1877816060137394749" datatype="html">
+        <source>The link is broken. Try again or choose a different QR.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3353693432826716953" datatype="html">
+        <source>Scan Again</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3746875819668943163" datatype="html">
+        <source>Pay Now</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4548722462586549001" datatype="html">
+        <source>Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7552923737240989417" datatype="html">
+        <source> Token is required </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">54,56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6519199396137223409" datatype="html">
+        <source>Amount (in USD)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">62</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9169235287547304268" datatype="html">
+        <source> Amount has to be greater than 0 </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">70,72</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="187187500641108332" datatype="html">
+        <source><x id="INTERPOLATION" equiv-text="commonButtonText.Cancel }}"/></source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
+          <context context-type="linenumber">89,90</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9126131107147614770" datatype="html">
+        <source>Payment Status</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-successful-page/pay-now-successful-page.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3848605480008272419" datatype="html">
+        <source>Amount:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-successful-page/pay-now-successful-page.component.html</context>
+          <context context-type="linenumber">15</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="2711460010464843071" datatype="html">
         <source>Attention: This is a preview of your request. Avoid the mistake of self-payment.</source>
         <context-group purpose="location">
@@ -1742,6 +1861,122 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-request-container/payment-request-container.component.ts</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCasesShopQrCodeTitle" datatype="html">
+        <source>My QR Code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCasesShopQrCodeDescription" datatype="html">
+        <source>By accepting cryptocurrencies, you open doors to a broader customer base. Enhance your business&apos;s payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions. Embrace the future of finance and offer your clientele the convenience and security of paying with digital currencies.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQRCodeTitle" datatype="html">
+        <source>Print QR code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQRCodeDescription" datatype="html">
+        <source>Enhance your business&apos;s payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scanQRToPayTitle" datatype="html">
+        <source>Scan QR to Pay</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scanQRToPayDescription" datatype="html">
+        <source>Scan QR code at the vendors and pay with crypto currency</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonTextScanNow" datatype="html">
+        <source>Scan Now</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="393529961181797332" datatype="html">
+        <source>Business Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2524293976543780538" datatype="html">
+        <source>Owner address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4318829415671234690" datatype="html">
+        <source>Address invalid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7848627177129525188" datatype="html">
+        <source> This address is invalid </source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">35,37</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7049887240439736400" datatype="html">
+        <source>Print</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommonTextPlaceholder.Title.BusinessName" datatype="html">
+        <source>Business Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="CommonTextPlaceholder.Title.ScanPay" datatype="html">
+        <source>Scan &amp; Pay with Crypto tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-visual/shop-qr-code-visual.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQrCodeMakerTitle" datatype="html">
+        <source>Print QR Code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/containers/shop-qr-code-creation-page/shop-qr-code-creation-page.component.ts</context>
+          <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printQrCodeMakerDesc" datatype="html">
+        <source>By accepting cryptocurrencies, you open doors to a broader customer base. Enhance your business&apos;s payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions. Embrace the future of finance and offer your clientele the convenience and security of paying with digital currencies.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/containers/shop-qr-code-creation-page/shop-qr-code-creation-page.component.ts</context>
+          <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4030991508483039728" datatype="html">
@@ -1807,14 +2042,14 @@
         <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span class=&quot;text-primary&quot;&gt;"/>Know us better<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/> Got questions? Reach us our social media </source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
-          <context context-type="linenumber">45,47</context>
+          <context context-type="linenumber">44,46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5486643322139519195" datatype="html">
         <source>Copyright © 2023 All Rights Reserved</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
-          <context context-type="linenumber">72</context>
+          <context context-type="linenumber">71</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.TermAndCond" datatype="html">
@@ -1850,6 +2085,34 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.html</context>
           <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8849033796776988076" datatype="html">
+        <source>Scan QR to Pay</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9002881166262081420" datatype="html">
+        <source>Scan QR code at the vendors and pay with crypto currency.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4266776168169426904" datatype="html">
+        <source>Sorry for the inconvenience.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8341593979198610736" datatype="html">
+        <source>Please use a mobile device to scan the QR code.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="819996403327805209" datatype="html">
@@ -2541,74 +2804,88 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
           <context context-type="linenumber">323,376</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="landingPage.myQRCodeTitle" datatype="html">
+        <source>My QR Code</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="landingPage.myQRCodeDesc" datatype="html">
+        <source>Print a QR code for your business and let your customers pay in Cryptos.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="servicePage.payTogetherServiceTitle" datatype="html">
         <source>Pay Together</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">34</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.payTogetherServiceDesc" datatype="html">
         <source> Create a payment link and share it with your friends to pay together.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.anonymousVoteServiceTitle" datatype="html">
         <source>Anonymous Vote</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">30</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.anonymousVoteServiceDesc" datatype="html">
         <source>Create a vote and share it with your friends to vote anonymously</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.createTokenServiceTitle" datatype="html">
         <source> Create Token</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">37</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.createTokenServiceDesc" datatype="html">
         <source> Create a token and share it with your friends to use it as a currency.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.networkBridgeServiceTitle" datatype="html">
         <source> Network Bridge</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.networkBridgeServiceDesc" datatype="html">
         <source> Connect two different networks and transfer tokens between them.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.tokenSwapServiceTitle" datatype="html">
         <source> Token Swap</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.tokenSwapServiceDesc" datatype="html">
         <source> Swap tokens for another token on the same network.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">67</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonButtonTextCancel" datatype="html">
@@ -2675,7 +2952,11 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">423</context>
+          <context context-type="linenumber">471</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">786</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
@@ -2833,36 +3114,48 @@ By adding tokens to the Community Vault, you affirm your understanding and agree
         <source>Token address not found!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">114</context>
+          <context context-type="linenumber">126</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">186</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorApprovingToken" datatype="html">
         <source>Error approving token</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">264</context>
+          <context context-type="linenumber">276</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
         <source>Error retreiving data from the blockchain</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">350</context>
+          <context context-type="linenumber">362</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">659</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
         <source>Error decoding payment request</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">389</context>
+          <context context-type="linenumber">401</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">396</context>
+          <context context-type="linenumber">408</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">427</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
+          <context context-type="linenumber">434</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.payment.title" datatype="html">

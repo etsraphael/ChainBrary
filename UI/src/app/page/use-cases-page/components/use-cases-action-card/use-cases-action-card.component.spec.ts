@@ -15,6 +15,7 @@ describe('UseCasesActionCardComponent', () => {
     fixture = TestBed.createComponent(UseCasesActionCardComponent);
     component = fixture.componentInstance;
     component.payload = {
+      id: '1',
       title: '',
       descritpion: '',
       routerLink: '',

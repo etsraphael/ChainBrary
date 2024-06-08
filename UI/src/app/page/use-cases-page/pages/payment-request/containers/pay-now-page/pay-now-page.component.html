@@ -1,0 +1,111 @@
+<ng-container
+  *ngIf="
+    (rawRequest$ | async)?.loading === false && (selectPayNowIsProcessing$ | async)?.isLoading === false;
+    else loadingView
+  "
+>
+  <div class="container-fluid bg-container h-100">
+    <div class="d-flex justify-content-center h-100">
+      <div class="col-12 col-md-6 col-lg-4">
+        <div class="d-flex flex-column justify-content-between h-100">
+          <div class="row">
+            <div class="col-12 text-start">
+              <h3 class="text-dark p-3">
+                <i (click)="location.back()" class="bi bi-arrow-left me-3 text-light"></i>
+                <span i18n class="text-light">Pay Now</span>
+              </h3>
+            </div>
+          </div>
+          <div class="container" *ngIf="(rawRequest$ | async)?.data; let request">
+            <form [formGroup]="mainForm">
+              <div class="row">
+                <div class="col-12 card py-2">
+                  <div class="row">
+                    <div class="col-sm-2 col-3 col-md-3 col-lg-2 my-auto">
+                      <div class="icon-wrapper d-flex justify-content-center text-center">
+                        <i class="bi bi-shop-window"></i>
+                      </div>
+                    </div>
+                    <div data-id="pn-header-container" class="col-9 my-auto pt-3">
+                      <h3 class="mb-0">{{ request.name }}</h3>
+                      <p>{{ formatService.formatPublicAddress(request.publicAddress, 9) }}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row my-3">
+                <div class="col-12 px-0">
+                  <mat-form-field class="w-100">
+                    <mat-label i18n>Tokens</mat-label>
+                    <mat-select formControlName="tokenId">
+                      <mat-optgroup *ngFor="let group of tokensAvailable" [label]="group.networkName">
+                        <mat-option
+                          *ngFor="let tokens of group.tokens"
+                          [value]="tokens.tokenId"
+                          (click)="networkSaved(group.chainId)"
+                        >
+                          {{ tokens.name }}
+                        </mat-option>
+                      </mat-optgroup>
+                    </mat-select>
+                    <mat-hint class="w-100 text-end">
+                      <span class="text-light">{{ networkNameSelected }}</span>
+                    </mat-hint>
+                    <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('tokenId')?.hasError('required')">
+                      Token is required
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-12 text-center">
+                  <h4 i18n class="text-light">Amount (in USD)</h4>
+                </div>
+                <div class="col-12 text-center amount-container">
+                  <mat-form-field>
+                    <div matPrefix class="pt-2">
+                      <span class="text-light prefix-span">$</span>
+                    </div>
+                    <input formControlName="amount" class="text-center text-light" type="number" matInput />
+                    <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">
+                      Amount has to be greater than 0
+                    </mat-error>
+                  </mat-form-field>
+                </div>
+                <div
+                  data-id="pw-conversion-result"
+                  *ngIf="tokenConversion$ | async; let tc"
+                  class="col-12 text-center pb-2"
+                >
+                  <h6 class="text-light">{{ tc }}</h6>
+                </div>
+                <div class="col-12 my-2">
+                  <button class="btn btn-light w-100" (click)="submitForm()">
+                    <span class="text-primary">{{ actionBtnText$ | async }}</span>
+                  </button>
+                </div>
+                <div class="col-12 my-2">
+                  <button class="btn w-100">
+                    <span i18n class="text-light">{{ commonButtonText.Cancel }}</span>
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <div class="title-container d-flex justify-content-center mb-5">
+                <img src="./../../../../../assets/icons/cb-logo.svg" alt="logo" class="me-3 my-auto" />
+                <h3 class="my-auto text-light">ChainBrary</h3>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>
+
+<ng-template #loadingView>
+  <app-loading-screen></app-loading-screen>
+</ng-template>
