@@ -4,7 +4,7 @@
     <body>
       <trans-unit id="1030764705504048600" datatype="html">
         <source> This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded. </source>
-        <target>Cette description n'est visible que pour le propriétaire du document et le premier acheteur. Assurez-vous que votre écran n'est pas enregistré.</target>
+        <target>Cette description n&apos;est visible que pour le propriétaire du document et le premier acheteur. Assurez-vous que votre écran n&apos;est pas enregistré.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">64</context>
