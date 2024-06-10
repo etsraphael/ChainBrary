@@ -35,30 +35,30 @@ const translateText = async (text: string, targetLanguage: string): Promise<stri
 };
 
 const updateTranslations = async () => {
-  const originalContent = readFileSync('src/locale/messages.es.xlf', 'utf8');
+  for (const language of languageList) {
+    const originalContent = readFileSync(`src/locale/messages.${language.key}.xlf`, 'utf8');
 
-  // Match all the translation units that need to be translated
-  const matches = [
-    ...originalContent.matchAll(
-      /<trans-unit[^>]*>[\s\S]*?<source>(.*?)<\/source>[\s\S]*?<target[^>]*state="new"[^>]*>[\s\S]*?<\/target>[\s\S]*?<\/trans-unit>/g
-    )
-  ];
+    // Match all the translation units that need to be translated
+    const matches = [
+      ...originalContent.matchAll(/<target\s+state="new">(.*?)<\/target>/g)
+    ];
 
-  // Translate all matches concurrently
-  const translations = await Promise.all(
-    matches.map(async ([match, originalText]) => {
-      const newtranslation = await translateText(originalText, 'Spanish');
-      return match.replace(`<target state="new">${originalText}</target>`, `<target>${newtranslation}</target>`);
-    })
-  );
+    // Translate all matches concurrently
+    const translations = await Promise.all(
+      matches.map(async ([match, originalText]) => {
+        const newtranslation = await translateText(originalText, language.value);
+        return match.replace(`<target state="new">${originalText}</target>`, `<target>${newtranslation}</target>`);
+      })
+    );
 
-  // Reconstruct the updated XML content
-  let updatedXml = originalContent;
-  matches.forEach((match, index) => {
-    updatedXml = updatedXml.replace(match[0], translations[index]);
-  });
+    // Reconstruct the updated XML content
+    let updatedXml = originalContent;
+    matches.forEach((match, index) => {
+      updatedXml = updatedXml.replace(match[0], translations[index]);
+    });
 
-  writeFileSync('src/locale/messages.es.xlf', updatedXml);
+    writeFileSync(`src/locale/messages.${language.key}.xlf`, updatedXml);
+  }
 };
 
 updateTranslations();
