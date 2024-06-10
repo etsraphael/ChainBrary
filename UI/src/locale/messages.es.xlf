@@ -179,7 +179,7 @@
       </trans-unit>
       <trans-unit id="2399487698306392686" datatype="html">
         <source>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</source>
-        <target>($USD <x id="INTERpolation" equiv-text="{{ usdAmount }}"/>)</target>
+        <target>($USD <x id="INTERPOLATION" equiv-text="{{ usdAmount }}"/>)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">21</context>
@@ -407,7 +407,7 @@
       </trans-unit>
       <trans-unit id="360586526427198849" datatype="html">
         <source> Accept <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. 0.1% of community fee will be deducted from the final transaction. </source>
-        <target>Acepta <x id="START_LINE" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>términos y condiciones<x id="CLOSE_LINK" ctype="x-a" equiv-components="&lt;/a&gt;"/>. Se deducirá el 0.1% de la tarifa comunitaria del la transacción final.</target>
+        <target>Acepta <x id="START_LINK" ctype="x-a" equiv-text="&lt;a (click)=&quot;openTermAndCond($event)&quot; class=&quot;terms-link&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. Se deducirá el 0.1% de la tarifa comunitaria del la transacción final.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">71</context>
@@ -1152,7 +1152,7 @@
       </trans-unit>
       <trans-unit id="6887169880348244051" datatype="html">
         <source> Refreshing... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> seconds </source>
-        <target>Refrescando... <x id="INTERCAUTION" equiv-text="{{ biddersCountdown }}"/> segundos</target>
+        <target>Refrescando... <x id="INTERPOLATION" equiv-text="{{ biddersCountdown }}"/> segundos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">178</context>
@@ -1256,7 +1256,7 @@
       </trans-unit>
       <trans-unit id="7656866871196066634" datatype="html">
         <source><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>Accept<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;terms-link ps-2&quot; (click)=&quot;openTermAndCond($event)&quot;&gt;"/>terms and conditions<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
-        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>Aceptar<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;terms-link ps-2&quot; (click)=&quot;openTermAndCond($event)&quot;&gt;"/>términos y condiciones<x id="CLOSE][LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
+        <target><x id="START_TAG_SPAN" ctype="x-span" equiv-text="&lt;span&gt;"/>Aceptar<x id="CLOSE_TAG_SPAN" ctype="x-span" equiv-text="&lt;/span&gt;"/><x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;terms-link ps-2&quot; (click)=&quot;openTermAndCond($event)&quot;&gt;"/>términos y condiciones<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
           <context context-type="linenumber">39</context>
@@ -1264,7 +1264,7 @@
       </trans-unit>
       <trans-unit id="7799133836890831347" datatype="html">
         <source> Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. </source>
-        <target>Su red actual no es compatible. Cambie a una red compatible. Para asistencia o para compartir sus sugerencias con nuestra comunidad, únase a nosotros en <x id="START_link" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</target>
+        <target>Su red actual no es compatible. Cambie a una red compatible. Para asistencia o para compartir sus sugerencias con nuestra comunidad, únase a nosotros en <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
           <context context-type="linenumber">7</context>
@@ -1432,7 +1432,7 @@
       </trans-unit>
       <trans-unit id="8519270983879897918" datatype="html">
         <source>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</source>
-        <target>(USD$ <x id="INTERpolation" equiv-text="{{ usdReceivingAmount }}"/>)</target>
+        <target>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/>)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">40</context>
@@ -1548,7 +1548,7 @@
       </trans-unit>
       <trans-unit id="900151136510105459" datatype="html">
         <source> Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Thank you for your patience. </source>
-        <target>Tenga en cuenta que los tiempos de confirmación para las ofertas recientes pueden variar debido a las condiciones de la red. Para ver el estado más reciente, por favor actualice esta página. Si su transacción aún está procesándose, puede seguirla aquí: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE:LINK" ctype="x-a" equiv-text="&gt;"/>. Gracias por su paciencia.</target>
+        <target>Tenga en cuenta que los tiempos de confirmación para las ofertas recientes pueden variar debido a las condiciones de la red. Para ver el estado más reciente, por favor actualice esta página. Si su transacción aún está procesándose, puede seguirla aquí: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Gracias por su paciencia.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">83</context>
