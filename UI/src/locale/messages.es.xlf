@@ -3,7 +3,7 @@
     <body>
       <trans-unit id="1030764705504048600" datatype="html">
         <source>This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded.</source>
-        <target state="new">Esta descripción solo es visible para el propietario del documento y el primer comprador. Asegúrate de que tu pantalla no esté siendo grabada.</target>
+        <target>Esta descripción solo es visible para el propietario del documento y el primer comprador. Asegúrate de que tu pantalla no esté siendo grabada.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">64</context>
@@ -11,7 +11,7 @@
       </trans-unit>
       <trans-unit id="1061254547793367784" datatype="html">
         <source>Network is not matching with wallet</source>
-        <target state="new">La red no coincide con la billetera</target>
+        <target>La red no coincide con la billetera</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
           <context context-type="linenumber">64</context>
@@ -271,7 +271,7 @@
       </trans-unit>
       <trans-unit id="2689785512504893020" datatype="html">
         <source>My amount staked</source>
-        <target state="new">Mi cantidad apostada</target>
+        <target>Mi cantidad apostada</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/community-vaults-page/components/community-vault-card/community-vault-card.component.html</context>
           <context context-type="linenumber">51</context>
@@ -447,7 +447,7 @@
       </trans-unit>
       <trans-unit id="3742754064909943461" datatype="html">
         <source>Files aren&apos;t stored on the blockchain to avoid high costs and network congestion; they&apos;re externally hosted and referenced for efficient, decentralized access.</source>
-        <target state="new">Files aren&apos;t stored on the blockchain to avoid high costs and network congestion; they&apos;re externally hosted and referenced for efficient, decentralized access.</target>
+        <target>Files aren&apos;t stored on the blockchain to avoid high costs and network congestion; they&apos;re externally hosted and referenced for efficient, decentralized access.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
           <context context-type="linenumber">6</context>
@@ -583,7 +583,7 @@
       </trans-unit>
       <trans-unit id="4129439569390692843" datatype="html">
         <source>4Ø4</source>
-        <target state="new">4Ø4</target>
+        <target>4Ø4</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
           <context context-type="linenumber">14</context>
@@ -1280,7 +1280,7 @@
       </trans-unit>
       <trans-unit id="7848627177129525188" datatype="html">
         <source>This address is invalid</source>
-        <target state="new">Esta dirección es inválida</target>
+        <target>Esta dirección es inválida</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
           <context context-type="linenumber">35</context>
@@ -1288,7 +1288,7 @@
       </trans-unit>
       <trans-unit id="7898632869036538763" datatype="html">
         <source>This description is only visible for the owner of the document and the first buyer. Make sure your screen is not recorded</source>
-        <target state="new">Esta descripción solo es visible para el propietario del documento y el primer comprador. Asegúrate de que tu pantalla no esté siendo grabada.</target>
+        <target>Esta descripción solo es visible para el propietario del documento y el primer comprador. Asegúrate de que tu pantalla no esté siendo grabada.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">45</context>
