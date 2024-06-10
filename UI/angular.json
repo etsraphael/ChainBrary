@@ -145,6 +145,7 @@
             "sort": "idAsc",
             "outputPath": "src/locale",
             "newTranslationTargetsBlank": false,
+            "trim": true,
             "targetFiles": ["messages.fr.xlf", "messages.es.xlf"]
           }
         },
