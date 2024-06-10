@@ -1131,7 +1131,7 @@
       </trans-unit>
       <trans-unit id="671512205135893869" datatype="html">
         <source>Link images</source>
-        <target>Vincular imágenes</target>
+        <target state="new">Link images</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
           <context context-type="linenumber">116</context>
@@ -1147,7 +1147,8 @@
       </trans-unit>
       <trans-unit id="6811901802533648897" datatype="html">
         <source>N/A</source>
-        <target>N/A</target>
+        <target state="new">N/A</target>
+        <note priority="1" from="description">Indicates that no data is available</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">37</context>
