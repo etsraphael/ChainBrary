@@ -20,15 +20,15 @@
         <tbody>
           <tr>
             <th i18n scope="row">Total Bid Amount</th>
-            <td i18n class="text-end">{{ bidResult.total }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+            <td class="text-end">{{ bidResult.total }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
           </tr>
           <tr>
             <th i18n scope="row">Withdrawal Fee (0.01%)</th>
-            <td i18n class="text-end">{{ bidResult.fee }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+            <td class="text-end">{{ bidResult.fee }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
           </tr>
           <tr>
             <th i18n scope="row">Amount to Receive</th>
-            <td i18n class="text-end">{{ bidResult.net }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
+            <td class="text-end">{{ bidResult.net }} {{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}</td>
           </tr>
         </tbody>
       </table>

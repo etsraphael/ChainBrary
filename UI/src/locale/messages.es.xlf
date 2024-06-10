@@ -137,18 +137,6 @@
           <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="187187500641108332" datatype="html">
-        <source>
-          <x id="INTERPOLATION" equiv-text="commonButtonText.Cancel }}"/>
-        </source>
-        <target state="new">
-          <x id="INTERPOLATION" equiv-text="commonButtonText.Cancel }}"/>
-        </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
-          <context context-type="linenumber">89</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="1877816060137394749" datatype="html">
         <source>The link is broken. Try again or choose a different QR.</source>
         <target>El enlace está roto. Intenta de nuevo o elige un QR diferente.</target>
@@ -1047,7 +1035,7 @@
       </trans-unit>
       <trans-unit id="6362446482375896189" datatype="html">
         <source> This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security and integrity. Access to its content is exclusively reserved for the document&apos;s owner and the initial purchaser, reflecting a new standard in document privacy and ownership. </source>
-        <target state="new"> This document is securely locked and stored using advanced blockchain technology, ensuring unmatched security and integrity. Access to its content is exclusively reserved for the document&apos;s owner and the initial purchaser, reflecting a new standard in document privacy and ownership. </target>
+        <target> Este documento está bloqueado y almacenado de forma segura utilizando tecnología blockchain avanzada, asegurando una seguridad e integridad incomparables. El acceso a su contenido está exclusivamente reservado para el propietario del documento y el comprador inicial, reflejando un nuevo estándar en privacidad y propiedad de documentos.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">5</context>
@@ -1131,7 +1119,7 @@
       </trans-unit>
       <trans-unit id="671512205135893869" datatype="html">
         <source>Link images</source>
-        <target state="new">Link images</target>
+        <target>Vincular imágenes</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
           <context context-type="linenumber">116</context>
@@ -1147,7 +1135,7 @@
       </trans-unit>
       <trans-unit id="6811901802533648897" datatype="html">
         <source>N/A</source>
-        <target state="new">N/A</target>
+        <target>NA</target>
         <note priority="1" from="description">Indicates that no data is available</note>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
@@ -1556,28 +1544,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">40</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="8968543130328972761" datatype="html">
-        <source>
-          <x id="INTERPOLATION" equiv-text="bidResult.total }}"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/>
-        </source>
-        <target state="new">
-          <x id="INTERPOLATION" equiv-text="bidResult.total }}"/>
-          <x id="INTERPOLATION_1" equiv-text="{{ (currentNetwork$ | async)?.nativeCurrency?.symbol }}"/>
-        </target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
-          <context context-type="linenumber">23</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
-          <context context-type="linenumber">27</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
-          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="900151136510105459" datatype="html">
