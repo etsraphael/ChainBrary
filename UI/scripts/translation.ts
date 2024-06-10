@@ -9,13 +9,17 @@ const languageList: KeyAndValue[] = [
   {
     key: 'fr',
     value: 'French'
+  },
+  {
+    key: 'es',
+    value: 'Spanish'
   }
 ];
 
 const translateText = async (text: string, targetLanguage: string): Promise<string> => {
   try {
     const response = await openai.chat.completions.create({
-      model: 'gpt-4',
+      model: 'gpt-4-turbo',
       messages: [
         { role: 'system', content: 'You are a translation model for a blockchain app.' },
         {
@@ -31,7 +35,7 @@ const translateText = async (text: string, targetLanguage: string): Promise<stri
 };
 
 const updateTranslations = async () => {
-  const originalContent = readFileSync('src/locale/messages.fr.xlf', 'utf8');
+  const originalContent = readFileSync('src/locale/messages.es.xlf', 'utf8');
 
   // Match all the translation units that need to be translated
   const matches = [
@@ -43,8 +47,8 @@ const updateTranslations = async () => {
   // Translate all matches concurrently
   const translations = await Promise.all(
     matches.map(async ([match, originalText]) => {
-      const newtranslation = await translateText(originalText, 'fr');
-      return match.replace(`<target state="new"/>`, `<target>${newtranslation}</target>`);
+      const newtranslation = await translateText(originalText, 'Spanish');
+      return match.replace(`<target state="new">${originalText}</target>`, `<target>${newtranslation}</target>`);
     })
   );
 
@@ -54,7 +58,7 @@ const updateTranslations = async () => {
     updatedXml = updatedXml.replace(match[0], translations[index]);
   });
 
-  writeFileSync('src/locale/messages.fr.xlf', updatedXml);
+  writeFileSync('src/locale/messages.es.xlf', updatedXml);
 };
 
 updateTranslations();
