@@ -9,11 +9,11 @@ const languageList: KeyAndValue[] = [
   {
     key: 'fr',
     value: 'French'
+  },
+  {
+    key: 'es',
+    value: 'Spanish'
   }
-  // {
-  //   key: 'es',
-  //   value: 'Spanish'
-  // }
 ];
 
 const translateText = async (text: string, targetLanguage: string, desc?: string): Promise<string> => {
