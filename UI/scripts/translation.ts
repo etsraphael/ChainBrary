@@ -9,11 +9,11 @@ const languageList: KeyAndValue[] = [
   {
     key: 'fr',
     value: 'French'
-  },
-  {
-    key: 'es',
-    value: 'Spanish'
   }
+  // {
+  //   key: 'es',
+  //   value: 'Spanish'
+  // }
 ];
 
 const translateText = async (text: string, targetLanguage: string, desc?: string): Promise<string> => {
@@ -47,8 +47,10 @@ const updateTranslations = async () => {
 
     // Translate all matches concurrently
     const translations = await Promise.all(
-      matches.map(async ([match, originalText, desc]) => {
+      matches.map(async ([match, originalText, desc], index) => {
+        console.log(`Translating unit ${index + 1} of ${matches.length} for ${language.value}`);
         const newtranslation = await translateText(originalText, language.value, desc);
+        console.log(`Translation complete for unit ${index + 1} of ${matches.length} for ${language.value}`);
         return match.replace(`<target state="new">${originalText}</target>`, `<target>${newtranslation}</target>`);
       })
     );
@@ -63,7 +65,13 @@ const updateTranslations = async () => {
   }
 };
 
-updateTranslations();
+updateTranslations()
+  .then(() => {
+    console.log('All translations updated successfully.');
+  })
+  .catch((error) => {
+    console.error('Error updating translations:', error);
+  });
 
 interface KeyAndValue {
   key: string;
