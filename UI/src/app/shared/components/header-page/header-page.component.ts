@@ -10,8 +10,6 @@ import { environment } from './../../../../environments/environment';
   styleUrls: ['./header-page.component.scss']
 })
 export class HeaderPageComponent {
-  language: string[] = ['en', 'fr'];
-  languageSelected: string;
   environment = environment;
 
   headerBtns: IHeaderBtn[] = [

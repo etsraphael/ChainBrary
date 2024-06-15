@@ -7,5 +7,5 @@ import { termsAndCondGlobal } from './../../../../shared/data/termAndCond';
   styleUrls: ['./terms-and-cond-page-container.component.scss']
 })
 export class TermsAndCondPageContainerComponent {
-  termsAndCondGlobalData = termsAndCondGlobal;
+  termsAndCondGlobalData = termsAndCondGlobal.replace(/__DOUBLE_NEWLINE__/g, '\n\n').replace(/__NEWLINE__/g, '\n');
 }
