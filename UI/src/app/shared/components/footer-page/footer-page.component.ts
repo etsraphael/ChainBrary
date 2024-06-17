@@ -43,7 +43,7 @@ export class FooterPageComponent implements OnInit {
   ];
 
   whitePaperText = $localize`:@@footerBtn.Title.WhitePaper:White Paper`;
-  language: string[] = ['en', 'fr'];
+  language: string[] = ['en', 'es', 'fr'];
   languageSelected: string;
   environment = environment;
 

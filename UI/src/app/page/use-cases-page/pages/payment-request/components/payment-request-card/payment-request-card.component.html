@@ -34,7 +34,7 @@
             <span class="conversionValue">(${{ paymentRequest.payment.data.amount }} USD)</span>
           </h4>
           <h4 *ngIf="usdIsEnabled && !tokenConversionRate">
-            <span i18n class="blur-text">N/A</span> {{ paymentToken.symbol }}
+            <span i18n="Indicates that no data is available" class="blur-text">N/A</span> {{ paymentToken.symbol }}
             <br />
             <h6 i18n class="text-secondary pt-3">
               To retrieve the current conversion rate, ensure the appropriate network is selected in your wallet

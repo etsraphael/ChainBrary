@@ -163,7 +163,7 @@ export class BidCreationComponent implements OnInit, OnDestroy, AfterViewInit {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
       panelClass: ['col-12', 'col-md-6', 'col-lg-8'],
-      data: bidTermAndCond,
+      data: bidTermAndCond.replace(/__DOUBLE_NEWLINE__/g, '\n\n').replace(/__NEWLINE__/g, '\n'),
       autoFocus: false
     });
   }

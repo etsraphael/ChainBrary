@@ -105,7 +105,7 @@ export class DocumentLockerFormComponent implements OnInit, OnDestroy {
       enterAnimationDuration: '200ms',
       exitAnimationDuration: '200ms',
       panelClass: ['col-12', 'col-md-6', 'col-lg-8'],
-      data: documentLockerTermAndCond,
+      data: documentLockerTermAndCond.replace(/__DOUBLE_NEWLINE__/g, '\n\n').replace(/__NEWLINE__/g, '\n'),
       autoFocus: false
     });
   }

@@ -10,6 +10,10 @@
           "fr": {
             "translation": "src/locale/messages.fr.xlf",
             "baseHref": "fr/"
+          },
+          "es": {
+            "translation": "src/locale/messages.es.xlf",
+            "baseHref": "es/"
           }
         }
       },
@@ -133,9 +137,16 @@
           "defaultConfiguration": "development"
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "builder": "ng-extract-i18n-merge:ng-extract-i18n-merge",
           "options": {
-            "browserTarget": "ChainBrary:build"
+            "buildTarget": "ChainBrary:build",
+            "format": "xlf",
+            "includeContext": true,
+            "sort": "idAsc",
+            "outputPath": "src/locale",
+            "newTranslationTargetsBlank": false,
+            "trim": true,
+            "targetFiles": ["messages.fr.xlf", "messages.es.xlf"]
           }
         },
         "test": {
