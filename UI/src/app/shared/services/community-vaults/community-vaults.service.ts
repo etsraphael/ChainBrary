@@ -26,20 +26,19 @@ export class CommunityVaultsService {
     );
     return contract.methods['getCommunityVaultMetadata']()
       .call({ from: from || '0x0000000000000000000000000000000000000000' })
-      .then(( res: any ) => ({
-          network: {
-            contractAddress: communityVaultContract.getAddress(),
-            networkDetail: this.web3LoginService.getNetworkDetailByChainId(chainId)
-          },
-          data: {
-            TVL: Number(web3.utils.fromWei(String(res[2]), 'ether')),
-            TVS: Number(web3.utils.fromWei(String(res[0]), 'ether')),
-            fullNetworkReward: Number(web3.utils.fromWei(String(res[3]), 'ether')),
-            userStaked: Number(web3.utils.fromWei(String(res[4]), 'ether')),
-            userReward: Number(web3.utils.fromWei(String(res[5]), 'ether'))
-          }
-        })
-      )
+      .then((res: any) => ({
+        network: {
+          contractAddress: communityVaultContract.getAddress(),
+          networkDetail: this.web3LoginService.getNetworkDetailByChainId(chainId)
+        },
+        data: {
+          TVL: Number(web3.utils.fromWei(String(res[2]), 'ether')),
+          TVS: Number(web3.utils.fromWei(String(res[0]), 'ether')),
+          fullNetworkReward: Number(web3.utils.fromWei(String(res[3]), 'ether')),
+          userStaked: Number(web3.utils.fromWei(String(res[4]), 'ether')),
+          userReward: Number(web3.utils.fromWei(String(res[5]), 'ether'))
+        }
+      }))
       .catch((error: Error) => Promise.reject(error));
   }
 

@@ -31,7 +31,16 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "localize": ["en"],
-            "allowedCommonJsDependencies": ["web3", "buffer", "qrcode", "localforage", "crc-32", "@ethereumjs/rlp", "setimmediate", "cross-fetch"],
+            "allowedCommonJsDependencies": [
+              "web3",
+              "buffer",
+              "qrcode",
+              "localforage",
+              "crc-32",
+              "@ethereumjs/rlp",
+              "setimmediate",
+              "cross-fetch"
+            ],
             "outputPath": "dist/chainbrary",
             "index": "src/index.html",
             "main": "src/main.ts",

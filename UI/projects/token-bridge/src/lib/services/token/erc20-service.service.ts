@@ -22,14 +22,20 @@ export class Erc20Service {
   getBalance(payload: IBalancePayload): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      transactionContract.getAbi(),
+      transactionContract.getAddress()
+    );
     return contract.methods['balanceOf'](payload.owner).call();
   }
 
   getAllowance(payload: IAllowancePayload): Promise<number> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      transactionContract.getAbi(),
+      transactionContract.getAddress()
+    );
     return contract.methods['allowance'](payload.owner, payload.spender).call();
   }
 
@@ -42,7 +48,10 @@ export class Erc20Service {
     return contract.methods['increaseAllowance'](payload.spender, amountToSend)
       .estimateGas({ from: payload.owner })
       .then((gas: bigint) =>
-        contract.methods['increaseAllowance'](payload.spender, amountToSend).send({ from: payload.owner, gas: gas.toString() })
+        contract.methods['increaseAllowance'](payload.spender, amountToSend).send({
+          from: payload.owner,
+          gas: gas.toString()
+        })
       );
   }
 
@@ -55,7 +64,10 @@ export class Erc20Service {
     return contract.methods['decreaseAllowance'](payload.spender, amountToSend)
       .estimateGas({ from: payload.owner })
       .then((gas: bigint) =>
-        contract.methods['decreaseAllowance'](payload.spender, amountToSend).send({ from: payload.owner, gas: gas.toString() })
+        contract.methods['decreaseAllowance'](payload.spender, amountToSend).send({
+          from: payload.owner,
+          gas: gas.toString()
+        })
       );
   }
 
@@ -67,7 +79,9 @@ export class Erc20Service {
 
     return contract.methods['transfer'](payload.to, amountToSend)
       .estimateGas({ from: payload.from })
-      .then((gas: bigint) => contract.methods['transfer'](payload.to, amountToSend).send({ from: payload.from, gas: gas.toString() }));
+      .then((gas: bigint) =>
+        contract.methods['transfer'](payload.to, amountToSend).send({ from: payload.from, gas: gas.toString() })
+      );
   }
 
   async approve(payload: IEditAllowancePayload): Promise<boolean | any> {

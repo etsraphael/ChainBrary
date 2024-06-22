@@ -26,7 +26,7 @@ import { VaultsStoreModule } from './vaults-store';
     BidStoreModule,
     DocumentLockerStoreModule,
     VaultsStoreModule,
-    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode() , connectInZone: true})
+    StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), connectInZone: true })
   ]
 })
 export class RootStateModule {}

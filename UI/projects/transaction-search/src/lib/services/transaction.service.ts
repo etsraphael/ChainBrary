@@ -59,7 +59,7 @@ export class TransactionService {
           const transaction = await web3.eth.getTransaction(rec.transactionHash as string);
           const block = await web3.eth.getBlock(rec.blockNumber);
           const submittedDate: bigint = (await web3.eth.getBlock(rec.blockNumber)).timestamp;
-          const submittedDateFormatted = new Date((Number(submittedDate)) * 1000);
+          const submittedDateFormatted = new Date(Number(submittedDate) * 1000);
 
           return {
             role,

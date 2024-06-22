@@ -22,7 +22,7 @@ export class PriceFeedService {
       return Promise.reject('Pair not found');
     }
 
-    const contract= new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
     return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()
@@ -55,7 +55,7 @@ export class PriceFeedService {
     return this.getCurrentPrice(pair, chainId, w);
   }
 
-  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number|any> {
+  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number | any> {
     const rpcUrl = this.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
     const transactionContract = new PriceFeedContract(chainId, pair);
@@ -64,7 +64,7 @@ export class PriceFeedService {
       return Promise.reject('Pair not found');
     }
 
-    const contract= new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
     return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()

@@ -86,10 +86,13 @@ export class DocumentLockerService {
     from: string,
     amount: number,
     contractAddress: string
-  ): Promise<IReceiptTransaction|any> {
+  ): Promise<IReceiptTransaction | any> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const dlFactoryContract = new DocumentLockerContract();
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(dlFactoryContract.getAbi() as AbiItem[], contractAddress);
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      dlFactoryContract.getAbi() as AbiItem[],
+      contractAddress
+    );
     const amountInWei: string = web3.utils.toWei(String(amount), 'ether');
 
     try {
@@ -110,7 +113,10 @@ export class DocumentLockerService {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const dlFactoryContract = new DocumentLockerContract();
 
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(dlFactoryContract.getAbi() as AbiItem[], conctractAddress);
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      dlFactoryContract.getAbi() as AbiItem[],
+      conctractAddress
+    );
     return contract.methods['getFullDocumentData']()
       .call({ from })
       .then((res: any) => {
