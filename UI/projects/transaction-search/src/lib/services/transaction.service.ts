@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
-import { ITransactionLog, ITransactionPayload, TransactionOptions, TransactionRole } from '../models/transaction.model';
-import { Transaction, BlockTransactionString } from 'web3-eth';
+import { ITransactionLog, TransactionOptions, TransactionRole } from '../models/transaction.model';
 @Injectable({
   providedIn: 'root'
 })
 export class TransactionService {
   async getTransactions(options: TransactionOptions): Promise<ITransactionLog[]> {
-    const latestBlock: number = await options.web3.eth.getBlockNumber();
+    const latestBlock: bigint = await options.web3.eth.getBlockNumber();
     const { page, limit } = options.pagination;
-    const fromBlock: number = latestBlock - page * limit;
+    const fromBlock: bigint = BigInt(latestBlock) - BigInt(page) * BigInt(limit);
     const transferEventSignature: string = options.web3.utils.sha3(
       'Transfer(address,address,uint256,uint256)'
     ) as string;
@@ -21,14 +20,14 @@ export class TransactionService {
     const [senderLogs, receiverLogs] = await Promise.all([
       this.getTransactionLogs(
         options.web3,
-        fromBlock,
+        Number(fromBlock),
         senderTopics as string[],
         TransactionRole.Sender,
         options.address.smartContractAddress
       ),
       this.getTransactionLogs(
         options.web3,
-        fromBlock,
+        Number(fromBlock),
         receiverTopics as string[],
         TransactionRole.Receiver,
         options.address.smartContractAddress
@@ -49,18 +48,18 @@ export class TransactionService {
     contractAddress: string
   ): Promise<ITransactionLog[]> {
     try {
-      const res: ITransactionPayload[] = await web3.eth.getPastLogs({
+      const res = await web3.eth.getPastLogs({
         fromBlock,
         address: contractAddress,
         topics
       });
 
       const processedLogs: ITransactionLog[] = await Promise.all(
-        res.map(async (rec: ITransactionPayload) => {
-          const transaction: Transaction = await web3.eth.getTransaction(rec.transactionHash);
-          const block: BlockTransactionString = await web3.eth.getBlock(rec.blockNumber);
-          const submittedDate: string | number = (await web3.eth.getBlock(rec.blockNumber)).timestamp;
-          const submittedDateFormatted = new Date((submittedDate as number) * 1000);
+        res.map(async (rec: any) => {
+          const transaction = await web3.eth.getTransaction(rec.transactionHash as string);
+          const block = await web3.eth.getBlock(rec.blockNumber);
+          const submittedDate: bigint = (await web3.eth.getBlock(rec.blockNumber)).timestamp;
+          const submittedDateFormatted = new Date((Number(submittedDate)) * 1000);
 
           return {
             role,

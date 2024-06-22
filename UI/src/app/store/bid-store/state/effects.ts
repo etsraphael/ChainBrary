@@ -14,6 +14,7 @@ import { IBid, IBidRefreshResponse } from './../../../shared/interfaces/bid.inte
 import { BidService } from './../../../shared/services/bid/bid.service';
 import * as BidActions from './actions';
 import { selectBidContractAddress, selectBidRefreshCheck, selectBlockNumber } from './selectors';
+import { AbiFragment } from 'web3';
 
 @Injectable()
 export class BidEffects {
@@ -232,7 +233,7 @@ export class BidEffects {
       ),
       switchMap((action: [ReturnType<typeof BidActions.createBid>, WalletProvider, string]) => {
         return from(this.bidService.deployBidContract(action[1], action[2], action[0].payload)).pipe(
-          map((response: { contract: Contract; transactionHash: string }) =>
+          map((response: { contract: Contract<AbiFragment[]>; transactionHash: string }) =>
             BidActions.bidCreationChecking({ txn: response.transactionHash })
           ),
           tap((action: ReturnType<typeof BidActions.bidCreationChecking>) => {

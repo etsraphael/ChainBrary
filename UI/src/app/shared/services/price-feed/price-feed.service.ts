@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 import Web3 from 'web3';
-import { Contract } from 'web3-eth-contract';
 import { PriceFeedContract } from '../../contracts';
 import { TokenPair } from '../../enum';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
@@ -15,7 +14,7 @@ export class PriceFeedService {
 
   // TODO: Use node every time when UI ready, and rename it
 
-  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId, w: WalletProvider): Promise<number> {
+  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId, w: WalletProvider): Promise<number | any> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const transactionContract = new PriceFeedContract(chainId, pair);
 
@@ -23,12 +22,11 @@ export class PriceFeedService {
       return Promise.reject('Pair not found');
     }
 
-    const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract= new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
-    return contract.methods
-      .getLatestDataFrom(transactionContract.getPairAddress())
+    return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()
-      .then((result: { answer: string; startedAt: string }) => {
+      .then((result: any) => {
         const convertedNum = Number(result.answer) / Math.pow(10, 8);
         return convertedNum.toFixed(2);
       });
@@ -57,7 +55,7 @@ export class PriceFeedService {
     return this.getCurrentPrice(pair, chainId, w);
   }
 
-  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number> {
+  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number|any> {
     const rpcUrl = this.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
     const transactionContract = new PriceFeedContract(chainId, pair);
@@ -66,12 +64,11 @@ export class PriceFeedService {
       return Promise.reject('Pair not found');
     }
 
-    const contract: Contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract= new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
 
-    return contract.methods
-      .getLatestDataFrom(transactionContract.getPairAddress())
+    return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()
-      .then((result: { answer: string; startedAt: string }) => {
+      .then((result: any) => {
         const convertedNum = Number(result.answer) / Math.pow(10, 8);
         return convertedNum.toFixed(2);
       });

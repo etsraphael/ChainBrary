@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
-import Web3 from 'web3';
+import Web3, { AbiFragment } from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
 import { CommunityVaultContract } from '../../contracts';
@@ -16,28 +16,17 @@ export class CommunityVaultsService {
     private web3ProviderService: Web3ProviderService
   ) {}
 
-  async getCommunityVaultByChainId(rpcUrl: string, chainId: NetworkChainId, from: string | null): Promise<Vault> {
+  async getCommunityVaultByChainId(rpcUrl: string, chainId: NetworkChainId, from: string | null): Promise<Vault | any> {
     const web3: Web3 = new Web3(rpcUrl);
     const communityVaultContract = new CommunityVaultContract(chainId);
 
-    const contract: Contract = new web3.eth.Contract(
+    const contract = new web3.eth.Contract(
       communityVaultContract.getAbi() as AbiItem[],
       communityVaultContract.getAddress()
     );
-    return contract.methods
-      .getCommunityVaultMetadata()
+    return contract.methods['getCommunityVaultMetadata']()
       .call({ from: from || '0x0000000000000000000000000000000000000000' })
-      .then(
-        (
-          res: [bigint, bigint, bigint, bigint, bigint, bigint] & {
-            totalStaked_: bigint;
-            accRewardPerShare_: bigint;
-            contractBalance_: bigint;
-            fullNetworkReward_: bigint;
-            userStaked_: bigint;
-            userReward_: bigint;
-          }
-        ) => ({
+      .then(( res: any ) => ({
           network: {
             contractAddress: communityVaultContract.getAddress(),
             networkDetail: this.web3LoginService.getNetworkDetailByChainId(chainId)
@@ -59,19 +48,19 @@ export class CommunityVaultsService {
     chainId: NetworkChainId,
     amount: number,
     from: string
-  ): Promise<IReceiptTransaction> {
+  ): Promise<IReceiptTransaction | any> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const communityVaultContract = new CommunityVaultContract(chainId);
 
-    const contract: Contract = new web3.eth.Contract(
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       communityVaultContract.getAbi() as AbiItem[],
       communityVaultContract.getAddress()
     );
     const amountInWei: string = web3.utils.toWei(String(amount), 'ether');
 
     try {
-      const gas: number = await contract.methods.deposit().estimateGas({ from, value: amountInWei });
-      const receipt: IReceiptTransaction = contract.methods.deposit().send({ from, value: amountInWei, gas: gas });
+      const gas: bigint = await contract.methods['deposit']().estimateGas({ from, value: amountInWei });
+      const receipt = contract.methods['deposit']().send({ from, value: amountInWei, gas: gas.toString() });
 
       return receipt;
     } catch (error) {
@@ -83,18 +72,18 @@ export class CommunityVaultsService {
     w: WalletProvider,
     chainId: NetworkChainId,
     from: string
-  ): Promise<IReceiptTransaction> {
+  ): Promise<IReceiptTransaction | any> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const communityVaultContract = new CommunityVaultContract(chainId);
 
-    const contract: Contract = new web3.eth.Contract(
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       communityVaultContract.getAbi() as AbiItem[],
       communityVaultContract.getAddress()
     );
 
     try {
-      const gas: number = await contract.methods.withdraw().estimateGas({ from });
-      const receipt: IReceiptTransaction = contract.methods.withdraw().send({ from, gas });
+      const gas: bigint = await contract.methods['withdraw']().estimateGas({ from });
+      const receipt = contract.methods['withdraw']().send({ from, gas: gas.toString() });
 
       return receipt;
     } catch (error) {

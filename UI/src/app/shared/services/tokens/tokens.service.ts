@@ -7,9 +7,7 @@ import {
   ITransferPayload
 } from '@chainbrary/token-bridge';
 import BigNumber from 'bignumber.js';
-import Web3 from 'web3';
-import { TransactionReceipt } from 'web3-core';
-import { Contract } from 'web3-eth-contract';
+import Web3, { TransactionReceipt } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { ERC20TokenContract, TransactionBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
@@ -67,8 +65,7 @@ export class TokensService {
 
       const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], address);
 
-      return await contract.methods
-        .canTransferToken(
+      return await contract.methods['canTransferToken'](
           payload.ownerAdress,
           web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
           payload.tokenAddress
@@ -79,7 +76,7 @@ export class TokensService {
     }
   }
 
-  async transferNonNativeTokenSC(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
+  async transferNonNativeTokenSC(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction | any> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionBridgeContract(payload.chainId);
 
@@ -90,30 +87,28 @@ export class TokensService {
     const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
 
     try {
-      const gas = await contract.methods
-        .transferTokenFund(
+      const gas = await contract.methods['transferTokenFund'](
           web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
           payload.destinationAddress,
           payload.tokenAddress
         )
         .estimateGas({ from: payload.ownerAdress });
 
-      return contract.methods
-        .transferTokenFund(
+      return contract.methods['transferTokenFund'](
           web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
           payload.destinationAddress,
           payload.tokenAddress
         )
-        .send({ from: payload.ownerAdress, gas: gas });
+        .send({ from: payload.ownerAdress, gas: gas.toString() });
     } catch (error) {
       return Promise.reject((error as Error)?.message || error);
     }
   }
 
-  async transferNativeTokenSC(payload: SendNativeTokenPayload): Promise<IReceiptTransaction> {
+  async transferNativeTokenSC(payload: SendNativeTokenPayload): Promise<IReceiptTransaction | any> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionBridgeContract(String(payload.chainId));
-    const contract: Contract = new web3.eth.Contract(
+    const contract= new web3.eth.Contract(
       transactionContract.getAbi() as AbiItem[],
       transactionContract.getAddress()
     );
@@ -122,13 +117,11 @@ export class TokensService {
     const amountFormat = amount.decimalPlaces(0, BigNumber.ROUND_HALF_UP).toString(10);
 
     try {
-      const gas: number = await contract.methods
-        .transferFund(payload.to)
+      const gas: bigint = await contract.methods['transferFund'](payload.to)
         .estimateGas({ from: payload.from, value: amountFormat });
 
-      const receipt: IReceiptTransaction = contract.methods
-        .transferFund(payload.to)
-        .send({ from: payload.from, value: amountFormat, gas: gas });
+      const receipt = contract.methods['transferFund'](payload.to)
+        .send({ from: payload.from, value: amountFormat, gas: gas.toString() });
 
       return receipt;
     } catch (error) {
@@ -157,13 +150,11 @@ export class TokensService {
     const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
 
     try {
-      const gas = await contract.methods
-        .transfer(payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
+      const gas = await contract.methods['transfer'](payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
         .estimateGas({ from: payload.ownerAdress });
 
-      return contract.methods
-        .transfer(payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
-        .send({ from: payload.ownerAdress, gas: gas });
+      return contract.methods['transfer'](payload.destinationAddress, web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'))
+        .send({ from: payload.ownerAdress, gas: gas.toString() });
     } catch (error) {
       return Promise.reject((error as { message: string; code: number }) || error);
     }
@@ -175,13 +166,11 @@ export class TokensService {
     const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
 
     try {
-      const gas = await contract.methods
-        .transfer(payload.destinationAddress, new BigNumber(payload.amount).toString(10))
+      const gas = await contract.methods['transfer'](payload.destinationAddress, new BigNumber(payload.amount).toString(10))
         .estimateGas({ from: payload.ownerAdress });
 
-      return contract.methods
-        .transfer(payload.destinationAddress, new BigNumber(payload.amount).toString(10))
-        .send({ from: payload.ownerAdress, gas: gas });
+      return contract.methods['transfer'](payload.destinationAddress, new BigNumber(payload.amount).toString(10))
+        .send({ from: payload.ownerAdress, gas: gas.toString() });
     } catch (error) {
       return Promise.reject((error as { message: string; code: number }) || error);
     }

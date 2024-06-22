@@ -31,7 +31,7 @@
           "builder": "@angular-builders/custom-webpack:browser",
           "options": {
             "localize": ["en"],
-            "allowedCommonJsDependencies": ["web3", "buffer", "qrcode"],
+            "allowedCommonJsDependencies": ["web3", "buffer", "qrcode", "localforage", "crc-32", "@ethereumjs/rlp", "setimmediate", "cross-fetch"],
             "outputPath": "dist/chainbrary",
             "index": "src/index.html",
             "main": "src/main.ts",
@@ -125,13 +125,13 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "ChainBrary:build:production"
+              "buildTarget": "ChainBrary:build:production"
             },
             "test": {
-              "browserTarget": "ChainBrary:build:test"
+              "buildTarget": "ChainBrary:build:test"
             },
             "development": {
-              "browserTarget": "ChainBrary:build:development"
+              "buildTarget": "ChainBrary:build:development"
             }
           },
           "defaultConfiguration": "development"

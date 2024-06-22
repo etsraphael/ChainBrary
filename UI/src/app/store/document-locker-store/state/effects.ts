@@ -13,6 +13,7 @@ import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/stat
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import * as DLActions from './actions';
 import { selectDocumentLockerRefreshCheck, selectSearchDocumentLockedData } from './selectors';
+import { AbiFragment } from 'web3';
 
 @Injectable()
 export class DocumentLockerEffects {
@@ -43,7 +44,7 @@ export class DocumentLockerEffects {
       ),
       switchMap((action: [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider, string]) => {
         return from(this.DLService.deployDocumentLockerContract(action[1], action[2], action[0].payload)).pipe(
-          map((response: { contract: Contract; transactionHash: string }) =>
+          map((response: { contract: Contract<AbiFragment[]>; transactionHash: string }) =>
             DLActions.documentLockerChecking({ txn: response.transactionHash })
           ),
           tap((action: ReturnType<typeof DLActions.documentLockerChecking>) => {

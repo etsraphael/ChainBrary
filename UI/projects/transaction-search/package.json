@@ -2,9 +2,9 @@
   "name": "@chainbrary/transaction-search",
   "version": "16.0.5",
   "peerDependencies": {
-    "@angular/common": "^16.1.8",
-    "@angular/core": "^16.1.8",
-    "web3": "^1.10.0"
+    "@angular/common": "^17.3.11",
+    "@angular/core": "^17.3.11",
+    "web3": "^1.10.3"
   },
   "dependencies": {
     "tslib": "^2.6.2"

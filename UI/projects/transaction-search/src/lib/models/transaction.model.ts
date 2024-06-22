@@ -1,10 +1,9 @@
-import { Transaction, BlockTransactionString } from 'web3-eth';
-import Web3 from 'web3';
+import Web3, { Transaction } from 'web3';
 
 export interface ITransactionLog {
   role: TransactionRole;
   transaction: Transaction;
-  block: BlockTransactionString;
+  block: any; //BlockTransactionString;
   submittedDate: Date;
   amount: number;
 }
