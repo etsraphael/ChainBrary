@@ -1,46 +1,44 @@
 import { Injectable } from '@angular/core';
 import { WalletProvider } from '@chainbrary/web3-login';
-import Web3, { AbiFragment, EventLog, FMT_NUMBER, NumberTypes, TransactionReceipt } from 'web3';
+import Web3, { AbiFragment, ContractEvents, EventLog, FMT_NUMBER, NumberTypes, TransactionReceipt } from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import { BidContract } from '../../contracts';
+import { BidContract, BidObjectResponse } from '../../contracts';
 import { IReceiptTransaction } from '../../interfaces';
 import { IBid, IBidCreation, IBidOffer, IBidRefreshResponse } from '../../interfaces/bid.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
+
 @Injectable({
   providedIn: 'root'
 })
 export class BidService {
   constructor(private web3ProviderService: Web3ProviderService) {}
 
-  async getBidFromContractAddress(w: WalletProvider, contractAddress: string): Promise<IBid> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
-    const bidFactoryContract = new BidContract();
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
-      bidFactoryContract.getAbi() as AbiItem[],
-      contractAddress
-    );
+  isBidResponseValid(res: unknown): res is BidObjectResponse {
+    if (typeof res !== 'object' || res === null) {
+      return false;
+    }
 
-    return contract.methods['getCompleteBidMetaData']()
-      .call()
-      .then((res: any) => {
-        return {
-          conctractAddress: contractAddress,
-          imgLists: res[0],
-          bidName: res[1],
-          owner: res[2],
-          auctionStartTime: new Date(parseInt(res[3]) * 1000),
-          auctionEndTime: new Date(parseInt(res[4]) * 1000),
-          extendTimeInMinutes: Number(res[5]),
-          ownerName: res[8],
-          description: res[9],
-          highestBid: Number(web3.utils.fromWei(String(res[10]), 'ether'))
-        } as IBid;
-      });
+    const obj = res as { [key: string]: unknown };
+
+    return (
+      Array.isArray(obj[0]) &&
+      typeof obj[1] === 'string' &&
+      typeof obj[2] === 'string' &&
+      typeof obj[3] === 'bigint' &&
+      typeof obj[4] === 'bigint' &&
+      typeof obj[5] === 'bigint' &&
+      typeof obj[6] === 'string' &&
+      typeof obj[7] === 'string' &&
+      typeof obj[8] === 'bigint' &&
+      typeof obj[9] === 'boolean' &&
+      typeof obj['__length__'] === 'number' &&
+      Object.keys(obj).length === 11
+    );
   }
 
   async getBidFromTxnHash(w: WalletProvider, txnHash: string): Promise<IBid> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
     const bidFactoryContract = new BidContract();
 
     return web3.eth.getTransactionReceipt(txnHash).then(async (receipt: TransactionReceipt) => {
@@ -50,15 +48,19 @@ export class BidService {
       );
       return contract.methods['getCompleteBidMetaData']()
         .call()
-        .then((res: any) => {
+        .then((res: void | [] | BidObjectResponse) => {
+          if (!this.isBidResponseValid(res)) {
+            return Promise.reject('Invalid bid response');
+          }
+
           return {
             conctractAddress: receipt.contractAddress,
             blockNumber: String(receipt.blockNumber),
             imgLists: res[0],
             bidName: res[1],
             owner: res[2],
-            auctionStartTime: new Date(parseInt(res[3]) * 1000),
-            auctionEndTime: new Date(parseInt(res[4]) * 1000),
+            auctionStartTime: new Date(Number(res[3]) * 1000),
+            auctionEndTime: new Date(Number(res[4]) * 1000),
             extendTimeInMinutes: Number(res[5]),
             ownerName: res[6],
             description: res[7],
@@ -75,8 +77,9 @@ export class BidService {
     from: string,
     amount: number,
     contractAddress: string
-  ): Promise<IReceiptTransaction | any> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+  ): Promise<IReceiptTransaction> {
+    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+
     const bidFactoryContract = new BidContract();
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       bidFactoryContract.getAbi() as AbiItem[],
@@ -86,16 +89,32 @@ export class BidService {
 
     try {
       const gas: bigint = await contract.methods['bid']().estimateGas({ from, value: amountInWei });
-      const receipt = contract.methods['bid']().send({ from, value: amountInWei, gas: gas.toString() });
+      const receipt = await contract.methods['bid']().send({ from, value: amountInWei, gas: gas.toString() });
 
-      return receipt;
+      const convertedReceipt: IReceiptTransaction = {
+        blockHash: receipt.blockHash,
+        blockNumber: Number(receipt.blockNumber),
+        contractAddress: contractAddress,
+        transactionIndex: Number(receipt.transactionIndex),
+        cumulativeGasUsed: Number(receipt.cumulativeGasUsed),
+        effectiveGasPrice: Number(receipt.effectiveGasPrice),
+        from: receipt.from,
+        gasUsed: Number(receipt.gasUsed),
+        logsBloom: receipt.logsBloom,
+        status: receipt.status,
+        to: receipt.to,
+        transactionHash: receipt.transactionHash,
+        type: receipt.type
+      };
+
+      return convertedReceipt;
     } catch (error) {
       return Promise.reject(error as string);
     }
   }
 
   async getBidderList(w: WalletProvider, blockNumber: string, contractAddress: string): Promise<IBidOffer[]> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
     const bidFactoryContract = new BidContract();
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       bidFactoryContract.getAbi() as AbiItem[],
@@ -107,15 +126,19 @@ export class BidService {
         fromBlock: blockNumber,
         toBlock: 'latest'
       })
-      .then((events: (string | EventLog)[]) =>
-        events
+      .then((events: (string | EventLog)[]) => {
+        console.log('events', events);
+        return events
           .map((event: string | EventLog) => ({
             bidderAddress: (event as any).returnValues['bidder'],
             amount: Number(web3.utils.fromWei(String((event as any).returnValues['amount']), 'ether'))
           }))
-          .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount)
-      )
-      .catch((error: string) => Promise.reject(error));
+          .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
+      })
+      .catch((error: string) => {
+        console.log('error', error);
+        return Promise.reject(error);
+      });
   }
 
   async deployBidContract(
@@ -123,7 +146,7 @@ export class BidService {
     from: string,
     bid: IBidCreation
   ): Promise<{ contract: Contract<AbiFragment[]>; transactionHash: string }> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
     const bidFactoryContract = new BidContract();
     const contractData = {
       data: bidFactoryContract.getByteCode(),
@@ -170,32 +193,40 @@ export class BidService {
     blockNumber: string,
     contractAddress: string
   ): Promise<IBidRefreshResponse> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       new BidContract().getAbi() as AbiItem[],
       contractAddress
     );
 
     try {
-      const bidList = await contract.getPastEvents('NewBid' as any, {
-        fromBlock: blockNumber,
-        toBlock: 'latest'
-      });
+      const bidList: (string | EventLog)[] = await contract.getPastEvents(
+        'NewBid' as keyof ContractEvents<AbiFragment[]>,
+        {
+          fromBlock: blockNumber,
+          toBlock: 'latest'
+        }
+      );
 
-      const highestBid = await contract.methods['highestBid']().call();
-      const auctionEndTime = await contract.methods['auctionEndTime']().call();
+      if (typeof bidList === 'string') {
+        return Promise.reject('Error fetching bid list');
+      }
 
-      const list = bidList
-        .map((event: string | EventLog) => ({
-          bidderAddress: (event as any).returnValues['bidder'],
-          amount: Number(web3.utils.fromWei(String((event as any).returnValues['amount']), 'ether'))
+      const highestBid: bigint = await contract.methods['highestBid']().call();
+      const auctionEndTime: bigint = await contract.methods['auctionEndTime']().call();
+
+      const list: IBidOffer[] = bidList
+        .map((event: string | EventLog) => event as EventLog)
+        .map((event: EventLog) => ({
+          bidderAddress: event.returnValues['bidder'] as string,
+          amount: Number(web3.utils.fromWei(String(event.returnValues['amount']), 'ether'))
         }))
         .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
 
       return {
         list: list,
         highestBid: Number(web3.utils.fromWei(String(highestBid), 'ether')),
-        auctionEndTime: new Date(parseInt(auctionEndTime as any) * 1000)
+        auctionEndTime: new Date(Number(auctionEndTime) * 1000)
       };
     } catch (error) {
       return Promise.reject(error);
@@ -203,7 +234,7 @@ export class BidService {
   }
 
   async requestWithdraw(w: WalletProvider, from: string, contractAddress: string): Promise<IReceiptTransaction | any> {
-    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
+    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       new BidContract().getAbi() as AbiItem[],
       contractAddress

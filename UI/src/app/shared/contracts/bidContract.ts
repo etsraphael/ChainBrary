@@ -1,6 +1,20 @@
 import { AbiItem } from 'web3-utils';
 import { BaseContractFactory } from './baseContract';
 
+export interface BidObjectResponse {
+  0: string[];
+  1: string;
+  2: string;
+  3: bigint;
+  4: bigint;
+  5: bigint;
+  6: string;
+  7: string;
+  8: bigint;
+  9: boolean;
+  __length__: number;
+}
+
 export class BidContract extends BaseContractFactory {
   getAbi(): (AbiItem | object)[] {
     return [
