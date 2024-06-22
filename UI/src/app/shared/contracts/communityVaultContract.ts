@@ -4,6 +4,16 @@ import { IContract } from '../interfaces';
 import { environment } from './../../../environments/environment';
 import { BaseContract } from './baseContract';
 
+export interface CommunityVaultObjectResponse {
+  0: bigint;
+  1: bigint;
+  2: bigint;
+  3: bigint;
+  4: bigint;
+  5: bigint;
+  __length__: number;
+}
+
 export class CommunityVaultContract extends BaseContract {
   constructor(public chainId: NetworkChainId) {
     super();

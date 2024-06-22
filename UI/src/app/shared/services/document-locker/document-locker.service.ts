@@ -86,7 +86,7 @@ export class DocumentLockerService {
     from: string,
     amount: number,
     contractAddress: string
-  ): Promise<IReceiptTransaction | any> {
+  ): Promise<IReceiptTransaction> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const dlFactoryContract = new DocumentLockerContract();
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
@@ -97,9 +97,25 @@ export class DocumentLockerService {
 
     try {
       const gas: bigint = await contract.methods['unlockFile']().estimateGas({ from, value: amountInWei });
-      const receipt = contract.methods['unlockFile']().send({ from, value: amountInWei, gas: gas.toString() });
+      const receipt = await contract.methods['unlockFile']().send({ from, value: amountInWei, gas: gas.toString() });
 
-      return receipt;
+      const convertedReceipt: IReceiptTransaction = {
+        blockHash: receipt.blockHash,
+        blockNumber: Number(receipt.blockNumber),
+        contractAddress: receipt.contractAddress as string,
+        transactionIndex: Number(receipt.transactionIndex),
+        cumulativeGasUsed: Number(receipt.cumulativeGasUsed),
+        effectiveGasPrice: Number(receipt.effectiveGasPrice),
+        from: receipt.from,
+        gasUsed: Number(receipt.gasUsed),
+        logsBloom: receipt.logsBloom,
+        status: receipt.status,
+        to: receipt.to,
+        transactionHash: receipt.transactionHash,
+        type: receipt.type
+      };
+
+      return convertedReceipt;
     } catch (error) {
       return Promise.reject(error as string);
     }

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
-import Web3 from 'web3';
-import { PriceFeedContract } from '../../contracts';
+import Web3, { AbiFragment, Contract } from 'web3';
+import { PriceFeedContract, PriceFeedObjectResponse } from '../../contracts';
 import { TokenPair } from '../../enum';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 import { environment } from './../../../../environments/environment';
@@ -14,6 +14,23 @@ export class PriceFeedService {
 
   // TODO: Use node every time when UI ready, and rename it
 
+  isPriceResponseValid(res: unknown): res is PriceFeedObjectResponse {
+    if (typeof res !== 'object' || res === null) {
+      return false;
+    }
+
+    const obj = res as { [key: string]: unknown };
+
+    return (
+      typeof obj[0] === 'bigint' &&
+      typeof obj[1] === 'bigint' &&
+      typeof obj[2] === 'bigint' &&
+      typeof obj[3] === 'bigint' &&
+      typeof obj[4] === 'bigint' &&
+      typeof obj['__length__'] === 'number'
+    );
+  }
+
   async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId, w: WalletProvider): Promise<number | any> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const transactionContract = new PriceFeedContract(chainId, pair);
@@ -22,12 +39,18 @@ export class PriceFeedService {
       return Promise.reject('Pair not found');
     }
 
-    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      transactionContract.getAbi(),
+      transactionContract.getAddress()
+    );
 
     return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()
-      .then((result: any) => {
-        const convertedNum = Number(result.answer) / Math.pow(10, 8);
+      .then((res: void | [] | PriceFeedObjectResponse) => {
+        if (!this.isPriceResponseValid(res)) {
+          return Promise.reject('Invalid price response');
+        }
+        const convertedNum: number = Number(res.answer) / Math.pow(10, 8);
         return convertedNum.toFixed(2);
       });
   }
@@ -68,8 +91,12 @@ export class PriceFeedService {
 
     return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()
-      .then((result: any) => {
-        const convertedNum = Number(result.answer) / Math.pow(10, 8);
+      .then((res: void | [] | PriceFeedObjectResponse) => {
+        if (!this.isPriceResponseValid(res)) {
+          return Promise.reject('Invalid price response');
+        }
+
+        const convertedNum = Number(res.answer) / Math.pow(10, 8);
         return convertedNum.toFixed(2);
       });
   }

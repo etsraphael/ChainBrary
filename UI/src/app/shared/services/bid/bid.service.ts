@@ -122,21 +122,20 @@ export class BidService {
     );
 
     return contract
-      .getPastEvents('NewBid' as any, {
+      .getPastEvents('NewBid' as keyof ContractEvents<AbiFragment[]>, {
         fromBlock: blockNumber,
         toBlock: 'latest'
       })
       .then((events: (string | EventLog)[]) => {
-        console.log('events', events);
         return events
-          .map((event: string | EventLog) => ({
-            bidderAddress: (event as any).returnValues['bidder'],
-            amount: Number(web3.utils.fromWei(String((event as any).returnValues['amount']), 'ether'))
+          .map((event: string | EventLog) => event as EventLog)
+          .map((event: EventLog) => ({
+            bidderAddress: event.returnValues['bidder'] as string,
+            amount: Number(web3.utils.fromWei(String(event.returnValues['amount']), 'ether'))
           }))
           .sort((a: IBidOffer, b: IBidOffer) => b.amount - a.amount);
       })
       .catch((error: string) => {
-        console.log('error', error);
         return Promise.reject(error);
       });
   }
@@ -233,7 +232,7 @@ export class BidService {
     }
   }
 
-  async requestWithdraw(w: WalletProvider, from: string, contractAddress: string): Promise<IReceiptTransaction | any> {
+  async requestWithdraw(w: WalletProvider, from: string, contractAddress: string): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3('http://127.0.0.1:8545/');
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       new BidContract().getAbi() as AbiItem[],
@@ -242,9 +241,25 @@ export class BidService {
 
     try {
       const gas: bigint = await contract.methods['withdrawAuctionAmount']().estimateGas({ from });
-      const receipt = contract.methods['withdrawAuctionAmount']().send({ from, gas: gas.toString() });
+      const receipt = await contract.methods['withdrawAuctionAmount']().send({ from, gas: gas.toString() });
 
-      return receipt;
+      const convertedReceipt: IReceiptTransaction = {
+        blockHash: receipt.blockHash,
+        blockNumber: Number(receipt.blockNumber),
+        contractAddress: receipt.contractAddress as string,
+        transactionIndex: Number(receipt.transactionIndex),
+        cumulativeGasUsed: Number(receipt.cumulativeGasUsed),
+        effectiveGasPrice: Number(receipt.effectiveGasPrice),
+        from: receipt.from,
+        gasUsed: Number(receipt.gasUsed),
+        logsBloom: receipt.logsBloom,
+        status: receipt.status,
+        to: receipt.to,
+        transactionHash: receipt.transactionHash,
+        type: receipt.type
+      };
+
+      return convertedReceipt;
     } catch (error) {
       return Promise.reject(error as string);
     }
