@@ -31,7 +31,7 @@ export class PriceFeedService {
     );
   }
 
-  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId, w: WalletProvider): Promise<number | any> {
+  async getCurrentPrice(pair: TokenPair, chainId: NetworkChainId, w: WalletProvider): Promise<number> {
     const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const transactionContract = new PriceFeedContract(chainId, pair);
 
@@ -44,15 +44,20 @@ export class PriceFeedService {
       transactionContract.getAddress()
     );
 
-    return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
-      .call()
-      .then((res: void | [] | PriceFeedObjectResponse) => {
-        if (!this.isPriceResponseValid(res)) {
-          return Promise.reject('Invalid price response');
-        }
-        const convertedNum: number = Number(res.answer) / Math.pow(10, 8);
-        return convertedNum.toFixed(2);
-      });
+    try {
+      const res: void | [] | PriceFeedObjectResponse = await contract.methods['getLatestDataFrom'](
+        transactionContract.getPairAddress()
+      ).call();
+
+      if (!this.isPriceResponseValid(res)) {
+        throw new Error('Invalid price response');
+      }
+
+      const convertedNum: number = Number((res as PriceFeedObjectResponse).answer) / Math.pow(10, 8);
+      return Number(convertedNum.toFixed(2));
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   getCurrentPriceOfNativeToken(chainId: NetworkChainId, w: WalletProvider): Promise<number> {
@@ -78,7 +83,7 @@ export class PriceFeedService {
     return this.getCurrentPrice(pair, chainId, w);
   }
 
-  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number | any> {
+  async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number> {
     const rpcUrl = this.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
     const transactionContract = new PriceFeedContract(chainId, pair);
@@ -92,16 +97,20 @@ export class PriceFeedService {
       transactionContract.getAddress()
     );
 
-    return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
-      .call()
-      .then((res: void | [] | PriceFeedObjectResponse) => {
-        if (!this.isPriceResponseValid(res)) {
-          return Promise.reject('Invalid price response');
-        }
+    try {
+      const res: void | [] | PriceFeedObjectResponse = await contract.methods['getLatestDataFrom'](
+        transactionContract.getPairAddress()
+      ).call();
 
-        const convertedNum = Number(res.answer) / Math.pow(10, 8);
-        return convertedNum.toFixed(2);
-      });
+      if (!this.isPriceResponseValid(res)) {
+        throw new Error('Invalid price response');
+      }
+
+      const convertedNum = Number((res as PriceFeedObjectResponse).answer) / Math.pow(10, 8);
+      return Number(convertedNum.toFixed(2));
+    } catch (error) {
+      return Promise.reject(error);
+    }
   }
 
   getCurrentPriceOfNativeTokenFromNode(chainId: NetworkChainId): Promise<number> {
