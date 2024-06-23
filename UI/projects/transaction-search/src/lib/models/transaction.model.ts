@@ -3,7 +3,9 @@ import Web3, { Transaction } from 'web3';
 export interface ITransactionLog {
   role: TransactionRole;
   transaction: Transaction;
-  block: any; //BlockTransactionString;
+  block: {
+    timestamp: bigint;
+  };
   submittedDate: Date;
   amount: number;
 }

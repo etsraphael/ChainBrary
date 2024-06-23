@@ -3,7 +3,7 @@ import { WalletProvider } from '@chainbrary/web3-login';
 import Web3, { AbiFragment, TransactionReceipt } from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { AbiItem } from 'web3-utils';
-import { DocumentLockerContract } from '../../contracts';
+import { DocumentDataObjectResponse, DocumentLockerContract, FullDocumentDataObjectResponse } from '../../contracts';
 import { IDocumentLockerCreation, IDocumentLockerResponse, IReceiptTransaction } from '../../interfaces';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 import { environment } from './../../../../environments/environment';
@@ -13,6 +13,41 @@ import { environment } from './../../../../environments/environment';
 })
 export class DocumentLockerService {
   constructor(private web3ProviderService: Web3ProviderService) {}
+
+  private isDocumentDataResponseValid(res: unknown): res is DocumentDataObjectResponse {
+    if (typeof res !== 'object' || res === null) {
+      return false;
+    }
+
+    const obj = res as { [key: string]: unknown };
+
+    return (
+      typeof obj[0] === 'string' &&
+      typeof obj[1] === 'string' &&
+      typeof obj[2] === 'bigint' &&
+      typeof obj[3] === 'string' &&
+      typeof obj[4] === 'string' &&
+      typeof obj['__length__'] === 'number'
+    );
+  }
+
+  private isFullDocumentDataObjectResponseResponseValid(res: unknown): res is FullDocumentDataObjectResponse {
+    if (typeof res !== 'object' || res === null) {
+      return false;
+    }
+
+    const obj = res as { [key: string]: unknown };
+
+    return (
+      typeof obj[0] === 'string' &&
+      typeof obj[1] === 'string' &&
+      typeof obj[2] === 'bigint' &&
+      typeof obj[3] === 'string' &&
+      typeof obj[4] === 'string' &&
+      typeof obj[5] === 'string' &&
+      typeof obj['__length__'] === 'number'
+    );
+  }
 
   async deployDocumentLockerContract(
     w: WalletProvider,
@@ -59,19 +94,23 @@ export class DocumentLockerService {
 
     return web3.eth
       .getTransactionReceipt(txnHash)
-      .then((receipt: TransactionReceipt) => {
+      .then(async (receipt: TransactionReceipt) => {
         const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
           dlFactoryContract.getAbi() as AbiItem[],
           receipt.contractAddress
         );
         return contract.methods['getDocumentData']()
           .call()
-          .then((res: any) => {
+          .then((res: void | [] | DocumentDataObjectResponse) => {
+            if (!this.isDocumentDataResponseValid(res)) {
+              return Promise.reject('Invalid bid response');
+            }
+
             return {
               conctractAddress: receipt.contractAddress,
               documentName: res[0],
               ownerName: res[1],
-              price: res[2],
+              price: Number(res[2]),
               ownerAddress: res[3],
               accessAddress: res[4]
             } as IDocumentLockerResponse;
@@ -135,12 +174,16 @@ export class DocumentLockerService {
     );
     return contract.methods['getFullDocumentData']()
       .call({ from })
-      .then((res: any) => {
+      .then((res: void | [] | FullDocumentDataObjectResponse) => {
+        if (!this.isFullDocumentDataObjectResponseResponseValid(res)) {
+          return Promise.reject('Invalid bid response');
+        }
+
         return {
           conctractAddress: conctractAddress,
           documentName: res[0],
           ownerName: res[1],
-          price: res[2],
+          price: Number(res[2]),
           desc: res[3],
           ownerAddress: res[4],
           accessAddress: res[5]

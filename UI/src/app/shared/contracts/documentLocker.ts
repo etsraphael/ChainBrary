@@ -1,6 +1,25 @@
 import { AbiItem } from 'web3-utils';
 import { BaseContractFactory } from './baseContract';
 
+export interface DocumentDataObjectResponse {
+  0: string;
+  1: string;
+  2: bigint;
+  3: string;
+  4: string;
+  __length__: number;
+}
+
+export interface FullDocumentDataObjectResponse {
+  0: string;
+  1: string;
+  2: bigint;
+  3: string;
+  4: string;
+  5: string;
+  __length__: number;
+}
+
 export class DocumentLockerContract extends BaseContractFactory {
   getAbi(): (AbiItem | object)[] {
     return [

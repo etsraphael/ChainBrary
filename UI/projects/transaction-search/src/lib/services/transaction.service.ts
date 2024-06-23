@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import Web3 from 'web3';
 import { ITransactionLog, TransactionOptions, TransactionRole } from '../models/transaction.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -55,20 +56,37 @@ export class TransactionService {
       });
 
       const processedLogs: ITransactionLog[] = await Promise.all(
-        res.map(async (rec: any) => {
-          const transaction = await web3.eth.getTransaction(rec.transactionHash as string);
-          const block = await web3.eth.getBlock(rec.blockNumber);
-          const submittedDate: bigint = (await web3.eth.getBlock(rec.blockNumber)).timestamp;
-          const submittedDateFormatted = new Date(Number(submittedDate) * 1000);
+        res.map(
+          async (
+            rec:
+              | string
+              | {
+                  readonly id?: string | undefined;
+                  readonly removed?: boolean | undefined;
+                  readonly logIndex?: bigint | undefined;
+                  readonly transactionIndex?: bigint | undefined;
+                  readonly transactionHash?: string | undefined;
+                  readonly topics?: string[] | undefined;
+                }
+          ) => {
+            if (typeof rec === 'object' && rec !== null && 'transactionHash' in rec && 'blockNumber' in rec) {
+              const transaction = await web3.eth.getTransaction(rec.transactionHash as string);
+              const block = await web3.eth.getBlock(rec.blockNumber as number);
+              const submittedDate: bigint = block.timestamp;
+              const submittedDateFormatted = new Date(Number(submittedDate) * 1000);
 
-          return {
-            role,
-            transaction,
-            block,
-            submittedDate: submittedDateFormatted,
-            amount: Number(web3.utils.fromWei(transaction.value, 'ether'))
-          };
-        })
+              return {
+                role,
+                transaction,
+                block,
+                submittedDate: submittedDateFormatted,
+                amount: Number(web3.utils.fromWei(transaction.value, 'ether'))
+              };
+            } else {
+              throw new Error('Invalid record object');
+            }
+          }
+        )
       );
 
       return processedLogs;

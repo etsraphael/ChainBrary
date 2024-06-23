@@ -87,7 +87,10 @@ export class PriceFeedService {
       return Promise.reject('Pair not found');
     }
 
-    const contract = new web3.eth.Contract(transactionContract.getAbi(), transactionContract.getAddress());
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      transactionContract.getAbi(),
+      transactionContract.getAddress()
+    );
 
     return contract.methods['getLatestDataFrom'](transactionContract.getPairAddress())
       .call()
