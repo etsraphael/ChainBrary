@@ -7,7 +7,7 @@ import {
   ITransferPayload
 } from '@chainbrary/token-bridge';
 import BigNumber from 'bignumber.js';
-import Web3, { TransactionReceipt } from 'web3';
+import Web3, { AbiFragment, Contract, TransactionReceipt } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { ERC20TokenContract, TransactionBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
@@ -75,7 +75,7 @@ export class TokensService {
     }
   }
 
-  async transferNonNativeTokenSC(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction | any> {
+  async transferNonNativeTokenSC(payload: SendTransactionTokenBridgePayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionBridgeContract(payload.chainId);
 
@@ -83,7 +83,10 @@ export class TokensService {
       return Promise.reject('Network not supported');
     }
 
-    const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      transactionContract.getAbi() as AbiItem[],
+      transactionContract.getAddress()
+    );
 
     try {
       const gas = await contract.methods['transferTokenFund'](
@@ -92,11 +95,29 @@ export class TokensService {
         payload.tokenAddress
       ).estimateGas({ from: payload.ownerAdress });
 
-      return contract.methods['transferTokenFund'](
+      const receipt = await contract.methods['transferTokenFund'](
         web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether'),
         payload.destinationAddress,
         payload.tokenAddress
       ).send({ from: payload.ownerAdress, gas: gas.toString() });
+
+      const convertedReceipt: IReceiptTransaction = {
+        blockHash: receipt.blockHash,
+        blockNumber: Number(receipt.blockNumber),
+        contractAddress: receipt.contractAddress as string,
+        transactionIndex: Number(receipt.transactionIndex),
+        cumulativeGasUsed: Number(receipt.cumulativeGasUsed),
+        effectiveGasPrice: Number(receipt.effectiveGasPrice),
+        from: receipt.from,
+        gasUsed: Number(receipt.gasUsed),
+        logsBloom: receipt.logsBloom,
+        status: receipt.status,
+        to: receipt.to,
+        transactionHash: receipt.transactionHash,
+        type: receipt.type
+      };
+
+      return convertedReceipt;
     } catch (error) {
       return Promise.reject((error as Error)?.message || error);
     }
