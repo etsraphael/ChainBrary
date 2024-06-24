@@ -1,6 +1,6 @@
 {
   "name": "@chainbrary/transaction-search",
-  "version": "16.0.5",
+  "version": "17.0.0",
   "peerDependencies": {
     "@angular/common": "^17.3.11",
     "@angular/core": "^17.3.11",
