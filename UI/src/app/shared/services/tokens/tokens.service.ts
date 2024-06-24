@@ -123,7 +123,7 @@ export class TokensService {
     }
   }
 
-  async transferNativeTokenSC(payload: SendNativeTokenPayload): Promise<IReceiptTransaction | any> {
+  async transferNativeTokenSC(payload: SendNativeTokenPayload): Promise<IReceiptTransaction> {
     const web3: Web3 = new Web3(window.ethereum);
     const transactionContract = new TransactionBridgeContract(String(payload.chainId));
     const contract = new web3.eth.Contract(transactionContract.getAbi() as AbiItem[], transactionContract.getAddress());
@@ -137,13 +137,29 @@ export class TokensService {
         value: amountFormat
       });
 
-      const receipt = contract.methods['transferFund'](payload.to).send({
+      const receipt = await contract.methods['transferFund'](payload.to).send({
         from: payload.from,
         value: amountFormat,
         gas: gas.toString()
       });
 
-      return receipt;
+      const convertedReceipt: IReceiptTransaction = {
+        blockHash: receipt.blockHash,
+        blockNumber: Number(receipt.blockNumber),
+        contractAddress: receipt.contractAddress as string,
+        transactionIndex: Number(receipt.transactionIndex),
+        cumulativeGasUsed: Number(receipt.cumulativeGasUsed),
+        effectiveGasPrice: Number(receipt.effectiveGasPrice),
+        from: receipt.from,
+        gasUsed: Number(receipt.gasUsed),
+        logsBloom: receipt.logsBloom,
+        status: receipt.status,
+        to: receipt.to,
+        transactionHash: receipt.transactionHash,
+        type: receipt.type
+      };
+
+      return convertedReceipt;
     } catch (error) {
       return Promise.reject((error as { message: string; code: number }) || error);
     }
