@@ -38,7 +38,7 @@ export class BidService {
   }
 
   async getBidFromTxnHash(w: WalletProvider, txnHash: string): Promise<IBid> {
-    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
 
     return web3.eth.getTransactionReceipt(txnHash).then(async (receipt: TransactionReceipt) => {
@@ -78,7 +78,7 @@ export class BidService {
     amount: number,
     contractAddress: string
   ): Promise<IReceiptTransaction> {
-    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
 
     const bidFactoryContract = new BidContract();
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
@@ -114,7 +114,7 @@ export class BidService {
   }
 
   async getBidderList(w: WalletProvider, blockNumber: string, contractAddress: string): Promise<IBidOffer[]> {
-    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       bidFactoryContract.getAbi() as AbiItem[],
@@ -145,7 +145,7 @@ export class BidService {
     from: string,
     bid: IBidCreation
   ): Promise<{ contract: Contract<AbiFragment[]>; transactionHash: string }> {
-    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const bidFactoryContract = new BidContract();
     const contractData = {
       data: bidFactoryContract.getByteCode(),
@@ -192,7 +192,7 @@ export class BidService {
     blockNumber: string,
     contractAddress: string
   ): Promise<IBidRefreshResponse> {
-    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       new BidContract().getAbi() as AbiItem[],
       contractAddress
@@ -233,7 +233,7 @@ export class BidService {
   }
 
   async requestWithdraw(w: WalletProvider, from: string, contractAddress: string): Promise<IReceiptTransaction> {
-    const web3: Web3 = new Web3('http://127.0.0.1:8545/');
+    const web3: Web3 = this.web3ProviderService.getWeb3Provider(w) as Web3;
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       new BidContract().getAbi() as AbiItem[],
       contractAddress
