@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { INetworkDetail, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, delay, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { AbiFragment } from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { environment } from '../../../../environments/environment';
 import { IDocumentLockerResponse, IReceiptTransaction, KeyAndLabel, StoreState } from '../../../shared/interfaces';
@@ -43,7 +45,7 @@ export class DocumentLockerEffects {
       ),
       switchMap((action: [ReturnType<typeof DLActions.createDocumentLocker>, WalletProvider, string]) => {
         return from(this.DLService.deployDocumentLockerContract(action[1], action[2], action[0].payload)).pipe(
-          map((response: { contract: Contract; transactionHash: string }) =>
+          map((response: { contract: Contract<AbiFragment[]>; transactionHash: string }) =>
             DLActions.documentLockerChecking({ txn: response.transactionHash })
           ),
           tap((action: ReturnType<typeof DLActions.documentLockerChecking>) => {

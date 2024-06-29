@@ -1,5 +1,5 @@
 # Stage 1: Building the app
-FROM node:16.14.2 as node
+FROM node:18.20.3 as node
 WORKDIR /app
 COPY . .
 

@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
