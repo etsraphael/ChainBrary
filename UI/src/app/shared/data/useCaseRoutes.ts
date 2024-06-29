@@ -5,21 +5,21 @@ const serviceCards: IServiceCard[] = [
     id: 'payment-request',
     title: $localize`:@@landingPage.paymentServiceTitle:Payment Request`,
     description: $localize`:@@landingPage.paymentServiceDesc:Connect you wallet, Create an ID or QRcode and use it to receive payments.`,
-    img: './../../../../assets/bg/light/payment-service.svg',
+    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/payment-service.svg',
     routerUrl: './../../use-cases/payment-request'
   },
   {
     id: 'bid',
     title: $localize`:@@landingPage.bidServiceTitle:Start a Bid`,
     description: $localize`:@@landingPage.bidServiceDesc:Upload an item, set time limit and start bidding with tokens.`,
-    img: './../../../../assets/bg/light/bid-service.svg',
+    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/bid-service.svg',
     routerUrl: './../../use-cases/bid/services'
   },
   {
     id: 'document-locker',
     title: $localize`:@@landingPage.documentLockerTitle:Document Locker`,
     description: $localize`:@@landingPage.documentLockerDesc:Lock confidential information and open only with tokens.`,
-    img: './../../../../assets/bg/light/document-service.svg',
+    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/document-service.svg',
     routerUrl: './../../use-cases/document-locker/services'
   },
   {
