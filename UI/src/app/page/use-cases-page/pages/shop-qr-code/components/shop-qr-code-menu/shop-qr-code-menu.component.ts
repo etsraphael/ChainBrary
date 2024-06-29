@@ -21,7 +21,7 @@ export class ShopQrCodeMenuComponent {
       descritpion: $localize`:@@printQRCodeDescription:Enhance your business's payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions.`,
       routerLink: '/use-cases/shop-qr-code/qr-code-creation',
       buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,
-      imgSrc: './../../../../assets/services/qr-code-shop.svg'
+      imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/qr-code-shop.svg'
     },
     {
       id: 'scan-qr-to-pay',
