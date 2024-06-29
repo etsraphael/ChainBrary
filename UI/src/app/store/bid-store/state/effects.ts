@@ -2,9 +2,11 @@ import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { INetworkDetail, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, delay, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
+import { AbiFragment } from 'web3';
 import { Contract } from 'web3-eth-contract';
 import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -232,7 +234,7 @@ export class BidEffects {
       ),
       switchMap((action: [ReturnType<typeof BidActions.createBid>, WalletProvider, string]) => {
         return from(this.bidService.deployBidContract(action[1], action[2], action[0].payload)).pipe(
-          map((response: { contract: Contract; transactionHash: string }) =>
+          map((response: { contract: Contract<AbiFragment[]>; transactionHash: string }) =>
             BidActions.bidCreationChecking({ txn: response.transactionHash })
           ),
           tap((action: ReturnType<typeof BidActions.bidCreationChecking>) => {
