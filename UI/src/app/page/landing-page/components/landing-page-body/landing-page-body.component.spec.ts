@@ -33,9 +33,9 @@ describe('LandingPageBodyComponent', () => {
 
   it('should have cards with image property', () => {
     const icons = [
-      './../../../../assets/bg/light/payment-service.svg',
-      './../../../../assets/bg/light/bid-service.svg',
-      './../../../../assets/bg/light/document-service.svg'
+      'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/payment-service.svg',
+      'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/bid-service.svg',
+      'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/document-service.svg'
     ];
 
     cards.forEach((card: IServiceCard, index: number) => {

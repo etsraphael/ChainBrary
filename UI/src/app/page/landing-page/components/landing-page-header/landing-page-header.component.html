@@ -38,7 +38,11 @@
       </div>
       <div class="col-md-6 d-none d-sm-none d-md-block">
         <div class="container-header-img d-flex justify-content-center h-100">
-          <img class="w-100 h-100" src="./../../../../../assets/images/header-cards.svg" alt="" />
+          <img
+            class="w-100 h-100"
+            src="https://chainbraryfrontendassets.blob.core.windows.net/illustrations/header-cards.svg"
+            alt=""
+          />
         </div>
       </div>
     </div>
@@ -55,10 +59,18 @@
       <div class="icon-wrapper">
         <div class="icon-container">
           <div *ngFor="let item of iconList">
-            <img [src]="'./../../../../../assets/icons/tokens-name/' + item.url" alt="icon" class="icon-content px-4" />
+            <img
+              [src]="'https://chainbraryfrontendassets.blob.core.windows.net/tokens/' + item.url"
+              alt="icon"
+              class="icon-content px-4"
+            />
           </div>
           <div *ngFor="let item of iconList">
-            <img [src]="'./../../../../../assets/icons/tokens-name/' + item.url" alt="icon" class="icon-content px-4" />
+            <img
+              [src]="'https://chainbraryfrontendassets.blob.core.windows.net/tokens/' + item.url"
+              alt="icon"
+              class="icon-content px-4"
+            />
           </div>
         </div>
       </div>
