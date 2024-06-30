@@ -7,9 +7,9 @@ export interface IReceiptTransaction {
   from: string;
   gasUsed: number;
   logsBloom: string;
-  status: true;
+  status: bigint;
   to: string;
   transactionHash: string;
   transactionIndex: number;
-  type: string;
+  type: bigint | undefined;
 }

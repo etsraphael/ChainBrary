@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ITransactionLog, TransactionOptions, TransactionSearchService } from '@chainbrary/transaction-search';
 import { NetworkChainId } from '@chainbrary/web3-login';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, concatMap, filter, from, map, of } from 'rxjs';
 import Web3 from 'web3';

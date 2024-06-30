@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
-import { Actions, concatLatestFrom, createEffect, ofType } from '@ngrx/effects';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { Buffer } from 'buffer';
 import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
-import { TransactionReceipt } from 'web3-core';
+import { TransactionReceipt } from 'web3';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
@@ -36,7 +38,6 @@ import {
   selectPaymentToken,
   selectRawPaymentRequest
 } from './selectors';
-import { Router } from '@angular/router';
 
 @Injectable()
 export class PaymentRequestEffects {
@@ -577,7 +578,7 @@ export class PaymentRequestEffects {
           return from(this.tokensService.transferNativeToken(payload)).pipe(
             map((receipt: TransactionReceipt) =>
               PaymentRequestActions.amountSent({
-                hash: receipt.transactionHash,
+                hash: String(receipt.transactionHash),
                 chainId: action[2]?.chainId as NetworkChainId
               })
             ),
@@ -620,7 +621,7 @@ export class PaymentRequestEffects {
         return from(this.tokensService.transferNonNativeToken(payload)).pipe(
           map((receipt: TransactionReceipt) =>
             PaymentRequestActions.amountSent({
-              hash: receipt.transactionHash,
+              hash: String(receipt.transactionHash),
               chainId: action[2].chainId as NetworkChainId
             })
           ),
@@ -691,7 +692,7 @@ export class PaymentRequestEffects {
           return from(this.tokensService.transferNativeToken(payload)).pipe(
             map((receipt: TransactionReceipt) =>
               PaymentRequestActions.payNowTransactionSuccess({
-                transactionHash: receipt.transactionHash,
+                transactionHash: String(receipt.transactionHash),
                 chainId: action[0].chainId as NetworkChainId,
                 amount: Number(action[2].data),
                 token: action[0].token
@@ -746,7 +747,7 @@ export class PaymentRequestEffects {
           return from(this.tokensService.transferNonNativeTokenForPayNow(payload)).pipe(
             map((receipt: TransactionReceipt) =>
               PaymentRequestActions.payNowTransactionSuccess({
-                transactionHash: receipt.transactionHash,
+                transactionHash: String(receipt.transactionHash),
                 chainId: action[0].chainId as NetworkChainId,
                 amount: Number(action[2].data),
                 token: action[0].token

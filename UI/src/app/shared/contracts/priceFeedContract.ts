@@ -1,9 +1,18 @@
+import { NetworkChainId } from '@chainbrary/web3-login';
 import { AbiItem } from 'web3-utils';
 import { environment } from '../../../environments/environment';
+import { TokenPair } from '../enum';
 import { IContract } from '../interfaces';
 import { BaseContract } from './baseContract';
-import { TokenPair } from '../enum';
-import { NetworkChainId } from '@chainbrary/web3-login';
+
+export interface PriceFeedObjectResponse {
+  answer: bigint;
+  answeredInRound: bigint;
+  roundId: bigint;
+  startedAt: bigint;
+  updatedAt: bigint;
+  __length__: number;
+}
 
 export class PriceFeedContract extends BaseContract {
   PRICE_FEED_DATA: IPriceFeedData = {
