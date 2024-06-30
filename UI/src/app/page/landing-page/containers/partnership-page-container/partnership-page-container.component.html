@@ -15,7 +15,7 @@
     <div class="ellpipse-container">
       <div class="d-flex justify-content-center icons-container">
         <div *ngFor="let p of projectsList; let i = index" class="container-project-icon" [ngStyle]="getIconStyle(i)">
-          <img [src]="'./../../../../../assets/icons/tokens/' + p.icon" [alt]="p.icon" />
+          <img [src]="'https://chainbraryfrontendassets.blob.core.windows.net/tokens/' + p.icon" [alt]="p.icon" />
         </div>
       </div>
     </div>
