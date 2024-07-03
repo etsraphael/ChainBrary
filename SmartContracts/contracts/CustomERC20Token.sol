@@ -32,7 +32,7 @@ contract ERC20Token is ERC20, ERC20Burnable, Ownable {
         _;
     }
 
-    function mint(address to, uint256 amount) public onlyIfMintable {
+    function mint(address to, uint256 amount) public onlyIfMintable onlyOwner {
         _mint(to, amount);
     }
 
@@ -40,11 +40,11 @@ contract ERC20Token is ERC20, ERC20Burnable, Ownable {
         return _isMintable;
     }
 
-    function burn(uint256 amount) public override onlyIfBurnable {
+    function burn(uint256 amount) public override onlyIfBurnable onlyOwner {
         super.burn(amount);
     }
 
-    function burnFrom(address account, uint256 amount) public override onlyIfBurnable {
+    function burnFrom(address account, uint256 amount) public override onlyIfBurnable onlyOwner {
         super.burnFrom(account, amount);
     }
 
