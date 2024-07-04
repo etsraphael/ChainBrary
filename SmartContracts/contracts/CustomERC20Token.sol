@@ -28,17 +28,17 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
     }
 
     modifier onlyIfMintable() {
-        require(_isMintable, "Token is not mintable");
+        require(_isMintable, "TokenNotMintable");
         _;
     }
 
     modifier onlyIfBurnable() {
-        require(_isBurnable, "Token is not burnable");
+        require(_isBurnable, "TokenNotBurnable");
         _;
     }
 
     modifier onlyIfPausable() {
-        require(_isPausable, "Token is not pausable");
+        require(_isPausable, "TokenNotPausable");
         _;
     }
 
