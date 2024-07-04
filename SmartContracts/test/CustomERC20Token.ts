@@ -32,6 +32,10 @@ describe('CustomERC20Token', function () {
     return deployTokenFixture(false, true, false);
   }
 
+  async function deployNonBurnableFixture() {
+    return deployTokenFixture(false, false, false);
+  }
+
   async function deployPausableFixture() {
     return deployTokenFixture(false, false, true);
   }
@@ -52,23 +56,29 @@ describe('CustomERC20Token', function () {
       await expect(token.connect(owner).mint(owner, ethers.parseEther('100'))).to.be.revertedWith(
         'Token is not mintable'
       );
+      await expect(token.connect(addr1).mint(owner, ethers.parseEther('100')))
+        .to.be.revertedWithCustomError(token, 'OwnableUnauthorizedAccount')
+        .withArgs(addr1.address);
     });
   });
 
-  // describe('Burning', function () {
-  //   it('Should allow owner to burn when burnable', async function () {
-  //     const { token, owner } = await loadFixture(deployTokenFixture);
-  //     await token.connect(owner).burn(ethers.parseEther('100'));
-  //     expect(await token.totalSupply()).to.equal(ethers.parseEther('900'));
-  //   });
+  describe('Burning', function () {
+    it('Should allow owner to burn when burnable', async function () {
+      const { token, owner, addr1 } = await loadFixture(deployBurnableFixture);
+      await token.connect(owner).burn(ethers.parseEther('100'));
+      expect(await token.totalSupply()).to.equal(ethers.parseEther('900'));
+      await expect(token.connect(addr1).burn(ethers.parseEther('100')))
+      .to.be.revertedWithCustomError(token, 'OwnableUnauthorizedAccount')
+      .withArgs(addr1.address);
+    });
 
-  //   it('Should not allow non-owner to burn', async function () {
-  //     const { token, addr1 } = await loadFixture(deployTokenFixture);
-  //     await expect(token.connect(addr1).burn(ethers.parseEther('100'))).to.be.revertedWith(
-  //       'Ownable: caller is not the owner'
-  //     );
-  //   });
-  // });
+    it('Should not allow non-owner to burn', async function () {
+      const { token, owner, addr1 } = await loadFixture(deployNonBurnableFixture);
+      await expect(token.connect(addr1).burn(ethers.parseEther('100'))).to.be.revertedWithCustomError(token, 'OwnableUnauthorizedAccount')
+      .withArgs(addr1.address);
+      await expect(token.connect(owner).burn(ethers.parseEther('100'))).to.be.revertedWith('Token is not burnable');
+    });
+  });
 
   // describe('Pausing', function () {
   //   it('Should allow owner to pause', async function () {

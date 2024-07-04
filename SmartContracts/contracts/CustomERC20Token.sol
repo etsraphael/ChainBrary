@@ -37,7 +37,12 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
         _;
     }
 
-    function mint(address to, uint256 amount) public onlyIfMintable onlyOwner {
+    modifier onlyIfPausable() {
+        require(_isPausable, "Token is not pausable");
+        _;
+    }
+
+    function mint(address to, uint256 amount) public onlyOwner onlyIfMintable {
         _mint(to, amount);
     }
 
@@ -45,11 +50,11 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
         return _isMintable;
     }
 
-    function burn(uint256 amount) public override onlyIfBurnable onlyOwner {
+    function burn(uint256 amount) public override onlyOwner onlyIfBurnable {
         super.burn(amount);
     }
 
-    function burnFrom(address account, uint256 amount) public override onlyIfBurnable onlyOwner {
+    function burnFrom(address account, uint256 amount) public override onlyOwner onlyIfBurnable {
         super.burnFrom(account, amount);
     }
 
@@ -57,11 +62,11 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
         return _isBurnable;
     }
 
-    function pause() public onlyOwner {
+    function pause() public onlyOwner onlyIfPausable {
         _pause();
     }
 
-    function unpause() public onlyOwner {
+    function unpause() public onlyOwner onlyIfPausable {
         _unpause();
     }
 
