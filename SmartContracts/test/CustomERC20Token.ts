@@ -41,11 +41,15 @@ describe('CustomERC20Token', function () {
       const { token, owner, addr1 } = await loadFixture(deployMintableFixture);
       await token.connect(owner).mint(addr1.address, ethers.parseEther('100'));
       expect(await token.balanceOf(addr1.address)).to.equal(ethers.parseEther('100'));
+      expect(await token.totalSupply()).to.equal(ethers.parseEther('1100'));
+      await expect(token.connect(addr1).mint(addr1.address, ethers.parseEther('100')))
+        .to.be.revertedWithCustomError(token, 'OwnableUnauthorizedAccount')
+        .withArgs(addr1.address);
     });
 
     it('Should not allow non-owner to mint', async function () {
-      const { token, addr1 } = await loadFixture(deployNonMintableFixture);
-      await expect(token.connect(addr1).mint(addr1.address, ethers.parseEther('100'))).to.be.revertedWith(
+      const { token, owner, addr1 } = await loadFixture(deployNonMintableFixture);
+      await expect(token.connect(owner).mint(owner, ethers.parseEther('100'))).to.be.revertedWith(
         'Token is not mintable'
       );
     });
