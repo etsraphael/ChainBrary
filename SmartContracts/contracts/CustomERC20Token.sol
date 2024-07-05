@@ -19,12 +19,18 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
         uint256 initialSupply,
         bool mintable,
         bool burnable,
-        bool pausable
+        bool pausable,
+        address[] memory preAssignedAddresses,
+        uint256[] memory preAssignedAmounts
     ) ERC20(name, symbol) Ownable(initialOwner) {
+        require(preAssignedAddresses.length == preAssignedAmounts.length, "Mismatched arrays");
         _isMintable = mintable;
         _isBurnable = burnable;
         _isPausable = pausable;
         _mint(initialOwner, initialSupply * (10 ** decimals()));
+        for (uint256 i = 0; i < preAssignedAddresses.length; i++) {
+            _mint(preAssignedAddresses[i], preAssignedAmounts[i] * (10 ** decimals()));
+        }
     }
 
     modifier onlyIfMintable() {

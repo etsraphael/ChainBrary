@@ -6,11 +6,16 @@ describe('CustomERC20Token', function () {
   const deployTokenFixture = async (mintable: boolean, burnable: boolean, pausable: boolean) => {
     const CustomERC20Token = await ethers.getContractFactory('CustomERC20Token');
     const [owner, addr1, addr2] = await ethers.getSigners();
-
-    const token = await CustomERC20Token.deploy(owner, 'CustomToken', 'CTK', 1000, mintable, burnable, pausable);
-
+    const token = await CustomERC20Token.deploy(owner, 'CustomToken', 'CTK', 1000, mintable, burnable, pausable, [], []);
     return { token, owner, addr1, addr2 };
   };
+
+  const deployTokenFixtureWithAssignee = async (mintable: boolean, burnable: boolean, pausable: boolean) => {
+    const CustomERC20Token = await ethers.getContractFactory('CustomERC20Token');
+    const [owner, addr1, addr2] = await ethers.getSigners();
+    const token = await CustomERC20Token.deploy(owner, 'CustomToken', 'CTK', 1000, mintable, burnable, pausable, [addr1.address, addr2.address], [20, 20]);
+    return { token, owner, addr1, addr2 };
+  }
 
   describe('Minting', function () {
     async function deployMintableFixture() {
@@ -119,4 +124,27 @@ describe('CustomERC20Token', function () {
         .withArgs();
     });
   });
+
+
+  // Assignee related tests
+  describe('Assignee related tests', function () {
+    async function deployMintableFixtureWithAssignee() {
+      return deployTokenFixtureWithAssignee(true, false, false);
+    }
+
+    async function deployNonMintableFixtureWithAssignee() {
+      return deployTokenFixtureWithAssignee(false, false, false);
+    }
+
+    it('Should return the right balance', async function () {
+      const { token, owner, addr1, addr2 } = await loadFixture(deployMintableFixtureWithAssignee);
+      expect(await token.balanceOf(addr1.address)).to.equal(ethers.parseEther('20'));
+      expect(await token.balanceOf(addr2.address)).to.equal(ethers.parseEther('20'));
+      await token.connect(addr1).transfer(addr2.address, ethers.parseEther('10'));
+      expect(await token.balanceOf(addr1.address)).to.equal(ethers.parseEther('10'));
+      expect(await token.balanceOf(addr2.address)).to.equal(ethers.parseEther('30'));
+    });
+
+  });
+
 });
