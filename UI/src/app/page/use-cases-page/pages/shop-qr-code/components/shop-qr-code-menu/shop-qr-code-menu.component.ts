@@ -29,7 +29,7 @@ export class ShopQrCodeMenuComponent {
       descritpion: $localize`:@@scanQRToPayDescription:Scan QR code at the vendors and pay with crypto currency`,
       routerLink: './../../../qr-code-scanning',
       buttonText: $localize`:@@commonTextScanNow:Scan Now`,
-      imgSrc: './../../../../assets/services/qr-code-shop-2.svg'
+      imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/qr-code-shop-2.svg'
     }
   ];
 }
