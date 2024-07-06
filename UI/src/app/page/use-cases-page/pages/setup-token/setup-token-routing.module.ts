@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { SetupTokenMenuComponent } from './components/setup-token-menu/setup-token-menu.component';
 import { SetupTokenHomeComponent } from './containers/setup-token-home/setup-token-home.component';
+import { TokenCreationPageComponent } from './containers/token-creation-page/token-creation-page.component';
+import { TokenManagementPageComponent } from './containers/token-management-page/token-management-page.component';
 
 const routes: Routes = [
   {
@@ -12,14 +14,14 @@ const routes: Routes = [
         path: 'services',
         component: SetupTokenMenuComponent
       },
-      // {
-      //   path: 'token-creation',
-      //   component: SetUpTokenCreationPageComponent
-      // },
-      // {
-      //   path: 'manage-token',
-      //   component: SetUpTokenCreationPageComponent
-      // },
+      {
+        path: 'token-creation',
+        component: TokenCreationPageComponent
+      },
+      {
+        path: 'manage-token',
+        component: TokenManagementPageComponent
+      },
       {
         path: '',
         redirectTo: 'services',
