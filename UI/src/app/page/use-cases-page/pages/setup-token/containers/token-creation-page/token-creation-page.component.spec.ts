@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TokenCreationPageComponent } from './token-creation-page.component';
 
 describe('TokenCreationPageComponent', () => {
@@ -8,7 +7,7 @@ describe('TokenCreationPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TokenCreationPageComponent]
+      declarations: [TokenCreationPageComponent]
     }).compileComponents();
 
     fixture = TestBed.createComponent(TokenCreationPageComponent);

@@ -17,7 +17,7 @@ export class SetupTokenMenuComponent {
   useCaseActionCardsPayload: IUseCasesActionCard[] = [
     {
       id: 'print-qr-code',
-      title: $localize`:@@printCreateTokenTitle:Create Token`,
+      title: $localize`:@@createTokenTitle:Create Token`,
       descritpion: $localize`:@@printCreateTokenDescription:Create your own token with custom name, symbol and initial supply.`,
       routerLink: '/use-cases/setup-token/token-creation',
       buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,

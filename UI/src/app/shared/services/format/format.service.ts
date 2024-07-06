@@ -56,4 +56,25 @@ export class FormatService {
         return null;
     }
   }
+
+  getIconUrl(chainId: NetworkChainId): string {
+    const blobUrl = 'https://chainbraryfrontendassets.blob.core.windows.net/tokens/';
+    switch (chainId) {
+      case NetworkChainId.LOCALHOST:
+      case NetworkChainId.ETHEREUM:
+        return blobUrl + 'eth-icon.svg';
+      case NetworkChainId.SEPOLIA:
+        return blobUrl + 'eth-icon.svg';
+      case NetworkChainId.POLYGON:
+        return blobUrl + 'matic-icon.svg';
+      case NetworkChainId.BNB:
+        return blobUrl + 'bnb-icon.svg';
+      case NetworkChainId.AVALANCHE:
+        return blobUrl + 'avax-icon.svg';
+      case NetworkChainId.FANTOM:
+        return blobUrl + 'ftm-icon.svg';
+      default:
+        return 'not-found.svg';
+    }
+  }
 }

@@ -1,0 +1,9 @@
+.network-card {
+  cursor: pointer;
+}
+
+.network-card:hover,
+.network-card.active {
+  background-color: #f5f5f5;
+  border: 2px solid var(--bs-primary);
+}
