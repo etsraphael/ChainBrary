@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 
 @Component({
@@ -9,6 +10,7 @@ import { FormatService } from './../../../../../../shared/services/format/format
   styleUrl: './token-creation-page.component.scss'
 })
 export class TokenCreationPageComponent {
+  commonButtonText = CommonButtonText;
   headerPayload: IHeaderBodyPage = {
     title: $localize`:@@createTokenTitle:Create Token`,
     goBackLink: '/use-cases/setup-token/services',
