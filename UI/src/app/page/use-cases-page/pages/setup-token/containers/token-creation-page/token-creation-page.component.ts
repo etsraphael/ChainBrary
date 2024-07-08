@@ -20,6 +20,7 @@ export class TokenCreationPageComponent {
   mainForm: FormGroup<ITokenCreationForm> = new FormGroup<ITokenCreationForm>({
     name: new FormControl<string | null>(null, [Validators.required]),
     symbol: new FormControl<string | null>(null, [Validators.required]),
+    network: new FormControl<NetworkChainId | null>(null, [Validators.required]),
     maxSupply: new FormControl<number | null>(null, [Validators.required]),
     decimals: new FormControl<number | null>(18, [Validators.required, Validators.min(1), Validators.max(18)]),
     options: new FormGroup<ICheckboxOptionsForm>({
@@ -55,21 +56,18 @@ export class TokenCreationPageComponent {
       )
     );
 
-  networkSelected: NetworkChainId | null = null;
-
   constructor(
     private web3LoginService: Web3LoginService,
     public formatService: FormatService
   ) {}
 
   selectNetwork(network: NetworkChainId): void {
-    this.networkSelected = network;
+    this.mainForm.get('network')?.setValue(network);
   }
 
   submit(): void {
     this.mainForm.markAllAsTouched();
     console.log('mainForm', this.mainForm.value);
-    console.log('this.networkSelected', this.networkSelected);
   }
 
   getTokenOptionControlByName(name: string): FormControl<boolean> {
@@ -88,6 +86,7 @@ export class TokenCreationPageComponent {
 export interface ITokenCreationForm {
   name: FormControl<string | null>;
   symbol: FormControl<string | null>;
+  network: FormControl<NetworkChainId | null>;
   maxSupply: FormControl<number | null>;
   decimals: FormControl<number | null>;
   options: FormGroup<ICheckboxOptionsForm>;

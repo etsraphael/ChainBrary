@@ -15,7 +15,7 @@
                 <div class="col-3">
                   <div
                     class="card h-100 network-card"
-                    [ngClass]="{ active: networkSelected === item.chainId }"
+                    [ngClass]="{ active: mainForm.get('network')?.value === item.chainId }"
                     (click)="selectNetwork(item.chainId)"
                   >
                     <div class="row mx-0">
@@ -32,6 +32,11 @@
                   </div>
                 </div>
               }
+              <mat-error
+                *ngIf="mainForm.get('network')?.hasError('required') && mainForm.get('network')?.touched === true"
+              >
+                <span i18n>Network is required</span>
+              </mat-error>
             </div>
             <div class="row my-2">
               <h5 class="mb-3">Token details</h5>
