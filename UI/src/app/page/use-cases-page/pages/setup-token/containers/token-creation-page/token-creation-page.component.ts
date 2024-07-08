@@ -21,14 +21,31 @@ export class TokenCreationPageComponent {
     name: new FormControl<string | null>(null, [Validators.required]),
     symbol: new FormControl<string | null>(null, [Validators.required]),
     maxSupply: new FormControl<number | null>(null, [Validators.required]),
-    decimals: new FormControl<number | null>(null, [Validators.required]),
-    network: new FormControl<NetworkChainId | null>(null, [Validators.required]),
+    decimals: new FormControl<number | null>(18, [Validators.required, Validators.min(1), Validators.max(18)]),
     options: new FormGroup<ICheckboxOptionsForm>({
       canBurn: new FormControl<boolean>(false),
       canMint: new FormControl<boolean>(false),
       canPause: new FormControl<boolean>(false)
     })
   });
+
+  optionsList: ITokenOptions[] = [
+    {
+      formControlName: 'canBurn',
+      title: $localize`:@@canBurn:Can Burn`,
+      description: $localize`:@@canBurnDescription:Allow the contract owner to burn tokens.`
+    },
+    {
+      formControlName: 'canMint',
+      title: $localize`:@@canMint:Can Mint`,
+      description: $localize`:@@canMintDescription:Allow the contract owner to mint tokens.`
+    },
+    {
+      formControlName: 'canPause',
+      title: $localize`:@@canPause:Can Pause`,
+      description: $localize`:@@canPauseDescription:Allow the contract owner to pause the contract.`
+    }
+  ];
 
   networkAvailable: INetworkDetail[] = this.web3LoginService
     .getNetworkDetailList()
@@ -51,8 +68,20 @@ export class TokenCreationPageComponent {
 
   submit(): void {
     this.mainForm.markAllAsTouched();
-    console.log('called submit');
     console.log('mainForm', this.mainForm.value);
+    console.log('this.networkSelected', this.networkSelected);
+  }
+
+  getTokenOptionControlByName(name: string): FormControl<boolean> {
+    return this.mainForm.get('options')?.get(name) as FormControl<boolean>;
+  }
+
+  increaseDecimals(): void {
+    return this.mainForm.get('decimals')?.setValue((this.mainForm.get('decimals')?.value as number) + 1);
+  }
+
+  decreaseDecimals(): void {
+    return this.mainForm.get('decimals')?.setValue((this.mainForm.get('decimals')?.value as number) - 1);
   }
 }
 
@@ -61,7 +90,6 @@ export interface ITokenCreationForm {
   symbol: FormControl<string | null>;
   maxSupply: FormControl<number | null>;
   decimals: FormControl<number | null>;
-  network: FormControl<NetworkChainId | null>;
   options: FormGroup<ICheckboxOptionsForm>;
 }
 
@@ -69,4 +97,10 @@ export interface ICheckboxOptionsForm {
   canBurn: FormControl<boolean | null>;
   canMint: FormControl<boolean | null>;
   canPause: FormControl<boolean | null>;
+}
+
+interface ITokenOptions {
+  formControlName: string;
+  title: string;
+  description: string;
 }

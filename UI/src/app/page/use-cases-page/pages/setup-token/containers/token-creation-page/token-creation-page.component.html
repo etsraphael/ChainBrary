@@ -69,21 +69,26 @@
                   </div>
                   <div class="col-12">
                     <mat-form-field class="w-100" appearance="outline">
-                      <input matInput type="text" placeholder="Max Supply" i18n-placeholder />
-                      <!-- <mat-error *ngIf="mainForm.get('max_supply')?.hasError('required')">
-                    <span i18n>Address invalid</span>
-                  </mat-error>
-                  -->
+                      <input
+                        formControlName="maxSupply"
+                        matInput
+                        type="number"
+                        placeholder="Max Supply"
+                        i18n-placeholder
+                      />
+                      <mat-error *ngIf="mainForm.get('maxSupply')?.hasError('required')">
+                        <span i18n>Max supply invalid</span>
+                      </mat-error>
                     </mat-form-field>
                   </div>
                   <div class="col-5">
                     <mat-form-field class="w-100" appearance="outline">
                       <mat-label>Decimal (1-18)</mat-label>
-                      <input class="text-center" matInput value="18" />
-                      <button matPrefix mat-icon-button type="button">
+                      <input formControlName="decimals" class="text-center" matInput type="number" />
+                      <button matPrefix mat-icon-button type="button" (click)="decreaseDecimals()">
                         <i class="bi bi-dash-circle"></i>
                       </button>
-                      <button matSuffix mat-icon-button type="button">
+                      <button matSuffix mat-icon-button type="button" (click)="increaseDecimals()">
                         <i class="bi bi-plus-circle"></i>
                       </button>
                     </mat-form-field>
@@ -93,10 +98,18 @@
             </div>
             <div class="row my-2">
               <h5 class="mb-3">Other Configs</h5>
-              <div class="row">
-                @for (item of [1, 2, 3, 4]; track item) {
-                  <div class="col-4">
-                    <mat-checkbox color="primary" [checked]="true">Checkbox {{ item }}</mat-checkbox>
+              <div class="row mb-3">
+                @for (item of optionsList; track item) {
+                  <div class="col-6">
+                    <mat-checkbox [formControl]="getTokenOptionControlByName(item.formControlName)" color="primary">
+                      {{ item.title }}
+                      <i
+                        [matTooltip]="item.description"
+                        aria-label="Button that displays a tooltip when focused or hovered over"
+                        class="ps-2 bi bi-info-circle"
+                      >
+                      </i>
+                    </mat-checkbox>
                   </div>
                 }
               </div>
