@@ -52,7 +52,9 @@ export class TokenManagementEffects {
       return this.actions$.pipe(
         ofType(showTokenCreationModal),
         switchMap(() => {
-          const dialog: MatDialogRef<TokenCreationModalComponent> = this.dialog.open(TokenCreationModalComponent);
+          const dialog: MatDialogRef<TokenCreationModalComponent> = this.dialog
+            .open(TokenCreationModalComponent)
+            .addPanelClass(['col-12', 'col-md-6']);
           return dialog.afterClosed().pipe(
             map((response) => {
               console.log('response', response);

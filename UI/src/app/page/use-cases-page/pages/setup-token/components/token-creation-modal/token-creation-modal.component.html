@@ -1,1 +1,12 @@
-<p>token-creation-modal works!</p>
+<div class="container">
+  <div class="d-flex justify-content-end my-2">
+    <div class="col-6 col-lg-4 px-2">
+      <button (click)="closeDialog()" class="btn btn-outline-primary w-100">
+        {{ commonButtonText.Back }}
+      </button>
+    </div>
+    <div class="col-6 col-lg-4 px-2">
+      <button (click)="createToken()" i18n class="btn btn-primary w-100">{{ commonButtonText.Confirm }}</button>
+    </div>
+  </div>
+</div>
