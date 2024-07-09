@@ -8,7 +8,7 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 import { selectAuthStatus } from '../../auth-store/state/selectors';
 import { TokenCreationModalComponent } from './../../../page/use-cases-page/pages/setup-token/components/token-creation-modal/token-creation-modal.component';
 import { AuthStatusCode } from './../../../shared/enum';
-import { createToken, showTokenCreationModal } from './actions';
+import { createToken, deployToken, showTokenCreationModal } from './actions';
 
 @Injectable()
 export class TokenManagementEffects {
@@ -24,13 +24,13 @@ export class TokenManagementEffects {
       ofType(createToken),
       concatLatestFrom(() => [this.store.select(selectAuthStatus)]),
       filter(([, authStatus]) => authStatus === AuthStatusCode.NotConnected),
-      switchMap(() => {
+      switchMap((action: [ReturnType<typeof createToken>, AuthStatusCode]) => {
         const dialog: MatDialogRef<Web3LoginComponent> = this.web3LoginService.openLoginModal();
         return dialog.afterClosed().pipe(
           switchMap(() =>
             this.web3LoginService.onWalletConnectedEvent$.pipe(
               take(1),
-              map(() => showTokenCreationModal())
+              map(() => showTokenCreationModal({ payload: action[0].payload }))
             )
           )
         );
@@ -43,26 +43,25 @@ export class TokenManagementEffects {
       ofType(createToken),
       concatLatestFrom(() => [this.store.select(selectAuthStatus)]),
       filter(([, authStatus]) => authStatus === AuthStatusCode.Connected),
-      map(() => showTokenCreationModal())
+      map((action: [ReturnType<typeof createToken>, AuthStatusCode]) =>
+        showTokenCreationModal({ payload: action[0].payload })
+      )
     );
   });
 
-  showTokenCreationModal$ = createEffect(
-    () => {
-      return this.actions$.pipe(
-        ofType(showTokenCreationModal),
-        switchMap(() => {
-          const dialog: MatDialogRef<TokenCreationModalComponent> = this.dialog
-            .open(TokenCreationModalComponent)
-            .addPanelClass(['col-12', 'col-md-6']);
-          return dialog.afterClosed().pipe(
-            map((response) => {
-              console.log('response', response);
-            })
-          );
-        })
-      );
-    },
-    { dispatch: false }
-  );
+  showTokenCreationModal$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(showTokenCreationModal),
+      switchMap((action: ReturnType<typeof showTokenCreationModal>) => {
+        const dialog: MatDialogRef<TokenCreationModalComponent> = this.dialog
+          .open(TokenCreationModalComponent)
+          .addPanelClass(['col-12', 'col-md-6']);
+        return dialog.afterClosed().pipe(
+          take(1),
+          filter((response: { success: boolean }) => response.success),
+          map(() => deployToken({ payload: action.payload }))
+        );
+      })
+    );
+  });
 }
