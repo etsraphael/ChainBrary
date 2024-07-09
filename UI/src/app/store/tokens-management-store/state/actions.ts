@@ -2,6 +2,7 @@ import { createAction, props } from '@ngrx/store';
 import { ITokenCreationPayload } from './../../../shared/interfaces';
 
 export const createToken = createAction('[TokenManagement] Create Token', props<{ payload: ITokenCreationPayload }>());
+export const showTokenCreationModal = createAction('[TokenManagement] Show Token Creation Modal');
 export const createTokenSuccess = createAction('[TokenManagement] Create Token Success');
 export const createTokenFailure = createAction('[TokenManagement] Create Token Failure');
 
