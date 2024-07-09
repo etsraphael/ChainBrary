@@ -4,7 +4,7 @@ import { Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 import { selectAuthStatus } from '../../auth-store/state/selectors';
 import { TokenCreationModalComponent } from './../../../page/use-cases-page/pages/setup-token/components/token-creation-modal/token-creation-modal.component';
 import { AuthStatusCode } from './../../../shared/enum';
@@ -27,9 +27,12 @@ export class TokenManagementEffects {
       switchMap(() => {
         const dialog: MatDialogRef<Web3LoginComponent> = this.web3LoginService.openLoginModal();
         return dialog.afterClosed().pipe(
-          switchMap(() => {
-            return this.web3LoginService.onWalletConnectedEvent$.pipe(map(() => showTokenCreationModal()));
-          })
+          switchMap(() =>
+            this.web3LoginService.onWalletConnectedEvent$.pipe(
+              take(1),
+              map(() => showTokenCreationModal())
+            )
+          )
         );
       })
     );
