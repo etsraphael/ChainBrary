@@ -10,6 +10,7 @@ export default buildModule('Apollo', (m) => {
   const bidContract = deployBidContract(m);
   const documentLocker = deployDocumentLocker(m);
   const communityVault = deployCommunityVault(m);
+  const customERC20Token = deployCustomERC20Token(m);
 
   return {
     rocketContract,
@@ -19,7 +20,8 @@ export default buildModule('Apollo', (m) => {
     erc20FixedSupply,
     bidContract,
     documentLocker,
-    communityVault
+    communityVault,
+    customERC20Token
   };
 });
 
@@ -83,4 +85,9 @@ function deployDocumentLocker(m: any) {
 function deployCommunityVault(m: any) {
   const communityVault = m.contract('CommunityVault');
   return communityVault;
+}
+
+function deployCustomERC20Token(m: any) {
+  const customERC20Token = m.contract('CustomERC20Token', ['Custom Token', 'CTK', 18]);
+  return customERC20Token;
 }
