@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
+import { Store } from '@ngrx/store';
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { CommonButtonText } from './../../../../../../shared/enum';
+import { ITokenCreationPayload } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { createToken } from './../../../../../../store/tokens-management-store/state/actions';
 
 @Component({
   selector: 'app-token-creation-page',
@@ -58,16 +61,18 @@ export class TokenCreationPageComponent {
 
   constructor(
     private web3LoginService: Web3LoginService,
-    public formatService: FormatService
+    public formatService: FormatService,
+    private store: Store
   ) {}
 
   selectNetwork(network: NetworkChainId): void {
-    this.mainForm.get('network')?.setValue(network);
+    return this.mainForm.get('network')?.setValue(network);
   }
 
   submit(): void {
     this.mainForm.markAllAsTouched();
-    console.log('mainForm', this.mainForm.value);
+    if (this.mainForm.invalid) return;
+    else this.store.dispatch(createToken({ payload: this.formToTokenCreationPayload() }));
   }
 
   getTokenOptionControlByName(name: string): FormControl<boolean> {
@@ -80,6 +85,19 @@ export class TokenCreationPageComponent {
 
   decreaseDecimals(): void {
     return this.mainForm.get('decimals')?.setValue((this.mainForm.get('decimals')?.value as number) - 1);
+  }
+
+  private formToTokenCreationPayload(): ITokenCreationPayload {
+    return {
+      name: this.mainForm.get('name')?.value as string,
+      symbol: this.mainForm.get('symbol')?.value as string,
+      network: this.mainForm.get('network')?.value as NetworkChainId,
+      maxSupply: this.mainForm.get('maxSupply')?.value as number,
+      decimals: this.mainForm.get('decimals')?.value as number,
+      canBurn: this.mainForm.get('options')?.get('canBurn')?.value as boolean,
+      canMint: this.mainForm.get('options')?.get('canMint')?.value as boolean,
+      canPause: this.mainForm.get('options')?.get('canPause')?.value as boolean
+    };
   }
 }
 
