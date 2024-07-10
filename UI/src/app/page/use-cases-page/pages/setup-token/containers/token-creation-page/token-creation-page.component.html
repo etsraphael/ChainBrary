@@ -7,7 +7,12 @@
   <div class="d-flex justify-content-center">
     <div class="col-12">
       <div class="card border-0 my-2 shadow-sm p-3">
-        <app-token-creation-form (createTokenEvent)="submit($event)"></app-token-creation-form>
+        <ng-container [ngSwitch]="currentPage">
+          <ng-container *ngSwitchCase="tokenCreationPageTypes.TokenCreation">
+            <app-token-creation-form (createTokenEvent)="goToReviewPage($event)"></app-token-creation-form>
+          </ng-container>
+          <ng-container *ngSwitchCase="tokenCreationPageTypes.TokenReview"> Token review page </ng-container>
+        </ng-container>
       </div>
     </div>
   </div>

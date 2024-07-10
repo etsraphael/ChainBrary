@@ -15,10 +15,27 @@ export class TokenCreationPageComponent {
     goBackLink: '/use-cases/setup-token/services',
     description: $localize`:@@printCreateTokenHeaderDescription:Simple, Fast, Convenient to create tokens. Get 100% ownership of generated tokens with Custom token name, symbol and initial supply. Automatic verified and published contract source code.`
   };
+  tokenCreationPageTypes = TokenCreationPageTypes;
+  currentPage = TokenCreationPageTypes.TokenCreation;
+  tokenCreationPayload: ITokenCreationPayload;
 
   constructor(private store: Store) {}
 
-  submit(event: ITokenCreationPayload): void {
-    return this.store.dispatch(createToken({ payload: event }));
+  goToReviewPage(event: ITokenCreationPayload): void {
+    this.tokenCreationPayload = event;
+    this.currentPage = TokenCreationPageTypes.TokenReview;
   }
+
+  createToken(): void {
+    this.store.dispatch(createToken({ payload: this.tokenCreationPayload }));
+  }
+
+  goBack(): void {
+    this.currentPage = TokenCreationPageTypes.TokenCreation;
+  }
+}
+
+enum TokenCreationPageTypes {
+  TokenCreation,
+  TokenReview
 }
