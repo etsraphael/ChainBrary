@@ -17,7 +17,7 @@ export class TokenCreationPageComponent {
   };
   tokenCreationPageTypes = TokenCreationPageTypes;
   currentPage = TokenCreationPageTypes.TokenCreation;
-  tokenCreationPayload: ITokenCreationPayload;
+  tokenCreationPayload: ITokenCreationPayload | null;
 
   constructor(private store: Store) {}
 
@@ -27,7 +27,7 @@ export class TokenCreationPageComponent {
   }
 
   createToken(): void {
-    this.store.dispatch(createToken({ payload: this.tokenCreationPayload }));
+    this.store.dispatch(createToken({ payload: this.tokenCreationPayload as ITokenCreationPayload }));
   }
 
   goBack(): void {

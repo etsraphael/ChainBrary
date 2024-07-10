@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { CommonButtonText } from './../../../../../../shared/enum';
@@ -6,12 +6,13 @@ import { ITokenCreationPayload } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 
 @Component({
-  selector: 'app-token-creation-form',
+  selector: 'app-token-creation-form[tokenCreationPayload]',
   templateUrl: './token-creation-form.component.html',
-  styleUrl: './token-creation-form.component.scss'
+  styleUrls: ['./token-creation-form.component.scss']
 })
-export class TokenCreationFormComponent {
-  @Output() createTokenEvent: EventEmitter<ITokenCreationPayload> = new EventEmitter<ITokenCreationPayload>();
+export class TokenCreationFormComponent implements OnInit {
+  @Input() tokenCreationPayload: ITokenCreationPayload | null = null;
+  @Output() goToReviewPage: EventEmitter<ITokenCreationPayload> = new EventEmitter<ITokenCreationPayload>();
   commonButtonText = CommonButtonText;
   mainForm: FormGroup<ITokenCreationForm> = new FormGroup<ITokenCreationForm>({
     name: new FormControl<string | null>(null, [Validators.required]),
@@ -57,6 +58,19 @@ export class TokenCreationFormComponent {
     private web3LoginService: Web3LoginService
   ) {}
 
+  ngOnInit(): void {
+    if (this.tokenCreationPayload) {
+      this.mainForm.get('name')?.setValue(this.tokenCreationPayload.name);
+      this.mainForm.get('symbol')?.setValue(this.tokenCreationPayload.symbol);
+      this.mainForm.get('network')?.setValue(this.tokenCreationPayload.network);
+      this.mainForm.get('maxSupply')?.setValue(this.tokenCreationPayload.maxSupply);
+      this.mainForm.get('decimals')?.setValue(this.tokenCreationPayload.decimals);
+      this.mainForm.get('options')?.get('canBurn')?.setValue(this.tokenCreationPayload.canBurn);
+      this.mainForm.get('options')?.get('canMint')?.setValue(this.tokenCreationPayload.canMint);
+      this.mainForm.get('options')?.get('canPause')?.setValue(this.tokenCreationPayload.canPause);
+    }
+  }
+
   selectNetwork(network: NetworkChainId): void {
     return this.mainForm.get('network')?.setValue(network);
   }
@@ -64,7 +78,7 @@ export class TokenCreationFormComponent {
   submit(): void {
     this.mainForm.markAllAsTouched();
     if (this.mainForm.invalid) return;
-    else this.createTokenEvent.emit(this.formToTokenCreationPayload());
+    else this.goToReviewPage.emit(this.formToTokenCreationPayload());
   }
 
   getTokenOptionControlByName(name: string): FormControl<boolean> {
@@ -72,11 +86,17 @@ export class TokenCreationFormComponent {
   }
 
   increaseDecimals(): void {
-    return this.mainForm.get('decimals')?.setValue((this.mainForm.get('decimals')?.value as number) + 1);
+    const currentDecimals = this.mainForm.get('decimals')?.value as number;
+    if (currentDecimals < 18) {
+      this.mainForm.get('decimals')?.setValue(currentDecimals + 1);
+    }
   }
 
   decreaseDecimals(): void {
-    return this.mainForm.get('decimals')?.setValue((this.mainForm.get('decimals')?.value as number) - 1);
+    const currentDecimals = this.mainForm.get('decimals')?.value as number;
+    if (currentDecimals > 1) {
+      this.mainForm.get('decimals')?.setValue(currentDecimals - 1);
+    }
   }
 
   private formToTokenCreationPayload(): ITokenCreationPayload {

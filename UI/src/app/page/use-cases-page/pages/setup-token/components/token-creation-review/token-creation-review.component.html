@@ -1,28 +1,8 @@
 <div class="container">
   <h5>Token details</h5>
-  <div class="container my-2">
+  <div class="container mt-3">
     <div class="row">
-      <div class="col-8">
-        <div class="row my-2">
-          <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Token Name</mat-label>
-            <input matInput type="text" [value]="tokenPayloadReview.name" disabled />
-          </mat-form-field>
-        </div>
-        <div class="row my-2">
-          <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Token Symbol</mat-label>
-            <input matInput type="text" [value]="tokenPayloadReview.symbol" disabled />
-          </mat-form-field>
-        </div>
-        <div class="row my-2">
-          <mat-form-field class="w-100" appearance="outline">
-            <mat-label>Decimal (1-18)</mat-label>
-            <input matInput type="number" [value]="tokenPayloadReview.decimals" disabled />
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="col-4 mb-4">
+      <div class="col-6 col-md-4 mb-4">
         <div class="card h-100 d-flex flex-column align-items-center justify-content-center network-card">
           <div class="row mx-0 w-100">
             <div class="text-center mx-auto py-3">
@@ -37,12 +17,52 @@
           </div>
         </div>
       </div>
+      <div class="col-6 col-md-8">
+        <div class="row my-2">
+          <div class="col-12">
+            <h6 class="text-dark mb-0">Token Name</h6>
+            <p class="text-muted">{{ tokenPayloadReview.name }}</p>
+            <hr class="mt-0" />
+          </div>
+          <div class="col-12">
+            <h6 class="text-dark mb-0">Token Symbol</h6>
+            <p class="text-muted">{{ tokenPayloadReview.symbol }}</p>
+            <hr class="mt-0" />
+          </div>
+          <div class="col-12">
+            <h6 class="text-dark mb-0">Decimal</h6>
+            <p class="text-muted">{{ tokenPayloadReview.decimals }}</p>
+            <hr class="mt-0" />
+          </div>
+        </div>
+      </div>
     </div>
+  </div>
+  <div class="container">
     <div class="row my-2">
-      <mat-form-field class="w-100" appearance="outline">
-        <mat-label>Max Supply</mat-label>
-        <input matInput type="number" [value]="tokenPayloadReview.maxSupply" disabled />
-      </mat-form-field>
+      <div class="col-12">
+        <h6 class="text-dark mb-0">Max Supply</h6>
+        <p class="text-muted">{{ tokenPayloadReview.maxSupply }}</p>
+        <hr class="mt-0" />
+      </div>
+      <div class="col-12">
+        <h6 class="text-dark">Other Configs</h6>
+        <mat-chip-listbox aria-label="Other Configs">
+          @for (o of optionsChecked; track optionsChecked) {
+            <mat-chip-option selected>{{ o }}</mat-chip-option>
+          }
+        </mat-chip-listbox>
+      </div>
+    </div>
+    <div class="d-flex justify-content-end mt-4">
+      <div class="col-6 col-lg-4 px-2">
+        <button class="btn btn-outline-primary w-100" (click)="goBackEvent.emit()">
+          {{ commonButtonText.Back }}
+        </button>
+      </div>
+      <div class="col-6 col-lg-4 px-2">
+        <button i18n class="btn btn-primary w-100" (click)="createTokenEvent.emit()">Create Token</button>
+      </div>
     </div>
   </div>
 </div>

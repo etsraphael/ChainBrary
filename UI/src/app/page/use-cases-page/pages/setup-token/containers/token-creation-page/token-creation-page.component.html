@@ -9,10 +9,19 @@
       <div class="card border-0 my-2 shadow-sm p-3">
         <ng-container [ngSwitch]="currentPage">
           <ng-container *ngSwitchCase="tokenCreationPageTypes.TokenCreation">
-            <app-token-creation-form (createTokenEvent)="goToReviewPage($event)"></app-token-creation-form>
+            <app-token-creation-form
+              (goToReviewPage)="goToReviewPage($event)"
+              [tokenCreationPayload]="tokenCreationPayload"
+            >
+            </app-token-creation-form>
           </ng-container>
           <ng-container *ngSwitchCase="tokenCreationPageTypes.TokenReview">
-            <app-token-creation-review [tokenPayloadReview]="tokenCreationPayload"></app-token-creation-review>
+            <app-token-creation-review
+              [tokenPayloadReview]="tokenCreationPayload!"
+              (goBackEvent)="goBack()"
+              (createTokenEvent)="createToken()"
+            >
+            </app-token-creation-review>
           </ng-container>
         </ng-container>
       </div>
