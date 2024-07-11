@@ -45,7 +45,7 @@
         <p class="text-muted">{{ tokenPayloadReview.maxSupply }}</p>
         <hr class="mt-0" />
       </div>
-      <div class="col-12">
+      <div class="col-12" *ngIf="optionsChecked.length > 0">
         <h6 class="text-dark">Other Configs</h6>
         <mat-chip-listbox aria-label="Other Configs">
           @for (o of optionsChecked; track optionsChecked) {
@@ -56,11 +56,11 @@
     </div>
     <div class="row d-flex justify-content-end">
       <ng-container *ngIf="!errorRetreivingPrice">
-        <div class="col-12 col-lg-4 my-2">
+        <div class="col-12 my-2">
           <h6 class="text-dark mb-0">Amount (USD)</h6>
           <p class="text-dark">$ {{ priceOfCreatingToken }}</p>
         </div>
-        <div class="col-12 col-lg-4 my-2">
+        <div class="col-12 my-2">
           <h6 class="text-dark mb-0">Amount in token</h6>
           <p class="text-dark">
             {{ invoiceAmount + ' ' + networkDetailSelected.nativeCurrency.symbol }}

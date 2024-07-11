@@ -52,7 +52,7 @@ export class TokenCreationReviewComponent implements OnInit {
     try {
       const price = await this.priceFeedService.getCurrentPriceOfNativeTokenFromNode(NetworkChainId.ETHEREUM);
       this.invoiceAmount = this.priceOfCreatingToken / price;
-    } catch (error) {
+    } catch (error: unknown) {
       this.priceError = 'Failed to get the current price of the native network token. Please try again later.';
     }
   }
