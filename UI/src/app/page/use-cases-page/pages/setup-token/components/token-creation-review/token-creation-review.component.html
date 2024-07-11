@@ -13,7 +13,7 @@
             </div>
           </div>
           <div class="d-flex justify-content-center mb-2 text-center px-3">
-            {{ web3LoginService.getNetworkDetailByChainId(tokenPayloadReview.network).name }}
+            {{ networkDetailSelected.name }}
           </div>
         </div>
       </div>
@@ -49,19 +49,38 @@
         <h6 class="text-dark">Other Configs</h6>
         <mat-chip-listbox aria-label="Other Configs">
           @for (o of optionsChecked; track optionsChecked) {
-            <mat-chip-option selected>{{ o }}</mat-chip-option>
+            <mat-chip-option selected disabled="">{{ o }}</mat-chip-option>
           }
         </mat-chip-listbox>
       </div>
     </div>
-    <div class="d-flex justify-content-end mt-4">
+    <div class="row d-flex justify-content-end">
+      <ng-container *ngIf="!errorRetreivingPrice">
+        <div class="col-12 col-lg-4 my-2">
+          <h6 class="text-dark mb-0">Amount (USD)</h6>
+          <p class="text-dark">$ {{ priceOfCreatingToken }}</p>
+        </div>
+        <div class="col-12 col-lg-4 my-2">
+          <h6 class="text-dark mb-0">Amount in token</h6>
+          <p class="text-dark">
+            {{ invoiceAmount + ' ' + networkDetailSelected.nativeCurrency.symbol }}
+          </p>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="errorRetreivingPrice">
+        <div class="col-12 my-2">
+          <p class="text-danger">{{ priceError }}</p>
+        </div>
+      </ng-container>
       <div class="col-6 col-lg-4 px-2">
         <button class="btn btn-outline-primary w-100" (click)="goBackEvent.emit()">
           {{ commonButtonText.Back }}
         </button>
       </div>
       <div class="col-6 col-lg-4 px-2">
-        <button i18n class="btn btn-primary w-100" (click)="createTokenEvent.emit()">Create Token</button>
+        <button [disabled]="errorRetreivingPrice" i18n class="btn btn-primary w-100" (click)="createTokenEvent.emit()">
+          Create Token
+        </button>
       </div>
     </div>
   </div>
