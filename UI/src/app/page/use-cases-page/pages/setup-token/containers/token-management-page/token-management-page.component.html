@@ -7,25 +7,27 @@
   <ng-container *ngIf="(tokenIsLoading$ | async) === false && (tokenDetail$ | async) !== null">
     <div class="card border-0 shadow-lg p-2">
       <div class="container">
-        <div class="row my-2 bg-primary-subtle py-2 card-header border-0">
-          <div class="col-4">
-            <div class="card h-100 d-flex flex-column align-items-center justify-content-center network-card">
-              <div class="row mx-0 w-100">
-                <div class="text-center mx-auto py-3">
-                  <img
-                    [src]="formatService.getIconUrl(networkDetailSelected.chainId)"
-                    [alt]="formatService.getIconUrl(networkDetailSelected.chainId)"
-                  />
+        <div class="my-2 card-header border-0">
+          <div class="row bg-primary-subtle py-2">
+            <div class="col-4">
+              <div class="card h-100 d-flex flex-column align-items-center justify-content-center network-card">
+                <div class="row mx-0 w-100">
+                  <div class="text-center mx-auto py-3">
+                    <img
+                      [src]="formatService.getIconUrl(networkDetailSelected.chainId)"
+                      [alt]="formatService.getIconUrl(networkDetailSelected.chainId)"
+                    />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center mb-2 text-center px-3">
+                  {{ networkDetailSelected.name }}
                 </div>
               </div>
-              <div class="d-flex justify-content-center mb-2 text-center px-3">
-                {{ networkDetailSelected.name }}
-              </div>
             </div>
-          </div>
-          <div class="col-8 my-auto">
-            <h6 class="text-dark">{{ (tokenDetail$ | async)?.name }}</h6>
-            <p class="text-muted mb-0">{{ (tokenDetail$ | async)?.symbol }}</p>
+            <div class="col-8 my-auto">
+              <h6 class="text-dark">{{ (tokenDetail$ | async)?.name }}</h6>
+              <p class="text-muted mb-0">{{ (tokenDetail$ | async)?.symbol }}</p>
+            </div>
           </div>
         </div>
         <div class="row my-2">
