@@ -10,3 +10,15 @@ export interface ITokenCreationPayload {
   canMint: boolean;
   canPause: boolean;
 }
+
+export interface ITokenSetup {
+  name: string;
+  symbol: string;
+  totalSupply: number;
+  decimals: number;
+  canMint: boolean;
+  canBurn: boolean;
+  canPause: boolean;
+  owner: string;
+  contractAddress: string;
+}

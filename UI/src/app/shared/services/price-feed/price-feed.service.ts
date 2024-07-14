@@ -4,7 +4,6 @@ import Web3, { AbiFragment, Contract } from 'web3';
 import { PriceFeedContract, PriceFeedObjectResponse } from '../../contracts';
 import { TokenPair } from '../../enum';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
-import { environment } from './../../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -84,7 +83,7 @@ export class PriceFeedService {
   }
 
   async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number> {
-    const rpcUrl = this.getRpcUrl(chainId);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, true);
     const web3: Web3 = new Web3(rpcUrl);
     const transactionContract = new PriceFeedContract(chainId, pair);
 
@@ -134,22 +133,5 @@ export class PriceFeedService {
     }
 
     return this.getCurrentPriceFromNode(pair, chainId);
-  }
-
-  private getRpcUrl(chainId: NetworkChainId): string {
-    switch (chainId) {
-      case NetworkChainId.ETHEREUM:
-        return environment.rpcKeys.eth;
-      case NetworkChainId.BNB:
-        return environment.rpcKeys.bnb;
-      case NetworkChainId.AVALANCHE:
-        return environment.rpcKeys.avalanche;
-      case NetworkChainId.POLYGON:
-        return environment.rpcKeys.polygon;
-      case NetworkChainId.SEPOLIA:
-        return environment.rpcKeys.sepolia;
-      default:
-        return '';
-    }
   }
 }

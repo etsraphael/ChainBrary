@@ -79,4 +79,33 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
     function _update(address from, address to, uint256 value) internal override(ERC20, ERC20Pausable) {
         super._update(from, to, value);
     }
+
+    function getTokenDetails()
+        public
+        view
+        returns (
+            string memory name,
+            string memory symbol,
+            uint256 totalSupply,
+            uint256 decimals,
+            bool isMintable,
+            bool isBurnable,
+            bool isPausable,
+            address owner
+        )
+    {
+        return (
+            name(),
+            symbol(),
+            totalSupply(),
+            decimals(),
+            _isMintable,
+            _isBurnable,
+            _isPausable,
+            owner()
+        );
+    }
+    {
+        return (name(), symbol(), totalSupply(), decimals(), _isMintable, _isBurnable, _isPausable, owner());
+    }
 }

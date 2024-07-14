@@ -100,6 +100,18 @@ export const environment = {
           address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
         }
       ]
+    },
+    token_setup: {
+      networkSupported: [
+        NetworkChainId.SEPOLIA,
+        NetworkChainId.BNB,
+        NetworkChainId.POLYGON,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.ETHEREUM,
+        NetworkChainId.LOCALHOST
+      ],
+      maxAttempt: 5,
+      attemptTimeout: 0.1 // minutes
     }
   },
   organizationName: 'chainbrary0',
@@ -113,6 +125,7 @@ export const environment = {
     sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
     polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49',
     avalanche: 'https://avax-mainnet.rpc.grove.city/v1/2501ba49',
-    bnb: 'https://bsc-mainnet.rpc.grove.city/v1/2501ba49'
+    bnb: 'https://bsc-mainnet.rpc.grove.city/v1/2501ba49',
+    local: 'http://127.0.0.1:8545/'
   }
 };
