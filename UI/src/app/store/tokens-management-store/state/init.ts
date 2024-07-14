@@ -9,5 +9,10 @@ export const initialState: ITokenManagementState = {
     data: { attempt: 0 },
     loading: false,
     error: null
+  },
+  tokenDetail: {
+    data: null,
+    loading: false,
+    error: null
   }
 };

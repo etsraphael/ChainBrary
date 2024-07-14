@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
-import { catchError, delay, filter, map, switchMap, take } from 'rxjs/operators';
+import { catchError, delay, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { AbiFragment, Contract } from 'web3';
 import { selectAuthStatus, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -22,7 +23,8 @@ export class TokenManagementEffects {
     private actions$: Actions,
     private web3LoginService: Web3LoginService,
     private tokenSetupService: TokenSetupService,
-    private readonly store: Store
+    private readonly store: Store,
+    private router: Router
   ) {}
 
   createTokenWithoutConnection$ = createEffect(() => {
@@ -69,6 +71,9 @@ export class TokenManagementEffects {
           map((response: { contract: Contract<AbiFragment[]>; transactionHash: string }) =>
             tokenActions.tokenCreationChecking({ txn: response.transactionHash, chainId: action[0].payload.network })
           ),
+          tap((action: ReturnType<typeof tokenActions.tokenCreationChecking>) => {
+            this.router.navigate(['/use-cases/setup-token/manage-token/', action.chainId, action.txn]);
+          }),
           catchError(() =>
             of(
               tokenActions.createTokenFailure({
@@ -98,6 +103,20 @@ export class TokenManagementEffects {
           ),
           catchError((error: { message: string }) =>
             of(tokenActions.tokenCreationCheckingFailure({ message: error.message, txn: action[0].txn }))
+          )
+        );
+      })
+    );
+  });
+
+  loadTokenByTxnHash$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.loadTokenByTxnHash),
+      switchMap((action: ReturnType<typeof tokenActions.loadTokenByTxnHash>) => {
+        return from(this.tokenSetupService.getCustomERC20FromTxnHash(action.chainId, action.txHash)).pipe(
+          map((token: ITokenSetup) => tokenActions.loadTokenByTxnHashSuccess({ token })),
+          catchError((error: { message: string }) =>
+            of(tokenActions.loadTokenByTxnHashFailure({ message: error.message }))
           )
         );
       })

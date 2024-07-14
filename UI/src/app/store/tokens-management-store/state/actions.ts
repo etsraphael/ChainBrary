@@ -10,10 +10,16 @@ export const createTokenFailure = createAction(
   props<{ errorMessage: string }>()
 );
 
-export const loadTokenById = createAction('[TokenManagement] Load Token By Id', props<{ contractAddress: string }>());
-export const loadTokenByIdSuccess = createAction('[TokenManagement] Load Token By Id Success');
-export const loadTokenByIdFailure = createAction(
-  '[TokenManagement] Load Token By Id Failure',
+export const loadTokenByTxnHash = createAction(
+  '[TokenManagement] Load Token By TxnHash',
+  props<{ txHash: string; chainId: NetworkChainId }>()
+);
+export const loadTokenByTxnHashSuccess = createAction(
+  '[TokenManagement] Load Token By TxnHash Success',
+  props<{ token: ITokenSetup }>()
+);
+export const loadTokenByTxnHashFailure = createAction(
+  '[TokenManagement] Load Token By TxnHash Failure',
   props<{ message: string }>()
 );
 

@@ -75,6 +75,39 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
       }
     })
   ),
+  on(
+    tokenActions.loadTokenByTxnHash,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      tokenDetail: {
+        loading: true,
+        error: null,
+        data: null
+      }
+    })
+  ),
+  on(
+    tokenActions.loadTokenByTxnHashSuccess,
+    (state: ITokenManagementState, { token }): ITokenManagementState => ({
+      ...state,
+      tokenDetail: {
+        loading: false,
+        error: null,
+        data: token
+      }
+    })
+  ),
+  on(
+    tokenActions.loadTokenByTxnHashFailure,
+    (state: ITokenManagementState, { message }): ITokenManagementState => ({
+      ...state,
+      tokenDetail: {
+        loading: false,
+        error: message,
+        data: null
+      }
+    })
+  ),
   on(VaultsActions.resetTokenManagement, (): ITokenManagementState => initialState)
 );
 

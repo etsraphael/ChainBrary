@@ -19,7 +19,7 @@ const routes: Routes = [
         component: TokenCreationPageComponent
       },
       {
-        path: 'manage-token',
+        path: 'manage-token/:chainId/:txnHash',
         component: TokenManagementPageComponent
       },
       {
