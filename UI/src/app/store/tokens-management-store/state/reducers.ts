@@ -51,7 +51,7 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
   ),
   on(
     tokenActions.tokenCreationCheckingSuccess,
-    (state: ITokenManagementState): ITokenManagementState => ({
+    (state: ITokenManagementState, { token }): ITokenManagementState => ({
       ...state,
       tokenCreationIsProcessing: {
         isLoading: false,
@@ -61,17 +61,22 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
         ...state.tokenRefreshCheck,
         loading: false,
         error: null
+      },
+      tokenDetail: {
+        loading: false,
+        error: null,
+        data: token
       }
     })
   ),
   on(
     tokenActions.tokenCreationCheckingFailure,
-    (state: ITokenManagementState): ITokenManagementState => ({
+    (state: ITokenManagementState, { message }): ITokenManagementState => ({
       ...state,
       tokenRefreshCheck: {
         ...state.tokenRefreshCheck,
         loading: false,
-        error: null
+        error: message
       }
     })
   ),

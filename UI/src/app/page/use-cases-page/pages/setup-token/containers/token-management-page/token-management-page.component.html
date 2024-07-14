@@ -4,11 +4,18 @@
       <app-header-body-page [header]="headerPayload"></app-header-body-page>
     </div>
   </div>
-  <ng-container *ngIf="(tokenIsLoading$ | async) === false && (tokenDetail$ | async) !== null">
+  <div class="mb-2">
+    <app-auth-banner></app-auth-banner>
+  </div>
+  <ng-container
+    *ngIf="
+      (tokenIsCreating$ | async) === false && (tokenIsLoading$ | async) === false && (tokenDetail$ | async) !== null
+    "
+  >
     <div class="card border-0 shadow-lg p-2">
       <div class="container">
-        <div class="my-2 card-header border-0">
-          <div class="row bg-primary-subtle py-2">
+        <div class="bg-primary-subtle py-3 my-2 card-header border-0">
+          <div class="row">
             <div class="col-4">
               <div class="card h-100 d-flex flex-column align-items-center justify-content-center network-card">
                 <div class="row mx-0 w-100">
@@ -25,17 +32,43 @@
               </div>
             </div>
             <div class="col-8 my-auto">
-              <h6 class="text-dark">{{ (tokenDetail$ | async)?.name }}</h6>
+              <h5 class="text-dark">{{ (tokenDetail$ | async)?.name }}</h5>
               <p class="text-muted mb-0">{{ (tokenDetail$ | async)?.symbol }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <hr class="mt-3 mb-4" />
+            <div class="col-12">
+              <h6 class="text-dark">Total Supply</h6>
+              <h5 class="text-muted mb-0">
+                {{ (tokenDetail$ | async)?.totalSupply + ' ' + (tokenDetail$ | async)?.symbol?.toUpperCase() }}
+              </h5>
             </div>
           </div>
         </div>
         <div class="row my-2">
-          @for (item of [0, 1, 2, 3, 4]; track item) {
+          @for (item of optionBtns; track item) {
             <div class="col-6 py-2">
-              <button class="btn btn-outline-primary w-100">Button {{ item }}</button>
+              <button class="btn btn-outline-primary w-100" [disabled]="item.disabled">{{ item.label }}</button>
             </div>
           }
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(tokenIsCreating$ | async) === true">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div class="d-flex flex-column align-items-center pt-5">
+            <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+            <p class="mt-3 text-secondary text-center">
+              <span i18n
+                >Creating your token... Stay on this page or refresh it later when the blockchain will validate your
+                transaction</span
+              >
+            </p>
+          </div>
         </div>
       </div>
     </div>
