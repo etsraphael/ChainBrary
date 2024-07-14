@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
-import { ITokenCreationPayload } from './../../../../../../shared/interfaces';
+import { ActionStoreProcessing, ITokenCreationPayload } from './../../../../../../shared/interfaces';
 import { createToken } from './../../../../../../store/tokens-management-store/state/actions';
+import { selectTokenCreationIsProcessing } from './../../../../../../store/tokens-management-store/state/selectors';
 
 @Component({
   selector: 'app-token-creation-page',
@@ -20,6 +22,10 @@ export class TokenCreationPageComponent {
   tokenCreationPayload: ITokenCreationPayload | null;
 
   constructor(private store: Store) {}
+
+  readonly tokenCreationIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(
+    selectTokenCreationIsProcessing
+  );
 
   goToReviewPage(event: ITokenCreationPayload): void {
     this.tokenCreationPayload = event;

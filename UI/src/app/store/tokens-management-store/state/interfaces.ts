@@ -3,7 +3,7 @@ import { ActionStoreProcessing, StoreState } from './../../../shared/interfaces'
 export const TOKEN_MANAGEMENT_FEATURE_KEY = 'token-management';
 
 export interface ITokenManagementState {
-  tokenCreation: ActionStoreProcessing;
+  tokenCreationIsProcessing: ActionStoreProcessing;
   tokenRefreshCheck: StoreState<{ attempt: number }>;
 }
 

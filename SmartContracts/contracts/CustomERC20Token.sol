@@ -83,28 +83,7 @@ contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20
     function getTokenDetails()
         public
         view
-        returns (
-            string memory name,
-            string memory symbol,
-            uint256 totalSupply,
-            uint256 decimals,
-            bool isMintable,
-            bool isBurnable,
-            bool isPausable,
-            address owner
-        )
-    {
-        return (
-            name(),
-            symbol(),
-            totalSupply(),
-            decimals(),
-            _isMintable,
-            _isBurnable,
-            _isPausable,
-            owner()
-        );
-    }
+        returns (string memory, string memory, uint256, uint256, bool, bool, bool, address)
     {
         return (name(), symbol(), totalSupply(), decimals(), _isMintable, _isBurnable, _isPausable, owner());
     }

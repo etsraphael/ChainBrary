@@ -5,7 +5,10 @@ import { ITokenCreationPayload, ITokenSetup } from './../../../shared/interfaces
 export const createToken = createAction('[TokenManagement] Create Token', props<{ payload: ITokenCreationPayload }>());
 export const deployToken = createAction('[TokenManagement] Deploy Token', props<{ payload: ITokenCreationPayload }>());
 export const createTokenSuccess = createAction('[TokenManagement] Create Token Success');
-export const createTokenFailure = createAction('[TokenManagement] Create Token Failure', props<{ message: string }>());
+export const createTokenFailure = createAction(
+  '[TokenManagement] Create Token Failure',
+  props<{ errorMessage: string }>()
+);
 
 export const loadTokenById = createAction('[TokenManagement] Load Token By Id', props<{ contractAddress: string }>());
 export const loadTokenByIdSuccess = createAction('[TokenManagement] Load Token By Id Success');

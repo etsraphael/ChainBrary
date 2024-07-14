@@ -2,9 +2,79 @@ import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import * as VaultsActions from './actions';
 import { initialState } from './init';
 import { ITokenManagementState } from './interfaces';
+import * as tokenActions from './actions';
 
 export const authReducer: ActionReducer<ITokenManagementState, Action> = createReducer(
   initialState,
+  on(
+    tokenActions.createToken,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      tokenCreationIsProcessing: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    tokenActions.createTokenFailure,
+    (state: ITokenManagementState, { errorMessage }): ITokenManagementState => ({
+      ...state,
+      tokenCreationIsProcessing: {
+        isLoading: false,
+        errorMessage
+      }
+    })
+  ),
+  on(
+    tokenActions.createTokenSuccess,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      tokenCreationIsProcessing: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    tokenActions.tokenCreationChecking,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      tokenRefreshCheck: {
+        data: {
+          attempt: state.tokenRefreshCheck.data ? state.tokenRefreshCheck.data.attempt + 1 : 1
+        },
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    tokenActions.tokenCreationCheckingSuccess,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      tokenCreationIsProcessing: {
+        isLoading: false,
+        errorMessage: null
+      },
+      tokenRefreshCheck: {
+        ...state.tokenRefreshCheck,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    tokenActions.tokenCreationCheckingFailure,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      tokenRefreshCheck: {
+        ...state.tokenRefreshCheck,
+        loading: false,
+        error: null
+      }
+    })
+  ),
   on(VaultsActions.resetTokenManagement, (): ITokenManagementState => initialState)
 );
 

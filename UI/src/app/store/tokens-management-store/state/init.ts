@@ -1,7 +1,7 @@
 import { ITokenManagementState } from './interfaces';
 
 export const initialState: ITokenManagementState = {
-  tokenCreation: {
+  tokenCreationIsProcessing: {
     isLoading: false,
     errorMessage: null
   },
