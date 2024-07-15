@@ -12,6 +12,8 @@ import {
   selectTokenCreationIsProcessing,
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { TokenActionModalComponent } from '../../components/token-action-modal/token-action-modal.component';
 
 @Component({
   selector: 'app-token-management-page',
@@ -28,32 +30,32 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   optionBtns: IOptionButton[] = [
     {
-      key: 'Mint',
+      key: IOptionActionBtn.Mint,
       label: $localize`:@@btnOption:Mint`,
       disabled: true
     },
     {
-      key: 'Burn',
+      key: IOptionActionBtn.Burn,
       label: $localize`:@@btnOption:Burn`,
       disabled: true
     },
     {
-      key: 'Transfer',
+      key: IOptionActionBtn.Transfer,
       label: $localize`:@@btnOption:Transfer`,
       disabled: false
     },
     {
-      key: 'ChangeOwner',
+      key: IOptionActionBtn.ChangeOwner,
       label: $localize`:@@btnOption:Change Owner`,
       disabled: true
     },
     {
-      key: 'Pause',
+      key: IOptionActionBtn.Pause,
       label: $localize`:@@btnOption:Pause`,
       disabled: true
     },
     {
-      key: 'RenounceOwnership',
+      key: IOptionActionBtn.RenounceOwnership,
       label: $localize`:@@btnOption:Renounce Ownership`,
       disabled: true
     }
@@ -63,7 +65,8 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     public formatService: FormatService,
     private route: ActivatedRoute,
     public web3LoginService: Web3LoginService,
-    private readonly store: Store
+    private readonly store: Store,
+    private dialog: MatDialog
   ) {}
 
   readonly tokenDetailStore$: Observable<StoreState<ITokenSetup | null>> = this.store.select(selectTokenDetail);
@@ -126,19 +129,19 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
       .subscribe(([tokenDetail, connectedAccountIsOwner]) => {
         this.optionBtns = this.optionBtns.map((btn: IOptionButton) => {
           switch (btn.key) {
-            case 'Mint':
+            case IOptionActionBtn.Mint:
               btn.disabled = tokenDetail?.canMint === false && !connectedAccountIsOwner;
               break;
-            case 'Burn':
+            case IOptionActionBtn.Burn:
               btn.disabled = tokenDetail?.canBurn === false && !connectedAccountIsOwner;
               break;
-            case 'Pause':
+            case IOptionActionBtn.Pause:
               btn.disabled = !tokenDetail?.canPause && !connectedAccountIsOwner;
               break;
-            case 'ChangeOwner':
+            case IOptionActionBtn.ChangeOwner:
               btn.disabled = !connectedAccountIsOwner;
               break;
-            case 'RenounceOwnership':
+            case IOptionActionBtn.RenounceOwnership:
               btn.disabled = !connectedAccountIsOwner;
               break;
             default:
@@ -148,8 +151,31 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
         });
       });
   }
+
+  onActionBtnClick(action: IOptionActionBtn): void {
+    // open modal TokenActionModalComponent
+    const dialogRef: MatDialogRef<TokenActionModalComponent> = this.dialog.open(TokenActionModalComponent, {
+      panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
+      data: { action }
+    });
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('result', result);
+    })
+
+  }
 }
 
 interface IOptionButton extends KeyAndLabel {
+  key: IOptionActionBtn,
   disabled: boolean;
+}
+
+export enum IOptionActionBtn {
+  Mint = 'Mint',
+  Burn = 'Burn',
+  Transfer = 'Transfer',
+  ChangeOwner = 'ChangeOwner',
+  Pause = 'Pause',
+  RenounceOwnership = 'RenounceOwnership'
 }

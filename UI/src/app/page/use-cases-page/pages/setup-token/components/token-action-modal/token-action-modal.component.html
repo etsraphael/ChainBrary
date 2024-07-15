@@ -1,0 +1,21 @@
+<div class="container p-4">
+  <div class="card-header">
+    <h2 class="card-title mb-2">Mint Tokens</h2>
+    <p class="text-muted">Disclaimer: Explain what is mint and what happens if they mint</p>
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="form-group">
+        <mat-form-field class="w-100 text-dark" appearance="outline">
+          <mat-label i18n>Amount</mat-label>
+          <input formControlName="amount" type="number" class="ps-1" matInput />
+        </mat-form-field>
+      </div>
+    </form>
+  </div>
+  <!-- TODO: Fix position -->
+  <div class="card-footer d-flex justify-content-end">
+    <button class="btn btn-outline-secondary" type="button">Back</button>
+    <button class="btn btn-primary ms-auto" type="submit">Mint</button>
+  </div>
+</div>
