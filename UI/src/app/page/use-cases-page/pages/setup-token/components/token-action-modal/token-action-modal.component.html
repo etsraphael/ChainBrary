@@ -1,21 +1,46 @@
 <div class="container p-4">
   <div class="card-header">
-    <h2 class="card-title mb-2">Mint Tokens</h2>
-    <p class="text-muted">Disclaimer: Explain what is mint and what happens if they mint</p>
+    <h2 class="card-title mb-2">{{ pageSelected.label }}</h2>
+    <p class="text-muted">{{ pageSelected.desc }}</p>
   </div>
-  <div class="card-body">
-    <form>
-      <div class="form-group">
-        <mat-form-field class="w-100 text-dark" appearance="outline">
-          <mat-label i18n>Amount</mat-label>
-          <input formControlName="amount" type="number" class="ps-1" matInput />
-        </mat-form-field>
-      </div>
-    </form>
+  <div class="card-body py-2">
+    <ng-container [ngSwitch]="pageSelected.key">
+      <ng-container *ngSwitchCase="optionActionBtnTypes.Mint">
+        <form [formGroup]="amountForm">
+          <div class="form-group">
+            <mat-form-field class="w-100 text-dark" appearance="outline">
+              <mat-label i18n>Amount</mat-label>
+              <input formControlName="amount" type="number" class="ps-1" matInput />
+              <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('required')"> Value is required </mat-error>
+              <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('min')">
+                Value has to be greater than 0
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </ng-container>
+      <ng-container *ngSwitchCase="optionActionBtnTypes.Burn">
+        <form [formGroup]="amountForm">
+          <div class="form-group">
+            <mat-form-field class="w-100 text-dark" appearance="outline">
+              <mat-label i18n>Amount</mat-label>
+              <input formControlName="amount" type="number" class="ps-1" matInput />
+              <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('required')"> Value is required </mat-error>
+              <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('min')">
+                Value has to be greater than 0
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </form>
+      </ng-container>
+    </ng-container>
   </div>
-  <!-- TODO: Fix position -->
   <div class="card-footer d-flex justify-content-end">
-    <button class="btn btn-outline-secondary" type="button">Back</button>
-    <button class="btn btn-primary ms-auto" type="submit">Mint</button>
+    <div class="col-3 px-2">
+      <button (click)="dialogRef.close()" class="w-100 btn btn-outline-secondary" type="button">Back</button>
+    </div>
+    <div class="col-3 px-2">
+      <button class="w-100 btn btn-primary" type="submit" (click)="submitAction()">Mint</button>
+    </div>
   </div>
 </div>

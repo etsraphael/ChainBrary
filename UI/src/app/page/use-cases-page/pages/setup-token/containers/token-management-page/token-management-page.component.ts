@@ -13,7 +13,10 @@ import {
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { TokenActionModalComponent } from '../../components/token-action-modal/token-action-modal.component';
+import {
+  TokenActionModalComponent,
+  TokenActionModalResponse
+} from '../../components/token-action-modal/token-action-modal.component';
 
 @Component({
   selector: 'app-token-management-page',
@@ -153,21 +156,22 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   }
 
   onActionBtnClick(action: IOptionActionBtn): void {
-    // open modal TokenActionModalComponent
-    const dialogRef: MatDialogRef<TokenActionModalComponent> = this.dialog.open(TokenActionModalComponent, {
-      panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
-      data: { action }
-    });
+    const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
+      TokenActionModalComponent,
+      {
+        panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
+        data: { action }
+      }
+    );
 
-    dialogRef.afterClosed().subscribe((result) => {
+    dialogRef.afterClosed().subscribe((result: TokenActionModalResponse | undefined) => {
       console.log('result', result);
-    })
-
+    });
   }
 }
 
 interface IOptionButton extends KeyAndLabel {
-  key: IOptionActionBtn,
+  key: IOptionActionBtn;
   disabled: boolean;
 }
 

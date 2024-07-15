@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TokenActionModalComponent } from './token-action-modal.component';
 
 describe('TokenActionModalComponent', () => {
@@ -9,9 +8,8 @@ describe('TokenActionModalComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TokenActionModalComponent]
-    })
-    .compileComponents();
-    
+    }).compileComponents();
+
     fixture = TestBed.createComponent(TokenActionModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
