@@ -36,4 +36,8 @@ export const tokenCreationCheckingFailure = createAction(
   props<{ message: string; txn: string }>()
 );
 
+export const mintToken = createAction('[TokenManagement] Mint Token', props<{ amount: number }>());
+export const mintTokenSuccess = createAction('[TokenManagement] Mint Token Success', props<{ txn: string }>());
+export const mintTokenFailure = createAction('[TokenManagement] Mint Token Failure', props<{ message: string }>());
+
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');

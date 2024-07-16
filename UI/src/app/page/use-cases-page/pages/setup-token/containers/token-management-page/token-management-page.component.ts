@@ -6,7 +6,7 @@ import { combineLatest, filter, map, Observable, ReplaySubject, take, takeUntil 
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { ActionStoreProcessing, ITokenSetup, KeyAndLabel, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { loadTokenByTxnHash } from './../../../../../../store/tokens-management-store/state/actions';
+import { loadTokenByTxnHash, mintToken } from './../../../../../../store/tokens-management-store/state/actions';
 import {
   selectConnectedAccountIsOwner,
   selectTokenCreationIsProcessing,
@@ -164,9 +164,20 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
       }
     );
 
-    dialogRef.afterClosed().subscribe((result: TokenActionModalResponse | undefined) => {
-      console.log('result', result);
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter((result: TokenActionModalResponse | undefined) => result !== undefined)
+      )
+      .subscribe((result: TokenActionModalResponse | undefined) => {
+        switch (action) {
+          case IOptionActionBtn.Mint:
+            return this.store.dispatch(mintToken({ amount: (result as TokenActionModalResponse).amount }));
+          default:
+            break;
+        }
+      });
   }
 }
 

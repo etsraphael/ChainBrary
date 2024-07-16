@@ -12,10 +12,10 @@ import { selectAuthStatus, selectPublicAddress } from '../../auth-store/state/se
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { environment } from './../../../../environments/environment';
 import { AuthStatusCode } from './../../../shared/enum';
-import { ITokenSetup, StoreState } from './../../../shared/interfaces';
+import { IReceiptTransaction, ITokenSetup, StoreState } from './../../../shared/interfaces';
 import { TokenSetupService } from './../../../shared/services/token-setup/token-setup.service';
 import * as tokenActions from './actions';
-import { selectTokenCreationRefreshCheck } from './selectors';
+import { selectTokenCreationRefreshCheck, selectTokenDetailData } from './selectors';
 
 @Injectable()
 export class TokenManagementEffects {
@@ -118,6 +118,31 @@ export class TokenManagementEffects {
           catchError((error: { message: string }) =>
             of(tokenActions.loadTokenByTxnHashFailure({ message: error.message }))
           )
+        );
+      })
+    );
+  });
+
+  mintToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.mintToken),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokenDetailData)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [ReturnType<typeof tokenActions.mintToken>, WalletProvider | null, string | null, ITokenSetup | null]
+        ) => payload as [ReturnType<typeof tokenActions.mintToken>, WalletProvider, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.mintToken>, WalletProvider, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.mintToken(action[2], action[0].amount, action[3].contractAddress, action[3].chainId)
+        ).pipe(
+          map((response: IReceiptTransaction) => tokenActions.mintTokenSuccess({ txn: response.blockHash })),
+          catchError((error: { message: string }) => of(tokenActions.mintTokenFailure({ message: error.message })))
         );
       })
     );

@@ -20,6 +20,11 @@ export const selectTokenDetail: MemoizedSelector<object, StoreState<ITokenSetup 
   (s: ITokenManagementState) => s.tokenDetail
 );
 
+export const selectTokenDetailData: MemoizedSelector<object, ITokenSetup | null> = createSelector(
+  selectTokenDetail,
+  (s: StoreState<ITokenSetup | null>) => s.data
+);
+
 export const selectConnectedAccountIsOwner: MemoizedSelector<object, boolean> = createSelector(
   selectTokenManagementState,
   selectPublicAddress,
