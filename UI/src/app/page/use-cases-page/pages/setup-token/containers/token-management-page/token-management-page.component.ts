@@ -1,8 +1,14 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { combineLatest, filter, map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
+import {
+  TokenActionModalComponent,
+  TokenActionModalResponse
+} from '../../components/token-action-modal/token-action-modal.component';
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import {
   ActionStoreProcessing,
@@ -18,12 +24,6 @@ import {
   selectTokenCreationIsProcessing,
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import {
-  TokenActionModalComponent,
-  TokenActionModalResponse
-} from '../../components/token-action-modal/token-action-modal.component';
-import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-token-management-page',
@@ -119,6 +119,48 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
+  onActionBtnClick(action: IOptionActionBtn): void {
+    const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
+      TokenActionModalComponent,
+      {
+        panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
+        data: { action }
+      }
+    );
+
+    dialogRef
+      .afterClosed()
+      .pipe(
+        take(1),
+        filter((result: TokenActionModalResponse | undefined) => result !== undefined)
+      )
+      .subscribe((result: TokenActionModalResponse | undefined) => {
+        switch (action) {
+          case IOptionActionBtn.Mint:
+            return this.store.dispatch(mintToken({ amount: (result as TokenActionModalResponse).amount }));
+          default:
+            break;
+        }
+      });
+  }
+
+  generateScanLink(hash: string): string {
+    switch (this.chainId) {
+      case NetworkChainId.ETHEREUM:
+        return `https://etherscan.io/tx/${hash}`;
+      case NetworkChainId.SEPOLIA:
+        return `https://sepolia.etherscan.io/tx/${hash}`;
+      case NetworkChainId.POLYGON:
+        return `https://polygonscan.com/tx/${hash}`;
+      case NetworkChainId.BNB:
+        return `https://bscscan.com/tx/${hash}`;
+      case NetworkChainId.AVALANCHE:
+        return `https://snowtrace.io/tx/${hash}`;
+      default:
+        return '';
+    }
+  }
+
   private initNetworkDetailSelected(): void {
     this.networkDetailSelected = this.web3LoginService.getNetworkDetailByChainId(this.chainId);
   }
@@ -162,31 +204,6 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
           }
           return btn;
         });
-      });
-  }
-
-  onActionBtnClick(action: IOptionActionBtn): void {
-    const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
-      TokenActionModalComponent,
-      {
-        panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
-        data: { action }
-      }
-    );
-
-    dialogRef
-      .afterClosed()
-      .pipe(
-        take(1),
-        filter((result: TokenActionModalResponse | undefined) => result !== undefined)
-      )
-      .subscribe((result: TokenActionModalResponse | undefined) => {
-        switch (action) {
-          case IOptionActionBtn.Mint:
-            return this.store.dispatch(mintToken({ amount: (result as TokenActionModalResponse).amount }));
-          default:
-            break;
-        }
       });
   }
 }
