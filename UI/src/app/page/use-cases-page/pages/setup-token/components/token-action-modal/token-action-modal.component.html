@@ -7,15 +7,31 @@
     <ng-container [ngSwitch]="pageSelected.key">
       <ng-container *ngSwitchCase="optionActionBtnTypes.Mint">
         <form [formGroup]="amountForm">
-          <div class="form-group">
-            <mat-form-field class="w-100 text-dark" appearance="outline">
-              <mat-label i18n>Amount</mat-label>
-              <input formControlName="amount" type="number" class="ps-1" matInput />
-              <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('required')"> Value is required </mat-error>
-              <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('min')">
-                Value has to be greater than 0
-              </mat-error>
-            </mat-form-field>
+          <div class="form-group row">
+            <div class="col-12">
+              <mat-form-field class="w-100 text-dark" appearance="outline">
+                <mat-label i18n>Recipient</mat-label>
+                <input formControlName="recipient" type="text" class="ps-1" matInput />
+                <mat-error i18n *ngIf="amountForm.get('recipient')?.hasError('required')">
+                  Recipient is required
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div class="col-12">
+              <mat-checkbox formControlName="addMyself" class="text-dark" color="primary">
+                <span i18n>Add myself as recipient</span>
+              </mat-checkbox>
+            </div>
+            <div class="col-12">
+              <mat-form-field class="w-100 text-dark" appearance="outline">
+                <mat-label i18n>Amount</mat-label>
+                <input formControlName="amount" type="number" class="ps-1" matInput />
+                <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('required')"> Value is required </mat-error>
+                <mat-error i18n *ngIf="amountForm.get('amount')?.hasError('min')">
+                  Value has to be greater than 0
+                </mat-error>
+              </mat-form-field>
+            </div>
           </div>
         </form>
       </ng-container>

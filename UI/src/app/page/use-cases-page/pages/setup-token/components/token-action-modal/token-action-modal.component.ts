@@ -1,10 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { Component, Inject } from '@angular/core';
+import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MaterialModule } from './../../../../../../module/material.module';
 import { KeyAndLabel } from './../../../../../../shared/interfaces';
+import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { IOptionActionBtn } from './../../containers/token-management-page/token-management-page.component';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-token-action-modal',
@@ -13,7 +15,7 @@ import { IOptionActionBtn } from './../../containers/token-management-page/token
   templateUrl: './token-action-modal.component.html',
   styleUrl: './token-action-modal.component.scss'
 })
-export class TokenActionModalComponent {
+export class TokenActionModalComponent implements OnInit, OnDestroy {
   optionActionBtnTypes: typeof IOptionActionBtn = IOptionActionBtn;
   optionActionBtnMenu: IOptionActionBtnPage[] = [
     {
@@ -51,13 +53,26 @@ export class TokenActionModalComponent {
     (option: IOptionActionBtnPage) => option.key === this.data.action
   ) as IOptionActionBtnPage;
   amountForm = new FormGroup<IAmountForm>({
+    recipient: new FormControl<string | null>(null, [Validators.required, this.formatService.ethAddressValidator()]),
+    addMyself: new FormControl<boolean>(false),
     amount: new FormControl<number | null>(null, [Validators.required, Validators.min(1)])
   });
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     @Inject(MAT_DIALOG_DATA) public data: { action: IOptionActionBtn },
-    public dialogRef: MatDialogRef<TokenActionModalComponent>
+    public dialogRef: MatDialogRef<TokenActionModalComponent>,
+    private formatService: FormatService
   ) {}
+
+  ngOnInit(): void {
+    this.listenAddMyself();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
 
   submitAction(): void {
     switch (this.data.action) {
@@ -74,6 +89,17 @@ export class TokenActionModalComponent {
         break;
     }
   }
+
+  private listenAddMyself(): void {
+    this.amountForm.get('addMyself')?.valueChanges.subscribe((value: boolean | null) => {
+      if (value) {
+        this.amountForm.get('recipient')?.setValue(null);
+        this.amountForm.get('recipient')?.disable();
+      } else {
+        this.amountForm.get('recipient')?.enable();
+      }
+    });
+  }
 }
 
 interface IOptionActionBtnPage extends KeyAndLabel {
@@ -82,6 +108,8 @@ interface IOptionActionBtnPage extends KeyAndLabel {
 }
 
 interface IAmountForm {
+  addMyself: FormControl<boolean | null>;
+  recipient: FormControl<string | null>;
   amount: FormControl<number | null>;
 }
 

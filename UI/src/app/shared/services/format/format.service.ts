@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
@@ -76,5 +77,16 @@ export class FormatService {
       default:
         return 'not-found.svg';
     }
+  }
+
+  ethAddressValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value = control.value as string;
+
+      if (!value) return null;
+
+      const isHex = /^0x[a-fA-F0-9]{40}$/.test(value);
+      return isHex ? null : { invalidAddress: true };
+    };
   }
 }
