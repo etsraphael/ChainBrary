@@ -141,7 +141,9 @@ export class TokenManagementEffects {
         return from(
           this.tokenSetupService.mintToken(action[2], action[0].amount, action[3].contractAddress, action[3].chainId)
         ).pipe(
-          map((response: IReceiptTransaction) => tokenActions.mintTokenSuccess({ txn: response.blockHash })),
+          map((response: IReceiptTransaction) =>
+            tokenActions.mintTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })
+          ),
           catchError((error: { message: string }) => of(tokenActions.mintTokenFailure({ message: error.message })))
         );
       })

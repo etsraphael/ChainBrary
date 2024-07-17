@@ -4,7 +4,13 @@ import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/we
 import { Store } from '@ngrx/store';
 import { combineLatest, filter, map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
-import { ActionStoreProcessing, ITokenSetup, KeyAndLabel, StoreState } from './../../../../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  ITokenSetup,
+  ITransactionCard,
+  KeyAndLabel,
+  StoreState
+} from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { loadTokenByTxnHash, mintToken } from './../../../../../../store/tokens-management-store/state/actions';
 import {
@@ -17,6 +23,7 @@ import {
   TokenActionModalComponent,
   TokenActionModalResponse
 } from '../../components/token-action-modal/token-action-modal.component';
+import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-token-management-page',
@@ -77,6 +84,9 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     selectTokenCreationIsProcessing
   );
   readonly connectedAccountIsOwner$: Observable<boolean> = this.store.select(selectConnectedAccountIsOwner);
+  readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
+    selectRecentTransactionsByComponent('TokenManagementPageComponent')
+  );
 
   get tokenIsCreating$(): Observable<boolean> {
     return this.tokenCreationIsProcessing$.pipe(map((s) => s.isLoading));

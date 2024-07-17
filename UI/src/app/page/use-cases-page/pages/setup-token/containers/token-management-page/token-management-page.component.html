@@ -7,6 +7,9 @@
   <div class="mb-2">
     <app-auth-banner></app-auth-banner>
   </div>
+  @for (item of transactionCards$ | async; track item) {
+    <app-transaction-card [cardContent]="item"></app-transaction-card>
+  }
   <ng-container
     *ngIf="
       (tokenIsCreating$ | async) === false && (tokenIsLoading$ | async) === false && (tokenDetail$ | async) !== null
