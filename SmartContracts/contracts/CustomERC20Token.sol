@@ -7,6 +7,64 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20FlashMint.sol";
 
+contract CustomERC20TokenFactory {
+    address public communityVault;
+
+    event TokenCreated(address tokenAddress, address owner, string name, string symbol, uint256 initialSupply);
+
+    constructor(address _communityVault) {
+        communityVault = _communityVault;
+    }
+
+    // Modifier to ensure the correct fee is sent
+    modifier feePaid(uint256 fee) {
+        require(msg.value >= fee, "Insufficient fee sent");
+        _;
+    }
+
+    // Function to create a new CustomERC20Token with fee injection to the CommunityVault
+    function createToken(
+        address initialOwner,
+        string memory name,
+        string memory symbol,
+        uint256 initialSupply,
+        bool mintable,
+        bool burnable,
+        bool pausable,
+        address[] memory preAssignedAddresses,
+        uint256[] memory preAssignedAmounts,
+        uint256 fee // The fee required to create the token
+    ) public payable feePaid(fee) {
+        // Send fee to the CommunityVault
+        (bool sent, ) = communityVault.call{value: fee}("");
+        require(sent, "Failed to send fee to CommunityVault");
+
+        // Create the new token
+        CustomERC20Token newToken = new CustomERC20Token(
+            initialOwner,
+            name,
+            symbol,
+            initialSupply,
+            mintable,
+            burnable,
+            pausable,
+            preAssignedAddresses,
+            preAssignedAmounts
+        );
+
+        // Transfer ownership to the specified initial owner
+        newToken.transferOwnership(initialOwner);
+
+        emit TokenCreated(address(newToken), initialOwner, name, symbol, initialSupply);
+    }
+
+    // Function to update the CommunityVault address
+    function updateCommunityVault(address _newCommunityVault) public {
+        require(_newCommunityVault != address(0), "New address is the zero address");
+        communityVault = _newCommunityVault;
+    }
+}
+
 contract CustomERC20Token is ERC20, ERC20Burnable, ERC20Pausable, Ownable, ERC20FlashMint {
     bool private _isMintable;
     bool private _isBurnable;
