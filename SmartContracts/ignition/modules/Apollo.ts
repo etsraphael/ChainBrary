@@ -88,6 +88,6 @@ function deployCommunityVault(m: any) {
 }
 
 function deployCustomERC20Token(m: any) {
-  const customERC20Token = m.contract('CustomERC20Token', ['Custom Token', 'CTK', 18]);
+  const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', 'Custom Token', 'CTK', 18, true, true,true, [], []]);
   return customERC20Token;
 }
