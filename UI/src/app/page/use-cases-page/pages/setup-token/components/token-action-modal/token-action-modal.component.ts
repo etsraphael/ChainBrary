@@ -60,7 +60,7 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { action: IOptionActionBtn },
+    @Inject(MAT_DIALOG_DATA) public data: { action: IOptionActionBtn; addressConnected: string },
     public dialogRef: MatDialogRef<TokenActionModalComponent>,
     private formatService: FormatService
   ) {}
@@ -93,9 +93,10 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
   private listenAddMyself(): void {
     this.amountForm.get('addMyself')?.valueChanges.subscribe((value: boolean | null) => {
       if (value) {
-        this.amountForm.get('recipient')?.setValue(null);
+        this.amountForm.get('recipient')?.setValue(this.data.addressConnected);
         this.amountForm.get('recipient')?.disable();
       } else {
+        this.amountForm.get('recipient')?.setValue(null);
         this.amountForm.get('recipient')?.enable();
       }
     });

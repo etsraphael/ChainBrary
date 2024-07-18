@@ -18,6 +18,7 @@ import {
   StoreState
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import { loadTokenByTxnHash, mintToken } from './../../../../../../store/tokens-management-store/state/actions';
 import {
   selectConnectedAccountIsOwner,
@@ -87,6 +88,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('TokenManagementPageComponent')
   );
+  readonly addressConnected$: Observable<string | null> = this.store.select(selectPublicAddress);
 
   get tokenIsCreating$(): Observable<boolean> {
     return this.tokenCreationIsProcessing$.pipe(map((s) => s.isLoading));
@@ -120,27 +122,35 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   }
 
   onActionBtnClick(action: IOptionActionBtn): void {
-    const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
-      TokenActionModalComponent,
-      {
-        panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
-        data: { action }
-      }
-    );
-
-    dialogRef
-      .afterClosed()
+    this.addressConnected$
       .pipe(
         take(1),
-        filter((result: TokenActionModalResponse | undefined) => result !== undefined)
+        filter((addressConnected: string | null) => addressConnected !== null),
+        map((addressConnected: string | null) => addressConnected as string)
       )
-      .subscribe((result: TokenActionModalResponse | undefined) => {
-        switch (action) {
-          case IOptionActionBtn.Mint:
-            return this.store.dispatch(mintToken({ amount: (result as TokenActionModalResponse).amount }));
-          default:
-            break;
-        }
+      .subscribe((addressConnected: string) => {
+        const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
+          TokenActionModalComponent,
+          {
+            panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
+            data: { action, addressConnected }
+          }
+        );
+
+        dialogRef
+          .afterClosed()
+          .pipe(
+            take(1),
+            filter((result: TokenActionModalResponse | undefined) => result !== undefined)
+          )
+          .subscribe((result: TokenActionModalResponse | undefined) => {
+            switch (action) {
+              case IOptionActionBtn.Mint:
+                return this.store.dispatch(mintToken({ amount: (result as TokenActionModalResponse).amount }));
+              default:
+                break;
+            }
+          });
       });
   }
 
