@@ -98,13 +98,11 @@ export const environment = {
       ]
     },
     token_setup: {
-      networkSupported: [
-        NetworkChainId.SEPOLIA,
-        NetworkChainId.BNB,
-        NetworkChainId.POLYGON,
-        NetworkChainId.AVALANCHE,
-        NetworkChainId.ETHEREUM,
-        NetworkChainId.LOCALHOST
+      contracts: [
+        {
+          chainId: NetworkChainId.LOCALHOST,
+          address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e'
+        }
       ],
       maxAttempt: 5,
       attemptTimeout: 2 // minutes

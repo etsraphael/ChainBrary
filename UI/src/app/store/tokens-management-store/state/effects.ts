@@ -7,7 +7,6 @@ import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { from, of } from 'rxjs';
 import { catchError, delay, filter, map, switchMap, take, tap } from 'rxjs/operators';
-import { AbiFragment, Contract } from 'web3';
 import { selectAuthStatus, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { environment } from './../../../../environments/environment';
@@ -67,9 +66,11 @@ export class TokenManagementEffects {
           payload as [ReturnType<typeof tokenActions.deployToken>, WalletProvider, string]
       ),
       switchMap((action: [ReturnType<typeof tokenActions.deployToken>, WalletProvider, string]) => {
-        return from(this.tokenSetupService.deployCustomERC20TokenContract(action[2], action[0].payload)).pipe(
-          map((response: { contract: Contract<AbiFragment[]>; transactionHash: string }) =>
-            tokenActions.tokenCreationChecking({ txn: response.transactionHash, chainId: action[0].payload.network })
+        return from(
+          this.tokenSetupService.deployCustomERC20TokenContract(action[2], action[0].payload, action[0].payload.network)
+        ).pipe(
+          map((response: string) =>
+            tokenActions.tokenCreationChecking({ txn: response, chainId: action[0].payload.network })
           ),
           tap((action: ReturnType<typeof tokenActions.tokenCreationChecking>) => {
             this.router.navigate(['/use-cases/setup-token/manage-token/', action.chainId, action.txn]);

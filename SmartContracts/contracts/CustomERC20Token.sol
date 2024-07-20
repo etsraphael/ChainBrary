@@ -7,12 +7,12 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Pausable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20FlashMint.sol";
 
-contract CustomERC20TokenFactory {
+contract CustomERC20TokenFactory is Ownable {
     address public communityVault;
 
     event TokenCreated(address tokenAddress, address owner, string name, string symbol, uint256 initialSupply);
 
-    constructor(address _communityVault) {
+    constructor(address _communityVault) Ownable(_msgSender()) {
         communityVault = _communityVault;
     }
 
@@ -52,16 +52,7 @@ contract CustomERC20TokenFactory {
             preAssignedAmounts
         );
 
-        // Transfer ownership to the specified initial owner
-        newToken.transferOwnership(initialOwner);
-
         emit TokenCreated(address(newToken), initialOwner, name, symbol, initialSupply);
-    }
-
-    // Function to update the CommunityVault address
-    function updateCommunityVault(address _newCommunityVault) public {
-        require(_newCommunityVault != address(0), "New address is the zero address");
-        communityVault = _newCommunityVault;
     }
 }
 

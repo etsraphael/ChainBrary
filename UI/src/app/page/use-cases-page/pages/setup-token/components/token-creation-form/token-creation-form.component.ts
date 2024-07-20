@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, isDevMode, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { CommonButtonText } from './../../../../../../shared/enum';
@@ -30,9 +30,12 @@ export class TokenCreationFormComponent implements OnInit {
   networkAvailable: INetworkDetail[] = this.web3LoginService
     .getNetworkDetailList()
     .filter((network: INetworkDetail) =>
-      [NetworkChainId.ETHEREUM, NetworkChainId.BNB, NetworkChainId.AVALANCHE, NetworkChainId.POLYGON].includes(
-        network.chainId
-      )
+      [
+        isDevMode() ? NetworkChainId.LOCALHOST : NetworkChainId.ETHEREUM,
+        NetworkChainId.BNB,
+        NetworkChainId.AVALANCHE,
+        NetworkChainId.POLYGON
+      ].includes(network.chainId)
     );
 
   optionsList: ITokenOptions[] = [

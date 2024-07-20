@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId } from '@chainbrary/web3-login';
-import Web3, { AbiFragment, AbiItem, Contract, FMT_NUMBER, NumberTypes, TransactionReceipt } from 'web3';
-import { CustomERC20TokenContract, CustomERC20TokenObjectResponse } from '../../contracts/customERC20TokenContract';
+import Web3, { AbiFragment, AbiItem, Contract, Log, TransactionReceipt } from 'web3';
+import {
+  CustomERC20TokenContract,
+  CustomERC20TokenFactoryContract,
+  CustomERC20TokenFactoryObjectResponse
+} from '../../contracts';
 import { IReceiptTransaction, ITokenCreationPayload, ITokenSetup } from '../../interfaces';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
@@ -11,7 +15,7 @@ import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 export class TokenSetupService {
   constructor(private web3ProviderService: Web3ProviderService) {}
 
-  private isCustomERC20TokenResponseValid(res: unknown): res is CustomERC20TokenObjectResponse {
+  private isCustomERC20TokenResponseValid(res: unknown): res is CustomERC20TokenFactoryObjectResponse {
     if (typeof res !== 'object' || res === null) {
       return false;
     }
@@ -33,34 +37,53 @@ export class TokenSetupService {
 
   async deployCustomERC20TokenContract(
     from: string,
-    token: ITokenCreationPayload
-  ): Promise<{ contract: Contract<AbiFragment[]>; transactionHash: string }> {
+    token: ITokenCreationPayload,
+    chainId: NetworkChainId
+  ): Promise<string> {
     const rpcUrl = this.web3ProviderService.getRpcUrl(token.network, false);
     const web3: Web3 = new Web3(rpcUrl);
 
-    const tokenFactoryContract = new CustomERC20TokenContract();
-    const contractData = {
-      data: tokenFactoryContract.getByteCode(),
-      arguments: [from, token.name, token.symbol, token.maxSupply, token.canMint, token.canBurn, token.canPause, [], []]
-    };
+    const tokenFactoryContract = new CustomERC20TokenFactoryContract(chainId);
 
-    const contract = new web3.eth.Contract(tokenFactoryContract.getAbi() as AbiItem[]);
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      tokenFactoryContract.getAbi() as AbiItem[],
+      tokenFactoryContract.getAddress()
+    );
+
+    const amountInWei: string = web3.utils.toWei(String(1), 'ether');
+
+    console.log('contract', contract);
 
     try {
-      const deployment = contract.deploy(contractData);
-      const gasEstimate: NumberTypes[FMT_NUMBER.BIGINT] = await web3.eth.estimateGas({
+      const gasEstimate: bigint = await contract.methods['createToken'](
         from,
-        data: deployment.encodeABI()
-      });
+        token.name,
+        token.symbol,
+        token.maxSupply,
+        token.canMint,
+        token.canBurn,
+        token.canPause,
+        [],
+        [],
+        amountInWei
+      ).estimateGas({ from, value: amountInWei });
 
       return new Promise((resolve, reject) => {
-        deployment
-          .send({
-            from,
-            gas: String(gasEstimate)
-          })
+        contract.methods['createToken'](
+          from,
+          token.name,
+          token.symbol,
+          token.maxSupply,
+          token.canMint,
+          token.canBurn,
+          token.canPause,
+          [],
+          [],
+          amountInWei
+        )
+          .send({ from, gas: String(gasEstimate), value: amountInWei })
           .on('transactionHash', (hash) => {
-            resolve({ contract, transactionHash: String(hash) });
+            resolve(String(hash));
           })
           .on('error', (error) => {
             reject((error as Error)?.message || error);
@@ -75,30 +98,44 @@ export class TokenSetupService {
     const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
     const web3: Web3 = new Web3(rpcUrl);
     const customERC20TokenContract = new CustomERC20TokenContract();
+    const tokenFactoryContract = new CustomERC20TokenFactoryContract(chainId);
 
     return web3.eth.getTransactionReceipt(txnHash).then(async (receipt: TransactionReceipt) => {
-      const contract = new web3.eth.Contract(customERC20TokenContract.getAbi() as AbiItem[], receipt.contractAddress);
-      return contract.methods['getTokenDetails']()
-        .call()
-        .then((res: void | [] | CustomERC20TokenObjectResponse) => {
-          if (!this.isCustomERC20TokenResponseValid(res)) {
-            return Promise.reject('Invalid token response');
-          }
+      const eventLogs = receipt.logs.filter(
+        (log: Log) => log?.address?.toLowerCase() === tokenFactoryContract.getAddress().toLowerCase()
+      );
+      if (eventLogs.length === 0) {
+        return Promise.reject('No event logs found for the specified transaction hash');
+      }
 
-          return {
-            name: res[0],
-            symbol: res[1],
-            totalSupply: Number(web3.utils.fromWei(String(res[2]), 'ether')),
-            decimals: Number(web3.utils.fromWei(String(res[3]), 'ether')),
-            canMint: res[4],
-            canBurn: res[5],
-            canPause: res[6],
-            owner: res[7],
-            contractAddress: receipt.contractAddress,
-            chainId: chainId
-          } as ITokenSetup;
-        })
-        .catch((error: string) => Promise.reject(error));
+      if (eventLogs[0].data) {
+        const tokenAddress: string = web3.eth.abi.decodeParameter('address', String(eventLogs[0].data)) as string;
+        const contract = new web3.eth.Contract(customERC20TokenContract.getAbi() as AbiItem[], tokenAddress);
+
+        return contract.methods['getTokenDetails']()
+          .call()
+          .then((res: void | [] | CustomERC20TokenFactoryObjectResponse) => {
+            if (!this.isCustomERC20TokenResponseValid(res)) {
+              return Promise.reject('Invalid token response');
+            }
+
+            return {
+              name: res[0],
+              symbol: res[1],
+              totalSupply: Number(web3.utils.fromWei(String(res[2]), 'ether')),
+              decimals: Number(web3.utils.fromWei(String(res[3]), 'ether')),
+              canMint: res[4],
+              canBurn: res[5],
+              canPause: res[6],
+              owner: res[7],
+              contractAddress: tokenAddress,
+              chainId: chainId
+            } as ITokenSetup;
+          })
+          .catch((error: string) => Promise.reject(error));
+      } else {
+        return Promise.reject('No data found in the event logs');
+      }
     });
   }
 
