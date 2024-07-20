@@ -2,8 +2,14 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { ITokenCreationPayload, ITokenSetup } from './../../../shared/interfaces';
 
-export const createToken = createAction('[TokenManagement] Create Token', props<{ payload: ITokenCreationPayload }>());
-export const deployToken = createAction('[TokenManagement] Deploy Token', props<{ payload: ITokenCreationPayload }>());
+export const createToken = createAction(
+  '[TokenManagement] Create Token',
+  props<{ payload: ITokenCreationPayload; amountInWei: string }>()
+);
+export const deployToken = createAction(
+  '[TokenManagement] Deploy Token',
+  props<{ payload: ITokenCreationPayload; amountInWei: string }>()
+);
 export const createTokenSuccess = createAction('[TokenManagement] Create Token Success');
 export const createTokenFailure = createAction(
   '[TokenManagement] Create Token Failure',

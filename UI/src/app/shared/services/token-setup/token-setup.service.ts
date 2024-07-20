@@ -38,21 +38,16 @@ export class TokenSetupService {
   async deployCustomERC20TokenContract(
     from: string,
     token: ITokenCreationPayload,
-    chainId: NetworkChainId
+    chainId: NetworkChainId,
+    amountInWei: string
   ): Promise<string> {
     const rpcUrl = this.web3ProviderService.getRpcUrl(token.network, false);
     const web3: Web3 = new Web3(rpcUrl);
-
     const tokenFactoryContract = new CustomERC20TokenFactoryContract(chainId);
-
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       tokenFactoryContract.getAbi() as AbiItem[],
       tokenFactoryContract.getAddress()
     );
-
-    const amountInWei: string = web3.utils.toWei(String(1), 'ether');
-
-    console.log('contract', contract);
 
     try {
       const gasEstimate: bigint = await contract.methods['createToken'](

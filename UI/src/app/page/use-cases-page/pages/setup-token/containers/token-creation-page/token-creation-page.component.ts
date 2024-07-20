@@ -32,8 +32,10 @@ export class TokenCreationPageComponent {
     this.currentPage = TokenCreationPageTypes.TokenReview;
   }
 
-  createToken(): void {
-    this.store.dispatch(createToken({ payload: this.tokenCreationPayload as ITokenCreationPayload }));
+  createToken(amountInWei: string): void {
+    return this.store.dispatch(
+      createToken({ payload: this.tokenCreationPayload as ITokenCreationPayload, amountInWei })
+    );
   }
 
   goBack(): void {

@@ -117,6 +117,7 @@ export class PriceFeedService {
     switch (chainId) {
       case NetworkChainId.ETHEREUM:
       case NetworkChainId.SEPOLIA:
+      case NetworkChainId.LOCALHOST:
         pair = TokenPair.EthToUsd;
         break;
       case NetworkChainId.BNB:
@@ -132,6 +133,6 @@ export class PriceFeedService {
         return Promise.reject('Pair not found');
     }
 
-    return this.getCurrentPriceFromNode(pair, chainId);
+    return this.getCurrentPriceFromNode(pair, chainId === NetworkChainId.LOCALHOST ? NetworkChainId.ETHEREUM : chainId);
   }
 }

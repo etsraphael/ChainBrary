@@ -37,7 +37,7 @@ export class TokenManagementEffects {
           switchMap(() =>
             this.web3LoginService.onWalletConnectedEvent$.pipe(
               take(1),
-              map(() => tokenActions.deployToken({ payload: action[0].payload }))
+              map(() => tokenActions.deployToken({ payload: action[0].payload, amountInWei: action[0].amountInWei }))
             )
           )
         );
@@ -51,7 +51,7 @@ export class TokenManagementEffects {
       concatLatestFrom(() => [this.store.select(selectAuthStatus)]),
       filter(([, authStatus]) => authStatus === AuthStatusCode.Connected),
       map((action: [ReturnType<typeof tokenActions.createToken>, AuthStatusCode]) =>
-        tokenActions.deployToken({ payload: action[0].payload })
+        tokenActions.deployToken({ payload: action[0].payload, amountInWei: action[0].amountInWei })
       )
     );
   });
@@ -67,7 +67,12 @@ export class TokenManagementEffects {
       ),
       switchMap((action: [ReturnType<typeof tokenActions.deployToken>, WalletProvider, string]) => {
         return from(
-          this.tokenSetupService.deployCustomERC20TokenContract(action[2], action[0].payload, action[0].payload.network)
+          this.tokenSetupService.deployCustomERC20TokenContract(
+            action[2],
+            action[0].payload,
+            action[0].payload.network,
+            action[0].amountInWei
+          )
         ).pipe(
           map((response: string) =>
             tokenActions.tokenCreationChecking({ txn: response, chainId: action[0].payload.network })

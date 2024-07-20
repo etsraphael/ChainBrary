@@ -20,7 +20,7 @@
               <app-token-creation-review
                 [tokenPayloadReview]="tokenCreationPayload!"
                 (goBackEvent)="goBack()"
-                (createTokenEvent)="createToken()"
+                (createTokenEvent)="createToken($event)"
               >
               </app-token-creation-review>
             </ng-container>

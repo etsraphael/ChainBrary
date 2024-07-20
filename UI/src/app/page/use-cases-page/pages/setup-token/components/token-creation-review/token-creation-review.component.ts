@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, Web3LoginService } from '@chainbrary/web3-login';
+import web3 from 'web3';
 import { CommonButtonText } from './../../../../../../shared/enum';
 import { ITokenCreationPayload } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
@@ -14,7 +15,7 @@ const PRICE_OF_CREATING_TOKEN = 10;
 })
 export class TokenCreationReviewComponent implements OnInit {
   @Input() tokenPayloadReview: ITokenCreationPayload;
-  @Output() createTokenEvent: EventEmitter<void> = new EventEmitter<void>();
+  @Output() createTokenEvent: EventEmitter<string> = new EventEmitter<string>();
   @Output() goBackEvent: EventEmitter<void> = new EventEmitter<void>();
   commonButtonText = CommonButtonText;
   invoiceAmount: number = 0;
@@ -48,9 +49,15 @@ export class TokenCreationReviewComponent implements OnInit {
     this.initNetworkDetailSelected();
   }
 
+  createTokenEventTrigger(): void {
+    return this.createTokenEvent.emit(web3.utils.toWei(String(this.invoiceAmount), 'ether'));
+  }
+
   private async getCurrentPriceOfNativeToken(): Promise<void> {
     try {
-      const price = await this.priceFeedService.getCurrentPriceOfNativeTokenFromNode(NetworkChainId.ETHEREUM);
+      const price: number = await this.priceFeedService.getCurrentPriceOfNativeTokenFromNode(
+        this.tokenPayloadReview.network
+      );
       this.invoiceAmount = this.priceOfCreatingToken / price;
     } catch (error: unknown) {
       this.priceError = 'Failed to get the current price of the native network token. Please try again later.';

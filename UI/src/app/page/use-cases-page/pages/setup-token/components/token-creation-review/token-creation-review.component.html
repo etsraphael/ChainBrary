@@ -78,7 +78,12 @@
         </button>
       </div>
       <div class="col-6 col-lg-4 px-2">
-        <button [disabled]="errorRetreivingPrice" i18n class="btn btn-primary w-100" (click)="createTokenEvent.emit()">
+        <button
+          [disabled]="errorRetreivingPrice"
+          i18n
+          class="btn btn-primary w-100"
+          (click)="createTokenEventTrigger()"
+        >
           Create Token
         </button>
       </div>
