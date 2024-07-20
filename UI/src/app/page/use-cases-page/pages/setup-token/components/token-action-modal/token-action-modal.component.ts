@@ -67,6 +67,7 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.listenAddMyself();
+    this.setUpForm();
   }
 
   ngOnDestroy(): void {
@@ -106,6 +107,13 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
         this.amountForm.get('recipient')?.enable();
       }
     });
+  }
+
+  private setUpForm(): void {
+    if (this.data.action === IOptionActionBtn.Burn) {
+      this.amountForm.get('addMyself')?.setValue(true);
+      this.amountForm.get('addMyself')?.disable();
+    }
   }
 }
 

@@ -178,13 +178,7 @@ export class TokenManagementEffects {
       ),
       switchMap((action: [ReturnType<typeof tokenActions.burnToken>, WalletProvider, string, ITokenSetup]) => {
         return from(
-          this.tokenSetupService.burnToken(
-            action[2],
-            action[0].to,
-            action[0].amount,
-            action[3].contractAddress,
-            action[3].chainId
-          )
+          this.tokenSetupService.burnToken(action[2], action[0].amount, action[3].contractAddress, action[3].chainId)
         ).pipe(
           map((response: IReceiptTransaction) =>
             tokenActions.burnTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })

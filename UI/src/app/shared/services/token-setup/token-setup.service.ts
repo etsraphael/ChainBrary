@@ -177,7 +177,6 @@ export class TokenSetupService {
 
   async burnToken(
     from: string,
-    to: string,
     amount: number,
     contractAddress: string,
     chainId: NetworkChainId
@@ -191,8 +190,8 @@ export class TokenSetupService {
 
     try {
       // Estimate gas and burn the token
-      const gas: bigint = await contract.methods['burnFrom'](to, amountInWei).estimateGas({ from });
-      const receipt = await contract.methods['burnFrom'](to, amountInWei).send({ from, gas: gas.toString() });
+      const gas: bigint = await contract.methods['burn'](amountInWei).estimateGas({ from });
+      const receipt = await contract.methods['burn'](amountInWei).send({ from, gas: gas.toString() });
 
       const convertedReceipt: IReceiptTransaction = {
         blockHash: receipt.blockHash,

@@ -159,8 +159,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
               case IOptionActionBtn.Burn:
                 return this.store.dispatch(
                   burnToken({
-                    amount: (result as TokenActionModalResponse).amount,
-                    to: (result as TokenActionModalResponse).to
+                    amount: (result as TokenActionModalResponse).amount
                   })
                 );
               default:

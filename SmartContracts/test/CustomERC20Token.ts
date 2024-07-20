@@ -47,7 +47,7 @@ describe('CustomERC20Token', function () {
 
   describe('Burning', function () {
     async function deployBurnableFixture() {
-      return deployTokenFixture(false, true, false);
+      return deployTokenFixture(true, true, false);
     }
 
     async function deployNonBurnableFixture() {
@@ -69,6 +69,23 @@ describe('CustomERC20Token', function () {
         .to.be.revertedWithCustomError(token, 'OwnableUnauthorizedAccount')
         .withArgs(addr1.address);
       await expect(token.connect(owner).burn(ethers.parseEther('100'))).to.be.revertedWith('TokenNotBurnable');
+    });
+
+    it('Should allow burnFrom after minting to addr1', async function () {
+      const { token, owner, addr1 } = await loadFixture(deployBurnableFixture);
+      await token.connect(owner).mint(addr1.address, ethers.parseEther('100'));
+    
+      // check balance of addr1
+      expect(await token.balanceOf(addr1.address)).to.equal(ethers.parseEther('100'));
+    
+      // owner approves addr1 to burn tokens
+      await token.connect(addr1).approve(owner.address, ethers.parseEther('50'));
+    
+      // owner burns 50 tokens from addr1
+      await token.connect(owner).burnFrom(addr1.address, ethers.parseEther('50'));
+    
+      // check balance of addr1 after burning
+      expect(await token.balanceOf(addr1.address)).to.equal(ethers.parseEther('50'));
     });
   });
 
