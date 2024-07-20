@@ -80,7 +80,13 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
       case IOptionActionBtn.Burn:
         this.amountForm.markAllAsTouched();
         if (this.amountForm.invalid) return;
-        else return this.dialogRef.close({ amount: this.amountForm.get('amount')?.value as number });
+        else {
+          const response: TokenActionModalResponse = {
+            to: this.amountForm.get('recipient')?.value as string,
+            amount: this.amountForm.get('amount')?.value as number
+          };
+          return this.dialogRef.close(response);
+        }
       case IOptionActionBtn.Transfer:
       case IOptionActionBtn.ChangeOwner:
       case IOptionActionBtn.Pause:
@@ -116,4 +122,5 @@ interface IAmountForm {
 
 export interface TokenActionModalResponse {
   amount: number;
+  to: string;
 }

@@ -42,11 +42,18 @@ export const tokenCreationCheckingFailure = createAction(
   props<{ message: string; txn: string }>()
 );
 
-export const mintToken = createAction('[TokenManagement] Mint Token', props<{ amount: number }>());
+export const mintToken = createAction('[TokenManagement] Mint Token', props<{ amount: number; to: string }>());
 export const mintTokenSuccess = createAction(
   '[TokenManagement] Mint Token Success',
   props<{ txn: string; chainId: NetworkChainId }>()
 );
 export const mintTokenFailure = createAction('[TokenManagement] Mint Token Failure', props<{ message: string }>());
+
+export const burnToken = createAction('[TokenManagement] Burn Token', props<{ amount: number; to: string }>());
+export const burnTokenSuccess = createAction(
+  '[TokenManagement] Burn Token Success',
+  props<{ txn: string; chainId: NetworkChainId }>()
+);
+export const burnTokenFailure = createAction('[TokenManagement] Burn Token Failure', props<{ message: string }>());
 
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');

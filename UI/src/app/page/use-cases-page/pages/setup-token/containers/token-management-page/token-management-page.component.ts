@@ -19,7 +19,11 @@ import {
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
-import { loadTokenByTxnHash, mintToken } from './../../../../../../store/tokens-management-store/state/actions';
+import {
+  burnToken,
+  loadTokenByTxnHash,
+  mintToken
+} from './../../../../../../store/tokens-management-store/state/actions';
 import {
   selectConnectedAccountIsOwner,
   selectTokenCreationIsProcessing,
@@ -146,7 +150,19 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
           .subscribe((result: TokenActionModalResponse | undefined) => {
             switch (action) {
               case IOptionActionBtn.Mint:
-                return this.store.dispatch(mintToken({ amount: (result as TokenActionModalResponse).amount }));
+                return this.store.dispatch(
+                  mintToken({
+                    amount: (result as TokenActionModalResponse).amount,
+                    to: (result as TokenActionModalResponse).to
+                  })
+                );
+              case IOptionActionBtn.Burn:
+                return this.store.dispatch(
+                  burnToken({
+                    amount: (result as TokenActionModalResponse).amount,
+                    to: (result as TokenActionModalResponse).to
+                  })
+                );
               default:
                 break;
             }

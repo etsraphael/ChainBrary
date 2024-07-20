@@ -136,6 +136,7 @@ export class TokenSetupService {
 
   async mintToken(
     from: string,
+    to: string,
     amount: number,
     contractAddress: string,
     chainId: NetworkChainId
@@ -149,8 +150,49 @@ export class TokenSetupService {
 
     try {
       // Estimate gas and mint the token
-      const gas: bigint = await contract.methods['mint'](from, amountInWei).estimateGas({ from });
-      const receipt = await contract.methods['mint'](from, amountInWei).send({ from, gas: gas.toString() });
+      const gas: bigint = await contract.methods['mint'](to, amountInWei).estimateGas({ from });
+      const receipt = await contract.methods['mint'](to, amountInWei).send({ from, gas: gas.toString() });
+
+      const convertedReceipt: IReceiptTransaction = {
+        blockHash: receipt.blockHash,
+        blockNumber: Number(receipt.blockNumber),
+        contractAddress: contractAddress,
+        transactionIndex: Number(receipt.transactionIndex),
+        cumulativeGasUsed: Number(receipt.cumulativeGasUsed),
+        effectiveGasPrice: Number(receipt.effectiveGasPrice),
+        from: receipt.from,
+        gasUsed: Number(receipt.gasUsed),
+        logsBloom: receipt.logsBloom,
+        status: receipt.status,
+        to: receipt.to,
+        transactionHash: receipt.transactionHash,
+        type: receipt.type
+      };
+
+      return convertedReceipt;
+    } catch (error) {
+      return Promise.reject((error as Error)?.message || error);
+    }
+  }
+
+  async burnToken(
+    from: string,
+    to: string,
+    amount: number,
+    contractAddress: string,
+    chainId: NetworkChainId
+  ): Promise<IReceiptTransaction> {
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const web3: Web3 = new Web3(rpcUrl);
+
+    const customERC20TokenContract = new CustomERC20TokenContract();
+    const contract = new web3.eth.Contract(customERC20TokenContract.getAbi() as AbiItem[], contractAddress);
+    const amountInWei: string = web3.utils.toWei(String(amount), 'ether');
+
+    try {
+      // Estimate gas and burn the token
+      const gas: bigint = await contract.methods['burnFrom'](to, amountInWei).estimateGas({ from });
+      const receipt = await contract.methods['burnFrom'](to, amountInWei).send({ from, gas: gas.toString() });
 
       const convertedReceipt: IReceiptTransaction = {
         blockHash: receipt.blockHash,

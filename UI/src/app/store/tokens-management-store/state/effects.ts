@@ -145,12 +145,51 @@ export class TokenManagementEffects {
       ),
       switchMap((action: [ReturnType<typeof tokenActions.mintToken>, WalletProvider, string, ITokenSetup]) => {
         return from(
-          this.tokenSetupService.mintToken(action[2], action[0].amount, action[3].contractAddress, action[3].chainId)
+          this.tokenSetupService.mintToken(
+            action[2],
+            action[0].to,
+            action[0].amount,
+            action[3].contractAddress,
+            action[3].chainId
+          )
         ).pipe(
           map((response: IReceiptTransaction) =>
             tokenActions.mintTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })
           ),
           catchError((error: { message: string }) => of(tokenActions.mintTokenFailure({ message: error.message })))
+        );
+      })
+    );
+  });
+
+  burnToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.burnToken),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokenDetailData)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [ReturnType<typeof tokenActions.burnToken>, WalletProvider | null, string | null, ITokenSetup | null]
+        ) => payload as [ReturnType<typeof tokenActions.burnToken>, WalletProvider, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.burnToken>, WalletProvider, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.burnToken(
+            action[2],
+            action[0].to,
+            action[0].amount,
+            action[3].contractAddress,
+            action[3].chainId
+          )
+        ).pipe(
+          map((response: IReceiptTransaction) =>
+            tokenActions.burnTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })
+          ),
+          catchError((error: { message: string }) => of(tokenActions.burnTokenFailure({ message: error.message })))
         );
       })
     );
