@@ -1,17 +1,16 @@
 import { buildModule } from '@nomicfoundation/hardhat-ignition/modules';
 import { ethers } from 'hardhat';
 
-export default buildModule('Apollo', (m) => {
-  const rocketContract = deployContractContrat(m);
+export default (communityVaultAddress: string) => buildModule('Apollo', (m) => {
+  const rocketContract = deployRocketContract(m);
   const lockContract = deployLockContract(m);
-  const transactionBridge = deployTransactionBridge(m);
+  const transactionBridge = deployTransactionBridge(m, communityVaultAddress);
   const priceFeed = deployPriceFeed(m);
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
   const documentLocker = deployDocumentLocker(m);
-  const communityVault = deployCommunityVault(m);
   const customERC20Token = deployCustomERC20Token(m);
-  const customERC20TokenFactory = deployCustomERC20TokenFactory(m);
+  const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
 
   return {
     rocketContract,
@@ -21,13 +20,12 @@ export default buildModule('Apollo', (m) => {
     erc20FixedSupply,
     bidContract,
     documentLocker,
-    communityVault,
     customERC20Token,
     customERC20TokenFactory
   };
 });
 
-function deployContractContrat(m: any) {
+function deployRocketContract(m: any) {
   const rocketContract = m.contract('Rocket', ['Saturn V']);
   m.call(rocketContract, 'launch', []);
   return rocketContract;
@@ -42,8 +40,8 @@ function deployLockContract(m: any) {
   return lockContract;
 }
 
-function deployTransactionBridge(m: any) {
-  const transactionBridge = m.contract('TransactionBridge', ['0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0']);
+function deployTransactionBridge(m: any, communityVaultAddress: string) {
+  const transactionBridge = m.contract('TransactionBridge', [communityVaultAddress]);
   return transactionBridge;
 }
 
@@ -84,17 +82,12 @@ function deployDocumentLocker(m: any) {
   return documentLocker;
 }
 
-function deployCommunityVault(m: any) {
-  const communityVault = m.contract('CommunityVault');
-  return communityVault;
-}
-
 function deployCustomERC20Token(m: any) {
   const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', 'Custom Token', 'CTK', 18, true, true,true, [], []]);
   return customERC20Token;
 }
 
-function deployCustomERC20TokenFactory(m: any) {
-  const customERC20TokenFactory = m.contract('CustomERC20TokenFactory', ['0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512']);
+function deployCustomERC20TokenFactory(m: any, communityVaultAddress: string) {
+  const customERC20TokenFactory = m.contract('CustomERC20TokenFactory', [communityVaultAddress]);
   return customERC20TokenFactory;
 }
