@@ -2,6 +2,7 @@ import { ActionStoreProcessing, ITokenSetup, StoreState } from './../../../share
 export const TOKEN_MANAGEMENT_FEATURE_KEY = 'token-management';
 
 export interface ITokenManagementState {
+  balance: StoreState<number | null>;
   tokenCreationIsProcessing: ActionStoreProcessing;
   tokenRefreshCheck: StoreState<{ attempt: number }>;
   tokenDetail: StoreState<ITokenSetup | null>;

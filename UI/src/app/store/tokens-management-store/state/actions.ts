@@ -2,6 +2,10 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { ITokenCreationPayload, ITokenSetup } from './../../../shared/interfaces';
 
+export const loadBalance = createAction('[TokenManagement] Load Balance');
+export const loadBalanceSuccess = createAction('[TokenManagement] Load Balance Success', props<{ balance: number }>());
+export const loadBalanceFailure = createAction('[TokenManagement] Load Balance Failure', props<{ message: string }>());
+
 export const createToken = createAction(
   '[TokenManagement] Create Token',
   props<{ payload: ITokenCreationPayload; amountInWei: string }>()

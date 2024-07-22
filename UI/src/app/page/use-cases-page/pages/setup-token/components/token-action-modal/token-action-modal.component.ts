@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { ReplaySubject } from 'rxjs';
 import { MaterialModule } from './../../../../../../module/material.module';
 import { KeyAndLabel } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { IOptionActionBtn } from './../../containers/token-management-page/token-management-page.component';
-import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-token-action-modal',

@@ -26,6 +26,37 @@ export class TokenManagementEffects {
     private router: Router
   ) {}
 
+  loadBalanceToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.loadBalance),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectTokenDetailData)]),
+      tap(console.log),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (payload: [ReturnType<typeof tokenActions.loadBalance>, string | null, ITokenSetup | null]) =>
+          payload as [ReturnType<typeof tokenActions.loadBalance>, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.loadBalance>, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.getBalance({
+            tokenAddress: action[2].contractAddress,
+            owner: action[1],
+            chainId: action[2].chainId
+          })
+        ).pipe(
+          map((response: number) => tokenActions.loadBalanceSuccess({ balance: response })),
+          catchError(() =>
+            of(
+              tokenActions.loadBalanceFailure({
+                message: $localize`:@@tokenManagement.balanceLoadFailure:Balance load failed`
+              })
+            )
+          )
+        );
+      })
+    );
+  });
+
   createTokenWithoutConnection$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(tokenActions.createToken),

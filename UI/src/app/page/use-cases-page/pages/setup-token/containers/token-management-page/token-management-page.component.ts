@@ -21,6 +21,7 @@ import { FormatService } from './../../../../../../shared/services/format/format
 import { selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import {
   burnToken,
+  loadBalance,
   loadTokenByTxnHash,
   mintToken
 } from './../../../../../../store/tokens-management-store/state/actions';
@@ -133,6 +134,11 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
         map((addressConnected: string | null) => addressConnected as string)
       )
       .subscribe((addressConnected: string) => {
+        // load balance if needed
+        if (action === IOptionActionBtn.Transfer) {
+          this.store.dispatch(loadBalance());
+        }
+
         const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
           TokenActionModalComponent,
           {

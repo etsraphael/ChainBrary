@@ -4,16 +4,39 @@ import Web3, { AbiFragment, AbiItem, Contract, Log, TransactionReceipt } from 'w
 import {
   CustomERC20TokenContract,
   CustomERC20TokenFactoryContract,
-  CustomERC20TokenFactoryObjectResponse
+  CustomERC20TokenFactoryObjectResponse,
+  ERC20TokenContract
 } from '../../contracts';
 import { IReceiptTransaction, ITokenCreationPayload, ITokenSetup } from '../../interfaces';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
+import { IBalancePayload } from '@chainbrary/token-bridge';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenSetupService {
   constructor(private web3ProviderService: Web3ProviderService) {}
+
+  async getBalance(payload: IBalancePayload): Promise<number> {
+    const rpcUrl = this.web3ProviderService.getRpcUrl(payload.chainId as NetworkChainId, false);
+    const web3: Web3 = new Web3(rpcUrl);
+    const transactionContract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      transactionContract.getAbi(),
+      transactionContract.getAddress()
+    );
+    const balance: bigint = await contract.methods['balanceOf'](payload.owner).call();
+
+    // Assume the balance is in Wei and you want to convert it to Ether
+    const balanceBigInt = BigInt(balance.toString());
+    const decimals = 18; // For Ether, the decimal places are 18
+    const divisor = BigInt(10 ** decimals);
+
+    // Convert balance from Wei to Ether
+    const balanceInEther = Number(balanceBigInt) / Number(divisor);
+
+    return balanceInEther;
+  }
 
   private isCustomERC20TokenResponseValid(res: unknown): res is CustomERC20TokenFactoryObjectResponse {
     if (typeof res !== 'object' || res === null) {
