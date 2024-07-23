@@ -23,10 +23,12 @@ import {
   burnToken,
   loadBalance,
   loadTokenByTxnHash,
-  mintToken
+  mintToken,
+  transferToken
 } from './../../../../../../store/tokens-management-store/state/actions';
 import {
   selectConnectedAccountIsOwner,
+  selectTokenBalance,
   selectTokenCreationIsProcessing,
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
@@ -94,6 +96,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     selectRecentTransactionsByComponent('TokenManagementPageComponent')
   );
   readonly addressConnected$: Observable<string | null> = this.store.select(selectPublicAddress);
+  readonly tokenBalance$: Observable<StoreState<number | null>> = this.store.select(selectTokenBalance);
 
   get tokenIsCreating$(): Observable<boolean> {
     return this.tokenCreationIsProcessing$.pipe(map((s) => s.isLoading));
@@ -143,7 +146,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
           TokenActionModalComponent,
           {
             panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
-            data: { action, addressConnected }
+            data: { action, addressConnected, tokenBalanceObs: this.tokenBalance$ }
           }
         );
 
@@ -166,6 +169,13 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
                 return this.store.dispatch(
                   burnToken({
                     amount: (result as TokenActionModalResponse).amount
+                  })
+                );
+              case IOptionActionBtn.Transfer:
+                return this.store.dispatch(
+                  transferToken({
+                    amount: (result as TokenActionModalResponse).amount,
+                    to: (result as TokenActionModalResponse).to
                   })
                 );
               default:

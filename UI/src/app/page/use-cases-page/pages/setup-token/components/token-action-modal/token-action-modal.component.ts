@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, Inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { ReplaySubject } from 'rxjs';
+import { filter, map, Observable, ReplaySubject, take } from 'rxjs';
 import { MaterialModule } from './../../../../../../module/material.module';
-import { KeyAndLabel } from './../../../../../../shared/interfaces';
+import { KeyAndLabel, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { IOptionActionBtn } from './../../containers/token-management-page/token-management-page.component';
 
@@ -60,10 +60,19 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { action: IOptionActionBtn; addressConnected: string },
+    @Inject(MAT_DIALOG_DATA)
+    public data: {
+      action: IOptionActionBtn;
+      addressConnected: string;
+      tokenBalanceObs: Observable<StoreState<number | null>>;
+    },
     public dialogRef: MatDialogRef<TokenActionModalComponent>,
     private formatService: FormatService
   ) {}
+
+  get currentBalance$(): Observable<number | null> {
+    return this.data.tokenBalanceObs.pipe(map((state: StoreState<number | null>) => state.data));
+  }
 
   ngOnInit(): void {
     this.listenAddMyself();
@@ -79,6 +88,7 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
     switch (this.data.action) {
       case IOptionActionBtn.Mint:
       case IOptionActionBtn.Burn:
+      case IOptionActionBtn.Transfer:
         this.amountForm.markAllAsTouched();
         if (this.amountForm.invalid) return;
         else {
@@ -88,7 +98,6 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
           };
           return this.dialogRef.close(response);
         }
-      case IOptionActionBtn.Transfer:
       case IOptionActionBtn.ChangeOwner:
       case IOptionActionBtn.Pause:
       case IOptionActionBtn.RenounceOwnership:
@@ -110,9 +119,24 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
   }
 
   private setUpForm(): void {
-    if (this.data.action === IOptionActionBtn.Burn) {
-      this.amountForm.get('addMyself')?.setValue(true);
-      this.amountForm.get('addMyself')?.disable();
+    switch (this.data.action) {
+      case IOptionActionBtn.Burn:
+        this.amountForm.get('addMyself')?.setValue(true);
+        this.amountForm.get('addMyself')?.disable();
+        break;
+      case IOptionActionBtn.Transfer:
+        this.currentBalance$
+          .pipe(
+            filter(Boolean),
+            map((state: number | null) => state as number),
+            take(1)
+          )
+          .subscribe((balance: number) => {
+            this.amountForm
+              .get('amount')
+              ?.setValidators([Validators.required, Validators.min(1), Validators.max(balance)]);
+          });
+        break;
     }
   }
 }

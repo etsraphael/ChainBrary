@@ -60,4 +60,11 @@ export const burnTokenSuccess = createAction(
 );
 export const burnTokenFailure = createAction('[TokenManagement] Burn Token Failure', props<{ message: string }>());
 
+export const transferToken = createAction('[TokenManagement] Transfer Token', props<{ amount: number; to: string }>());
+export const transferTokenSuccess = createAction(
+  '[TokenManagement] Transfer Token Success',
+  props<{ txn: string; chainId: NetworkChainId }>()
+);
+export const transferTokenFailure = createAction('[TokenManagement] Transfer Token Failure', props<{ message: string }>());
+
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');

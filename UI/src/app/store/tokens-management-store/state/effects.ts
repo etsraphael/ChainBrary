@@ -30,7 +30,6 @@ export class TokenManagementEffects {
     return this.actions$.pipe(
       ofType(tokenActions.loadBalance),
       concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectTokenDetailData)]),
-      tap(console.log),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       map(
         (payload: [ReturnType<typeof tokenActions.loadBalance>, string | null, ITokenSetup | null]) =>
@@ -215,6 +214,44 @@ export class TokenManagementEffects {
             tokenActions.burnTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })
           ),
           catchError((error: { message: string }) => of(tokenActions.burnTokenFailure({ message: error.message })))
+        );
+      })
+    );
+  });
+
+  transferToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.transferToken),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokenDetailData)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [
+            ReturnType<typeof tokenActions.transferToken>,
+            WalletProvider | null,
+            string | null,
+            ITokenSetup | null
+          ]
+        ) => payload as [ReturnType<typeof tokenActions.transferToken>, WalletProvider, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.transferToken>, WalletProvider, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.transferToken(
+            action[2],
+            action[0].to,
+            action[0].amount,
+            action[3].contractAddress,
+            action[3].chainId
+          )
+        ).pipe(
+          map((response: IReceiptTransaction) =>
+            tokenActions.transferTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })
+          ),
+          catchError((error: { message: string }) => of(tokenActions.transferTokenFailure({ message: error.message })))
         );
       })
     );

@@ -7,6 +7,39 @@ import * as tokenActions from './actions';
 export const authReducer: ActionReducer<ITokenManagementState, Action> = createReducer(
   initialState,
   on(
+    tokenActions.loadBalance,
+    (state: ITokenManagementState): ITokenManagementState => ({
+      ...state,
+      balance: {
+        loading: true,
+        error: null,
+        data: null
+      }
+    })
+  ),
+  on(
+    tokenActions.loadBalanceSuccess,
+    (state: ITokenManagementState, { balance }): ITokenManagementState => ({
+      ...state,
+      balance: {
+        loading: false,
+        error: null,
+        data: balance
+      }
+    })
+  ),
+  on(
+    tokenActions.loadBalanceFailure,
+    (state: ITokenManagementState, { message }): ITokenManagementState => ({
+      ...state,
+      balance: {
+        loading: false,
+        error: message,
+        data: null
+      }
+    })
+  ),
+  on(
     tokenActions.createToken,
     (state: ITokenManagementState): ITokenManagementState => ({
       ...state,
