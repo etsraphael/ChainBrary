@@ -219,6 +219,45 @@ export class TokenManagementEffects {
     );
   });
 
+  togglePauseToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.togglePauseToken),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokenDetailData)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [
+            ReturnType<typeof tokenActions.togglePauseToken>,
+            WalletProvider | null,
+            string | null,
+            ITokenSetup | null
+          ]
+        ) => payload as [ReturnType<typeof tokenActions.togglePauseToken>, WalletProvider, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.togglePauseToken>, WalletProvider, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.toggleTokenPause(
+            action[2],
+            action[3].contractAddress,
+            action[3].chainId,
+            action[0].pause
+          )
+        ).pipe(
+          map((response: IReceiptTransaction) =>
+            tokenActions.togglePauseTokenSuccess({ txn: response.blockHash, chainId: action[3].chainId })
+          ),
+          catchError((error: { message: string }) =>
+            of(tokenActions.togglePauseTokenFailure({ message: error.message }))
+          )
+        );
+      })
+    );
+  });
+
   transferToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(tokenActions.transferToken),

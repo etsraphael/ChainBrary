@@ -6,6 +6,7 @@ import { Store } from '@ngrx/store';
 import { combineLatest, filter, map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
 import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
 import {
+  TokenActionConfirmationModalResponse,
   TokenActionModalComponent,
   TokenActionModalResponse
 } from '../../components/token-action-modal/token-action-modal.component';
@@ -24,6 +25,7 @@ import {
   loadBalance,
   loadTokenByTxnHash,
   mintToken,
+  togglePauseToken,
   transferToken
 } from './../../../../../../store/tokens-management-store/state/actions';
 import {
@@ -70,6 +72,11 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     {
       key: IOptionActionBtn.Pause,
       label: $localize`:@@btnOption:Pause`,
+      disabled: true
+    },
+    {
+      key: IOptionActionBtn.Unpause,
+      label: $localize`:@@btnOption:Unpause`,
       disabled: true
     },
     {
@@ -142,21 +149,24 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
           this.store.dispatch(loadBalance());
         }
 
-        const dialogRef: MatDialogRef<TokenActionModalComponent, TokenActionModalResponse> = this.dialog.open(
+        const dialogRef: MatDialogRef<
           TokenActionModalComponent,
-          {
-            panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
-            data: { action, addressConnected, tokenBalanceObs: this.tokenBalance$ }
-          }
-        );
+          TokenActionModalResponse | TokenActionConfirmationModalResponse
+        > = this.dialog.open(TokenActionModalComponent, {
+          panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
+          data: { action, addressConnected, tokenBalanceObs: this.tokenBalance$ }
+        });
 
         dialogRef
           .afterClosed()
           .pipe(
             take(1),
-            filter((result: TokenActionModalResponse | undefined) => result !== undefined)
+            filter(
+              (result: TokenActionModalResponse | TokenActionConfirmationModalResponse | undefined) =>
+                result !== undefined
+            )
           )
-          .subscribe((result: TokenActionModalResponse | undefined) => {
+          .subscribe((result: TokenActionModalResponse | TokenActionConfirmationModalResponse | undefined) => {
             switch (action) {
               case IOptionActionBtn.Mint:
                 return this.store.dispatch(
@@ -178,6 +188,12 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
                     to: (result as TokenActionModalResponse).to
                   })
                 );
+              case IOptionActionBtn.Pause: {
+                return this.store.dispatch(togglePauseToken({ pause: true }));
+              }
+              case IOptionActionBtn.Unpause: {
+                return this.store.dispatch(togglePauseToken({ pause: false }));
+              }
               default:
                 break;
             }
@@ -223,22 +239,34 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
         take(1)
       )
       .subscribe(([tokenDetail, connectedAccountIsOwner]) => {
+        const tokenPaused: boolean | undefined = tokenDetail?.isPaused;
+
+        this.optionBtns = this.optionBtns.filter(
+          (btn: IOptionButton) =>
+            !(tokenPaused && btn.key === IOptionActionBtn.Pause) &&
+            !(!tokenPaused && btn.key === IOptionActionBtn.Unpause)
+        );
+
         this.optionBtns = this.optionBtns.map((btn: IOptionButton) => {
           switch (btn.key) {
             case IOptionActionBtn.Mint:
-              btn.disabled = tokenDetail?.canMint === false && !connectedAccountIsOwner;
+              btn.disabled = (tokenDetail?.canMint === false && !connectedAccountIsOwner) || tokenPaused === true;
               break;
             case IOptionActionBtn.Burn:
-              btn.disabled = tokenDetail?.canBurn === false && !connectedAccountIsOwner;
+              btn.disabled = (tokenDetail?.canBurn === false && !connectedAccountIsOwner) || tokenPaused === true;
               break;
             case IOptionActionBtn.Pause:
+            case IOptionActionBtn.Unpause:
               btn.disabled = !tokenDetail?.canPause && !connectedAccountIsOwner;
               break;
             case IOptionActionBtn.ChangeOwner:
-              btn.disabled = !connectedAccountIsOwner;
+              btn.disabled = !connectedAccountIsOwner || tokenPaused === true;
               break;
             case IOptionActionBtn.RenounceOwnership:
-              btn.disabled = !connectedAccountIsOwner;
+              btn.disabled = !connectedAccountIsOwner || tokenPaused === true;
+              break;
+            case IOptionActionBtn.Transfer:
+              btn.disabled = tokenPaused === true;
               break;
             default:
               break;
@@ -260,5 +288,6 @@ export enum IOptionActionBtn {
   Transfer = 'Transfer',
   ChangeOwner = 'ChangeOwner',
   Pause = 'Pause',
+  Unpause = 'Unpause',
   RenounceOwnership = 'RenounceOwnership'
 }

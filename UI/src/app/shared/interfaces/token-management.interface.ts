@@ -21,5 +21,6 @@ export interface ITokenSetup {
   canPause: boolean;
   owner: string;
   contractAddress: string;
+  isPaused: boolean;
   chainId: NetworkChainId;
 }

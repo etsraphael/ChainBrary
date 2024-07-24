@@ -53,7 +53,8 @@ export class TokenSetupService {
       typeof obj[4] === 'boolean' &&
       typeof obj[5] === 'boolean' &&
       typeof obj[6] === 'boolean' &&
-      typeof obj[7] === 'string' &&
+      typeof obj[7] === 'boolean' &&
+      typeof obj[8] === 'string' &&
       typeof obj['__length__'] === 'number'
     );
   }
@@ -145,9 +146,10 @@ export class TokenSetupService {
               canMint: res[4],
               canBurn: res[5],
               canPause: res[6],
-              owner: res[7],
+              owner: res[8],
               contractAddress: tokenAddress,
-              chainId: chainId
+              chainId: chainId,
+              isPaused: res[7]
             } as ITokenSetup;
           })
           .catch((error: string) => Promise.reject(error));
@@ -238,7 +240,12 @@ export class TokenSetupService {
     }
   }
 
-  async pauseToken(from: string, contractAddress: string, chainId: NetworkChainId): Promise<IReceiptTransaction> {
+  async toggleTokenPause(
+    from: string,
+    contractAddress: string,
+    chainId: NetworkChainId,
+    pause: boolean
+  ): Promise<IReceiptTransaction> {
     const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
     const web3: Web3 = new Web3(rpcUrl);
 
@@ -246,9 +253,9 @@ export class TokenSetupService {
     const contract = new web3.eth.Contract(customERC20TokenContract.getAbi() as AbiItem[], contractAddress);
 
     try {
-      // Estimate gas and pause the token
-      const gas: bigint = await contract.methods['pause']().estimateGas({ from });
-      const receipt = await contract.methods['pause']().send({ from, gas: gas.toString() });
+      // Estimate gas and toggle the token pause state
+      const gas: bigint = await contract.methods[pause ? 'pause' : 'unpause']().estimateGas({ from });
+      const receipt = await contract.methods[pause ? 'pause' : 'unpause']().send({ from, gas: gas.toString() });
 
       const convertedReceipt: IReceiptTransaction = {
         blockHash: receipt.blockHash,
@@ -312,5 +319,4 @@ export class TokenSetupService {
       return Promise.reject((error as Error)?.message || error);
     }
   }
-
 }

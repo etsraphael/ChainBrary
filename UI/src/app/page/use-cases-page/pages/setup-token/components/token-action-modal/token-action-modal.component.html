@@ -99,14 +99,32 @@
           </div>
         </form>
       </ng-container>
+      <ng-container *ngSwitchCase="optionActionBtnTypes.Pause">
+        <div class="alert alert-warning" role="alert">
+          <strong i18n>Are you sure?</strong>
+          <p i18n>
+            This action will pause the entire token and stop all current transfers. Please confirm if you want to
+            proceed.
+          </p>
+        </div>
+      </ng-container>
+      <ng-container *ngSwitchCase="optionActionBtnTypes.Unpause">
+        <div class="alert alert-warning" role="alert">
+          <strong i18n>Are you sure?</strong>
+          <p i18n>
+            This action will unpause the entire token and allow all transfers to continue. Please confirm if you want to
+            proceed.
+          </p>
+        </div>
+      </ng-container>
     </ng-container>
   </div>
   <div class="card-footer d-flex justify-content-end">
-    <div class="col-3 px-2">
+    <div class="px-2">
       <button (click)="dialogRef.close()" class="w-100 btn btn-outline-secondary" type="button">Back</button>
     </div>
-    <div class="col-3 px-2">
-      <button class="w-100 btn btn-primary" type="submit" (click)="submitAction()">Mint</button>
+    <div class="px-2">
+      <button class="w-100 btn btn-primary" type="submit" (click)="submitAction()">Confirm</button>
     </div>
   </div>
 </div>

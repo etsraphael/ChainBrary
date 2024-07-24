@@ -65,6 +65,19 @@ export const transferTokenSuccess = createAction(
   '[TokenManagement] Transfer Token Success',
   props<{ txn: string; chainId: NetworkChainId }>()
 );
-export const transferTokenFailure = createAction('[TokenManagement] Transfer Token Failure', props<{ message: string }>());
+export const transferTokenFailure = createAction(
+  '[TokenManagement] Transfer Token Failure',
+  props<{ message: string }>()
+);
+
+export const togglePauseToken = createAction('[TokenManagement] Toggle Pause Token', props<{ pause: boolean }>());
+export const togglePauseTokenSuccess = createAction(
+  '[TokenManagement] Toggle Pause Token Success',
+  props<{ txn: string; chainId: NetworkChainId }>()
+);
+export const togglePauseTokenFailure = createAction(
+  '[TokenManagement] Toggle Pause Token Failure',
+  props<{ message: string }>()
+);
 
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');

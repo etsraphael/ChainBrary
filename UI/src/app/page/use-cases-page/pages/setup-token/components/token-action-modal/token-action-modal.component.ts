@@ -44,6 +44,11 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
       desc: $localize`:@@btnOption.Desc:Temporarily halt all token transfers and actions.`
     },
     {
+      key: IOptionActionBtn.Unpause,
+      label: $localize`:@@btnOption.Title:Unpause Tokens`,
+      desc: $localize`:@@btnOption.Desc:Resume token transfers and actions.`
+    },
+    {
       key: IOptionActionBtn.RenounceOwnership,
       label: $localize`:@@btnOption.Title:Renounce Ownership`,
       desc: $localize`:@@btnOption.Desc:Relinquish control and ownership of the tokens.`
@@ -98,9 +103,15 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
           };
           return this.dialogRef.close(response);
         }
-      case IOptionActionBtn.ChangeOwner:
-      case IOptionActionBtn.Pause:
       case IOptionActionBtn.RenounceOwnership:
+      case IOptionActionBtn.Pause:
+      case IOptionActionBtn.Unpause: {
+        const response: TokenActionConfirmationModalResponse = {
+          confirmed: true
+        };
+        return this.dialogRef.close(response);
+      }
+      case IOptionActionBtn.ChangeOwner:
       default:
         break;
     }
@@ -155,4 +166,8 @@ interface IAmountForm {
 export interface TokenActionModalResponse {
   amount: number;
   to: string;
+}
+
+export interface TokenActionConfirmationModalResponse {
+  confirmed: boolean;
 }
