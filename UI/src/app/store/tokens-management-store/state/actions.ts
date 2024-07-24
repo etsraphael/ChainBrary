@@ -80,4 +80,24 @@ export const togglePauseTokenFailure = createAction(
   props<{ message: string }>()
 );
 
+export const renounceOwnership = createAction('[TokenManagement] Renounce Ownership');
+export const renounceOwnershipSuccess = createAction(
+  '[TokenManagement] Renounce Ownership Success',
+  props<{ txn: string; chainId: NetworkChainId }>()
+);
+export const renounceOwnershipFailure = createAction(
+  '[TokenManagement] Renounce Ownership Failure',
+  props<{ message: string }>()
+);
+
+export const changeOwnership = createAction('[TokenManagement] Change Ownership', props<{ to: string }>());
+export const changeOwnershipSuccess = createAction(
+  '[TokenManagement] Change Ownership Success',
+  props<{ txn: string; chainId: NetworkChainId }>()
+);
+export const changeOwnershipFailure = createAction(
+  '[TokenManagement] Change Ownership Failure',
+  props<{ message: string }>()
+);
+
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');

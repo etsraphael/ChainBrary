@@ -8,7 +8,8 @@ import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-s
 import {
   TokenActionConfirmationModalResponse,
   TokenActionModalComponent,
-  TokenActionModalResponse
+  TokenActionModalResponse,
+  TokenActionOwnershipModalResponse
 } from '../../components/token-action-modal/token-action-modal.component';
 import { IHeaderBodyPage } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import {
@@ -149,10 +150,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
           this.store.dispatch(loadBalance());
         }
 
-        const dialogRef: MatDialogRef<
-          TokenActionModalComponent,
-          TokenActionModalResponse | TokenActionConfirmationModalResponse
-        > = this.dialog.open(TokenActionModalComponent, {
+        const dialogRef: MatDialogRef<TokenActionModalComponent> = this.dialog.open(TokenActionModalComponent, {
           panelClass: ['col-12', 'col-md-6', 'col-lg-4'],
           data: { action, addressConnected, tokenBalanceObs: this.tokenBalance$ }
         });
@@ -162,42 +160,58 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
           .pipe(
             take(1),
             filter(
-              (result: TokenActionModalResponse | TokenActionConfirmationModalResponse | undefined) =>
-                result !== undefined
+              (
+                result:
+                  | TokenActionModalResponse
+                  | TokenActionConfirmationModalResponse
+                  | TokenActionOwnershipModalResponse
+                  | undefined
+              ) => result !== undefined
             )
           )
-          .subscribe((result: TokenActionModalResponse | TokenActionConfirmationModalResponse | undefined) => {
-            switch (action) {
-              case IOptionActionBtn.Mint:
-                return this.store.dispatch(
-                  mintToken({
-                    amount: (result as TokenActionModalResponse).amount,
-                    to: (result as TokenActionModalResponse).to
-                  })
-                );
-              case IOptionActionBtn.Burn:
-                return this.store.dispatch(
-                  burnToken({
-                    amount: (result as TokenActionModalResponse).amount
-                  })
-                );
-              case IOptionActionBtn.Transfer:
-                return this.store.dispatch(
-                  transferToken({
-                    amount: (result as TokenActionModalResponse).amount,
-                    to: (result as TokenActionModalResponse).to
-                  })
-                );
-              case IOptionActionBtn.Pause: {
-                return this.store.dispatch(togglePauseToken({ pause: true }));
+          .subscribe(
+            (
+              result:
+                | TokenActionModalResponse
+                | TokenActionConfirmationModalResponse
+                | TokenActionOwnershipModalResponse
+                | undefined
+            ) => {
+              switch (action) {
+                case IOptionActionBtn.Mint:
+                  return this.store.dispatch(
+                    mintToken({
+                      amount: (result as TokenActionModalResponse).amount,
+                      to: (result as TokenActionModalResponse).to
+                    })
+                  );
+                case IOptionActionBtn.Burn:
+                  return this.store.dispatch(
+                    burnToken({
+                      amount: (result as TokenActionModalResponse).amount
+                    })
+                  );
+                case IOptionActionBtn.Transfer:
+                  return this.store.dispatch(
+                    transferToken({
+                      amount: (result as TokenActionModalResponse).amount,
+                      to: (result as TokenActionModalResponse).to
+                    })
+                  );
+                case IOptionActionBtn.Pause: {
+                  return this.store.dispatch(togglePauseToken({ pause: true }));
+                }
+                case IOptionActionBtn.Unpause: {
+                  return this.store.dispatch(togglePauseToken({ pause: false }));
+                }
+                case IOptionActionBtn.RenounceOwnership:
+                case IOptionActionBtn.ChangeOwner: {
+                  console.log('Change Owner'); // TODO: add the logic for change owner
+                  return;
+                }
               }
-              case IOptionActionBtn.Unpause: {
-                return this.store.dispatch(togglePauseToken({ pause: false }));
-              }
-              default:
-                break;
             }
-          });
+          );
       });
   }
 

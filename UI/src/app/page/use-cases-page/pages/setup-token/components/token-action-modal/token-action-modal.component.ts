@@ -62,6 +62,9 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
     addMyself: new FormControl<boolean>(false),
     amount: new FormControl<number | null>(null, [Validators.required, Validators.min(1)])
   });
+  ownershipForm = new FormGroup<OwnershipForm>({
+    to: new FormControl<string | null>(null, [Validators.required, this.formatService.ethAddressValidator()])
+  });
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
@@ -112,8 +115,14 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
         return this.dialogRef.close(response);
       }
       case IOptionActionBtn.ChangeOwner:
-      default:
-        break;
+        this.ownershipForm.markAllAsTouched();
+        if (this.ownershipForm.invalid) return;
+        else {
+          const response: TokenActionOwnershipModalResponse = {
+            to: this.ownershipForm.get('to')?.value as string
+          };
+          return this.dialogRef.close(response);
+        }
     }
   }
 
@@ -163,6 +172,10 @@ interface IAmountForm {
   amount: FormControl<number | null>;
 }
 
+interface OwnershipForm {
+  to: FormControl<string | null>;
+}
+
 export interface TokenActionModalResponse {
   amount: number;
   to: string;
@@ -170,4 +183,8 @@ export interface TokenActionModalResponse {
 
 export interface TokenActionConfirmationModalResponse {
   confirmed: boolean;
+}
+
+export interface TokenActionOwnershipModalResponse {
+  to: string;
 }
