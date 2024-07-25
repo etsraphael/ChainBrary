@@ -295,4 +295,73 @@ export class TokenManagementEffects {
       })
     );
   });
+
+  renounceOwnership$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.renounceOwnership),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokenDetailData)
+      ]),
+      tap(console.log),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [
+            ReturnType<typeof tokenActions.renounceOwnership>,
+            WalletProvider | null,
+            string | null,
+            ITokenSetup | null
+          ]
+        ) => payload as [ReturnType<typeof tokenActions.renounceOwnership>, WalletProvider, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.renounceOwnership>, WalletProvider, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.renounceTokenOwnership(action[2], action[3].contractAddress, action[3].chainId)
+        ).pipe(
+          map((response: IReceiptTransaction) =>
+            tokenActions.renounceOwnershipSuccess({ txn: response.blockHash, chainId: action[3].chainId })
+          ),
+          catchError((error: { message: string }) =>
+            of(tokenActions.renounceOwnershipFailure({ message: error.message }))
+          )
+        );
+      })
+    );
+  });
+
+  changeOwnership$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.changeOwnership),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokenDetailData)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
+      map(
+        (
+          payload: [
+            ReturnType<typeof tokenActions.changeOwnership>,
+            WalletProvider | null,
+            string | null,
+            ITokenSetup | null
+          ]
+        ) => payload as [ReturnType<typeof tokenActions.changeOwnership>, WalletProvider, string, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.changeOwnership>, WalletProvider, string, ITokenSetup]) => {
+        return from(
+          this.tokenSetupService.transferTokenOwnership(action[2], action[0].to, action[3].contractAddress, action[3].chainId)
+        ).pipe(
+          map((response: IReceiptTransaction) =>
+            tokenActions.changeOwnershipSuccess({ txn: response.blockHash, chainId: action[3].chainId })
+          ),
+          catchError((error: { message: string }) =>
+            of(tokenActions.changeOwnershipFailure({ message: error.message }))
+          )
+        );
+      })
+    );
+  })
 }

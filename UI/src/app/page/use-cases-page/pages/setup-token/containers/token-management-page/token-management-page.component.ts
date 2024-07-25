@@ -2,9 +2,9 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute } from '@angular/router';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
-import { Store } from '@ngrx/store';
+import { Actions, ofType } from '@ngrx/effects';
+import { Action, Store } from '@ngrx/store';
 import { combineLatest, filter, map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
-import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
 import {
   TokenActionConfirmationModalResponse,
   TokenActionModalComponent,
@@ -20,21 +20,24 @@ import {
   StoreState
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
+import { accountChanged, networkChangeSuccess, resetAuth, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
 import { selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import {
   burnToken,
+  changeOwnership,
   loadBalance,
   loadTokenByTxnHash,
   mintToken,
+  renounceOwnership,
   togglePauseToken,
   transferToken
 } from './../../../../../../store/tokens-management-store/state/actions';
 import {
-  selectConnectedAccountIsOwner,
   selectTokenBalance,
   selectTokenCreationIsProcessing,
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
+import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-token-management-page',
@@ -92,19 +95,23 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     public web3LoginService: Web3LoginService,
     private readonly store: Store,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private actions$: Actions
   ) {}
 
   readonly tokenDetailStore$: Observable<StoreState<ITokenSetup | null>> = this.store.select(selectTokenDetail);
   readonly tokenCreationIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(
     selectTokenCreationIsProcessing
   );
-  readonly connectedAccountIsOwner$: Observable<boolean> = this.store.select(selectConnectedAccountIsOwner);
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('TokenManagementPageComponent')
   );
   readonly addressConnected$: Observable<string | null> = this.store.select(selectPublicAddress);
   readonly tokenBalance$: Observable<StoreState<number | null>> = this.store.select(selectTokenBalance);
+  readonly resetPermission$: Observable<Action> = this.actions$.pipe(
+    ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
+    takeUntil(this.destroyed$)
+  );
 
   get tokenIsCreating$(): Observable<boolean> {
     return this.tokenCreationIsProcessing$.pipe(map((s) => s.isLoading));
@@ -130,6 +137,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     this.initNetworkDetailSelected();
     this.callActions();
     this.setUpButtonOptions();
+    this.listenToResetPermission();
   }
 
   ngOnDestroy(): void {
@@ -204,10 +212,11 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
                 case IOptionActionBtn.Unpause: {
                   return this.store.dispatch(togglePauseToken({ pause: false }));
                 }
-                case IOptionActionBtn.RenounceOwnership:
                 case IOptionActionBtn.ChangeOwner: {
-                  console.log('Change Owner'); // TODO: add the logic for change owner
-                  return;
+                  return this.store.dispatch(changeOwnership({ to: (result as TokenActionOwnershipModalResponse).to }));
+                }
+                case IOptionActionBtn.RenounceOwnership: {
+                  return this.store.dispatch(renounceOwnership());
                 }
               }
             }
@@ -246,14 +255,21 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
       .subscribe(() => this.store.dispatch(loadTokenByTxnHash({ txHash: this.txnHash, chainId: this.chainId })));
   }
 
+  private listenToResetPermission(): void {
+    this.resetPermission$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.setUpButtonOptions();
+    });
+  }
+
   private setUpButtonOptions(): void {
-    combineLatest([this.tokenDetail$, this.connectedAccountIsOwner$])
+    combineLatest([this.tokenDetail$, this.store.select(selectPublicAddress).pipe(filter(Boolean))])
       .pipe(
-        filter(([tokenDetail]) => tokenDetail !== null),
+        filter(([tokenDetail,address]) => tokenDetail !== null && address !== null),
         take(1)
       )
-      .subscribe(([tokenDetail, connectedAccountIsOwner]) => {
+      .subscribe(([tokenDetail, address]: [ITokenSetup | null, string]) => {
         const tokenPaused: boolean | undefined = tokenDetail?.isPaused;
+        const connectedAccountIsOwner: boolean = tokenDetail?.owner.toLocaleLowerCase() === address.toLowerCase();
 
         this.optionBtns = this.optionBtns.filter(
           (btn: IOptionButton) =>
@@ -264,14 +280,14 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
         this.optionBtns = this.optionBtns.map((btn: IOptionButton) => {
           switch (btn.key) {
             case IOptionActionBtn.Mint:
-              btn.disabled = (tokenDetail?.canMint === false && !connectedAccountIsOwner) || tokenPaused === true;
+              btn.disabled = !connectedAccountIsOwner || tokenDetail?.canMint === false || tokenPaused === true;
               break;
             case IOptionActionBtn.Burn:
-              btn.disabled = (tokenDetail?.canBurn === false && !connectedAccountIsOwner) || tokenPaused === true;
+              btn.disabled = !connectedAccountIsOwner || tokenDetail?.canBurn === false || tokenPaused === true;
               break;
             case IOptionActionBtn.Pause:
             case IOptionActionBtn.Unpause:
-              btn.disabled = !tokenDetail?.canPause && !connectedAccountIsOwner;
+              btn.disabled = !connectedAccountIsOwner || !tokenDetail?.canPause;
               break;
             case IOptionActionBtn.ChangeOwner:
               btn.disabled = !connectedAccountIsOwner || tokenPaused === true;

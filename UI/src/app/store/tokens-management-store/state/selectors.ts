@@ -25,11 +25,6 @@ export const selectTokenDetailData: MemoizedSelector<object, ITokenSetup | null>
   (s: StoreState<ITokenSetup | null>) => s.data
 );
 
-export const selectConnectedAccountIsOwner: MemoizedSelector<object, boolean> = createSelector(
-  selectTokenManagementState,
-  selectPublicAddress,
-  (s: ITokenManagementState, p: string | null) => s.tokenDetail.data?.owner === p?.toLocaleLowerCase()
-);
 export const selectTokenBalance: MemoizedSelector<object, StoreState<number | null>> = createSelector(
   selectTokenManagementState,
   (s: ITokenManagementState) => s.balance
