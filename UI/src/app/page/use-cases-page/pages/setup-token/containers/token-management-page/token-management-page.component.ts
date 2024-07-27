@@ -46,6 +46,7 @@ import {
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
+import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-token-management-page',
@@ -105,7 +106,8 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     private readonly store: Store,
     private dialog: MatDialog,
     private actions$: Actions,
-    private router: Router
+    private router: Router,
+    private snackbar: MatSnackBar,
   ) {}
 
   readonly tokenDetailStore$: Observable<StoreState<ITokenSetup | null>> = this.store.select(selectTokenDetail);
@@ -248,6 +250,12 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
       default:
         return '';
     }
+  }
+
+  clipboardClicked(): MatSnackBarRef<TextOnlySnackBar> {
+    return this.snackbar.open($localize`:@@Copied:Copied`, '', {
+      duration: 3000
+    });
   }
 
   private initNetworkDetailSelected(): void {

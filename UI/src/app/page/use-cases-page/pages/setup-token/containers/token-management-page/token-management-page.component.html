@@ -8,25 +8,32 @@
     <app-auth-banner></app-auth-banner>
   </div>
   @for (item of transactionCards$ | async; track item) {
-    <app-transaction-card [cardContent]="item"></app-transaction-card>
+  <app-transaction-card [cardContent]="item"></app-transaction-card>
   }
-  <ng-container
-    *ngIf="
+  <ng-container *ngIf="
       (tokenIsCreating$ | async) === false && (tokenIsLoading$ | async) === false && (tokenDetail$ | async) !== null
-    "
-  >
+    ">
     <div class="card border-0 shadow-lg p-2">
       <div class="container">
         <div class="bg-primary-subtle py-3 my-2 card-header border-0">
           <div class="row">
-            <div class="col-4">
+            <div class="col-8 col-md-9 my-auto">
+              <div class="d-flex align-items-center">
+                <h5 class="bg-primary text-light symbole-container">{{ (tokenDetail$ | async)?.symbol }}</h5>
+                <h5 class="text-muted ms-2">{{ (tokenDetail$ | async)?.name }}</h5>
+              </div>
+              <p [cdkCopyToClipboard]="(tokenDetail$ | async)?.contractAddress!" (click)="clipboardClicked()"
+                class="text-muted mb-0 d-flex align-items-center contract-address-container bg-primary py-2 px-3 text-dark bg-opacity-25">
+                {{ formatService.formatPublicAddress((tokenDetail$ | async)?.contractAddress!, 8) }}
+                <i class="ms-auto bi bi-files"></i>
+              </p>
+            </div>
+            <div class="col-4 col-md-3">
               <div class="card h-100 d-flex flex-column align-items-center justify-content-center network-card">
                 <div class="row mx-0 w-100">
                   <div class="text-center mx-auto py-3">
-                    <img
-                      [src]="formatService.getIconUrl(networkDetailSelected.chainId)"
-                      [alt]="formatService.getIconUrl(networkDetailSelected.chainId)"
-                    />
+                    <img [src]="formatService.getIconUrl(networkDetailSelected.chainId)"
+                      [alt]="formatService.getIconUrl(networkDetailSelected.chainId)" />
                   </div>
                 </div>
                 <div class="d-flex justify-content-center mb-2 text-center px-3">
@@ -34,35 +41,31 @@
                 </div>
               </div>
             </div>
-            <div class="col-8 my-auto">
-              <h5 class="text-dark">{{ (tokenDetail$ | async)?.name }}</h5>
-              <h6 class="text-muted">{{ (tokenDetail$ | async)?.symbol }}</h6>
-              <p class="text-muted mb-0 d-flex align-items-center">
-                {{ formatService.formatPublicAddress((tokenDetail$ | async)?.contractAddress!, 10) }}
-                <button
-                  [cdkCopyToClipboard]="(tokenDetail$ | async)?.contractAddress!"
-                  type="button"
-                  class="btn btn-secondary d-inline-flex justify-content-center align-items-center ms-2"
-                >
-                  <i class="bi bi-files"></i>
-                </button>
-              </p>
-            </div>
           </div>
           <div class="row">
             <hr class="mt-3 mb-4" />
             <div class="col-12">
               <div class="d-flex justify-content-between">
                 <div class="col-8">
-                  <h6 class="text-dark">Total Supply</h6>
+                  <h6 class="text-dark supply-label">Total Supply</h6>
                   <h5 class="text-muted mb-0">
                     {{ (tokenDetail$ | async)?.totalSupply + ' ' + (tokenDetail$ | async)?.symbol?.toUpperCase() }}
                   </h5>
                 </div>
                 <div class="col-4 text-end">
-                  <a target="_blank" [href]="generateScanLink((tokenDetail$ | async)?.contractAddress!)">
-                    <button type="button" class="btn btn-outline-primary">Explorer</button>
-                  </a>
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                      <a target="_blank" [href]="generateScanLink((tokenDetail$ | async)?.contractAddress!)">
+                        <span>Explorer</span>
+                      </a>
+                    </button>
+                    <button mat-menu-item>
+                      <span>Add to wallet</span>
+                    </button>
+                  </mat-menu>
                 </div>
               </div>
             </div>
@@ -70,15 +73,12 @@
         </div>
         <div class="row my-2">
           @for (item of optionBtns; track item) {
-            <div class="col-6 py-2">
-              <button
-                (click)="onActionBtnClick(item.key)"
-                class="btn btn-outline-primary w-100"
-                [disabled]="item.disabled"
-              >
-                {{ item.label }}
-              </button>
-            </div>
+          <div class="col-6 py-2">
+            <button (click)="onActionBtnClick(item.key)" class="btn btn-outline-primary w-100"
+              [disabled]="item.disabled">
+              {{ item.label }}
+            </button>
+          </div>
           }
         </div>
       </div>
