@@ -9,6 +9,7 @@ import { from, of } from 'rxjs';
 import { catchError, delay, filter, map, switchMap, take, tap } from 'rxjs/operators';
 import { selectAuthStatus, selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
+import { showErrorNotification } from '../../notification-store/state/actions';
 import { environment } from './../../../../environments/environment';
 import { AuthStatusCode } from './../../../shared/enum';
 import { IReceiptTransaction, ITokenSetup, StoreState } from './../../../shared/interfaces';
@@ -385,6 +386,33 @@ export class TokenManagementEffects {
           )
         );
       })
+    );
+  });
+
+  addTokenToWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.addTokenToWallet),
+      concatLatestFrom(() => [this.store.select(selectTokenDetailData)]),
+      filter((payload) => payload[1] !== null),
+      map(
+        (payload: [ReturnType<typeof tokenActions.addTokenToWallet>, ITokenSetup | null]) =>
+          payload as [ReturnType<typeof tokenActions.addTokenToWallet>, ITokenSetup]
+      ),
+      switchMap((action: [ReturnType<typeof tokenActions.addTokenToWallet>, ITokenSetup]) => {
+        return from(this.tokenSetupService.addTokenToWallet(action[1])).pipe(
+          map(() => tokenActions.addTokenToWalletSuccess()),
+          catchError((error: string) => of(tokenActions.addTokenToWalletFailure({ message: error })))
+        );
+      })
+    );
+  });
+
+  errorMessage$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.addTokenToWalletFailure),
+      map((action: ReturnType<typeof tokenActions.addTokenToWalletFailure>) =>
+        showErrorNotification({ message: action.message })
+      )
     );
   });
 }

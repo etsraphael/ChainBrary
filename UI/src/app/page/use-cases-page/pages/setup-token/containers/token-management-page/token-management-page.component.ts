@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
@@ -28,6 +29,7 @@ import {
 } from './../../../../../../store/auth-store/state/actions';
 import { selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import {
+  addTokenToWallet,
   burnToken,
   changeOwnership,
   loadBalance,
@@ -46,7 +48,6 @@ import {
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
-import { MatSnackBar, MatSnackBarRef, TextOnlySnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-token-management-page',
@@ -107,7 +108,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private actions$: Actions,
     private router: Router,
-    private snackbar: MatSnackBar,
+    private snackbar: MatSnackBar
   ) {}
 
   readonly tokenDetailStore$: Observable<StoreState<ITokenSetup | null>> = this.store.select(selectTokenDetail);
@@ -256,6 +257,10 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     return this.snackbar.open($localize`:@@Copied:Copied`, '', {
       duration: 3000
     });
+  }
+
+  addTokenToWallet(): void {
+    return this.store.dispatch(addTokenToWallet());
   }
 
   private initNetworkDetailSelected(): void {

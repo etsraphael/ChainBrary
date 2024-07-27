@@ -113,4 +113,11 @@ export const changeOwnershipFailure = createAction(
   props<{ message: string }>()
 );
 
+export const addTokenToWallet = createAction('[TokenManagement] Add Token To Wallet');
+export const addTokenToWalletSuccess = createAction('[TokenManagement] Add Token To Wallet Success');
+export const addTokenToWalletFailure = createAction(
+  '[TokenManagement] Add Token To Wallet Failure',
+  props<{ message: string }>()
+);
+
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NetworkChainId } from '@chainbrary/web3-login';
-import Web3, { AbiFragment, AbiItem, Contract, Log, TransactionReceipt } from 'web3';
+import Web3, { AbiFragment, AbiItem, Contract, JsonRpcResponseWithResult, Log, TransactionReceipt } from 'web3';
 import {
   CustomERC20TokenContract,
   CustomERC20TokenFactoryContract,
@@ -422,6 +422,32 @@ export class TokenSetupService {
       };
 
       return convertedReceipt;
+    } catch (error) {
+      return Promise.reject((error as Error)?.message || error);
+    }
+  }
+
+  async addTokenToWallet(token: ITokenSetup): Promise<boolean> {
+    const web3: Web3 = new Web3(window.ethereum);
+    try {
+      const response: JsonRpcResponseWithResult<boolean> | undefined = await web3.currentProvider?.request({
+        method: 'wallet_watchAsset',
+        params: {
+          type: 'ERC20',
+          options: {
+            address: token.contractAddress,
+            symbol: token.symbol,
+            decimals: 18,
+            image: null
+          }
+        }
+      });
+
+      if (response?.error) {
+        return Promise.reject('Invalid response');
+      } else {
+        return true;
+      }
     } catch (error) {
       return Promise.reject((error as Error)?.message || error);
     }
