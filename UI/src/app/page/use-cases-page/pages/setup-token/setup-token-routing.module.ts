@@ -4,6 +4,7 @@ import { SetupTokenMenuComponent } from './components/setup-token-menu/setup-tok
 import { SetupTokenHomeComponent } from './containers/setup-token-home/setup-token-home.component';
 import { TokenCreationPageComponent } from './containers/token-creation-page/token-creation-page.component';
 import { TokenManagementPageComponent } from './containers/token-management-page/token-management-page.component';
+import { TokenSearchPageComponent } from './containers/token-search-page/token-search-page.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,10 @@ const routes: Routes = [
       {
         path: 'manage-token',
         component: TokenManagementPageComponent
+      },
+      {
+        path: 'token-search',
+        component: TokenSearchPageComponent
       },
       {
         path: '',

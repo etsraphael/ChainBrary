@@ -10,6 +10,10 @@ export const initialState: ITokenManagementState = {
     isLoading: false,
     errorMessage: null
   },
+  searchToken: {
+    isLoading: false,
+    errorMessage: null
+  },
   tokenRefreshCheck: {
     data: { attempt: 0 },
     loading: false,

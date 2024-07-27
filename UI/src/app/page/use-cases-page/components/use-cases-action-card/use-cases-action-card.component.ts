@@ -12,7 +12,7 @@ export class UseCasesActionCardComponent {
 export interface IUseCasesActionCard {
   id: string;
   title: string;
-  descritpion: string;
+  description: string;
   routerLink: string;
   buttonText: string;
   imgSrc: string;

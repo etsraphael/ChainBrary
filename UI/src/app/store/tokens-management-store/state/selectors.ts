@@ -28,3 +28,8 @@ export const selectTokenBalance: MemoizedSelector<object, StoreState<number | nu
   selectTokenManagementState,
   (s: ITokenManagementState) => s.balance
 );
+
+export const selectSearchToken: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
+  selectTokenManagementState,
+  (s: ITokenManagementState) => s.searchToken
+);

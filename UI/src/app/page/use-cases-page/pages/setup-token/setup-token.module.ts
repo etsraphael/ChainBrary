@@ -12,6 +12,7 @@ import { SetupTokenHomeComponent } from './containers/setup-token-home/setup-tok
 import { TokenCreationPageComponent } from './containers/token-creation-page/token-creation-page.component';
 import { TokenManagementPageComponent } from './containers/token-management-page/token-management-page.component';
 import { SetUpTokenRoutingModule } from './setup-token-routing.module';
+import { TokenSearchPageComponent } from './containers/token-search-page/token-search-page.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { SetUpTokenRoutingModule } from './setup-token-routing.module';
     TokenCreationPageComponent,
     TokenManagementPageComponent,
     TokenCreationFormComponent,
-    TokenCreationReviewComponent
+    TokenCreationReviewComponent,
+    TokenSearchPageComponent
   ],
   imports: [
     CommonModule,

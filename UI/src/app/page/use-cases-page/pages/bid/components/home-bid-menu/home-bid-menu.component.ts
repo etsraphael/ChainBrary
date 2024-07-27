@@ -17,7 +17,7 @@ export class HomeBidMenuComponent {
     {
       id: 'create-bid',
       title: $localize`:@@useCases.bid.createBid:Create a bid`,
-      descritpion: $localize`:@@useCases.bid.createBidDescription:Kickstart your bidding process with 'Create a Bid.' Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.`,
+      description: $localize`:@@useCases.bid.createBidDescription:Kickstart your bidding process with 'Create a Bid.' Tailor your bid with ease, ensuring a secure and straightforward setup. Ideal for diverse offerings, this feature simplifies launching bids on our decentralized platform.`,
       routerLink: '/use-cases/bid/creation',
       buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,
       imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/bid-service.svg'
@@ -25,7 +25,7 @@ export class HomeBidMenuComponent {
     {
       id: 'join-bid',
       title: $localize`:@@useCases.bid.joinBid:Join a bid`,
-      descritpion: $localize`:@@useCases.bid.joinBidDescription:Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.`,
+      description: $localize`:@@useCases.bid.joinBidDescription:Dive into existing bids with 'Join a Bid.' Find and participate in bids that align with your interests. Our platform offers a seamless and secure way to engage with the decentralized bidding community.`,
       routerLink: '/use-cases/bid/search',
       buttonText: $localize`:@@commonButtonTextStartJoining:Start joining`,
       imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/anonymous-vote.svg'

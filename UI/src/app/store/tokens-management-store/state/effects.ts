@@ -178,6 +178,27 @@ export class TokenManagementEffects {
     );
   });
 
+  searchToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.searchToken),
+      switchMap((action: ReturnType<typeof tokenActions.searchToken>) => {
+        return from(
+          this.tokenSetupService.getCustomERC20FromContractAddress(action.chainId, action.contractAddress)
+        ).pipe(
+          map((token: ITokenSetup) => tokenActions.searchTokenSuccess({ token })),
+          tap((token: ReturnType<typeof tokenActions.searchTokenSuccess>) =>
+            this.router.navigate(['/use-cases/setup-token/manage-token'], {
+              queryParams: { chainId: token.token.chainId, contractAddress: token.token.contractAddress }
+            })
+          ),
+          catchError((error: { message: string }) =>
+            of(tokenActions.loadTokenByContractAddressFailure({ message: error.message }))
+          )
+        );
+      })
+    );
+  });
+
   mintToken$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(tokenActions.mintToken),

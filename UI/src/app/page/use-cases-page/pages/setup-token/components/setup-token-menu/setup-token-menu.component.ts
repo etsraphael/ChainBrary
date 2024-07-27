@@ -18,7 +18,7 @@ export class SetupTokenMenuComponent {
     {
       id: 'print-qr-code',
       title: $localize`:@@createTokenTitle:Create Token`,
-      descritpion: $localize`:@@printCreateTokenDescription:Create your own token with custom name, symbol and initial supply.`,
+      description: $localize`:@@printCreateTokenDescription:Create your own token with custom name, symbol and initial supply.`,
       routerLink: '/use-cases/setup-token/token-creation',
       buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,
       imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/token-creation.svg'
@@ -26,8 +26,8 @@ export class SetupTokenMenuComponent {
     {
       id: 'scan-qr-to-pay',
       title: $localize`:@@scanManageTokenTitle:Manage Token`,
-      descritpion: $localize`:@@scanManageTokenDescription:Manage your token by minting, burning, transferring and more.`,
-      routerLink: '/use-cases/setup-token/manage-token',
+      description: $localize`:@@scanManageTokenDescription:Manage your token by minting, burning, transferring and more.`,
+      routerLink: '/use-cases/setup-token/token-search',
       buttonText: $localize`:@@commonTextManageNow:Manage`,
       imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/setup-token-management.svg'
     }

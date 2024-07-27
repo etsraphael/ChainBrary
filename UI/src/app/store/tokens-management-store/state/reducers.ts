@@ -154,6 +154,38 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
       }
     })
   ),
+  on(VaultsActions.searchToken, (): ITokenManagementState => {
+    return {
+      ...initialState,
+      searchToken: {
+        isLoading: true,
+        errorMessage: null
+      }
+    };
+  }),
+  on(VaultsActions.searchTokenSuccess, (state: ITokenManagementState, { token }): ITokenManagementState => {
+    return {
+      ...state,
+      searchToken: {
+        isLoading: false,
+        errorMessage: null
+      },
+      tokenDetail: {
+        loading: false,
+        error: null,
+        data: token
+      }
+    };
+  }),
+  on(VaultsActions.searchTokenFailure, (state: ITokenManagementState, { message }): ITokenManagementState => {
+    return {
+      ...state,
+      searchToken: {
+        isLoading: false,
+        errorMessage: message
+      }
+    };
+  }),
   on(VaultsActions.resetTokenManagement, (): ITokenManagementState => initialState)
 );
 

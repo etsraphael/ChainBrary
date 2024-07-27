@@ -1,0 +1,35 @@
+<app-header-body-page [header]="headerPayload"></app-header-body-page>
+<div class="container mt-3">
+  <div class="row">
+    <form [formGroup]="mainForm">
+      <div class="col-12">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label i18n>Contract address</mat-label>
+          <input formControlName="contractAddress" matInput type="text" />
+          <mat-error i18n *ngIf="mainForm.get('contractAddress')?.hasError('required')">
+            Contract address is required
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <mat-form-field class="w-100" appearance="outline">
+          <mat-label i18n>Network</mat-label>
+          <mat-select formControlName="networkChainId">
+            @for (item of networkAvailable; track item.chainId) {
+              <mat-option [value]="item.chainId">
+                {{ item.name }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error i18n *ngIf="mainForm.get('networkChainId')?.hasError('required')"> Network is required </mat-error>
+          <mat-error i18n *ngIf="mainForm.get('contractAddress')?.hasError('invalidAddress')">
+            This address is invalid
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <div class="col-12">
+        <button i18n class="btn btn-primary w-100" (click)="searchToken()">Search</button>
+      </div>
+    </form>
+  </div>
+</div>

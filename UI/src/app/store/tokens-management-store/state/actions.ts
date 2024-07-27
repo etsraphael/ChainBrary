@@ -120,4 +120,14 @@ export const addTokenToWalletFailure = createAction(
   props<{ message: string }>()
 );
 
+export const searchToken = createAction(
+  '[TokenManagement] Search Token',
+  props<{ contractAddress: string; chainId: NetworkChainId }>()
+);
+export const searchTokenSuccess = createAction(
+  '[TokenManagement] Search Token Success',
+  props<{ token: ITokenSetup }>()
+);
+export const searchTokenFailure = createAction('[TokenManagement] Search Token Failure', props<{ message: string }>());
+
 export const resetTokenManagement = createAction('[TokenManagement] Reset TokenManagement');
