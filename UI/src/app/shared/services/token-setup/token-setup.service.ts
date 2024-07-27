@@ -159,6 +159,36 @@ export class TokenSetupService {
     });
   }
 
+  async getCustomERC20FromContractAddress(chainId: NetworkChainId, contractAddress: string): Promise<ITokenSetup> {
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const web3: Web3 = new Web3(rpcUrl);
+    const customERC20TokenContract = new CustomERC20TokenContract();
+    const contract = new web3.eth.Contract(customERC20TokenContract.getAbi() as AbiItem[], contractAddress);
+
+    return contract.methods['getTokenDetails']()
+      .call()
+      .then((res: void | [] | CustomERC20TokenFactoryObjectResponse) => {
+        if (!this.isCustomERC20TokenResponseValid(res)) {
+          return Promise.reject('Invalid token response');
+        }
+
+        return {
+          name: res[0],
+          symbol: res[1],
+          totalSupply: Number(web3.utils.fromWei(String(res[2]), 'ether')),
+          decimals: Number(web3.utils.fromWei(String(res[3]), 'ether')),
+          canMint: res[4],
+          canBurn: res[5],
+          canPause: res[6],
+          owner: res[8],
+          contractAddress: contractAddress,
+          chainId: chainId,
+          isPaused: res[7]
+        } as ITokenSetup;
+      })
+      .catch((error: string) => Promise.reject(error));
+  }
+
   async mintToken(
     from: string,
     to: string,
@@ -359,7 +389,11 @@ export class TokenSetupService {
     }
   }
 
-  async renounceTokenOwnership(from: string, contractAddress: string, chainId: NetworkChainId): Promise<IReceiptTransaction> {
+  async renounceTokenOwnership(
+    from: string,
+    contractAddress: string,
+    chainId: NetworkChainId
+  ): Promise<IReceiptTransaction> {
     const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
     const web3: Web3 = new Web3(rpcUrl);
 

@@ -46,6 +46,11 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
       tokenCreationIsProcessing: {
         isLoading: true,
         errorMessage: null
+      },
+      tokenDetail: {
+        loading: false,
+        error: null,
+        data: null
       }
     })
   ),
@@ -115,6 +120,7 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
   ),
   on(
     tokenActions.loadTokenByTxnHash,
+    tokenActions.loadTokenByContractAddress,
     (state: ITokenManagementState): ITokenManagementState => ({
       ...state,
       tokenDetail: {
@@ -126,6 +132,7 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
   ),
   on(
     tokenActions.loadTokenByTxnHashSuccess,
+    tokenActions.loadTokenByContractAddressSuccess,
     (state: ITokenManagementState, { token }): ITokenManagementState => ({
       ...state,
       tokenDetail: {
@@ -137,6 +144,7 @@ export const authReducer: ActionReducer<ITokenManagementState, Action> = createR
   ),
   on(
     tokenActions.loadTokenByTxnHashFailure,
+    tokenActions.loadTokenByContractAddressFailure,
     (state: ITokenManagementState, { message }): ITokenManagementState => ({
       ...state,
       tokenDetail: {

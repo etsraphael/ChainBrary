@@ -108,7 +108,9 @@ export class TokenManagementEffects {
             tokenActions.tokenCreationChecking({ txn: response, chainId: action[0].payload.network })
           ),
           tap((action: ReturnType<typeof tokenActions.tokenCreationChecking>) => {
-            this.router.navigate(['/use-cases/setup-token/manage-token/', action.chainId, action.txn]);
+            this.router.navigate(['/use-cases/setup-token/manage-token'], {
+              queryParams: { chainId: action.chainId, txnHash: action.txn }
+            });
           }),
           catchError(() =>
             of(
@@ -149,10 +151,26 @@ export class TokenManagementEffects {
     return this.actions$.pipe(
       ofType(tokenActions.loadTokenByTxnHash),
       switchMap((action: ReturnType<typeof tokenActions.loadTokenByTxnHash>) => {
-        return from(this.tokenSetupService.getCustomERC20FromTxnHash(action.chainId, action.txHash)).pipe(
+        return from(this.tokenSetupService.getCustomERC20FromTxnHash(action.chainId, action.txHash as string)).pipe(
           map((token: ITokenSetup) => tokenActions.loadTokenByTxnHashSuccess({ token })),
           catchError((error: { message: string }) =>
             of(tokenActions.loadTokenByTxnHashFailure({ message: error.message }))
+          )
+        );
+      })
+    );
+  });
+
+  loadTokenByContractAddress$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(tokenActions.loadTokenByContractAddress),
+      switchMap((action: ReturnType<typeof tokenActions.loadTokenByContractAddress>) => {
+        return from(
+          this.tokenSetupService.getCustomERC20FromContractAddress(action.chainId, action.contractAddress)
+        ).pipe(
+          map((token: ITokenSetup) => tokenActions.loadTokenByContractAddressSuccess({ token })),
+          catchError((error: { message: string }) =>
+            of(tokenActions.loadTokenByContractAddressFailure({ message: error.message }))
           )
         );
       })
@@ -352,7 +370,12 @@ export class TokenManagementEffects {
       ),
       switchMap((action: [ReturnType<typeof tokenActions.changeOwnership>, WalletProvider, string, ITokenSetup]) => {
         return from(
-          this.tokenSetupService.transferTokenOwnership(action[2], action[0].to, action[3].contractAddress, action[3].chainId)
+          this.tokenSetupService.transferTokenOwnership(
+            action[2],
+            action[0].to,
+            action[3].contractAddress,
+            action[3].chainId
+          )
         ).pipe(
           map((response: IReceiptTransaction) =>
             tokenActions.changeOwnershipSuccess({ txn: response.blockHash, chainId: action[3].chainId })
@@ -363,5 +386,5 @@ export class TokenManagementEffects {
         );
       })
     );
-  })
+  });
 }

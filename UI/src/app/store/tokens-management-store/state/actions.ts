@@ -21,15 +21,28 @@ export const createTokenFailure = createAction(
 );
 
 export const loadTokenByTxnHash = createAction(
-  '[TokenManagement] Load Token By TxnHash',
+  '[TokenManagement] Load Token By Txn Hash',
   props<{ txHash: string; chainId: NetworkChainId }>()
 );
 export const loadTokenByTxnHashSuccess = createAction(
-  '[TokenManagement] Load Token By TxnHash Success',
+  '[TokenManagement] Load Toke By Txn Hashn Success',
   props<{ token: ITokenSetup }>()
 );
 export const loadTokenByTxnHashFailure = createAction(
-  '[TokenManagement] Load Token By TxnHash Failure',
+  '[TokenManagement] Load Token By Txn Hash Failure',
+  props<{ message: string }>()
+);
+
+export const loadTokenByContractAddress = createAction(
+  '[TokenManagement] Load Token By Contract Address',
+  props<{ contractAddress: string; chainId: NetworkChainId }>()
+);
+export const loadTokenByContractAddressSuccess = createAction(
+  '[TokenManagement] Load Token By Contract Address Success',
+  props<{ token: ITokenSetup }>()
+);
+export const loadTokenByContractAddressFailure = createAction(
+  '[TokenManagement] Load Token By Contract Address Failure',
   props<{ message: string }>()
 );
 

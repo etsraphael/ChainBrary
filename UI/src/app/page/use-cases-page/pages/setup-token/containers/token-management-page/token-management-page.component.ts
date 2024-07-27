@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
@@ -20,16 +20,24 @@ import {
   StoreState
 } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
-import { accountChanged, networkChangeSuccess, resetAuth, setAuthPublicAddress } from './../../../../../../store/auth-store/state/actions';
+import {
+  accountChanged,
+  networkChangeSuccess,
+  resetAuth,
+  setAuthPublicAddress
+} from './../../../../../../store/auth-store/state/actions';
 import { selectPublicAddress } from './../../../../../../store/auth-store/state/selectors';
 import {
   burnToken,
   changeOwnership,
   loadBalance,
+  loadTokenByContractAddress,
   loadTokenByTxnHash,
+  loadTokenByTxnHashSuccess,
   mintToken,
   renounceOwnership,
   togglePauseToken,
+  tokenCreationCheckingSuccess,
   transferToken
 } from './../../../../../../store/tokens-management-store/state/actions';
 import {
@@ -96,7 +104,8 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
     public web3LoginService: Web3LoginService,
     private readonly store: Store,
     private dialog: MatDialog,
-    private actions$: Actions
+    private actions$: Actions,
+    private router: Router
   ) {}
 
   readonly tokenDetailStore$: Observable<StoreState<ITokenSetup | null>> = this.store.select(selectTokenDetail);
@@ -108,10 +117,6 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   );
   readonly addressConnected$: Observable<string | null> = this.store.select(selectPublicAddress);
   readonly tokenBalance$: Observable<StoreState<number | null>> = this.store.select(selectTokenBalance);
-  readonly resetPermission$: Observable<Action> = this.actions$.pipe(
-    ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
-    takeUntil(this.destroyed$)
-  );
 
   get tokenIsCreating$(): Observable<boolean> {
     return this.tokenCreationIsProcessing$.pipe(map((s) => s.isLoading));
@@ -126,18 +131,22 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   }
 
   get chainId(): NetworkChainId {
-    return this.route.snapshot.params['chainId'];
+    return this.route.snapshot.queryParams['chainId'];
   }
 
-  get txnHash(): string {
-    return this.route.snapshot.params['txnHash'];
+  get txnHash(): string | undefined {
+    return this.route.snapshot.queryParams['txnHash'];
+  }
+
+  get contractAddress(): string | undefined {
+    return this.route.snapshot.queryParams['contractAddress'];
   }
 
   ngOnInit(): void {
     this.initNetworkDetailSelected();
     this.callActions();
     this.setUpButtonOptions();
-    this.listenToResetPermission();
+    this.listenToActions();
   }
 
   ngOnDestroy(): void {
@@ -246,25 +255,54 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   }
 
   private callActions(): void {
-    combineLatest([this.tokenDetail$, this.tokenCreationIsProcessing$])
-      .pipe(
-        takeUntil(this.destroyed$),
-        filter(([tokenDetail, tokenRefreshCheck]) => tokenDetail === null && tokenRefreshCheck.isLoading === false),
-        take(1)
-      )
-      .subscribe(() => this.store.dispatch(loadTokenByTxnHash({ txHash: this.txnHash, chainId: this.chainId })));
+    if (this.contractAddress) {
+      this.store.dispatch(loadTokenByContractAddress({ contractAddress: this.contractAddress, chainId: this.chainId }));
+    } else
+      combineLatest([this.tokenDetail$, this.tokenCreationIsProcessing$])
+        .pipe(
+          takeUntil(this.destroyed$),
+          filter(
+            ([tokenDetail, tokenRefreshCheck]) =>
+              tokenDetail === null && tokenRefreshCheck.isLoading === false && !this.contractAddress
+          ),
+          take(1)
+        )
+        .subscribe(() =>
+          this.store.dispatch(loadTokenByTxnHash({ txHash: this.txnHash as string, chainId: this.chainId }))
+        );
   }
 
-  private listenToResetPermission(): void {
-    this.resetPermission$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+  private listenToActions(): void {
+    const resetPermission$: Observable<Action> = this.actions$.pipe(
+      ofType(resetAuth, accountChanged, networkChangeSuccess, setAuthPublicAddress),
+      takeUntil(this.destroyed$)
+    );
+    const updateUrl$: Observable<ReturnType<typeof tokenCreationCheckingSuccess | typeof loadTokenByTxnHashSuccess>> =
+      this.actions$.pipe(ofType(tokenCreationCheckingSuccess, loadTokenByTxnHashSuccess), takeUntil(this.destroyed$));
+
+    resetPermission$.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.setUpButtonOptions();
     });
+
+    updateUrl$
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((action: ReturnType<typeof tokenCreationCheckingSuccess | typeof loadTokenByTxnHashSuccess>) => {
+        this.route.queryParams.pipe(take(1)).subscribe((params) => {
+          const newParams = { ...params };
+          delete newParams['txnHash'];
+          newParams['contractAddress'] = action.token.contractAddress;
+          this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: newParams
+          });
+        });
+      });
   }
 
   private setUpButtonOptions(): void {
     combineLatest([this.tokenDetail$, this.store.select(selectPublicAddress).pipe(filter(Boolean))])
       .pipe(
-        filter(([tokenDetail,address]) => tokenDetail !== null && address !== null),
+        filter(([tokenDetail, address]) => tokenDetail !== null && address !== null),
         take(1)
       )
       .subscribe(([tokenDetail, address]: [ITokenSetup | null, string]) => {

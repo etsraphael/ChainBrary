@@ -1,6 +1,5 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
 import { ActionStoreProcessing, ITokenSetup, StoreState } from '../../../shared/interfaces';
-import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { ITokenManagementState, TOKEN_MANAGEMENT_FEATURE_KEY } from './interfaces';
 
 export const selectTokenManagementState = createFeatureSelector<ITokenManagementState>(TOKEN_MANAGEMENT_FEATURE_KEY);
