@@ -191,9 +191,7 @@ export class TokenManagementEffects {
               queryParams: { chainId: token.token.chainId, contractAddress: token.token.contractAddress }
             })
           ),
-          catchError((error: { message: string }) =>
-            of(tokenActions.loadTokenByContractAddressFailure({ message: error.message }))
-          )
+          catchError((error: { message: string }) => of(tokenActions.searchTokenFailure({ message: error.message })))
         );
       })
     );

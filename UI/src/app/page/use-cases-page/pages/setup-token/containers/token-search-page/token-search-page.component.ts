@@ -32,7 +32,7 @@ export class TokenSearchPageComponent implements OnInit {
       ].includes(network.chainId)
     );
 
-  mainForm = new FormGroup<SearchTokenForm>({
+  mainForm: FormGroup<SearchTokenForm> = new FormGroup<SearchTokenForm>({
     contractAddress: new FormControl<string | null>(null, [
       Validators.required,
       this.formatService.ethAddressValidator()
@@ -50,6 +50,10 @@ export class TokenSearchPageComponent implements OnInit {
 
   get searchTokenProcessing$(): Observable<boolean> {
     return this.searchToken$.pipe(map((s: ActionStoreProcessing) => s.isLoading));
+  }
+
+  get searchTokenError$(): Observable<string | null> {
+    return this.searchToken$.pipe(map((s: ActionStoreProcessing) => s.errorMessage));
   }
 
   ngOnInit(): void {

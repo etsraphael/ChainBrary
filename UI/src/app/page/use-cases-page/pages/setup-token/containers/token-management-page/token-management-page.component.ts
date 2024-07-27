@@ -268,9 +268,26 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   }
 
   private callActions(): void {
-    if (this.contractAddress) {
-      this.store.dispatch(loadTokenByContractAddress({ contractAddress: this.contractAddress, chainId: this.chainId }));
-    } else
+    // add a condition here, if tokenDetail$ already has the same contract address, don't call the action
+    this.tokenDetail$
+      .pipe(
+        take(1),
+        filter((tokenDetail: ITokenSetup | null) => tokenDetail?.contractAddress !== this.contractAddress)
+      )
+      .subscribe(() => {
+        if (this.contractAddress) {
+          return this.store.dispatch(
+            loadTokenByContractAddress({ contractAddress: this.contractAddress, chainId: this.chainId })
+          );
+        }
+
+        if (this.txnHash) {
+          return this.store.dispatch(loadTokenByTxnHash({ txHash: this.txnHash as string, chainId: this.chainId }));
+        }
+      });
+
+    // after creation, load the token for the first time by txn hash
+    if (this.txnHash) {
       combineLatest([this.tokenDetail$, this.tokenCreationIsProcessing$])
         .pipe(
           takeUntil(this.destroyed$),
@@ -283,6 +300,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
         .subscribe(() =>
           this.store.dispatch(loadTokenByTxnHash({ txHash: this.txnHash as string, chainId: this.chainId }))
         );
+    }
   }
 
   private listenToActions(): void {
