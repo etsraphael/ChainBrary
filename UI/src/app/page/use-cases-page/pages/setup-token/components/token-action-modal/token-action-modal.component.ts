@@ -4,6 +4,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { filter, map, Observable, ReplaySubject, take } from 'rxjs';
 import { MaterialModule } from './../../../../../../module/material.module';
+import { CommonButtonText } from './../../../../../../shared/enum';
 import { KeyAndLabel, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { IOptionActionBtn } from './../../containers/token-management-page/token-management-page.component';
@@ -16,6 +17,7 @@ import { IOptionActionBtn } from './../../containers/token-management-page/token
   styleUrl: './token-action-modal.component.scss'
 })
 export class TokenActionModalComponent implements OnInit, OnDestroy {
+  commonButtonText = CommonButtonText;
   optionActionBtnTypes: typeof IOptionActionBtn = IOptionActionBtn;
   optionActionBtnMenu: IOptionActionBtnPage[] = [
     {

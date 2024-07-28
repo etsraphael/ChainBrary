@@ -51,7 +51,7 @@
             <div class="col-12">
               <div class="d-flex justify-content-between">
                 <div class="col-8">
-                  <h6 class="text-dark supply-label">Total Supply</h6>
+                  <h6 i18n class="text-dark supply-label">Total Supply</h6>
                   <h5 class="text-muted mb-0">
                     {{ (tokenDetail$ | async)?.totalSupply + ' ' + (tokenDetail$ | async)?.symbol?.toUpperCase() }}
                   </h5>
@@ -63,12 +63,11 @@
                   <mat-menu #menu="matMenu">
                     <button mat-menu-item>
                       <a target="_blank" [href]="generateScanLink((tokenDetail$ | async)?.contractAddress!)">
-                        <span>Explorer</span>
+                        <span i18n>Explorer</span>
                       </a>
                     </button>
-                    <!-- TODO -->
                     <button mat-menu-item (click)="addTokenToWallet()">
-                      <span>Add to wallet</span>
+                      <span i18n>Add to wallet</span>
                     </button>
                   </mat-menu>
                 </div>

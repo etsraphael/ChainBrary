@@ -149,10 +149,14 @@
   </div>
   <div class="card-footer d-flex justify-content-end">
     <div class="px-2">
-      <button (click)="dialogRef.close()" class="w-100 btn btn-outline-secondary" type="button">Back</button>
+      <button (click)="dialogRef.close()" class="w-100 btn btn-outline-secondary" type="button">
+        {{ commonButtonText.Back }}
+      </button>
     </div>
     <div class="px-2">
-      <button class="w-100 btn btn-primary" type="submit" (click)="submitAction()">Confirm</button>
+      <button class="w-100 btn btn-primary" type="submit" (click)="submitAction()">
+        {{ commonButtonText.Confirm }}
+      </button>
     </div>
   </div>
 </div>

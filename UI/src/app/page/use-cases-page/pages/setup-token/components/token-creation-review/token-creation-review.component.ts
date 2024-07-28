@@ -60,7 +60,7 @@ export class TokenCreationReviewComponent implements OnInit {
       );
       this.invoiceAmount = this.priceOfCreatingToken / price;
     } catch (error: unknown) {
-      this.priceError = 'Failed to get the current price of the native network token. Please try again later.';
+      this.priceError = $localize`:@@ErrorMessageRetrievePrice.Desc:Failed to get the current price of the native network token. Please try again later.`;
     }
   }
 

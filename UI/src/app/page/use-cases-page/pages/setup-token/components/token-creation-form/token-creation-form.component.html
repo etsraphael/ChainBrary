@@ -25,7 +25,7 @@
       </mat-error>
     </div>
     <div class="row my-2">
-      <h5 class="mb-3">Token details</h5>
+      <h5 i18n class="mb-3">Token details</h5>
       <div class="col-12">
         <div class="row">
           <div class="col-6">
@@ -61,7 +61,7 @@
           </div>
           <div class="col-6 col-md-5">
             <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Decimal (1-18)</mat-label>
+              <mat-label i18n>Decimal (1-18)</mat-label>
               <input formControlName="decimals" class="text-center" matInput type="number" />
               <button matPrefix mat-icon-button type="button" (click)="decreaseDecimals()">
                 <i class="bi bi-dash-circle"></i>
@@ -75,7 +75,7 @@
       </div>
     </div>
     <div class="row my-2">
-      <h5 class="mb-3">Other Configs</h5>
+      <h5 i18n class="mb-3">Other Configs</h5>
       <div class="row mb-3">
         @for (item of optionsList; track item) {
           <div class="col-6">
