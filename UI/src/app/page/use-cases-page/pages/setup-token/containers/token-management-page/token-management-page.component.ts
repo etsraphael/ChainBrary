@@ -268,7 +268,7 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   }
 
   private callActions(): void {
-    // add a condition here, if tokenDetail$ already has the same contract address, don't call the action
+    // if tokenDetail$ already has the same contract address, don't call the action
     this.tokenDetail$
       .pipe(
         take(1),
