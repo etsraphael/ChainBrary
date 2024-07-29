@@ -22,38 +22,38 @@ export class TokenActionModalComponent implements OnInit, OnDestroy {
   optionActionBtnMenu: IOptionActionBtnPage[] = [
     {
       key: IOptionActionBtn.Mint,
-      label: $localize`:@@btnOption.Title:Mint Tokens`,
-      desc: $localize`:@@btnOption.Desc:Create new tokens and add them to the total supply.`
+      label: $localize`:@@btnOption.Title.Mint:Mint Tokens`,
+      desc: $localize`:@@btnOption.Desc.Mint:Create new tokens and add them to the total supply.`
     },
     {
       key: IOptionActionBtn.Burn,
-      label: $localize`:@@btnOption.Title:Burn Tokens`,
-      desc: $localize`:@@btnOption.Desc:Destroy tokens to reduce the total supply.`
+      label: $localize`:@@btnOption.Title.Burn:Burn Tokens`,
+      desc: $localize`:@@btnOption.Desc.Burn:Destroy tokens to reduce the total supply.`
     },
     {
       key: IOptionActionBtn.Transfer,
-      label: $localize`:@@btnOption.Title:Transfer Tokens`,
-      desc: $localize`:@@btnOption.Desc:Move tokens from one account to another.`
+      label: $localize`:@@btnOption.Title.Transfer:Transfer Tokens`,
+      desc: $localize`:@@btnOption.Desc.Transfer:Move tokens from one account to another.`
     },
     {
       key: IOptionActionBtn.ChangeOwner,
-      label: $localize`:@@btnOption.Title:Change Owner Tokens`,
-      desc: $localize`:@@btnOption.Desc:Assign token ownership to a different account.`
+      label: $localize`:@@btnOption.Title.ChangeOwner:Change Owner Tokens`,
+      desc: $localize`:@@btnOption.Desc.ChangeOwner:Assign token ownership to a different account.`
     },
     {
       key: IOptionActionBtn.Pause,
-      label: $localize`:@@btnOption.Title:Pause Tokens`,
-      desc: $localize`:@@btnOption.Desc:Temporarily halt all token transfers and actions.`
+      label: $localize`:@@btnOption.Title.Pause:Pause Tokens`,
+      desc: $localize`:@@btnOption.Desc.Pause:Temporarily halt all token transfers and actions.`
     },
     {
       key: IOptionActionBtn.Unpause,
-      label: $localize`:@@btnOption.Title:Unpause Tokens`,
-      desc: $localize`:@@btnOption.Desc:Resume token transfers and actions.`
+      label: $localize`:@@btnOption.Title.Unpause:Unpause Tokens`,
+      desc: $localize`:@@btnOption.Desc.Unpause:Resume token transfers and actions.`
     },
     {
       key: IOptionActionBtn.RenounceOwnership,
-      label: $localize`:@@btnOption.Title:Renounce Ownership`,
-      desc: $localize`:@@btnOption.Desc:Relinquish control and ownership of the tokens.`
+      label: $localize`:@@btnOption.Title.RenounceOwnership:Renounce Ownership`,
+      desc: $localize`:@@btnOption.Desc.RenounceOwnership:Relinquish control and ownership of the tokens.`
     }
   ];
   pageSelected: IOptionActionBtnPage = this.optionActionBtnMenu.find(

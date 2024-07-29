@@ -65,37 +65,37 @@ export class TokenManagementPageComponent implements OnInit, OnDestroy {
   optionBtns: IOptionButton[] = [
     {
       key: IOptionActionBtn.Mint,
-      label: $localize`:@@btnOption:Mint`,
+      label: $localize`:@@btnOption.Mint:Mint`,
       disabled: true
     },
     {
       key: IOptionActionBtn.Burn,
-      label: $localize`:@@btnOption:Burn`,
+      label: $localize`:@@btnOption.Burn:Burn`,
       disabled: true
     },
     {
       key: IOptionActionBtn.Transfer,
-      label: $localize`:@@btnOption:Transfer`,
+      label: $localize`:@@btnOption.Transfer:Transfer`,
       disabled: false
     },
     {
       key: IOptionActionBtn.ChangeOwner,
-      label: $localize`:@@btnOption:Change Owner`,
+      label: $localize`:@@btnOption.ChangeOwner:Change Owner`,
       disabled: true
     },
     {
       key: IOptionActionBtn.Pause,
-      label: $localize`:@@btnOption:Pause`,
+      label: $localize`:@@btnOption.Pause:Pause`,
       disabled: true
     },
     {
       key: IOptionActionBtn.Unpause,
-      label: $localize`:@@btnOption:Unpause`,
+      label: $localize`:@@btnOption.Unpause:Unpause`,
       disabled: true
     },
     {
       key: IOptionActionBtn.RenounceOwnership,
-      label: $localize`:@@btnOption:Renounce Ownership`,
+      label: $localize`:@@btnOption.RenounceOwnership:Renounce Ownership`,
       disabled: true
     }
   ];
