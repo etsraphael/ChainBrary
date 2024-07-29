@@ -2731,6 +2731,20 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="PayButton.ConnectWallet" datatype="html">
+        <source>Connect Wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PayButton.PayNow" datatype="html">
+        <source>Pay Now</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="paymentRequestDescription" datatype="html">
         <source>Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.</source>
         <context-group purpose="location">
