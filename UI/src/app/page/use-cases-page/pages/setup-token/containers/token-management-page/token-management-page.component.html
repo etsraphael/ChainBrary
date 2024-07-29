@@ -1,0 +1,111 @@
+<div class="container">
+  <div class="d-flex justify-content-center pt-2">
+    <div class="col-12">
+      <app-header-body-page [header]="headerPayload"></app-header-body-page>
+    </div>
+  </div>
+  <div class="mb-2">
+    <app-auth-banner></app-auth-banner>
+  </div>
+  @for (item of transactionCards$ | async; track item) {
+    <app-transaction-card [cardContent]="item"></app-transaction-card>
+  }
+  <ng-container
+    *ngIf="
+      (tokenIsCreating$ | async) === false && (tokenIsLoading$ | async) === false && (tokenDetail$ | async) !== null
+    "
+  >
+    <div class="card border-0 shadow-lg p-2">
+      <div class="container">
+        <div class="bg-primary-subtle py-3 my-2 card-header border-0">
+          <div class="row">
+            <div class="col-8 col-md-9 my-auto">
+              <div class="d-flex align-items-center">
+                <h5 class="bg-primary text-light symbol-container">{{ (tokenDetail$ | async)?.symbol }}</h5>
+                <h5 class="text-muted ms-2">{{ (tokenDetail$ | async)?.name }}</h5>
+              </div>
+              <p
+                [cdkCopyToClipboard]="(tokenDetail$ | async)?.contractAddress!"
+                (click)="clipboardClicked()"
+                class="text-muted mb-0 d-flex align-items-center contract-address-container bg-primary py-2 px-3 text-dark bg-opacity-25"
+              >
+                {{ formatService.formatPublicAddress((tokenDetail$ | async)?.contractAddress!, 8) }}
+                <i class="ms-auto bi bi-files"></i>
+              </p>
+            </div>
+            <div class="col-4 col-md-3">
+              <div class="card h-100 d-flex flex-column align-items-center justify-content-center network-card">
+                <div class="row mx-0 w-100">
+                  <div class="text-center mx-auto py-3">
+                    <img [src]="formatService.getIconUrl(networkDetailSelected.chainId)" alt="Network Icon" />
+                  </div>
+                </div>
+                <div class="d-flex justify-content-center mb-2 text-center px-3">
+                  {{ networkDetailSelected.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <hr class="mt-3 mb-4" />
+            <div class="col-12">
+              <div class="d-flex justify-content-between">
+                <div class="col-8">
+                  <h6 i18n class="text-dark supply-label">Total Supply</h6>
+                  <h5 class="text-muted mb-0">
+                    {{ (tokenDetail$ | async)?.totalSupply + ' ' + (tokenDetail$ | async)?.symbol?.toUpperCase() }}
+                  </h5>
+                </div>
+                <div class="col-4 text-end">
+                  <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                    <mat-icon>more_vert</mat-icon>
+                  </button>
+                  <mat-menu #menu="matMenu">
+                    <button mat-menu-item>
+                      <a target="_blank" [href]="generateScanLink((tokenDetail$ | async)?.contractAddress!)">
+                        <span i18n>Explorer</span>
+                      </a>
+                    </button>
+                    <button mat-menu-item (click)="addTokenToWallet()">
+                      <span i18n>Add to wallet</span>
+                    </button>
+                  </mat-menu>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row my-2">
+          @for (item of optionBtns; track item) {
+            <div class="col-6 py-2">
+              <button
+                (click)="onActionBtnClick(item.key)"
+                class="btn btn-outline-primary w-100"
+                [disabled]="item.disabled"
+              >
+                {{ item.label }}
+              </button>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(tokenIsCreating$ | async) === true">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div class="d-flex flex-column align-items-center pt-5">
+            <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+            <p class="mt-3 text-secondary text-center">
+              <span i18n>
+                Creating your token... Stay on this page or refresh it later when the blockchain will validate your
+                transaction
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

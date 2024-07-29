@@ -141,7 +141,11 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
   get actionBtnText$(): Observable<string> {
     return this.authStatus$.pipe(
-      map((status: AuthStatusCode) => (status === AuthStatusCode.NotConnected ? 'Connect Wallet' : 'Pay Now'))
+      map((status: AuthStatusCode) =>
+        status === AuthStatusCode.NotConnected
+          ? $localize`:@@PayButton.ConnectWallet:Connect Wallet`
+          : $localize`:@@PayButton.PayNow:Pay Now`
+      )
     );
   }
 

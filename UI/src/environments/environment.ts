@@ -96,6 +96,16 @@ export const environment = {
           address: '0xAF19dc1D220774B8D267387Ca2d3E2d452294B81'
         }
       ]
+    },
+    token_setup: {
+      contracts: [
+        {
+          chainId: NetworkChainId.LOCALHOST,
+          address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e'
+        }
+      ],
+      maxAttempt: 5,
+      attemptTimeout: 2 // minutes
     }
   },
   organizationName: 'chainbrary0',
@@ -109,6 +119,7 @@ export const environment = {
     sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
     polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49',
     avalanche: 'https://avax-mainnet.rpc.grove.city/v1/2501ba49',
-    bnb: 'https://bsc-mainnet.rpc.grove.city/v1/2501ba49'
+    bnb: 'https://bsc-mainnet.rpc.grove.city/v1/2501ba49',
+    local: 'http://127.0.0.1:8545/'
   }
 };

@@ -43,6 +43,11 @@ const routes: Routes = [
         loadChildren: () => import('./pages/shop-qr-code/shop-qr-code.module').then((m) => m.ShopQrCodeModule)
       },
       {
+        title: 'Setup Token',
+        path: 'setup-token',
+        loadChildren: () => import('./pages/setup-token/setup-token.module').then((m) => m.SetupTokenModule)
+      },
+      {
         title: 'Activity',
         path: 'activity',
         component: ActivityContainerComponent,

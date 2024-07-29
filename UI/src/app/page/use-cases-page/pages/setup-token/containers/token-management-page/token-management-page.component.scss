@@ -1,0 +1,42 @@
+.card-header {
+  background: none;
+}
+
+.bg-primary-subtle,
+.symbol-container {
+  border-radius: var(--bs-card-border-radius);
+}
+
+.bi-files {
+  font-size: 12px;
+}
+
+.network-card {
+  border-radius: 4px;
+}
+
+.symbol-container {
+  padding: 4px 8px 3px;
+}
+
+.contract-address-container {
+  cursor: pointer;
+  border-radius: var(--bs-card-border-radius);
+  opacity: 0.9;
+}
+
+.contract-address-container:hover {
+  opacity: 1;
+}
+
+.bi-files {
+  font-size: 1.2rem;
+}
+
+.supply-label {
+  font-weight: 200;
+}
+
+a {
+  text-decoration: none;
+}
