@@ -466,6 +466,13 @@
           <context context-type="linenumber">5</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="3620675444965298612" datatype="html">
+        <source>Select Network</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="3644217488386459799" datatype="html">
         <source>The image is loading.</source>
         <context-group purpose="location">
