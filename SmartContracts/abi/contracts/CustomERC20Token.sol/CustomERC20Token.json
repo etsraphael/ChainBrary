@@ -467,6 +467,59 @@
   },
   {
     "inputs": [],
+    "name": "getTokenDetails",
+    "outputs": [
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      },
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "isBurnable",
     "outputs": [
       {

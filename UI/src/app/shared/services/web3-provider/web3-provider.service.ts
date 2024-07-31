@@ -1,4 +1,4 @@
-import { Injectable, isDevMode } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 import Web3 from 'web3';
 import { environment } from './../../../../environments/environment';
@@ -17,12 +17,7 @@ export class Web3ProviderService {
     }
   }
 
-  getRpcUrl(chainId: NetworkChainId, forceNode: boolean): string {
-    // If it's dev mode, use the localhost rpc
-    if (isDevMode() && forceNode === false) {
-      return environment.rpcKeys.local;
-    }
-
+  getRpcUrl(chainId: NetworkChainId): string {
     switch (chainId) {
       case NetworkChainId.ETHEREUM:
         return environment.rpcKeys.eth;
@@ -34,6 +29,7 @@ export class Web3ProviderService {
         return environment.rpcKeys.polygon;
       case NetworkChainId.SEPOLIA:
         return environment.rpcKeys.sepolia;
+      case NetworkChainId.LOCALHOST:
       default:
         return environment.rpcKeys.local;
     }

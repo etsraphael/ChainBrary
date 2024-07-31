@@ -106,6 +106,10 @@ export const environment = {
         {
           chainId: NetworkChainId.LOCALHOST,
           address: '0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9'
+        },
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x08454C8D47277Fa30c209c15c174b12139DBDc74'
         }
       ],
       maxAttempt: 5,

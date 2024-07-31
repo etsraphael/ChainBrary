@@ -18,7 +18,7 @@ export class TokenSetupService {
   constructor(private web3ProviderService: Web3ProviderService) {}
 
   async getBalance(payload: IBalancePayload): Promise<number> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(payload.chainId as NetworkChainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(payload.chainId as NetworkChainId);
     const web3: Web3 = new Web3(rpcUrl);
     const transactionContract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
@@ -65,8 +65,7 @@ export class TokenSetupService {
     chainId: NetworkChainId,
     amountInWei: string
   ): Promise<string> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(token.network, false);
-    const web3: Web3 = new Web3(rpcUrl);
+    const web3: Web3 = new Web3(window.ethereum);
     const tokenFactoryContract = new CustomERC20TokenFactoryContract(chainId);
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       tokenFactoryContract.getAbi() as AbiItem[],
@@ -114,7 +113,7 @@ export class TokenSetupService {
   }
 
   async getCustomERC20FromTxnHash(chainId: NetworkChainId, txnHash: string): Promise<ITokenSetup> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
     const customERC20TokenContract = new CustomERC20TokenContract();
     const tokenFactoryContract = new CustomERC20TokenFactoryContract(chainId);
@@ -160,7 +159,7 @@ export class TokenSetupService {
   }
 
   async getCustomERC20FromContractAddress(chainId: NetworkChainId, contractAddress: string): Promise<ITokenSetup> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
     const customERC20TokenContract = new CustomERC20TokenContract();
     const contract = new web3.eth.Contract(customERC20TokenContract.getAbi() as AbiItem[], contractAddress);
@@ -196,7 +195,7 @@ export class TokenSetupService {
     contractAddress: string,
     chainId: NetworkChainId
   ): Promise<IReceiptTransaction> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
 
     const customERC20TokenContract = new CustomERC20TokenContract();
@@ -236,7 +235,7 @@ export class TokenSetupService {
     contractAddress: string,
     chainId: NetworkChainId
   ): Promise<IReceiptTransaction> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
 
     const customERC20TokenContract = new CustomERC20TokenContract();
@@ -276,7 +275,7 @@ export class TokenSetupService {
     chainId: NetworkChainId,
     pause: boolean
   ): Promise<IReceiptTransaction> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
 
     const customERC20TokenContract = new CustomERC20TokenContract();
@@ -316,7 +315,7 @@ export class TokenSetupService {
     contractAddress: string,
     chainId: NetworkChainId
   ): Promise<IReceiptTransaction> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
 
     const customERC20TokenContract = new CustomERC20TokenContract();
@@ -356,7 +355,7 @@ export class TokenSetupService {
     contractAddress: string,
     chainId: NetworkChainId
   ): Promise<IReceiptTransaction> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
 
     const customERC20TokenContract = new CustomERC20TokenContract();
@@ -394,7 +393,7 @@ export class TokenSetupService {
     contractAddress: string,
     chainId: NetworkChainId
   ): Promise<IReceiptTransaction> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, false);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
 
     const customERC20TokenContract = new CustomERC20TokenContract();
