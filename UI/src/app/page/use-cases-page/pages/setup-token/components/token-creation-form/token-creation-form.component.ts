@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
-import { environment } from 'src/environments/environment';
+import { environment } from './../../../../../../../environments/environment';
 import { CommonButtonText } from './../../../../../../shared/enum';
 import { ITokenCreationPayload } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
