@@ -100,10 +100,6 @@ export const environment = {
     token_setup: {
       contracts: [
         {
-          chainId: NetworkChainId.LOCALHOST,
-          address: '0xB7f8BC63BbcaD18155201308C8f3540b07f84F5e'
-        },
-        {
           chainId: NetworkChainId.SEPOLIA,
           address: '0x08454C8D47277Fa30c209c15c174b12139DBDc74'
         },
