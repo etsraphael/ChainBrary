@@ -5,6 +5,7 @@ export * from './document-locker-store';
 export * from './global-store';
 export * from './notification-store';
 export * from './payment-request-store';
+export * from './tokens-management-store';
 export * from './transaction-store';
 export * from './vaults-store';
 export { RootStateModule };

@@ -44,11 +44,40 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="1135259164674472580" datatype="html">
+        <source>Token Symbol</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="1142017936680420194" datatype="html">
         <source>Payment Expired</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1198843287268908464" datatype="html">
+        <source>Searching token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1231684257036349485" datatype="html">
+        <source>Other Configs</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1301951622136807684" datatype="html">
@@ -63,6 +92,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
           <context context-type="linenumber">32</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1317503863793875734" datatype="html">
+        <source>Decimal</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1354625054283722441" datatype="html">
@@ -89,12 +125,23 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">25</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="1457251910333381962" datatype="html">
         <source>Image found!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="153027490108697752" datatype="html">
+        <source>Create Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="166713648723495622" datatype="html">
@@ -120,6 +167,18 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/community-vaults-page/components/add-token-card/add-token-card.component.html</context>
           <context context-type="linenumber">26</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1877816060137394749" datatype="html">
@@ -203,11 +262,25 @@
           <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="2524945731690222198" datatype="html">
+        <source>New owner</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">129</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="2528942312139055862" datatype="html">
         <source>Reward Tiers</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
           <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2566945408090825303" datatype="html">
+        <source>Contract address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">20</context>
         </context-group>
       </trans-unit>
       <trans-unit id="257111130178722688" datatype="html">
@@ -265,6 +338,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
           <context context-type="linenumber">6</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2815038373235337557" datatype="html">
+        <source>Symbol is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2899790821846500123" datatype="html">
@@ -330,6 +410,13 @@
           <context context-type="linenumber">85</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="3439846926103299712" datatype="html">
+        <source>Amount in token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="3479439260272663944" datatype="html">
         <source>Wallet Address</source>
         <context-group purpose="location">
@@ -377,6 +464,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
           <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3620675444965298612" datatype="html">
+        <source>Select Network</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="3644217488386459799" datatype="html">
@@ -507,11 +601,32 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="4040365224455764613" datatype="html">
+        <source>Network is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">24</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4076052241657090490" datatype="html">
+        <source>Contract address is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="4112850117898161412" datatype="html">
         <source>@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
           <context context-type="linenumber">122</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4127571452382238225" datatype="html">
+        <source>Explorer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.html</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4129439569390692843" datatype="html">
@@ -533,6 +648,17 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
           <context context-type="linenumber">39</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4258152560656282868" datatype="html">
+        <source>Max Supply</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">44</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4266776168169426904" datatype="html">
@@ -563,6 +689,21 @@
           <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="4370135196015358209" datatype="html">
+        <source>Recipient is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">81</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="4400676864758421575" datatype="html">
         <source>Owner name is required</source>
         <context-group purpose="location">
@@ -586,6 +727,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">61</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4520880229441666139" datatype="html">
+        <source>Name required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">35</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4548722462586549001" datatype="html">
@@ -621,6 +769,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.html</context>
           <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="4580988005648117665" datatype="html">
+        <source>Search</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="459395347792320431" datatype="html">
@@ -744,11 +899,25 @@
           <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="5272594461999589912" datatype="html">
+        <source>Decimal (1-18)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">64</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="5362875351638477540" datatype="html">
         <source>Creating your bid... Please confirm the request on your wallet. This could take 5 minutes, please stay on this page.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">28</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5379610040251388970" datatype="html">
+        <source>Burning account</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">43</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5387207834911850380" datatype="html">
@@ -768,6 +937,10 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">31</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="5453367173225236176" datatype="html">
         <source>This program is specifically designed for our websites and applications. We prioritize the detection and prevention of incidents that may lead to: - Direct unauthorized access to or draining of locked user funds. - Social engineering attacks that could result in users inadvertently authorizing transactions or being redirected to malicious sites.</source>
@@ -781,6 +954,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/footer-page/footer-page.component.html</context>
           <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5521405896734533151" datatype="html">
+        <source>New owner is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">131</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5552614718654397904" datatype="html">
@@ -817,6 +997,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="5874523164192679080" datatype="html">
+        <source>Total Supply</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.html</context>
+          <context context-type="linenumber">54</context>
         </context-group>
       </trans-unit>
       <trans-unit id="588284100849805066" datatype="html">
@@ -901,7 +1088,7 @@
         <source>Join Our Community</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">33</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6296019452799956336" datatype="html">
@@ -920,6 +1107,24 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">5</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6363148572877317457" datatype="html">
+        <source>This action cannot be undone. Are you sure you want to renounce ownership?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">124</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">145</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="6378908494843510635" datatype="html">
+        <source>Creating your token... Stay on this page or refresh it later when the blockchain will validate your transaction</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.html</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6417299265220958493" datatype="html">
@@ -961,6 +1166,18 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">66</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">27</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">88</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6542869314342680122" datatype="html">
@@ -1027,11 +1244,18 @@
           <context context-type="linenumber">178</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="6952960449910855430" datatype="html">
+        <source>Amount (USD)</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">60</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6990955688134532612" datatype="html">
         <source>Building trust among various crypto users by supporting different tokens</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-header/landing-page-header.component.html</context>
-          <context context-type="linenumber">48</context>
+          <context context-type="linenumber">52</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7010298828580734548" datatype="html">
@@ -1053,6 +1277,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
           <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7102899067527440730" datatype="html">
+        <source>Add to wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.html</context>
+          <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7137698570686115830" datatype="html">
@@ -1083,6 +1314,21 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="7386452610361273153" datatype="html">
+        <source>Value is required</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">59</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">90</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="7439885234895906954" datatype="html">
         <source>Bid address</source>
         <context-group purpose="location">
@@ -1095,6 +1341,25 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/auth-banner/auth-banner.component.html</context>
           <context context-type="linenumber">38</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="7515883357904500238" datatype="html">
+        <source>Are you sure?</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">113</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">123</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">144</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7552923737240989417" datatype="html">
@@ -1122,6 +1387,13 @@
           <context context-type="linenumber">148</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="779155967323628279" datatype="html">
+        <source>Value has to be less than current balance</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">94</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="7799133836890831347" datatype="html">
         <source>Your current network is not supported. Please switch to a compatible network. For assistance or to share your suggestions with our community, join us on <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;https://discord.gg/Y3pTujEsMe&quot; target=&quot;_blank&quot; rel=&quot;noopener noreferrer&quot;&gt;"/>Discord<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>.</source>
         <context-group purpose="location">
@@ -1138,6 +1410,10 @@
       </trans-unit>
       <trans-unit id="7848627177129525188" datatype="html">
         <source>This address is invalid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.html</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.html</context>
           <context context-type="linenumber">35</context>
@@ -1193,6 +1469,13 @@
           <context context-type="linenumber">109</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="8080704420695889674" datatype="html">
+        <source>This action will pause the entire token and stop all current transfers. Please confirm if you want to proceed.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">105</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="8094993489193090328" datatype="html">
         <source>Bid address must be a valid address</source>
         <context-group purpose="location">
@@ -1219,6 +1502,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">92</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8267637593425979844" datatype="html">
+        <source>Max supply invalid</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8279184784576934083" datatype="html">
@@ -1256,6 +1546,21 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="8443568478896860043" datatype="html">
+        <source>Recipient</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">48</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="8505691224260767503" datatype="html">
         <source>Term and condition</source>
         <context-group purpose="location">
@@ -1282,6 +1587,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8568269815642805499" datatype="html">
+        <source>This action will unpause the entire token and allow all transfers to continue. Please confirm if you want to proceed.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">114</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8576150205750449599" datatype="html">
+        <source>Current balance:</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">73</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8594720254866711271" datatype="html">
@@ -1325,6 +1644,10 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">134</context>
+        </context-group>
       </trans-unit>
       <trans-unit id="8847837690960818708" datatype="html">
         <source>URL invalid</source>
@@ -1358,6 +1681,17 @@
           <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="8989751411189950371" datatype="html">
+        <source>Token Name</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">33</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="900151136510105459" datatype="html">
         <source>Please be aware that confirmation times for recent bids can vary due to network conditions. For the latest status, kindly refresh this page. If your transaction is still processing, you can track it here: <x id="START_LINK" ctype="x-a" equiv-text="&lt;a target=&quot;_blank&quot; [href]=&quot;txnLink$ | async&quot;&gt;"/><x id="INTERPOLATION" equiv-text="$ | async }}"/><x id="CLOSE_LINK" ctype="x-a" equiv-text="&gt;"/>. Thank you for your patience.</source>
         <context-group purpose="location">
@@ -1370,6 +1704,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/qr-code-scanning-page/qr-code-scanning-page.component.html</context>
           <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9065303519977993027" datatype="html">
+        <source>Token details</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9126131107147614770" datatype="html">
@@ -1393,11 +1734,32 @@
           <context context-type="linenumber">70</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="918986430725137551" datatype="html">
+        <source>Create Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
+          <context context-type="linenumber">104</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="9216117865911519658" datatype="html">
         <source>Action</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/activity/components/transaction-activity-table/transaction-activity-table.component.html</context>
           <context context-type="linenumber">8</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9220665988605981561" datatype="html">
+        <source>Add myself as recipient</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.html</context>
+          <context context-type="linenumber">13</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="967849583089050242" datatype="html">
+        <source>Creating your token... Please confirm the request on your wallet.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-creation-page/token-creation-page.component.html</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidCreation.ImageAlreadyAdded" datatype="html">
@@ -1425,70 +1787,70 @@
         <source>You are already the highest bidder</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">24</context>
+          <context context-type="linenumber">26</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhileCreatingYourBid" datatype="html">
         <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the bid deployment on the blockchain.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">244</context>
+          <context context-type="linenumber">246</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhilePlacingYourBid" datatype="html">
         <source>An error occured while placing your bid</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">177</context>
+          <context context-type="linenumber">179</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.AnErrorOccuredWhileSearchingForYourBid" datatype="html">
         <source>This address is not associated with any bids that have been created. Please make sure the network is correct and try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">358</context>
+          <context context-type="linenumber">360</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.auctionNotOngoing" datatype="html">
         <source>This auction is not ongoing</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.bidAmountNotHighEnough" datatype="html">
         <source>Your bid amount is not high enough</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">28</context>
+          <context context-type="linenumber">30</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidErrorMessage.PleaseConnectYourWalletToCreateABid" datatype="html">
         <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">218</context>
+          <context context-type="linenumber">220</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BidResponse.BidCreatedSuccessfully" datatype="html">
         <source>Bid created successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">258</context>
+          <context context-type="linenumber">260</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BidResponse.Success.BidPlacedSuccessfully" datatype="html">
         <source>Bid placed successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">195</context>
+          <context context-type="linenumber">197</context>
         </context-group>
       </trans-unit>
       <trans-unit id="BidResponse.WithdrawRequestSentSuccessfully" datatype="html">
         <source>Withdraw request sent successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">310</context>
+          <context context-type="linenumber">312</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidResult.AuctionEnded" datatype="html">
@@ -1513,6 +1875,153 @@
           <context context-type="linenumber">1</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="btnOption.Burn" datatype="html">
+        <source>Burn</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">73</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.ChangeOwner" datatype="html">
+        <source>Change Owner</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">83</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.Burn" datatype="html">
+        <source>Destroy tokens to reduce the total supply.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">31</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.ChangeOwner" datatype="html">
+        <source>Assign token ownership to a different account.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.Mint" datatype="html">
+        <source>Create new tokens and add them to the total supply.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">26</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.Pause" datatype="html">
+        <source>Temporarily halt all token transfers and actions.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.RenounceOwnership" datatype="html">
+        <source>Relinquish control and ownership of the tokens.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">56</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.Transfer" datatype="html">
+        <source>Move tokens from one account to another.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Desc.Unpause" datatype="html">
+        <source>Resume token transfers and actions.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Mint" datatype="html">
+        <source>Mint</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Pause" datatype="html">
+        <source>Pause</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">88</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.RenounceOwnership" datatype="html">
+        <source>Renounce Ownership</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">98</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.Burn" datatype="html">
+        <source>Burn Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">30</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.ChangeOwner" datatype="html">
+        <source>Change Owner Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.Mint" datatype="html">
+        <source>Mint Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">25</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.Pause" datatype="html">
+        <source>Pause Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.RenounceOwnership" datatype="html">
+        <source>Renounce Ownership</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">55</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.Transfer" datatype="html">
+        <source>Transfer Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Title.Unpause" datatype="html">
+        <source>Unpause Tokens</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-action-modal/token-action-modal.component.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Transfer" datatype="html">
+        <source>Transfer</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">78</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="btnOption.Unpause" datatype="html">
+        <source>Unpause</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">93</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="BugBountyProgram.Desc" datatype="html">
         <source>Welcome to the Chainbrary Bug Bounty Program. Our commitment is to provide a secure and reliable platform for our users. We encourage responsible disclosure of vulnerabilities and invite security researchers to participate in this program. Our focus is predominantly on safeguarding user funds against unauthorized access and fraudulent activities.</source>
         <context-group purpose="location">
@@ -1525,6 +2034,48 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/containers/bounty-page-container/bounty-page-container.component.ts</context>
           <context context-type="linenumber">11</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="canBurn" datatype="html">
+        <source>Can Burn</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
+          <context context-type="linenumber">44</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="canBurnDescription" datatype="html">
+        <source>Allow the contract owner to burn tokens.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
+          <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="canMint" datatype="html">
+        <source>Can Mint</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
+          <context context-type="linenumber">49</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="canMintDescription" datatype="html">
+        <source>Allow the contract owner to mint tokens.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
+          <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="canPause" datatype="html">
+        <source>Can Pause</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
+          <context context-type="linenumber">54</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="canPauseDescription" datatype="html">
+        <source>Allow the contract owner to pause the contract.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
+          <context context-type="linenumber">55</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonButtonTextBack" datatype="html">
@@ -1580,6 +2131,10 @@
           <context context-type="linenumber">22</context>
         </context-group>
         <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">23</context>
+        </context-group>
+        <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-menu/shop-qr-code-menu.component.ts</context>
           <context context-type="linenumber">23</context>
         </context-group>
@@ -1617,6 +2172,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.ts</context>
           <context context-type="linenumber">50</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="commonTextManageNow" datatype="html">
+        <source>Manage</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="CommonTextPlaceholder.Title.BusinessName" datatype="html">
@@ -1680,15 +2242,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">180</context>
+          <context context-type="linenumber">182</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/bid-store/state/effects.ts</context>
-          <context context-type="linenumber">329</context>
+          <context context-type="linenumber">331</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">249</context>
+          <context context-type="linenumber">251</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/notification-store/state/effects.ts</context>
@@ -1720,53 +2282,71 @@
           <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="Copied" datatype="html">
+        <source>Copied</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">257</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="createTokenTitle" datatype="html">
+        <source>Create Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">20</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-creation-page/token-creation-page.component.ts</context>
+          <context context-type="linenumber">16</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="documentLockerErrors.calculationError" datatype="html">
         <source>Calculation error</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">21</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.contractCreationError" datatype="html">
         <source>An error has occurred with your wallet. Please ensure that you are using the correct address and network. Additionally, verify that you have sufficient funds available for the document deployment on the blockchain.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.noAccess" datatype="html">
         <source>No access</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">22</context>
+          <context context-type="linenumber">24</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.notEnoughFunds" datatype="html">
         <source>Not enough funds</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">20</context>
+          <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.notFound" datatype="html">
         <source>Not found</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.unknownError" datatype="html">
         <source>An error occured while processing your document. Please try again.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">246</context>
+          <context context-type="linenumber">248</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerErrors.walletNotConnected" datatype="html">
         <source>Wallet not connected. Please connect your wallet and try again. If you do not have a wallet, please create one.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">290</context>
+          <context context-type="linenumber">292</context>
         </context-group>
       </trans-unit>
       <trans-unit id="documentLockerFoundTitle" datatype="html">
@@ -1802,14 +2382,14 @@
         <source>Contract unlocking in process</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">265</context>
+          <context context-type="linenumber">267</context>
         </context-group>
       </trans-unit>
       <trans-unit id="DocumentResponse.LockingDocumentCreatedSuccessfully" datatype="html">
         <source>Locking document created successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/document-locker-store/state/effects.ts</context>
-          <context context-type="linenumber">302</context>
+          <context context-type="linenumber">304</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ErrorMessage.Insufficient-balance" datatype="html">
@@ -1828,6 +2408,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
           <context context-type="linenumber">96</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessageRetrievePrice.Desc" datatype="html">
+        <source>Failed to get the current price of the native network token. Please try again later.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.ts</context>
+          <context context-type="linenumber">63</context>
         </context-group>
       </trans-unit>
       <trans-unit id="footerBtn.Title.BountyProgram" datatype="html">
@@ -1884,7 +2471,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">19</context>
+          <context context-type="linenumber">17</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headerBtn.Title.Partnership" datatype="html">
@@ -1899,7 +2486,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">23</context>
+          <context context-type="linenumber">21</context>
         </context-group>
       </trans-unit>
       <trans-unit id="headerBtn.Title.Services" datatype="html">
@@ -1914,7 +2501,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/header-page/header-page.component.ts</context>
-          <context context-type="linenumber">27</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.bidServiceDesc" datatype="html">
@@ -2144,6 +2731,20 @@
           <context context-type="linenumber">13</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="PayButton.ConnectWallet" datatype="html">
+        <source>Connect Wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
+          <context context-type="linenumber">146</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="PayButton.PayNow" datatype="html">
+        <source>Pay Now</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
+          <context context-type="linenumber">147</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="paymentRequestDescription" datatype="html">
         <source>Easily generate and share payment requests via URL or QR code. This feature primarily focuses on creating payment requests, allowing users to lock in prices in USD, ensuring accuracy despite token value fluctuations. A variety of tokens are available to accommodate diverse needs.</source>
         <context-group purpose="location">
@@ -2170,6 +2771,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.ts</context>
           <context context-type="linenumber">22</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printCreateTokenDescription" datatype="html">
+        <source>Create your own token with custom name, symbol and initial supply.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">21</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="printCreateTokenHeaderDescription" datatype="html">
+        <source>Simple, Fast, Convenient to create tokens. Get 100% ownership of generated tokens with Custom token name, symbol and initial supply. Automatic verified and published contract source code.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-creation-page/token-creation-page.component.ts</context>
+          <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
       <trans-unit id="printQRCodeDescription" datatype="html">
@@ -2236,37 +2851,37 @@
         <source>Error approving token</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">276</context>
+          <context context-type="linenumber">277</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
         <source>Error decoding payment request</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">401</context>
+          <context context-type="linenumber">402</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">408</context>
+          <context context-type="linenumber">409</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">427</context>
+          <context context-type="linenumber">428</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">434</context>
+          <context context-type="linenumber">435</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
         <source>Error retreiving data from the blockchain</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">362</context>
+          <context context-type="linenumber">363</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">659</context>
+          <context context-type="linenumber">660</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
@@ -2280,11 +2895,11 @@
         <source>Token address not found!</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">126</context>
+          <context context-type="linenumber">127</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">186</context>
+          <context context-type="linenumber">187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.TransactionIsProcessing" datatype="html">
@@ -2295,11 +2910,25 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">471</context>
+          <context context-type="linenumber">472</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">786</context>
+          <context context-type="linenumber">787</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scanManageTokenDescription" datatype="html">
+        <source>Manage your token by minting, burning, transferring and more.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="scanManageTokenTitle" datatype="html">
+        <source>Manage Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">28</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scanQRToPayDescription" datatype="html">
@@ -2320,53 +2949,53 @@
         <source>Create a vote and share it with your friends to vote anonymously</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">43</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.anonymousVoteServiceTitle" datatype="html">
         <source>Anonymous Vote</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">42</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.createTokenServiceDesc" datatype="html">
-        <source>Create a token and share it with your friends to use it as a currency.</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">51</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="servicePage.createTokenServiceTitle" datatype="html">
-        <source>Create Token</source>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.networkBridgeServiceDesc" datatype="html">
         <source>Connect two different networks and transfer tokens between them.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">59</context>
+          <context context-type="linenumber">58</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.networkBridgeServiceTitle" datatype="html">
         <source>Network Bridge</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.payTogetherServiceDesc" datatype="html">
         <source>Create a payment link and share it with your friends to pay together.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.payTogetherServiceTitle" datatype="html">
         <source>Pay Together</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">41</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.tokenSetupServiceDesc" datatype="html">
+        <source>Create and manage your token, then share it with your friends to use as a currency.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
+          <context context-type="linenumber">35</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="servicePage.tokenSetupServiceTitle" datatype="html">
+        <source>Token Setup</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
           <context context-type="linenumber">34</context>
@@ -2376,14 +3005,14 @@
         <source>Swap tokens for another token on the same network.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">66</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.tokenSwapServiceTitle" datatype="html">
         <source>Token Swap</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="termsAndCondGlobal" datatype="html">
@@ -2394,26 +3023,44 @@
           <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="tokenManagement.balanceLoadFailure" datatype="html">
+        <source>Balance load failed</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/tokens-management-store/state/effects.ts</context>
+          <context context-type="linenumber">51</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="tokenManagement.tokenCreationFailure" datatype="html">
+        <source>Token creation failed. Please try again.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/tokens-management-store/state/effects.ts</context>
+          <context context-type="linenumber">119</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="transaction.payment.title" datatype="html">
         <source>Transaction sent successfully</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">33</context>
+          <context context-type="linenumber">35</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">52</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">67</context>
+          <context context-type="linenumber">69</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.WalletIsNotConnected" datatype="html">
         <source>Wallet is not connected</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">106</context>
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.createBid" datatype="html">
@@ -2472,6 +3119,27 @@
           <context context-type="linenumber">11</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="useCasesSearchTokenTitle" datatype="html">
+        <source>Search token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-search-page/token-search-page.component.ts</context>
+          <context context-type="linenumber">19</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCasesSetUpTokenDescription" datatype="html">
+        <source>Simple, Fast, Convenient to create tokens.Get 100% ownership of generated tokens with Custom token name, symbol and initial supply. Automatic verified and published contract source code.</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">14</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="useCasesSetUpTokenTitle" datatype="html">
+        <source>Set up token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/setup-token-menu/setup-token-menu.component.ts</context>
+          <context context-type="linenumber">12</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="useCasesShopQrCodeDescription" datatype="html">
         <source>By accepting cryptocurrencies, you open doors to a broader customer base. Enhance your business&apos;s payment options by printing a QR code, allowing your customers to make seamless cryptocurrency transactions. Embrace the future of finance and offer your clientele the convenience and security of paying with digital currencies.</source>
         <context-group purpose="location">
@@ -2492,6 +3160,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/termAndCond.ts</context>
           <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="viewTokenTitle" datatype="html">
+        <source>View Token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.ts</context>
+          <context context-type="linenumber">59</context>
         </context-group>
       </trans-unit>
       <trans-unit id="withdrawBidText" datatype="html">

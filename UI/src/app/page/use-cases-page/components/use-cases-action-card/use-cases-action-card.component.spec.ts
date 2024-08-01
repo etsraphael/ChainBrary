@@ -17,7 +17,7 @@ describe('UseCasesActionCardComponent', () => {
     component.payload = {
       id: '1',
       title: '',
-      descritpion: '',
+      description: '',
       routerLink: '',
       buttonText: '',
       imgSrc: ''

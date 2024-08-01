@@ -17,7 +17,7 @@ export class DocumentLockerMenuComponent {
     {
       id: 'lock-document',
       title: $localize`:@@lockDocumentTitle:Lock a document`,
-      descritpion: $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
+      description: $localize`:@@lockDocumentDescription:Protect your documents with our blockchain-based Document Locker, ensuring exclusive access and utmost privacy.`,
       routerLink: '/use-cases/document-locker/creation',
       buttonText: $localize`:@@commonButtonTextStartCreation:Start creation`,
       imgSrc: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/document-service.svg'

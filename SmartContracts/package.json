@@ -5,6 +5,7 @@
     "prettier": "prettier --write 'contracts/*.sol' --plugin=prettier-plugin-solidity",
     "compile": "npx hardhat compile",
     "test": "npx hardhat test",
+    "deploy:local:vaults": "hardhat ignition deploy ignition/modules/CommunityVaults.ts --network localhost",
     "deploy:local": "hardhat ignition deploy ignition/modules/Apollo.ts --network localhost",
     "abi": "npx hardhat export-abi",
     "node": "npx hardhat node",
@@ -22,6 +23,7 @@
     "@chainlink/contracts": "^0.8.0",
     "@graphprotocol/graph-cli": "^0.76.0",
     "@openzeppelin/contracts": "^5.0.2",
+    "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "bignumber.js": "^9.1.2"
   }
 }

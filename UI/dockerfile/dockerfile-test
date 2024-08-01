@@ -31,6 +31,9 @@ COPY --from=node /app/dist/chainbrary/en /usr/share/nginx/html/en
 # Copy over the built French version
 COPY --from=node /app/dist/chainbrary/fr /usr/share/nginx/html/fr
 
+# Copy over the built Spanish version
+COPY --from=node /app/dist/chainbrary/es /usr/share/nginx/html/es
+
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
