@@ -83,7 +83,7 @@ export class PriceFeedService {
   }
 
   async getCurrentPriceFromNode(pair: TokenPair, chainId: NetworkChainId): Promise<number> {
-    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId, true);
+    const rpcUrl = this.web3ProviderService.getRpcUrl(chainId);
     const web3: Web3 = new Web3(rpcUrl);
     const transactionContract = new PriceFeedContract(chainId, pair);
 
