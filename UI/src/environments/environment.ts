@@ -98,7 +98,6 @@ export const environment = {
       ]
     },
     token_setup: {
-      // TODO: Publish it to other networks before merging on TEST
       contracts: [
         {
           chainId: NetworkChainId.LOCALHOST,
@@ -107,6 +106,10 @@ export const environment = {
         {
           chainId: NetworkChainId.SEPOLIA,
           address: '0x08454C8D47277Fa30c209c15c174b12139DBDc74'
+        },
+        {
+          chainId: NetworkChainId.BNB,
+          address: '0xe932493F692f6A9a861Af7546BD534E4E74299Ca'
         }
       ],
       maxAttempt: 5,
