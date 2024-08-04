@@ -108,17 +108,25 @@ export class MetamaskProviderService extends BaseProviderService {
         }
 
         // Request account access
-        window.ethereum.request({ method: 'eth_requestAccounts' }).then((accounts: string[]) => {
-          // Request chainId
-          window.ethereum.request({ method: 'eth_chainId' }).then((chainId: string) => {
-            this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(chainId);
-            this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
-            this.publicGlobalValuesService.recentLoginPayload = {
-              publicAddress: accounts[0],
-              network: chainId
+        window.ethereum
+          .request({ method: 'eth_requestAccounts' })
+          .then((accounts: string[]) => {
+            // Request chainId
+            window.ethereum.request({ method: 'eth_chainId' }).then((chainId: string) => {
+              this.publicGlobalValuesService.currentNetwork = this.networkService.getNetworkDetailByChainId(chainId);
+              this.publicGlobalValuesService.walletConnected = WalletProvider.METAMASK;
+              this.publicGlobalValuesService.recentLoginPayload = {
+                publicAddress: accounts[0],
+                network: chainId
+              };
+            });
+          })
+          .catch((error: { code: number; message: string }) => {
+            this.publicGlobalValuesService.walletError = {
+              code: error.code,
+              message: error.message
             };
           });
-        });
       }, 1000);
       return;
     }

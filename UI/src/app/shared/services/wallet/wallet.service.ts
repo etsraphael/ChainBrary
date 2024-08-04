@@ -32,12 +32,14 @@ export class WalletService {
 
   formatErrorMessage(code: number): string {
     switch (code) {
+      case -32002:
+        return $localize`:@@ErrorMessage.WalletAlreadyProcessing:Wallet is already processing another request`;
       case -32000:
-        return 'Wallet connect has not enough balance to pay for the transaction';
+        return $localize`:@@ErrorMessage.WalletNotEnoughBalance:Wallet connect has not enough balance to pay for the transaction`;
       case 4001:
-        return 'Transaction rejected by wallet';
+        return $localize`:@@ErrorMessage.TransactionRejected:Transaction rejected by wallet`;
       default:
-        return 'An error occurred while sending the transaction on the wallet';
+        return $localize`:@@ErrorMessage.TransactionError:An error occurred while sending the transaction on the wallet`;
     }
   }
 }
