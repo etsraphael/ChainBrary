@@ -1,8 +1,19 @@
 import { Injectable } from '@angular/core';
-import { INetworkDetail, WalletConnectedEvent, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import {
+  INetworkDetail,
+  WalletConnectedEvent,
+  WalletErrorEvent,
+  WalletProvider,
+  Web3LoginService
+} from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { filter, map, skip } from 'rxjs';
-import { accountChanged, networkChangeSuccess, setAuthPublicAddress } from './../../../store/auth-store/state/actions';
+import {
+  accountChanged,
+  networkChangeSuccess,
+  setAuthPublicAddress,
+  walletError
+} from './../../../store/auth-store/state/actions';
 
 @Injectable({
   providedIn: 'root'
@@ -36,5 +47,14 @@ export class Web3EventsService {
       .subscribe((network: INetworkDetail) => {
         this.store.dispatch(networkChangeSuccess({ network }));
       });
+
+    this.web3LoginService.walletError$
+      .pipe(
+        filter((error: WalletErrorEvent | null) => !!error),
+        map((error: WalletErrorEvent | null) => error as WalletErrorEvent)
+      )
+      .subscribe((error: WalletErrorEvent) =>
+        this.store.dispatch(walletError({ code: error.code, message: error.message }))
+      );
   }
 }

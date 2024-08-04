@@ -48,3 +48,8 @@ export interface WalletConnectedEvent {
   network: INetworkDetail | null;
   walletProvider: WalletProvider;
 }
+
+export interface WalletErrorEvent {
+  code: number;
+  message: string;
+}
