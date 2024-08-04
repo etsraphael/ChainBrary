@@ -59,20 +59,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm = new FormGroup<PaymentMakerForm>({
-    price: new FormGroup({
-      token: new FormGroup({
-        tokenId: new FormControl('', [Validators.required]),
-        chainId: new FormControl('', [Validators.required])
+    price: new FormGroup<PriceSettingsForm>({
+      token: new FormGroup<TokenChoiceMakerForm>({
+        tokenId: new FormControl(null, [Validators.required]),
+        chainId: new FormControl(null, [Validators.required])
       }),
-      description: new FormControl('', []),
+      description: new FormControl(null, []),
       amount: new FormControl(1, [Validators.required, Validators.min(0)]),
       amountInUsd: new FormControl(0, []),
       valueLockedInUsd: new FormControl(false, [])
     }),
-    profile: new FormGroup({
-      publicAddress: new FormControl('', [Validators.required, this.formatService.ethAddressValidator()]),
-      avatarUrl: new FormControl('', [], [this.urlValidator()]),
-      username: new FormControl('', [Validators.required, Validators.maxLength(20)])
+    profile: new FormGroup<ProfileForm>({
+      publicAddress: new FormControl(null, [Validators.required, this.formatService.ethAddressValidator()]),
+      avatarUrl: new FormControl(null, [], [this.urlValidator()]),
+      username: new FormControl(null, [Validators.required, Validators.maxLength(20)])
     })
   });
   linkGenerated: string;
@@ -138,139 +138,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.setDefaultTokenSelection();
   }
 
-  listenToResetTransaction(): void {
-    this.resetTransactionObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
-      this.stepper.selectedIndex = 0;
-      this.priceForm.reset();
-      this.setDefaultTokenSelection();
-    });
-  }
-
-  listenNetworkChange(): Subscription {
-    return this.currentNetworkObs
-      .pipe(takeUntil(this.destroyed$))
-      .subscribe((currentNetwork: INetworkDetail | null) => {
-        if (currentNetwork) {
-          this.tokenChoiceForm.patchValue({
-            chainId: currentNetwork.chainId,
-            tokenId: currentNetwork.nativeCurrency.id
-          });
-        } else {
-          this.tokenChoiceForm.patchValue({
-            chainId: NetworkChainId.ETHEREUM,
-            tokenId: TokenId.ETHEREUM
-          });
-        }
-        this.priceForm.patchValue({
-          amount: 1,
-          valueLockedInUsd: false
-        });
-      });
-  }
-
-  setDefaultTokenSelection(): void {
-    this.currentNetworkObs.pipe(take(1)).subscribe((currentNetwork: INetworkDetail | null) => {
-      if (currentNetwork) {
-        this.tokenChoiceForm.patchValue({
-          chainId: currentNetwork.chainId,
-          tokenId: currentNetwork.nativeCurrency.id
-        });
-      } else {
-        const network: INetworkDetail = this.web3LoginService.getNetworkDetailByChainId(
-          environment.contracts.bridgeTransfer.defaultNetwork
-        );
-
-        this.tokenChoiceForm.patchValue({
-          chainId: network.chainId,
-          tokenId: network.nativeCurrency.id
-        });
-      }
-      this.priceForm.patchValue({
-        amount: 1,
-        valueLockedInUsd: false
-      });
-    });
-  }
-
-  listenToTokenChange(): void {
-    this.priceForm
-      .get('token.tokenId')
-      ?.valueChanges.pipe(
-        filter((tokenId: string | null) => tokenId !== null),
-        map((tokenId: string | null) => tokenId as string),
-        debounceTime(400),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((tokenId: string) => this.setUpTokenChoice.emit(tokenId));
-  }
-
-  listenToAmountChange(): void {
-    this.priceForm
-      .get('amount')
-      ?.valueChanges.pipe(
-        distinctUntilChanged(),
-        startWith(this.priceForm.get('amount')?.value || 0),
-        debounceTime(1000),
-        filter((amount: number | null) => amount !== null && amount > 0),
-        map((amount: number | null) => amount as number),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: false }));
-
-    this.priceForm
-      .get('amountInUsd')
-      ?.valueChanges.pipe(
-        distinctUntilChanged(),
-        startWith(this.priceForm.get('amountInUsd')?.value || 0),
-        debounceTime(1000),
-        filter((amount: number | null) => amount !== null && amount > 0),
-        map((amount: number | null) => amount as number),
-        takeUntil(this.destroyed$)
-      )
-      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: true }));
-
-    this.paymentConversionObs
-      .pipe(
-        distinctUntilChanged(),
-        debounceTime(1000),
-        takeUntil(this.destroyed$),
-        filter((conversion: DataConversionStore) => conversion.conversionUSD.error !== 'NOT_SUPPORTED')
-      )
-      .subscribe((conversion: DataConversionStore) => {
-        if (conversion.conversionToken.data !== null) {
-          this.priceForm.patchValue(
-            {
-              amount: conversion.conversionToken.data,
-              amountInUsd: conversion.conversionUSD.data
-            },
-            { emitEvent: false }
-          );
-        }
-
-        if (conversion.conversionUSD.data !== null) {
-          this.priceForm.patchValue(
-            {
-              amount: conversion.conversionToken.data,
-              amountInUsd: conversion.conversionUSD.data
-            },
-            { emitEvent: false }
-          );
-        }
-      });
-  }
-
-  listenToAddressChange(): void {
-    this.publicAddressObs.pipe(takeUntil(this.destroyed$)).subscribe((publicAddress: string | null) => {
-      if (publicAddress) {
-        this.profileForm.get('publicAddress')?.setValue(publicAddress);
-        this.profileForm.get('publicAddress')?.disable();
-      } else {
-        this.profileForm.get('publicAddress')?.setValue('');
-        this.profileForm.get('publicAddress')?.enable();
-      }
-    });
-  }
-
   onStepChange(event: StepperSelectionEvent): void {
     if (event.selectedIndex === 2) {
       this.generatePaymentRequest();
@@ -334,5 +201,138 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
+  }
+
+  private listenToResetTransaction(): void {
+    this.resetTransactionObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
+      this.stepper.selectedIndex = 0;
+      this.priceForm.reset();
+      this.setDefaultTokenSelection();
+    });
+  }
+
+  private listenNetworkChange(): Subscription {
+    return this.currentNetworkObs
+      .pipe(takeUntil(this.destroyed$))
+      .subscribe((currentNetwork: INetworkDetail | null) => {
+        if (currentNetwork) {
+          this.tokenChoiceForm.patchValue({
+            chainId: currentNetwork.chainId,
+            tokenId: currentNetwork.nativeCurrency.id
+          });
+        } else {
+          this.tokenChoiceForm.patchValue({
+            chainId: NetworkChainId.ETHEREUM,
+            tokenId: TokenId.ETHEREUM
+          });
+        }
+        this.priceForm.patchValue({
+          amount: 1,
+          valueLockedInUsd: false
+        });
+      });
+  }
+
+  private setDefaultTokenSelection(): void {
+    this.currentNetworkObs.pipe(take(1)).subscribe((currentNetwork: INetworkDetail | null) => {
+      if (currentNetwork) {
+        this.tokenChoiceForm.patchValue({
+          chainId: currentNetwork.chainId,
+          tokenId: currentNetwork.nativeCurrency.id
+        });
+      } else {
+        const network: INetworkDetail = this.web3LoginService.getNetworkDetailByChainId(
+          environment.contracts.bridgeTransfer.defaultNetwork
+        );
+
+        this.tokenChoiceForm.patchValue({
+          chainId: network.chainId,
+          tokenId: network.nativeCurrency.id
+        });
+      }
+      this.priceForm.patchValue({
+        amount: 1,
+        valueLockedInUsd: false
+      });
+    });
+  }
+
+  private listenToTokenChange(): void {
+    this.priceForm
+      .get('token.tokenId')
+      ?.valueChanges.pipe(
+        filter((tokenId: string | null) => tokenId !== null),
+        map((tokenId: string | null) => tokenId as string),
+        debounceTime(400),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((tokenId: string) => this.setUpTokenChoice.emit(tokenId));
+  }
+
+  private listenToAmountChange(): void {
+    this.priceForm
+      .get('amount')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        startWith(this.priceForm.get('amount')?.value || 0),
+        debounceTime(1000),
+        filter((amount: number | null) => amount !== null && amount > 0),
+        map((amount: number | null) => amount as number),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: false }));
+
+    this.priceForm
+      .get('amountInUsd')
+      ?.valueChanges.pipe(
+        distinctUntilChanged(),
+        startWith(this.priceForm.get('amountInUsd')?.value || 0),
+        debounceTime(1000),
+        filter((amount: number | null) => amount !== null && amount > 0),
+        map((amount: number | null) => amount as number),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((amount: number) => this.applyConversionToken.emit({ amount, amountInUsd: true }));
+
+    this.paymentConversionObs
+      .pipe(
+        distinctUntilChanged(),
+        debounceTime(1000),
+        takeUntil(this.destroyed$),
+        filter((conversion: DataConversionStore) => conversion.conversionUSD.error !== 'NOT_SUPPORTED')
+      )
+      .subscribe((conversion: DataConversionStore) => {
+        if (conversion.conversionToken.data !== null) {
+          this.priceForm.patchValue(
+            {
+              amount: conversion.conversionToken.data,
+              amountInUsd: conversion.conversionUSD.data
+            },
+            { emitEvent: false }
+          );
+        }
+
+        if (conversion.conversionUSD.data !== null) {
+          this.priceForm.patchValue(
+            {
+              amount: conversion.conversionToken.data,
+              amountInUsd: conversion.conversionUSD.data
+            },
+            { emitEvent: false }
+          );
+        }
+      });
+  }
+
+  private listenToAddressChange(): void {
+    this.publicAddressObs.pipe(takeUntil(this.destroyed$)).subscribe((publicAddress: string | null) => {
+      if (publicAddress) {
+        this.profileForm.get('publicAddress')?.setValue(publicAddress);
+        this.profileForm.get('publicAddress')?.disable();
+      } else {
+        this.profileForm.get('publicAddress')?.setValue('');
+        this.profileForm.get('publicAddress')?.enable();
+      }
+    });
   }
 }

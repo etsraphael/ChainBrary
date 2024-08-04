@@ -20,9 +20,14 @@ export class PaymentRequestProfileSettingsComponent {
 
   constructor(
     private snackbar: MatSnackBar,
-    public web3LoginService: Web3LoginService,
+    private web3LoginService: Web3LoginService,
     private dialog: MatDialog
   ) {}
+
+  openLoginModal(event: Event): void {
+    event.stopPropagation();
+    this.web3LoginService.openLoginModal();
+  }
 
   submitForm(): void {
     this.profileForm.markAllAsTouched();
@@ -59,7 +64,7 @@ export class PaymentRequestProfileSettingsComponent {
       });
   }
 
-  removeAvatarUrl(): void {
+  private removeAvatarUrl(): void {
     return this.profileForm.get('avatarUrl')?.setValue(null);
   }
 }
