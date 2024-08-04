@@ -4,6 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { delay, filter, map, switchMap, tap } from 'rxjs';
 import { showErrorNotification, showSuccessNotification } from '../../notification-store/state/actions';
 import { AuthService } from './../../../shared/services/auth/auth.service';
+import { WalletService } from './../../../shared/services/wallet/wallet.service';
 import * as AuthActions from './actions';
 
 @Injectable()
@@ -11,7 +12,8 @@ export class AuthEffects {
   constructor(
     private actions$: Actions,
     private authService: AuthService,
-    private web3LoginService: Web3LoginService
+    private web3LoginService: Web3LoginService,
+    private walletService: WalletService
   ) {}
 
   setAuthPublicAddress$ = createEffect(
@@ -137,6 +139,15 @@ export class AuthEffects {
           });
         }
       })
+    );
+  });
+
+  errorWallet$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(AuthActions.walletError),
+      map((action: ReturnType<typeof AuthActions.walletError>) =>
+        showErrorNotification({ message: this.walletService.formatErrorMessage(action.code) })
+      )
     );
   });
 

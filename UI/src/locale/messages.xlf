@@ -2040,42 +2040,42 @@
         <source>Can Burn</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
-          <context context-type="linenumber">44</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="canBurnDescription" datatype="html">
         <source>Allow the contract owner to burn tokens.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
-          <context context-type="linenumber">45</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="canMint" datatype="html">
         <source>Can Mint</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="canMintDescription" datatype="html">
         <source>Allow the contract owner to mint tokens.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">46</context>
         </context-group>
       </trans-unit>
       <trans-unit id="canPause" datatype="html">
         <source>Can Pause</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
-          <context context-type="linenumber">54</context>
+          <context context-type="linenumber">50</context>
         </context-group>
       </trans-unit>
       <trans-unit id="canPauseDescription" datatype="html">
         <source>Allow the contract owner to pause the contract.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.ts</context>
-          <context context-type="linenumber">55</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonButtonTextBack" datatype="html">
@@ -2401,6 +2401,34 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/community-vaults-page/components/withdraw-token-card/withdraw-token-card.component.ts</context>
           <context context-type="linenumber">57</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessage.TransactionError" datatype="html">
+        <source>An error occurred while sending the transaction on the wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
+          <context context-type="linenumber">42</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessage.TransactionRejected" datatype="html">
+        <source>Transaction rejected by wallet</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
+          <context context-type="linenumber">40</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessage.WalletAlreadyProcessing" datatype="html">
+        <source>Wallet is already processing another request</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
+          <context context-type="linenumber">36</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="ErrorMessage.WalletNotEnoughBalance" datatype="html">
+        <source>Wallet connect has not enough balance to pay for the transaction</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
+          <context context-type="linenumber">38</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ErrorMessagePictureNotAttached" datatype="html">
@@ -2840,11 +2868,11 @@
         <source>An unexpected error occurred</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">136</context>
+          <context context-type="linenumber">138</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">161</context>
+          <context context-type="linenumber">172</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorApprovingToken" datatype="html">
@@ -2888,7 +2916,7 @@
         <source>Network is updated</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">99</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.TokenAddressNotFound" datatype="html">
@@ -2906,7 +2934,7 @@
         <source>Transaction is processing</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/auth-store/state/effects.ts</context>
-          <context context-type="linenumber">87</context>
+          <context context-type="linenumber">89</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
