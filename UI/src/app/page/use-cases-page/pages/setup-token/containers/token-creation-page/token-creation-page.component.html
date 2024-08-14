@@ -26,6 +26,15 @@
             </ng-container>
           </ng-container>
         </ng-container>
+        <div class="container">
+          <div class="row">
+            <div *ngIf="(tokenCreationIsProcessing$ | async)?.errorMessage; let error" class="col-12 my-2">
+              <div class="alert alert-danger" role="alert">
+                {{ error }}
+              </div>
+            </div>
+          </div>
+        </div>
         <ng-template #loadingTemplate>
           <div class="container">
             <div class="row justify-content-center">
