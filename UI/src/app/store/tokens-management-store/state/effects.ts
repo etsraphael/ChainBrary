@@ -14,6 +14,7 @@ import { environment } from './../../../../environments/environment';
 import { AuthStatusCode } from './../../../shared/enum';
 import { IReceiptTransaction, ITokenSetup, StoreState } from './../../../shared/interfaces';
 import { TokenSetupService } from './../../../shared/services/token-setup/token-setup.service';
+import { WalletService } from './../../../shared/services/wallet/wallet.service';
 import * as tokenActions from './actions';
 import { selectTokenCreationRefreshCheck, selectTokenDetailData } from './selectors';
 
@@ -21,6 +22,7 @@ import { selectTokenCreationRefreshCheck, selectTokenDetailData } from './select
 export class TokenManagementEffects {
   constructor(
     private actions$: Actions,
+    private walletService: WalletService,
     private web3LoginService: Web3LoginService,
     private tokenSetupService: TokenSetupService,
     private readonly store: Store,
@@ -113,10 +115,10 @@ export class TokenManagementEffects {
               queryParams: { chainId: action.chainId, txnHash: action.txn }
             });
           }),
-          catchError(() =>
+          catchError((response: { error: { message: string; code: number } }) =>
             of(
               tokenActions.createTokenFailure({
-                errorMessage: $localize`:@@tokenManagement.tokenCreationFailure:Token creation failed. Please try again.`
+                errorMessage: this.walletService.formatErrorMessage(response.error.code)
               })
             )
           )
