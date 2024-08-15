@@ -16,6 +16,7 @@ import {
   loadTransactionsFromBridgeTransferSuccess,
   localTransactionSentSuccessfully
 } from './actions';
+import { mintTokenSuccess } from '../../tokens-management-store/state/actions';
 
 @Injectable()
 export class TransactionEffects {
@@ -52,6 +53,23 @@ export class TransactionEffects {
             type: 'success',
             hash: action.hash,
             component: 'CommunityVaultsListPageContainerComponent',
+            chainId: action.chainId
+          }
+        });
+      })
+    );
+  });
+
+  minTokenSent$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(mintTokenSuccess),
+      map((action: ReturnType<typeof mintTokenSuccess>) => {
+        return localTransactionSentSuccessfully({
+          card: {
+            title: $localize`:@@transaction.payment.title:Transaction sent successfully`,
+            type: 'success',
+            hash: action.txn,
+            component: 'TokenManagementPageComponent',
             chainId: action.chainId
           }
         });

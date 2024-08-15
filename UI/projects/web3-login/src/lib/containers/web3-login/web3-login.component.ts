@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Observable } from 'rxjs';
 import { WalletProvider } from '../../interfaces';
@@ -11,9 +11,7 @@ import { MetamaskProviderService } from '../../services/providers/metamask-provi
   templateUrl: './web3-login.component.html',
   styleUrls: ['./web3-login.component.scss']
 })
-export class Web3LoginComponent implements OnInit, OnDestroy {
-  isLoading$: Observable<boolean>;
-
+export class Web3LoginComponent implements OnDestroy {
   constructor(
     public dialogRef: MatDialogRef<Web3LoginComponent>,
     private metamaskProviderService: MetamaskProviderService,
@@ -21,8 +19,8 @@ export class Web3LoginComponent implements OnInit, OnDestroy {
     private privateGlobalValuesService: PrivateGlobalValuesService
   ) {}
 
-  ngOnInit(): void {
-    this.isLoading$ = this.privateGlobalValuesService.isLoading$;
+  get isLoading$(): Observable<boolean> {
+    return this.privateGlobalValuesService.isLoading$;
   }
 
   ngOnDestroy(): void {

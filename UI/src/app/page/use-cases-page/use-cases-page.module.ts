@@ -4,6 +4,7 @@ import { SharedComponentsModule } from './../../shared/components/shared-compone
 import { ActivityModule } from './pages/activity/activity.module';
 import { BidModule } from './pages/bid/bid.module';
 import { PaymentRequestModule } from './pages/payment-request/payment-request.module';
+import { SetupTokenModule } from './pages/setup-token/setup-token.module';
 import { ShopQrCodeModule } from './pages/shop-qr-code/shop-qr-code.module';
 import { UseCasesPageRoutingModule } from './use-cases-page-routing.module';
 import { UseCasesPageComponent } from './use-cases-page.component';
@@ -17,7 +18,8 @@ import { UseCasesPageComponent } from './use-cases-page.component';
     SharedComponentsModule,
     ActivityModule,
     BidModule,
-    ShopQrCodeModule
+    ShopQrCodeModule,
+    SetupTokenModule
   ]
 })
 export class UseCasesPageModule {}

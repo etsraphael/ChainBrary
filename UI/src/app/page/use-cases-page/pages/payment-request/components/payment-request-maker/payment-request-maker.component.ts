@@ -6,7 +6,6 @@ import {
   FormControl,
   FormGroup,
   ValidationErrors,
-  ValidatorFn,
   Validators
 } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
@@ -60,20 +59,20 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
   AuthStatusCodeTypes = AuthStatusCode;
   mainForm = new FormGroup<PaymentMakerForm>({
-    price: new FormGroup({
-      token: new FormGroup({
-        tokenId: new FormControl('', [Validators.required]),
-        chainId: new FormControl('', [Validators.required])
+    price: new FormGroup<PriceSettingsForm>({
+      token: new FormGroup<TokenChoiceMakerForm>({
+        tokenId: new FormControl(null, [Validators.required]),
+        chainId: new FormControl(null, [Validators.required])
       }),
-      description: new FormControl('', []),
+      description: new FormControl(null, []),
       amount: new FormControl(1, [Validators.required, Validators.min(0)]),
       amountInUsd: new FormControl(0, []),
       valueLockedInUsd: new FormControl(false, [])
     }),
-    profile: new FormGroup({
-      publicAddress: new FormControl('', [Validators.required, this.ethAddressValidator()]),
-      avatarUrl: new FormControl('', [], [this.urlValidator()]),
-      username: new FormControl('', [Validators.required, Validators.maxLength(20)])
+    profile: new FormGroup<ProfileForm>({
+      publicAddress: new FormControl(null, [Validators.required, this.formatService.ethAddressValidator()]),
+      avatarUrl: new FormControl(null, [], [this.urlValidator()]),
+      username: new FormControl(null, [Validators.required, Validators.maxLength(20)])
     })
   });
   linkGenerated: string;
@@ -139,7 +138,72 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     this.setDefaultTokenSelection();
   }
 
-  listenToResetTransaction(): void {
+  onStepChange(event: StepperSelectionEvent): void {
+    if (event.selectedIndex === 2) {
+      this.generatePaymentRequest();
+    }
+  }
+
+  generatePaymentRequest(): void {
+    const { username, publicAddress, avatarUrl } = this.profileControls;
+    const { amount, amountInUsd, description, valueLockedInUsd } = this.priceControls;
+    const { tokenId, chainId } = this.tokenChoiceControls;
+    const amountToReceive: number | null = valueLockedInUsd.value ? amountInUsd.value : amount.value;
+
+    const paymentRequest: IPaymentRequest = {
+      chainId: chainId.value as NetworkChainId,
+      tokenId: tokenId.value as string,
+      username: username.value as string,
+      publicAddress: publicAddress.value as string,
+      amount: amountToReceive as number,
+      description: description.value as string,
+      avatarUrl: avatarUrl.value as string,
+      usdEnabled: valueLockedInUsd.value as boolean
+    };
+
+    const paymentRequestBase64: string = Buffer.from(
+      JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
+      'utf-8'
+    )
+      .toString('base64')
+      .replace('+', '-')
+      .replace('/', '_');
+    const url: URL = new URL(window.location.href);
+    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
+    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
+  }
+
+  urlValidator(): AsyncValidatorFn {
+    return (control: AbstractControl): Observable<ValidationErrors | null> => {
+      if (!control.value) return of(null);
+      this.isAvatarUrlValid = false;
+
+      const src: string = control.value;
+      const img: HTMLImageElement = new Image();
+      img.src = src;
+
+      return new Observable((observer) => {
+        img.onload = () => {
+          this.isAvatarUrlValid = true;
+          observer.next(null);
+          observer.complete();
+        };
+
+        img.onerror = () => {
+          this.isAvatarUrlValid = false;
+          observer.next({ invalidUrl: true });
+          observer.complete();
+        };
+      });
+    };
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
+  }
+
+  private listenToResetTransaction(): void {
     this.resetTransactionObs.pipe(takeUntil(this.destroyed$)).subscribe(() => {
       this.stepper.selectedIndex = 0;
       this.priceForm.reset();
@@ -147,7 +211,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
   }
 
-  listenNetworkChange(): Subscription {
+  private listenNetworkChange(): Subscription {
     return this.currentNetworkObs
       .pipe(takeUntil(this.destroyed$))
       .subscribe((currentNetwork: INetworkDetail | null) => {
@@ -169,7 +233,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       });
   }
 
-  setDefaultTokenSelection(): void {
+  private setDefaultTokenSelection(): void {
     this.currentNetworkObs.pipe(take(1)).subscribe((currentNetwork: INetworkDetail | null) => {
       if (currentNetwork) {
         this.tokenChoiceForm.patchValue({
@@ -193,7 +257,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     });
   }
 
-  listenToTokenChange(): void {
+  private listenToTokenChange(): void {
     this.priceForm
       .get('token.tokenId')
       ?.valueChanges.pipe(
@@ -205,7 +269,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       .subscribe((tokenId: string) => this.setUpTokenChoice.emit(tokenId));
   }
 
-  listenToAmountChange(): void {
+  private listenToAmountChange(): void {
     this.priceForm
       .get('amount')
       ?.valueChanges.pipe(
@@ -260,7 +324,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       });
   }
 
-  listenToAddressChange(): void {
+  private listenToAddressChange(): void {
     this.publicAddressObs.pipe(takeUntil(this.destroyed$)).subscribe((publicAddress: string | null) => {
       if (publicAddress) {
         this.profileForm.get('publicAddress')?.setValue(publicAddress);
@@ -270,81 +334,5 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         this.profileForm.get('publicAddress')?.enable();
       }
     });
-  }
-
-  onStepChange(event: StepperSelectionEvent): void {
-    if (event.selectedIndex === 2) {
-      this.generatePaymentRequest();
-    }
-  }
-
-  generatePaymentRequest(): void {
-    const { username, publicAddress, avatarUrl } = this.profileControls;
-    const { amount, amountInUsd, description, valueLockedInUsd } = this.priceControls;
-    const { tokenId, chainId } = this.tokenChoiceControls;
-    const amountToReceive: number | null = valueLockedInUsd.value ? amountInUsd.value : amount.value;
-
-    const paymentRequest: IPaymentRequest = {
-      chainId: chainId.value as NetworkChainId,
-      tokenId: tokenId.value as string,
-      username: username.value as string,
-      publicAddress: publicAddress.value as string,
-      amount: amountToReceive as number,
-      description: description.value as string,
-      avatarUrl: avatarUrl.value as string,
-      usdEnabled: valueLockedInUsd.value as boolean
-    };
-
-    const paymentRequestBase64: string = Buffer.from(
-      JSON.stringify(this.formatService.removeEmptyStringProperties(paymentRequest)),
-      'utf-8'
-    )
-      .toString('base64')
-      .replace('+', '-')
-      .replace('/', '_');
-    const url: URL = new URL(window.location.href);
-    const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
-  }
-
-  ethAddressValidator(): ValidatorFn {
-    return (control: AbstractControl): ValidationErrors | null => {
-      const value = control.value as string;
-
-      if (!value) return null;
-
-      const isHex = /^0x[a-fA-F0-9]{40}$/.test(value);
-      return isHex ? null : { invalidAddress: true };
-    };
-  }
-
-  urlValidator(): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (!control.value) return of(null);
-      this.isAvatarUrlValid = false;
-
-      const src: string = control.value;
-      const img: HTMLImageElement = new Image();
-      img.src = src;
-
-      return new Observable((observer) => {
-        img.onload = () => {
-          this.isAvatarUrlValid = true;
-          observer.next(null);
-          observer.complete();
-        };
-
-        img.onerror = () => {
-          this.isAvatarUrlValid = false;
-          observer.next({ invalidUrl: true });
-          observer.complete();
-        };
-      });
-    };
-  }
-
-  ngOnDestroy(): void {
-    this.destroyed$.next(true);
-    this.destroyed$.complete();
   }
 }

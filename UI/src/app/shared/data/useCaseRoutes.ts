@@ -4,7 +4,7 @@ const serviceCards: IServiceCard[] = [
   {
     id: 'payment-request',
     title: $localize`:@@landingPage.paymentServiceTitle:Payment Request`,
-    description: $localize`:@@landingPage.paymentServiceDesc:Connect you wallet, Create an ID or QRcode and use it to receive payments.`,
+    description: $localize`:@@landingPage.paymentServiceDesc:Connect your wallet, Create an ID or QRcode and use it to receive payments.`,
     img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/payment-service.svg',
     routerUrl: './../../use-cases/payment-request'
   },
@@ -30,6 +30,13 @@ const serviceCards: IServiceCard[] = [
     routerUrl: './../../use-cases/shop-qr-code/services'
   },
   {
+    id: 'token-setup',
+    title: $localize`:@@servicePage.tokenSetupServiceTitle:Token Setup`,
+    description: $localize`:@@servicePage.tokenSetupServiceDesc:Create and manage your token, then share it with your friends to use as a currency.`,
+    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/token-creation.svg',
+    routerUrl: './../../use-cases/setup-token/services'
+  },
+  {
     id: 'shop-qr-code',
     title: $localize`:@@servicePage.payTogetherServiceTitle:Pay Together`,
     description: $localize`:@@servicePage.payTogetherServiceDesc: Create a payment link and share it with your friends to pay together.`,
@@ -42,14 +49,6 @@ const serviceCards: IServiceCard[] = [
     title: $localize`:@@servicePage.anonymousVoteServiceTitle:Anonymous Vote`,
     description: $localize`:@@servicePage.anonymousVoteServiceDesc:Create a vote and share it with your friends to vote anonymously`,
     img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/anonymous-vote.svg',
-    routerUrl: null,
-    isDisabled: true
-  },
-  {
-    id: 'create-token',
-    title: $localize`:@@servicePage.createTokenServiceTitle: Create Token`,
-    description: $localize`:@@servicePage.createTokenServiceDesc: Create a token and share it with your friends to use it as a currency.`,
-    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/token-creation.svg',
     routerUrl: null,
     isDisabled: true
   },

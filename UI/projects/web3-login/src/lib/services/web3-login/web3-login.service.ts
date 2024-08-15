@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Observable, distinctUntilChanged, of, switchMap } from 'rxjs';
 import { Web3LoginComponent } from '../../containers/web3-login/web3-login.component';
-import { INetworkDetail, WalletConnectedEvent, WalletProvider } from '../../interfaces';
+import { INetworkDetail, WalletConnectedEvent, WalletErrorEvent, WalletProvider } from '../../interfaces';
 import { PublicGlobalValuesService } from '../global-values/public-global-values.service';
 import { NetworkServiceWeb3Login } from '../network/network.service';
 import { BraveWalletProviderService } from '../providers/brave-wallet-provider/brave-wallet-provider.service';
@@ -58,6 +58,10 @@ export class Web3LoginService {
 
   get currentNetwork$(): Observable<INetworkDetail | null> {
     return this.publicGlobalValuesService.currentNetwork$;
+  }
+
+  get walletError$(): Observable<WalletErrorEvent | null> {
+    return this.publicGlobalValuesService.walletError$;
   }
 
   openLoginModal(): MatDialogRef<Web3LoginComponent> {
