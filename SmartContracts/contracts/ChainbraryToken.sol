@@ -70,7 +70,7 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         _transfer(address(this), msg.sender, cbTokenAmount);
     }
 
-    function getCBTokenAmountWithMedian(uint256 paymentAmount) internal view returns (uint256) {
+    function getCBTokenAmountWithMedian(uint256 paymentAmount) public view returns (uint256) {
         uint256 token1Price = getPrice(priceFeedToken1);
         uint256 token2Price = getPrice(priceFeedToken2);
         uint256 token3Price = getPrice(priceFeedToken3);

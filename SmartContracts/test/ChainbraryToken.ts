@@ -29,7 +29,7 @@ describe('ChainbraryToken', function () {
     const mockV3Aggregator2: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, TOKEN_2_PRICE);
     const mockV3Aggregator3: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, TOKEN_3_PRICE);
 
-    const token = await chainbraryToken.deploy(INITIAL_SUPPLY, OWNER_MINT_AMOUNT, TOKEN_1, TOKEN_2, TOKEN_3);
+    const token = await chainbraryToken.deploy(INITIAL_SUPPLY, OWNER_MINT_AMOUNT, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3);
     return { token, owner, addr1, addr2, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 };
   };
 
@@ -50,7 +50,7 @@ describe('ChainbraryToken', function () {
     expect(totalSupply).to.equal(ethers.parseUnits(INITIAL_SUPPLY.toString(), DECIMAL));
   });
 
-  it('Get median price of 3 tokens', async function () {
+  it.only('Get median price of 3 tokens', async function () {
     const { token, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } = await loadFixture(deployTokenFixture);
     const mockAggregators: MockingPriceFeed[] = [mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3];
     const expectedPrices: bigint[] = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map(price => ethers.parseUnits(price.toString(), DECIMAL));
@@ -61,6 +61,14 @@ describe('ChainbraryToken', function () {
         expect(price).to.equal(expectedPrices[index]);
       })
     );
+
+    const paymentAmount: bigint = ethers.parseUnits('1');
+    const tokenAmount: bigint = await token.getCBTokenAmountWithMedian(paymentAmount);
+    
+    const medianPrice: bigint = [...expectedPrices].sort((a, b) => (a > b ? 1 : -1))[1];
+    const expectedTokenAmount: bigint = paymentAmount * BigInt(1e18) / medianPrice;
+    
+    expect(tokenAmount).to.equal(expectedTokenAmount);
 
   });
 });
