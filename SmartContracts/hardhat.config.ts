@@ -10,7 +10,10 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 31337,
       loggingEnabled: true
-    }
+    },
+    forking: {
+      url: `https://eth-mainnet.rpc.grove.city/v1/2501ba49`
+    },
   }
 };
 
