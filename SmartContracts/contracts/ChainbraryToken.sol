@@ -69,8 +69,8 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         require(cbTokenAmount > 0, "Insufficient amount to buy tokens");
         _transfer(address(this), msg.sender, cbTokenAmount);
     }
- 
-     function getCBTokenAmountWithMedian(uint256 paymentAmount) internal view returns (uint256) {
+
+    function getCBTokenAmountWithMedian(uint256 paymentAmount) internal view returns (uint256) {
         uint256 token1Price = getPrice(priceFeedToken1);
         uint256 token2Price = getPrice(priceFeedToken2);
         uint256 token3Price = getPrice(priceFeedToken3);
@@ -94,9 +94,13 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         return cbTokenAmount;
     }
 
-    function getPrice(AggregatorV3Interface priceFeed) internal view returns (uint256) {
+    function getPrice(AggregatorV3Interface priceFeed) public view returns (uint256) {
         (, int256 price, , , ) = priceFeed.latestRoundData();
-        return uint256(price * 1e10); // Adjust to 18 decimal places
+        return uint256(price * 1e18);
+    }
+
+    function getPublicPrice(address feed) external view returns (uint256) {
+        return getPrice(AggregatorV3Interface(feed));
     }
 
     function withdrawTokens(uint256 amount) public nonReentrant {

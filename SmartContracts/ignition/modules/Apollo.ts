@@ -13,6 +13,7 @@ export default buildModule('Apollo', (m) => {
   const customERC20Token = deployCustomERC20Token(m);
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
   const chainbraryToken = deployChainbraryToken(m);
+  const mockingPriceFeed = deployMockingPriceFeed(m);
 
   return {
     rocketContract,
@@ -24,7 +25,8 @@ export default buildModule('Apollo', (m) => {
     documentLocker,
     customERC20Token,
     customERC20TokenFactory,
-    chainbraryToken
+    chainbraryToken,
+    mockingPriceFeed
   };
 });
 
@@ -98,4 +100,9 @@ function deployCustomERC20TokenFactory(m: any, communityVaultAddress: string) {
 function deployChainbraryToken(m: any) {
   const chainbraryToken = m.contract('ChainbraryToken', [21000000000, 150000000, '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c', '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419', '0x14e613AC84a31f709eadbdF89C6CC390fDc9540A']);
   return chainbraryToken;
+}
+
+function deployMockingPriceFeed(m: any) {
+  const mockingPriceFeed = m.contract('MockingPriceFeed', ['18', '1000000000000000000']);
+  return mockingPriceFeed;
 }
