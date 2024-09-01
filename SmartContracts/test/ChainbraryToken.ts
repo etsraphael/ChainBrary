@@ -50,7 +50,7 @@ describe('ChainbraryToken', function () {
     expect(totalSupply).to.equal(ethers.parseUnits(INITIAL_SUPPLY.toString(), DECIMAL));
   });
 
-  it.only('Get median price of 3 tokens', async function () {
+  it('Should get median price of 3 tokens', async function () {
     const { token, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } = await loadFixture(deployTokenFixture);
     const mockAggregators: MockingPriceFeed[] = [mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3];
     const expectedPrices: bigint[] = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map(price => ethers.parseUnits(price.toString(), DECIMAL));
