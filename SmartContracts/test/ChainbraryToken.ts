@@ -9,10 +9,6 @@ const INITIAL_SUPPLY = 21000000000;
 const OWNER_MINT_AMOUNT = 150000000;
 const DECIMAL = 18;
 
-const TOKEN_1 = '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c';
-const TOKEN_2 = '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419';
-const TOKEN_3 = '0x14e613AC84a31f709eadbdF89C6CC390fDc9540A';
-
 const TOKEN_1_PRICE = 50000;
 const TOKEN_2_PRICE = 3000;
 const TOKEN_3_PRICE = 600;
@@ -71,4 +67,118 @@ describe('ChainbraryToken', function () {
     expect(tokenAmount).to.equal(expectedTokenAmount);
 
   });
+
+  it('Should respect the max purchase limit', async function () {
+    const { token, addr1 } = await loadFixture(deployTokenFixture);
+    const amount: bigint = ethers.parseUnits('2000', DECIMAL);
+
+    await expect(
+      token.connect(addr1).buyTokens(amount, { value: amount })
+    ).to.be.revertedWith('Purchase exceeds max limit');
+  });
+
+  it('Should allow user to use buyTokens function and get the correct amount of tokens', async function () {
+    const { token, addr1 } = await loadFixture(deployTokenFixture);
+  
+    // Set an amount within the max purchase limit
+    const paymentAmount: bigint = ethers.parseUnits('1', 'ether');
+    const tokenAmount: bigint = await token.getCBTokenAmountWithMedian(paymentAmount);
+  
+    const initialBalance: bigint = await token.balanceOf(addr1.address);
+    expect(initialBalance).to.equal(0);
+
+    await token.connect(addr1).buyTokens(tokenAmount, { value: paymentAmount });
+  
+    const finalBalance: bigint = await token.balanceOf(addr1.address);
+    expect(finalBalance).to.equal(initialBalance + tokenAmount);
+  
+    // Check that the contract's balance decreased by the correct amount
+    const contractBalance: bigint = await token.balanceOf(token.getAddress());
+    expect(contractBalance).to.equal(await token.totalSupply() - finalBalance - await token.balanceOf(token.owner()));
+  });
+  
+  it('Should allow owner to withdraw funds received', async function () {
+    const { token, owner, addr1 } = await loadFixture(deployTokenFixture);
+  
+    // Send some ether to the contract by buying tokens
+    const paymentAmount: bigint = ethers.parseUnits('1', 'ether');
+    await token.connect(addr1).buyTokens(await token.getCBTokenAmountWithMedian(paymentAmount), { value: paymentAmount });
+  
+    const initialOwnerBalance = await ethers.provider.getBalance(owner.address);
+    const initialContractBalance = await ethers.provider.getBalance(token.getAddress());
+  
+    // Withdraw the funds from the contract
+    const tx = await token.connect(owner).withdrawFunds(initialContractBalance);
+    const receipt = await tx.wait();
+
+    if (!receipt) {
+      throw new Error('No receipt');
+    }
+    const gasUsed = receipt.gasUsed * tx.gasPrice;
+  
+    const finalOwnerBalance = await ethers.provider.getBalance(owner.address);
+    const finalContractBalance = await ethers.provider.getBalance(token.getAddress());
+  
+    expect(finalContractBalance).to.equal(BigInt(0));
+    expect(finalOwnerBalance).to.equal(initialOwnerBalance + initialContractBalance - gasUsed);
+  });
+
+  it('Should not allow owner to withdraw funds if contract does not have enough tokens', async function () {
+    const { token, owner } = await loadFixture(deployTokenFixture);
+  
+    const contractBalance: bigint = await ethers.provider.getBalance(token.getAddress());
+    expect(contractBalance).to.equal(0);
+
+    const amount: bigint = ethers.parseUnits('1', 'ether')
+  
+    await expect(token.connect(owner).withdrawFunds(amount)).to.be.revertedWith('Insufficient balance');
+  });
+  
+  it('Should restrict withdrawals to the owner only', async function () {
+    const { token, addr1, addr2 } = await loadFixture(deployTokenFixture);
+
+    // Send some ether to the contract by buying tokens
+    const paymentAmount: bigint = ethers.parseUnits('1', 'ether');
+    await token.connect(addr2).buyTokens(await token.getCBTokenAmountWithMedian(paymentAmount), { value: paymentAmount });
+  
+    const contractBalance: bigint = await ethers.provider.getBalance(token.getAddress());
+  
+    await expect(token.connect(addr1).withdrawFunds(contractBalance)).to.be.revertedWithCustomError(token, "OwnableUnauthorizedAccount");
+  });
+  
+  it('Should update price feeds after the lock period', async function () {
+    const { token, owner, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } = await loadFixture(deployTokenFixture);
+  
+    const MockV3Aggregator: MockingPriceFeed__factory = await ethers.getContractFactory('MockingPriceFeed');
+    const newMockV3Aggregator1: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, 45000);
+    const newMockV3Aggregator2: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, 3200);
+    const newMockV3Aggregator3: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, 700);
+  
+    await ethers.provider.send('evm_increaseTime', [14 * 24 * 60 * 60]); // increase time by 14 days
+    await ethers.provider.send('evm_mine', []); // mine a new block
+  
+    await token.connect(owner).updatePriceFeeds(newMockV3Aggregator1.getAddress(), newMockV3Aggregator2.getAddress(), newMockV3Aggregator3.getAddress());
+  
+    const updatedPrice1 = await token.getPrice(newMockV3Aggregator1.getAddress());
+    const updatedPrice2 = await token.getPrice(newMockV3Aggregator2.getAddress());
+    const updatedPrice3 = await token.getPrice(newMockV3Aggregator3.getAddress());
+  
+    expect(updatedPrice1).to.equal(ethers.parseUnits('45000', DECIMAL));
+    expect(updatedPrice2).to.equal(ethers.parseUnits('3200', DECIMAL));
+    expect(updatedPrice3).to.equal(ethers.parseUnits('700', DECIMAL));
+  });
+  
+  it('Should not allow updating price feeds before the lock period', async function () {
+    const { token, owner, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } = await loadFixture(deployTokenFixture);
+  
+    const MockV3Aggregator: MockingPriceFeed__factory = await ethers.getContractFactory('MockingPriceFeed');
+    const newMockV3Aggregator1: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, 45000);
+    const newMockV3Aggregator2: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, 3200);
+    const newMockV3Aggregator3: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, 700);
+  
+    await expect(
+      token.connect(owner).updatePriceFeeds(newMockV3Aggregator1.getAddress(), newMockV3Aggregator2.getAddress(), newMockV3Aggregator3.getAddress())
+    ).to.be.revertedWith('Update locked for 2 weeks');
+  });
+
 });

@@ -29,7 +29,7 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     ) ERC20("ChainbraryToken", "CBT") Ownable(_msgSender()) {
         require(_ownerMintAmount <= _initialSupply, "Owner mint amount cannot exceed total supply");
 
-        _mint(msg.sender, _ownerMintAmount * 10 ** decimals()); // Mint chosen amount to the owner (msg.sender)
+        _mint(_msgSender(), _ownerMintAmount * 10 ** decimals()); // Mint chosen amount to the owner (_msgSender())
         _mint(address(this), _initialSupply * 10 ** decimals() - (_ownerMintAmount * 10 ** decimals())); // Mint the rest to the contract itself
 
         priceFeedToken1 = AggregatorV3Interface(_priceFeedToken1);
@@ -67,7 +67,7 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
 
         uint256 cbTokenAmount = getCBTokenAmountWithMedian(msg.value);
         require(cbTokenAmount > 0, "Insufficient amount to buy tokens");
-        _transfer(address(this), msg.sender, cbTokenAmount);
+        _transfer(address(this), _msgSender(), cbTokenAmount);
     }
 
     function getCBTokenAmountWithMedian(uint256 paymentAmount) public view returns (uint256) {
@@ -99,24 +99,18 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         return uint256(price * 1e18);
     }
 
-    function getPublicPrice(address feed) external view returns (uint256) {
-        return getPrice(AggregatorV3Interface(feed));
-    }
-
-    function withdrawTokens(uint256 amount) public nonReentrant {
-        require(block.timestamp > lastWithdrawalTime[msg.sender] + 7 days, "Withdrawal limit reached");
-        require(amount <= weeklyWithdrawalLimit, "Amount exceeds weekly limit");
-
-        _transfer(address(this), msg.sender, amount);
-        withdrawnAmount[msg.sender] += amount;
-        lastWithdrawalTime[msg.sender] = block.timestamp;
+    function withdrawFunds(uint256 amount) external onlyOwner {
+        require(amount <= address(this).balance, "Insufficient balance");
+        payable(owner()).transfer(amount);
     }
 
     function setMaxPurchaseLimit(uint256 _limit) external onlyOwner {
         maxPurchaseLimit = _limit;
+        lastUpdateTimestamp + 14 days;
     }
 
     function setWeeklyWithdrawalLimit(uint256 _limit) external onlyOwner {
         weeklyWithdrawalLimit = _limit;
+        lastUpdateTimestamp + 14 days;
     }
 }

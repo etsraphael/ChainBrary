@@ -6,7 +6,7 @@ import { ContractTransactionReceipt, ContractTransactionResponse } from 'ethers'
 
 describe('TransactionBridge', function () {
   async function deployContractFixture() {
-    const vaultAddress = '0x0DCd1Bf9A1b36cE34237eEaFef220932846BCD82';
+    const vaultAddress = '0x998abeb3E57409262aE5b751f60747921B33613E';
     const TransactionBridge = await ethers.getContractFactory('TransactionBridge');
     const Token = await ethers.getContractFactory('ERC20FixedSupply');
     const transactionBridge = await TransactionBridge.deploy(vaultAddress);
