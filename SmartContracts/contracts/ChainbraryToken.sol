@@ -19,6 +19,8 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     mapping(address => uint256) public withdrawnAmount;
 
     event PriceFeedsUpdated(address indexed token1, address indexed token2, address indexed token3);
+    event MaxPurchaseLimitUpdated(uint256 newLimit);
+    event WeeklyWithdrawalLimitUpdated(uint256 newLimit);
 
     constructor(
         uint256 _initialSupply,
@@ -104,12 +106,14 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         payable(owner()).transfer(amount);
     }
 
-    function setMaxPurchaseLimit(uint256 _limit) external onlyOwner {
+    function setMaxPurchaseLimit(uint256 _limit) external onlyOwner onlyAfterLockPeriod {
+        emit MaxPurchaseLimitUpdated(_limit);
         maxPurchaseLimit = _limit;
         lastUpdateTimestamp + 14 days;
     }
 
-    function setWeeklyWithdrawalLimit(uint256 _limit) external onlyOwner {
+    function setWeeklyWithdrawalLimit(uint256 _limit) external onlyOwner onlyAfterLockPeriod {
+        emit WeeklyWithdrawalLimitUpdated(_limit);
         weeklyWithdrawalLimit = _limit;
         lastUpdateTimestamp + 14 days;
     }

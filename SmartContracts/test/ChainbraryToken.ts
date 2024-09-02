@@ -181,4 +181,56 @@ describe('ChainbraryToken', function () {
     ).to.be.revertedWith('Update locked for 2 weeks');
   });
 
+  it('Should not allow setting max purchase limit before the lock period', async function () {
+    const { token, owner } = await loadFixture(deployTokenFixture);
+  
+    const newMaxPurchaseLimit: bigint = ethers.parseUnits('1500', DECIMAL);
+  
+    await expect(
+      token.connect(owner).setMaxPurchaseLimit(newMaxPurchaseLimit)
+    ).to.be.revertedWith('Update locked for 2 weeks');
+  });
+  
+  it('Should allow setting max purchase limit after the lock period', async function () {
+    const { token, owner } = await loadFixture(deployTokenFixture);
+  
+    const newMaxPurchaseLimit: bigint = ethers.parseUnits('1500', DECIMAL);
+  
+    await ethers.provider.send('evm_increaseTime', [14 * 24 * 60 * 60]); // increase time by 14 days
+    await ethers.provider.send('evm_mine', []); // mine a new block
+  
+    await expect(token.connect(owner).setMaxPurchaseLimit(newMaxPurchaseLimit))
+      .to.emit(token, 'MaxPurchaseLimitUpdated')
+      .withArgs(newMaxPurchaseLimit);
+  
+    const updatedMaxPurchaseLimit = await token.maxPurchaseLimit();
+    expect(updatedMaxPurchaseLimit).to.equal(newMaxPurchaseLimit);
+  });
+
+it('Should not allow setting weekly withdrawal limit before the lock period', async function () {
+  const { token, owner } = await loadFixture(deployTokenFixture);
+
+  const newWeeklyWithdrawalLimit: bigint = ethers.parseUnits('200', DECIMAL);
+
+  await expect(
+    token.connect(owner).setWeeklyWithdrawalLimit(newWeeklyWithdrawalLimit)
+  ).to.be.revertedWith('Update locked for 2 weeks');
+});
+
+it('Should allow setting weekly withdrawal limit after the lock period', async function () {
+  const { token, owner } = await loadFixture(deployTokenFixture);
+
+  const newWeeklyWithdrawalLimit: bigint = ethers.parseUnits('200', DECIMAL);
+
+  await ethers.provider.send('evm_increaseTime', [14 * 24 * 60 * 60]); // increase time by 14 days
+  await ethers.provider.send('evm_mine', []); // mine a new block
+
+  await expect(token.connect(owner).setWeeklyWithdrawalLimit(newWeeklyWithdrawalLimit))
+    .to.emit(token, 'WeeklyWithdrawalLimitUpdated')
+    .withArgs(newWeeklyWithdrawalLimit);
+
+  const updatedWeeklyWithdrawalLimit = await token.weeklyWithdrawalLimit();
+  expect(updatedWeeklyWithdrawalLimit).to.equal(newWeeklyWithdrawalLimit);
+});
+
 });
