@@ -14,7 +14,7 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     uint256 public maxPurchaseLimit;
     uint256 public weeklyWithdrawalLimit;
     uint256 public lastUpdateTimestamp;
-    uint256 public dailyIncreaseRate;
+    uint256 public dailyIncreaseRate; // in basis points eg. 100 = 0.1%
 
     mapping(address => uint256) public lastWithdrawalTime;
     mapping(address => uint256) public withdrawnAmount;
@@ -73,12 +73,12 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         require(amount <= maxPurchaseLimit, "Purchase exceeds max limit");
         require(msg.value > 0, "Send native token to purchase");
 
-        uint256 cbTokenAmount = getCBTokenAmountWithAverage(msg.value);
+        uint256 cbTokenAmount = getExponentialPrice(msg.value);
         require(cbTokenAmount > 0, "Insufficient amount to buy tokens");
         _transfer(address(this), _msgSender(), cbTokenAmount);
     }
 
-    function getCBTokenAmountWithAverage(uint256 paymentAmount) public view returns (uint256) {
+    function getExponentialPrice(uint256 paymentAmount) public view returns (uint256) {
         uint256 token1Price = getPrice(priceFeedToken1);
         uint256 token2Price = getPrice(priceFeedToken2);
         uint256 token3Price = getPrice(priceFeedToken3);
@@ -86,24 +86,15 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         // Calculate the average price
         uint256 averagePrice = (token1Price + token2Price + token3Price) / 3;
 
-        // Calculate the time-based multiplier to adjust the price over time
-        uint256 timeMultiplier = calculateTimeMultiplier();
+        // Calculate the time-based exponential multiplier
+        uint256 timeElapsed = block.timestamp / 1 days;
+        uint256 exponentialMultiplier = (10 ** decimals() * (1 + timeElapsed) ** 2) / 1e6;
 
-        // Apply the time multiplier to the average price
-        uint256 adjustedPrice = (averagePrice * timeMultiplier) / 10 ** decimals();
+        // Apply the exponential multiplier to the average price
+        uint256 adjustedPrice = (averagePrice * exponentialMultiplier) / 10 ** decimals();
 
         uint256 cbTokenAmount = (paymentAmount * 10 ** decimals()) / adjustedPrice;
         return cbTokenAmount;
-    }
-
-    function calculateTimeMultiplier() public view returns (uint256) {
-        // Calculate days since contract deployment
-        uint256 timeElapsed = block.timestamp;
-        uint256 daysElapsed = timeElapsed / 1 days;
-
-        // Increase the price by the configured daily rate (e.g., 100 = 0.1%)
-        uint256 multiplier = 10 ** decimals() + (daysElapsed * dailyIncreaseRate * 10 ** (decimals() - 2)); // dailyIncreaseRate in basis points
-        return multiplier;
     }
 
     function getPrice(AggregatorV3Interface priceFeed) public view returns (uint256) {

@@ -19,14 +19,22 @@ describe('ChainbraryToken', function () {
     const totalPrices: bigint = expectedPrices.reduce((a: bigint, b: bigint) => a + b, BigInt(0));
     const averagePrice: bigint = totalPrices / BigInt(expectedPrices.length);
 
-    // Get the time multiplier from the contract (assuming you have a view function)
-    const timeMultiplier: bigint = await token.calculateTimeMultiplier();
+    // Calculate the time elapsed in days since deployment
+    const currentBlock = await ethers.provider.getBlock('latest');
+    if (!currentBlock) {
+      throw new Error('No block');
+    }
+    const timeElapsed: bigint = BigInt(currentBlock.timestamp) / BigInt(86400); // 86400 seconds in a day
 
-    // Apply the time multiplier to the average price
-    const adjustedPrice: bigint = (averagePrice * timeMultiplier) / BigInt(1e18);
+    // Calculate the exponential multiplier
+    const exponentialMultiplier: bigint =
+      (BigInt(10 ** DECIMAL) * (BigInt(1) + timeElapsed) ** BigInt(2)) / BigInt(1e6);
+
+    // Apply the exponential multiplier to the average price
+    const adjustedPrice: bigint = (averagePrice * exponentialMultiplier) / BigInt(10 ** DECIMAL);
 
     // Calculate the expected token amount
-    const expectedTokenAmount: bigint = (paymentAmount * BigInt(1e18)) / adjustedPrice;
+    const expectedTokenAmount: bigint = (paymentAmount * BigInt(10 ** DECIMAL)) / adjustedPrice;
 
     return expectedTokenAmount;
   }
@@ -68,7 +76,7 @@ describe('ChainbraryToken', function () {
     expect(totalSupply).to.equal(ethers.parseUnits(INITIAL_SUPPLY.toString(), DECIMAL));
   });
 
-  it('Should get average price of 3 tokens', async function () {
+  it('Should get exponential price of 3 tokens', async function () {
     const { token, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } = await loadFixture(deployTokenFixture);
     const mockAggregators = [mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3];
     const expectedPrices = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map((price) =>
@@ -83,20 +91,13 @@ describe('ChainbraryToken', function () {
     );
 
     const paymentAmount = ethers.parseUnits('1');
-    const tokenAmount = await token.getCBTokenAmountWithAverage(paymentAmount);
+    const tokenAmount = await token.getExponentialPrice(paymentAmount);
 
-    // Calculate the average price
-    const totalPrices = expectedPrices.reduce((a, b) => a + b, BigInt(0));
-    const averagePrice = totalPrices / BigInt(expectedPrices.length);
-
-    // Calculate the expected token amount
-    const timeMultiplier = await token.calculateTimeMultiplier(); // Assuming you have a view function to return the multiplier for testing purposes
-    const adjustedPrice = (averagePrice * timeMultiplier) / BigInt(1e18);
-    const expectedTokenAmount = (paymentAmount * BigInt(1e18)) / adjustedPrice;
+    // Calculate the expected token amount using the updated function
+    const expectedTokenAmount = await calculateExpectedTokenAmount(token, paymentAmount, expectedPrices);
 
     expect(tokenAmount).to.equal(expectedTokenAmount);
-  });
-
+});
   it('Should respect the max purchase limit', async function () {
     const { token, addr1 } = await loadFixture(deployTokenFixture);
     const amount: bigint = ethers.parseUnits('2000', DECIMAL);
