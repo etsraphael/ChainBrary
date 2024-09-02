@@ -14,6 +14,7 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     uint256 public maxPurchaseLimit;
     uint256 public weeklyWithdrawalLimit;
     uint256 public lastUpdateTimestamp;
+    uint256 public dailyIncreaseRate;
 
     mapping(address => uint256) public lastWithdrawalTime;
     mapping(address => uint256) public withdrawnAmount;
@@ -21,6 +22,7 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     event PriceFeedsUpdated(address indexed token1, address indexed token2, address indexed token3);
     event MaxPurchaseLimitUpdated(uint256 newLimit);
     event WeeklyWithdrawalLimitUpdated(uint256 newLimit);
+    event DailyIncreaseRateUpdated(uint256 newRate);
 
     constructor(
         uint256 _initialSupply,
@@ -38,15 +40,19 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         priceFeedToken2 = AggregatorV3Interface(_priceFeedToken2);
         priceFeedToken3 = AggregatorV3Interface(_priceFeedToken3);
 
-        maxPurchaseLimit = 1000 * 10 ** decimals(); // Example limit
-        weeklyWithdrawalLimit = 100 * 10 ** decimals(); // Example weekly withdrawal limit
-
-        lastUpdateTimestamp = block.timestamp; // Initialize the last update timestamp
+        maxPurchaseLimit = 1000 * 10 ** decimals();
+        weeklyWithdrawalLimit = 100 * 10 ** decimals();
+        lastUpdateTimestamp = block.timestamp;
     }
 
     modifier onlyAfterLockPeriod() {
         require(block.timestamp >= lastUpdateTimestamp + 14 days, "Update locked for 2 weeks");
         _;
+    }
+
+    function updateDailyIncreaseRate(uint256 _dailyIncreaseRate) external onlyOwner {
+        dailyIncreaseRate = _dailyIncreaseRate;
+        emit DailyIncreaseRateUpdated(_dailyIncreaseRate);
     }
 
     function updatePriceFeeds(
@@ -67,38 +73,42 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         require(amount <= maxPurchaseLimit, "Purchase exceeds max limit");
         require(msg.value > 0, "Send native token to purchase");
 
-        uint256 cbTokenAmount = getCBTokenAmountWithMedian(msg.value);
+        uint256 cbTokenAmount = getCBTokenAmountWithAverage(msg.value);
         require(cbTokenAmount > 0, "Insufficient amount to buy tokens");
         _transfer(address(this), _msgSender(), cbTokenAmount);
     }
 
-    function getCBTokenAmountWithMedian(uint256 paymentAmount) public view returns (uint256) {
+    function getCBTokenAmountWithAverage(uint256 paymentAmount) public view returns (uint256) {
         uint256 token1Price = getPrice(priceFeedToken1);
         uint256 token2Price = getPrice(priceFeedToken2);
         uint256 token3Price = getPrice(priceFeedToken3);
 
-        // Declare and assign values to the prices array
-        uint256[3] memory prices = [token1Price, token2Price, token3Price];
+        // Calculate the average price
+        uint256 averagePrice = (token1Price + token2Price + token3Price) / 3;
 
-        // Sort prices to find the median
-        for (uint256 i = 0; i < prices.length - 1; i++) {
-            for (uint256 j = i + 1; j < prices.length; j++) {
-                if (prices[i] > prices[j]) {
-                    uint256 temp = prices[i];
-                    prices[i] = prices[j];
-                    prices[j] = temp;
-                }
-            }
-        }
-        uint256 medianPrice = prices[1]; // The median price
+        // Calculate the time-based multiplier to adjust the price over time
+        uint256 timeMultiplier = calculateTimeMultiplier();
 
-        uint256 cbTokenAmount = (paymentAmount * 1e18) / medianPrice;
+        // Apply the time multiplier to the average price
+        uint256 adjustedPrice = (averagePrice * timeMultiplier) / 10 ** decimals();
+
+        uint256 cbTokenAmount = (paymentAmount * 10 ** decimals()) / adjustedPrice;
         return cbTokenAmount;
+    }
+
+    function calculateTimeMultiplier() public view returns (uint256) {
+        // Calculate days since contract deployment
+        uint256 timeElapsed = block.timestamp;
+        uint256 daysElapsed = timeElapsed / 1 days;
+
+        // Increase the price by the configured daily rate (e.g., 100 = 0.1%)
+        uint256 multiplier = 10 ** decimals() + (daysElapsed * dailyIncreaseRate * 10 ** (decimals() - 2)); // dailyIncreaseRate in basis points
+        return multiplier;
     }
 
     function getPrice(AggregatorV3Interface priceFeed) public view returns (uint256) {
         (, int256 price, , , ) = priceFeed.latestRoundData();
-        return uint256(price * 1e18);
+        return uint256(price) * 10 ** decimals();
     }
 
     function withdrawFunds(uint256 amount) external onlyOwner {
@@ -107,14 +117,20 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     }
 
     function setMaxPurchaseLimit(uint256 _limit) external onlyOwner onlyAfterLockPeriod {
-        emit MaxPurchaseLimitUpdated(_limit);
         maxPurchaseLimit = _limit;
         lastUpdateTimestamp + 14 days;
+        emit MaxPurchaseLimitUpdated(_limit);
     }
 
     function setWeeklyWithdrawalLimit(uint256 _limit) external onlyOwner onlyAfterLockPeriod {
-        emit WeeklyWithdrawalLimitUpdated(_limit);
         weeklyWithdrawalLimit = _limit;
         lastUpdateTimestamp + 14 days;
+        emit WeeklyWithdrawalLimitUpdated(_limit);
+    }
+
+    function setdailyIncreaseRate(uint256 _rate) external onlyOwner onlyAfterLockPeriod {
+        dailyIncreaseRate = _rate;
+        lastUpdateTimestamp + 14 days;
+        emit DailyIncreaseRateUpdated(_rate);
     }
 }
