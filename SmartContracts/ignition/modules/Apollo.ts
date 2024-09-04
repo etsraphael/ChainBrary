@@ -12,6 +12,8 @@ export default buildModule('Apollo', (m) => {
   const documentLocker = deployDocumentLocker(m);
   const customERC20Token = deployCustomERC20Token(m);
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
+  const chainbraryToken = deployChainbraryToken(m);
+  const mockingPriceFeed = deployMockingPriceFeed(m);
 
   return {
     rocketContract,
@@ -22,7 +24,9 @@ export default buildModule('Apollo', (m) => {
     bidContract,
     documentLocker,
     customERC20Token,
-    customERC20TokenFactory
+    customERC20TokenFactory,
+    chainbraryToken,
+    mockingPriceFeed
   };
 });
 
@@ -91,4 +95,14 @@ function deployCustomERC20Token(m: any) {
 function deployCustomERC20TokenFactory(m: any, communityVaultAddress: string) {
   const customERC20TokenFactory = m.contract('CustomERC20TokenFactory', [communityVaultAddress]);
   return customERC20TokenFactory;
+}
+
+function deployChainbraryToken(m: any) {
+  const chainbraryToken = m.contract('ChainbraryToken', [21000000000, 150000000, '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c', '0x5f4eC3Df9cbd43714FE2740f5E3616155c5b8419', '0x14e613AC84a31f709eadbdF89C6CC390fDc9540A']);
+  return chainbraryToken;
+}
+
+function deployMockingPriceFeed(m: any) {
+  const mockingPriceFeed = m.contract('MockingPriceFeed', ['18', '1000000000000000000']);
+  return mockingPriceFeed;
 }
