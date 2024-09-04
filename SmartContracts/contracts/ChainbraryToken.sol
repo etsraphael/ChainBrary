@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
+import "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
-contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
+contract ChainbraryToken is ERC20Upgradeable, OwnableUpgradeable, UUPSUpgradeable, ReentrancyGuardUpgradeable {
     AggregatorV3Interface public priceFeedToken1;
     AggregatorV3Interface public priceFeedToken2;
     AggregatorV3Interface public priceFeedToken3;
@@ -14,27 +15,27 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
     uint256 public maxPurchaseLimit;
     uint256 public weeklyWithdrawalLimit;
     uint256 public lastUpdateTimestamp;
-    uint256 public dailyIncreaseRate; // in basis points eg. 100 = 0.1%
+    uint256 public dailyIncreaseRate;
 
-    mapping(address => uint256) public lastWithdrawalTime;
-    mapping(address => uint256) public withdrawnAmount;
+     event PriceFeedsUpdated(address indexed token1, address indexed token2, address indexed token3);
+     event MaxPurchaseLimitUpdated(uint256 newLimit);
+     event WeeklyWithdrawalLimitUpdated(uint256 newLimit);
+     event DailyIncreaseRateUpdated(uint256 newRate);
 
-    event PriceFeedsUpdated(address indexed token1, address indexed token2, address indexed token3);
-    event MaxPurchaseLimitUpdated(uint256 newLimit);
-    event WeeklyWithdrawalLimitUpdated(uint256 newLimit);
-    event DailyIncreaseRateUpdated(uint256 newRate);
-
-    constructor(
+    function initialize(
         uint256 _initialSupply,
         uint256 _ownerMintAmount,
         address _priceFeedToken1,
         address _priceFeedToken2,
         address _priceFeedToken3
-    ) ERC20("ChainbraryToken", "CBT") Ownable(_msgSender()) {
-        require(_ownerMintAmount <= _initialSupply, "Owner mint amount cannot exceed total supply");
+    ) public initializer {
+        __ERC20_init("ChainbraryToken", "CBT");
+        __Ownable_init(_msgSender());
+        __UUPSUpgradeable_init();
+        __ReentrancyGuard_init();
 
-        _mint(_msgSender(), _ownerMintAmount * 10 ** decimals()); // Mint chosen amount to the owner (_msgSender())
-        _mint(address(this), _initialSupply * 10 ** decimals() - (_ownerMintAmount * 10 ** decimals())); // Mint the rest to the contract itself
+        _mint(_msgSender(), _ownerMintAmount * 10 ** decimals()); // Mint to the owner
+        _mint(address(this), _initialSupply * 10 ** decimals() - (_ownerMintAmount * 10 ** decimals())); // Mint to the contract
 
         priceFeedToken1 = AggregatorV3Interface(_priceFeedToken1);
         priceFeedToken2 = AggregatorV3Interface(_priceFeedToken2);
@@ -45,6 +46,8 @@ contract ChainbraryToken is ERC20, Ownable, ReentrancyGuard {
         lastUpdateTimestamp = block.timestamp;
     }
 
+    function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
+   
     modifier onlyAfterLockPeriod() {
         require(block.timestamp >= lastUpdateTimestamp + 14 days, "Update locked for 2 weeks");
         _;

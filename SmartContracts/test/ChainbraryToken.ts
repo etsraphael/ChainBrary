@@ -49,13 +49,15 @@ describe('ChainbraryToken', function () {
     const mockV3Aggregator2: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, TOKEN_2_PRICE);
     const mockV3Aggregator3: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, TOKEN_3_PRICE);
 
-    const token = await chainbraryToken.deploy(
+    const token = await chainbraryToken.deploy();
+    await token.initialize(
       INITIAL_SUPPLY,
       OWNER_MINT_AMOUNT,
-      mockV3Aggregator1,
-      mockV3Aggregator2,
-      mockV3Aggregator3
+      mockV3Aggregator1.getAddress(),
+      mockV3Aggregator2.getAddress(),
+      mockV3Aggregator3.getAddress()
     );
+
     return { token, owner, addr1, addr2, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 };
   };
 
