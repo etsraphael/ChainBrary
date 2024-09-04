@@ -17,10 +17,10 @@ contract ChainbraryToken is ERC20Upgradeable, OwnableUpgradeable, UUPSUpgradeabl
     uint256 public lastUpdateTimestamp;
     uint256 public dailyIncreaseRate;
 
-     event PriceFeedsUpdated(address indexed token1, address indexed token2, address indexed token3);
-     event MaxPurchaseLimitUpdated(uint256 newLimit);
-     event WeeklyWithdrawalLimitUpdated(uint256 newLimit);
-     event DailyIncreaseRateUpdated(uint256 newRate);
+    event PriceFeedsUpdated(address indexed token1, address indexed token2, address indexed token3);
+    event MaxPurchaseLimitUpdated(uint256 newLimit);
+    event WeeklyWithdrawalLimitUpdated(uint256 newLimit);
+    event DailyIncreaseRateUpdated(uint256 newRate);
 
     function initialize(
         uint256 _initialSupply,
@@ -47,7 +47,7 @@ contract ChainbraryToken is ERC20Upgradeable, OwnableUpgradeable, UUPSUpgradeabl
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
-   
+
     modifier onlyAfterLockPeriod() {
         require(block.timestamp >= lastUpdateTimestamp + 14 days, "Update locked for 2 weeks");
         _;

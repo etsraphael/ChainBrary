@@ -1,9 +1,7 @@
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
-import { ChainbraryToken, MockingPriceFeed, MockingPriceFeed__factory } from '../typechain-types';
-import BigNumber from 'bignumber.js';
-// import { MockingPriceFeed } from '../typechain-types';
+import { ChainbraryToken, ChainbraryToken__factory, MockingPriceFeed, MockingPriceFeed__factory } from '../typechain-types';
 
 const INITIAL_SUPPLY = 21000000000;
 const OWNER_MINT_AMOUNT = 150000000;
@@ -40,7 +38,7 @@ describe('ChainbraryToken', function () {
   }
 
   const deployTokenFixture = async () => {
-    const chainbraryToken = await ethers.getContractFactory('ChainbraryToken');
+    const chainbraryToken: ChainbraryToken__factory = await ethers.getContractFactory('ChainbraryToken');
     const [owner, addr1, addr2] = await ethers.getSigners();
 
     // use MockV3Aggregator
@@ -80,8 +78,8 @@ describe('ChainbraryToken', function () {
 
   it('Should get exponential price of 3 tokens', async function () {
     const { token, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } = await loadFixture(deployTokenFixture);
-    const mockAggregators = [mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3];
-    const expectedPrices = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map((price) =>
+    const mockAggregators: MockingPriceFeed[] = [mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3];
+    const expectedPrices: bigint[] = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map((price) =>
       ethers.parseUnits(price.toString(), DECIMAL)
     );
 
@@ -92,14 +90,15 @@ describe('ChainbraryToken', function () {
       })
     );
 
-    const paymentAmount = ethers.parseUnits('1');
-    const tokenAmount = await token.getExponentialPrice(paymentAmount);
+    const paymentAmount: bigint = ethers.parseUnits('1');
+    const tokenAmount: bigint = await token.getExponentialPrice(paymentAmount);
 
     // Calculate the expected token amount using the updated function
-    const expectedTokenAmount = await calculateExpectedTokenAmount(token, paymentAmount, expectedPrices);
+    const expectedTokenAmount: bigint = await calculateExpectedTokenAmount(token, paymentAmount, expectedPrices);
 
     expect(tokenAmount).to.equal(expectedTokenAmount);
 });
+
   it('Should respect the max purchase limit', async function () {
     const { token, addr1 } = await loadFixture(deployTokenFixture);
     const amount: bigint = ethers.parseUnits('2000', DECIMAL);
@@ -110,27 +109,26 @@ describe('ChainbraryToken', function () {
   });
 
   it('Should allow user to use buyTokens function and get the correct amount of tokens', async function () {
-    const { token, addr1, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 } =
+    const { token, addr1 } =
       await loadFixture(deployTokenFixture);
 
-    const mockAggregators = [mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3];
-    const expectedPrices = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map((price) =>
+    const expectedPrices: bigint[] = [TOKEN_1_PRICE, TOKEN_2_PRICE, TOKEN_3_PRICE].map((price) =>
       ethers.parseUnits(price.toString(), DECIMAL)
     );
 
-    const paymentAmount = ethers.parseUnits('1', 'ether');
-    const tokenAmount = await calculateExpectedTokenAmount(token, paymentAmount, expectedPrices);
+    const paymentAmount: bigint = ethers.parseUnits('1', 'ether');
+    const tokenAmount: bigint = await calculateExpectedTokenAmount(token, paymentAmount, expectedPrices);
 
-    const initialBalance = await token.balanceOf(addr1.address);
+    const initialBalance: bigint = await token.balanceOf(addr1.address);
     expect(initialBalance).to.equal(0);
 
     await token.connect(addr1).buyTokens(tokenAmount, { value: paymentAmount });
 
-    const finalBalance = await token.balanceOf(addr1.address);
+    const finalBalance: bigint = await token.balanceOf(addr1.address);
     expect(finalBalance).to.equal(initialBalance + tokenAmount);
 
     // Check that the contract's balance decreased by the correct amount
-    const contractBalance = await token.balanceOf(token.getAddress());
+    const contractBalance: bigint = await token.balanceOf(token.getAddress());
     expect(contractBalance).to.equal(
       (await token.totalSupply()) - finalBalance - (await token.balanceOf(token.owner()))
     );
@@ -164,7 +162,7 @@ describe('ChainbraryToken', function () {
     const gasUsed = receipt.gasUsed * tx.gasPrice;
 
     const finalOwnerBalance = await ethers.provider.getBalance(owner.address);
-    const finalContractBalance = await ethers.provider.getBalance(token.getAddress());
+    const finalContractBalance: bigint = await ethers.provider.getBalance(token.getAddress());
 
     expect(finalContractBalance).to.equal(BigInt(0));
     expect(finalOwnerBalance).to.equal(initialOwnerBalance + initialContractBalance - gasUsed);
@@ -196,7 +194,7 @@ describe('ChainbraryToken', function () {
       .connect(addr2)
       .buyTokens(await calculateExpectedTokenAmount(token, paymentAmount, expectedPrices), { value: paymentAmount });
 
-    const contractBalance = await ethers.provider.getBalance(token.getAddress());
+    const contractBalance: bigint = await ethers.provider.getBalance(token.getAddress());
 
     await expect(token.connect(addr1).withdrawFunds(contractBalance)).to.be.revertedWithCustomError(
       token,
@@ -224,9 +222,9 @@ describe('ChainbraryToken', function () {
         newMockV3Aggregator3.getAddress()
       );
 
-    const updatedPrice1 = await token.getPrice(newMockV3Aggregator1.getAddress());
-    const updatedPrice2 = await token.getPrice(newMockV3Aggregator2.getAddress());
-    const updatedPrice3 = await token.getPrice(newMockV3Aggregator3.getAddress());
+    const updatedPrice1: bigint = await token.getPrice(newMockV3Aggregator1.getAddress());
+    const updatedPrice2: bigint = await token.getPrice(newMockV3Aggregator2.getAddress());
+    const updatedPrice3: bigint = await token.getPrice(newMockV3Aggregator3.getAddress());
 
     expect(updatedPrice1).to.equal(ethers.parseUnits('45000', DECIMAL));
     expect(updatedPrice2).to.equal(ethers.parseUnits('3200', DECIMAL));
