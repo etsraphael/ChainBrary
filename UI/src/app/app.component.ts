@@ -7,6 +7,13 @@ import { ReplaySubject } from 'rxjs/internal/ReplaySubject';
 import { AnalyticsService } from './shared/services/analytics/analytics.service';
 import { NavService } from './shared/services/nav/nav.service';
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    ethereum?: any;
+  }
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
