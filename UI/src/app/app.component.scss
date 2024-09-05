@@ -1,5 +1,7 @@
 mat-drawer-container {
-  position: absolute;
+  height: 100vh; /* Make sure it takes the full viewport height */
+  overflow: auto; /* Ensure content can scroll */
+  position: absolute; /* Your current styling */
   top: 0;
   bottom: 0;
   left: 0;
