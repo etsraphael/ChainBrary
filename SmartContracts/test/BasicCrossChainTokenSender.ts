@@ -55,22 +55,7 @@ describe('BasicCrossChainTokenSender', function () {
     return basicCrossChainTokenSenderInstance;
   };
 
-  it('should deploy BasicCrossChainTokenSender and ChainbraryToken', async () => {
-    const { token } = await loadFixture(deployChainbraryTokenFixture);
-    expect(await token.name()).to.equal('ChainbraryToken');
-
-    const basicCrossChainTokenSender = await deployBasicCrossChainTokenSenderFixture();
-
-    // Check if BasicCrossChainTokenSender was deployed successfully
-    expect(await basicCrossChainTokenSender.getAddress()).to.properAddress;
-    expect(await ethers.provider.getCode(basicCrossChainTokenSender.getAddress())).to.not.equal('0x');
-
-    // Optionally, check if a function exists
-    expect(typeof basicCrossChainTokenSender.send).to.equal('function');
-  });
-
-  // "only" makes the test run only this test for now
-  it.only('should use BasicCrossChainTokenSender to transfer the chainbrary token', async () => {
+  it('should use BasicCrossChainTokenSender to transfer the chainbrary token', async () => {
     const deployMockingCcipRouter = await deployMockingCcipRouterFixture();
     const { token, owner, addr1 } = await loadFixture(deployChainbraryTokenFixture);
     const basicCrossChainTokenSender = await deployBasicCrossChainTokenSenderFixture();
