@@ -2,8 +2,12 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import {
+  BasicCrossChainTokenSender,
+  BasicCrossChainTokenSender__factory,
   ChainbraryToken,
   ChainbraryToken__factory,
+  MockingCcipRouter,
+  MockingCcipRouter__factory,
   MockingPriceFeed,
   MockingPriceFeed__factory
 } from '../typechain-types';
@@ -27,7 +31,7 @@ describe('BasicCrossChainTokenSender', function () {
     const mockV3Aggregator2: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, TOKEN_2_PRICE);
     const mockV3Aggregator3: MockingPriceFeed = await MockV3Aggregator.deploy(DECIMAL, TOKEN_3_PRICE);
 
-    const token = await chainbraryToken.deploy();
+    const token: ChainbraryToken = await chainbraryToken.deploy();
     await token.initialize(
       INITIAL_SUPPLY,
       OWNER_MINT_AMOUNT,
@@ -39,9 +43,15 @@ describe('BasicCrossChainTokenSender', function () {
     return { token, owner, addr1, addr2, mockV3Aggregator1, mockV3Aggregator2, mockV3Aggregator3 };
   };
 
+  const deployMockingCcipRouterFixture = async () => {
+    const mockingCcipRouter: MockingCcipRouter__factory = await ethers.getContractFactory('MockingCcipRouter');
+    const mockingCcipRouterInstance: MockingCcipRouter = await mockingCcipRouter.deploy();
+    return mockingCcipRouterInstance;
+  }
+
   const deployBasicCrossChainTokenSenderFixture = async () => {
-    const basicCrossChainTokenSender = await ethers.getContractFactory('BasicCrossChainTokenSender');
-    const basicCrossChainTokenSenderInstance = await basicCrossChainTokenSender.deploy();
+    const basicCrossChainTokenSender: BasicCrossChainTokenSender__factory = await ethers.getContractFactory('BasicCrossChainTokenSender');
+    const basicCrossChainTokenSenderInstance: BasicCrossChainTokenSender = await basicCrossChainTokenSender.deploy();
     return basicCrossChainTokenSenderInstance;
   };
 
@@ -61,37 +71,35 @@ describe('BasicCrossChainTokenSender', function () {
 
   // "only" makes the test run only this test for now
   it.only('should use BasicCrossChainTokenSender to transfer the chainbrary token', async () => {
+    const deployMockingCcipRouter = await deployMockingCcipRouterFixture();
     const { token, owner, addr1 } = await loadFixture(deployChainbraryTokenFixture);
     const basicCrossChainTokenSender = await deployBasicCrossChainTokenSenderFixture();
 
     // Check initial balance before transfer
-    expect(await token.balanceOf(owner.getAddress())).to.equal(ethers.parseUnits(OWNER_MINT_AMOUNT.toString(), DECIMAL) );
+    expect(await token.balanceOf(owner.getAddress())).to.equal(ethers.parseUnits(OWNER_MINT_AMOUNT.toString(), DECIMAL));
 
-    /*  if we check inside of hardhat.config.ts we have two network right now, localnet1 and localnet2 
-    but I'm not sure both are running with npm start
-    */
+    // Check if deployMockingCcipRouter was deployed successfully
+    expect(await deployMockingCcipRouter.getAddress()).to.properAddress;
 
-
-    /*
-        function send(
-        address router,
-        uint64 destinationChainSelector,
-        address receiver,
-        Client.EVMTokenAmount[] memory tokensToSendDetails
-    )
-     */
+    const mockingCcipRouterAddress = await deployMockingCcipRouter.getAddress();
 
     const tokensToSendDetails = [
       {
         token: await token.getAddress(),
-        amount: ethers.parseUnits(OWNER_MINT_AMOUNT.toString(), DECIMAL)
+        amount: ethers.parseUnits('1', DECIMAL)
       }
     ];
 
+    // Approve the BasicCrossChainTokenSender contract to spend the owner's tokens
+    await token.connect(owner).approve(
+      basicCrossChainTokenSender.getAddress(),
+      tokensToSendDetails[0].amount
+    );
+
     // use send function to transfer token, 
     await basicCrossChainTokenSender.send(
-      '', // I don't know what to put here as "router"
-      '', // I don't know what to put here as "destinationChainSelector"
+      mockingCcipRouterAddress,
+      '0000000000000000000',
       await addr1.getAddress(), 
       tokensToSendDetails
     );

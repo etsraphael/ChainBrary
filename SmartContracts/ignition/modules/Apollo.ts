@@ -15,6 +15,7 @@ export default buildModule('Apollo', (m) => {
   const chainbraryToken = deployChainbraryToken(m);
   const mockingPriceFeed = deployMockingPriceFeed(m);
   const basicCrossChainTokenSender = deployBasicCrossChainTokenSender(m);
+  const mockingCcipRouter = deployMockingCcipRouter(m);
 
   return {
     rocketContract,
@@ -28,7 +29,8 @@ export default buildModule('Apollo', (m) => {
     customERC20TokenFactory,
     chainbraryToken,
     mockingPriceFeed,
-    basicCrossChainTokenSender
+    basicCrossChainTokenSender,
+    mockingCcipRouter
   };
 });
 
@@ -112,4 +114,9 @@ function deployMockingPriceFeed(m: any) {
 function deployBasicCrossChainTokenSender(m: any) {
   const basicCrossChainTokenSender = m.contract('BasicCrossChainTokenSender');
   return basicCrossChainTokenSender;
+}
+
+function deployMockingCcipRouter(m: any) {
+  const mockingCcipRouter = m.contract('MockingCcipRouter');
+  return mockingCcipRouter;
 }
