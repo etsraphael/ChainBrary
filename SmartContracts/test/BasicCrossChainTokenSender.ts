@@ -86,7 +86,7 @@ describe('BasicCrossChainTokenSender', function () {
     const tokensToSendDetails = [
       {
         token: await token.getAddress(),
-        amount: ethers.parseUnits('1', DECIMAL)
+        amount: ethers.parseUnits('10', DECIMAL)
       }
     ];
 
@@ -104,6 +104,9 @@ describe('BasicCrossChainTokenSender', function () {
       tokensToSendDetails,
       { value: ethers.parseEther("1") }
     );
+
+    // Check balance after transfer
+    expect(await token.balanceOf(owner.getAddress())).to.equal(ethers.parseUnits((OWNER_MINT_AMOUNT - 10).toString(), DECIMAL));
   });
 
 
