@@ -27,7 +27,7 @@ contract BasicCrossChainTokenSender {
         uint64 destinationChainSelector,
         address receiver,
         Client.EVMTokenAmount[] memory tokensToSendDetails
-    ) external {
+    ) external payable {
         uint256 length = tokensToSendDetails.length;
 
         for (uint256 i = 0; i < length; ) {

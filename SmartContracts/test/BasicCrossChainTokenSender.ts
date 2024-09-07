@@ -97,11 +97,12 @@ describe('BasicCrossChainTokenSender', function () {
     );
 
     // use send function to transfer token, 
-    await basicCrossChainTokenSender.send(
+    await basicCrossChainTokenSender.connect(owner).send(
       mockingCcipRouterAddress,
-      '0000000000000000000',
+      '6433500567565415381',
       await addr1.getAddress(), 
-      tokensToSendDetails
+      tokensToSendDetails,
+      { value: ethers.parseEther("1") }
     );
   });
 
