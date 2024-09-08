@@ -30,6 +30,12 @@
   "overrides": {
     "@chainlink/contracts-ccip": {
       "license": "MIT"
+    },
+    "@openzeppelin/contracts-upgradeable": {
+      "license": "MIT"
+    },
+    "@openzeppelin/contracts": {
+      "license": "MIT"
     }
   }
 }
