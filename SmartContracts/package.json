@@ -8,8 +8,7 @@
     "deploy:local:vaults": "hardhat ignition deploy ignition/modules/CommunityVaults.ts --network localhost",
     "deploy:local": "hardhat ignition deploy ignition/modules/Apollo.ts --network localhost",
     "abi": "npx hardhat export-abi",
-    "node": "npx hardhat node",
-    "graphgen": "npx hardhat run scripts/deploy-graph.ts"
+    "node": "npx hardhat node"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition": "^0.15.5",
@@ -22,7 +21,6 @@
   "dependencies": {
     "@chainlink/contracts": "^0.8.0",
     "@chainlink/contracts-ccip": "^1.4.0",
-    "@graphprotocol/graph-cli": "^0.81.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "bignumber.js": "^9.1.2"
