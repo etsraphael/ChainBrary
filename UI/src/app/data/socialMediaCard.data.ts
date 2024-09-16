@@ -30,5 +30,10 @@ export const footerListData: SocialMediaCardItem[] = [
     text: 'Instagram',
     url: 'https://www.instagram.com/chainbrary',
     icon: 'bi-instagram'
+  },
+  {
+    text: 'LinkedIn',
+    url: 'https://www.linkedin.com/company/chainbrary/',
+    icon: 'bi-linkedin'
   }
 ];

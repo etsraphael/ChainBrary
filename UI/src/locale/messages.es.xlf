@@ -2504,7 +2504,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.ts</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.ts</context>
@@ -2921,7 +2921,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.paymentServiceDesc" datatype="html">
-        <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
+        <source>Connect your wallet, Create an ID or QRcode and use it to receive payments.</source>
         <target>Conecta tu billetera, Crea una ID o QRcode y úsalo para recibir pagos.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>

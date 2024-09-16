@@ -2505,7 +2505,7 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.ts</context>
-          <context context-type="linenumber">31</context>
+          <context context-type="linenumber">36</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.ts</context>
@@ -2707,7 +2707,7 @@
       </trans-unit>
       <trans-unit id="ErrorMessage.TransactionError" datatype="html">
         <source>An error occurred while sending the transaction on the wallet</source>
-        <target>Une erreur s'est produite lors de l'envoi de la transaction sur le portefeuille</target>
+        <target>Une erreur s&apos;est produite lors de l&apos;envoi de la transaction sur le portefeuille</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
           <context context-type="linenumber">42</context>
@@ -2731,7 +2731,7 @@
       </trans-unit>
       <trans-unit id="ErrorMessage.WalletNotEnoughBalance" datatype="html">
         <source>Wallet connect has not enough balance to pay for the transaction</source>
-        <target>Wallet connect n'a pas assez de solde pour payer la transaction</target>
+        <target>Wallet connect n&apos;a pas assez de solde pour payer la transaction</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
           <context context-type="linenumber">38</context>
@@ -2922,7 +2922,7 @@
         </context-group>
       </trans-unit>
       <trans-unit id="landingPage.paymentServiceDesc" datatype="html">
-        <source>Connect you wallet, Create an ID or QRcode and use it to receive payments.</source>
+        <source>Connect your wallet, Create an ID or QRcode and use it to receive payments.</source>
         <target>Connectez votre portefeuille, créez un ID ou un QRcode et utilisez-le pour recevoir des paiements.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/landing-page/components/landing-page-body/landing-page-body.component.ts</context>

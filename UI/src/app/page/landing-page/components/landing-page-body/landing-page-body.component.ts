@@ -15,7 +15,7 @@ export class LandingPageBodyComponent {
     {
       id: 'payment-request',
       title: $localize`:@@landingPage.paymentServiceTitle:Payment Request`,
-      description: $localize`:@@landingPage.paymentServiceDesc:Connect you wallet, Create an ID or QRcode and use it to receive payments.`,
+      description: $localize`:@@landingPage.paymentServiceDesc:Connect your wallet, Create an ID or QRcode and use it to receive payments.`,
       img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/payment-service.svg',
       routerUrl: './../../use-cases/payment-request'
     },

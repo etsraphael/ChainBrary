@@ -17,15 +17,19 @@ export const communityVaults: VaultSupported[] = [
         }
       ]
     : []),
-  {
-    contractAddress: environment.contracts.communityVault.contracts.find(
-      (contract) => contract.chainId === NetworkChainId.SEPOLIA
-    )?.address as string,
-    name: 'Sepolia network',
-    chainId: NetworkChainId.SEPOLIA,
-    rpcUrl: environment.rpcKeys.sepolia,
-    icon: 'eth-icon.svg'
-  },
+  ...(environment.environmentName === 'production'
+    ? []
+    : [
+        {
+          contractAddress: environment.contracts.communityVault.contracts.find(
+            (contract) => contract.chainId === NetworkChainId.SEPOLIA
+          )?.address as string,
+          name: 'Sepolia network',
+          chainId: NetworkChainId.SEPOLIA,
+          rpcUrl: environment.rpcKeys.sepolia,
+          icon: 'eth-icon.svg'
+        }
+      ]),
   {
     contractAddress: environment.contracts.communityVault.contracts.find(
       (contract) => contract.chainId === NetworkChainId.POLYGON
