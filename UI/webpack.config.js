@@ -1,8 +1,9 @@
 const SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
-module.exports = {
-  devtool: 'source-map',
-  plugins: [
+const plugins = [];
+
+if (process.env.SENTRY_AUTH_TOKEN) {
+  plugins.push(
     new SentryWebpackPlugin({
       org: 'chainbrary',
       project: 'chainbrary-ui',
@@ -10,5 +11,10 @@ module.exports = {
       include: './dist/chainbrary',
       release: '0.0.3'
     })
-  ]
+  );
+}
+
+module.exports = {
+  devtool: 'source-map',
+  plugins: plugins
 };
