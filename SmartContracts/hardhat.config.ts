@@ -10,6 +10,14 @@ const config: HardhatUserConfig = {
     hardhat: {
       chainId: 31337,
       loggingEnabled: true
+    },
+    localnet1: {
+      url: 'http://127.0.0.1:8545',
+      chainId: 1337
+    },
+    localnet2: {
+      url: 'http://127.0.0.1:8546',
+      chainId: 1338
     }
   }
 };
