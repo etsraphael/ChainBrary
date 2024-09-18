@@ -14,6 +14,10 @@ contract CrossChainDEX is ReentrancyGuard {
     mapping(address => mapping(address => uint256)) public totalLiquidity;
     mapping(address => mapping(address => mapping(address => uint256))) public liquidityProviderBalance;
 
+    // Constants for fee calculation
+    uint256 private constant FEE_NUMERATOR = 997;
+    uint256 private constant FEE_DENOMINATOR = 1000;
+
     // Events
     event LiquidityAdded(
         address indexed provider,
@@ -39,22 +43,6 @@ contract CrossChainDEX is ReentrancyGuard {
 
     constructor(address _router) {
         router = _router;
-    }
-
-    function getQuote(address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256 amountOut) {
-        require(amountIn > 0, "Invalid input amount");
-        require(reserves[tokenIn][tokenOut] > 0, "Pool doesn't exist");
-
-        uint256 reserveIn = reserves[tokenIn][tokenOut];
-        uint256 reserveOut = reserves[tokenOut][tokenIn];
-
-        // Calculate the output amount using the constant product formula
-        uint256 amountInWithFee = amountIn * 997; // Assuming a 0.3% fee
-        uint256 numerator = amountInWithFee * reserveOut;
-        uint256 denominator = (reserveIn * 1000) + amountInWithFee;
-        amountOut = numerator / denominator;
-
-        require(amountOut > 0, "Insufficient output amount");
     }
 
     function addLiquidity(address tokenA, address tokenB, uint256 amountA, uint256 amountB) external nonReentrant {
@@ -104,7 +92,8 @@ contract CrossChainDEX is ReentrancyGuard {
     function swap(
         address tokenIn,
         address tokenOut,
-        uint256 amountIn
+        uint256 amountIn,
+        uint256 minAmountOut
     ) external nonReentrant returns (uint256 amountOut) {
         require(amountIn > 0, "Invalid input amount");
         require(reserves[tokenIn][tokenOut] > 0, "Pool doesn't exist");
@@ -115,11 +104,12 @@ contract CrossChainDEX is ReentrancyGuard {
         // Calculate the output amount using the constant product formula
         uint256 reserveIn = reserves[tokenIn][tokenOut];
         uint256 reserveOut = reserves[tokenOut][tokenIn];
-        uint256 amountInWithFee = amountIn * 997; // Assuming a 0.3% fee
+        uint256 amountInWithFee = amountIn * FEE_NUMERATOR;
         uint256 numerator = amountInWithFee * reserveOut;
-        uint256 denominator = (reserveIn * 1000) + amountInWithFee;
+        uint256 denominator = (reserveIn * FEE_DENOMINATOR) + amountInWithFee;
         amountOut = numerator / denominator;
 
+        require(amountOut >= minAmountOut, "Slippage tolerance exceeded");
         require(amountOut > 0, "Insufficient output amount");
 
         // Update reserves
@@ -130,6 +120,22 @@ contract CrossChainDEX is ReentrancyGuard {
         IERC20(tokenOut).safeTransfer(msg.sender, amountOut);
 
         emit SwapExecuted(msg.sender, tokenIn, tokenOut, amountIn, amountOut);
+    }
+
+    function getQuote(address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256 amountOut) {
+        require(amountIn > 0, "Invalid input amount");
+        require(reserves[tokenIn][tokenOut] > 0, "Pool doesn't exist");
+
+        uint256 reserveIn = reserves[tokenIn][tokenOut];
+        uint256 reserveOut = reserves[tokenOut][tokenIn];
+
+        // Calculate the output amount using the constant product formula
+        uint256 amountInWithFee = amountIn * FEE_NUMERATOR;
+        uint256 numerator = amountInWithFee * reserveOut;
+        uint256 denominator = (reserveIn * FEE_DENOMINATOR) + amountInWithFee;
+        amountOut = numerator / denominator;
+
+        require(amountOut > 0, "Insufficient output amount");
     }
 
     function ccipReceive(Client.Any2EVMMessage calldata message) external {
