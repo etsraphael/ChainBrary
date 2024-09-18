@@ -41,6 +41,22 @@ contract CrossChainDEX is ReentrancyGuard {
         router = _router;
     }
 
+    function getQuote(address tokenIn, address tokenOut, uint256 amountIn) external view returns (uint256 amountOut) {
+        require(amountIn > 0, "Invalid input amount");
+        require(reserves[tokenIn][tokenOut] > 0, "Pool doesn't exist");
+
+        uint256 reserveIn = reserves[tokenIn][tokenOut];
+        uint256 reserveOut = reserves[tokenOut][tokenIn];
+
+        // Calculate the output amount using the constant product formula
+        uint256 amountInWithFee = amountIn * 997; // Assuming a 0.3% fee
+        uint256 numerator = amountInWithFee * reserveOut;
+        uint256 denominator = (reserveIn * 1000) + amountInWithFee;
+        amountOut = numerator / denominator;
+
+        require(amountOut > 0, "Insufficient output amount");
+    }
+
     function addLiquidity(address tokenA, address tokenB, uint256 amountA, uint256 amountB) external nonReentrant {
         require(amountA > 0 && amountB > 0, "Invalid amounts");
 
