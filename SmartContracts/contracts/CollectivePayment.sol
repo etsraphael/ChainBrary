@@ -76,8 +76,9 @@ contract CollectivePayment is Ownable, ReentrancyGuard, AutomationCompatible {
     }
 
     // Chainlink Automation functions
-    function checkUpkeep(bytes calldata) external view override returns (bool upkeepNeeded, bytes memory) {
+    function checkUpkeep(bytes calldata) external view override returns (bool upkeepNeeded, bytes memory performData) {
         upkeepNeeded = (block.timestamp > startTime + timeout) && !fundsTransferred;
+        performData = ""; // Ensure performData is assigned
     }
 
     function performUpkeep(bytes calldata) external override {
