@@ -51,43 +51,43 @@ describe('CrossChainDEX', function () {
     await tokenA.connect(user1).approve(dex.getAddress(), LIQUIDITY_AMOUNT);
     await tokenB.connect(user1).approve(dex.getAddress(), LIQUIDITY_AMOUNT);
 
-    // // User1 adds liquidity
-    // await expect(
-    //   dex.connect(user1).addLiquidity(
-    //     tokenA.getAddress(),
-    //     tokenB.getAddress(),
-    //     LIQUIDITY_AMOUNT,
-    //     LIQUIDITY_AMOUNT
-    //   )
-    // )
-    //   .to.emit(dex, 'LiquidityAdded')
-    //   .withArgs(
-    //     user1.address,
-    //     tokenA.getAddress(),
-    //     tokenB.getAddress(),
-    //     LIQUIDITY_AMOUNT,
-    //     LIQUIDITY_AMOUNT,
-    //     0
-    //   );
+    // User1 adds liquidity
+    await expect(
+      dex.connect(user1).addLiquidity(
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        LIQUIDITY_AMOUNT,
+        LIQUIDITY_AMOUNT
+      )
+    )
+      .to.emit(dex, 'LiquidityAdded')
+      .withArgs(
+        user1.address,
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        LIQUIDITY_AMOUNT,
+        LIQUIDITY_AMOUNT,
+        LIQUIDITY_AMOUNT
+      );
 
-    // // Check the reserves
-    // const reserveA = await dex.reserves(tokenA.getAddress(), tokenB.getAddress());
-    // const reserveB = await dex.reserves(tokenB.getAddress(), tokenA.getAddress());
+    // Check the reserves
+    const reserveA = await dex.reserves(tokenA.getAddress(), tokenB.getAddress());
+    const reserveB = await dex.reserves(tokenB.getAddress(), tokenA.getAddress());
 
-    // expect(reserveA).to.equal(LIQUIDITY_AMOUNT);
-    // expect(reserveB).to.equal(LIQUIDITY_AMOUNT);
+    expect(reserveA).to.equal(LIQUIDITY_AMOUNT);
+    expect(reserveB).to.equal(LIQUIDITY_AMOUNT);
 
-    // // Check total liquidity
-    // const totalLiquidity = await dex.totalLiquidity(tokenA.getAddress(), tokenB.getAddress());
-    // expect(totalLiquidity).to.be.gt(0);
+    // Check total liquidity
+    const totalLiquidity = await dex.totalLiquidity(tokenA.getAddress(), tokenB.getAddress());
+    expect(totalLiquidity).to.be.gt(LIQUIDITY_AMOUNT);
 
-    // // Check user1's liquidity balance
-    // const userLiquidity = await dex.liquidityProviderBalance(
-    //   tokenA.getAddress(),
-    //   tokenB.getAddress(),
-    //   user1.address
-    // );
-    // expect(userLiquidity).to.equal(totalLiquidity);
+    // Check user1's liquidity balance
+    const userLiquidity = await dex.liquidityProviderBalance(
+      tokenA.getAddress(),
+      tokenB.getAddress(),
+      user1.address
+    );
+    expect(userLiquidity).to.equal(totalLiquidity);
   });
 
   it('Should allow users to remove liquidity', async function () {
