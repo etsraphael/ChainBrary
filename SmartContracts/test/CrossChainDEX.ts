@@ -371,15 +371,131 @@ describe('CrossChainDEX', function () {
   });
 
   it('Should fail swap if minimum amount out is not met (slippage)', async function () {
-    // ... test code ...
+    // Deploy TokenA and TokenB
+    const { token: tokenA } = await loadFixture(deployTokenAFixture);
+    const { token: tokenB } = await loadFixture(deployTokenBFixture);
+  
+    // Deploy CrossChainDEX
+    const { dex } = await loadFixture(deployCrossChainDEXFixture);
+  
+    // Get signers
+    const [owner, user1, user2] = await ethers.getSigners();
+  
+    // User1 adds liquidity
+    await tokenA.transfer(user1.address, LIQUIDITY_AMOUNT);
+    await tokenB.transfer(user1.address, LIQUIDITY_AMOUNT);
+    await tokenA.connect(user1).approve(dex.getAddress(), LIQUIDITY_AMOUNT);
+    await tokenB.connect(user1).approve(dex.getAddress(), LIQUIDITY_AMOUNT);
+    await dex.connect(user1).addLiquidity(
+      tokenA.getAddress(),
+      tokenB.getAddress(),
+      LIQUIDITY_AMOUNT,
+      LIQUIDITY_AMOUNT
+    );
+  
+    // User2 wants to swap tokens
+    const swapAmount = ethers.parseUnits('100', DECIMALS);
+    await tokenA.transfer(user2.address, swapAmount);
+    await tokenA.connect(user2).approve(dex.getAddress(), swapAmount);
+  
+    // Get the expected amountOut
+    const amountOut = await dex.getQuote(tokenA.getAddress(), tokenB.getAddress(), swapAmount);
+  
+    // Set minAmountOut higher than the expected amountOut to simulate slippage
+    const minAmountOut = amountOut + ethers.parseUnits('1', DECIMALS);
+  
+    // User2 attempts to swap with minAmountOut higher than amountOut
+    await expect(
+      dex.connect(user2).swap(
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        swapAmount,
+        minAmountOut
+      )
+    ).to.be.revertedWith('Slippage tolerance exceeded');
   });
-
+  
   it('Should fail to add liquidity with zero amounts', async function () {
-    // ... test code ...
+    // Deploy TokenA and TokenB
+    const { token: tokenA } = await loadFixture(deployTokenAFixture);
+    const { token: tokenB } = await loadFixture(deployTokenBFixture);
+  
+    // Deploy CrossChainDEX
+    const { dex } = await loadFixture(deployCrossChainDEXFixture);
+  
+    // Get signers
+    const [owner, user1] = await ethers.getSigners();
+  
+    // User1 has tokens
+    const tokenAmount = ethers.parseUnits('100', DECIMALS);
+    await tokenA.transfer(user1.address, tokenAmount);
+    await tokenB.transfer(user1.address, tokenAmount);
+    await tokenA.connect(user1).approve(dex.getAddress(), tokenAmount);
+    await tokenB.connect(user1).approve(dex.getAddress(), tokenAmount);
+  
+    // Attempt to add liquidity with zero amountA
+    await expect(
+      dex.connect(user1).addLiquidity(
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        0,
+        tokenAmount
+      )
+    ).to.be.revertedWith('Invalid amounts');
+  
+    // Attempt to add liquidity with zero amountB
+    await expect(
+      dex.connect(user1).addLiquidity(
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        tokenAmount,
+        0
+      )
+    ).to.be.revertedWith('Invalid amounts');
+  
+    // Attempt to add liquidity with both amounts zero
+    await expect(
+      dex.connect(user1).addLiquidity(
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        0,
+        0
+      )
+    ).to.be.revertedWith('Invalid amounts');
   });
-
+  
   it('Should fail to remove liquidity if user has none', async function () {
-    // ... test code ...
+    // Deploy TokenA and TokenB
+    const { token: tokenA } = await loadFixture(deployTokenAFixture);
+    const { token: tokenB } = await loadFixture(deployTokenBFixture);
+  
+    // Deploy CrossChainDEX
+    const { dex } = await loadFixture(deployCrossChainDEXFixture);
+  
+    // Get signers
+    const [owner, user1, user2] = await ethers.getSigners();
+  
+    // User1 adds liquidity
+    await tokenA.transfer(user1.address, LIQUIDITY_AMOUNT);
+    await tokenB.transfer(user1.address, LIQUIDITY_AMOUNT);
+    await tokenA.connect(user1).approve(dex.getAddress(), LIQUIDITY_AMOUNT);
+    await tokenB.connect(user1).approve(dex.getAddress(), LIQUIDITY_AMOUNT);
+    await dex.connect(user1).addLiquidity(
+      tokenA.getAddress(),
+      tokenB.getAddress(),
+      LIQUIDITY_AMOUNT,
+      LIQUIDITY_AMOUNT
+    );
+  
+    // User2 attempts to remove liquidity without adding any
+    const liquidityAmount = ethers.parseUnits('100', DECIMALS);
+    await expect(
+      dex.connect(user2).removeLiquidity(
+        tokenA.getAddress(),
+        tokenB.getAddress(),
+        liquidityAmount
+      )
+    ).to.be.revertedWith('Insufficient liquidity balance');
   });
 
 });
