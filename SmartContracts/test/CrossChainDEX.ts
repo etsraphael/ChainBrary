@@ -23,12 +23,11 @@ describe('CrossChainDEX', function () {
 
   const deployCrossChainDEXFixture = async () => {
     const CrossChainDEX: CrossChainDEX__factory = await ethers.getContractFactory('CrossChainDEX');
-    const [owner] = await ethers.getSigners();
     const dex: CrossChainDEX = await CrossChainDEX.deploy(ethers.ZeroAddress);
     return { dex };
   };
 
-  it.only('Should allow users to add liquidity', async function () {
+  it('Should allow users to add liquidity', async function () {
     // Deploy TokenA and TokenB
     const { token: tokenA } = await loadFixture(deployTokenAFixture);
     const { token: tokenB } = await loadFixture(deployTokenBFixture);
@@ -79,7 +78,7 @@ describe('CrossChainDEX', function () {
 
     // Check total liquidity
     const totalLiquidity = await dex.totalLiquidity(tokenA.getAddress(), tokenB.getAddress());
-    expect(totalLiquidity).to.be.gt(0);
+    expect(totalLiquidity).to.be.equal(LIQUIDITY_AMOUNT);
 
     // Check user1's liquidity balance
     const userLiquidity: bigint = await dex.liquidityProviderBalance(
