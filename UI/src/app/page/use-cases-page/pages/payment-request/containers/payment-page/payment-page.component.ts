@@ -34,7 +34,6 @@ import {
 import { selectWalletConnected } from './../../../../../../store/global-store/state/selectors';
 import {
   approveTokenAllowance,
-  generatePaymentRequest,
   sendAmount,
   smartContractCanTransfer
 } from './../../../../../../store/payment-request-store/state/actions';
@@ -100,7 +99,7 @@ export class PaymentPageComponent implements OnInit, OnDestroy {
   setUpId(): Subscription {
     return this.route.params.subscribe((params: Params) => {
       if (params['id']) {
-        this.store.dispatch(generatePaymentRequest({ encodedRequest: params['id'] }));
+        // this.store.dispatch(generatePaymentRequest({ encodedRequest: params['id'] }));
       }
     });
   }

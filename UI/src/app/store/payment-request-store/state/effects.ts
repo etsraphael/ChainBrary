@@ -5,7 +5,6 @@ import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { Buffer } from 'buffer';
 import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxjs';
 import { TransactionReceipt } from 'web3';
 import { selectCurrentNetwork, selectNetworkSymbol, selectPublicAddress } from '../../auth-store/state/selectors';
@@ -148,65 +147,65 @@ export class PaymentRequestEffects {
     );
   });
 
-  checkIfTransferIsPossibleAfterPaymentGeneration$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-      concatLatestFrom(() => [
-        this.store.select(selectPublicAddress),
-        this.store.select(selectIsNonNativeToken),
-        this.store.select(selectPaymentNetworkIsMathing)
-      ]),
-      filter(
-        (
-          payload: [
-            ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>,
-            string | null,
-            boolean,
-            boolean
-          ]
-        ) => payload[1] !== null && payload[2] && payload[3]
-      ),
-      map(
-        (payload) =>
-          payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
-      ),
-      switchMap(
-        async (
-          action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
-        ) => {
-          if (action[0].paymentRequest.usdEnabled === false) {
-            return PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable: true });
-          }
+  // checkIfTransferIsPossibleAfterPaymentGeneration$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(PaymentRequestActions.generatePaymentRequestSuccess),
+  //     concatLatestFrom(() => [
+  //       this.store.select(selectPublicAddress),
+  //       this.store.select(selectIsNonNativeToken),
+  //       this.store.select(selectPaymentNetworkIsMathing)
+  //     ]),
+  //     filter(
+  //       (
+  //         payload: [
+  //           ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>,
+  //           string | null,
+  //           boolean,
+  //           boolean
+  //         ]
+  //       ) => payload[1] !== null && payload[2] && payload[3]
+  //     ),
+  //     map(
+  //       (payload) =>
+  //         payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
+  //     ),
+  //     switchMap(
+  //       async (
+  //         action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
+  //       ) => {
+  //         if (action[0].paymentRequest.usdEnabled === false) {
+  //           return PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable: true });
+  //         }
 
-          const tokenAddress: ITokenContract | undefined = tokenList
-            .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);
+  //         const tokenAddress: ITokenContract | undefined = tokenList
+  //           .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
+  //           ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);
 
-          if (!tokenAddress) {
-            return PaymentRequestActions.smartContractCanTransferFailure({
-              message: $localize`:@@ResponseMessage.TokenAddressNotFound:Token address not found!`
-            });
-          }
+  //         if (!tokenAddress) {
+  //           return PaymentRequestActions.smartContractCanTransferFailure({
+  //             message: $localize`:@@ResponseMessage.TokenAddressNotFound:Token address not found!`
+  //           });
+  //         }
 
-          const payload: TransactionTokenBridgePayload = {
-            ownerAdress: action[1],
-            tokenAddress: tokenAddress.address,
-            chainId: action[0].paymentRequest.chainId,
-            amount: action[0].paymentRequest.amount
-          };
+  //         const payload: TransactionTokenBridgePayload = {
+  //           ownerAdress: action[1],
+  //           tokenAddress: tokenAddress.address,
+  //           chainId: action[0].paymentRequest.chainId,
+  //           amount: action[0].paymentRequest.amount
+  //         };
 
-          return this.tokensService
-            .getTransferAvailable(payload)
-            .then((isTransferable: boolean) =>
-              PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable })
-            );
-        }
-      ),
-      catchError((error: string) => {
-        return of(PaymentRequestActions.smartContractCanTransferFailure({ message: error }));
-      })
-    );
-  });
+  //         return this.tokensService
+  //           .getTransferAvailable(payload)
+  //           .then((isTransferable: boolean) =>
+  //             PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable })
+  //           );
+  //       }
+  //     ),
+  //     catchError((error: string) => {
+  //       return of(PaymentRequestActions.smartContractCanTransferFailure({ message: error }));
+  //     })
+  //   );
+  // });
 
   checkIfTransferIsPossibleAfterAllowance$ = createEffect(() => {
     return this.actions$.pipe(
@@ -382,36 +381,36 @@ export class PaymentRequestEffects {
     );
   });
 
-  generatePayment$ = createEffect(() => {
-    return this.actions$.pipe(
-      ofType(PaymentRequestActions.generatePaymentRequest),
-      map((action: ReturnType<typeof PaymentRequestActions.generatePaymentRequest>) => {
-        const decodedPayment = Buffer.from(
-          action.encodedRequest.replace('+', '-').replace('/', '_'),
-          'base64'
-        ).toString('utf-8');
-        const decodedPaymentRequest: IPaymentRequest = JSON.parse(decodedPayment);
-        if (this.isIPaymentRequest(decodedPaymentRequest)) {
-          return PaymentRequestActions.generatePaymentRequestSuccess({
-            paymentRequest: decodedPaymentRequest,
-            token: tokenList.find((token) => token.tokenId === decodedPaymentRequest.tokenId) as IToken,
-            network: this.web3LoginService.getNetworkDetailByChainId(decodedPaymentRequest.chainId)
-          });
-        } else {
-          return PaymentRequestActions.generatePaymentRequestFailure({
-            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
-          });
-        }
-      }),
-      catchError(() =>
-        of(
-          PaymentRequestActions.generatePaymentRequestFailure({
-            errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
-          })
-        )
-      )
-    );
-  });
+  // generatePayment$ = createEffect(() => {
+  //   return this.actions$.pipe(
+  //     ofType(PaymentRequestActions.generatePaymentRequest),
+  //     map((action: ReturnType<typeof PaymentRequestActions.generatePaymentRequest>) => {
+  //       const decodedPayment = Buffer.from(
+  //         action.encodedRequest.replace('+', '-').replace('/', '_'),
+  //         'base64'
+  //       ).toString('utf-8');
+  //       const decodedPaymentRequest: IPaymentRequest = JSON.parse(decodedPayment);
+  //       if (this.isIPaymentRequest(decodedPaymentRequest)) {
+  //         return PaymentRequestActions.generatePaymentRequestSuccess({
+  //           paymentRequest: decodedPaymentRequest,
+  //           token: tokenList.find((token) => token.tokenId === decodedPaymentRequest.tokenId) as IToken,
+  //           network: this.web3LoginService.getNetworkDetailByChainId(decodedPaymentRequest.chainId)
+  //         });
+  //       } else {
+  //         return PaymentRequestActions.generatePaymentRequestFailure({
+  //           errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
+  //         });
+  //       }
+  //     }),
+  //     catchError(() =>
+  //       of(
+  //         PaymentRequestActions.generatePaymentRequestFailure({
+  //           errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
+  //         })
+  //       )
+  //     )
+  //   );
+  // });
 
   generateRawPayment$ = createEffect(() => {
     return this.actions$.pipe(
@@ -419,6 +418,7 @@ export class PaymentRequestEffects {
       map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {
         const decodedPayment: string = atob(action.encodedRequest).replace('+', '-').replace('/', '_');
         const decodedPaymentRequest: IPaymentRequestRaw = JSON.parse(decodedPayment);
+
         if (this.isRawIPaymentRequest(decodedPaymentRequest)) {
           return PaymentRequestActions.decryptRawPaymentRequestSuccess({
             rawRequest: decodedPaymentRequest

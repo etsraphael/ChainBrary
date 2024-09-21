@@ -14,21 +14,9 @@
     </div>
   </div>
 </ng-container>
-
 <!-- Payment Card Maker -->
 <ng-template #paymentCard>
-  <div class="card cb-card border-0 shadow-sm position-relative payment-maker-card-container pb-3">
-    <!-- Avatar -->
-    <div class="position-relative">
-      <div class="card-header-custom position-absolute w-100">
-        <div class="row justify-content-center">
-          <div class="col-5 col-sm-4 col-md-5 col-lg-4 text-center">
-            <app-user-avatar [avatarUrl]="isAvatarUrlValid ? avatarValue : null"></app-user-avatar>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="my-4"></div>
+  <div class="card cb-card border-0 shadow-sm position-relative payment-maker-card-container pb-3 pt-2">
     <!-- Page Container -->
     <mat-vertical-stepper [linear]="true" #stepper (selectionChange)="onStepChange($event)">
       <mat-step [stepControl]="profileForm">

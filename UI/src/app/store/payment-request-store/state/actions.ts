@@ -1,7 +1,7 @@
-import { INetworkDetail, NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { TokenPair } from './../../../shared/enum';
-import { IPaymentRequest, IPaymentRequestRaw, IProfileAdded, IToken } from './../../../shared/interfaces';
+import { IPaymentRequestRaw, IProfileAdded, IToken } from './../../../shared/interfaces';
 
 export const initPaymentRequestMaker = createAction('[Payment Request] Init Payment Request Maker');
 
@@ -26,18 +26,18 @@ export const applyConversionNotSupported = createAction(
   props<{ amountInToken: number }>()
 );
 
-export const generatePaymentRequest = createAction(
-  '[Payment Request] Generate Payment Request',
-  props<{ encodedRequest: string }>()
-);
-export const generatePaymentRequestSuccess = createAction(
-  '[Payment Request] Generate Payment Request Success',
-  props<{ paymentRequest: IPaymentRequest; network: INetworkDetail; token: IToken }>()
-);
-export const generatePaymentRequestFailure = createAction(
-  '[Payment Request] Generate Payment Request Failure',
-  props<{ errorMessage: string }>()
-);
+// export const generatePaymentRequest = createAction(
+//   '[Payment Request] Generate Payment Request',
+//   props<{ encodedRequest: string }>()
+// );
+// export const generatePaymentRequestSuccess = createAction(
+//   '[Payment Request] Generate Payment Request Success',
+//   props<{ paymentRequest: IPaymentRequest; network: INetworkDetail; token: IToken }>()
+// );
+// export const generatePaymentRequestFailure = createAction(
+//   '[Payment Request] Generate Payment Request Failure',
+//   props<{ errorMessage: string }>()
+// );
 
 export const loadVerifiedAccount = createAction(
   '[Payment Request] Load Verified Account',

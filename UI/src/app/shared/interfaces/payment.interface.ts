@@ -13,13 +13,10 @@ export interface IPaymentRequest {
   username: string;
   amount: number;
   usdEnabled: boolean;
-  description?: string | null;
-  avatarUrl?: string;
 }
 
 export interface PriceSettingsForm {
   token: FormGroup<TokenChoiceMakerForm>;
-  description: FormControl<string | null>;
   amount: FormControl<number | null>;
   amountInUsd: FormControl<number | null>;
   valueLockedInUsd: FormControl<boolean | null>;
@@ -27,7 +24,6 @@ export interface PriceSettingsForm {
 
 export interface ProfileForm {
   publicAddress: FormControl<string | null>;
-  avatarUrl: FormControl<string | null>;
   username: FormControl<string | null>;
 }
 
