@@ -6,11 +6,20 @@ export interface IPaymentRequestRaw {
   name: string;
 }
 
+export interface IPaymentRequestEncrypted {
+  chainId: NetworkChainId;
+  tokenId: TokenId | string | null;
+  publicAddress: string;
+  name: string;
+  amount: number | null;
+  usdEnabled: boolean;
+}
+
 export interface IPaymentRequest {
   chainId: NetworkChainId;
   tokenId: TokenId | string;
   publicAddress: string;
-  username: string;
+  name: string;
   amount: number;
   usdEnabled: boolean;
 }

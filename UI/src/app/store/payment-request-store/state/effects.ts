@@ -14,6 +14,7 @@ import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IPaymentRequest,
+  IPaymentRequestEncrypted,
   IPaymentRequestRaw,
   IReceiptTransaction,
   IToken,
@@ -50,13 +51,7 @@ export class PaymentRequestEffects {
     private router: Router
   ) {}
 
-  private isIPaymentRequest(obj: IPaymentRequest): obj is IPaymentRequest {
-    return (
-      typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.amount === 'number'
-    );
-  }
-
-  private isRawIPaymentRequest(obj: IPaymentRequestRaw): obj is IPaymentRequestRaw {
+  private isRawIPaymentRequestEncrypted(obj: IPaymentRequestEncrypted): obj is IPaymentRequestEncrypted {
     return (
       typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.name === 'string'
     );
@@ -416,12 +411,22 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.decryptRawPaymentRequest),
       map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {
-        const decodedPayment: string = atob(action.encodedRequest).replace('+', '-').replace('/', '_');
-        const decodedPaymentRequest: IPaymentRequestRaw = JSON.parse(decodedPayment);
 
-        if (this.isRawIPaymentRequest(decodedPaymentRequest)) {
+        const decodedPayment: string = atob(action.encodedRequest).replace('+', '-').replace('/', '_');
+        const decodedPaymentRequest: IPaymentRequestEncrypted = JSON.parse(decodedPayment);
+
+        const completePaymentRequest: IPaymentRequestEncrypted = {
+          publicAddress: decodedPaymentRequest.publicAddress,
+          name: decodedPaymentRequest.name,
+          chainId: (decodedPaymentRequest as IPaymentRequest).chainId || null,
+          tokenId: (decodedPaymentRequest as IPaymentRequest).tokenId || null,
+          amount: (decodedPaymentRequest as IPaymentRequest).amount || null,
+          usdEnabled: (decodedPaymentRequest as IPaymentRequest).usdEnabled ||false
+        };
+
+        if (this.isRawIPaymentRequestEncrypted(decodedPaymentRequest)) {
           return PaymentRequestActions.decryptRawPaymentRequestSuccess({
-            rawRequest: decodedPaymentRequest
+            rawRequest: completePaymentRequest
           });
         } else {
           return PaymentRequestActions.decryptRawPaymentRequestFailure({

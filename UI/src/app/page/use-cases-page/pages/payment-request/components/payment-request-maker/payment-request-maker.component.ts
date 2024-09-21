@@ -147,7 +147,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     const paymentRequest: IPaymentRequest = {
       chainId: chainId.value as NetworkChainId,
       tokenId: tokenId.value as string,
-      username: username.value as string,
+      name: username.value as string,
       publicAddress: publicAddress.value as string,
       amount: amountToReceive as number,
       usdEnabled: valueLockedInUsd.value as boolean
