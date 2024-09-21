@@ -3,7 +3,6 @@ import {
   ActionStoreProcessing,
   IPaymentRequest,
   IPaymentRequestRaw,
-  IProfilePayment,
   IToken,
   StoreState
 } from '../../../shared/interfaces';
@@ -16,7 +15,6 @@ export interface IPaymentRequestState {
   conversionUSD: StoreState<number | null>;
   smartContractCanTransfer: StoreState<boolean>;
   token: IToken | null;
-  profile: IProfilePayment;
   network: INetworkDetail | null;
   rawRequest: StoreState<IPaymentRequestRaw | null>;
   payNowIsProcessing: ActionStoreProcessing;

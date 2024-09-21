@@ -80,17 +80,6 @@ export const selectPaymentNetworkIsMathing: MemoizedSelector<object, boolean> = 
   (s, network) => s.network?.chainId === network?.chainId
 );
 
-export const selectProfilePayment: MemoizedSelector<object, IProfilePayment> = createSelector(
-  selectPaymentRequest,
-  (s) => s.profile
-);
-
-export const selectIsPaymentMaker: MemoizedSelector<object, boolean> = createSelector(
-  selectPaymentRequest,
-  selectPublicAddress,
-  (s, adress) => adress?.toLowerCase() === s.profile?.publicAddress?.toLowerCase()
-);
-
 export const selectRawPaymentRequest: MemoizedSelector<object, StoreState<IPaymentRequestRaw | null>> = createSelector(
   selectPaymentRequest,
   (s: IPaymentRequestState) => s.rawRequest
