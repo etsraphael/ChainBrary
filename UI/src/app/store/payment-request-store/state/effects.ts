@@ -411,7 +411,6 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.decryptRawPaymentRequest),
       map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {
-
         const decodedPayment: string = atob(action.encodedRequest).replace('+', '-').replace('/', '_');
         const decodedPaymentRequest: IPaymentRequestEncrypted = JSON.parse(decodedPayment);
 
@@ -421,7 +420,7 @@ export class PaymentRequestEffects {
           chainId: (decodedPaymentRequest as IPaymentRequest).chainId || null,
           tokenId: (decodedPaymentRequest as IPaymentRequest).tokenId || null,
           amount: (decodedPaymentRequest as IPaymentRequest).amount || null,
-          usdEnabled: (decodedPaymentRequest as IPaymentRequest).usdEnabled ||false
+          usdEnabled: (decodedPaymentRequest as IPaymentRequest).usdEnabled || false
         };
 
         if (this.isRawIPaymentRequestEncrypted(decodedPaymentRequest)) {

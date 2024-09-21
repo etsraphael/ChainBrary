@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { PayNowNotFoundPageComponent } from '../page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component';
 import { PayNowPageComponent } from '../page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component';
 import { PayNowSuccessfulPageComponent } from '../page/use-cases-page/pages/payment-request/containers/pay-now-successful-page/pay-now-successful-page.component';
-import { PaymentPageComponent } from '../page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component';
 import { QrCodeScanningPageComponent } from '../shared/components/qr-code-scanning-page/qr-code-scanning-page.component';
 
 const routes: Routes = [
@@ -39,11 +38,6 @@ const routes: Routes = [
     title: 'Successful Payment',
     path: 'successful-payment',
     component: PayNowSuccessfulPageComponent
-  },
-  {
-    title: 'Payment Request',
-    path: 'payment-page/:id',
-    component: PaymentPageComponent
   },
   {
     path: '**',
