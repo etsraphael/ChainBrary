@@ -1,26 +1,12 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 
-export interface IPaymentRequestRaw {
+export interface IPaymentRequest {
   publicAddress: string;
   name: string;
-}
-
-export interface IPaymentRequestEncrypted {
   chainId: NetworkChainId;
   tokenId: TokenId | string | null;
-  publicAddress: string;
-  name: string;
   amount: number | null;
-  usdEnabled: boolean;
-}
-
-export interface IPaymentRequest {
-  chainId: NetworkChainId;
-  tokenId: TokenId | string;
-  publicAddress: string;
-  name: string;
-  amount: number;
   usdEnabled: boolean;
 }
 

@@ -18,7 +18,7 @@ import {
 } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { AuthStatusCode, CommonButtonText, ICommonButtonText, TokenPair } from './../../../../../../shared/enum';
-import { ActionStoreProcessing, IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
+import { ActionStoreProcessing, IPaymentRequest, IToken, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { networkChange } from './../../../../../../store/auth-store/state/actions';
 import { selectAuthStatus, selectCurrentChainId } from './../../../../../../store/auth-store/state/selectors';
@@ -29,8 +29,8 @@ import {
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
   selectConversionToken,
-  selectPayNowIsProcessing,
-  selectRawPaymentRequest
+  selectPaymentRequestDetail,
+  selectPayNowIsProcessing
 } from './../../../../../../store/payment-request-store/state/selectors';
 
 interface NetworkGroup {
@@ -153,7 +153,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     return this.tokensAvailable.find((network: NetworkGroup) => network.chainId === this.networkSelected)?.networkName;
   }
 
-  readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
+  readonly rawRequest$: Observable<StoreState<IPaymentRequest | null>> = this.store.select(selectPaymentRequestDetail);
   readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
   readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
   readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);

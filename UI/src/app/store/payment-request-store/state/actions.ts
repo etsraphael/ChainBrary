@@ -1,7 +1,7 @@
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { TokenPair } from './../../../shared/enum';
-import { IPaymentRequestRaw, IProfileAdded, IToken } from './../../../shared/interfaces';
+import { IPaymentRequest, IProfileAdded, IToken } from './../../../shared/interfaces';
 
 export const initPaymentRequestMaker = createAction('[Payment Request] Init Payment Request Maker');
 
@@ -86,7 +86,7 @@ export const decryptRawPaymentRequest = createAction(
 );
 export const decryptRawPaymentRequestSuccess = createAction(
   '[Payment Request] Decrypt Raw Payment Request Success',
-  props<{ rawRequest: IPaymentRequestRaw }>()
+  props<{ requestDetail: IPaymentRequest }>()
 );
 export const decryptRawPaymentRequestFailure = createAction(
   '[Payment Request] Decrypt Raw Payment Request Failure',

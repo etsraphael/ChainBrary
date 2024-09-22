@@ -1,37 +1,30 @@
 import { INetworkDetail } from '@chainbrary/web3-login';
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { selectCurrentNetwork, selectPublicAddress } from '../../auth-store/state/selectors';
-import {
-  ActionStoreProcessing,
-  IPaymentRequest,
-  IPaymentRequestRaw,
-  IProfilePayment,
-  IToken,
-  StoreState
-} from './../../../shared/interfaces';
+import { selectCurrentNetwork } from '../../auth-store/state/selectors';
+import { ActionStoreProcessing, IPaymentRequest, IToken, StoreState } from './../../../shared/interfaces';
 import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces';
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
 
-export const selectPaymentRequestIsLoading: MemoizedSelector<object, boolean> = createSelector(
-  selectPaymentRequest,
-  (s) => s.payment.loading
-);
+// export const selectPaymentRequestIsLoading: MemoizedSelector<object, boolean> = createSelector(
+//   selectPaymentRequest,
+//   (s) => s.payment.loading
+// );
 
-export const selectPayment: MemoizedSelector<object, IPaymentRequest | null> = createSelector(
-  selectPaymentRequest,
-  (s) => s.payment.data
-);
+// export const selectPayment: MemoizedSelector<object, IPaymentRequest | null> = createSelector(
+//   selectPaymentRequest,
+//   (s) => s.payment.data
+// );
 
-export const selectPaymentRequestError: MemoizedSelector<object, string | null> = createSelector(
-  selectPaymentRequest,
-  (s) => s.payment.error
-);
+// export const selectPaymentRequestError: MemoizedSelector<object, string | null> = createSelector(
+//   selectPaymentRequest,
+//   (s) => s.payment.error
+// );
 
-export const selectCardIsLoading: MemoizedSelector<object, boolean> = createSelector(
-  selectPaymentRequest,
-  (s) => s.payment.loading
-);
+// export const selectCardIsLoading: MemoizedSelector<object, boolean> = createSelector(
+//   selectPaymentRequest,
+//   (s) => s.payment.loading
+// );
 
 export const selectPaymentNetwork: MemoizedSelector<object, INetworkDetail | null> = createSelector(
   selectPaymentRequest,
@@ -55,7 +48,7 @@ export const selectConversionToken: MemoizedSelector<object, StoreState<number |
 
 export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
-  (s) => s.payment.data?.tokenId !== s.network?.nativeCurrency.id
+  (s) => s.requestDetail.data?.tokenId !== s.network?.nativeCurrency.id
 );
 
 export const selectSmartContractCanTransfer: MemoizedSelector<object, boolean> = createSelector(
@@ -80,9 +73,9 @@ export const selectPaymentNetworkIsMathing: MemoizedSelector<object, boolean> = 
   (s, network) => s.network?.chainId === network?.chainId
 );
 
-export const selectRawPaymentRequest: MemoizedSelector<object, StoreState<IPaymentRequestRaw | null>> = createSelector(
+export const selectPaymentRequestDetail: MemoizedSelector<object, StoreState<IPaymentRequest | null>> = createSelector(
   selectPaymentRequest,
-  (s: IPaymentRequestState) => s.rawRequest
+  (s: IPaymentRequestState) => s.requestDetail
 );
 
 export const selectPayNowIsProcessing: MemoizedSelector<object, ActionStoreProcessing> = createSelector(

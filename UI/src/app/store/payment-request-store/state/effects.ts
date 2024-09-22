@@ -14,8 +14,6 @@ import { TransactionBridgeContract } from './../../../shared/contracts';
 import { tokenList } from './../../../shared/data/tokenList';
 import {
   IPaymentRequest,
-  IPaymentRequestEncrypted,
-  IPaymentRequestRaw,
   IReceiptTransaction,
   IToken,
   ITokenContract,
@@ -32,11 +30,10 @@ import {
   DataConversionStore,
   selectConversionToken,
   selectIsNonNativeToken,
-  selectPayment,
+  selectPaymentRequestDetail,
   selectPaymentConversion,
   selectPaymentNetworkIsMathing,
-  selectPaymentToken,
-  selectRawPaymentRequest
+  selectPaymentToken
 } from './selectors';
 
 @Injectable()
@@ -51,7 +48,7 @@ export class PaymentRequestEffects {
     private router: Router
   ) {}
 
-  private isRawIPaymentRequestEncrypted(obj: IPaymentRequestEncrypted): obj is IPaymentRequestEncrypted {
+  private isRawIPaymentRequestDetail(obj: IPaymentRequest): obj is IPaymentRequest {
     return (
       typeof obj === 'object' && obj !== null && typeof obj.publicAddress === 'string' && typeof obj.name === 'string'
     );
@@ -75,7 +72,7 @@ export class PaymentRequestEffects {
         this.store.select(selectPublicAddress),
         this.store.select(selectIsNonNativeToken),
         this.store.select(selectPaymentNetworkIsMathing),
-        this.store.select(selectPayment)
+        this.store.select(selectPaymentRequestDetail)
       ]),
       filter(
         (
@@ -84,7 +81,7 @@ export class PaymentRequestEffects {
             string | null,
             boolean,
             boolean,
-            IPaymentRequest | null
+            StoreState<IPaymentRequest | null>
           ]
         ) => payload[1] !== null && payload[3] && payload[4] !== null
       ),
@@ -95,7 +92,7 @@ export class PaymentRequestEffects {
             string,
             boolean,
             boolean,
-            IPaymentRequest
+            StoreState<IPaymentRequest | null>
           ]
       ),
       switchMap(
@@ -105,7 +102,7 @@ export class PaymentRequestEffects {
             string,
             boolean,
             boolean,
-            IPaymentRequest
+            StoreState<IPaymentRequest | null>
           ]
         ) => {
           if (action[2] === false) {
@@ -113,8 +110,8 @@ export class PaymentRequestEffects {
           }
 
           const tokenAddress: ITokenContract | undefined = tokenList
-            .find((token) => token.tokenId === action[4].tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[4].chainId);
+            .find((token) => token.tokenId === (action[4]?.data as IPaymentRequest).tokenId)
+            ?.networkSupport.find((support) => support.chainId === (action[4]?.data as IPaymentRequest).chainId);
 
           if (!tokenAddress) {
             return PaymentRequestActions.smartContractCanTransferFailure({
@@ -125,8 +122,8 @@ export class PaymentRequestEffects {
           const payload: TransactionTokenBridgePayload = {
             ownerAdress: action[1],
             tokenAddress: tokenAddress.address,
-            chainId: action[4].chainId,
-            amount: action[4].amount
+            chainId: (action[4]?.data as IPaymentRequest).chainId,
+            amount: (action[4]?.data as IPaymentRequest).amount as number
           };
 
           return this.tokensService
@@ -205,32 +202,41 @@ export class PaymentRequestEffects {
   checkIfTransferIsPossibleAfterAllowance$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.approveTokenAllowanceSuccess),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPaymentRequestDetail)]),
       filter(
         (
           payload: [
             ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>,
             string | null,
-            IPaymentRequest | null
+            StoreState<IPaymentRequest | null>
           ]
         ) => payload[1] !== null && payload[2] !== null
       ),
       map(
         (payload) =>
-          payload as [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]
+          payload as [
+            ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>,
+            string,
+            StoreState<IPaymentRequest | null>
+          ]
       ),
       switchMap(
         async (
-          action: [ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>, string, IPaymentRequest]
+          action: [
+            ReturnType<typeof PaymentRequestActions.approveTokenAllowanceSuccess>,
+            string,
+            StoreState<IPaymentRequest | null>
+          ]
         ) => {
           const tokenAddress: string = tokenList
-            .find((token) => token.tokenId === action[2].tokenId)
-            ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
+            .find((token) => token.tokenId === (action[2]?.data as IPaymentRequest).tokenId)
+            ?.networkSupport.find((support) => support.chainId === (action[2]?.data as IPaymentRequest).chainId)
+            ?.address as string;
           const payload: TransactionTokenBridgePayload = {
             ownerAdress: action[1],
             tokenAddress: tokenAddress,
-            chainId: action[2].chainId,
-            amount: action[2].amount
+            chainId: (action[2]?.data as IPaymentRequest).chainId,
+            amount: (action[2]?.data as IPaymentRequest).amount as number
           };
           return this.tokensService
             .getTransferAvailable(payload)
@@ -245,22 +251,27 @@ export class PaymentRequestEffects {
   approveTokenAllowance$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.approveTokenAllowance),
-      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPayment)]),
+      concatLatestFrom(() => [this.store.select(selectPublicAddress), this.store.select(selectPaymentRequestDetail)]),
       map(
         (payload) =>
-          payload as [ReturnType<typeof PaymentRequestActions.approveTokenAllowance>, string, IPaymentRequest]
+          payload as [
+            ReturnType<typeof PaymentRequestActions.approveTokenAllowance>,
+            string,
+            StoreState<IPaymentRequest | null>
+          ]
       ),
       mergeMap(([, publicAddress, payment]) => {
         const tokenAddress: string = tokenList
-          .find((token) => token.tokenId === payment.tokenId)
-          ?.networkSupport.find((support) => support.chainId === payment.chainId)?.address as string;
+          .find((token) => token.tokenId === (payment.data as IPaymentRequest).tokenId)
+          ?.networkSupport.find((support) => support.chainId === (payment.data as IPaymentRequest).chainId)
+          ?.address as string;
 
         const payload: IEditAllowancePayload = {
           tokenAddress: tokenAddress,
-          chainId: payment.chainId,
+          chainId: (payment.data as IPaymentRequest).chainId,
           owner: publicAddress,
-          spender: new TransactionBridgeContract(payment.chainId).getAddress(),
-          amount: payment.amount
+          spender: new TransactionBridgeContract((payment.data as IPaymentRequest).chainId).getAddress(),
+          amount: (payment.data as IPaymentRequest).amount as number
         };
 
         return from(this.tokensService.approve(payload)).pipe(
@@ -412,9 +423,9 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.decryptRawPaymentRequest),
       map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {
         const decodedPayment: string = atob(action.encodedRequest).replace('+', '-').replace('/', '_');
-        const decodedPaymentRequest: IPaymentRequestEncrypted = JSON.parse(decodedPayment);
+        const decodedPaymentRequest: IPaymentRequest = JSON.parse(decodedPayment);
 
-        const completePaymentRequest: IPaymentRequestEncrypted = {
+        const completePaymentRequest: IPaymentRequest = {
           publicAddress: decodedPaymentRequest.publicAddress,
           name: decodedPaymentRequest.name,
           chainId: (decodedPaymentRequest as IPaymentRequest).chainId || null,
@@ -423,9 +434,9 @@ export class PaymentRequestEffects {
           usdEnabled: (decodedPaymentRequest as IPaymentRequest).usdEnabled || false
         };
 
-        if (this.isRawIPaymentRequestEncrypted(decodedPaymentRequest)) {
+        if (this.isRawIPaymentRequestDetail(decodedPaymentRequest)) {
           return PaymentRequestActions.decryptRawPaymentRequestSuccess({
-            rawRequest: completePaymentRequest
+            requestDetail: completePaymentRequest
           });
         } else {
           return PaymentRequestActions.decryptRawPaymentRequestFailure({
@@ -484,40 +495,55 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
         this.store.select(selectPublicAddress),
-        this.store.select(selectPayment),
+        this.store.select(selectPaymentRequestDetail),
         this.store.select(selectIsNonNativeToken)
       ]),
-      filter((payload) => payload[1] !== null && payload[3] && payload[2]?.usdEnabled === true),
+      filter((payload) => payload[1] !== null && payload[3] && payload[2]?.data?.usdEnabled === true),
       map(
-        (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+        (payload) =>
+          payload as [
+            ReturnType<typeof PaymentRequestActions.sendAmount>,
+            string,
+            StoreState<IPaymentRequest | null>,
+            boolean
+          ]
       ),
-      switchMap((action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
-        const tokenAddress: string = tokenList
-          .find((token) => token.tokenId === action[2].tokenId)
-          ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
-        const payload: SendTransactionTokenBridgePayload = {
-          tokenAddress: tokenAddress,
-          chainId: action[2].chainId,
-          amount: action[2].amount,
-          ownerAdress: action[1],
-          destinationAddress: action[2].publicAddress
-        };
-        return from(this.tokensService.transferNonNativeTokenSC(payload)).pipe(
-          map((receipt: IReceiptTransaction) =>
-            PaymentRequestActions.amountSent({
-              hash: receipt.transactionHash,
-              chainId: action[2].chainId as NetworkChainId
-            })
-          ),
-          catchError((error: { message: string; code: number }) =>
-            of(
-              PaymentRequestActions.amountSentFailure({
-                message: this.walletService.formatErrorMessage((error as { code: number }).code)
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof PaymentRequestActions.sendAmount>,
+            string,
+            StoreState<IPaymentRequest | null>,
+            boolean
+          ]
+        ) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[2].data?.tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[2].data?.chainId)?.address as string;
+          const payload: SendTransactionTokenBridgePayload = {
+            tokenAddress: tokenAddress,
+            chainId: (action[2].data as IPaymentRequest).chainId,
+            amount: (action[2].data as IPaymentRequest).amount as number,
+            ownerAdress: action[1],
+            destinationAddress: (action[2].data as IPaymentRequest).publicAddress
+          };
+          return from(this.tokensService.transferNonNativeTokenSC(payload)).pipe(
+            map((receipt: IReceiptTransaction) =>
+              PaymentRequestActions.amountSent({
+                hash: receipt.transactionHash,
+                chainId: (action[2].data as IPaymentRequest).chainId as NetworkChainId
               })
+            ),
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.amountSentFailure({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
             )
-          )
-        );
-      })
+          );
+        }
+      )
     );
   });
 
@@ -526,25 +552,30 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
         this.store.select(selectPublicAddress),
-        this.store.select(selectPayment),
+        this.store.select(selectPaymentRequestDetail),
         this.store.select(selectIsNonNativeToken)
       ]),
-      filter((payload) => !payload[3] && payload[2]?.usdEnabled === true),
+      filter((payload) => !payload[3] && payload[2]?.data?.usdEnabled === true),
       switchMap(
         (
-          action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
+          action: [
+            ReturnType<typeof PaymentRequestActions.sendAmount>,
+            string | null,
+            StoreState<IPaymentRequest | null>,
+            boolean
+          ]
         ) => {
           const payload: SendNativeTokenPayload = {
-            to: action[2]?.publicAddress as string,
+            to: action[2]?.data?.publicAddress as string,
             amount: Number(action[0].priceValue),
-            chainId: action[2]?.chainId as NetworkChainId,
+            chainId: action[2]?.data?.chainId as NetworkChainId,
             from: action[1] as string
           };
           return from(this.tokensService.transferNativeTokenSC(payload)).pipe(
             map((receipt: IReceiptTransaction) =>
               PaymentRequestActions.amountSent({
                 hash: receipt.transactionHash,
-                chainId: action[2]?.chainId as NetworkChainId
+                chainId: action[2]?.data?.chainId as NetworkChainId
               })
             ),
             catchError((error: { message: string; code: number }) =>
@@ -565,25 +596,30 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
         this.store.select(selectPublicAddress),
-        this.store.select(selectPayment),
+        this.store.select(selectPaymentRequestDetail),
         this.store.select(selectIsNonNativeToken)
       ]),
-      filter((payload) => !payload[3] && payload[2]?.usdEnabled === false),
+      filter((payload) => !payload[3] && payload[2]?.data?.usdEnabled === false),
       switchMap(
         (
-          action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string | null, IPaymentRequest | null, boolean]
+          action: [
+            ReturnType<typeof PaymentRequestActions.sendAmount>,
+            string | null,
+            StoreState<IPaymentRequest | null>,
+            boolean
+          ]
         ) => {
           const payload: SendNativeTokenPayload = {
-            to: action[2]?.publicAddress as string,
+            to: action[2]?.data?.publicAddress as string,
             amount: Number(action[0].priceValue),
-            chainId: action[2]?.chainId as NetworkChainId,
+            chainId: action[2]?.data?.chainId as NetworkChainId,
             from: action[1] as string
           };
           return from(this.tokensService.transferNativeToken(payload)).pipe(
             map((receipt: TransactionReceipt) =>
               PaymentRequestActions.amountSent({
                 hash: String(receipt.transactionHash),
-                chainId: action[2]?.chainId as NetworkChainId
+                chainId: action[2]?.data?.chainId as NetworkChainId
               })
             ),
             catchError((error: { message: string; code: number }) =>
@@ -604,40 +640,55 @@ export class PaymentRequestEffects {
       ofType(PaymentRequestActions.sendAmount),
       concatLatestFrom(() => [
         this.store.select(selectPublicAddress),
-        this.store.select(selectPayment),
+        this.store.select(selectPaymentRequestDetail),
         this.store.select(selectIsNonNativeToken)
       ]),
-      filter((payload) => payload[1] !== null && payload[3] && payload[2]?.usdEnabled === false),
+      filter((payload) => payload[1] !== null && payload[3] && payload[2]?.data?.usdEnabled === false),
       map(
-        (payload) => payload as [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]
+        (payload) =>
+          payload as [
+            ReturnType<typeof PaymentRequestActions.sendAmount>,
+            string,
+            StoreState<IPaymentRequest | null>,
+            boolean
+          ]
       ),
-      switchMap((action: [ReturnType<typeof PaymentRequestActions.sendAmount>, string, IPaymentRequest, boolean]) => {
-        const tokenAddress: string = tokenList
-          .find((token) => token.tokenId === action[2].tokenId)
-          ?.networkSupport.find((support) => support.chainId === action[2].chainId)?.address as string;
-        const payload: SendTransactionTokenBridgePayload = {
-          tokenAddress: tokenAddress,
-          chainId: action[2].chainId,
-          amount: action[2].amount,
-          ownerAdress: action[1],
-          destinationAddress: action[2].publicAddress
-        };
-        return from(this.tokensService.transferNonNativeToken(payload)).pipe(
-          map((receipt: TransactionReceipt) =>
-            PaymentRequestActions.amountSent({
-              hash: String(receipt.transactionHash),
-              chainId: action[2].chainId as NetworkChainId
-            })
-          ),
-          catchError((error: { message: string; code: number }) =>
-            of(
-              PaymentRequestActions.amountSentFailure({
-                message: this.walletService.formatErrorMessage((error as { code: number }).code)
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof PaymentRequestActions.sendAmount>,
+            string,
+            StoreState<IPaymentRequest | null>,
+            boolean
+          ]
+        ) => {
+          const tokenAddress: string = tokenList
+            .find((token) => token.tokenId === action[2]?.data?.tokenId)
+            ?.networkSupport.find((support) => support.chainId === action[2].data?.chainId)?.address as string;
+          const payload: SendTransactionTokenBridgePayload = {
+            tokenAddress: tokenAddress,
+            chainId: (action[2]?.data as IPaymentRequest).chainId,
+            amount: (action[2]?.data as IPaymentRequest).amount as number,
+            ownerAdress: action[1],
+            destinationAddress: (action[2]?.data as IPaymentRequest)?.publicAddress
+          };
+          return from(this.tokensService.transferNonNativeToken(payload)).pipe(
+            map((receipt: TransactionReceipt) =>
+              PaymentRequestActions.amountSent({
+                hash: String(receipt.transactionHash),
+                chainId: (action[2]?.data as IPaymentRequest)?.chainId
               })
+            ),
+            catchError((error: { message: string; code: number }) =>
+              of(
+                PaymentRequestActions.amountSentFailure({
+                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                })
+              )
             )
-          )
-        );
-      })
+          );
+        }
+      )
     );
   });
 
@@ -672,7 +723,7 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.payNowTransaction),
       concatLatestFrom(() => [
-        this.store.select(selectRawPaymentRequest),
+        this.store.select(selectPaymentRequestDetail),
         this.store.select(selectConversionToken),
         this.store.select(selectPublicAddress)
       ]),
@@ -681,7 +732,7 @@ export class PaymentRequestEffects {
         (
           action: [
             ReturnType<typeof PaymentRequestActions.payNowTransaction>,
-            StoreState<IPaymentRequestRaw | null>,
+            StoreState<IPaymentRequest | null>,
             StoreState<number | null>,
             string | null
           ]
@@ -722,7 +773,7 @@ export class PaymentRequestEffects {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.payNowTransaction),
       concatLatestFrom(() => [
-        this.store.select(selectRawPaymentRequest),
+        this.store.select(selectPaymentRequestDetail),
         this.store.select(selectConversionToken),
         this.store.select(selectPublicAddress)
       ]),
@@ -731,7 +782,7 @@ export class PaymentRequestEffects {
         (
           action: [
             ReturnType<typeof PaymentRequestActions.payNowTransaction>,
-            StoreState<IPaymentRequestRaw | null>,
+            StoreState<IPaymentRequest | null>,
             StoreState<number | null>,
             string | null
           ]
