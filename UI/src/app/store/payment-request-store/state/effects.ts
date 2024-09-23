@@ -418,7 +418,7 @@ export class PaymentRequestEffects {
   //   );
   // });
 
-  generateRawPayment$ = createEffect(() => {
+  generatePayment$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.decryptRawPaymentRequest),
       map((action: ReturnType<typeof PaymentRequestActions.decryptRawPaymentRequest>) => {

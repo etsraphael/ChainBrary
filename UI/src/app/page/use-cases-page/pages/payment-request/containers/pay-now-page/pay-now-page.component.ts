@@ -163,6 +163,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.callActions();
     this.listenFormChanges();
+    this.setUpPaymentFound();
   }
 
   networkSaved(val: NetworkChainId): void {
@@ -180,6 +181,22 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
     if (this.mainForm.invalid) return;
     else return this.processPayment();
+  }
+
+  private setUpPaymentFound(): void {
+    this.requestDetail$.pipe(
+      take(1),
+      map((rd: StoreState<IPaymentRequest | null>) => rd.data),
+      filter(Boolean)
+    ).subscribe((rd: IPaymentRequest) => {
+      this.networkSelected = rd.chainId as NetworkChainId;
+      this.mainForm.patchValue({
+        amount: rd.amount || 10,
+        tokenId: rd.tokenId as TokenId || null
+      });
+      rd.amount && this.mainForm.get('amount')?.disable();
+      rd.tokenId && this.mainForm.get('tokenId')?.disable();
+    });
   }
 
   private processPayment(): Subscription {
