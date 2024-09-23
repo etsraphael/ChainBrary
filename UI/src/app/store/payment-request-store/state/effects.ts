@@ -692,7 +692,7 @@ export class PaymentRequestEffects {
     );
   });
 
-  applyConversionTokeFromNode$ = createEffect(() => {
+  applyConversionTokenFromNode$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(PaymentRequestActions.applyConversionTokenFromPayNow),
       switchMap(async (payload: ReturnType<typeof PaymentRequestActions.applyConversionTokenFromPayNow>) => {
@@ -737,9 +737,11 @@ export class PaymentRequestEffects {
             string | null
           ]
         ) => {
+          const amountToPay: number = action[0].lockInUSD ? Number(action[2].data) : action[0].amount;
+
           const payload: SendNativeTokenPayload = {
             to: action[1]?.data?.publicAddress as string,
-            amount: Number(action[2].data) * 10 ** action[0].token.decimals,
+            amount: amountToPay * 10 ** action[0].token.decimals,
             chainId: action[0].chainId,
             from: action[3] as string
           };
@@ -777,7 +779,10 @@ export class PaymentRequestEffects {
         this.store.select(selectConversionToken),
         this.store.select(selectPublicAddress)
       ]),
-      filter((payload) => !!payload[1]?.data?.publicAddress && !!payload[3] && !payload[0].token.nativeToChainId),
+      filter(
+        (payload) =>
+          !!payload[1]?.data?.publicAddress && !!payload[3] && !payload[0].token.nativeToChainId && payload[0].lockInUSD
+      ),
       switchMap(
         (
           action: [

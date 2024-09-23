@@ -62,3 +62,13 @@
   border-radius: 10px !important;
   overflow: hidden;
 }
+
+.swapping-icon {
+  position: relative;
+    bottom: -1px;
+}
+
+.amout-title-container:hover {
+  cursor: pointer;
+  color: var(--bs-light-border-subtle) !important;
+}

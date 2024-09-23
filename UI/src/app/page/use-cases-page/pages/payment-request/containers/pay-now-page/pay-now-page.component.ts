@@ -44,6 +44,11 @@ interface ITokenForm {
   tokenId: FormControl<TokenId | null>;
 }
 
+enum PaymentTypes {
+  USD,
+  TOKEN
+}
+
 @Component({
   selector: 'app-pay-now-page',
   templateUrl: './pay-now-page.component.html',
@@ -111,6 +116,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   ];
   networkSelected: NetworkChainId;
   commonButtonText: ICommonButtonText = CommonButtonText;
+  paymentTypes = PaymentTypes;
+  paymentTypeSelected: PaymentTypes = PaymentTypes.USD;
 
   constructor(
     public location: Location,
@@ -183,20 +190,26 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     else return this.processPayment();
   }
 
+  switchPaymentType(): void {
+    this.paymentTypeSelected = this.paymentTypeSelected === PaymentTypes.USD ? PaymentTypes.TOKEN : PaymentTypes.USD;
+  }
+
   private setUpPaymentFound(): void {
-    this.requestDetail$.pipe(
-      take(1),
-      map((rd: StoreState<IPaymentRequest | null>) => rd.data),
-      filter(Boolean)
-    ).subscribe((rd: IPaymentRequest) => {
-      this.networkSelected = rd.chainId as NetworkChainId;
-      this.mainForm.patchValue({
-        amount: rd.amount || 10,
-        tokenId: rd.tokenId as TokenId || null
+    this.requestDetail$
+      .pipe(
+        take(1),
+        map((rd: StoreState<IPaymentRequest | null>) => rd.data),
+        filter(Boolean)
+      )
+      .subscribe((rd: IPaymentRequest) => {
+        this.networkSelected = rd.chainId as NetworkChainId;
+        this.mainForm.patchValue({
+          amount: rd.amount || 10,
+          tokenId: (rd.tokenId as TokenId) || null
+        });
+        rd.amount && this.mainForm.get('amount')?.disable();
+        rd.tokenId && this.mainForm.get('tokenId')?.disable();
       });
-      rd.amount && this.mainForm.get('amount')?.disable();
-      rd.tokenId && this.mainForm.get('tokenId')?.disable();
-    });
   }
 
   private processPayment(): Subscription {
@@ -214,7 +227,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             payNowTransaction({
               amount: this.mainForm.get('amount')?.value as number,
               chainId: chainId as NetworkChainId,
-              token: this.currentTokenUsed as IToken
+              token: this.currentTokenUsed as IToken,
+              lockInUSD: this.mainForm.get('amount')?.disabled ? false : true
             })
           );
         }

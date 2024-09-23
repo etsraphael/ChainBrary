@@ -59,13 +59,19 @@
               </div>
               <div class="row">
                 <div class="col-12 text-center">
-                  <h4 i18n class="text-light">Amount (in USD)</h4>
+                  <h4 class="text-light amout-title-container" (click)="switchPaymentType()">
+                    {{ paymentTypeSelected === paymentTypes.USD ? 'Amount (in USD)' : 'Amount (in X)' }}
+                    <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>
+                  </h4>
                 </div>
                 <div class="col-12 text-center amount-container">
                   <mat-form-field>
                     <div matPrefix class="pt-2">
                       <span class="text-light prefix-span">$</span>
                     </div>
+                    <!-- <div matSuffix class="pt-2 pe-2">
+                      <span class="text-light prefix-span">BTC</span>
+                    </div> -->
                     <input formControlName="amount" class="text-center text-light" type="number" matInput />
                     <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">
                       Amount has to be greater than 0
