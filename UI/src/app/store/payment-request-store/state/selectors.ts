@@ -6,39 +6,19 @@ import { IPaymentRequestState, PAYMENT_REQUEST_FEATURE_KEY } from './interfaces'
 
 export const selectPaymentRequest = createFeatureSelector<IPaymentRequestState>(PAYMENT_REQUEST_FEATURE_KEY);
 
-// export const selectPaymentRequestIsLoading: MemoizedSelector<object, boolean> = createSelector(
-//   selectPaymentRequest,
-//   (s) => s.payment.loading
-// );
-
-// export const selectPayment: MemoizedSelector<object, IPaymentRequest | null> = createSelector(
-//   selectPaymentRequest,
-//   (s) => s.payment.data
-// );
-
-// export const selectPaymentRequestError: MemoizedSelector<object, string | null> = createSelector(
-//   selectPaymentRequest,
-//   (s) => s.payment.error
-// );
-
-// export const selectCardIsLoading: MemoizedSelector<object, boolean> = createSelector(
-//   selectPaymentRequest,
-//   (s) => s.payment.loading
-// );
-
 export const selectPaymentNetwork: MemoizedSelector<object, INetworkDetail | null> = createSelector(
   selectPaymentRequest,
-  (s) => s.network
+  (s: IPaymentRequestState) => s.network
 );
 
 export const selectPaymentToken: MemoizedSelector<object, IToken | null> = createSelector(
   selectPaymentRequest,
-  (s) => s.token
+  (s: IPaymentRequestState) => s.token
 );
 
 export const selectPaymentConversion: MemoizedSelector<object, DataConversionStore> = createSelector(
   selectPaymentRequest,
-  (s) => ({ conversionToken: s.conversionToken, conversionUSD: s.conversionUSD })
+  (s: IPaymentRequestState) => ({ conversionToken: s.conversionToken, conversionUSD: s.conversionUSD })
 );
 
 export const selectConversionToken: MemoizedSelector<object, StoreState<number | null>> = createSelector(
@@ -48,29 +28,29 @@ export const selectConversionToken: MemoizedSelector<object, StoreState<number |
 
 export const selectIsNonNativeToken: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
-  (s) => s.requestDetail.data?.tokenId !== s.network?.nativeCurrency.id
+  (s: IPaymentRequestState) => s.requestDetail.data?.tokenId !== s.network?.nativeCurrency.id
 );
 
 export const selectSmartContractCanTransfer: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   selectIsNonNativeToken,
-  (s, isNonNative) => s.smartContractCanTransfer.data || !isNonNative
+  (s: IPaymentRequestState, isNonNative: boolean) => s.smartContractCanTransfer.data || !isNonNative
 );
 
 export const selectSmartContractCanTransferIsLoading: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
-  (s) => s.smartContractCanTransfer.loading
+  (s: IPaymentRequestState) => s.smartContractCanTransfer.loading
 );
 
 export const selectSmartContractCanTransferError: MemoizedSelector<object, string | null> = createSelector(
   selectPaymentRequest,
-  (s) => s.smartContractCanTransfer.error
+  (s: IPaymentRequestState) => s.smartContractCanTransfer.error
 );
 
 export const selectPaymentNetworkIsMathing: MemoizedSelector<object, boolean> = createSelector(
   selectPaymentRequest,
   selectCurrentNetwork,
-  (s, network) => s.network?.chainId === network?.chainId
+  (s: IPaymentRequestState, network: INetworkDetail | null) => s.network?.chainId === network?.chainId
 );
 
 export const selectPaymentRequestDetail: MemoizedSelector<object, StoreState<IPaymentRequest | null>> = createSelector(
@@ -80,7 +60,7 @@ export const selectPaymentRequestDetail: MemoizedSelector<object, StoreState<IPa
 
 export const selectPayNowIsProcessing: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
   selectPaymentRequest,
-  (s) => s.payNowIsProcessing
+  (s: IPaymentRequestState) => s.payNowIsProcessing
 );
 
 export interface DataConversionStore {

@@ -1,6 +1,6 @@
 <ng-container
   *ngIf="
-    (rawRequest$ | async)?.loading === false && (selectPayNowIsProcessing$ | async)?.isLoading === false;
+    (requestDetail$ | async)?.loading === false && (selectPayNowIsProcessing$ | async)?.isLoading === false;
     else loadingView
   "
 >
@@ -16,7 +16,7 @@
               </h3>
             </div>
           </div>
-          <div class="container" *ngIf="(rawRequest$ | async)?.data; let request">
+          <div class="container" *ngIf="(requestDetail$ | async)?.data; let request">
             <form [formGroup]="mainForm">
               <div class="row">
                 <div class="col-12 card py-2">
