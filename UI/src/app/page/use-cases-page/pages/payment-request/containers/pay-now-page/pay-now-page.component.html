@@ -60,7 +60,7 @@
               <div class="row">
                 <div class="col-12 text-center">
                   <h4 class="text-light amount-title-container" (click)="switchPaymentType()" [ngClass]="{ 'active': switchBtnDisabled === false}">
-                    {{ paymentTypeSelected === paymentTypes.USD ? 'Amount (in USD)' : 'Amount (in X)' }}
+                    {{ paymentTypeSelected === paymentTypes.USD ? 'Amount (in USD)' : 'Amount (in ' + currentTokenUsed?.symbol +  ')' }}
                     <ng-container *ngIf="switchBtnDisabled === false">
                       <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>
                     </ng-container>

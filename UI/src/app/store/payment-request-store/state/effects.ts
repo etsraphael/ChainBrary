@@ -17,6 +17,7 @@ import {
   IReceiptTransaction,
   IToken,
   ITokenContract,
+  PaymentTypes,
   SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
   StoreState,
@@ -705,8 +706,7 @@ export class PaymentRequestEffects {
         }
 
         return PaymentRequestActions.applyConversionTokenFromPayNowSuccess({
-          usdAmount: payload.amount,
-          tokenAmount: parseFloat((payload.amount / price).toFixed(12)),
+          result: payload.paymentType === PaymentTypes.TOKEN ?  price * payload.amount : parseFloat((payload.amount / price).toFixed(12)),
           paymentType: payload.paymentType
         });
       }),

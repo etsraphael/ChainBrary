@@ -3,6 +3,7 @@ import { resetAuth } from '../../auth-store/state/actions';
 import * as PaymentActions from './actions';
 import { initialState } from './init';
 import { IPaymentRequestState } from './interfaces';
+import { PaymentTypes } from './../../../shared/interfaces';
 
 export const authReducer: ActionReducer<IPaymentRequestState, Action> = createReducer(
   initialState,
@@ -225,10 +226,13 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     PaymentActions.applyConversionTokenFromPayNowSuccess,
     (state, action): IPaymentRequestState => ({
       ...state,
-      conversionToken: {
+      [action.paymentType === PaymentTypes.USD ? 'conversionToken' : 'conversionUSD']: {
         loading: true,
         error: null,
-        data: action.tokenAmount
+        data: action.result
+      },
+      [action.paymentType === PaymentTypes.USD ? 'conversionUSD' : 'conversionToken']: {
+        ...initialState[action.paymentType === PaymentTypes.USD ? 'conversionUSD' : 'conversionToken']
       }
     })
   ),

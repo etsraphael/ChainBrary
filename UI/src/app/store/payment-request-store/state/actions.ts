@@ -99,7 +99,7 @@ export const applyConversionTokenFromPayNow = createAction(
 );
 export const applyConversionTokenFromPayNowSuccess = createAction(
   '[Payment Request] Apply Conversion Token From PayNow Success',
-  props<{ usdAmount: number; tokenAmount: number, paymentType: PaymentTypes }>()
+  props<{ result: number, paymentType: PaymentTypes }>()
 );
 export const applyConversionTokenFromPayNowFailure = createAction(
   '[Payment Request] Apply Conversion Token From PayNow Failure',
