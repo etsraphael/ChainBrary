@@ -18,7 +18,7 @@ import {
 } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { AuthStatusCode, CommonButtonText, ICommonButtonText, TokenPair } from './../../../../../../shared/enum';
-import { ActionStoreProcessing, IPaymentRequest, IToken, StoreState } from './../../../../../../shared/interfaces';
+import { ActionStoreProcessing, IPaymentRequest, IToken, PaymentTypes, StoreState } from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { networkChange } from './../../../../../../store/auth-store/state/actions';
 import { selectAuthStatus, selectCurrentChainId } from './../../../../../../store/auth-store/state/selectors';
@@ -28,7 +28,9 @@ import {
   payNowTransaction
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
+  DataConversionStore,
   selectConversionToken,
+  selectPaymentConversion,
   selectPaymentRequestDetail,
   selectPayNowIsProcessing
 } from './../../../../../../store/payment-request-store/state/selectors';
@@ -42,11 +44,6 @@ interface NetworkGroup {
 interface ITokenForm {
   amount: FormControl<number | null>;
   tokenId: FormControl<TokenId | null>;
-}
-
-enum PaymentTypes {
-  USD,
-  TOKEN
 }
 
 @Component({
@@ -128,6 +125,14 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     private web3LoginService: Web3LoginService
   ) {}
 
+  readonly requestDetail$: Observable<StoreState<IPaymentRequest | null>> =
+  this.store.select(selectPaymentRequestDetail);
+readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
+readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
+readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
+readonly paymentConversion$: Observable<DataConversionStore> = this.store.select(selectPaymentConversion)
+
   get routeId(): string {
     return this.route.snapshot.params['id'];
   }
@@ -146,6 +151,19 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get paymentConversionFormatted$(): Observable<string> {
+    return this.paymentConversion$.pipe(
+      filter((conversion: DataConversionStore) => conversion.conversionToken.data !== null || conversion.conversionUSD.data !== null),
+      map((conversion: DataConversionStore) => {
+        if(this.paymentTypeSelected === PaymentTypes.TOKEN) {
+          return '$' + (conversion.conversionUSD.data as number)
+        } else {
+          return (conversion.conversionToken.data as number) + ' ' + this.currentTokenUsed?.symbol
+        }
+      })
+    );
+  }
+
   get actionBtnText$(): Observable<string> {
     return this.authStatus$.pipe(
       map((status: AuthStatusCode) =>
@@ -160,12 +178,9 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     return this.tokensAvailable.find((network: NetworkGroup) => network.chainId === this.networkSelected)?.networkName;
   }
 
-  readonly requestDetail$: Observable<StoreState<IPaymentRequest | null>> =
-    this.store.select(selectPaymentRequestDetail);
-  readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
-  readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
-  readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
-  private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
+  get switchBtnDisabled(): boolean {
+    return this.mainForm.get('amount')?.disabled === true || this.mainForm.get('tokenId')?.value === null;
+  }
 
   ngOnInit(): void {
     this.callActions();
@@ -191,6 +206,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   }
 
   switchPaymentType(): void {
+    if (this.switchBtnDisabled) return;
     this.paymentTypeSelected = this.paymentTypeSelected === PaymentTypes.USD ? PaymentTypes.TOKEN : PaymentTypes.USD;
   }
 
@@ -264,9 +280,10 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
           if (feed !== undefined || isNative) {
             return this.store.dispatch(
               applyConversionTokenFromPayNow({
-                usdAmount: val.amount as number,
+                amount: val.amount as number,
                 chainId: this.networkSelected,
-                pair: isNative ? null : (feed as TokenPair)
+                pair: isNative ? null : (feed as TokenPair),
+                paymentType: this.paymentTypeSelected
               })
             );
           }

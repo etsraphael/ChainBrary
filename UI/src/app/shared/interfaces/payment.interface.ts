@@ -66,3 +66,8 @@ export interface SendNativeTokenPayload {
   amount: number;
   chainId: NetworkChainId;
 }
+
+export enum PaymentTypes {
+  USD,
+  TOKEN
+}

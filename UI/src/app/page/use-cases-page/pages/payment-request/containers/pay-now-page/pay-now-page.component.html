@@ -59,19 +59,21 @@
               </div>
               <div class="row">
                 <div class="col-12 text-center">
-                  <h4 class="text-light amout-title-container" (click)="switchPaymentType()">
+                  <h4 class="text-light amount-title-container" (click)="switchPaymentType()" [ngClass]="{ 'active': switchBtnDisabled === false}">
                     {{ paymentTypeSelected === paymentTypes.USD ? 'Amount (in USD)' : 'Amount (in X)' }}
-                    <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>
+                    <ng-container *ngIf="switchBtnDisabled === false">
+                      <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>
+                    </ng-container>
                   </h4>
                 </div>
                 <div class="col-12 text-center amount-container">
                   <mat-form-field>
-                    <div matPrefix class="pt-2">
+                    <div *ngIf="paymentTypeSelected === paymentTypes.USD" matPrefix class="pt-2">
                       <span class="text-light prefix-span">$</span>
                     </div>
-                    <!-- <div matSuffix class="pt-2 pe-2">
-                      <span class="text-light prefix-span">BTC</span>
-                    </div> -->
+                    <div *ngIf="paymentTypeSelected === paymentTypes.TOKEN" matSuffix class="pt-2 pe-2">
+                      <span class="text-light prefix-span">{{currentTokenUsed?.symbol}}</span>
+                    </div>
                     <input formControlName="amount" class="text-center text-light" type="number" matInput />
                     <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">
                       Amount has to be greater than 0
@@ -80,7 +82,7 @@
                 </div>
                 <div
                   data-id="pw-conversion-result"
-                  *ngIf="tokenConversion$ | async; let tc"
+                  *ngIf="paymentConversionFormatted$ | async; let tc"
                   class="col-12 text-center pb-2"
                 >
                   <h6 class="text-light">{{ tc }}</h6>

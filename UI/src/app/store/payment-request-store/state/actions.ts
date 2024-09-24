@@ -1,7 +1,7 @@
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import { TokenPair } from './../../../shared/enum';
-import { IPaymentRequest, IProfileAdded, IToken } from './../../../shared/interfaces';
+import { IPaymentRequest, IProfileAdded, IToken, PaymentTypes } from './../../../shared/interfaces';
 
 export const initPaymentRequestMaker = createAction('[Payment Request] Init Payment Request Maker');
 
@@ -95,11 +95,11 @@ export const decryptRawPaymentRequestFailure = createAction(
 
 export const applyConversionTokenFromPayNow = createAction(
   '[Payment Request] Apply Conversion Token From PayNow',
-  props<{ usdAmount: number; chainId: NetworkChainId; pair: TokenPair | null }>()
+  props<{ amount: number; chainId: NetworkChainId; pair: TokenPair | null, paymentType: PaymentTypes }>()
 );
 export const applyConversionTokenFromPayNowSuccess = createAction(
   '[Payment Request] Apply Conversion Token From PayNow Success',
-  props<{ usdAmount: number; tokenAmount: number }>()
+  props<{ usdAmount: number; tokenAmount: number, paymentType: PaymentTypes }>()
 );
 export const applyConversionTokenFromPayNowFailure = createAction(
   '[Payment Request] Apply Conversion Token From PayNow Failure',

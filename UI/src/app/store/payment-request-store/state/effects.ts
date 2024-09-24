@@ -705,8 +705,9 @@ export class PaymentRequestEffects {
         }
 
         return PaymentRequestActions.applyConversionTokenFromPayNowSuccess({
-          usdAmount: payload.usdAmount,
-          tokenAmount: parseFloat((payload.usdAmount / price).toFixed(12))
+          usdAmount: payload.amount,
+          tokenAmount: parseFloat((payload.amount / price).toFixed(12)),
+          paymentType: payload.paymentType
         });
       }),
       catchError(() =>

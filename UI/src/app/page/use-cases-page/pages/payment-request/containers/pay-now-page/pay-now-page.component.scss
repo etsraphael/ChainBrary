@@ -68,7 +68,7 @@
     bottom: -1px;
 }
 
-.amout-title-container:hover {
+.amount-title-container.active:hover {
   cursor: pointer;
   color: var(--bs-light-border-subtle) !important;
 }
