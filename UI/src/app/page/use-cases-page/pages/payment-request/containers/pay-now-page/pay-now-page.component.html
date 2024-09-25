@@ -59,8 +59,16 @@
               </div>
               <div class="row">
                 <div class="col-12 text-center">
-                  <h4 class="text-light amount-title-container" (click)="switchPaymentType()" [ngClass]="{ 'active': switchBtnDisabled === false}">
-                    {{ paymentTypeSelected === paymentTypes.USD ? 'Amount (in USD)' : 'Amount (in ' + currentTokenUsed?.symbol +  ')' }}
+                  <h4
+                    class="text-light amount-title-container"
+                    (click)="switchPaymentType()"
+                    [ngClass]="{ active: switchBtnDisabled === false }"
+                  >
+                    {{
+                      paymentTypeSelected === paymentTypes.USD
+                        ? 'Amount (in USD)'
+                        : 'Amount (in ' + currentTokenUsed?.symbol + ')'
+                    }}
                     <ng-container *ngIf="switchBtnDisabled === false">
                       <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>
                     </ng-container>
@@ -72,7 +80,7 @@
                       <span class="text-light prefix-span">$</span>
                     </div>
                     <div *ngIf="paymentTypeSelected === paymentTypes.TOKEN" matSuffix class="pt-2 pe-2">
-                      <span class="text-light prefix-span">{{currentTokenUsed?.symbol}}</span>
+                      <span class="text-light prefix-span">{{ currentTokenUsed?.symbol }}</span>
                     </div>
                     <input formControlName="amount" class="text-center text-light" type="number" matInput />
                     <mat-error i18n class="text-light" i18n *ngIf="mainForm.get('amount')?.hasError('min')">

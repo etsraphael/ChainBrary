@@ -706,7 +706,10 @@ export class PaymentRequestEffects {
         }
 
         return PaymentRequestActions.applyConversionTokenFromPayNowSuccess({
-          result: payload.paymentType === PaymentTypes.TOKEN ?  price * payload.amount : parseFloat((payload.amount / price).toFixed(12)),
+          result:
+            payload.paymentType === PaymentTypes.TOKEN
+              ? price * payload.amount
+              : parseFloat((payload.amount / price).toFixed(12)),
           paymentType: payload.paymentType
         });
       }),

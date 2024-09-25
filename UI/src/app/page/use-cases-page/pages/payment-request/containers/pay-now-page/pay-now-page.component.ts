@@ -18,7 +18,13 @@ import {
 } from 'rxjs';
 import { tokenList } from 'src/app/shared/data/tokenList';
 import { AuthStatusCode, CommonButtonText, ICommonButtonText, TokenPair } from './../../../../../../shared/enum';
-import { ActionStoreProcessing, IPaymentRequest, IToken, PaymentTypes, StoreState } from './../../../../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  IPaymentRequest,
+  IToken,
+  PaymentTypes,
+  StoreState
+} from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { networkChange } from './../../../../../../store/auth-store/state/actions';
 import { selectAuthStatus, selectCurrentChainId } from './../../../../../../store/auth-store/state/selectors';
@@ -126,12 +132,12 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   ) {}
 
   readonly requestDetail$: Observable<StoreState<IPaymentRequest | null>> =
-  this.store.select(selectPaymentRequestDetail);
-readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
-readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
-readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
-private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
-readonly paymentConversion$: Observable<DataConversionStore> = this.store.select(selectPaymentConversion)
+    this.store.select(selectPaymentRequestDetail);
+  readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
+  readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
+  readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+  private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
+  readonly paymentConversion$: Observable<DataConversionStore> = this.store.select(selectPaymentConversion);
 
   get routeId(): string {
     return this.route.snapshot.params['id'];
@@ -153,12 +159,15 @@ readonly paymentConversion$: Observable<DataConversionStore> = this.store.select
 
   get paymentConversionFormatted$(): Observable<string> {
     return this.paymentConversion$.pipe(
-      filter((conversion: DataConversionStore) => conversion.conversionToken.data !== null || conversion.conversionUSD.data !== null),
+      filter(
+        (conversion: DataConversionStore) =>
+          conversion.conversionToken.data !== null || conversion.conversionUSD.data !== null
+      ),
       map((conversion: DataConversionStore) => {
-        if(this.paymentTypeSelected === PaymentTypes.TOKEN) {
-          return '$' + (conversion.conversionUSD.data as number)
+        if (this.paymentTypeSelected === PaymentTypes.TOKEN) {
+          return '$' + (conversion.conversionUSD.data as number);
         } else {
-          return (conversion.conversionToken.data as number) + ' ' + this.currentTokenUsed?.symbol
+          return (conversion.conversionToken.data as number) + ' ' + this.currentTokenUsed?.symbol;
         }
       })
     );
@@ -208,6 +217,10 @@ readonly paymentConversion$: Observable<DataConversionStore> = this.store.select
   switchPaymentType(): void {
     if (this.switchBtnDisabled) return;
     this.paymentTypeSelected = this.paymentTypeSelected === PaymentTypes.USD ? PaymentTypes.TOKEN : PaymentTypes.USD;
+    this.applyConversionToken(
+      this.mainForm.get('amount')?.value as number,
+      this.mainForm.get('tokenId')?.value as TokenId
+    );
   }
 
   private setUpPaymentFound(): void {
@@ -268,27 +281,29 @@ readonly paymentConversion$: Observable<DataConversionStore> = this.store.select
             amount: number | null;
             tokenId: TokenId | null;
           }>
-        ) => {
-          const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find(
-            (network) => network.chainId === this.networkSelected
-          )?.priceFeed[0];
-
-          const isNative: boolean = tokenList.some(
-            (token) => token.tokenId === val.tokenId && token.nativeToChainId === this.networkSelected
-          );
-
-          if (feed !== undefined || isNative) {
-            return this.store.dispatch(
-              applyConversionTokenFromPayNow({
-                amount: val.amount as number,
-                chainId: this.networkSelected,
-                pair: isNative ? null : (feed as TokenPair),
-                paymentType: this.paymentTypeSelected
-              })
-            );
-          }
-        }
+        ) => this.applyConversionToken(val.amount as number, val.tokenId as TokenId)
       );
+  }
+
+  private applyConversionToken(amount: number, tokenId: TokenId): void {
+    const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find(
+      (network) => network.chainId === this.networkSelected
+    )?.priceFeed[0];
+
+    const isNative: boolean = tokenList.some(
+      (token) => token.tokenId === tokenId && token.nativeToChainId === this.networkSelected
+    );
+
+    if (feed !== undefined || isNative) {
+      return this.store.dispatch(
+        applyConversionTokenFromPayNow({
+          amount: amount,
+          chainId: this.networkSelected,
+          pair: isNative ? null : (feed as TokenPair),
+          paymentType: this.paymentTypeSelected
+        })
+      );
+    }
   }
 
   ngOnDestroy(): void {
