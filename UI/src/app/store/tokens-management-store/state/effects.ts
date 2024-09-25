@@ -118,7 +118,7 @@ export class TokenManagementEffects {
           catchError((response: { error: { message: string; code: number } }) =>
             of(
               tokenActions.createTokenFailure({
-                errorMessage: this.walletService.formatErrorMessage(response.error.code)
+                errorMessage: this.walletService.formatErrorMessage(response.error.code).message
               })
             )
           )

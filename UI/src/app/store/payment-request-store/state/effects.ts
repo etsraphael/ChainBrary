@@ -25,7 +25,7 @@ import {
 } from './../../../shared/interfaces';
 import { PriceFeedService } from './../../../shared/services/price-feed/price-feed.service';
 import { TokensService } from './../../../shared/services/tokens/tokens.service';
-import { WalletService } from './../../../shared/services/wallet/wallet.service';
+import { CustomWeb3Error, WalletService } from './../../../shared/services/wallet/wallet.service';
 import * as PaymentRequestActions from './actions';
 import {
   DataConversionStore,
@@ -443,10 +443,10 @@ export class PaymentRequestEffects {
                 chainId: (action[2].data as IPaymentRequest).chainId as NetworkChainId
               })
             ),
-            catchError((error: { message: string; code: number }) =>
+            catchError((error: CustomWeb3Error) =>
               of(
                 PaymentRequestActions.amountSentFailure({
-                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  message: error.message
                 })
               )
             )
@@ -487,10 +487,10 @@ export class PaymentRequestEffects {
                 chainId: action[2]?.data?.chainId as NetworkChainId
               })
             ),
-            catchError((error: { message: string; code: number }) =>
+            catchError((error: CustomWeb3Error) =>
               of(
                 PaymentRequestActions.amountSentFailure({
-                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  message: error.message
                 })
               )
             )
@@ -531,10 +531,10 @@ export class PaymentRequestEffects {
                 chainId: action[2]?.data?.chainId as NetworkChainId
               })
             ),
-            catchError((error: { message: string; code: number }) =>
+            catchError((error: CustomWeb3Error) =>
               of(
                 PaymentRequestActions.amountSentFailure({
-                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  message: error.message
                 })
               )
             )
@@ -588,10 +588,10 @@ export class PaymentRequestEffects {
                 chainId: (action[2]?.data as IPaymentRequest)?.chainId
               })
             ),
-            catchError((error: { message: string; code: number }) =>
+            catchError((error: CustomWeb3Error) =>
               of(
                 PaymentRequestActions.amountSentFailure({
-                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  message: error.message
                 })
               )
             )
@@ -667,13 +667,13 @@ export class PaymentRequestEffects {
                 token: action[0].token
               })
             ),
-            catchError((error: { message: string; code: number }) =>
+            catchError((error: CustomWeb3Error) =>
               of(
                 PaymentRequestActions.payNowTransactionFailure({
-                  errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  errorMessage: error.message
                 }),
                 showErrorNotification({
-                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  message: error.message
                 })
               )
             )
@@ -724,13 +724,13 @@ export class PaymentRequestEffects {
                 token: action[0].token
               })
             ),
-            catchError((error: { message: string; code: number }) =>
+            catchError((error: CustomWeb3Error) =>
               of(
                 PaymentRequestActions.payNowTransactionFailure({
-                  errorMessage: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  errorMessage: error.message
                 }),
                 showErrorNotification({
-                  message: this.walletService.formatErrorMessage((error as { code: number }).code)
+                  message: error.message
                 })
               )
             )
