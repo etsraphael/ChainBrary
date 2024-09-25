@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletProvider } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
@@ -31,9 +31,9 @@ import {
   DataConversionStore,
   selectConversionToken,
   selectIsNonNativeToken,
-  selectPaymentRequestDetail,
   selectPaymentConversion,
   selectPaymentNetworkIsMathing,
+  selectPaymentRequestDetail,
   selectPaymentToken
 } from './selectors';
 
@@ -41,7 +41,6 @@ import {
 export class PaymentRequestEffects {
   constructor(
     private actions$: Actions,
-    private web3LoginService: Web3LoginService,
     private store: Store,
     private priceFeedService: PriceFeedService,
     private walletService: WalletService,
@@ -139,66 +138,6 @@ export class PaymentRequestEffects {
       })
     );
   });
-
-  // checkIfTransferIsPossibleAfterPaymentGeneration$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(PaymentRequestActions.generatePaymentRequestSuccess),
-  //     concatLatestFrom(() => [
-  //       this.store.select(selectPublicAddress),
-  //       this.store.select(selectIsNonNativeToken),
-  //       this.store.select(selectPaymentNetworkIsMathing)
-  //     ]),
-  //     filter(
-  //       (
-  //         payload: [
-  //           ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>,
-  //           string | null,
-  //           boolean,
-  //           boolean
-  //         ]
-  //       ) => payload[1] !== null && payload[2] && payload[3]
-  //     ),
-  //     map(
-  //       (payload) =>
-  //         payload as [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
-  //     ),
-  //     switchMap(
-  //       async (
-  //         action: [ReturnType<typeof PaymentRequestActions.generatePaymentRequestSuccess>, string, boolean, boolean]
-  //       ) => {
-  //         if (action[0].paymentRequest.usdEnabled === false) {
-  //           return PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable: true });
-  //         }
-
-  //         const tokenAddress: ITokenContract | undefined = tokenList
-  //           .find((token) => token.tokenId === action[0].paymentRequest.tokenId)
-  //           ?.networkSupport.find((support) => support.chainId === action[0].paymentRequest.chainId);
-
-  //         if (!tokenAddress) {
-  //           return PaymentRequestActions.smartContractCanTransferFailure({
-  //             message: $localize`:@@ResponseMessage.TokenAddressNotFound:Token address not found!`
-  //           });
-  //         }
-
-  //         const payload: TransactionTokenBridgePayload = {
-  //           ownerAdress: action[1],
-  //           tokenAddress: tokenAddress.address,
-  //           chainId: action[0].paymentRequest.chainId,
-  //           amount: action[0].paymentRequest.amount
-  //         };
-
-  //         return this.tokensService
-  //           .getTransferAvailable(payload)
-  //           .then((isTransferable: boolean) =>
-  //             PaymentRequestActions.smartContractCanTransferSuccess({ isTransferable })
-  //           );
-  //       }
-  //     ),
-  //     catchError((error: string) => {
-  //       return of(PaymentRequestActions.smartContractCanTransferFailure({ message: error }));
-  //     })
-  //   );
-  // });
 
   checkIfTransferIsPossibleAfterAllowance$ = createEffect(() => {
     return this.actions$.pipe(
@@ -387,37 +326,6 @@ export class PaymentRequestEffects {
       })
     );
   });
-
-  // generatePayment$ = createEffect(() => {
-  //   return this.actions$.pipe(
-  //     ofType(PaymentRequestActions.generatePaymentRequest),
-  //     map((action: ReturnType<typeof PaymentRequestActions.generatePaymentRequest>) => {
-  //       const decodedPayment = Buffer.from(
-  //         action.encodedRequest.replace('+', '-').replace('/', '_'),
-  //         'base64'
-  //       ).toString('utf-8');
-  //       const decodedPaymentRequest: IPaymentRequest = JSON.parse(decodedPayment);
-  //       if (this.isIPaymentRequest(decodedPaymentRequest)) {
-  //         return PaymentRequestActions.generatePaymentRequestSuccess({
-  //           paymentRequest: decodedPaymentRequest,
-  //           token: tokenList.find((token) => token.tokenId === decodedPaymentRequest.tokenId) as IToken,
-  //           network: this.web3LoginService.getNetworkDetailByChainId(decodedPaymentRequest.chainId)
-  //         });
-  //       } else {
-  //         return PaymentRequestActions.generatePaymentRequestFailure({
-  //           errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
-  //         });
-  //       }
-  //     }),
-  //     catchError(() =>
-  //       of(
-  //         PaymentRequestActions.generatePaymentRequestFailure({
-  //           errorMessage: $localize`:@@ResponseMessage.ErrorDecodingPaymentRequest:Error decoding payment request`
-  //         })
-  //       )
-  //     )
-  //   );
-  // });
 
   generatePayment$ = createEffect(() => {
     return this.actions$.pipe(

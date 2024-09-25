@@ -26,19 +26,6 @@ export const applyConversionNotSupported = createAction(
   props<{ amountInToken: number }>()
 );
 
-// export const generatePaymentRequest = createAction(
-//   '[Payment Request] Generate Payment Request',
-//   props<{ encodedRequest: string }>()
-// );
-// export const generatePaymentRequestSuccess = createAction(
-//   '[Payment Request] Generate Payment Request Success',
-//   props<{ paymentRequest: IPaymentRequest; network: INetworkDetail; token: IToken }>()
-// );
-// export const generatePaymentRequestFailure = createAction(
-//   '[Payment Request] Generate Payment Request Failure',
-//   props<{ errorMessage: string }>()
-// );
-
 export const loadVerifiedAccount = createAction(
   '[Payment Request] Load Verified Account',
   props<{ address: string }>()

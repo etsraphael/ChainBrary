@@ -7,47 +7,6 @@ import { PaymentTypes } from './../../../shared/interfaces';
 
 export const authReducer: ActionReducer<IPaymentRequestState, Action> = createReducer(
   initialState,
-  // on(
-  //   PaymentActions.generatePaymentRequest,
-  //   (state): IPaymentRequestState => ({
-  //     ...state,
-  //     requestDetail: {
-  //       ...state.requestDetail,
-  //       error: null,
-  //       loading: true
-  //     }
-  //   })
-  // ),
-  // on(
-  //   PaymentActions.generatePaymentRequestSuccess,
-  //   (state, { paymentRequest, network, token }): IPaymentRequestState => ({
-  //     ...state,
-  //     requestDetail: {
-  //       error: null,
-  //       loading: false,
-  //       data: paymentRequest
-  //     },
-  //     profile: {
-  //       publicAddress: paymentRequest.publicAddress,
-  //       avatarUrl: paymentRequest.avatarUrl ? paymentRequest.avatarUrl : null,
-  //       username: paymentRequest.username
-  //     },
-  //     network,
-  //     token,
-  //     smartContractCanTransfer: initialState.smartContractCanTransfer
-  //   })
-  // ),
-  // on(
-  //   PaymentActions.generatePaymentRequestFailure,
-  //   (state, { errorMessage }): IPaymentRequestState => ({
-  //     ...state,
-  //     requestDetail: {
-  //       error: errorMessage,
-  //       loading: false,
-  //       data: null
-  //     }
-  //   })
-  // ),
   on(
     PaymentActions.approveTokenAllowance,
     PaymentActions.sendAmount,

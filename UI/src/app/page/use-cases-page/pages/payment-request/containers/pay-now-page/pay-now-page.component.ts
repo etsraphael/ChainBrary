@@ -16,7 +16,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
-import { tokenList } from 'src/app/shared/data/tokenList';
+import { tokenList } from './../../../../../../shared/data/tokenList';
 import { AuthStatusCode, CommonButtonText, ICommonButtonText, TokenPair } from './../../../../../../shared/enum';
 import {
   ActionStoreProcessing,
