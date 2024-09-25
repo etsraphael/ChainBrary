@@ -257,7 +257,7 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
               amount: this.mainForm.get('amount')?.value as number,
               chainId: chainId as NetworkChainId,
               token: this.currentTokenUsed as IToken,
-              lockInUSD: this.mainForm.get('amount')?.disabled ? false : true
+              lockInUSD: this.paymentTypeSelected === PaymentTypes.USD
             })
           );
         }
