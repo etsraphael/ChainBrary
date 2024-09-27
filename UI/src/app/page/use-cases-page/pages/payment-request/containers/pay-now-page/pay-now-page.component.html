@@ -67,7 +67,7 @@
                     {{
                       paymentTypeSelected === paymentTypes.USD
                         ? 'Amount (in USD)'
-                        : 'Amount (in ' + currentTokenUsed?.symbol + ')'
+                        : 'Amount (in ' + (currentTokenUsed?.symbol || 'Token') + ')'
                     }}
                     <ng-container *ngIf="switchBtnDisabled === false">
                       <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>

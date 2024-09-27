@@ -232,6 +232,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
       )
       .subscribe((rd: IPaymentRequest) => {
         this.networkSelected = rd.chainId as NetworkChainId;
+        this.paymentTypeSelected = rd.usdEnabled ? PaymentTypes.USD : PaymentTypes.TOKEN;
+
         this.mainForm.patchValue({
           amount: rd.amount || 10,
           tokenId: (rd.tokenId as TokenId) || null
