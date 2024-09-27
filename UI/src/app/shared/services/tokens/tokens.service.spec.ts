@@ -1,12 +1,15 @@
 import { TestBed } from '@angular/core/testing';
-
+import { StoreModule } from '@ngrx/store';
+import { SharedTestModule } from '../../components/shared-components.module';
 import { TokensService } from './tokens.service';
 
 describe('TokensService', () => {
   let service: TokensService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [SharedTestModule, StoreModule.forRoot({})]
+    });
     service = TestBed.inject(TokensService);
   });
 

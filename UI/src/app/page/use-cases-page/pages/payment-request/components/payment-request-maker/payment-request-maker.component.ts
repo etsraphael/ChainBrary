@@ -64,14 +64,12 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
         tokenId: new FormControl(null, [Validators.required]),
         chainId: new FormControl(null, [Validators.required])
       }),
-      description: new FormControl(null, []),
       amount: new FormControl(1, [Validators.required, Validators.min(0)]),
       amountInUsd: new FormControl(0, []),
       valueLockedInUsd: new FormControl(false, [])
     }),
     profile: new FormGroup<ProfileForm>({
       publicAddress: new FormControl(null, [Validators.required, this.formatService.ethAddressValidator()]),
-      avatarUrl: new FormControl(null, [], [this.urlValidator()]),
       username: new FormControl(null, [Validators.required, Validators.maxLength(20)])
     })
   });
@@ -109,10 +107,6 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
     return this.paymentConversionObs.pipe(map((x) => x.conversionUSD.data));
   }
 
-  get avatarValue(): string | null {
-    return this.profileControls.avatarUrl.value;
-  }
-
   get profileControls(): ProfileForm {
     return this.mainForm.controls.profile.controls;
   }
@@ -145,19 +139,17 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
   }
 
   generatePaymentRequest(): void {
-    const { username, publicAddress, avatarUrl } = this.profileControls;
-    const { amount, amountInUsd, description, valueLockedInUsd } = this.priceControls;
+    const { username, publicAddress } = this.profileControls;
+    const { amount, amountInUsd, valueLockedInUsd } = this.priceControls;
     const { tokenId, chainId } = this.tokenChoiceControls;
     const amountToReceive: number | null = valueLockedInUsd.value ? amountInUsd.value : amount.value;
 
     const paymentRequest: IPaymentRequest = {
       chainId: chainId.value as NetworkChainId,
       tokenId: tokenId.value as string,
-      username: username.value as string,
+      name: username.value as string,
       publicAddress: publicAddress.value as string,
       amount: amountToReceive as number,
-      description: description.value as string,
-      avatarUrl: avatarUrl.value as string,
       usdEnabled: valueLockedInUsd.value as boolean
     };
 
@@ -170,7 +162,7 @@ export class PaymentRequestMakerComponent implements OnInit, OnDestroy {
       .replace('/', '_');
     const url: URL = new URL(window.location.href);
     const origin = `${url.protocol}//${url.hostname}${url.port ? ':' + url.port : ''}`;
-    this.linkGenerated = `${origin}/payment-page/${paymentRequestBase64}`;
+    this.linkGenerated = `${origin}/pay-now/${paymentRequestBase64}`;
   }
 
   urlValidator(): AsyncValidatorFn {

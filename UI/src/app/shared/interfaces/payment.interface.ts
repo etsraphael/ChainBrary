@@ -1,25 +1,17 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 
-export interface IPaymentRequestRaw {
+export interface IPaymentRequest {
   publicAddress: string;
   name: string;
-}
-
-export interface IPaymentRequest {
   chainId: NetworkChainId;
-  tokenId: TokenId | string;
-  publicAddress: string;
-  username: string;
-  amount: number;
+  tokenId: TokenId | string | null;
+  amount: number | null;
   usdEnabled: boolean;
-  description?: string | null;
-  avatarUrl?: string;
 }
 
 export interface PriceSettingsForm {
   token: FormGroup<TokenChoiceMakerForm>;
-  description: FormControl<string | null>;
   amount: FormControl<number | null>;
   amountInUsd: FormControl<number | null>;
   valueLockedInUsd: FormControl<boolean | null>;
@@ -27,7 +19,6 @@ export interface PriceSettingsForm {
 
 export interface ProfileForm {
   publicAddress: FormControl<string | null>;
-  avatarUrl: FormControl<string | null>;
   username: FormControl<string | null>;
 }
 
@@ -74,4 +65,9 @@ export interface SendNativeTokenPayload {
   to: string;
   amount: number;
   chainId: NetworkChainId;
+}
+
+export enum PaymentTypes {
+  USD,
+  TOKEN
 }

@@ -12,14 +12,6 @@ describe('Create a payment request with wallet', () => {
     // Complete profile information
     cy.get('app-payment-request-profile-settings [data-id="username-input"]').type('My Username');
     cy.get('app-payment-request-profile-settings [data-id="submit-button"]').click();
-
-    // Complete description
-    cy.get('app-payment-request-price-settings [data-id="description-input"]')
-      .should('be.visible')
-      .should('be.enabled')
-      .focus()
-      .type('This is my payment request description');
-
     cy.get('app-payment-request-price-settings [data-id="submit-button"]').click();
   });
 });
@@ -40,14 +32,6 @@ describe('Create a payment request without wallet', () => {
 
     // Complete description
     cy.get('app-payment-request-price-settings').contains('A connected wallet is required for conversion rates');
-    cy.get('app-payment-request-price-settings [data-id="description-input"]').should('be.visible');
-    cy.get('app-payment-request-price-settings [data-id="description-input"]').should('be.enabled');
-
-    cy.get('app-payment-request-price-settings [data-id="description-input"]')
-      .should('be.visible')
-      .should('be.enabled')
-      .focus()
-      .type('This is my payment request description');
     cy.get('app-payment-request-price-settings [data-id="submit-button"]').click();
   });
 });

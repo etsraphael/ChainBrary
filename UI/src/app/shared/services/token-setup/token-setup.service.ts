@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { IBalancePayload } from '@chainbrary/token-bridge';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import Web3, { AbiFragment, AbiItem, Contract, JsonRpcResponseWithResult, Log, TransactionReceipt } from 'web3';
 import {
@@ -8,14 +9,17 @@ import {
   ERC20TokenContract
 } from '../../contracts';
 import { IReceiptTransaction, ITokenCreationPayload, ITokenSetup } from '../../interfaces';
+import { WalletService } from '../wallet/wallet.service';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
-import { IBalancePayload } from '@chainbrary/token-bridge';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokenSetupService {
-  constructor(private web3ProviderService: Web3ProviderService) {}
+  constructor(
+    private web3ProviderService: Web3ProviderService,
+    private walletService: WalletService
+  ) {}
 
   async getBalance(payload: IBalancePayload): Promise<number> {
     const rpcUrl = this.web3ProviderService.getRpcUrl(payload.chainId as NetworkChainId);
@@ -104,11 +108,11 @@ export class TokenSetupService {
             resolve(String(hash));
           })
           .on('error', (error) => {
-            reject((error as Error)?.message || error);
+            reject(this.walletService.formatErrorMessage(error));
           });
       });
     } catch (error) {
-      return Promise.reject((error as Error)?.message || error);
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 

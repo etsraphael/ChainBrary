@@ -18,7 +18,6 @@ export class PaymentRequestReviewComponent {
   @Input() valueLockedInUsd: boolean;
   @Input() tokenSelected: IToken | null;
   @Output() goToPreviousPageEvent = new EventEmitter<void>();
-  protocolFee = 0.001;
   commonButtonText = CommonButtonText;
 
   constructor(
@@ -27,19 +26,11 @@ export class PaymentRequestReviewComponent {
   ) {}
 
   get receivingAmount(): number {
-    return this.valueLockedInUsd ? this.amount - this.protocolFeeAmount : this.amount;
-  }
-
-  get protocolFeeAmount(): number {
-    return this.amount * this.protocolFee;
+    return this.amount;
   }
 
   get usdReceivingAmount(): number {
-    return this.usdAmount ? Number((this.usdAmount - this.usdProtocolFeeAmount).toFixed(2)) : 0;
-  }
-
-  get usdProtocolFeeAmount(): number {
-    return this.usdAmount ? Number((this.usdAmount * this.protocolFee).toFixed(2)) : 0;
+    return this.usdAmount ? Number(this.usdAmount.toFixed(2)) : 0;
   }
 
   goToPaymentPage(): Window | null {
