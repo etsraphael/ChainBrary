@@ -21,15 +21,6 @@
               <span i18n *ngIf="usdAmount" class="convertion-rate text-secondary">($USD {{ usdAmount }})</span>
             </td>
           </tr>
-          <tr *ngIf="valueLockedInUsd">
-            <td i18n class="align-middle">Protocol Fee (0.1%)</td>
-            <td>
-              {{ protocolFeeAmount }} {{ tokenSelected.symbol }}<br />
-              <span i18n *ngIf="usdAmount" class="convertion-rate text-secondary"
-                >($USD {{ usdProtocolFeeAmount }})</span
-              >
-            </td>
-          </tr>
           <tr>
             <td i18n class="align-middle"><strong>Receiving Amount</strong></td>
             <td>
@@ -54,14 +45,14 @@
             [buttonClasses]="['btn-secondary-gradient', 'text-white']"
             [buttonText]="commonButtonText.Back"
             (callToAction)="goToPreviousPageEvent.emit()"
-          />
+          ></app-chainbrary-button>
         </div>
         <div class="col-12 col-lg-6 py-2 py-lg-0">
           <app-chainbrary-button
             [buttonClasses]="['btn-warning-gradient', 'text-white']"
             [buttonText]="commonButtonText.Preview"
             (callToAction)="goToPaymentPage()"
-          />
+          ></app-chainbrary-button>
         </div>
       </div>
     </div>

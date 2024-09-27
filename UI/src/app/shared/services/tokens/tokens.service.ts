@@ -18,12 +18,16 @@ import {
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
 } from '../../interfaces';
+import { WalletService } from '../wallet/wallet.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TokensService {
-  constructor(private erc20Service: Erc20Service) {}
+  constructor(
+    private erc20Service: Erc20Service,
+    private walletService: WalletService
+  ) {}
 
   getTokensListed(): IToken[] {
     return tokenList;
@@ -71,7 +75,7 @@ export class TokensService {
         payload.tokenAddress
       ).call();
     } catch (error) {
-      return Promise.reject('Network not supported yet');
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 
@@ -119,7 +123,7 @@ export class TokensService {
 
       return convertedReceipt;
     } catch (error) {
-      return Promise.reject((error as Error)?.message || error);
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 
@@ -161,7 +165,7 @@ export class TokensService {
 
       return convertedReceipt;
     } catch (error) {
-      return Promise.reject((error as { message: string; code: number }) || error);
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 
@@ -176,7 +180,7 @@ export class TokensService {
 
       return receipt;
     } catch (error) {
-      return Promise.reject((error as { message: string; code: number }) || error);
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 
@@ -196,7 +200,7 @@ export class TokensService {
         web3.utils.toWei(new BigNumber(payload.amount).toString(10), 'ether')
       ).send({ from: payload.ownerAdress, gas: gas.toString() });
     } catch (error) {
-      return Promise.reject((error as { message: string; code: number }) || error);
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 
@@ -216,7 +220,7 @@ export class TokensService {
         gas: gas.toString()
       });
     } catch (error) {
-      return Promise.reject((error as { message: string; code: number }) || error);
+      return Promise.reject(this.walletService.formatErrorMessage(error));
     }
   }
 }

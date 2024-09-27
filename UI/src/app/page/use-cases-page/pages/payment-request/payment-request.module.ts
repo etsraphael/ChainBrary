@@ -6,7 +6,6 @@ import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { UserCasesSharedComponentsModule } from '../../components/user-cases-shared-components.module';
 import { MaterialModule } from './../../../../module/material.module';
 import { SharedComponentsModule } from './../../../../shared/components/shared-components.module';
-import { PaymentRequestCardComponent } from './components/payment-request-card/payment-request-card.component';
 import { PaymentRequestMakerComponent } from './components/payment-request-maker/payment-request-maker.component';
 import { PaymentRequestPriceSettingsComponent } from './components/payment-request-price-settings/payment-request-price-settings.component';
 import { PaymentRequestProfileSettingsComponent } from './components/payment-request-profile-settings/payment-request-profile-settings.component';
@@ -14,14 +13,11 @@ import { PaymentRequestReviewComponent } from './components/payment-request-revi
 import { PayNowNotFoundPageComponent } from './containers/pay-now-not-found-page/pay-now-not-found-page.component';
 import { PayNowPageComponent } from './containers/pay-now-page/pay-now-page.component';
 import { PayNowSuccessfulPageComponent } from './containers/pay-now-successful-page/pay-now-successful-page.component';
-import { PaymentPageComponent } from './containers/payment-page/payment-page.component';
 import { PaymentRequestContainerComponent } from './containers/payment-request-container/payment-request-container.component';
 
 @NgModule({
   declarations: [
     PaymentRequestContainerComponent,
-    PaymentPageComponent,
-    PaymentRequestCardComponent,
     PaymentRequestMakerComponent,
     PaymentRequestReviewComponent,
     PaymentRequestPriceSettingsComponent,

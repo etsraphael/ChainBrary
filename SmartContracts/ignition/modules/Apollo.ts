@@ -12,6 +12,11 @@ export default buildModule('Apollo', (m) => {
   const documentLocker = deployDocumentLocker(m);
   const customERC20Token = deployCustomERC20Token(m);
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
+  const chainbraryToken = deployChainbraryToken(m);
+  const mockingPriceFeed = deployMockingPriceFeed(m);
+  const basicCrossChainTokenSender = deployBasicCrossChainTokenSender(m);
+  const mockingCcipRouter = deployMockingCcipRouter(m);
+  const crossChainDEX = deployCrossChainDEX(m);
 
   return {
     rocketContract,
@@ -22,7 +27,12 @@ export default buildModule('Apollo', (m) => {
     bidContract,
     documentLocker,
     customERC20Token,
-    customERC20TokenFactory
+    customERC20TokenFactory,
+    chainbraryToken,
+    mockingPriceFeed,
+    basicCrossChainTokenSender,
+    mockingCcipRouter,
+    crossChainDEX
   };
 });
 
@@ -91,4 +101,29 @@ function deployCustomERC20Token(m: any) {
 function deployCustomERC20TokenFactory(m: any, communityVaultAddress: string) {
   const customERC20TokenFactory = m.contract('CustomERC20TokenFactory', [communityVaultAddress]);
   return customERC20TokenFactory;
+}
+
+function deployChainbraryToken(m: any) {
+  const chainbraryToken = m.contract('ChainbraryToken');
+  return chainbraryToken;
+}
+
+function deployMockingPriceFeed(m: any) {
+  const mockingPriceFeed = m.contract('MockingPriceFeed', ['18', '1000000000000000000']);
+  return mockingPriceFeed;
+}
+
+function deployBasicCrossChainTokenSender(m: any) {
+  const basicCrossChainTokenSender = m.contract('BasicCrossChainTokenSender');
+  return basicCrossChainTokenSender;
+}
+
+function deployMockingCcipRouter(m: any) {
+  const mockingCcipRouter = m.contract('MockingCcipRouter');
+  return mockingCcipRouter;
+}
+
+function deployCrossChainDEX(m: any) {
+  const crossChainDEX = m.contract('CrossChainDEX', ['0x70997970C51812dc3A010C7d01b50e0d17dc79C8']);
+  return crossChainDEX;
 }
