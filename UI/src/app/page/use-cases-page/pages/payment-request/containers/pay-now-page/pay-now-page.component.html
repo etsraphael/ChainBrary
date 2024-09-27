@@ -58,7 +58,7 @@
                 </div>
               </div>
               <div class="row">
-                <div class="col-12 text-center">
+                <div data-id="payment-type-container" class="col-12 text-center">
                   <h4
                     class="text-light amount-title-container"
                     (click)="switchPaymentType()"
@@ -97,7 +97,7 @@
                 </div>
                 <div class="col-12 my-2">
                   <button class="btn btn-light w-100" (click)="submitForm()">
-                    <span class="text-primary">{{ actionBtnText$ | async }}</span>
+                    <span data-id="action-btn" class="text-primary">{{ actionBtnText$ | async }}</span>
                   </button>
                 </div>
                 <div class="col-12 my-2">

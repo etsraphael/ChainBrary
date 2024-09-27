@@ -8,7 +8,7 @@ describe('TokensService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [SharedTestModule, StoreModule.forRoot({})],
+      imports: [SharedTestModule, StoreModule.forRoot({})]
     });
     service = TestBed.inject(TokensService);
   });
