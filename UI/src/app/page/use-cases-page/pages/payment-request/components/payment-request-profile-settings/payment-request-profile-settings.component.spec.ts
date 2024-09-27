@@ -16,7 +16,6 @@ describe('PaymentRequestProfileSettingsComponent', () => {
 
   const profileForm: FormGroup<ProfileForm> = new FormGroup<ProfileForm>({
     publicAddress: new FormControl('', [Validators.required]),
-    avatarUrl: new FormControl('', []),
     username: new FormControl('', [Validators.required, Validators.maxLength(20)])
   });
 
@@ -56,7 +55,6 @@ describe('PaymentRequestProfileSettingsComponent', () => {
 
     component.profileForm.setValue({
       publicAddress: 'MockedAddress',
-      avatarUrl: 'MockedAvatar',
       username: 'Jane'
     });
 
