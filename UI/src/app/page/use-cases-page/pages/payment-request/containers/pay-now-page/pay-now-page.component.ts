@@ -233,13 +233,18 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
       .subscribe((rd: IPaymentRequest) => {
         this.networkSelected = rd.chainId as NetworkChainId;
         this.paymentTypeSelected = rd.usdEnabled ? PaymentTypes.USD : PaymentTypes.TOKEN;
+        const amount: number = rd.amount || 10;
 
         this.mainForm.patchValue({
-          amount: rd.amount || 10,
+          amount: amount,
           tokenId: (rd.tokenId as TokenId) || null
         });
         rd.amount && this.mainForm.get('amount')?.disable();
         rd.tokenId && this.mainForm.get('tokenId')?.disable();
+
+        if (rd.amount && rd.tokenId) {
+          this.applyConversionToken(amount, rd.tokenId as TokenId);
+        }
       });
   }
 
