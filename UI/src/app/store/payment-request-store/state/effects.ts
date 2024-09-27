@@ -663,7 +663,7 @@ export class PaymentRequestEffects {
               PaymentRequestActions.payNowTransactionSuccess({
                 transactionHash: String(receipt.transactionHash),
                 chainId: action[0].chainId as NetworkChainId,
-                amount: Number(action[2].data),
+                amount: amountToPay,
                 token: action[0].token
               })
             ),

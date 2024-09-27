@@ -22,6 +22,7 @@ import {
   ActionStoreProcessing,
   IPaymentRequest,
   IToken,
+  ITokenContract,
   PaymentTypes,
   StoreState
 } from './../../../../../../shared/interfaces';
@@ -294,11 +295,11 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
 
   private applyConversionToken(amount: number, tokenId: TokenId): void {
     const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find(
-      (network) => network.chainId === this.networkSelected
+      (network: ITokenContract) => network.chainId === this.networkSelected
     )?.priceFeed[0];
 
     const isNative: boolean = tokenList.some(
-      (token) => token.tokenId === tokenId && token.nativeToChainId === this.networkSelected
+      (token: IToken) => token.tokenId === tokenId && token.nativeToChainId === this.networkSelected
     );
 
     if (feed !== undefined || isNative) {
