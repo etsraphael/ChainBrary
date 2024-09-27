@@ -55,12 +55,8 @@ export class WalletService {
   }
 
   private extractErrorCode(error: unknown): number {
-    console.log('error', error);
     if (typeof error === 'object' && error !== null) {
-      const err = error as { code?: number; cause?: { code?: number }; error?: { code: number, message: string }  };
-      console.log('err', err);
-      console.log('err.cause', err.cause);
-      console.log('response', err.cause?.code ?? err.code ?? err.error?.code ?? 0);
+      const err = error as { code?: number; cause?: { code?: number }; error?: { code: number; message: string } };
       return err.cause?.code ?? err.code ?? err.error?.code ?? 0;
     }
     return 0;
