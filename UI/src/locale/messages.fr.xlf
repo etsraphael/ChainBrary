@@ -220,7 +220,7 @@
       </trans-unit>
       <trans-unit id="2213209021687200702" datatype="html">
         <source>Lock in USD value</source>
-        <target state="new">Lock in USD value</target>
+        <target>Verrouiller la valeur en USD</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">74</context>
@@ -1827,7 +1827,7 @@
         <target>Le montant doit être supérieur à 0</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">82</context>
         </context-group>
       </trans-unit>
       <trans-unit id="918986430725137551" datatype="html">
@@ -1860,6 +1860,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-creation-page/token-creation-page.component.html</context>
           <context context-type="linenumber">45</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="AmountTitle|Title showing amount in currency" datatype="html">
+        <source>Amount (in <x id="PH" equiv-text="currency"/>)</source>
+        <target>Montant (en <x id="PH" equiv-text="currency"/>)</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidCreation.ImageAlreadyAdded" datatype="html">
@@ -2574,7 +2582,7 @@
       </trans-unit>
       <trans-unit id="ErrorMessage.TransactionRejected" datatype="html">
         <source>Error 4001: Transaction rejected by wallet</source>
-        <target state="new">Transaction rejetée par le portefeuille</target>
+        <target>Transaction rejetée par le portefeuille</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
           <context context-type="linenumber">48</context>
@@ -2582,7 +2590,7 @@
       </trans-unit>
       <trans-unit id="ErrorMessage.WalletAlreadyProcessing" datatype="html">
         <source>Error -32002: Wallet is already processing another request</source>
-        <target state="new">Le portefeuille traite déjà une autre demande.</target>
+        <target>Le portefeuille traite déjà une autre demande.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
           <context context-type="linenumber">42</context>
@@ -2590,7 +2598,7 @@
       </trans-unit>
       <trans-unit id="ErrorMessage.WalletNotEnoughBalance" datatype="html">
         <source>Error -32000: Wallet connect has not enough balance to pay for the transaction</source>
-        <target state="new">Wallet connect n&apos;a pas assez de solde pour payer la transaction</target>
+        <target>Wallet connect n'a pas assez de solde pour payer la transaction</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
           <context context-type="linenumber">45</context>
@@ -2969,7 +2977,7 @@
         <target>Connecter le portefeuille</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">181</context>
+          <context context-type="linenumber">189</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PayButton.PayNow" datatype="html">
@@ -2977,7 +2985,7 @@
         <target>Payer maintenant</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">190</context>
         </context-group>
       </trans-unit>
       <trans-unit id="paymentRequestDescription" datatype="html">

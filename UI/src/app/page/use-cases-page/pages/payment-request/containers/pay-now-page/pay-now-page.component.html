@@ -64,11 +64,7 @@
                     (click)="switchPaymentType()"
                     [ngClass]="{ active: switchBtnDisabled === false }"
                   >
-                    {{
-                      paymentTypeSelected === paymentTypes.USD
-                        ? 'Amount (in USD)'
-                        : 'Amount (in ' + (currentTokenUsed?.symbol || 'Token') + ')'
-                    }}
+                    {{ amountTitle }}
                     <ng-container *ngIf="switchBtnDisabled === false">
                       <i class="bi bi-arrow-left-right swapping-icon ps-2"></i>
                     </ng-container>

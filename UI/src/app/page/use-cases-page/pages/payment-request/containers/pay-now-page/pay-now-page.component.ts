@@ -174,6 +174,12 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get amountTitle(): string {
+    const currency =
+      this.paymentTypeSelected === this.paymentTypes.USD ? 'USD' : this.currentTokenUsed?.symbol || 'Token';
+    return $localize`:@@AmountTitle|Title showing amount in currency:Amount (in ${currency})`;
+  }
+
   get actionBtnText$(): Observable<string> {
     return this.authStatus$.pipe(
       map((status: AuthStatusCode) =>
