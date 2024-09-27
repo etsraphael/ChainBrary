@@ -31,7 +31,7 @@
         <target>Lien généré</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
-          <context context-type="linenumber">73</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1113901831127827755" datatype="html">
@@ -60,14 +60,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-review/token-creation-review.component.html</context>
           <context context-type="linenumber">28</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="1142017936680420194" datatype="html">
-        <source>Payment Expired</source>
-        <target>Paiement Expiré</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
-          <context context-type="linenumber">96</context>
         </context-group>
       </trans-unit>
       <trans-unit id="1198843287268908464" datatype="html">
@@ -226,9 +218,9 @@
           <context context-type="linenumber">114</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2376758992024201726" datatype="html">
-        <source>Lock in USD value (0.1% fee)</source>
-        <target>Verrouiller la valeur en USD (frais de 0,1%)</target>
+      <trans-unit id="2213209021687200702" datatype="html">
+        <source>Lock in USD value</source>
+        <target state="new">Lock in USD value</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">74</context>
@@ -248,10 +240,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
           <context context-type="linenumber">21</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
-          <context context-type="linenumber">29</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2416307778914933359" datatype="html">
@@ -283,7 +271,7 @@
         <target>Entrez votre adresse de portefeuille pour recevoir des fonds</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
-          <context context-type="linenumber">51</context>
+          <context context-type="linenumber">36</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2524293976543780538" datatype="html">
@@ -331,15 +319,7 @@
         <target><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/> Montant à recevoir<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
-          <context context-type="linenumber">34</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="2653855312577235883" datatype="html">
-        <source>Link an avatar (Optional)</source>
-        <target>Liez un avatar (Facultatif)</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
-          <context context-type="linenumber">29</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2672148692007685520" datatype="html">
@@ -374,28 +354,12 @@
           <context context-type="linenumber">154</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="2711460010464843071" datatype="html">
-        <source>Attention: This is a preview of your request. Avoid the mistake of self-payment.</source>
-        <target>Attention: Ceci est un aperçu de votre demande. Évitez l&apos;erreur de l&apos;auto-paiement.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">6</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="2815038373235337557" datatype="html">
         <source>Symbol is required</source>
         <target>Le symbole est requis</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/components/token-creation-form/token-creation-form.component.html</context>
           <context context-type="linenumber">50</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="2899790821846500123" datatype="html">
-        <source>Protocol Fee (0.1%)</source>
-        <target>Frais de protocole (0,1%)</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
-          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2918365309871770766" datatype="html">
@@ -625,10 +589,6 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/containers/bid-page/bid-page.component.html</context>
           <context context-type="linenumber">44</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">81</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="3906114694097528014" datatype="html">
         <source>Payment is processing and may take a few minutes. Once confirmed from your wallet, refresh to unlock the document. If there are any issues, the transaction will be reverted.</source>
@@ -667,7 +627,7 @@
         <target>Afficher le Code QR</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
-          <context context-type="linenumber">90</context>
+          <context context-type="linenumber">81</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4030991508483039728" datatype="html">
@@ -694,14 +654,6 @@
           <context context-type="linenumber">22</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="4112850117898161412" datatype="html">
-        <source>@@CommonErrorMessage.NetworkMismatch:Network mismatch with wallet</source>
-        <target>@@CommonErrorMessage.NetworkMismatch:Décalage de réseau avec le portefeuille</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
-          <context context-type="linenumber">122</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="4127571452382238225" datatype="html">
         <source>Explorer</source>
         <target>Explorateur</target>
@@ -724,14 +676,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">151</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="4241281336435708069" datatype="html">
-        <source>To retrieve the current conversion rate, ensure the appropriate network is selected in your wallet</source>
-        <target>Pour récupérer le taux de conversion actuel, assurez-vous que le réseau approprié est sélectionné dans votre portefeuille</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
-          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4258152560656282868" datatype="html">
@@ -800,14 +744,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-creation/bid-creation.component.html</context>
           <context context-type="linenumber">33</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="4403433136208247804" datatype="html">
-        <source>You&apos;ve reached ChainBrary&apos;s secure payment portal. Fast, secure, and reliable cryptocurrency transactions start here. Verify, confirm, and go!</source>
-        <target>Vous avez atteint le portail de paiement sécurisé de ChainBrary. Les transactions de cryptomonnaie rapides, sécurisées et fiables commencent ici. Vérifiez, confirmez et allez-y!</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4452427314943113135" datatype="html">
@@ -945,10 +881,6 @@
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
           <context context-type="linenumber">16</context>
         </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
-          <context context-type="linenumber">85</context>
-        </context-group>
       </trans-unit>
       <trans-unit id="4925061034446572205" datatype="html">
         <source>Eligibility Criteria</source>
@@ -1011,7 +943,7 @@
         <target>Vérifier &amp; Confirmer</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">40</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5272594461999589912" datatype="html">
@@ -1096,18 +1028,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/community-vaults-page/containers/withdraw-token-page-container/withdraw-token-page-container.component.html</context>
           <context context-type="linenumber">22</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="5715712979751449266" datatype="html">
-        <source>Powered by <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/>ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></source>
-        <target>Propulsé par <x id="START_LINK" ctype="x-a" equiv-text="&lt;a [routerLink]=&quot;[&apos;/&apos;]&quot;&gt;"/> ChainBrary<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
-          <context context-type="linenumber">106</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">39</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5737197851349495875" datatype="html">
@@ -1206,14 +1126,6 @@
           <context context-type="linenumber">18</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6236714119050776000" datatype="html">
-        <source>Payment Request</source>
-        <target>Demande de Paiement</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">15</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="6243916962387560750" datatype="html">
         <source>Price is required</source>
         <target>Le prix est requis</target>
@@ -1268,22 +1180,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-management-page/token-management-page.component.html</context>
           <context context-type="linenumber">101</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6417299265220958493" datatype="html">
-        <source>Please be connected on the <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="async)?.name }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> network to use this feature.</source>
-        <target>Veuillez être connecté sur le réseau <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/> <x id="INTERPOLATION" equiv-text="async)?.name }}"/> <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="network"/> pour utiliser cette fonctionnalité.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">59</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="6519199396137223409" datatype="html">
-        <source>Amount (in USD)</source>
-        <target>Montant (en USD)</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
-          <context context-type="linenumber">62</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6533918067030990396" datatype="html">
@@ -1374,15 +1270,6 @@
           <context context-type="linenumber">79</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="6811901802533648897" datatype="html">
-        <source>N/A</source>
-        <target>S/O</target>
-        <note priority="1" from="description">Indicates that no data is available</note>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.html</context>
-          <context context-type="linenumber">37</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="6837890927238901672" datatype="html">
         <source>This document has already been unlocked by another user. This means that the content of this document is only accessible to the owner of the document and the user who unlocked it first.</source>
         <target>Ce document a déjà été déverrouillé par un autre utilisateur. Cela signifie que le contenu de ce document n&apos;est accessible qu&apos;au propriétaire du document et à l&apos;utilisateur qui l&apos;a déverrouillé en premier.</target>
@@ -1461,14 +1348,6 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/use-cases-list/use-cases-list.component.html</context>
           <context context-type="linenumber">7</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="7306017679756660793" datatype="html">
-        <source><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/><x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/><x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> is requesting a sum equivalent to <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/>$<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/>. <x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> To ensure accuracy, the transaction will be precisely calculated to match this amount in <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> prior to processing the payment.</source>
-        <target><x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/> <x id="INTERPOLATION" equiv-text="estState$ | async)?.profile?.username }}"/> <x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> demande une somme équivalente à <x id="START_TAG_STRONG" ctype="x-strong" equiv-text="&lt;strong&gt;"/> $<x id="INTERPOLATION_1" equiv-text="{{ (selectPaymentRequestState$ | async)?.payment?.data?.amount }}"/> USD<x id="CLOSE_TAG_STRONG" ctype="x-strong" equiv-text="&lt;/strong&gt;"/> .<x id="LINE_BREAK" ctype="lb" equiv-text="&lt;br /&gt;"/> Pour garantir la précision, la transaction sera calculée avec précision pour correspondre à ce montant en <x id="INTERPOLATION_2" equiv-text="{{ tokenInfo }}"/> avant de traiter le paiement.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.html</context>
-          <context context-type="linenumber">94</context>
         </context-group>
       </trans-unit>
       <trans-unit id="7359402418621608550" datatype="html">
@@ -1712,7 +1591,7 @@
         <target>Détails de l&apos;Utilisateur</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-maker/payment-request-maker.component.html</context>
-          <context context-type="linenumber">35</context>
+          <context context-type="linenumber">23</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8305010609335633188" datatype="html">
@@ -1776,7 +1655,7 @@
         <target>(USD$ <x id="INTERPOLATION" equiv-text="{{ usdReceivingAmount }}"/> )</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">31</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8554234730084811933" datatype="html">
@@ -1784,7 +1663,7 @@
         <target>Le nom doit contenir moins de 20 caractères</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">27</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8568269815642805499" datatype="html">
@@ -1888,7 +1767,7 @@
         <target>Nom</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.html</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">25</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8989751411189950371" datatype="html">
@@ -1948,7 +1827,7 @@
         <target>Le montant doit être supérieur à 0</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.html</context>
-          <context context-type="linenumber">70</context>
+          <context context-type="linenumber">86</context>
         </context-group>
       </trans-unit>
       <trans-unit id="918986430725137551" datatype="html">
@@ -1980,7 +1859,7 @@
         <target>Création de votre jeton... Veuillez confirmer la demande sur votre portefeuille.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/setup-token/containers/token-creation-page/token-creation-page.component.html</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidCreation.ImageAlreadyAdded" datatype="html">
@@ -2436,20 +2315,12 @@
           <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
-      <trans-unit id="CommonErrorMessage.ConnectYourWallet" datatype="html">
-        <source>Please connect your wallet</source>
-        <target>Veuillez connecter votre portefeuille</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
-          <context context-type="linenumber">113</context>
-        </context-group>
-      </trans-unit>
       <trans-unit id="CommonText.LinkCopiedToClipboard" datatype="html">
         <source>Link copied to clipboard</source>
         <target>Lien copié dans le presse-papiers</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-review/payment-request-review.component.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="commonTextManageNow" datatype="html">
@@ -2500,20 +2371,8 @@
           <context context-type="linenumber">178</context>
         </context-group>
         <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-card/payment-request-card.component.ts</context>
-          <context context-type="linenumber">123</context>
-        </context-group>
-        <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-profile-settings/payment-request-profile-settings.component.ts</context>
-          <context context-type="linenumber">36</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.ts</context>
-          <context context-type="linenumber">145</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/payment-page/payment-page.component.ts</context>
-          <context context-type="linenumber">155</context>
+          <context context-type="linenumber">32</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/shop-qr-code/components/shop-qr-code-printer/shop-qr-code-printer.component.ts</context>
@@ -2710,31 +2569,31 @@
         <target>Une erreur s&apos;est produite lors de l&apos;envoi de la transaction sur le portefeuille</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">51</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ErrorMessage.TransactionRejected" datatype="html">
-        <source>Transaction rejected by wallet</source>
-        <target>Transaction rejetée par le portefeuille</target>
+        <source>Error 4001: Transaction rejected by wallet</source>
+        <target state="new">Transaction rejetée par le portefeuille</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
-          <context context-type="linenumber">40</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ErrorMessage.WalletAlreadyProcessing" datatype="html">
-        <source>Wallet is already processing another request</source>
-        <target>Le portefeuille traite déjà une autre demande.</target>
+        <source>Error -32002: Wallet is already processing another request</source>
+        <target state="new">Le portefeuille traite déjà une autre demande.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
-          <context context-type="linenumber">36</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ErrorMessage.WalletNotEnoughBalance" datatype="html">
-        <source>Wallet connect has not enough balance to pay for the transaction</source>
-        <target>Wallet connect n&apos;a pas assez de solde pour payer la transaction</target>
+        <source>Error -32000: Wallet connect has not enough balance to pay for the transaction</source>
+        <target state="new">Wallet connect n&apos;a pas assez de solde pour payer la transaction</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/services/wallet/wallet.service.ts</context>
-          <context context-type="linenumber">38</context>
+          <context context-type="linenumber">45</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ErrorMessagePictureNotAttached" datatype="html">
@@ -3110,7 +2969,7 @@
         <target>Connecter le portefeuille</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">146</context>
+          <context context-type="linenumber">181</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PayButton.PayNow" datatype="html">
@@ -3118,7 +2977,7 @@
         <target>Payer maintenant</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">147</context>
+          <context context-type="linenumber">182</context>
         </context-group>
       </trans-unit>
       <trans-unit id="paymentRequestDescription" datatype="html">
@@ -3242,7 +3101,7 @@
         <target>Erreur d&apos;approbation de jeton</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">277</context>
+          <context context-type="linenumber">222</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorDecodingPaymentRequest" datatype="html">
@@ -3250,19 +3109,11 @@
         <target>Erreur lors du décodage de la demande de paiement</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">402</context>
+          <context context-type="linenumber">352</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">409</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">428</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">435</context>
+          <context context-type="linenumber">359</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.ErrorRetreivingDataFromTheBlockchain" datatype="html">
@@ -3270,11 +3121,11 @@
         <target>Erreur lors de la récupération des données de la blockchain</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">363</context>
+          <context context-type="linenumber">308</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">660</context>
+          <context context-type="linenumber">627</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.NetworkIsUpdated" datatype="html">
@@ -3290,11 +3141,7 @@
         <target>Adresse du jeton introuvable !</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">127</context>
-        </context-group>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">187</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="ResponseMessage.TransactionIsProcessing" datatype="html">
@@ -3306,11 +3153,11 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">472</context>
+          <context context-type="linenumber">396</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/payment-request-store/state/effects.ts</context>
-          <context context-type="linenumber">787</context>
+          <context context-type="linenumber">758</context>
         </context-group>
       </trans-unit>
       <trans-unit id="scanManageTokenDescription" datatype="html">
@@ -3439,15 +3286,7 @@
         <target>Échec du chargement de l&apos;équilibre</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/tokens-management-store/state/effects.ts</context>
-          <context context-type="linenumber">51</context>
-        </context-group>
-      </trans-unit>
-      <trans-unit id="tokenManagement.tokenCreationFailure" datatype="html">
-        <source>Token creation failed. Please try again.</source>
-        <target>La création de jeton a échoué. Veuillez réessayer.</target>
-        <context-group purpose="location">
-          <context context-type="sourcefile">src/app/store/tokens-management-store/state/effects.ts</context>
-          <context context-type="linenumber">119</context>
+          <context context-type="linenumber">53</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.payment.title" datatype="html">
