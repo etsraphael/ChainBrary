@@ -1,7 +1,8 @@
 /// <reference types="cypress" />
 
 import '@angular/compiler';
-import { IPaymentRequestRaw } from '../../../../src/app/shared/interfaces';
+import { IPaymentRequest } from '../../../../src/app/shared/interfaces';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 class MockPaymentService {
   removeEmptyStringProperties<T>(obj: T): T {
@@ -18,9 +19,13 @@ class MockPaymentService {
 describe('Check native payment generated', () => {
   const formatService = new MockPaymentService();
 
-  const paymentRequest: IPaymentRequestRaw = {
+  const paymentRequest: IPaymentRequest = {
     publicAddress: '0xbA3Fc0648186a79baEF8DCeE9e055873F432a351',
-    name: 'John Doe'
+    name: 'John Doe',
+    chainId: NetworkChainId.ETHEREUM,
+    tokenId: null,
+    amount: null,
+    usdEnabled: false
   };
 
   const paymentRequestBase64: string = Buffer.from(

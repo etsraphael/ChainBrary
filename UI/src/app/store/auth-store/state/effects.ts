@@ -146,7 +146,7 @@ export class AuthEffects {
     return this.actions$.pipe(
       ofType(AuthActions.walletError),
       map((action: ReturnType<typeof AuthActions.walletError>) =>
-        showErrorNotification({ message: this.walletService.formatErrorMessage(action.code) })
+        showErrorNotification({ message: this.walletService.formatErrorMessage(action.code).message })
       )
     );
   });

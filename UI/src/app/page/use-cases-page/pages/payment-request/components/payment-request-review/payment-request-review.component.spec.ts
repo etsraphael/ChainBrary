@@ -79,20 +79,6 @@ describe('PaymentRequestReviewComponent', () => {
     expect(emitSpy).toHaveBeenCalledTimes(1);
   });
 
-  it('should calculate the protocol fee amount correctly', () => {
-    component.amount = 100;
-    component.protocolFee = 0.1;
-    const expectedProtocolFeeAmount = component.amount * component.protocolFee;
-    expect(component.protocolFeeAmount).toBe(expectedProtocolFeeAmount);
-  });
-
-  it('should calculate the USD protocol fee amount correctly', () => {
-    component.usdAmount = 50;
-    component.protocolFee = 0.1;
-    const expectedUSDProtocolFeeAmount = component.usdAmount * component.protocolFee;
-    expect(component.usdProtocolFeeAmount).toBe(expectedUSDProtocolFeeAmount);
-  });
-
   it('should call goToPaymentPage() with the correct parameters', () => {
     const previewLink = 'https://example.com/preview';
     component.previewLink = previewLink;

@@ -1,12 +1,7 @@
 import { IPaymentRequestState } from './interfaces';
 
 export const initialState: IPaymentRequestState = {
-  profile: {
-    publicAddress: null,
-    avatarUrl: null,
-    username: null
-  },
-  payment: {
+  requestDetail: {
     loading: false,
     error: null,
     data: null
@@ -27,11 +22,6 @@ export const initialState: IPaymentRequestState = {
     loading: false,
     error: null,
     data: false
-  },
-  rawRequest: {
-    loading: false,
-    error: null,
-    data: null
   },
   payNowIsProcessing: {
     isLoading: false,

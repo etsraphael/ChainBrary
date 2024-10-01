@@ -22,7 +22,6 @@ describe('PaymentRequestPriceSettingsComponent', () => {
       tokenId: new FormControl('', [Validators.required]),
       chainId: new FormControl('', [Validators.required])
     }),
-    description: new FormControl('', []),
     amount: new FormControl(1, [Validators.required, Validators.min(0)]),
     amountInUsd: new FormControl(1, [Validators.required, Validators.min(0)]),
     valueLockedInUsd: new FormControl(false, [])

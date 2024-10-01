@@ -14,7 +14,7 @@ import { environment } from './../../../../environments/environment';
 import { AuthStatusCode } from './../../../shared/enum';
 import { IReceiptTransaction, ITokenSetup, StoreState } from './../../../shared/interfaces';
 import { TokenSetupService } from './../../../shared/services/token-setup/token-setup.service';
-import { WalletService } from './../../../shared/services/wallet/wallet.service';
+import { CustomWeb3Error, WalletService } from './../../../shared/services/wallet/wallet.service';
 import * as tokenActions from './actions';
 import { selectTokenCreationRefreshCheck, selectTokenDetailData } from './selectors';
 
@@ -115,10 +115,10 @@ export class TokenManagementEffects {
               queryParams: { chainId: action.chainId, txnHash: action.txn }
             });
           }),
-          catchError((response: { error: { message: string; code: number } }) =>
+          catchError((error: CustomWeb3Error) =>
             of(
               tokenActions.createTokenFailure({
-                errorMessage: this.walletService.formatErrorMessage(response.error.code)
+                errorMessage: error.message
               })
             )
           )

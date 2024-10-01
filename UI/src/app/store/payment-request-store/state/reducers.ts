@@ -3,57 +3,17 @@ import { resetAuth } from '../../auth-store/state/actions';
 import * as PaymentActions from './actions';
 import { initialState } from './init';
 import { IPaymentRequestState } from './interfaces';
+import { PaymentTypes } from './../../../shared/interfaces';
 
 export const authReducer: ActionReducer<IPaymentRequestState, Action> = createReducer(
   initialState,
-  on(
-    PaymentActions.generatePaymentRequest,
-    (state): IPaymentRequestState => ({
-      ...state,
-      payment: {
-        ...state.payment,
-        error: null,
-        loading: true
-      }
-    })
-  ),
-  on(
-    PaymentActions.generatePaymentRequestSuccess,
-    (state, { paymentRequest, network, token }): IPaymentRequestState => ({
-      ...state,
-      payment: {
-        error: null,
-        loading: false,
-        data: paymentRequest
-      },
-      profile: {
-        publicAddress: paymentRequest.publicAddress,
-        avatarUrl: paymentRequest.avatarUrl ? paymentRequest.avatarUrl : null,
-        username: paymentRequest.username
-      },
-      network,
-      token,
-      smartContractCanTransfer: initialState.smartContractCanTransfer
-    })
-  ),
-  on(
-    PaymentActions.generatePaymentRequestFailure,
-    (state, { errorMessage }): IPaymentRequestState => ({
-      ...state,
-      payment: {
-        error: errorMessage,
-        loading: false,
-        data: null
-      }
-    })
-  ),
   on(
     PaymentActions.approveTokenAllowance,
     PaymentActions.sendAmount,
     (state): IPaymentRequestState => ({
       ...state,
-      payment: {
-        ...state.payment,
+      requestDetail: {
+        ...state.requestDetail,
         loading: true,
         error: null
       }
@@ -66,8 +26,8 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     PaymentActions.approveTokenAllowanceSuccess,
     (state): IPaymentRequestState => ({
       ...state,
-      payment: {
-        ...state.payment,
+      requestDetail: {
+        ...state.requestDetail,
         loading: false,
         error: null
       }
@@ -181,8 +141,8 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     PaymentActions.decryptRawPaymentRequest,
     (state): IPaymentRequestState => ({
       ...state,
-      rawRequest: {
-        ...state.rawRequest,
+      requestDetail: {
+        ...state.requestDetail,
         loading: true,
         error: null
       }
@@ -190,12 +150,12 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
   ),
   on(
     PaymentActions.decryptRawPaymentRequestSuccess,
-    (state, { rawRequest }): IPaymentRequestState => ({
+    (state, { requestDetail }): IPaymentRequestState => ({
       ...state,
-      rawRequest: {
+      requestDetail: {
         loading: false,
         error: null,
-        data: rawRequest
+        data: requestDetail
       }
     })
   ),
@@ -203,7 +163,7 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     PaymentActions.decryptRawPaymentRequestFailure,
     (state, { errorMessage }): IPaymentRequestState => ({
       ...state,
-      rawRequest: {
+      requestDetail: {
         loading: false,
         error: errorMessage,
         data: null
@@ -225,10 +185,13 @@ export const authReducer: ActionReducer<IPaymentRequestState, Action> = createRe
     PaymentActions.applyConversionTokenFromPayNowSuccess,
     (state, action): IPaymentRequestState => ({
       ...state,
-      conversionToken: {
+      [action.paymentType === PaymentTypes.USD ? 'conversionToken' : 'conversionUSD']: {
         loading: true,
         error: null,
-        data: action.tokenAmount
+        data: action.result
+      },
+      [action.paymentType === PaymentTypes.USD ? 'conversionUSD' : 'conversionToken']: {
+        ...initialState[action.paymentType === PaymentTypes.USD ? 'conversionUSD' : 'conversionToken']
       }
     })
   ),

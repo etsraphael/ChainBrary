@@ -22,11 +22,9 @@ describe('Check native payment generated', () => {
   const paymentRequest: IPaymentRequest = {
     chainId: NetworkChainId.SEPOLIA,
     tokenId: TokenId.SEPOLIA,
-    username: 'John Doe',
+    name: 'John Doe',
     publicAddress: '0xd288b9f2028cea98f3132b700fa45c95023eca24',
     amount: 1,
-    description: 'A simple description',
-    avatarUrl: '',
     usdEnabled: false
   };
 
@@ -38,11 +36,15 @@ describe('Check native payment generated', () => {
     .replace('+', '-')
     .replace('/', '_');
 
+  beforeEach(() => {
+    cy.viewport('iphone-x');
+  });
+
   it('Generate payment without wallet', () => {
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-    cy.get('[data-id=recipient-username-id]').should('have.text', paymentRequest.username);
-    cy.get('[data-id=recipient-description-id]').contains(paymentRequest.description);
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible');
+    cy.visit(`${Cypress.env('baseUrl')}/pay-now/${paymentRequestBase64}`);
+    cy.get('[data-id=pn-header-container] h3').should('have.text', paymentRequest.name);
+    cy.get('[data-id=action-btn]').should('have.text', 'Connect Wallet');
+    cy.get('[data-id=payment-type-container]').contains('Amount (in SEP)');
   });
 
   it('Generate payment with wallet and wrong network', () => {
@@ -50,46 +52,11 @@ describe('Check native payment generated', () => {
     const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
     const SIGNED_MESSAGE = '...';
     cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.POLYGON);
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
+    cy.visit(`${Cypress.env('baseUrl')}/pay-now/${paymentRequestBase64}`);
 
     // test
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
-    cy.get('app-payment-page [data-id="wrong-network-alert"]').should('be.visible').contains('Wrong network');
-  });
-
-  it('Generate payment with wallet and right network', () => {
-    const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
-    const SIGNED_MESSAGE = '...';
-
-    // Inject MetaMask
-    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
-
-    cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');
-
-    cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]')
-      .find('button[type="submit"]')
-      .should('not.have.attr', 'disabled');
-  });
-
-  it('Generate payment receiver of the transaction', () => {
-    const WALLET_ADDRESS = paymentRequest.publicAddress;
-    const SIGNED_MESSAGE = '...';
-
-    // Inject MetaMask
-    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.SEPOLIA);
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
-
-    cy.get('app-payment-page [data-id="warning-banner"]')
-      .should('be.visible')
-      .contains('Attention: This is a preview of your request. Avoid the mistake of self-payment.');
+    cy.get('[data-id=action-btn]').should('have.text', 'Pay Now');
+    cy.get('[data-id=action-btn]').click();
   });
 });
 
@@ -99,11 +66,9 @@ describe('Check native payment generated with USD enabled', () => {
   const paymentRequest: IPaymentRequest = {
     chainId: NetworkChainId.POLYGON,
     tokenId: TokenId.ETHEREUM,
-    username: 'John Doe',
+    name: 'John Doe',
     publicAddress: '0xd288b9f2028cea98f3132b700fa45c95023eca24',
     amount: 1000,
-    description: 'A simple transaction',
-    avatarUrl: '',
     usdEnabled: true
   };
 
@@ -115,15 +80,15 @@ describe('Check native payment generated with USD enabled', () => {
     .replace('+', '-')
     .replace('/', '_');
 
-  it('Generate payment without wallet', () => {
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-    cy.get('[data-id=recipient-username-id]').should('have.text', paymentRequest.username);
-    cy.get('[data-id=recipient-description-id]').contains(paymentRequest.description);
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible');
+  beforeEach(() => {
+    cy.viewport('iphone-x');
+  });
 
-    cy.get('[data-id=mathing-amount-message]').contains(
-      `${paymentRequest.username} is requesting a sum equivalent to $${paymentRequest.amount} USD.`
-    );
+  it('Generate payment without wallet', () => {
+    cy.visit(`${Cypress.env('baseUrl')}/pay-now/${paymentRequestBase64}`);
+    cy.get('[data-id=pn-header-container] h3').should('have.text', paymentRequest.name);
+    cy.get('[data-id=payment-type-container]').contains('Amount (in USD)');
+    cy.get('[data-id=action-btn]').should('have.text', 'Connect Wallet');
   });
 });
 
@@ -133,11 +98,9 @@ describe('Check non-native payment generated', () => {
   const paymentRequest: IPaymentRequest = {
     chainId: NetworkChainId.POLYGON,
     tokenId: 'chainlink',
-    username: 'John Doe',
+    name: 'John Doe',
     publicAddress: '0xd288b9f2028cea98f3132b700fa45c95023eca24',
     amount: 1,
-    description: 'A simple transaction',
-    avatarUrl: '',
     usdEnabled: false
   };
 
@@ -149,29 +112,15 @@ describe('Check non-native payment generated', () => {
     .replace('+', '-')
     .replace('/', '_');
 
-  it('Generate payment without wallet', () => {
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-    cy.get('[data-id=recipient-username-id]').should('have.text', paymentRequest.username);
-    cy.get('[data-id=recipient-description-id]').contains(paymentRequest.description);
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible');
+  beforeEach(() => {
+    cy.viewport('iphone-x');
   });
 
-  it('Generate payment with wallet and right network', () => {
-    const WALLET_ADDRESS = '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266';
-    const SIGNED_MESSAGE = '...';
+  it('Generate payment without wallet', () => {
+    cy.visit(`${Cypress.env('baseUrl')}/pay-now/${paymentRequestBase64}`);
 
-    // Inject MetaMask
-    cy.login(WALLET_ADDRESS, SIGNED_MESSAGE, NetworkChainId.POLYGON);
-    cy.visit(`${Cypress.env('baseUrl')}/payment-page/${paymentRequestBase64}`);
-
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('be.visible').click();
-    cy.get('lib-web3-login lib-card-body-login [data-id="wallet-container-btn-metamask"]').click();
-    cy.get('app-payment-request-card [data-id="login-btn"]').should('not.exist');
-
-    cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]').should('be.visible');
-
-    cy.get('app-payment-request-card [data-id="btn-confirm-transaction"]')
-      .find('button[type="submit"]')
-      .should('have.attr', 'disabled');
+    cy.get('[data-id=pn-header-container] h3').should('have.text', paymentRequest.name);
+    cy.get('[data-id=action-btn]').should('have.text', 'Connect Wallet');
+    cy.get('[data-id=payment-type-container]').contains('Amount (in LINK)');
   });
 });

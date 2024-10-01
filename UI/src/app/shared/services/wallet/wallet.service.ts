@@ -4,18 +4,21 @@ import { Store } from '@ngrx/store';
 import { Observable, combineLatest, map } from 'rxjs';
 import { selectCurrentNetwork } from './../../../store/auth-store/state/selectors';
 
+export interface CustomWeb3Error {
+  code: number;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class WalletService {
-  private networkOnStore$: Observable<INetworkDetail | null>;
-
   constructor(
     private web3LoginService: Web3LoginService,
     private store: Store
-  ) {
-    this.networkOnStore$ = this.store.select(selectCurrentNetwork);
-  }
+  ) {}
+
+  private readonly networkOnStore$: Observable<INetworkDetail | null> = this.store.select(selectCurrentNetwork);
 
   get networkIsMatching$(): Observable<boolean> {
     return combineLatest([this.web3LoginService.currentNetwork$, this.networkOnStore$]).pipe(
@@ -30,16 +33,32 @@ export class WalletService {
     return this.web3LoginService.currentNetwork$;
   }
 
-  formatErrorMessage(code: number): string {
+  formatErrorMessage(error: unknown): CustomWeb3Error {
+    const code: number = this.extractErrorCode(error);
+    let message: string;
+
     switch (code) {
       case -32002:
-        return $localize`:@@ErrorMessage.WalletAlreadyProcessing:Wallet is already processing another request`;
+        message = $localize`:@@ErrorMessage.WalletAlreadyProcessing:Error -32002: Wallet is already processing another request`;
+        break;
       case -32000:
-        return $localize`:@@ErrorMessage.WalletNotEnoughBalance:Wallet connect has not enough balance to pay for the transaction`;
+        message = $localize`:@@ErrorMessage.WalletNotEnoughBalance:Error -32000: Wallet connect has not enough balance to pay for the transaction`;
+        break;
       case 4001:
-        return $localize`:@@ErrorMessage.TransactionRejected:Transaction rejected by wallet`;
+        message = $localize`:@@ErrorMessage.TransactionRejected:Error 4001: Transaction rejected by wallet`;
+        break;
       default:
-        return $localize`:@@ErrorMessage.TransactionError:An error occurred while sending the transaction on the wallet`;
+        message = $localize`:@@ErrorMessage.TransactionError:An error occurred while sending the transaction on the wallet`;
     }
+
+    return { code, message };
+  }
+
+  private extractErrorCode(error: unknown): number {
+    if (typeof error === 'object' && error !== null) {
+      const err = error as { code?: number; cause?: { code?: number }; error?: { code: number; message: string } };
+      return err.cause?.code ?? err.code ?? err.error?.code ?? 0;
+    }
+    return 0;
   }
 }

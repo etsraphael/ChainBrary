@@ -16,9 +16,16 @@ import {
   take,
   takeUntil
 } from 'rxjs';
-import { tokenList } from 'src/app/shared/data/tokenList';
+import { tokenList } from './../../../../../../shared/data/tokenList';
 import { AuthStatusCode, CommonButtonText, ICommonButtonText, TokenPair } from './../../../../../../shared/enum';
-import { ActionStoreProcessing, IPaymentRequestRaw, IToken, StoreState } from './../../../../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  IPaymentRequest,
+  IToken,
+  ITokenContract,
+  PaymentTypes,
+  StoreState
+} from './../../../../../../shared/interfaces';
 import { FormatService } from './../../../../../../shared/services/format/format.service';
 import { networkChange } from './../../../../../../store/auth-store/state/actions';
 import { selectAuthStatus, selectCurrentChainId } from './../../../../../../store/auth-store/state/selectors';
@@ -28,9 +35,11 @@ import {
   payNowTransaction
 } from './../../../../../../store/payment-request-store/state/actions';
 import {
+  DataConversionStore,
   selectConversionToken,
-  selectPayNowIsProcessing,
-  selectRawPaymentRequest
+  selectPaymentConversion,
+  selectPaymentRequestDetail,
+  selectPayNowIsProcessing
 } from './../../../../../../store/payment-request-store/state/selectors';
 
 interface NetworkGroup {
@@ -111,6 +120,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
   ];
   networkSelected: NetworkChainId;
   commonButtonText: ICommonButtonText = CommonButtonText;
+  paymentTypes = PaymentTypes;
+  paymentTypeSelected: PaymentTypes = PaymentTypes.USD;
 
   constructor(
     public location: Location,
@@ -120,6 +131,14 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     private snackbar: MatSnackBar,
     private web3LoginService: Web3LoginService
   ) {}
+
+  readonly requestDetail$: Observable<StoreState<IPaymentRequest | null>> =
+    this.store.select(selectPaymentRequestDetail);
+  readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
+  readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
+  readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
+  private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
+  readonly paymentConversion$: Observable<DataConversionStore> = this.store.select(selectPaymentConversion);
 
   get routeId(): string {
     return this.route.snapshot.params['id'];
@@ -139,6 +158,28 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get paymentConversionFormatted$(): Observable<string> {
+    return this.paymentConversion$.pipe(
+      filter(
+        (conversion: DataConversionStore) =>
+          conversion.conversionToken.data !== null || conversion.conversionUSD.data !== null
+      ),
+      map((conversion: DataConversionStore) => {
+        if (this.paymentTypeSelected === PaymentTypes.TOKEN) {
+          return '$' + (conversion.conversionUSD.data as number);
+        } else {
+          return (conversion.conversionToken.data as number) + ' ' + this.currentTokenUsed?.symbol;
+        }
+      })
+    );
+  }
+
+  get amountTitle(): string {
+    const currency =
+      this.paymentTypeSelected === this.paymentTypes.USD ? 'USD' : this.currentTokenUsed?.symbol || 'Token';
+    return $localize`:@@AmountTitle|Title showing amount in currency:Amount (in ${currency})`;
+  }
+
   get actionBtnText$(): Observable<string> {
     return this.authStatus$.pipe(
       map((status: AuthStatusCode) =>
@@ -153,15 +194,14 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     return this.tokensAvailable.find((network: NetworkGroup) => network.chainId === this.networkSelected)?.networkName;
   }
 
-  readonly rawRequest$: Observable<StoreState<IPaymentRequestRaw | null>> = this.store.select(selectRawPaymentRequest);
-  readonly conversionToken$: Observable<StoreState<number | null>> = this.store.select(selectConversionToken);
-  readonly selectPayNowIsProcessing$: Observable<ActionStoreProcessing> = this.store.select(selectPayNowIsProcessing);
-  readonly authStatus$: Observable<AuthStatusCode> = this.store.select(selectAuthStatus);
-  private readonly currentChainId$: Observable<NetworkChainId | null> = this.store.select(selectCurrentChainId);
+  get switchBtnDisabled(): boolean {
+    return this.mainForm.get('amount')?.disabled === true || this.mainForm.get('tokenId')?.value === null;
+  }
 
   ngOnInit(): void {
     this.callActions();
     this.listenFormChanges();
+    this.setUpPaymentFound();
   }
 
   networkSaved(val: NetworkChainId): void {
@@ -181,6 +221,40 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
     else return this.processPayment();
   }
 
+  switchPaymentType(): void {
+    if (this.switchBtnDisabled) return;
+    this.paymentTypeSelected = this.paymentTypeSelected === PaymentTypes.USD ? PaymentTypes.TOKEN : PaymentTypes.USD;
+    this.applyConversionToken(
+      this.mainForm.get('amount')?.value as number,
+      this.mainForm.get('tokenId')?.value as TokenId
+    );
+  }
+
+  private setUpPaymentFound(): void {
+    this.requestDetail$
+      .pipe(
+        take(1),
+        map((rd: StoreState<IPaymentRequest | null>) => rd.data),
+        filter(Boolean)
+      )
+      .subscribe((rd: IPaymentRequest) => {
+        this.networkSelected = rd.chainId as NetworkChainId;
+        this.paymentTypeSelected = rd.usdEnabled ? PaymentTypes.USD : PaymentTypes.TOKEN;
+        const amount: number = rd.amount || 10;
+
+        this.mainForm.patchValue({
+          amount: amount,
+          tokenId: (rd.tokenId as TokenId) || null
+        });
+        rd.amount && this.mainForm.get('amount')?.disable();
+        rd.tokenId && this.mainForm.get('tokenId')?.disable();
+
+        if (rd.amount && rd.tokenId) {
+          this.applyConversionToken(amount, rd.tokenId as TokenId);
+        }
+      });
+  }
+
   private processPayment(): Subscription {
     return combineLatest([this.authStatus$, this.currentChainId$])
       .pipe(take(1))
@@ -196,7 +270,8 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             payNowTransaction({
               amount: this.mainForm.get('amount')?.value as number,
               chainId: chainId as NetworkChainId,
-              token: this.currentTokenUsed as IToken
+              token: this.currentTokenUsed as IToken,
+              lockInUSD: this.paymentTypeSelected === PaymentTypes.USD
             })
           );
         }
@@ -220,26 +295,29 @@ export class PayNowPageComponent implements OnInit, OnDestroy {
             amount: number | null;
             tokenId: TokenId | null;
           }>
-        ) => {
-          const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find(
-            (network) => network.chainId === this.networkSelected
-          )?.priceFeed[0];
-
-          const isNative: boolean = tokenList.some(
-            (token) => token.tokenId === val.tokenId && token.nativeToChainId === this.networkSelected
-          );
-
-          if (feed !== undefined || isNative) {
-            return this.store.dispatch(
-              applyConversionTokenFromPayNow({
-                usdAmount: val.amount as number,
-                chainId: this.networkSelected,
-                pair: isNative ? null : (feed as TokenPair)
-              })
-            );
-          }
-        }
+        ) => this.applyConversionToken(val.amount as number, val.tokenId as TokenId)
       );
+  }
+
+  private applyConversionToken(amount: number, tokenId: TokenId): void {
+    const feed: TokenPair | undefined = this.currentTokenUsed?.networkSupport.find(
+      (network: ITokenContract) => network.chainId === this.networkSelected
+    )?.priceFeed[0];
+
+    const isNative: boolean = tokenList.some(
+      (token: IToken) => token.tokenId === tokenId && token.nativeToChainId === this.networkSelected
+    );
+
+    if (feed !== undefined || isNative) {
+      return this.store.dispatch(
+        applyConversionTokenFromPayNow({
+          amount: amount,
+          chainId: this.networkSelected,
+          pair: isNative ? null : (feed as TokenPair),
+          paymentType: this.paymentTypeSelected
+        })
+      );
+    }
   }
 
   ngOnDestroy(): void {
