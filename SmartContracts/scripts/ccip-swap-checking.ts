@@ -1,10 +1,13 @@
-import { Token, CurrencyAmount, TradeType } from '@uniswap/sdk-core';
+import { CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core';
 import { Pool, Route, Trade } from '@uniswap/v3-sdk';
+import dotenv from 'dotenv';
 import { ethers } from 'ethers';
 
+dotenv.config();
+
 // Token details for USDC and DAI on Arbitrum
-const USDC = new Token(42161, '0xFF970A61A04b1CA14834A43f5de4533ebDDB5CC8', 6, 'USDC', 'USD Coin');
-const DAI = new Token(42161, '0xda10009cbd5d07dd0cecc66161fc93d7c9000da1', 18, 'DAI', 'Dai Stablecoin');
+const USDC = new Token(42161, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin');
+const DAI = new Token(42161, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin');
 
 // Amount of USDC to swap
 const amountIn: CurrencyAmount<Token> = CurrencyAmount.fromRawAmount(USDC, ethers.parseUnits('100', 6).toString());
@@ -17,10 +20,11 @@ const POOL_ABI = [
 
 async function getUniswapQuote(): Promise<void> {
   try {
-    const provider = ethers.getDefaultProvider('arbitrum'); // Connect to Arbitrum network
+    // Connect to the Poly Network mainnet
+    const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(process.env.POLY_MAINNET_URL);
 
     // Pool address for USDC/DAI on Arbitrum (3000 fee tier)
-    const poolAddress = '0x854046b4C2062B09f3D365F074C8bd51A79Af3de';
+    const poolAddress = '0x5f69C2ec01c22843f8273838d570243fd1963014';
 
     // Connect to the pool contract
     const poolContract = new ethers.Contract(poolAddress, POOL_ABI, provider);
