@@ -46,7 +46,7 @@
     "@ngrx/entity": "^17.2.0",
     "@ngrx/store": "^17.2.0",
     "@ngrx/store-devtools": "^17.2.0",
-    "@sentry/angular-ivy": "^7.91.0",
+    "@sentry/angular-ivy": "^7.119.1",
     "angularx-qrcode": "^17.0.1",
     "apollo-angular": "^7.0.2",
     "bignumber.js": "^9.1.2",
