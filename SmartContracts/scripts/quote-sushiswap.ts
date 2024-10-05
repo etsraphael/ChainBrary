@@ -8,7 +8,7 @@ export async function getSushiSwapQuote(
   tokenOut: Token,
   networkUrl: string,
   amountInRaw: string // Amount to swap as a string
-): Promise<void> {
+): Promise<string | null> {
   try {
     // Connect to the network
     const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
@@ -25,7 +25,7 @@ export async function getSushiSwapQuote(
 
     if (!routerAddress) {
       console.log('SushiSwap is not deployed on this network.');
-      return;
+      return null;
     }
 
     // Router ABI
@@ -46,9 +46,9 @@ export async function getSushiSwapQuote(
     const amountsOut: ethers.BigNumberish[] = await routerContract.getAmountsOut(amountIn, path);
 
     const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
-
-    console.log(`Sushiswap Quote: ${amountOut} ${tokenOut.symbol}`);
+    return amountOut;
   } catch (error) {
     console.error('Error getting SushiSwap quote:', error);
+    return null;
   }
 }

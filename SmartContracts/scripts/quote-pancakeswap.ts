@@ -6,7 +6,7 @@ export async function getPancakeSwapQuote(
   tokenOut: Token,
   networkUrl: string,
   amountInRaw: string // Amount to swap as a string
-): Promise<void> {
+): Promise<string | null> {
   try {
     // Connect to the network
     const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
@@ -23,7 +23,7 @@ export async function getPancakeSwapQuote(
 
     if (!routerAddress) {
       console.log('PancakeSwap is not deployed on this network.');
-      return;
+      return null;
     }
 
     // Router ABI
@@ -44,9 +44,9 @@ export async function getPancakeSwapQuote(
     const amountsOut: ethers.BigNumberish[] = await routerContract.getAmountsOut(amountIn, path);
 
     const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
-
-    console.log(`PancakeSwap Quote: ${amountOut} ${tokenOut.symbol}`);
+    return amountOut;
   } catch (error) {
     console.error('Error getting PancakeSwap quote:', error);
+    return null;
   }
 }

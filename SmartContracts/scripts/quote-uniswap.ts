@@ -9,7 +9,7 @@ export async function getUniswapQuote(
   networkUrl: string,
   amountInRaw: string, // Amount to swap as a string
   fee: number = 3000 // Pool fee tier (default to 0.3%)
-): Promise<void> {
+): Promise<string | null> {
   try {
     // Connect to the network
     const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
@@ -29,7 +29,7 @@ export async function getUniswapQuote(
 
     if (!FACTORY_ADDRESS) {
       console.log('Uniswap V3 is not deployed on this network.');
-      return;
+      return null;
     }
 
     // Factory ABI
@@ -45,7 +45,7 @@ export async function getUniswapQuote(
 
     if (poolAddress === ethers.ZeroAddress) {
       console.log('No pool found for the given token pair and fee tier.');
-      return;
+      return null;
     }
 
     // Pool contract ABI
@@ -83,8 +83,9 @@ export async function getUniswapQuote(
 
     // Get the quote for the trade (output amount)
     const amountOut: string = trade.outputAmount.toSignificant(6);
-    console.log(`Uniswap Quote: ${amountOut} ${tokenOut.symbol}`);
+    return amountOut;
   } catch (error) {
     console.error('Error getting Uniswap quote:', error);
+    return null;
   }
 }
