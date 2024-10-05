@@ -83,7 +83,7 @@ export async function getUniswapQuote(
 
     // Get the quote for the trade (output amount)
     const amountOut: string = trade.outputAmount.toSignificant(6);
-    console.log(`Quote: ${amountOut} ${tokenOut.symbol}`);
+    console.log(`Uniswap Quote: ${amountOut} ${tokenOut.symbol}`);
   } catch (error) {
     console.error('Error getting Uniswap quote:', error);
   }
