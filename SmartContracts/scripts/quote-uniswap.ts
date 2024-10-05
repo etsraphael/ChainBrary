@@ -17,7 +17,8 @@ export async function getUniswapQuote(
     // Uniswap V3 Factory addresses per network
     const FACTORY_ADDRESSES: { [chainId: number]: string } = {
       1: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Ethereum Mainnet
-      137: '0x1F98431c8aD98523631AE4a59f267346ea31F984' // Polygon Mainnet
+      137: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Polygon Mainnet
+      56: '0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7' // BSC Mainnet
     };
 
     // Get the correct factory address for the network
