@@ -1,26 +1,27 @@
 import dotenv from 'dotenv';
 import { Token } from '@uniswap/sdk-core';
+import { INetwork, NetworkNameList } from './interfaces';
 
 dotenv.config();
 
 // Supported networks
-export const NETWORKS = {
-  POLYGON_MAINNET: {
+export const NETWORKS: { [key: string]: INetwork } = {
+  [NetworkNameList.POLYGON_MAINNET]: {
     chainId: 137,
     rpcUrl: process.env.POLY_MAINNET_URL as string,
     name: 'Polygon Mainnet'
   },
-  BSC_MAINNET: {
+  [NetworkNameList.BSC_MAINNET]: {
     chainId: 56,
     rpcUrl: process.env.BSC_MAINNET_URL as string,
     name: 'Binance Smart Chain Mainnet'
   },
-  ETH_MAINNET: {
+  [NetworkNameList.ETH_MAINNET]: {
     chainId: 1,
     rpcUrl: process.env.ETH_MAINNET_URL as string,
     name: 'Ethereum Mainnet'
   },
-  ARBITRUM_MAINNET_URL: {
+  [NetworkNameList.ARBITRUM_MAINNET]: {
     chainId: 42161,
     rpcUrl: process.env.ARBITRUM_MAINNET_URL as string,
     name: 'Arbitrum Mainnet'
@@ -79,7 +80,7 @@ export const TOKEN_PAIRS = [
     fee: 3000
   },
   {
-    network: NETWORKS.ARBITRUM_MAINNET_URL,
+    network: NETWORKS.ARBITRUM_MAINNET,
     tokenIn: TOKENS.ARBITRUM.USDT,
     tokenOut: TOKENS.ARBITRUM.DAI,
     amountIn: '1',

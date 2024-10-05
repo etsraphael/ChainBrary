@@ -20,9 +20,19 @@ async function runQuotes() {
       pair.fee
     );
 
-    const sushiswapQuote: string | null = await getSushiSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn);
+    const sushiswapQuote: string | null = await getSushiSwapQuote(
+      pair.tokenIn,
+      pair.tokenOut,
+      pair.network.rpcUrl,
+      pair.amountIn
+    );
 
-    const pancakeswapQuote: string | null = await getPancakeSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn);
+    const pancakeswapQuote: string | null = await getPancakeSwapQuote(
+      pair.tokenIn,
+      pair.tokenOut,
+      pair.network.rpcUrl,
+      pair.amountIn
+    );
 
     results.push({
       tokenIn: pair.tokenIn.symbol,
