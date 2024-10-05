@@ -34,7 +34,7 @@ export async function getSushiSwapQuote(
     ];
 
     // Create router contract instance
-    const routerContract = new ethers.Contract(routerAddress, ROUTER_ABI, provider);
+    const routerContract: ethers.Contract = new ethers.Contract(routerAddress, ROUTER_ABI, provider);
 
     // Amount of tokenIn to swap
     const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenIn.decimals);

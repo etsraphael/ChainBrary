@@ -58,10 +58,10 @@ export async function getUniswapQuote(
     const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, provider);
 
     // Fetch pool state: slot0 and liquidity
-    const slot0 = await poolContract.slot0();
-    const sqrtPriceX96 = slot0[0];
-    const tick = slot0[1];
-    const liquidity = await poolContract.liquidity();
+    const slot0: BigInt[] = await poolContract.slot0();
+    const sqrtPriceX96: BigInt = slot0[0];
+    const tick: BigInt = slot0[1];
+    const liquidity: BigInt = await poolContract.liquidity();
 
     // Create a Uniswap V3 pool instance
     const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
