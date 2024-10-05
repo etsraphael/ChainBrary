@@ -19,6 +19,11 @@ export const NETWORKS = {
     chainId: 1,
     rpcUrl: process.env.ETH_MAINNET_URL as string,
     name: 'Ethereum Mainnet'
+  },
+  ARBITRUM_MAINNET_URL: {
+    chainId: 42161,
+    rpcUrl: process.env.ARBITRUM_MAINNET_URL as string,
+    name: 'Arbitrum Mainnet'
   }
 };
 
@@ -36,6 +41,10 @@ export const TOKENS = {
   BSC: {
     ETH: new Token(56, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum'),
     USDT: new Token(56, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Tether USD')
+  },
+  ARBITRUM: {
+    DAI: new Token(42161, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai Stablecoin'),
+    USDT: new Token(42161, '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9', 18, 'USDT', 'Tether USD')
   }
 };
 
@@ -66,6 +75,13 @@ export const TOKEN_PAIRS = [
     network: NETWORKS.BSC_MAINNET,
     tokenIn: TOKENS.BSC.USDT,
     tokenOut: TOKENS.BSC.ETH,
+    amountIn: '1',
+    fee: 3000
+  },
+  {
+    network: NETWORKS.ARBITRUM_MAINNET_URL,
+    tokenIn: TOKENS.ARBITRUM.USDT,
+    tokenOut: TOKENS.ARBITRUM.DAI,
     amountIn: '1',
     fee: 3000
   }

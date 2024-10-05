@@ -17,8 +17,8 @@ export async function getSushiSwapQuote(
     const ROUTER_ADDRESSES: { [chainId: number]: string } = {
       1: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Ethereum Mainnet
       137: '0x1b02da8cb0d097eb8d57a175b88c7d8b47997506', // Polygon Mainnet
-      56: '0x1b02da8cb0d097eb8d57a175b88c7d8b47997506' // BSC Mainnet
-      // Add other networks as needed
+      56: '0x1b02da8cb0d097eb8d57a175b88c7d8b47997506', // BSC Mainnet
+      42161: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506' // Arbitrum Mainnets
     };
 
     const routerAddress: string = ROUTER_ADDRESSES[tokenIn.chainId];
