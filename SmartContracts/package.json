@@ -23,7 +23,6 @@
     "@chainlink/contracts-ccip": "^1.4.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
-    "@sushiswap/sdk": "^5.0.0-canary.116",
     "@uniswap/sdk-core": "^5.8.0",
     "@uniswap/v3-sdk": "^3.17.0",
     "bignumber.js": "^9.1.2",
