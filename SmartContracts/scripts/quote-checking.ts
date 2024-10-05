@@ -1,5 +1,3 @@
-// scripts/quote-checking.ts
-
 import { getUniswapQuote } from './quote-uniswap';
 import { TOKEN_PAIRS } from './constants';
 

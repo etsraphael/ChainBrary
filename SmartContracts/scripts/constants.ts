@@ -1,4 +1,3 @@
-// scripts/constants.ts
 import dotenv from 'dotenv';
 import { Token } from '@uniswap/sdk-core';
 

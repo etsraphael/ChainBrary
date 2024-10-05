@@ -1,5 +1,3 @@
-// scripts/quote-uniswap.ts
-
 import { CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core';
 import { Pool, Route, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
