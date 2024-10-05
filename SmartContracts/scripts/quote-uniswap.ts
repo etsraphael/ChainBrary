@@ -14,8 +14,19 @@ export async function getUniswapQuote(
     // Connect to the network
     const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
 
-    // Uniswap V3 Factory address (same on all networks)
-    const FACTORY_ADDRESS: string = '0x1F98431c8aD98523631AE4a59f267346ea31F984';
+    // Uniswap V3 Factory addresses per network
+    const FACTORY_ADDRESSES: { [chainId: number]: string } = {
+      1: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Ethereum Mainnet
+      137: '0x1F98431c8aD98523631AE4a59f267346ea31F984' // Polygon Mainnet
+    };
+
+    // Get the correct factory address for the network
+    const FACTORY_ADDRESS: string = FACTORY_ADDRESSES[tokenIn.chainId];
+
+    if (!FACTORY_ADDRESS) {
+      console.log('Uniswap V3 is not deployed on this network.');
+      return;
+    }
 
     // Factory ABI
     const FACTORY_ABI: string[] = [

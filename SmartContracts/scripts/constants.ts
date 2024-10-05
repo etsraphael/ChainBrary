@@ -31,7 +31,11 @@ export const TOKENS = {
   },
   ETH: {
     DAI: new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin'),
-    USDC: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+    USDC: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
+  },
+  BSC: {
+    ETH: new Token(56, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum'),
+    USDT: new Token(56, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Tether USD')
   }
 };
 
@@ -57,6 +61,12 @@ export const TOKEN_PAIRS = [
     tokenOut: TOKENS.ETH.DAI,
     amountIn: '1',
     fee: 3000
+  },
+  {
+    network: NETWORKS.BSC_MAINNET,
+    tokenIn: TOKENS.BSC.USDT,
+    tokenOut: TOKENS.BSC.ETH,
+    amountIn: '1',
+    fee: 3000
   }
-
 ];
