@@ -1,5 +1,3 @@
-// quote-sushiswap.ts
-
 import { ethers } from 'ethers';
 import { Token } from '@uniswap/sdk-core';
 
