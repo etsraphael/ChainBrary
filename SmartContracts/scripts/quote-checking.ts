@@ -2,6 +2,7 @@ import { TOKEN_PAIRS } from './constants';
 import { getPancakeSwapQuote } from './quote-pancakeswap';
 import { getSushiSwapQuote } from './quote-sushiswap';
 import { getUniswapQuote } from './quote-uniswap';
+import Table from 'cli-table3';
 
 // Function to run quotes for all token pairs
 async function runQuotes() {
@@ -55,13 +56,22 @@ runQuotes();
 function displayResults(results: any[]) {
   console.log('\nQuotes Comparison Table:\n');
 
-  // Table header
-  console.log(
-    `| Token Pair (Network) | Uniswap Quote | SushiSwap Quote | PancakeSwap Quote | Best Quote | % Difference |`
-  );
-  console.log(
-    `|----------------------|---------------|-----------------|-------------------|------------|--------------|`
-  );
+  // Create a new table instance
+  const table = new Table({
+    head: [
+      'Token Pair (Network)',
+      'Uniswap Quote',
+      'SushiSwap Quote',
+      'PancakeSwap Quote',
+      'Best Quote',
+      '% Difference',
+    ],
+    style: {
+      head: ['cyan'],
+      border: ['grey'],
+    },
+    wordWrap: true,
+  });
 
   results.forEach((result) => {
     const { tokenIn, tokenOut, network, uniswapQuote, sushiswapQuote, pancakeswapQuote } = result;
@@ -70,16 +80,25 @@ function displayResults(results: any[]) {
     const quotes = [
       { dex: 'Uniswap', amount: parseFloat(uniswapQuote) },
       { dex: 'SushiSwap', amount: parseFloat(sushiswapQuote) },
-      { dex: 'PancakeSwap', amount: parseFloat(pancakeswapQuote) }
+      { dex: 'PancakeSwap', amount: parseFloat(pancakeswapQuote) },
     ].filter((quote) => !isNaN(quote.amount));
 
     if (quotes.length === 0) {
-      console.log(`| ${tokenIn}/${tokenOut} (${network}) | No valid quotes available |`);
+      table.push([
+        `${tokenIn}/${tokenOut} (${network})`,
+        'No valid quotes available',
+        '',
+        '',
+        '',
+        '',
+      ]);
       return;
     }
 
     // Find the best quote
-    const bestQuote = quotes.reduce((prev, current) => (prev.amount > current.amount ? prev : current));
+    const bestQuote = quotes.reduce((prev, current) =>
+      prev.amount > current.amount ? prev : current
+    );
 
     // Calculate percentage differences
     const percentageDifferences = quotes.map((quote) => {
@@ -88,17 +107,25 @@ function displayResults(results: any[]) {
     });
 
     // Prepare row data
-    const uniswapDisplay = uniswapQuote ? `${uniswapQuote}` : 'N/A';
-    const sushiswapDisplay = sushiswapQuote ? `${sushiswapQuote}` : 'N/A';
-    const pancakeswapDisplay = pancakeswapQuote ? `${pancakeswapQuote}` : 'N/A';
+    const uniswapDisplay = uniswapQuote ? uniswapQuote : 'N/A';
+    const sushiswapDisplay = sushiswapQuote ? sushiswapQuote : 'N/A';
+    const pancakeswapDisplay = pancakeswapQuote ? pancakeswapQuote : 'N/A';
     const bestQuoteDex = bestQuote.dex;
     const percentageDifferenceDisplay = percentageDifferences
       .map((diff) => `${diff.dex}: ${diff.difference}%`)
       .join(', ');
 
-    // Display the row
-    console.log(
-      `| ${tokenIn}/${tokenOut} (${network}) | ${uniswapDisplay} | ${sushiswapDisplay} | ${pancakeswapDisplay} | ${bestQuoteDex} | ${percentageDifferenceDisplay} |`
-    );
+    // Add row to the table
+    table.push([
+      `${tokenIn}/${tokenOut} (${network})`,
+      uniswapDisplay,
+      sushiswapDisplay,
+      pancakeswapDisplay,
+      bestQuoteDex,
+      percentageDifferenceDisplay,
+    ]);
   });
+
+  // Display the table
+  console.log(table.toString());
 }
