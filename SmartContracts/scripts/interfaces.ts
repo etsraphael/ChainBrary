@@ -1,11 +1,11 @@
 import { Token } from '@uniswap/sdk-core';
 
-// export interface QuoteResult {
-//   tokenIn: Token;
-//   tokenOut: Token;
-//   network: pair.network.name,
-//   dex: DEX,
-// }
+export interface QuoteResult {
+  tokenIn: Token;
+  tokenOut: Token;
+  network: NetworkNameList;
+  dex: DEX;
+}
 
 export enum DEX {
   UNISWAP = 'Uniswap',
