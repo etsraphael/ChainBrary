@@ -25,3 +25,11 @@ export interface INetwork {
   rpcUrl: string;
   name: string;
 }
+
+export interface IQuotePayload {
+  network: INetwork;
+  tokenIn: Token;
+  tokenOut: Token;
+  amountIn: string;
+  fee: number;
+}

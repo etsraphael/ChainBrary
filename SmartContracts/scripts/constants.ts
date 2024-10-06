@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 import { Token } from '@uniswap/sdk-core';
-import { INetwork, NetworkNameList } from './interfaces';
+import { INetwork, IQuotePayload, NetworkNameList } from './interfaces';
 
 dotenv.config();
 
 // Supported networks
-export const NETWORKS: { [key: string]: INetwork } = {
+export const NETWORKS: { [key in NetworkNameList]: INetwork } = {
   [NetworkNameList.POLYGON_MAINNET]: {
     chainId: 137,
     rpcUrl: process.env.POLY_MAINNET_URL as string,
@@ -29,7 +29,7 @@ export const NETWORKS: { [key: string]: INetwork } = {
 };
 
 // Supported tokens
-export const TOKENS = {
+export const TOKENS: { [key in string]: { [key in string]: Token } } = {
   POLYGON: {
     USDC: new Token(137, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin'),
     DAI: new Token(137, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin'),
@@ -50,7 +50,7 @@ export const TOKENS = {
 };
 
 // List of token pairs to quote
-export const TOKEN_PAIRS = [
+export const TOKEN_PAIRS: IQuotePayload[] = [
   {
     network: NETWORKS.POLYGON_MAINNET,
     tokenIn: TOKENS.POLYGON.USDC,
