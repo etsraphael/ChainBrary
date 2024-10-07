@@ -8,6 +8,7 @@ import { getUniswapQuote } from './quote-uniswap';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
+  const startTime = Date.now(); // Start the timer
   const results: QuoteResult[] = [];
 
   // Initialize the progress bar
@@ -45,13 +46,17 @@ async function runQuotes(): Promise<void> {
     }
   }
   progressBar.stop();
+
+  const endTime = Date.now(); // End the timer
+  const elapsedSeconds: string = ((endTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
+  console.log('\n');
+  console.log(`\nTotal time taken: ${elapsedSeconds} seconds`);
+
   displayResults(results);
 }
 
 // Function to display results in a table
 function displayResults(results: QuoteResult[]) {
-  console.log('\nQuotes Comparison Table:\n');
-
   // Group results by network
   const groupedResults = results.reduce(
     (acc: { [networkName: string]: QuoteResult[] }, result: QuoteResult) => {

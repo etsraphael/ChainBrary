@@ -45,7 +45,6 @@ export async function getSushiSwapQuote(
     const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
     return amountOut;
   } catch (error) {
-    console.error('Error getting SushiSwap quote:', error);
     return null;
   }
 }

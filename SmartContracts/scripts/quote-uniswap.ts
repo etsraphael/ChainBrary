@@ -86,7 +86,6 @@ export async function getUniswapQuote(
     const amountOut: string = trade.outputAmount.toSignificant(6);
     return amountOut;
   } catch (error) {
-    console.error('Error getting Uniswap quote:', error);
     return null;
   }
 }

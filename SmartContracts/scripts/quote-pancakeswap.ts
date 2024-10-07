@@ -45,7 +45,6 @@ export async function getPancakeSwapQuote(
     const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
     return amountOut;
   } catch (error) {
-    console.error('Error getting PancakeSwap quote:', error);
     return null;
   }
 }
