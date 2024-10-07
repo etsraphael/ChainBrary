@@ -19,7 +19,7 @@ async function runQuotes(): Promise<void> {
   progressBar.start(totalTasks, 0);
 
   for (const pair of TOKEN_PAIRS) {
-    const dexes = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2];
+    const dexes: DEX[] = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2];
 
     for (const dex of dexes) {
       let payload: QuotePayload = {
@@ -29,7 +29,7 @@ async function runQuotes(): Promise<void> {
         amountInRaw: pair.amountIn,
         fee: pair.fee,
         dex: dex
-      }
+      };
 
       let quote: string | null = await getQuote(payload);
 

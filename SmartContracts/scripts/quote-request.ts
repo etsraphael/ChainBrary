@@ -14,7 +14,7 @@ export async function getQuote(payload: QuotePayload): Promise<string | null> {
       return getUniswapV2Quote(payload);
     default:
       return null;
-  };
+  }
 }
 
 export async function getUniswapV2Quote(payload: QuotePayload): Promise<string | null> {
@@ -109,7 +109,7 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<string |
     const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
     // Amount of tokenIn to swap
-    const amountIn = CurrencyAmount.fromRawAmount(
+    const amountIn: CurrencyAmount<Token> = CurrencyAmount.fromRawAmount(
       tokenIn,
       ethers.parseUnits(amountInRaw, tokenIn.decimals).toString()
     );
