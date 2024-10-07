@@ -33,7 +33,9 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
   POLYGON: {
     USDC: new Token(137, '0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174', 6, 'USDC', 'USD Coin'),
     DAI: new Token(137, '0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063', 18, 'DAI', 'Dai Stablecoin'),
-    WETH: new Token(137, '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', 18, 'WETH', 'Wrapped Ether')
+    WETH: new Token(137, '0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619', 18, 'WETH', 'Wrapped Ether'),
+    LINK: new Token(137, '0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39', 18, 'LINK', 'Chainlink'),
+    WBTC: new Token(137, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin')
   },
   ETH: {
     DAI: new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin'),
@@ -103,5 +105,19 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 3000
+  },
+  {
+    network: NETWORKS.POLYGON_MAINNET,
+    tokenIn: TOKENS.POLYGON.LINK,
+    tokenOut: TOKENS.POLYGON.WETH,
+    amountIn: '1',
+    fee: 300
+  },
+  {
+    network: NETWORKS.POLYGON_MAINNET,
+    tokenIn: TOKENS.POLYGON.WBTC,
+    tokenOut: TOKENS.POLYGON.WETH,
+    amountIn: '1',
+    fee: 300
   }
 ];
