@@ -20,7 +20,8 @@ export interface QuotePayload {
 export enum DEX {
   UNISWAP_V3 = 'Uniswap_v3',
   SUSHISWAP_V2 = 'SushiSwap_v2',
-  PANCAKESWAP_V2 = 'PancakeSwap_v2'
+  PANCAKESWAP_V2 = 'PancakeSwap_v2',
+  PANCAKESWAP_V3 = 'PancakeSwap_v3'
 }
 
 export enum NetworkNameList {

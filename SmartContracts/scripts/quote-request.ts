@@ -7,7 +7,6 @@ export async function getQuote(payload: QuotePayload): Promise<string | null> {
     case DEX.UNISWAP_V3:
       return getUniswapV3Quote(payload);
     case DEX.SUSHISWAP_V2:
-      return getUniswapV2Quote(payload);
     case DEX.PANCAKESWAP_V2:
       return getUniswapV2Quote(payload);
     default:
