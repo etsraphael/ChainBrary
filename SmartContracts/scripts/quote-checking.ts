@@ -2,9 +2,6 @@ import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
 import { TOKEN_PAIRS } from './constants';
 import { DEX, QuotePayload, QuoteResult } from './interfaces';
-import { getPancakeSwapQuote } from './quote-pancakeswap';
-import { getSushiSwapQuote } from './quote-sushiswap';
-import { getUniswapQuote } from './quote-uniswap';
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
 

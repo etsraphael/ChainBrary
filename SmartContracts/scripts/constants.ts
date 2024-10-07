@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { Token } from '@uniswap/sdk-core';
-import { INetwork, IQuotePayload, NetworkNameList } from './interfaces';
+import { DEX, INetwork, IQuotePayload, NetworkNameList } from './interfaces';
 
 dotenv.config();
 
@@ -151,4 +151,33 @@ function getNetworkByName(networkName: NetworkNameList): INetwork {
     throw new Error(`Network ${networkName} not found`);
   }
   return network;
+}
+
+export function routerContracts(dex: DEX): { [chainId: number]: string } | null {
+  switch (dex) {
+    case DEX.UNISWAP_V3:
+      return {
+        1: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Ethereum Mainnet
+        137: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Polygon Mainnet
+        56: '0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7', // BSC Mainnet
+        10: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Optimism Mainnet
+        42161: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Arbitrum Mainnet
+        42220: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc' // Celo Mainnet
+      };
+    case DEX.SUSHISWAP_V2:
+      return {
+        1: '0xd9e1cE17f2641f24aE83637ab66a2cca9C378B9F', // Ethereum Mainnet
+        137: '0x1b02da8cb0d097eb8d57a175b88c7d8b47997506', // Polygon Mainnet
+        56: '0x1b02da8cb0d097eb8d57a175b88c7d8b47997506', // BSC Mainnet
+        42161: '0x1b02dA8Cb0d097eB8D57A175b88c7D8b47997506' // Arbitrum Mainnets
+      };
+    case DEX.PANCAKESWAP_V2:
+      return {
+        1: '0xEfF92A263d31888d860bD50809A8D171709b7b1c', // Ethereum Mainnet
+        56: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // BSC Mainnet
+        42161: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb' // Arbitrum Mainnets
+      };
+    default:
+      return null;
+  }
 }
