@@ -3,16 +3,18 @@ import { TOKEN_PAIRS } from './constants';
 import { getPancakeSwapQuote } from './quote-pancakeswap';
 import { getSushiSwapQuote } from './quote-sushiswap';
 import { getUniswapQuote } from './quote-uniswap';
+import cliProgress from 'cli-progress';
 
 // Function to run quotes for all token pairs
-async function runQuotes() {
+async function runQuotes(): Promise<void> {
   const results = [];
 
-  for (const pair of TOKEN_PAIRS) {
-    console.log(
-      `\nFetching quotes for swapping ${pair.amountIn} ${pair.tokenIn.symbol} to ${pair.tokenOut.symbol} on ${pair.network.name}...`
-    );
+  // Initialize the progress bar
+  const totalTasks: number = TOKEN_PAIRS.length * 3; // Total number of quotes to fetch
+  const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  progressBar.start(totalTasks, 0);
 
+  for (const pair of TOKEN_PAIRS) {
     const uniswapQuote: string | null = await getUniswapQuote(
       pair.tokenIn,
       pair.tokenOut,
@@ -20,6 +22,7 @@ async function runQuotes() {
       pair.amountIn,
       pair.fee
     );
+    progressBar.increment();
 
     const sushiswapQuote: string | null = await getSushiSwapQuote(
       pair.tokenIn,
@@ -27,6 +30,7 @@ async function runQuotes() {
       pair.network.rpcUrl,
       pair.amountIn
     );
+    progressBar.increment();
 
     const pancakeswapQuote: string | null = await getPancakeSwapQuote(
       pair.tokenIn,
@@ -34,6 +38,7 @@ async function runQuotes() {
       pair.network.rpcUrl,
       pair.amountIn
     );
+    progressBar.increment();
 
     results.push({
       tokenIn: pair.tokenIn.symbol,
@@ -43,10 +48,9 @@ async function runQuotes() {
       sushiswapQuote,
       pancakeswapQuote
     });
-
-    console.log('Quote fetching complete.');
   }
 
+  progressBar.stop();
   displayResults(results);
 }
 
