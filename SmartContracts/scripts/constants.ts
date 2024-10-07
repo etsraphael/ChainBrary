@@ -37,15 +37,19 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
   },
   ETH: {
     DAI: new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin'),
-    USDC: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin')
+    USDC: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+    WETH: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether')
   },
   BSC: {
     ETH: new Token(56, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum'),
-    USDT: new Token(56, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Tether USD')
+    USDT: new Token(56, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Tether USD'),
+    WBNB: new Token(56, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')
   },
   ARBITRUM: {
     DAI: new Token(42161, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai Stablecoin'),
-    USDT: new Token(42161, '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9', 18, 'USDT', 'Tether USD')
+    USDT: new Token(42161, '0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9', 18, 'USDT', 'Tether USD'),
+    WETH: new Token(42161, '0x82af49447d8a07e3bd95bd0d56f35241523fbab1', 18, 'WETH', 'Wrapped Ether'),
+    USDC: new Token(42161, '0xaf88d065e77c8cC2239327C5EDb3A432268e5831', 6, 'USDC', 'USD Coin')
   }
 };
 
@@ -81,8 +85,22 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
   },
   {
     network: NETWORKS.ARBITRUM_MAINNET,
-    tokenIn: TOKENS.ARBITRUM.USDT,
-    tokenOut: TOKENS.ARBITRUM.DAI,
+    tokenIn: TOKENS.ARBITRUM.WETH,
+    tokenOut: TOKENS.ARBITRUM.USDC,
+    amountIn: '1',
+    fee: 3000
+  },
+  {
+    network: NETWORKS.ETH_MAINNET,
+    tokenIn: TOKENS.ETH.WETH,
+    tokenOut: TOKENS.ETH.USDC,
+    amountIn: '1',
+    fee: 3000
+  },
+  {
+    network: NETWORKS.BSC_MAINNET,
+    tokenIn: TOKENS.BSC.WBNB,
+    tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 3000
   }
