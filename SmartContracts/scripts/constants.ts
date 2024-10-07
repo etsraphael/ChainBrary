@@ -46,7 +46,10 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
   BSC: {
     ETH: new Token(56, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum'),
     USDT: new Token(56, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Tether USD'),
-    WBNB: new Token(56, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB')
+    WBNB: new Token(56, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'),
+    FLUX: new Token(56, '0xaff9084f2374585879e8b434c399e29e80cce635', 18, 'FLUX', 'Flux Protocol'),
+    DOGE: new Token(56, '0xba2ae424d960c26247dd6c32edc70b295c744c43', 8, 'DOGE', 'Dogecoin'),
+    DOT: new Token(56, '0x7083609fce4d1d8dc0c979aab8c869ea2c873402', 18, 'DOT', 'Polkadot')
   },
   ARBITRUM: {
     DAI: new Token(42161, '0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1', 18, 'DAI', 'Dai Stablecoin'),
@@ -111,6 +114,27 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     network: NETWORKS.POLYGON_MAINNET,
     tokenIn: TOKENS.POLYGON.WBTC,
     tokenOut: TOKENS.POLYGON.WETH,
+    amountIn: '1',
+    fee: 300
+  },
+  {
+    network: NETWORKS.BSC_MAINNET,
+    tokenIn: TOKENS.BSC.FLUX,
+    tokenOut: TOKENS.BSC.WBNB,
+    amountIn: '1',
+    fee: 300
+  },
+  {
+    network: NETWORKS.BSC_MAINNET,
+    tokenIn: TOKENS.BSC.WBNB,
+    tokenOut: TOKENS.BSC.DOGE,
+    amountIn: '1',
+    fee: 300
+  },
+  {
+    network: NETWORKS.BSC_MAINNET,
+    tokenIn: TOKENS.BSC.DOT,
+    tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 300
   }
