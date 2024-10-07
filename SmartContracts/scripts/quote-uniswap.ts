@@ -1,6 +1,5 @@
 import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core';
 import { Pool, Route, SwapRouter, Trade } from '@uniswap/v3-sdk';
-import BigNumber from 'bignumber.js';
 import { ethers, TransactionRequest } from 'ethers';
 
 // Function to get Uniswap quote
@@ -91,6 +90,7 @@ export async function getUniswapQuote(
 }
 
 export async function checkIfTransactionIsProfitable() {
+  console.log('Checking if a transaction is profitable on Uniswap V3...');
   // TODO: Check if a transaction is profitable on Uniswap V3
 }
 

@@ -5,6 +5,7 @@ import { DEX, QuoteResult } from './interfaces';
 import { getPancakeSwapQuote } from './quote-pancakeswap';
 import { getSushiSwapQuote } from './quote-sushiswap';
 import { getUniswapQuote } from './quote-uniswap';
+import inquirer from 'inquirer';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
@@ -53,6 +54,21 @@ async function runQuotes(): Promise<void> {
   console.log(`\nTotal time taken: ${elapsedSeconds} seconds`);
 
   displayResults(results);
+
+  // const { confirm } = await inquirer.prompt([
+  //   {
+  //     type: 'confirm',
+  //     name: 'confirm',
+  //     message: 'Do you want to proceed with this trade?',
+  //     default: false
+  //   }
+  // ]);
+
+  // if (confirm) {
+  //   console.log('Trade is profitable. Proceeding with the trade...');
+  // } else {
+  //   console.log('Trade is no longer profitable.');
+  // }
 }
 
 // Function to display results in a table
