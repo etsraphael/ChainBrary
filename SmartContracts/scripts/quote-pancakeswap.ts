@@ -22,7 +22,6 @@ export async function getPancakeSwapQuote(
     const routerAddress: string = ROUTER_ADDRESSES[tokenIn.chainId];
 
     if (!routerAddress) {
-      console.log('PancakeSwap is not deployed on this network.');
       return null;
     }
 

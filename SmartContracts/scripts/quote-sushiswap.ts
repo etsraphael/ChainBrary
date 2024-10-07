@@ -22,7 +22,6 @@ export async function getSushiSwapQuote(
     const routerAddress: string = ROUTER_ADDRESSES[tokenIn.chainId];
 
     if (!routerAddress) {
-      console.log('SushiSwap is not deployed on this network.');
       return null;
     }
 
