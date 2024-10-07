@@ -8,10 +8,19 @@ export interface QuoteResult {
   quoteResult: string | null;
 }
 
+export interface QuotePayload {
+  tokenIn: Token;
+  tokenOut: Token;
+  networkUrl: string;
+  amountInRaw: string;
+  fee: number;
+  dex: DEX;
+}
+
 export enum DEX {
-  UNISWAP = 'Uniswap',
-  SUSHISWAP = 'SushiSwap',
-  PANCAKESWAP = 'PancakeSwap'
+  UNISWAP_V3 = 'Uniswap_v3',
+  SUSHISWAP_V2 = 'SushiSwap_v2',
+  PANCAKESWAP_V2 = 'PancakeSwap_v2'
 }
 
 export enum NetworkNameList {

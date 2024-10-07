@@ -1,11 +1,12 @@
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
 import { TOKEN_PAIRS } from './constants';
-import { DEX, QuoteResult } from './interfaces';
+import { DEX, QuotePayload, QuoteResult } from './interfaces';
 import { getPancakeSwapQuote } from './quote-pancakeswap';
 import { getSushiSwapQuote } from './quote-sushiswap';
 import { getUniswapQuote } from './quote-uniswap';
 import inquirer from 'inquirer';
+import { getQuote } from './quote-request';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
@@ -18,22 +19,19 @@ async function runQuotes(): Promise<void> {
   progressBar.start(totalTasks, 0);
 
   for (const pair of TOKEN_PAIRS) {
-    const dexes = [DEX.UNISWAP, DEX.SUSHISWAP, DEX.PANCAKESWAP];
+    const dexes = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2];
 
     for (const dex of dexes) {
-      let quote: string | null;
-
-      switch (dex) {
-        case DEX.UNISWAP:
-          quote = await getUniswapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn, pair.fee); // v3 uniswap
-          break;
-        case DEX.SUSHISWAP:
-          quote = await getSushiSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn); // v2 uniswap
-          break;
-        case DEX.PANCAKESWAP:
-          quote = await getPancakeSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn); // v2 uniswap
-          break;
+      let payload: QuotePayload = {
+        tokenIn: pair.tokenIn,
+        tokenOut: pair.tokenOut,
+        networkUrl: pair.network.rpcUrl,
+        amountInRaw: pair.amountIn,
+        fee: pair.fee,
+        dex: dex
       }
+
+      let quote: string | null = await getQuote(payload);
 
       progressBar.increment();
 
