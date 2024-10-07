@@ -74,7 +74,9 @@ async function runQuotes(): Promise<void> {
 // Function to display results in a table
 function displayResults(results: QuoteResult[]) {
   // Group results by network
-  const groupedResults = results.reduce(
+  const groupedResults: {
+    [networkName: string]: QuoteResult[];
+  } = results.reduce(
     (acc: { [networkName: string]: QuoteResult[] }, result: QuoteResult) => {
       const key = result.network.name;
       if (!acc[key]) {
@@ -87,7 +89,7 @@ function displayResults(results: QuoteResult[]) {
   );
 
   // Get all unique DEXs
-  const allDexes = Array.from(new Set(results.map((result) => result.dex)));
+  const allDexes: DEX[] = Array.from(new Set(results.map((result) => result.dex)));
 
   // For each network, create a table
   for (const [networkName, networkResults] of Object.entries(groupedResults)) {
@@ -101,7 +103,7 @@ function displayResults(results: QuoteResult[]) {
       { name: 'percentageDifference', title: '% Difference', alignment: 'left' }
     ];
 
-    const p = new Table({ columns });
+    const p: Table = new Table({ columns });
 
     // Group results by token pair within the network
     const tokenPairResults = networkResults.reduce(
