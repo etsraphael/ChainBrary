@@ -52,93 +52,107 @@ async function runQuotes(): Promise<void> {
 function displayResults(results: QuoteResult[]) {
   console.log('\nQuotes Comparison Table:\n');
 
-  // Group results by token pair and network
+  // Group results by network
   const groupedResults = results.reduce(
-    (
-      acc: {
-        [key: string]: QuoteResult[];
-      },
-      result: QuoteResult
-    ) => {
-      const key = `${result.tokenIn.symbol}/${result.tokenOut.symbol} (${result.network.name})`;
+    (acc: { [networkName: string]: QuoteResult[] }, result: QuoteResult) => {
+      const key = result.network.name;
       if (!acc[key]) {
         acc[key] = [];
       }
       acc[key].push(result);
       return acc;
     },
-    {} as { [key: string]: QuoteResult[] }
+    {} as { [networkName: string]: QuoteResult[] }
   );
 
   // Get all unique DEXs
   const allDexes = Array.from(new Set(results.map((result) => result.dex)));
 
-  // Create table columns dynamically based on the DEXs present
-  const columns = [
-    { name: 'tokenPair', title: 'Token Pair (Network)', alignment: 'left' },
-    ...allDexes.map((dex) => ({ name: dex, title: `${dex} Quote`, alignment: 'right' })),
-    { name: 'bestQuote', title: 'Best Quote', alignment: 'center', color: 'green' },
-    { name: 'percentageDifference', title: '% Difference', alignment: 'left' }
-  ];
+  // For each network, create a table
+  for (const [networkName, networkResults] of Object.entries(groupedResults)) {
+    console.log(`\nNetwork: ${networkName}`);
 
-  const p = new Table({ columns });
+    // Create table columns dynamically based on the DEXs present
+    const columns = [
+      { name: 'tokenPair', title: 'Token Pair', alignment: 'left' },
+      ...allDexes.map((dex) => ({ name: dex, title: `${dex} Quote`, alignment: 'right' })),
+      { name: 'bestQuote', title: 'Best Quote', alignment: 'center', color: 'green' },
+      { name: 'percentageDifference', title: '% Difference', alignment: 'left' }
+    ];
 
-  // Process each group
-  for (const [tokenPair, group] of Object.entries(groupedResults)) {
-    // Map DEX names to quotes
-    const dexQuotes = group.reduce(
-      (acc, result) => {
-        const amount = parseFloat(result.quoteResult || 'NaN');
-        if (!isNaN(amount)) {
-          acc[result.dex] = amount;
+    const p = new Table({ columns });
+
+    // Group results by token pair within the network
+    const tokenPairResults = networkResults.reduce(
+      (acc: { [tokenPair: string]: QuoteResult[] }, result: QuoteResult) => {
+        const key = `${result.tokenIn.symbol}/${result.tokenOut.symbol}`;
+        if (!acc[key]) {
+          acc[key] = [];
         }
+        acc[key].push(result);
         return acc;
       },
-      {} as { [dex in DEX]: number }
+      {} as { [tokenPair: string]: QuoteResult[] }
     );
 
-    // If no valid quotes, add a row indicating that
-    if (Object.keys(dexQuotes).length === 0) {
+    // Process each token pair
+    for (const [tokenPair, pairResults] of Object.entries(tokenPairResults)) {
+      // Map DEX names to quotes
+      const dexQuotes = pairResults.reduce(
+        (acc, result) => {
+          const amount = parseFloat(result.quoteResult || 'NaN');
+          if (!isNaN(amount)) {
+            acc[result.dex] = amount;
+          }
+          return acc;
+        },
+        {} as { [dex in DEX]: number }
+      );
+
+      // If no valid quotes, add a row indicating that
+      if (Object.keys(dexQuotes).length === 0) {
+        const rowData: any = {
+          tokenPair: tokenPair,
+          bestQuote: 'No valid quotes available',
+          percentageDifference: ''
+        };
+        allDexes.forEach((dex) => {
+          rowData[dex] = '';
+        });
+        p.addRow(rowData);
+        continue;
+      }
+
+      // Find the best quote
+      const bestDex: string = Object.keys(dexQuotes).reduce((best, dex) => {
+        return dexQuotes[dex as DEX] > dexQuotes[best as DEX] ? dex : best;
+      }, Object.keys(dexQuotes)[0]);
+
+      const bestQuoteAmount: number = dexQuotes[bestDex as DEX];
+
+      // Calculate percentage differences
+      const percentageDifferences = Object.entries(dexQuotes).map(([dex, amount]) => {
+        const diff = ((bestQuoteAmount - amount) / bestQuoteAmount) * 100;
+        return { dex, difference: diff.toFixed(2) };
+      });
+
+      // Prepare data for the table
       const rowData: any = {
         tokenPair: tokenPair,
-        bestQuote: 'No valid quotes available',
-        percentageDifference: ''
+        bestQuote: bestDex,
+        percentageDifference: percentageDifferences.map((diff) => `${diff.dex}: ${diff.difference}%`).join(', ')
       };
+
       allDexes.forEach((dex) => {
-        rowData[dex] = '';
+        rowData[dex] = dexQuotes[dex as DEX]?.toString() || 'N/A';
       });
+
       p.addRow(rowData);
-      continue;
     }
 
-    // Find the best quote
-    const bestDex: string = Object.keys(dexQuotes).reduce((best, dex) => {
-      return dexQuotes[dex as DEX] > dexQuotes[best as DEX] ? dex : best;
-    }, Object.keys(dexQuotes)[0]);
-
-    const bestQuoteAmount: number = dexQuotes[bestDex as DEX];
-
-    // Calculate percentage differences
-    const percentageDifferences = Object.entries(dexQuotes).map(([dex, amount]) => {
-      const diff = ((bestQuoteAmount - amount) / bestQuoteAmount) * 100;
-      return { dex, difference: diff.toFixed(2) };
-    });
-
-    // Prepare data for the table
-    const rowData: any = {
-      tokenPair: tokenPair,
-      bestQuote: bestDex,
-      percentageDifference: percentageDifferences.map((diff) => `${diff.dex}: ${diff.difference}%`).join(', ')
-    };
-
-    allDexes.forEach((dex) => {
-      rowData[dex] = dexQuotes[dex as DEX]?.toString() || 'N/A';
-    });
-
-    p.addRow(rowData);
+    // Print the table for the current network
+    p.printTable();
   }
-
-  p.printTable();
 }
 
 runQuotes();

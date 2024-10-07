@@ -80,8 +80,8 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
   },
   {
     network: NETWORKS.BSC_MAINNET,
-    tokenIn: TOKENS.BSC.USDT,
-    tokenOut: TOKENS.BSC.ETH,
+    tokenIn: TOKENS.BSC.ETH,
+    tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 3000
   },
