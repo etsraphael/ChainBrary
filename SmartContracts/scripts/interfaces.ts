@@ -3,8 +3,9 @@ import { Token } from '@uniswap/sdk-core';
 export interface QuoteResult {
   tokenIn: Token;
   tokenOut: Token;
-  network: NetworkNameList;
+  network: INetwork;
   dex: DEX;
+  quoteResult: string | null;
 }
 
 export enum DEX {
