@@ -25,6 +25,7 @@ export interface INetwork {
   chainId: number;
   rpcUrl: string;
   name: string;
+  networkName: NetworkNameList;
 }
 
 export interface IQuotePayload {

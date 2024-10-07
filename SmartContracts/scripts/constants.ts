@@ -5,28 +5,32 @@ import { INetwork, IQuotePayload, NetworkNameList } from './interfaces';
 dotenv.config();
 
 // Supported networks
-export const NETWORKS: { [key in NetworkNameList]: INetwork } = {
-  [NetworkNameList.POLYGON_MAINNET]: {
+export const NETWORKS: INetwork[] = [
+  {
     chainId: 137,
     rpcUrl: process.env.POLY_MAINNET_URL as string,
-    name: 'Polygon Mainnet'
+    name: 'Polygon Mainnet',
+    networkName: NetworkNameList.POLYGON_MAINNET
   },
-  [NetworkNameList.BSC_MAINNET]: {
+  {
     chainId: 56,
     rpcUrl: process.env.BSC_MAINNET_URL as string,
-    name: 'Binance Smart Chain Mainnet'
+    name: 'Binance Smart Chain Mainnet',
+    networkName: NetworkNameList.BSC_MAINNET
   },
-  [NetworkNameList.ETH_MAINNET]: {
+  {
     chainId: 1,
     rpcUrl: process.env.ETH_MAINNET_URL as string,
-    name: 'Ethereum Mainnet'
+    name: 'Ethereum Mainnet',
+    networkName: NetworkNameList.ETH_MAINNET
   },
-  [NetworkNameList.ARBITRUM_MAINNET]: {
+  {
     chainId: 42161,
     rpcUrl: process.env.ARBITRUM_MAINNET_URL as string,
-    name: 'Arbitrum Mainnet'
+    name: 'Arbitrum Mainnet',
+    networkName: NetworkNameList.ARBITRUM_MAINNET
   }
-};
+];
 
 // Supported tokens
 export const TOKENS: { [key in string]: { [key in string]: Token } } = {
@@ -62,80 +66,89 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
 // List of token pairs to quote
 export const TOKEN_PAIRS: IQuotePayload[] = [
   {
-    network: NETWORKS.POLYGON_MAINNET,
+    network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.WETH,
     tokenOut: TOKENS.POLYGON.USDC,
     amountIn: '1',
     fee: 3000
   },
   {
-    network: NETWORKS.BSC_MAINNET,
+    network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.ETH,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 3000
   },
   {
-    network: NETWORKS.ARBITRUM_MAINNET,
+    network: getNetworkByName(NetworkNameList.ARBITRUM_MAINNET),
     tokenIn: TOKENS.ARBITRUM.WETH,
     tokenOut: TOKENS.ARBITRUM.USDC,
     amountIn: '1',
     fee: 3000
   },
   {
-    network: NETWORKS.ETH_MAINNET,
+    network: getNetworkByName(NetworkNameList.ETH_MAINNET),
     tokenIn: TOKENS.ETH.WETH,
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
     fee: 3000
   },
   {
-    network: NETWORKS.ETH_MAINNET,
+    network: getNetworkByName(NetworkNameList.ETH_MAINNET),
     tokenIn: TOKENS.ETH.WBTC,
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
     fee: 3000
   },
   {
-    network: NETWORKS.BSC_MAINNET,
+    network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.WBNB,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 3000
   },
   {
-    network: NETWORKS.POLYGON_MAINNET,
+    network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.LINK,
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
     fee: 300
   },
   {
-    network: NETWORKS.POLYGON_MAINNET,
+    network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.WBTC,
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
     fee: 300
   },
   {
-    network: NETWORKS.BSC_MAINNET,
+    network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.FLUX,
     tokenOut: TOKENS.BSC.WBNB,
     amountIn: '1',
     fee: 300
   },
   {
-    network: NETWORKS.BSC_MAINNET,
+    network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.WBNB,
     tokenOut: TOKENS.BSC.DOGE,
     amountIn: '1',
     fee: 300
   },
   {
-    network: NETWORKS.BSC_MAINNET,
+    network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.DOT,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 300
   }
 ];
+
+// Helper function to get network by networkName
+function getNetworkByName(networkName: NetworkNameList): INetwork {
+  const network = NETWORKS.find((n) => n.networkName === networkName);
+  if (!network) {
+    throw new Error(`Network ${networkName} not found`);
+  }
+  return network;
+}

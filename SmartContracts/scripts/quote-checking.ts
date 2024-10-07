@@ -25,13 +25,13 @@ async function runQuotes(): Promise<void> {
 
       switch (dex) {
         case DEX.UNISWAP:
-          quote = await getUniswapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn, pair.fee);
+          quote = await getUniswapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn, pair.fee); // v3 uniswap
           break;
         case DEX.SUSHISWAP:
-          quote = await getSushiSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn);
+          quote = await getSushiSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn); // v2 uniswap
           break;
         case DEX.PANCAKESWAP:
-          quote = await getPancakeSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn);
+          quote = await getPancakeSwapQuote(pair.tokenIn, pair.tokenOut, pair.network.rpcUrl, pair.amountIn); // v2 uniswap
           break;
       }
 
