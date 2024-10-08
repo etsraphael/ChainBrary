@@ -1,31 +1,103 @@
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
 import { TOKEN_PAIRS } from './constants';
-import { DEX, QuotePayload, QuoteResult } from './interfaces';
+import { DEX, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
+import { Token } from '@uniswap/sdk-core';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
-  const results: QuoteResult[] = await getQuotes();
-  displayResults(results);
+  // const results: QuoteResult[] = await getQuotes();
 
-  const { confirm } = await inquirer.prompt([
+  const results: QuoteResult[] = [
     {
-      type: 'confirm',
-      name: 'confirm',
-      message: 'Do you want to proceed with this trade?',
-      default: false
+      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+      tokenOut: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether'),
+      network: {
+        chainId: 56,
+        rpcUrl: process.env.BSC_MAINNET_URL as string,
+        name: 'Binance Smart Chain Mainnet',
+        networkName: NetworkNameList.BSC_MAINNET
+      },
+      dex: DEX.SUSHISWAP_V2,
+      quoteResult: '2600'
+    },
+    {
+      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+      tokenOut: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether'),
+      network: {
+        chainId: 56,
+        rpcUrl: process.env.BSC_MAINNET_URL as string,
+        name: 'Binance Smart Chain Mainnet',
+        networkName: NetworkNameList.BSC_MAINNET
+      },
+      dex: DEX.UNISWAP_V3,
+      quoteResult: '2900'
     }
-  ]);
+  ];
 
-  if (confirm) {
-    console.log('Starting the trade...');
-  } else {
-    // exit message 
-    console.log('Trade cancelled');
-    process.exit(0);
-  }
+  displayResults(results);
+  const profitableResult: TradingPayload[] = checkProfitability(results);
+
+  console.log('profitableResult', profitableResult);
+
+  // const { confirm } = await inquirer.prompt([
+  //   {
+  //     type: 'confirm',
+  //     name: 'confirm',
+  //     message: 'Do you want to proceed with this trade?',
+  //     default: false
+  //   }
+  // ]);
+
+  // if (confirm) {
+  //   console.log('Starting the trade...');
+  // } else {
+  //   // exit message
+  //   console.log('Trade cancelled');
+  //   process.exit(0);
+  // }
+}
+
+function checkProfitability(results: QuoteResult[]): TradingPayload[] {
+  const groupedResults = results.reduce<Record<string, QuoteResult[]>>((acc, result) => {
+    const key = `${result.tokenIn.address}-${result.tokenOut.address}`;
+    (acc[key] ||= []).push(result);
+    return acc;
+  }, {});
+
+  return Object.values(groupedResults).flatMap((quoteResults: QuoteResult[]) => {
+    const validQuotes = quoteResults
+      .filter((q) => q.quoteResult !== null)
+      .map((q) => ({ ...q, quoteValue: parseFloat(q.quoteResult!) }))
+      .sort((a, b) => b.quoteValue - a.quoteValue);
+
+    if (validQuotes.length <= 1) return [];
+
+    const highestQuote = validQuotes[0];
+    const lowestQuote = validQuotes[validQuotes.length - 1];
+    const profitMargin: number = ((highestQuote.quoteValue - lowestQuote.quoteValue) / lowestQuote.quoteValue) * 100;
+
+    if (profitMargin < 5) return [];
+
+    const toQuotePayload = (quote: typeof highestQuote): QuotePayload => ({
+      tokenIn: quote.tokenIn,
+      tokenOut: quote.tokenOut,
+      dex: quote.dex,
+      networkUrl: quote.network.rpcUrl,
+      amountInRaw: quote.quoteResult!,
+      fee: 0
+    });
+
+    return [
+      {
+        quoteResult1: toQuotePayload(highestQuote),
+        quoteResult2: toQuotePayload(lowestQuote),
+        profit: profitMargin.toFixed(2) + '%'
+      }
+    ];
+  });
 }
 
 // Function retrieve quotes for a token pair

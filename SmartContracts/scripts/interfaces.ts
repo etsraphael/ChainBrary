@@ -1,5 +1,11 @@
 import { Token } from '@uniswap/sdk-core';
 
+export interface TradingPayload {
+  quoteResult1: QuotePayload;
+  quoteResult2: QuotePayload;
+  profit: string;
+}
+
 export interface QuoteResult {
   tokenIn: Token;
   tokenOut: Token;
