@@ -7,6 +7,29 @@ import { getQuote } from './quote-request';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
+  const results: QuoteResult[] = await getQuotes();
+  displayResults(results);
+
+  const { confirm } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'confirm',
+      message: 'Do you want to proceed with this trade?',
+      default: false
+    }
+  ]);
+
+  if (confirm) {
+    console.log('Starting the trade...');
+  } else {
+    // exit message 
+    console.log('Trade cancelled');
+    process.exit(0);
+  }
+}
+
+// Function retrieve quotes for a token pair
+async function getQuotes(): Promise<QuoteResult[]> {
   const startTime = Date.now(); // Start the timer
   const results: QuoteResult[] = [];
   const dexes: DEX[] = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2, DEX.PANCAKESWAP_V3];
@@ -46,23 +69,7 @@ async function runQuotes(): Promise<void> {
   const elapsedSeconds: string = ((endTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
   console.log('\n');
   console.log(`\nTotal time taken: ${elapsedSeconds} seconds`);
-
-  displayResults(results);
-
-  // const { confirm } = await inquirer.prompt([
-  //   {
-  //     type: 'confirm',
-  //     name: 'confirm',
-  //     message: 'Do you want to proceed with this trade?',
-  //     default: false
-  //   }
-  // ]);
-
-  // if (confirm) {
-  //   console.log('Trade is profitable. Proceeding with the trade...');
-  // } else {
-  //   console.log('Trade is no longer profitable.');
-  // }
+  return results;
 }
 
 // Function to display results in a table
