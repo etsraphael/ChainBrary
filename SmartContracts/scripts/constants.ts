@@ -70,77 +70,77 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenIn: TOKENS.POLYGON.WETH,
     tokenOut: TOKENS.POLYGON.USDC,
     amountIn: '1',
-    fee: 3000
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.ETH,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
-    fee: 3000
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.ARBITRUM_MAINNET),
     tokenIn: TOKENS.ARBITRUM.WETH,
     tokenOut: TOKENS.ARBITRUM.USDC,
     amountIn: '1',
-    fee: 3000
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
     tokenIn: TOKENS.ETH.WETH,
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
-    fee: 3000
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
     tokenIn: TOKENS.ETH.WBTC,
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
-    fee: 3000
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.WBNB,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
-    fee: 3000
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.LINK,
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
-    fee: 300
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.WBTC,
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
-    fee: 300
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.FLUX,
     tokenOut: TOKENS.BSC.WBNB,
     amountIn: '1',
-    fee: 300
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.WBNB,
     tokenOut: TOKENS.BSC.DOGE,
     amountIn: '1',
-    fee: 300
+    fee: 100
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.DOT,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
-    fee: 300
+    fee: 100
   }
 ];
 
@@ -176,6 +176,10 @@ export function routerContracts(dex: DEX): { [chainId: number]: string } | null 
         1: '0xEfF92A263d31888d860bD50809A8D171709b7b1c', // Ethereum Mainnet
         56: '0x10ED43C718714eb63d5aA57B78B54704E256024E', // BSC Mainnet
         42161: '0x8cFe327CEc66d1C090Dd72bd0FF11d690C33a2Eb' // Arbitrum Mainnets
+      };
+    case DEX.PANCAKESWAP_V3:
+      return {
+        56: '0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865' // BSC Mainnet
       };
     default:
       return null;

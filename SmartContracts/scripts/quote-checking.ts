@@ -9,15 +9,14 @@ import { getQuote } from './quote-request';
 async function runQuotes(): Promise<void> {
   const startTime = Date.now(); // Start the timer
   const results: QuoteResult[] = [];
+  const dexes: DEX[] = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2, DEX.PANCAKESWAP_V3];
 
   // Initialize the progress bar
-  const totalTasks: number = TOKEN_PAIRS.length * 3; // Total number of quotes to fetch
+  const totalTasks: number = TOKEN_PAIRS.length * dexes.length; // Total number of quotes to fetch
   const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   progressBar.start(totalTasks, 0);
 
   for (const pair of TOKEN_PAIRS) {
-    const dexes: DEX[] = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2];
-
     for (const dex of dexes) {
       let payload: QuotePayload = {
         tokenIn: pair.tokenIn,
@@ -41,7 +40,7 @@ async function runQuotes(): Promise<void> {
       });
     }
   }
-  progressBar.stop();
+  // progressBar.stop();
 
   const endTime = Date.now(); // End the timer
   const elapsedSeconds: string = ((endTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds

@@ -5,6 +5,7 @@ import { getUniswapV2Quote, getUniswapV3Quote } from './quote-uniswap';
 export async function getQuote(payload: QuotePayload): Promise<string | null> {
   switch (payload.dex) {
     case DEX.UNISWAP_V3:
+    case DEX.PANCAKESWAP_V3:
       return getUniswapV3Quote(payload);
     case DEX.SUSHISWAP_V2:
     case DEX.PANCAKESWAP_V2:
