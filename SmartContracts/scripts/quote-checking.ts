@@ -40,7 +40,7 @@ async function runQuotes(): Promise<void> {
       });
     }
   }
-  // progressBar.stop();
+  progressBar.stop();
 
   const endTime = Date.now(); // End the timer
   const elapsedSeconds: string = ((endTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
