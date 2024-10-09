@@ -70,77 +70,88 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenIn: TOKENS.POLYGON.WETH,
     tokenOut: TOKENS.POLYGON.USDC,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: [DEX.UNISWAP_V3]
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.ETH,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.ARBITRUM_MAINNET),
     tokenIn: TOKENS.ARBITRUM.WETH,
     tokenOut: TOKENS.ARBITRUM.USDC,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
     tokenIn: TOKENS.ETH.WETH,
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
     tokenIn: TOKENS.ETH.WBTC,
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.WBNB,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.LINK,
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.WBTC,
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.FLUX,
     tokenOut: TOKENS.BSC.WBNB,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.WBNB,
     tokenOut: TOKENS.BSC.DOGE,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
     tokenIn: TOKENS.BSC.DOT,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
-    fee: 100
+    fee: 100,
+    dexSupported: []
   }
 ];
 

@@ -50,4 +50,5 @@ export interface IQuotePayload {
   tokenOut: Token;
   amountIn: string;
   fee: number;
+  dexSupported: DEX[];
 }
