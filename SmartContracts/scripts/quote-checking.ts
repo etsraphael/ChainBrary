@@ -5,11 +5,13 @@ import { DEX, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from 
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
 import { Token } from '@uniswap/sdk-core';
+import { startTrading } from './trading-process';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
   // const results: QuoteResult[] = await getQuotes();
 
+  // Sample results to delete soon
   const results: QuoteResult[] = [
     {
       tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
@@ -34,30 +36,87 @@ async function runQuotes(): Promise<void> {
       },
       dex: DEX.UNISWAP_V3,
       quoteResult: '2900'
+    },
+    {
+      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+      tokenOut: new Token(137, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin'),
+      network: {
+        chainId: 56,
+        rpcUrl: process.env.BSC_MAINNET_URL as string,
+        name: 'Binance Smart Chain Mainnet',
+        networkName: NetworkNameList.BSC_MAINNET
+      },
+      dex: DEX.SUSHISWAP_V2,
+      quoteResult: '60000'
+    },
+    {
+      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
+      tokenOut: new Token(137, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin'),
+      network: {
+        chainId: 56,
+        rpcUrl: process.env.BSC_MAINNET_URL as string,
+        name: 'Binance Smart Chain Mainnet',
+        networkName: NetworkNameList.BSC_MAINNET
+      },
+      dex: DEX.UNISWAP_V3,
+      quoteResult: '65000'
     }
   ];
 
   displayResults(results);
   const profitableResult: TradingPayload[] = checkProfitability(results);
 
-  console.log('profitableResult', profitableResult);
+  if (profitableResult.length === 0) {
+    console.log('No profitable trades found.');
+    return;
+  }
 
-  // const { confirm } = await inquirer.prompt([
+  // const response: {
+  //   selectedTradeIndex: number;
+  // } = await inquirer.prompt([
   //   {
-  //     type: 'confirm',
-  //     name: 'confirm',
-  //     message: 'Do you want to proceed with this trade?',
-  //     default: false
+  //     type: 'list',
+  //     name: 'selectedTradeIndex',
+  //     message: 'Select the trade you want to proceed with:',
+  //     choices: profitableResult.map((trade, index) => ({
+  //       name: `Trade ${index + 1}: ${trade.quoteResult1.tokenIn.symbol} to ${trade.quoteResult1.tokenOut.symbol} with ${trade.profit} profit`,
+  //       value: index
+  //     }))
   //   }
   // ]);
 
-  // if (confirm) {
-  //   console.log('Starting the trade...');
-  // } else {
-  //   // exit message
-  //   console.log('Trade cancelled');
-  //   process.exit(0);
-  // }
+  // TO be deleted soon
+  const response = {
+    selectedTradeIndex: 0
+  };
+
+  // Get the selected trade
+  const selectedTrade: TradingPayload = profitableResult[response.selectedTradeIndex];
+  console.log(`You selected Trade ${response.selectedTradeIndex + 1}:`);
+  console.log(`Trading ${selectedTrade.quoteResult1.tokenIn.symbol} to ${selectedTrade.quoteResult1.tokenOut.symbol}`);
+
+  // Ask for confirmation to proceed
+  const { confirm } = await inquirer.prompt([
+    {
+      type: 'confirm',
+      name: 'confirm',
+      message: `Do you want to proceed with this trade? (Profit: ${selectedTrade.profit.toFixed(2)}%)`,
+      default: false
+    }
+  ]);
+
+  if (confirm) {
+    const tradePayload: TradingPayload = {
+      quoteResult1: selectedTrade.quoteResult1,
+      quoteResult2: selectedTrade.quoteResult2,
+      profit: selectedTrade.profit
+    };
+    startTrading(tradePayload);
+  } else {
+    // exit message
+    console.log('Trade cancelled');
+    process.exit(0);
+  }
 }
 
 function checkProfitability(results: QuoteResult[]): TradingPayload[] {
@@ -94,7 +153,7 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
       {
         quoteResult1: toQuotePayload(highestQuote),
         quoteResult2: toQuotePayload(lowestQuote),
-        profit: profitMargin.toFixed(2) + '%'
+        profit: profitMargin
       }
     ];
   });

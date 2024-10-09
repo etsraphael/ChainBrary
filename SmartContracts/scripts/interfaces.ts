@@ -3,7 +3,7 @@ import { Token } from '@uniswap/sdk-core';
 export interface TradingPayload {
   quoteResult1: QuotePayload;
   quoteResult2: QuotePayload;
-  profit: string;
+  profit: number;
 }
 
 export interface QuoteResult {
