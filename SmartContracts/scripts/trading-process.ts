@@ -26,10 +26,14 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 }
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
-  // const quote1: string | null = await getQuote(payload.quoteResult1);
-  // const quote2: string | null = await getQuote(payload.quoteResult2);
-  const quote1 = '2600';
-  const quote2 = '2905';
+
+  console.log('payload', payload);
+
+  const quote1: string | null = await getQuote(payload.quoteResult1); // alaways return null
+  const quote2: string | null = await getQuote(payload.quoteResult2); // alaways return null
+  console.log('quote1', quote1)
+  console.log('quote2', quote2)
+
 
   if (quote1 === null || quote2 === null) {
     console.log('The quotes are no longer valid.');
@@ -169,6 +173,8 @@ async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
   try {
     const { tokenIn, tokenOut, networkUrl, amountInRaw, fee, dex } = payload;
 
+    console.log('payload', payload)
+
     // Get the factory address based on DEX and chainId
     const factoryAddresses = routerContracts(dex);
     if (!factoryAddresses) {
@@ -189,6 +195,8 @@ async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
     ];
     const factoryContract: ethers.Contract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
     const poolAddress: string = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
+
+    console.log('poolAddress', poolAddress)
 
     if (poolAddress === ethers.ZeroAddress) {
       return false;

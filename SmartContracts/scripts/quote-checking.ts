@@ -9,86 +9,32 @@ import { startTrading } from './trading-process';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
-  // const results: QuoteResult[] = await getQuotes();
 
-  // Sample results to delete soon
-  const results: QuoteResult[] = [
-    {
-      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
-      tokenOut: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether'),
-      network: {
-        chainId: 56,
-        rpcUrl: process.env.BSC_MAINNET_URL as string,
-        name: 'Binance Smart Chain Mainnet',
-        networkName: NetworkNameList.BSC_MAINNET
-      },
-      dex: DEX.SUSHISWAP_V2,
-      quoteResult: '2600'
-    },
-    {
-      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
-      tokenOut: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether'),
-      network: {
-        chainId: 56,
-        rpcUrl: process.env.BSC_MAINNET_URL as string,
-        name: 'Binance Smart Chain Mainnet',
-        networkName: NetworkNameList.BSC_MAINNET
-      },
-      dex: DEX.UNISWAP_V3,
-      quoteResult: '2900'
-    },
-    {
-      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
-      tokenOut: new Token(137, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin'),
-      network: {
-        chainId: 56,
-        rpcUrl: process.env.BSC_MAINNET_URL as string,
-        name: 'Binance Smart Chain Mainnet',
-        networkName: NetworkNameList.BSC_MAINNET
-      },
-      dex: DEX.SUSHISWAP_V2,
-      quoteResult: '60000'
-    },
-    {
-      tokenIn: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
-      tokenOut: new Token(137, '0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6', 8, 'WBTC', 'Wrapped Bitcoin'),
-      network: {
-        chainId: 56,
-        rpcUrl: process.env.BSC_MAINNET_URL as string,
-        name: 'Binance Smart Chain Mainnet',
-        networkName: NetworkNameList.BSC_MAINNET
-      },
-      dex: DEX.UNISWAP_V3,
-      quoteResult: '65000'
-    }
-  ];
-
+  // get quotes and display 
+  const results: QuoteResult[] = await getQuotes();
   displayResults(results);
-  const profitableResult: TradingPayload[] = checkProfitability(results);
 
+  // check profitability
+  const profitableResult: TradingPayload[] = checkProfitability(results);
   if (profitableResult.length === 0) {
     console.log('No profitable trades found.');
     return;
   }
 
-  // const response: {
-  //   selectedTradeIndex: number;
-  // } = await inquirer.prompt([
-  //   {
-  //     type: 'list',
-  //     name: 'selectedTradeIndex',
-  //     message: 'Select the trade you want to proceed with:',
-  //     choices: profitableResult.map((trade, index) => ({
-  //       name: `Trade ${index + 1}: ${trade.quoteResult1.tokenIn.symbol} to ${trade.quoteResult1.tokenOut.symbol} with ${trade.profit} profit`,
-  //       value: index
-  //     }))
-  //   }
-  // ]);
-
-  // TO be deleted soon
-  const response = {
-    selectedTradeIndex: 0
-  };
+  // Ask user to select a trade
+  const response: {
+    selectedTradeIndex: number;
+  } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'selectedTradeIndex',
+      message: 'Select the trade you want to proceed with:',
+      choices: profitableResult.map((trade, index) => ({
+        name: `Trade ${index + 1}: ${trade.quoteResult1.tokenIn.symbol} to ${trade.quoteResult1.tokenOut.symbol} with ${trade.profit.toFixed(2)}% profit`,
+        value: index
+      }))
+    }
+  ]);
 
   // Get the selected trade
   const selectedTrade: TradingPayload = profitableResult[response.selectedTradeIndex];
@@ -105,6 +51,7 @@ async function runQuotes(): Promise<void> {
     }
   ]);
 
+  // Start trading if confirmed
   if (confirm) {
     const tradePayload: TradingPayload = {
       quoteResult1: selectedTrade.quoteResult1,
