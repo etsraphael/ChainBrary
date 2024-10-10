@@ -26,9 +26,14 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 }
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
-  console.log('payload', payload);
 
-  const quote1: string | null = await getQuote(payload.quoteResult1); // alaways return null
+  // update amount in raw here to 100
+  payload.quoteResult1.amountInRaw = '100';
+  payload.quoteResult2.amountInRaw = '100';
+  payload.quoteResult1.fee = 100;
+  payload.quoteResult2.fee = 100;
+
+  const quote1: string | null = await getQuote(payload.quoteResult1); // v3 won't work here
   const quote2: string | null = await getQuote(payload.quoteResult2); // alaways return null
   console.log('quote1', quote1);
   console.log('quote2', quote2);
@@ -170,8 +175,6 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
 async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
   try {
     const { tokenIn, tokenOut, networkUrl, amountInRaw, fee, dex } = payload;
-
-    console.log('payload', payload);
 
     // Get the factory address based on DEX and chainId
     const factoryAddresses = routerContracts(dex);

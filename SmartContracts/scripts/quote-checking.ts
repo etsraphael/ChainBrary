@@ -29,7 +29,7 @@ async function runQuotes(): Promise<void> {
       name: 'selectedTradeIndex',
       message: 'Select the trade you want to proceed with:',
       choices: profitableResult.map((trade, index) => ({
-        name: `Trade ${index + 1}: ${trade.quoteResult1.tokenIn.symbol} to ${trade.quoteResult1.tokenOut.symbol} with ${trade.profit.toFixed(2)}% profit`,
+        name: `Trade ${index + 1}: ${trade.quoteResult1.tokenIn.symbol} to ${trade.quoteResult1.tokenOut.symbol} with ${trade.profit.toFixed(2)}% profit. From ${trade.quoteResult1.dex} to ${trade.quoteResult2.dex}. Throught ${trade.quoteResult1.networkUrl}`,
         value: index
       }))
     }
@@ -151,6 +151,7 @@ async function getQuotes(): Promise<QuoteResult[]> {
   console.log(`\nTotal time taken: ${elapsedSeconds} seconds`);
   return results;
 }
+
 // Function to display results in a table
 function displayResults(results: QuoteResult[]) {
   // Group results by network
