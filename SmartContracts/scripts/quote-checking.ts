@@ -9,8 +9,7 @@ import { startTrading } from './trading-process';
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
-
-  // get quotes and display 
+  // get quotes and display
   const results: QuoteResult[] = await getQuotes();
   displayResults(results);
 

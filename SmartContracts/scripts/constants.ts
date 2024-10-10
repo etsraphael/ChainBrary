@@ -71,7 +71,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.POLYGON.USDC,
     amountIn: '1',
     fee: 100,
-    dexSupported: [DEX.UNISWAP_V3]
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
@@ -79,7 +79,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2, DEX.PANCAKESWAP_V3]
   },
   {
     network: getNetworkByName(NetworkNameList.ARBITRUM_MAINNET),
@@ -87,7 +87,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.ARBITRUM.USDC,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
@@ -95,7 +95,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
@@ -103,7 +103,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.ETH.USDC,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
@@ -111,7 +111,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2, DEX.PANCAKESWAP_V3]
   },
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
@@ -119,7 +119,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
@@ -127,7 +127,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.POLYGON.WETH,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
@@ -135,7 +135,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.BSC.WBNB,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.PANCAKESWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
@@ -143,7 +143,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.BSC.DOGE,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.PANCAKESWAP_V2]
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
@@ -151,7 +151,7 @@ export const TOKEN_PAIRS: IQuotePayload[] = [
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 100,
-    dexSupported: []
+    dexSupported: [DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2]
   }
 ];
 
