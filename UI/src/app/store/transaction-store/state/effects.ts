@@ -16,7 +16,7 @@ import {
   loadTransactionsFromBridgeTransferSuccess,
   localTransactionSentSuccessfully
 } from './actions';
-import { mintTokenSuccess } from '../../tokens-management-store/state/actions';
+import { mintTokenSuccess, burnTokenSuccess } from '../../tokens-management-store/state/actions';
 
 @Injectable()
 export class TransactionEffects {
@@ -60,10 +60,10 @@ export class TransactionEffects {
     );
   });
 
-  minTokenSent$ = createEffect(() => {
+  tokenSent$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(mintTokenSuccess),
-      map((action: ReturnType<typeof mintTokenSuccess>) => {
+      ofType(mintTokenSuccess, burnTokenSuccess),
+      map((action: ReturnType<typeof mintTokenSuccess | typeof burnTokenSuccess>) => {
         return localTransactionSentSuccessfully({
           card: {
             title: $localize`:@@transaction.payment.title:Transaction sent successfully`,
