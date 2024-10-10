@@ -1,7 +1,7 @@
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
 import { TOKEN_PAIRS } from './constants';
-import { DEX, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
+import { DEX, IDexPool, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
 import { Token } from '@uniswap/sdk-core';
@@ -109,22 +109,24 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
 async function getQuotes(): Promise<QuoteResult[]> {
   const startTime = Date.now(); // Start the timer
   const results: QuoteResult[] = [];
-  const dexes: DEX[] = [DEX.UNISWAP_V3, DEX.SUSHISWAP_V2, DEX.PANCAKESWAP_V2, DEX.PANCAKESWAP_V3];
 
   // Initialize the progress bar
-  const totalTasks: number = TOKEN_PAIRS.length * dexes.length; // Total number of quotes to fetch
+  const totalTasks: number = TOKEN_PAIRS.reduce((acc, pair) => acc + pair.dexSupported.length, 0); // Total number of quotes to fetch
   const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   progressBar.start(totalTasks, 0);
 
   for (const pair of TOKEN_PAIRS) {
-    for (const dex of dexes) {
+    // Filter the DEXes to only include those supported by the pair
+    const supportedDexes: DEX[] = pair.dexSupported;
+
+    for (const dex of supportedDexes) {
       let payload: QuotePayload = {
         tokenIn: pair.tokenIn,
         tokenOut: pair.tokenOut,
         networkUrl: pair.network.rpcUrl,
         amountInRaw: pair.amountIn,
         fee: pair.fee,
-        dex: dex
+        dex: dex // this will only include the dex supported by the pair
       };
 
       let quote: string | null = await getQuote(payload);
@@ -140,6 +142,7 @@ async function getQuotes(): Promise<QuoteResult[]> {
       });
     }
   }
+
   progressBar.stop();
 
   const endTime = Date.now(); // End the timer
@@ -148,7 +151,6 @@ async function getQuotes(): Promise<QuoteResult[]> {
   console.log(`\nTotal time taken: ${elapsedSeconds} seconds`);
   return results;
 }
-
 // Function to display results in a table
 function displayResults(results: QuoteResult[]) {
   // Group results by network

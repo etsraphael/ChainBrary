@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import { Token } from '@uniswap/sdk-core';
-import { DEX, INetwork, IQuotePayload, NetworkNameList } from './interfaces';
+import { DEX, INetwork, IDexPool, NetworkNameList } from './interfaces';
 
 dotenv.config();
 
@@ -64,7 +64,7 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
 };
 
 // List of token pairs to quote
-export const TOKEN_PAIRS: IQuotePayload[] = [
+export const TOKEN_PAIRS: IDexPool[] = [
   {
     network: getNetworkByName(NetworkNameList.POLYGON_MAINNET),
     tokenIn: TOKENS.POLYGON.WETH,

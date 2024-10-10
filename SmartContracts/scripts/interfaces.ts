@@ -44,11 +44,11 @@ export interface INetwork {
   networkName: NetworkNameList;
 }
 
-export interface IQuotePayload {
+export interface IDexPool {
   network: INetwork;
   tokenIn: Token;
   tokenOut: Token;
   amountIn: string;
   fee: number;
-  dexSupported: DEX[];
+  dexSupported: DEX[]; // new value here
 }
