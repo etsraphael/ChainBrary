@@ -1,11 +1,12 @@
-import { CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core';
-import { Pool, Route, Trade } from '@uniswap/v3-sdk';
+import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core';
+import { FeeAmount, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
 import { routerContracts } from './constants';
 import { DEX, QuotePayload, TradingPayload } from './interfaces';
 import { getUniswapV3Quote } from './quote-uniswap';
 import { getQuote } from './quote-request';
 import inquirer from 'inquirer';
+import JSBI from 'jsbi';
 
 export async function startTrading(payload: TradingPayload): Promise<string | null> {
   try {
@@ -26,7 +27,6 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 }
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
-
   // update amount in raw here to 100
   payload.quoteResult1.amountInRaw = '100';
   payload.quoteResult2.amountInRaw = '100';
@@ -156,8 +156,8 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
     // Set slippage tolerance (example: 0.5%)
     const amountOutMin = ethers.parseUnits('0.95', tokenOut.decimals);
 
-    // Transaction deadline (example: 20 minutes from now)
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
+    // Transaction deadline (example: 2 minutes from now)
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 2;
 
     // Execute the swap
     const tx = await routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, wallet.address, deadline);
@@ -173,65 +173,107 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
 
 // Function to execute Uniswap V3 trade
 async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
+  const UNISWAP_V3_FEE = 500; // 0.05% fee
+  const MAX_FEE_PER_GAS = ethers.parseUnits('100', 'gwei');
+  const MAX_PRIORITY_FEE_PER_GAS = ethers.parseUnits('10', 'gwei');
+
+  const CurrentConfig = {
+    wallet: {
+      address: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
+      privateKey: '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+    },
+    tokens: {
+      in: payload.tokenIn,
+      amountIn: payload.amountInRaw, // Use the actual input amount
+      out: payload.tokenOut,
+      poolFee: FeeAmount.MEDIUM
+    }
+  };
+
   try {
-    const { tokenIn, tokenOut, networkUrl, amountInRaw, fee, dex } = payload;
+    const { tokenIn, tokenOut, networkUrl, amountInRaw, fee } = payload;
 
     // Get the factory address based on DEX and chainId
-    const factoryAddresses = routerContracts(dex);
+    const factoryAddresses = routerContracts(DEX.UNISWAP_V3);
     if (!factoryAddresses) {
+      console.error('Factory address not found for this DEX.');
       return false;
     }
     const FACTORY_ADDRESS: string = factoryAddresses[tokenIn.chainId];
     if (!FACTORY_ADDRESS) {
+      console.error('Factory address not available for this chain.');
       return false;
     }
 
     // Connect to the network
-    const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
-    const wallet: ethers.Wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
+    const provider = new ethers.JsonRpcProvider(networkUrl);
+    const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
 
-    // Get the pool address
-    const FACTORY_ABI: string[] = [
+    // Get the pool details from the contract (you will need on-chain data for this)
+    const FACTORY_ABI = [
       'function getPool(address tokenA, address tokenB, uint24 fee) external view returns (address pool)'
     ];
-    const factoryContract: ethers.Contract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
-    const poolAddress: string = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
-
-    console.log('poolAddress', poolAddress);
+    const factoryContract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
+    const poolAddress = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
 
     if (poolAddress === ethers.ZeroAddress) {
+      console.error('No pool found for the given tokens and fee.');
       return false;
     }
 
-    // Pool ABI for executing the trade
+    // Pool contract ABI
     const POOL_ABI: string[] = [
-      'function exactInputSingle((address tokenIn, address tokenOut, uint24 fee, address recipient, uint256 deadline, uint256 amountIn, uint256 amountOutMinimum, uint160 sqrtPriceLimitX96)) external returns (uint256 amountOut)'
+      'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16, uint16, uint16, uint8, bool)',
+      'function liquidity() external view returns (uint128)'
     ];
 
-    const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, wallet);
+    // Connect to the pool contract
+    const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, provider);
+
+    // Fetch pool details: sqrtPriceX96, liquidity, tick (these should be fetched from on-chain data)
+    const slot0 = await poolContract.slot0();
+    const sqrtPriceX96 = slot0[0];
+    const tick = slot0[1];
+    const liquidity = await poolContract.liquidity();
+
+    // Create the pool instance using the fetched pool data
+    const pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
     // Amount of tokenIn to swap
-    const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenIn.decimals);
+    const amountIn = JSBI.BigInt(amountInRaw); // You can also use ethers.parseUnits(amountInRaw, tokenIn.decimals)
 
-    // Set slippage tolerance (example: 0.5%)
-    const amountOutMin = ethers.parseUnits('0.95', tokenOut.decimals);
-
-    // Transaction deadline (example: 20 minutes from now)
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 20;
-
-    // Execute the trade
-    const tx = await poolContract.exactInputSingle({
-      tokenIn: tokenIn.address,
-      tokenOut: tokenOut.address,
-      fee: fee,
-      recipient: wallet.address,
-      deadline: deadline,
-      amountIn: amountIn,
-      amountOutMinimum: amountOutMin,
-      sqrtPriceLimitX96: 0
+    // Create a trade object using the pool
+    const uncheckedTrade = Trade.createUncheckedTrade({
+      route: new Route([pool], tokenIn, tokenOut),
+      inputAmount: CurrencyAmount.fromRawAmount(tokenIn, amountIn),
+      outputAmount: CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt('0')), // Placeholder
+      tradeType: TradeType.EXACT_INPUT
     });
 
-    await tx.wait();
+    // Define swap options
+    const options: SwapOptions = {
+      slippageTolerance: new Percent(50, 10_000), // 50 bips, or 0.50%
+      deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now
+      recipient: wallet.address
+    };
+
+    // Get the method parameters for the swap
+    const methodParameters = SwapRouter.swapCallParameters([uncheckedTrade], options);
+
+    // Create the transaction
+    const tx: ethers.TransactionRequest = {
+      data: methodParameters.calldata,
+      to: poolAddress, // Uniswap V3 Router Address (mainnet example)
+      value: methodParameters.value,
+      from: CurrentConfig.wallet.address,
+      maxFeePerGas: MAX_FEE_PER_GAS,
+      maxPriorityFeePerGas: MAX_PRIORITY_FEE_PER_GAS
+    };
+
+    // Send the transaction
+    const txResponse = await wallet.sendTransaction(tx);
+    await txResponse.wait();
+
     console.log('Uniswap V3 Trade Executed');
     return true;
   } catch (error) {
