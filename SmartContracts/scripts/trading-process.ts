@@ -173,14 +173,13 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
 
 // Function to execute Uniswap V3 trade
 async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
-  const UNISWAP_V3_FEE = 500; // 0.05% fee
   const MAX_FEE_PER_GAS = ethers.parseUnits('100', 'gwei');
   const MAX_PRIORITY_FEE_PER_GAS = ethers.parseUnits('10', 'gwei');
 
   const CurrentConfig = {
     wallet: {
-      address: '0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266',
-      privateKey: '0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80'
+      address: process.env.WALLET_PUBLIC_ADDRESS as string,
+      privateKey: process.env.WALLET_PRIVATE_KEY as string
     },
     tokens: {
       in: payload.tokenIn,
@@ -237,13 +236,13 @@ async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
     const liquidity = await poolContract.liquidity();
 
     // Create the pool instance using the fetched pool data
-    const pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
+    const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
     // Amount of tokenIn to swap
-    const amountIn = JSBI.BigInt(amountInRaw); // You can also use ethers.parseUnits(amountInRaw, tokenIn.decimals)
+    const amountIn: JSBI = JSBI.BigInt(amountInRaw); // You can also use ethers.parseUnits(amountInRaw, tokenIn.decimals)
 
     // Create a trade object using the pool
-    const uncheckedTrade = Trade.createUncheckedTrade({
+    const uncheckedTrade: Trade<Token, Token, TradeType.EXACT_INPUT> = Trade.createUncheckedTrade({
       route: new Route([pool], tokenIn, tokenOut),
       inputAmount: CurrencyAmount.fromRawAmount(tokenIn, amountIn),
       outputAmount: CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt('0')), // Placeholder
