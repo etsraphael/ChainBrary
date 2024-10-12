@@ -1,12 +1,11 @@
 import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core';
 import { FeeAmount, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
-import { routerContracts } from './constants';
-import { DEX, QuotePayload, TradingPayload } from './interfaces';
-import { getUniswapV3Quote } from './quote-uniswap';
-import { getQuote } from './quote-request';
 import inquirer from 'inquirer';
 import JSBI from 'jsbi';
+import { routerContracts } from './constants';
+import { DEX, QuotePayload, TradingPayload } from './interfaces';
+import { getQuote } from './quote-request';
 
 export async function startTrading(payload: TradingPayload): Promise<string | null> {
   try {
@@ -27,23 +26,48 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 }
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
-  // update amount in raw here to 100
-  payload.quoteResult1.amountInRaw = '100';
-  payload.quoteResult2.amountInRaw = '100';
+  // update amount in raw here to 1
+  payload.quoteResult1.amountInRaw = '10';
+  payload.quoteResult2.amountInRaw = '10';
   payload.quoteResult1.fee = 100;
   payload.quoteResult2.fee = 100;
 
-  const quote1: string | null = await getQuote(payload.quoteResult1); // v3 won't work here
-  const quote2: string | null = await getQuote(payload.quoteResult2); // alaways return null
-  console.log('quote1', quote1);
-  console.log('quote2', quote2);
+  const quote1: string | null = await getQuote(payload.quoteResult1);
+  const quote2: string | null = await getQuote(payload.quoteResult2);
+
+  // explain the profit
+  console.log(
+    'First trade: ' +
+      quote2 +
+      ' ' +
+      payload.quoteResult2.tokenOut.symbol +
+      ' to ' +
+      payload.quoteResult2.amountInRaw +
+      ' ' +
+      payload.quoteResult2.tokenIn.symbol +
+      ' from ' +
+      payload.quoteResult2.dex
+  );
+  
+  console.log(
+    'Second trade: ' +
+      quote1 +
+      ' ' +
+      payload.quoteResult1.tokenOut.symbol +
+      ' to ' +
+      payload.quoteResult1.amountInRaw +
+      ' ' +
+      payload.quoteResult1.tokenIn.symbol +
+      ' from ' +
+      payload.quoteResult1.dex
+  );
 
   if (quote1 === null || quote2 === null) {
     console.log('The quotes are no longer valid.');
     return false;
   }
 
-  const profit: number = ((Number(quote2) - Number(quote1)) / Number(quote1)) * 100;
+  const profit: number = ((Number(quote1) - Number(quote2)) / Number(quote2)) * 100;
   console.log(`Old Profit: ${payload.profit.toFixed(2)}%`);
   console.log(`New Profit: ${profit.toFixed(2)}%`);
 
@@ -61,36 +85,7 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
 
 async function executeTrades(payload: TradingPayload) {
   try {
-    // Execute the first trade based on the DEX
-    switch (payload.quoteResult1.dex) {
-      case DEX.SUSHISWAP_V2:
-      case DEX.PANCAKESWAP_V2:
-        const isTrade1V2Successful = await executeUniswapV2Trade(payload.quoteResult1);
-        if (isTrade1V2Successful) {
-          console.log('First trade (V2) executed successfully');
-        } else {
-          console.log('First trade (V2) execution failed');
-          return;
-        }
-        break;
-
-      case DEX.UNISWAP_V3:
-      case DEX.PANCAKESWAP_V3:
-        const isTrade1V3Successful = await executeUniswapV3Trade(payload.quoteResult1);
-        if (isTrade1V3Successful) {
-          console.log('First trade (V3) executed successfully');
-        } else {
-          console.log('First trade (V3) execution failed');
-          return;
-        }
-        break;
-
-      default:
-        console.log(`Unsupported DEX for the first trade: ${payload.quoteResult1.dex}`);
-        return;
-    }
-
-    // Execute the second trade based on the DEX
+    // Buy the cheaper token first
     switch (payload.quoteResult2.dex) {
       case DEX.SUSHISWAP_V2:
       case DEX.PANCAKESWAP_V2:
@@ -118,6 +113,35 @@ async function executeTrades(payload: TradingPayload) {
         console.log(`Unsupported DEX for the second trade: ${payload.quoteResult2.dex}`);
         return;
     }
+
+    // // Sell the more expensive token next
+    // switch (payload.quoteResult1.dex) {
+    //   case DEX.SUSHISWAP_V2:
+    //   case DEX.PANCAKESWAP_V2:
+    //     const isTrade1V2Successful = await executeUniswapV2Trade(payload.quoteResult1);
+    //     if (isTrade1V2Successful) {
+    //       console.log('First trade (V2) executed successfully');
+    //     } else {
+    //       console.log('First trade (V2) execution failed');
+    //       return;
+    //     }
+    //     break;
+
+    //   case DEX.UNISWAP_V3:
+    //   case DEX.PANCAKESWAP_V3:
+    //     const isTrade1V3Successful = await executeUniswapV3Trade(payload.quoteResult1);
+    //     if (isTrade1V3Successful) {
+    //       console.log('First trade (V3) executed successfully');
+    //     } else {
+    //       console.log('First trade (V3) execution failed');
+    //       return;
+    //     }
+    //     break;
+
+    //   default:
+    //     console.log(`Unsupported DEX for the first trade: ${payload.quoteResult1.dex}`);
+    //     return;
+    // }
   } catch (error) {
     console.error('Error executing trades:', error);
   }
@@ -144,25 +168,86 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
 
     // Router ABI for swapExactTokensForTokens
     const ROUTER_ABI: string[] = [
-      'function swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] memory path, address to, uint256 deadline) external returns (uint256[] memory amounts)'
+      'function swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] memory path, address to, uint256 deadline) external returns (uint256[] memory amounts)',
+      'function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts)'
     ];
 
     const routerContract: ethers.Contract = new ethers.Contract(routerAddress, ROUTER_ABI, wallet);
 
+    // Token contract ABI
+    const TOKEN_ABI: string[] = [
+      'function approve(address spender, uint256 amount) public returns (bool)',
+      'function balanceOf(address owner) public view returns (uint256)',
+      'function allowance(address owner, address spender) public view returns (uint256)'
+    ];
+
+    const tokenContract: ethers.Contract = new ethers.Contract(tokenOut.address, TOKEN_ABI, wallet);
+
     // Amount of tokenIn to swap
-    const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenIn.decimals);
-    const path: string[] = [tokenIn.address, tokenOut.address];
+    const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenOut.decimals);
 
-    // Set slippage tolerance (example: 0.5%)
-    const amountOutMin = ethers.parseUnits('0.95', tokenOut.decimals);
+    // Check balance
+    const balance: bigint = await tokenContract.balanceOf(wallet.address);
 
-    // Transaction deadline (example: 2 minutes from now)
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 2;
+    // logs the amount by ether 
+    console.log('amountIn', ethers.formatEther(amountIn.toString()));
+    console.log('balance', ethers.formatEther(balance.toString()));
+
+    if (balance < amountIn) {
+      console.error('Insufficient token balance');
+      return false;
+    }
+
+    // Fetch the current gas price from fee data (in Wei)
+    const feeData: ethers.FeeData = await provider.getFeeData();
+    const currentGasPrice: bigint | null = feeData.gasPrice;  // Gas price in Wei
+    
+    // Ensure gasPrice exists in the feeData
+    if (!currentGasPrice) {
+      throw new Error("Could not fetch gas price");
+    }
+
+    // logs the gas price in ether
+    console.log('currentGasPrice: ', ethers.formatEther(currentGasPrice.toString()));
+
+    // Check allowance
+    const allowance: bigint = await tokenContract.allowance(wallet.address, routerAddress);
+    const adjustedGasPrice: bigint = currentGasPrice * 110n / 100n; // Multiply by 110% (use `n` to indicate `bigint`)
+
+    console.log('allowance', ethers.formatEther(allowance.toString()));
+
+    if (allowance < amountIn) { 
+      console.log('Not enough allowance. Approving...');
+      // Adjust the gas price (e.g., increase by 10% to prioritize)
+    
+      const approvalTx = await tokenContract.approve(routerAddress, amountIn, {
+        gasPrice: adjustedGasPrice
+      });
+    
+      await approvalTx.wait();
+      console.log(`Approved ${tokenOut.symbol} for ${amountInRaw}`);
+    }
+
+    if(allowance >= amountIn) {
+      console.log('Already enough allowance');
+    }
+    
+
+    // Set up the swap
+    const path: string[] = [tokenOut.address, tokenIn.address];
+    const amountOutMin = ethers.parseUnits('0.95', tokenOut.decimals); // Slippage tolerance: 5%
+    const deadline = Math.floor(Date.now() / 1000) + 60 * 2; // 2 minutes from now
+
+    // Get expected amounts out
+    const amountsOut = await routerContract.getAmountsOut(amountIn, path);
+    const expectedAmountOut = amountsOut[amountsOut.length - 1];
+    console.log('Expected amount out:', ethers.formatUnits(expectedAmountOut, tokenIn.decimals));
+    
 
     // Execute the swap
-    const tx = await routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, wallet.address, deadline);
+    // const tx = await routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, wallet.address, deadline); // this one does not work
+    // await tx.wait();
 
-    await tx.wait();
     console.log('Uniswap V2 Trade Executed');
     return true;
   } catch (error) {

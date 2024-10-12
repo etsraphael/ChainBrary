@@ -38,6 +38,10 @@ export async function getUniswapV2Quote(payload: QuotePayload): Promise<string |
     // Get quote
     const amountsOut: ethers.BigNumberish[] = await routerContract.getAmountsOut(amountIn, path);
 
+    // console.log('amountIn', amountIn.toString())
+    // console.log('routerContract', await routerContract.getAddress());
+    // console.log('path', path);
+
     const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
     return amountOut;
   } catch (error) {

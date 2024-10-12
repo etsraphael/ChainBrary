@@ -48,7 +48,7 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
     WBTC: new Token(1, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped Bitcoin')
   },
   BSC: {
-    ETH: new Token(56, '0x2170Ed0880ac9A755fd29B2688956BD959F933F8', 18, 'ETH', 'Ethereum'),
+    WETH: new Token(56, '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 18, 'WETH', 'Ethereum'),
     USDT: new Token(56, '0x55d398326f99059ff775485246999027b3197955', 18, 'USDT', 'Tether USD'),
     WBNB: new Token(56, '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c', 18, 'WBNB', 'Wrapped BNB'),
     FLUX: new Token(56, '0xaff9084f2374585879e8b434c399e29e80cce635', 18, 'FLUX', 'Flux Protocol'),
@@ -75,7 +75,7 @@ export const TOKEN_PAIRS: IDexPool[] = [
   },
   {
     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
-    tokenIn: TOKENS.BSC.ETH,
+    tokenIn: TOKENS.BSC.WETH,
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 100,
