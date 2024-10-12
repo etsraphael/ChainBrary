@@ -1,16 +1,39 @@
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
-import { TOKEN_PAIRS } from './constants';
+import { TOKEN_PAIRS, TOKENS } from './constants';
 import { DEX, IDexPool, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
 import { Token } from '@uniswap/sdk-core';
 import { startTrading } from './trading-process';
 
+// Function to prompt the user to select a token to grow
+async function selectTokenToGrow(): Promise<Token> {
+  const allTokens = Object.values(TOKENS).flatMap(tokenMap => Object.values(tokenMap));
+  const tokenChoices = allTokens.map(token => ({
+    name: `${token.symbol} (${token.name}) on chain ${token.chainId}`,
+    value: token
+  }));
+
+  const response = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'token',
+      message: 'Which token would you like to grow?',
+      choices: tokenChoices
+    }
+  ]);
+
+  return response.token;
+}
+
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
+  // Prompt the user to select the token to grow
+  const selectedToken = await selectTokenToGrow();
+
   // get quotes and display
-  const results: QuoteResult[] = await getQuotes();
+  const results: QuoteResult[] = await getQuotes(selectedToken);
   displayResults(results);
 
   // check profitability
@@ -22,6 +45,16 @@ async function runQuotes(): Promise<void> {
 
   console.log(JSON.stringify(profitableResult, null, 2));
 
+  // Prepare trade options with more context
+  const tradeChoices = profitableResult.map((trade, index) => {
+    const amountIn = parseFloat(trade.quoteResult1.amountInRaw);
+    const amountOut = parseFloat(trade.quoteResult2.amountInRaw);
+    return {
+      name: `Trade ${index + 1}: Buy ${amountIn} ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Profit: ${trade.profit.toFixed(2)}%`,
+      value: index
+    };
+  });
+
   // Ask user to select a trade
   const response: {
     selectedTradeIndex: number;
@@ -29,11 +62,8 @@ async function runQuotes(): Promise<void> {
     {
       type: 'list',
       name: 'selectedTradeIndex',
-      message: 'Select the trade you want to proceed with:',
-      choices: profitableResult.map((trade, index) => ({
-        name: `Trade ${index + 1}: ${trade.quoteResult1.tokenIn.symbol} to ${trade.quoteResult1.tokenOut.symbol} with ${trade.profit.toFixed(2)}% profit. From ${trade.quoteResult1.dex} to ${trade.quoteResult2.dex}. Throught ${trade.quoteResult1.networkUrl}`,
-        value: index
-      }))
+      message: `Select the trade you want to proceed with (${profitableResult.length} profitable trades found):`,
+      choices: tradeChoices
     }
   ]);
 
@@ -88,15 +118,13 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
       .map((q) => {
         const amountIn = parseFloat(q.amountIn);
         const quoteResult = parseFloat(q.quoteResult!);
-        console.log('quoteResult', quoteResult);
-        console.log('amountIn', amountIn);
         let priceAB: number;
         if (q.tokenIn.address === tokenA.address) {
           // Selling tokenA for tokenB
-          priceAB = amountIn / quoteResult;
+          priceAB = quoteResult / amountIn; // Corrected calculation
         } else {
           // Buying tokenA with tokenB
-          priceAB = quoteResult / amountIn;
+          priceAB = amountIn / quoteResult; // Corrected calculation
         }
         return {
           ...q,
@@ -139,17 +167,22 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
     ];
   });
 }
+
 // Function retrieve quotes for a token pair
-async function getQuotes(): Promise<QuoteResult[]> {
+async function getQuotes(selectedToken: Token): Promise<QuoteResult[]> {
   const startTime = Date.now(); // Start the timer
   const results: QuoteResult[] = [];
 
   // Initialize the progress bar
-  const totalTasks: number = TOKEN_PAIRS.reduce((acc, pair) => acc + pair.dexSupported.length, 0); // Total number of quotes to fetch
+  const totalTasks: number = TOKEN_PAIRS.filter(pair =>
+    pair.tokenIn.address === selectedToken.address || pair.tokenOut.address === selectedToken.address
+  ).reduce((acc, pair) => acc + pair.dexSupported.length, 0); // Total number of quotes to fetch
   const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   progressBar.start(totalTasks, 0);
 
-  for (const pair of TOKEN_PAIRS) {
+  for (const pair of TOKEN_PAIRS.filter(pair =>
+    pair.tokenIn.address === selectedToken.address || pair.tokenOut.address === selectedToken.address
+  )) {
     // Filter the DEXes to only include those supported by the pair
     const supportedDexes: DEX[] = pair.dexSupported;
 
