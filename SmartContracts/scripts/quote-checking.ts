@@ -124,7 +124,7 @@ async function getQuotes(): Promise<QuoteResult[]> {
         tokenIn: pair.tokenIn,
         tokenOut: pair.tokenOut,
         networkUrl: pair.network.rpcUrl,
-        amountInRaw: pair.amountIn,
+        amountInRaw: pair.amountIn.toString(),
         fee: pair.fee,
         dex: dex // this will only include the dex supported by the pair
       };

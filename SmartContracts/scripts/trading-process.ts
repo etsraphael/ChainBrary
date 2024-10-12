@@ -48,7 +48,7 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
       ' from ' +
       payload.quoteResult2.dex
   );
-  
+
   console.log(
     'Second trade: ' +
       quote1 +
@@ -189,7 +189,7 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
     // Check balance
     const balance: bigint = await tokenContract.balanceOf(wallet.address);
 
-    // logs the amount by ether 
+    // logs the amount by ether
     console.log('amountIn', ethers.formatEther(amountIn.toString()));
     console.log('balance', ethers.formatEther(balance.toString()));
 
@@ -200,11 +200,11 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
 
     // Fetch the current gas price from fee data (in Wei)
     const feeData: ethers.FeeData = await provider.getFeeData();
-    const currentGasPrice: bigint | null = feeData.gasPrice;  // Gas price in Wei
-    
+    const currentGasPrice: bigint | null = feeData.gasPrice; // Gas price in Wei
+
     // Ensure gasPrice exists in the feeData
     if (!currentGasPrice) {
-      throw new Error("Could not fetch gas price");
+      throw new Error('Could not fetch gas price');
     }
 
     // logs the gas price in ether
@@ -212,26 +212,25 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
 
     // Check allowance
     const allowance: bigint = await tokenContract.allowance(wallet.address, routerAddress);
-    const adjustedGasPrice: bigint = currentGasPrice * 110n / 100n; // Multiply by 110% (use `n` to indicate `bigint`)
+    const adjustedGasPrice: bigint = (currentGasPrice * 110n) / 100n; // Multiply by 110% (use `n` to indicate `bigint`)
 
     console.log('allowance', ethers.formatEther(allowance.toString()));
 
-    if (allowance < amountIn) { 
+    if (allowance < amountIn) {
       console.log('Not enough allowance. Approving...');
       // Adjust the gas price (e.g., increase by 10% to prioritize)
-    
+
       const approvalTx = await tokenContract.approve(routerAddress, amountIn, {
         gasPrice: adjustedGasPrice
       });
-    
+
       await approvalTx.wait();
       console.log(`Approved ${tokenOut.symbol} for ${amountInRaw}`);
     }
 
-    if(allowance >= amountIn) {
+    if (allowance >= amountIn) {
       console.log('Already enough allowance');
     }
-    
 
     // Set up the swap
     const path: string[] = [tokenOut.address, tokenIn.address];
@@ -242,7 +241,6 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
     const amountsOut = await routerContract.getAmountsOut(amountIn, path);
     const expectedAmountOut = amountsOut[amountsOut.length - 1];
     console.log('Expected amount out:', ethers.formatUnits(expectedAmountOut, tokenIn.decimals));
-    
 
     // Execute the swap
     // const tx = await routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, wallet.address, deadline); // this one does not work

@@ -48,7 +48,7 @@ export interface IDexPool {
   network: INetwork;
   tokenIn: Token;
   tokenOut: Token;
-  amountIn: string;
+  amountIn: number;
   fee: number;
   dexSupported: DEX[]; // new value here
 }
