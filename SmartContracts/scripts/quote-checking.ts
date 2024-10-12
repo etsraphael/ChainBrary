@@ -20,6 +20,8 @@ async function runQuotes(): Promise<void> {
     return;
   }
 
+  console.log(JSON.stringify(profitableResult, null, 2));
+
   // Ask user to select a trade
   const response: {
     selectedTradeIndex: number;
@@ -66,45 +68,77 @@ async function runQuotes(): Promise<void> {
 }
 
 function checkProfitability(results: QuoteResult[]): TradingPayload[] {
-  const groupedResults = results.reduce<Record<string, QuoteResult[]>>((acc, result) => {
-    const key = `${result.tokenIn.address}-${result.tokenOut.address}`;
-    (acc[key] ||= []).push(result);
+  // Group quotes by unordered pair of token addresses
+  const groupedResults = results.reduce<Record<string, { tokenA: Token, tokenB: Token, quotes: QuoteResult[] }>>((acc, result) => {
+    const addresses = [result.tokenIn.address, result.tokenOut.address].sort();
+    const key = `${addresses[0]}-${addresses[1]}`;
+    if (!acc[key]) {
+      const tokens = addresses[0] === result.tokenIn.address
+        ? { tokenA: result.tokenIn, tokenB: result.tokenOut }
+        : { tokenA: result.tokenOut, tokenB: result.tokenIn };
+      acc[key] = { ...tokens, quotes: [] };
+    }
+    acc[key].quotes.push(result);
     return acc;
   }, {});
 
-  return Object.values(groupedResults).flatMap((quoteResults: QuoteResult[]) => {
-    const validQuotes = quoteResults
+  return Object.values(groupedResults).flatMap(({ tokenA, tokenB, quotes }) => {
+    const validQuotes = quotes
       .filter((q) => q.quoteResult !== null)
-      .map((q) => ({ ...q, quoteValue: parseFloat(q.quoteResult!) }))
-      .sort((a, b) => b.quoteValue - a.quoteValue);
+      .map((q) => {
+        const amountIn = parseFloat(q.amountIn);
+        const quoteResult = parseFloat(q.quoteResult!);
+        console.log('quoteResult', quoteResult);
+        console.log('amountIn', amountIn);
+        let priceAB: number;
+        if (q.tokenIn.address === tokenA.address) {
+          // Selling tokenA for tokenB
+          priceAB = amountIn / quoteResult;
+        } else {
+          // Buying tokenA with tokenB
+          priceAB = quoteResult / amountIn;
+        }
+        return {
+          ...q,
+          amountIn,
+          quoteResult,
+          priceAB
+        };
+      })
+      .sort((a, b) => a.priceAB - b.priceAB);
 
-    if (validQuotes.length <= 1) return [];
+    // Separate buy and sell quotes
+    const buyQuotes = validQuotes.filter(q => q.tokenIn.address === tokenB.address && q.tokenOut.address === tokenA.address);
+    const sellQuotes = validQuotes.filter(q => q.tokenIn.address === tokenA.address && q.tokenOut.address === tokenB.address);
 
-    const highestQuote = validQuotes[0];
-    const lowestQuote = validQuotes[validQuotes.length - 1];
-    const profitMargin: number = ((highestQuote.quoteValue - lowestQuote.quoteValue) / lowestQuote.quoteValue) * 100;
+    if (buyQuotes.length === 0 || sellQuotes.length === 0) return [];
 
-    if (profitMargin < 5) return [];
+    const bestBuyQuote = buyQuotes[0]; // Lowest priceAB
+    const bestSellQuote = sellQuotes[sellQuotes.length - 1]; // Highest priceAB
 
-    const toQuotePayload = (quote: typeof highestQuote): QuotePayload => ({
+    // Compute profit margin
+    const profitMargin = ((bestSellQuote.priceAB - bestBuyQuote.priceAB) / bestBuyQuote.priceAB) * 100;
+
+    if (profitMargin < 1) return []; // Adjust the threshold as needed
+
+    const toQuotePayload = (quote: typeof bestBuyQuote): QuotePayload => ({
       tokenIn: quote.tokenIn,
       tokenOut: quote.tokenOut,
       dex: quote.dex,
       networkUrl: quote.network.rpcUrl,
-      amountInRaw: quote.quoteResult!,
+      amountInRaw: quote.amountIn.toString(),
       fee: 0
     });
 
     return [
       {
-        quoteResult1: toQuotePayload(highestQuote),
-        quoteResult2: toQuotePayload(lowestQuote),
+        quoteResult1: toQuotePayload(bestBuyQuote),
+        quoteResult2: toQuotePayload(bestSellQuote),
         profit: profitMargin
       }
     ];
   });
 }
-
 // Function retrieve quotes for a token pair
 async function getQuotes(): Promise<QuoteResult[]> {
   const startTime = Date.now(); // Start the timer
@@ -134,6 +168,7 @@ async function getQuotes(): Promise<QuoteResult[]> {
       progressBar.increment();
 
       results.push({
+        amountIn: pair.amountIn,
         tokenIn: pair.tokenIn,
         tokenOut: pair.tokenOut,
         network: pair.network,

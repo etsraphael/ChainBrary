@@ -84,6 +84,11 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
 }
 
 async function executeTrades(payload: TradingPayload) {
+
+  console.log('executeTrades', payload)
+
+
+  return;
   try {
     // Buy the cheaper token first
     switch (payload.quoteResult2.dex) {
@@ -149,6 +154,7 @@ async function executeTrades(payload: TradingPayload) {
 
 // Function to execute Uniswap V2 trade
 async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
+  console.log('payload', payload);
   try {
     const { tokenIn, tokenOut, networkUrl, amountInRaw, dex } = payload;
 
@@ -215,6 +221,8 @@ async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
     const adjustedGasPrice: bigint = currentGasPrice * 110n / 100n; // Multiply by 110% (use `n` to indicate `bigint`)
 
     console.log('allowance', ethers.formatEther(allowance.toString()));
+
+    return true; // stop here for now
 
     if (allowance < amountIn) { 
       console.log('Not enough allowance. Approving...');

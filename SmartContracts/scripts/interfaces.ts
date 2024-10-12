@@ -7,6 +7,7 @@ export interface TradingPayload {
 }
 
 export interface QuoteResult {
+  amountIn: string;
   tokenIn: Token;
   tokenOut: Token;
   network: INetwork;
