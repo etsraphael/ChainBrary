@@ -9,8 +9,8 @@ import { startTrading } from './trading-process';
 
 // Function to prompt the user to select a token to grow
 async function selectTokenToGrow(): Promise<Token> {
-  const allTokens = Object.values(TOKENS).flatMap(tokenMap => Object.values(tokenMap));
-  const tokenChoices = allTokens.map(token => ({
+  const allTokens = Object.values(TOKENS).flatMap((tokenMap) => Object.values(tokenMap));
+  const tokenChoices = allTokens.map((token) => ({
     name: `${token.symbol} (${token.name}) on chain ${token.chainId}`,
     value: token
   }));
@@ -30,10 +30,10 @@ async function selectTokenToGrow(): Promise<Token> {
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
   // Prompt the user to select the token to grow
-  const selectedToken = await selectTokenToGrow();
+  // const selectedToken = await selectTokenToGrow();
 
   // get quotes and display
-  const results: QuoteResult[] = await getQuotes(selectedToken);
+  const results: QuoteResult[] = await getQuotes(null);
   displayResults(results);
 
   // check profitability
@@ -99,18 +99,22 @@ async function runQuotes(): Promise<void> {
 
 function checkProfitability(results: QuoteResult[]): TradingPayload[] {
   // Group quotes by unordered pair of token addresses
-  const groupedResults = results.reduce<Record<string, { tokenA: Token, tokenB: Token, quotes: QuoteResult[] }>>((acc, result) => {
-    const addresses = [result.tokenIn.address, result.tokenOut.address].sort();
-    const key = `${addresses[0]}-${addresses[1]}`;
-    if (!acc[key]) {
-      const tokens = addresses[0] === result.tokenIn.address
-        ? { tokenA: result.tokenIn, tokenB: result.tokenOut }
-        : { tokenA: result.tokenOut, tokenB: result.tokenIn };
-      acc[key] = { ...tokens, quotes: [] };
-    }
-    acc[key].quotes.push(result);
-    return acc;
-  }, {});
+  const groupedResults = results.reduce<Record<string, { tokenA: Token; tokenB: Token; quotes: QuoteResult[] }>>(
+    (acc, result) => {
+      const addresses = [result.tokenIn.address, result.tokenOut.address].sort();
+      const key = `${addresses[0]}-${addresses[1]}`;
+      if (!acc[key]) {
+        const tokens =
+          addresses[0] === result.tokenIn.address
+            ? { tokenA: result.tokenIn, tokenB: result.tokenOut }
+            : { tokenA: result.tokenOut, tokenB: result.tokenIn };
+        acc[key] = { ...tokens, quotes: [] };
+      }
+      acc[key].quotes.push(result);
+      return acc;
+    },
+    {}
+  );
 
   return Object.values(groupedResults).flatMap(({ tokenA, tokenB, quotes }) => {
     const validQuotes = quotes
@@ -136,8 +140,12 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
       .sort((a, b) => a.priceAB - b.priceAB);
 
     // Separate buy and sell quotes
-    const buyQuotes = validQuotes.filter(q => q.tokenIn.address === tokenB.address && q.tokenOut.address === tokenA.address);
-    const sellQuotes = validQuotes.filter(q => q.tokenIn.address === tokenA.address && q.tokenOut.address === tokenB.address);
+    const buyQuotes = validQuotes.filter(
+      (q) => q.tokenIn.address === tokenB.address && q.tokenOut.address === tokenA.address
+    );
+    const sellQuotes = validQuotes.filter(
+      (q) => q.tokenIn.address === tokenA.address && q.tokenOut.address === tokenB.address
+    );
 
     if (buyQuotes.length === 0 || sellQuotes.length === 0) return [];
 
@@ -169,20 +177,25 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
 }
 
 // Function retrieve quotes for a token pair
-async function getQuotes(selectedToken: Token): Promise<QuoteResult[]> {
+async function getQuotes(selectedToken: Token | null): Promise<QuoteResult[]> {
   const startTime = Date.now(); // Start the timer
   const results: QuoteResult[] = [];
+  let dexPools: IDexPool[] = [];
+
+  if (selectedToken) {
+    dexPools = TOKEN_PAIRS.filter(
+      (pair) => pair.tokenIn.address === selectedToken.address || pair.tokenOut.address === selectedToken.address
+    );
+  } else {
+    dexPools = TOKEN_PAIRS;
+  }
 
   // Initialize the progress bar
-  const totalTasks: number = TOKEN_PAIRS.filter(pair =>
-    pair.tokenIn.address === selectedToken.address || pair.tokenOut.address === selectedToken.address
-  ).reduce((acc, pair) => acc + pair.dexSupported.length, 0); // Total number of quotes to fetch
+  const totalTasks: number = dexPools.reduce((acc, pair) => acc + pair.dexSupported.length, 0); // Total number of quotes to fetch
   const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
   progressBar.start(totalTasks, 0);
 
-  for (const pair of TOKEN_PAIRS.filter(pair =>
-    pair.tokenIn.address === selectedToken.address || pair.tokenOut.address === selectedToken.address
-  )) {
+  for (const pair of dexPools) {
     // Filter the DEXes to only include those supported by the pair
     const supportedDexes: DEX[] = pair.dexSupported;
 
