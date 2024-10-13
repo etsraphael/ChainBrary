@@ -45,7 +45,9 @@ export const TOKENS: { [key in string]: { [key in string]: Token } } = {
     DAI: new Token(1, '0x6B175474E89094C44Da98b954EedeAC495271d0F', 18, 'DAI', 'Dai Stablecoin'),
     USDC: new Token(1, '0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48', 6, 'USDC', 'USD Coin'),
     WETH: new Token(1, '0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2', 18, 'WETH', 'Wrapped Ether'),
-    WBTC: new Token(1, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped Bitcoin')
+    WBTC: new Token(1, '0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599', 8, 'WBTC', 'Wrapped Bitcoin'),
+    LINK: new Token(1, '0x514910771af9ca656af840dff83e8264ecf986ca', 18, 'LINK', 'Chainlink'),
+    USDT: new Token(1, '0xdac17f958d2ee523a2206206994597c13d831ec7', 6, 'USDT', 'Tether USD')
   },
   BSC: {
     WETH: new Token(56, '0x2170ed0880ac9a755fd29b2688956bd959f933f8', 18, 'WETH', 'Ethereum'),
@@ -151,6 +153,14 @@ export const TOKEN_PAIRS: IDexPool[] = [
     tokenOut: TOKENS.BSC.USDT,
     amountIn: '1',
     fee: 100,
+    dexSupported: [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]
+  },
+  {
+    network: getNetworkByName(NetworkNameList.ETH_MAINNET),
+    tokenIn: TOKENS.ETH.LINK,
+    tokenOut: TOKENS.ETH.USDT,
+    amountIn: '1',
+    fee: 3000,
     dexSupported: [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]
   }
 ];
