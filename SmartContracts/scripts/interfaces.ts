@@ -52,7 +52,8 @@ export interface IDexPool {
 }
 
 export enum UniswapFee {
-  LOW = 100
-  // MEDIUM = 3000,
-  // HIGH = 10000
+  LOW = 100,
+  MEDIUM = 500,
+  HIGH = 3000,
+  // SUPER_HIGH = 10000
 }

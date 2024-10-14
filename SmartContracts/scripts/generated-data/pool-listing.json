@@ -1,6 +1,538 @@
 [
   {
     "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+    },
+    "amountIn": "1",
+    "fee": 3000,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 8,
+      "symbol": "WBTC",
+      "name": "Wrapped Bitcoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2260FAC5E5542a773Aa44fBCfeDf7C193bc2C599"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "LINK",
+      "name": "Chainlink",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x514910771AF9Ca656af840dff83E8264EcF986CA"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 1,
+      "rpcUrl": "https://eth-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "ETH_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 1,
+      "decimals": 6,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xdAC17F958D2ee523a2206206994597C13D831ec7"
+    },
+    "tokenOut": {
+      "chainId": 1,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x6B175474E89094C44Da98b954EedeAC495271d0F"
+    },
+    "amountIn": "1",
+    "fee": 3000,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
       "chainId": 56,
       "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
       "networkName": "BSC_MAINNET"
@@ -13,6 +545,174 @@
       "isNative": false,
       "isToken": true,
       "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "WBNB",
+      "name": "Wrapped BNB",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Ethereum",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "WBNB",
+      "name": "Wrapped BNB",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Ethereum",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Ethereum",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
+    "amountIn": "1",
+    "fee": 3000,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x55d398326f99059fF775485246999027B3197955"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x55d398326f99059fF775485246999027B3197955"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "WBNB",
+      "name": "Wrapped BNB",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
     },
     "tokenOut": {
       "chainId": 56,
@@ -36,11 +736,11 @@
     "tokenIn": {
       "chainId": 56,
       "decimals": 18,
-      "symbol": "WETH",
-      "name": "Ethereum",
+      "symbol": "WBNB",
+      "name": "Wrapped BNB",
       "isNative": false,
       "isToken": true,
-      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
     },
     "tokenOut": {
       "chainId": 56,
@@ -64,13 +764,32 @@
     "tokenIn": {
       "chainId": 56,
       "decimals": 18,
-      "symbol": "WETH",
-      "name": "Ethereum",
+      "symbol": "WBNB",
+      "name": "Wrapped BNB",
       "isNative": false,
       "isToken": true,
-      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
+      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
     },
     "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
       "chainId": 56,
       "decimals": 18,
       "symbol": "WBNB",
@@ -79,8 +798,17 @@
       "isToken": true,
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
     },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
     "amountIn": "1",
-    "fee": 100,
+    "fee": 3000,
     "dex": "Uniswap_v3"
   },
   {
@@ -92,23 +820,23 @@
     "tokenIn": {
       "chainId": 56,
       "decimals": 18,
-      "symbol": "WETH",
-      "name": "Ethereum",
-      "isNative": false,
-      "isToken": true,
-      "address": "0x2170Ed0880ac9A755fd29B2688956BD959F933F8"
-    },
-    "tokenOut": {
-      "chainId": 56,
-      "decimals": 18,
       "symbol": "WBNB",
       "name": "Wrapped BNB",
       "isNative": false,
       "isToken": true,
       "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
     },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "DOT",
+      "name": "Polkadot",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402"
+    },
     "amountIn": "1",
-    "fee": 100,
+    "fee": 500,
     "dex": "PancakeSwap_v3"
   },
   {
@@ -129,14 +857,14 @@
     "tokenOut": {
       "chainId": 56,
       "decimals": 18,
-      "symbol": "USDT",
-      "name": "Tether USD",
+      "symbol": "DOT",
+      "name": "Polkadot",
       "isNative": false,
       "isToken": true,
-      "address": "0x55d398326f99059fF775485246999027B3197955"
+      "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402"
     },
     "amountIn": "1",
-    "fee": 100,
+    "fee": 3000,
     "dex": "Uniswap_v3"
   },
   {
@@ -148,11 +876,11 @@
     "tokenIn": {
       "chainId": 56,
       "decimals": 18,
-      "symbol": "WBNB",
-      "name": "Wrapped BNB",
+      "symbol": "DOT",
+      "name": "Polkadot",
       "isNative": false,
       "isToken": true,
-      "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c"
+      "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402"
     },
     "tokenOut": {
       "chainId": 56,
@@ -162,6 +890,258 @@
       "isNative": false,
       "isToken": true,
       "address": "0x55d398326f99059fF775485246999027B3197955"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "DOT",
+      "name": "Polkadot",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x55d398326f99059fF775485246999027B3197955"
+    },
+    "amountIn": "1",
+    "fee": 3000,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 56,
+      "rpcUrl": "https://bsc-mainnet.rpc.grove.city/v1/2501ba49",
+      "networkName": "BSC_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 56,
+      "decimals": 18,
+      "symbol": "DOT",
+      "name": "Polkadot",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x7083609fCE4d1d8Dc0C979AAb8c869Ea2C873402"
+    },
+    "tokenOut": {
+      "chainId": 56,
+      "decimals": 8,
+      "symbol": "DOGE",
+      "name": "Dogecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xbA2aE424d960c26247Dd6c32edC70B295c744C43"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+    },
+    "amountIn": "1",
+    "fee": 500,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "WETH",
+      "name": "Wrapped Ether",
+      "isNative": false,
+      "isToken": true,
+      "address": "0x82aF49447D8a07e3bd95BD0d56f35241523fBab1"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "Uniswap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "USDT",
+      "name": "Tether USD",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xFd086bC7CD5C481DCC9C85ebE478A1C0b69FCbb9"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+    },
+    "amountIn": "1",
+    "fee": 100,
+    "dex": "PancakeSwap_v3"
+  },
+  {
+    "network": {
+      "chainId": 42161,
+      "rpcUrl": "https://arbitrum-one.rpc.grove.city/v1/2501ba49",
+      "networkName": "ARBITRUM_MAINNET"
+    },
+    "tokenIn": {
+      "chainId": 42161,
+      "decimals": 6,
+      "symbol": "USDC",
+      "name": "USD Coin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xaf88d065e77c8cC2239327C5EDb3A432268e5831"
+    },
+    "tokenOut": {
+      "chainId": 42161,
+      "decimals": 18,
+      "symbol": "DAI",
+      "name": "Dai Stablecoin",
+      "isNative": false,
+      "isToken": true,
+      "address": "0xDA10009cBd5D07dd0CeCc66161FC93D7c9000da1"
     },
     "amountIn": "1",
     "fee": 100,
