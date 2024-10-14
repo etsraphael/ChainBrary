@@ -48,6 +48,7 @@ import {
   selectTokenDetail
 } from './../../../../../../store/tokens-management-store/state/selectors';
 import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
+import { burnTokenSuccess } from './../../../../../../store/tokens-management-store/state/actions';
 
 @Component({
   selector: 'app-token-management-page',
