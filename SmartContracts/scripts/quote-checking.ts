@@ -154,9 +154,10 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
       .map((q) => {
         const amountIn = parseFloat(q.amountIn);
         const quoteResult = parseFloat(q.quoteResult!);
-        const priceAB = q.tokenIn.address === tokenA.address
-          ? quoteResult / amountIn  // Selling tokenA for tokenB
-          : amountIn / quoteResult; // Buying tokenA with tokenB
+        const priceAB =
+          q.tokenIn.address === tokenA.address
+            ? quoteResult / amountIn // Selling tokenA for tokenB
+            : amountIn / quoteResult; // Buying tokenA with tokenB
 
         return { ...q, amountIn, quoteResult, priceAB };
       })
@@ -176,10 +177,6 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
 
     // Calculate profit margin
     const profitMargin = ((bestSellQuote.priceAB - bestBuyQuote.priceAB) / bestBuyQuote.priceAB) * 100;
-
-    console.log('bestSellQuote.priceAB', bestSellQuote.priceAB)
-    console.log('bestBuyQuote.priceAB', bestBuyQuote.priceAB)
-    console.log(`Profit margin: ${profitMargin}%`);
 
     // Set a minimum profit margin threshold
     const MIN_PROFIT_MARGIN = 1; // Adjust as needed

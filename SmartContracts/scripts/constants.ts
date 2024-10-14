@@ -61,7 +61,7 @@ export function routerContracts(dex: DEX): { [chainId: number]: string } | null 
         // 137: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Polygon Mainnet
         56: '0xdB1d10011AD0Ff90774D0C6Bb92e5C5c8b4461F7', // BSC Mainnet
         // 10: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Optimism Mainnet
-        42161: '0x1F98431c8aD98523631AE4a59f267346ea31F984', // Arbitrum Mainnet
+        42161: '0x1F98431c8aD98523631AE4a59f267346ea31F984' // Arbitrum Mainnet
         // 42220: '0xAfE208a311B21f13EF87E33A90049fC17A7acDEc' // Celo Mainnet
       };
     case DEX.PANCAKESWAP_V3:
