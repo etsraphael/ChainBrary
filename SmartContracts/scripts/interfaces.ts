@@ -24,13 +24,6 @@ export interface QuotePayload {
   dex: DEX;
 }
 
-export enum DEX {
-  UNISWAP_V3 = 'Uniswap_v3',
-  SUSHISWAP_V2 = 'SushiSwap_v2',
-  PANCAKESWAP_V2 = 'PancakeSwap_v2',
-  PANCAKESWAP_V3 = 'PancakeSwap_v3'
-}
-
 export enum NetworkNameList {
   POLYGON_MAINNET = 'POLYGON_MAINNET',
   BSC_MAINNET = 'BSC_MAINNET',
@@ -41,8 +34,12 @@ export enum NetworkNameList {
 export interface INetwork {
   chainId: number;
   rpcUrl: string;
-  name: string;
   networkName: NetworkNameList;
+}
+
+export enum DEX {
+  UNISWAP_V3 = 'Uniswap_v3',
+  PANCAKESWAP_V3 = 'PancakeSwap_v3'
 }
 
 export interface IDexPool {
@@ -51,5 +48,11 @@ export interface IDexPool {
   tokenOut: Token;
   amountIn: string;
   fee: number;
-  dexSupported: DEX[]; // new value here
+  dex: DEX;
+}
+
+export enum UniswapFee {
+  LOW = 500,
+  MEDIUM = 3000,
+  HIGH = 10000
 }

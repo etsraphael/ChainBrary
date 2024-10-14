@@ -90,16 +90,16 @@ async function executeTrades(payload: TradingPayload) {
   try {
     // Buy the cheaper token first
     switch (payload.quoteResult2.dex) {
-      case DEX.SUSHISWAP_V2:
-      case DEX.PANCAKESWAP_V2:
-        const isTrade2V2Successful: boolean = await executeUniswapV2Trade(payload.quoteResult2);
-        if (isTrade2V2Successful) {
-          console.log('Second trade (V2) executed successfully');
-        } else {
-          console.log('Second trade (V2) execution failed');
-          return;
-        }
-        break;
+      // case DEX.SUSHISWAP_V2:
+      // case DEX.PANCAKESWAP_V2:
+      //   const isTrade2V2Successful: boolean = await executeUniswapV2Trade(payload.quoteResult2);
+      //   if (isTrade2V2Successful) {
+      //     console.log('Second trade (V2) executed successfully');
+      //   } else {
+      //     console.log('Second trade (V2) execution failed');
+      //     return;
+      //   }
+      //   break;
 
       case DEX.UNISWAP_V3:
       case DEX.PANCAKESWAP_V3:

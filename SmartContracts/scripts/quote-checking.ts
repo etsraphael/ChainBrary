@@ -1,11 +1,13 @@
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
-import { TOKEN_PAIRS, TOKENS } from './constants';
+import {  TOKENS } from './constants';
 import { DEX, IDexPool, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
 import { Token } from '@uniswap/sdk-core';
 import { startTrading } from './trading-process';
+import path from 'path';
+import fs from 'fs';
 
 // Function to prompt the user to select a token to grow
 async function selectTokenToGrow(): Promise<Token> {
@@ -27,13 +29,24 @@ async function selectTokenToGrow(): Promise<Token> {
   return response.token;
 }
 
+// Load pools from the generated JSON file
+function loadPools(): IDexPool[] {
+  const filePath = path.resolve(__dirname, './generated-data/pool-listing.json');
+  if (!fs.existsSync(filePath)) {
+    throw new Error(`File not found: ${filePath}`);
+  }
+  const rawData = fs.readFileSync(filePath, 'utf-8');
+  return JSON.parse(rawData) as IDexPool[];
+}
+
+
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
   // Prompt the user to select the token to grow
   // const selectedToken = await selectTokenToGrow();
 
   // get quotes and display
-  const results: QuoteResult[] = await getQuotes(null);
+  const results: QuoteResult[] = await getQuotes();
   displayResults(results);
 
   // check profitability
@@ -176,62 +189,47 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
   });
 }
 
-// Function retrieve quotes for a token pair
-async function getQuotes(selectedToken: Token | null): Promise<QuoteResult[]> {
-  const startTime = Date.now(); // Start the timer
+
+// Fetch quotes for all pools from the loaded file
+async function getQuotes(): Promise<QuoteResult[]> {
+  const pools = loadPools();
   const results: QuoteResult[] = [];
-  let dexPools: IDexPool[] = [];
+  const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
-  if (selectedToken) {
-    dexPools = TOKEN_PAIRS.filter(
-      (pair) => pair.tokenIn.address === selectedToken.address || pair.tokenOut.address === selectedToken.address
-    );
-  } else {
-    dexPools = TOKEN_PAIRS;
-  }
+  console.log(`Fetching quotes for ${pools.length} pools...`);
+  progressBar.start(pools.length, 0);
 
-  // Initialize the progress bar
-  const totalTasks: number = dexPools.reduce((acc, pair) => acc + pair.dexSupported.length, 0); // Total number of quotes to fetch
-  const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-  progressBar.start(totalTasks, 0);
+  for (const pool of pools) {
+    const payload: QuotePayload = {
+      tokenIn: pool.tokenIn,
+      tokenOut: pool.tokenOut,
+      networkUrl: pool.network.rpcUrl,
+      amountInRaw: pool.amountIn,
+      fee: pool.fee,
+      dex: pool.dex,
+    };
 
-  for (const pair of dexPools) {
-    // Filter the DEXes to only include those supported by the pair
-    const supportedDexes: DEX[] = pair.dexSupported;
-
-    for (const dex of supportedDexes) {
-      let payload: QuotePayload = {
-        tokenIn: pair.tokenIn,
-        tokenOut: pair.tokenOut,
-        networkUrl: pair.network.rpcUrl,
-        amountInRaw: pair.amountIn,
-        fee: pair.fee,
-        dex: dex // this will only include the dex supported by the pair
-      };
-
-      let quote: string | null = await getQuote(payload);
-
-      progressBar.increment();
-
+    try {
+      const quote = await getQuote(payload);
       results.push({
-        amountIn: pair.amountIn,
-        tokenIn: pair.tokenIn,
-        tokenOut: pair.tokenOut,
-        network: pair.network,
-        dex: dex,
-        quoteResult: quote
+        amountIn: pool.amountIn,
+        tokenIn: pool.tokenIn,
+        tokenOut: pool.tokenOut,
+        network: pool.network,
+        dex: pool.dex,
+        quoteResult: quote,
       });
+    } catch (error) {
+      console.error(`Error fetching quote for ${pool.dex}`, error);
     }
+
+    progressBar.increment();
   }
 
   progressBar.stop();
-
-  const endTime = Date.now(); // End the timer
-  const elapsedSeconds: string = ((endTime - startTime) / 1000).toFixed(2); // Calculate elapsed time in seconds
-  console.log('\n');
-  console.log(`\nTotal time taken: ${elapsedSeconds} seconds`);
   return results;
 }
+
 
 // Function to display results in a table
 function displayResults(results: QuoteResult[]) {
@@ -240,7 +238,7 @@ function displayResults(results: QuoteResult[]) {
     [networkName: string]: QuoteResult[];
   } = results.reduce(
     (acc: { [networkName: string]: QuoteResult[] }, result: QuoteResult) => {
-      const key = result.network.name;
+      const key = result.network.networkName;
       if (!acc[key]) {
         acc[key] = [];
       }
