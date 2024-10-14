@@ -49,36 +49,35 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<string |
   try {
     const { tokenIn, tokenOut, networkUrl, amountInRaw, fee, dex } = payload;
 
+    // Ensure tokenIn and tokenOut are instances of Token
+    const tokenA = new Token(tokenIn.chainId, tokenIn.address, tokenIn.decimals, tokenIn.symbol, tokenIn.name);
+    const tokenB = new Token(tokenOut.chainId, tokenOut.address, tokenOut.decimals, tokenOut.symbol, tokenOut.name);
+
     // Get the factory address based on DEX and chainId
     const factoryAddresses = routerContracts(dex);
-    if (!factoryAddresses) {
-      return null;
-    }
-    const FACTORY_ADDRESS: string = factoryAddresses[tokenIn.chainId];
-    if (!FACTORY_ADDRESS) {
-      return null;
-    }
+    if (!factoryAddresses) return null;
+
+    const FACTORY_ADDRESS: string = factoryAddresses[tokenA.chainId];
+    if (!FACTORY_ADDRESS) return null;
 
     // Connect to the network
-    const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
+    const provider = new ethers.JsonRpcProvider(networkUrl);
 
     // Factory ABI
-    const FACTORY_ABI: string[] = [
+    const FACTORY_ABI = [
       'function getPool(address tokenA, address tokenB, uint24 fee) external view returns (address pool)'
     ];
 
     // Create factory contract instance
-    const factoryContract: ethers.Contract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
+    const factoryContract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
 
     // Get pool address
-    const poolAddress: string = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
+    const poolAddress: string = await factoryContract.getPool(tokenA.address, tokenB.address, fee);
 
-    if (poolAddress === ethers.ZeroAddress) {
-      return null;
-    }
+    if (poolAddress === ethers.ZeroAddress) return null;
 
     // Pool contract ABI
-    const POOL_ABI: string[] = [
+    const POOL_ABI = [
       'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16, uint16, uint16, uint8, bool)',
       'function liquidity() external view returns (uint128)'
     ];
@@ -87,22 +86,19 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<string |
     const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, provider);
 
     // Fetch pool state: slot0 and liquidity
-    const slot0 = await poolContract.slot0();
-    const sqrtPriceX96 = slot0[0];
-    const tick = slot0[1];
-    const liquidity = await poolContract.liquidity();
+    const slot0: bigint[] = await poolContract.slot0();
+    const sqrtPriceX96: bigint = slot0[0];
+    const tick: bigint = slot0[1];
+    const liquidity: bigint = await poolContract.liquidity();
 
     // Create a Uniswap V3 pool instance
-    const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
+    const pool: Pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
     // Amount of tokenIn to swap
-    const amountIn: CurrencyAmount<Token> = CurrencyAmount.fromRawAmount(
-      tokenIn,
-      ethers.parseUnits(amountInRaw, tokenIn.decimals).toString()
-    );
+    const amountIn = CurrencyAmount.fromRawAmount(tokenA, ethers.parseUnits(amountInRaw, tokenA.decimals).toString());
 
     // Create the route and trade (exact input trade)
-    const route: Route<Token, Token> = new Route([pool], tokenIn, tokenOut);
+    const route: Route<Token, Token> = new Route([pool], tokenA, tokenB);
     const trade: Trade<Token, Token, TradeType.EXACT_INPUT> = Trade.createUncheckedTrade({
       route: route,
       inputAmount: amountIn,
@@ -111,9 +107,10 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<string |
     });
 
     // Get the quote for the trade (output amount)
-    const amountOut = trade.outputAmount.toSignificant(6);
+    const amountOut: string = trade.outputAmount.toSignificant(6);
     return amountOut;
   } catch (error) {
+    console.log('error', error);
     return null;
   }
 }

@@ -1,6 +1,6 @@
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
-import {  TOKENS } from './constants';
+import { TOKENS } from './constants';
 import { DEX, IDexPool, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import inquirer from 'inquirer';
 import { getQuote } from './quote-request';
@@ -38,7 +38,6 @@ function loadPools(): IDexPool[] {
   const rawData = fs.readFileSync(filePath, 'utf-8');
   return JSON.parse(rawData) as IDexPool[];
 }
-
 
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
@@ -189,10 +188,9 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
   });
 }
 
-
 // Fetch quotes for all pools from the loaded file
 async function getQuotes(): Promise<QuoteResult[]> {
-  const pools = loadPools();
+  const pools: IDexPool[] = loadPools();
   const results: QuoteResult[] = [];
   const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
@@ -206,7 +204,7 @@ async function getQuotes(): Promise<QuoteResult[]> {
       networkUrl: pool.network.rpcUrl,
       amountInRaw: pool.amountIn,
       fee: pool.fee,
-      dex: pool.dex,
+      dex: pool.dex
     };
 
     try {
@@ -217,7 +215,7 @@ async function getQuotes(): Promise<QuoteResult[]> {
         tokenOut: pool.tokenOut,
         network: pool.network,
         dex: pool.dex,
-        quoteResult: quote,
+        quoteResult: quote
       });
     } catch (error) {
       console.error(`Error fetching quote for ${pool.dex}`, error);
@@ -229,7 +227,6 @@ async function getQuotes(): Promise<QuoteResult[]> {
   progressBar.stop();
   return results;
 }
-
 
 // Function to display results in a table
 function displayResults(results: QuoteResult[]) {

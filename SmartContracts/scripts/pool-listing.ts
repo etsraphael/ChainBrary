@@ -16,7 +16,10 @@ function generateAllPools(): IDexPool[] {
         continue; // Skip identical tokens or tokens on different chains
       }
 
-      for (const fee of Object.values(UniswapFee)) {
+      // Filter numeric values from the UniswapFee enum
+      const fees = Object.values(UniswapFee).filter((fee) => typeof fee === 'number') as number[];
+
+      for (const fee of fees) {
         const network = getNetworkByChainId(tokenIn.chainId);
 
         for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]) {
@@ -25,13 +28,15 @@ function generateAllPools(): IDexPool[] {
             tokenIn,
             tokenOut,
             amountIn: '1',
-            fee: Number(fee),
+            fee, // No need for `Number(fee)` as it's already numeric
             dex
           });
         }
       }
     }
   }
+
+  console.log('pools', pools.length); // This should now correctly reflect the pool count
   return pools;
 }
 
@@ -39,12 +44,20 @@ function generateAllPools(): IDexPool[] {
 async function getQuotes(): Promise<IDexPool[]> {
   const pools = generateAllPools();
   const validPools: IDexPool[] = [];
-  const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  const checkedPairs: Set<string> = new Set(); // Track pairs with valid quotes (> 1)
 
   console.log(`Fetching quotes for ${pools.length} pools...`);
-  progressBar.start(pools.length, 0);
 
   for (const pool of pools) {
+    // Create a unique identifier for the token pair and dex to track them
+    const pairKey = `${pool.tokenIn.symbol}-${pool.tokenOut.symbol}-${pool.dex}`;
+
+    // If we already found a quote > 1 for this pair, skip further calls
+    if (checkedPairs.has(pairKey)) {
+      console.log(`Skipping pool for ${pairKey} as a valid quote is already found.`);
+      continue;
+    }
+
     const payload: QuotePayload = {
       tokenIn: pool.tokenIn,
       tokenOut: pool.tokenOut,
@@ -55,18 +68,21 @@ async function getQuotes(): Promise<IDexPool[]> {
     };
 
     try {
-      const quoteResult = await getQuote(payload);
+      const quoteResult: string | null = await getQuote(payload);
       if (quoteResult) {
-        validPools.push(pool); // Store only pools with valid quotes
+        const quoteValue = parseFloat(quoteResult);
+        if (quoteValue > 1) {
+          // Add to valid pools and mark this pair as "checked"
+          validPools.push(pool);
+          checkedPairs.add(pairKey); // Avoid future calls for this pair
+        }
       }
     } catch (error) {
       console.error(`Error fetching quote for ${pool.dex}`, error);
     }
-
-    progressBar.increment();
   }
 
-  progressBar.stop();
+  console.log(`Fetched quotes for ${validPools.length} valid pools.`);
   return validPools;
 }
 
@@ -87,7 +103,7 @@ async function runPoolSearching(): Promise<void> {
     const outputPath = path.resolve(__dirname, './generated-data/pool-listing.json');
     fs.writeFileSync(outputPath, JSON.stringify(validPools, null, 2), 'utf-8');
 
-    console.log(`Quotes saved successfully to ${outputPath}`);
+    console.log(`Quotes saved successfully to ${outputPath}. Total pools: ${validPools.length}`);
   } catch (error) {
     console.error('Unexpected error during pool searching:', error);
   }
