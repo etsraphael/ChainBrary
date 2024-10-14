@@ -39,6 +39,27 @@ function loadPools(): IDexPool[] {
   return JSON.parse(rawData) as IDexPool[];
 }
 
+function loadFilteredPools(): IDexPool[] {
+  const pools: IDexPool[] = loadPools();
+
+  // Group pools by token pairs to identify those available on multiple DEXes
+  const groupedPools = pools.reduce<Record<string, IDexPool[]>>((acc, pool) => {
+    const addresses = [pool.tokenIn.address, pool.tokenOut.address].sort();
+    const key = `${addresses[0]}-${addresses[1]}`;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(pool);
+    return acc;
+  }, {});
+
+  // Keep only pools where the same token pair exists on more than one DEX
+  const filteredPools = Object.values(groupedPools)
+    .filter((poolGroup) => poolGroup.length > 1) // Only keep pools available on multiple DEXes
+    .flat(); // Flatten to return a single array
+
+  console.log(`Filtered down to ${filteredPools.length} pools with multi-DEX support.`);
+  return filteredPools;
+}
+
 // Function to run quotes for all token pairs
 async function runQuotes(): Promise<void> {
   // Prompt the user to select the token to grow
@@ -54,8 +75,6 @@ async function runQuotes(): Promise<void> {
     console.log('No profitable trades found.');
     return;
   }
-
-  console.log(JSON.stringify(profitableResult, null, 2));
 
   // Prepare trade options with more context
   const tradeChoices = profitableResult.map((trade, index) => {
@@ -128,30 +147,21 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
     {}
   );
 
+  // Generate trading opportunities
   return Object.values(groupedResults).flatMap(({ tokenA, tokenB, quotes }) => {
     const validQuotes = quotes
       .filter((q) => q.quoteResult !== null)
       .map((q) => {
         const amountIn = parseFloat(q.amountIn);
         const quoteResult = parseFloat(q.quoteResult!);
-        let priceAB: number;
-        if (q.tokenIn.address === tokenA.address) {
-          // Selling tokenA for tokenB
-          priceAB = quoteResult / amountIn; // Corrected calculation
-        } else {
-          // Buying tokenA with tokenB
-          priceAB = amountIn / quoteResult; // Corrected calculation
-        }
-        return {
-          ...q,
-          amountIn,
-          quoteResult,
-          priceAB
-        };
-      })
-      .sort((a, b) => a.priceAB - b.priceAB);
+        const priceAB = q.tokenIn.address === tokenA.address
+          ? quoteResult / amountIn  // Selling tokenA for tokenB
+          : amountIn / quoteResult; // Buying tokenA with tokenB
 
-    // Separate buy and sell quotes
+        return { ...q, amountIn, quoteResult, priceAB };
+      })
+      .sort((a, b) => a.priceAB - b.priceAB); // Sort by priceAB
+
     const buyQuotes = validQuotes.filter(
       (q) => q.tokenIn.address === tokenB.address && q.tokenOut.address === tokenA.address
     );
@@ -164,11 +174,18 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
     const bestBuyQuote = buyQuotes[0]; // Lowest priceAB
     const bestSellQuote = sellQuotes[sellQuotes.length - 1]; // Highest priceAB
 
-    // Compute profit margin
+    // Calculate profit margin
     const profitMargin = ((bestSellQuote.priceAB - bestBuyQuote.priceAB) / bestBuyQuote.priceAB) * 100;
 
-    if (profitMargin < 1) return []; // Adjust the threshold as needed
+    console.log('bestSellQuote.priceAB', bestSellQuote.priceAB)
+    console.log('bestBuyQuote.priceAB', bestBuyQuote.priceAB)
+    console.log(`Profit margin: ${profitMargin}%`);
 
+    // Set a minimum profit margin threshold
+    const MIN_PROFIT_MARGIN = 1; // Adjust as needed
+    if (profitMargin < MIN_PROFIT_MARGIN) return [];
+
+    // Prepare QuotePayload
     const toQuotePayload = (quote: typeof bestBuyQuote): QuotePayload => ({
       tokenIn: quote.tokenIn,
       tokenOut: quote.tokenOut,
@@ -190,7 +207,7 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
 
 // Fetch quotes for all pools from the loaded file
 async function getQuotes(): Promise<QuoteResult[]> {
-  const pools: IDexPool[] = loadPools();
+  const pools: IDexPool[] = loadFilteredPools();
   const results: QuoteResult[] = [];
   const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
