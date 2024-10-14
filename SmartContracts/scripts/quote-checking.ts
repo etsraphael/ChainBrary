@@ -42,8 +42,8 @@ function loadPools(): IDexPool[] {
 function loadFilteredPools(): IDexPool[] {
   const pools: IDexPool[] = loadPools();
 
-  // Group pools by token pairs to identify those available on multiple DEXes
-  const groupedPools = pools.reduce<Record<string, IDexPool[]>>((acc, pool) => {
+  // Group pools by token pairs
+  const groupedPools: Record<string, IDexPool[]> = pools.reduce<Record<string, IDexPool[]>>((acc, pool) => {
     const addresses = [pool.tokenIn.address, pool.tokenOut.address].sort();
     const key = `${addresses[0]}-${addresses[1]}`;
     if (!acc[key]) acc[key] = [];
@@ -51,13 +51,27 @@ function loadFilteredPools(): IDexPool[] {
     return acc;
   }, {});
 
-  // Keep only pools where the same token pair exists on more than one DEX
-  const filteredPools = Object.values(groupedPools)
-    .filter((poolGroup) => poolGroup.length > 1) // Only keep pools available on multiple DEXes
-    .flat(); // Flatten to return a single array
+  // Duplicate pools to include both directions
+  const bidirectionalPools: IDexPool[] = Object.values(groupedPools).flatMap((poolGroup) => {
+    return poolGroup.flatMap((pool) => {
+      // Original direction
+      const originalPool = { ...pool };
+      // Reverse direction
+      const reversePool: IDexPool = {
+        ...pool,
+        tokenIn: pool.tokenOut,
+        tokenOut: pool.tokenIn,
+        amountIn: pool.amountIn,
+        dex: pool.dex,
+        fee: pool.fee,
+        network: pool.network
+      };
+      return [originalPool, reversePool];
+    });
+  });
 
-  console.log(`Filtered down to ${filteredPools.length} pools with multi-DEX support.`);
-  return filteredPools;
+  console.log(`Total pools after adding reverse directions: ${bidirectionalPools.length}`);
+  return bidirectionalPools;
 }
 
 // Function to run quotes for all token pairs
@@ -154,51 +168,65 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
       .map((q) => {
         const amountIn = parseFloat(q.amountIn);
         const quoteResult = parseFloat(q.quoteResult!);
-        const priceAB =
-          q.tokenIn.address === tokenA.address
-            ? quoteResult / amountIn // Selling tokenA for tokenB
-            : amountIn / quoteResult; // Buying tokenA with tokenB
+        let priceAB: number;
+
+        if (q.tokenIn.address === tokenA.address) {
+          // Selling tokenA for tokenB
+          priceAB = quoteResult / amountIn; // Price of tokenA in terms of tokenB
+        } else {
+          // Buying tokenA with tokenB
+          priceAB = amountIn / quoteResult; // Price of tokenA in terms of tokenB
+        }
 
         return { ...q, amountIn, quoteResult, priceAB };
-      })
-      .sort((a, b) => a.priceAB - b.priceAB); // Sort by priceAB
+      });
 
-    const buyQuotes = validQuotes.filter(
-      (q) => q.tokenIn.address === tokenB.address && q.tokenOut.address === tokenA.address
-    );
-    const sellQuotes = validQuotes.filter(
-      (q) => q.tokenIn.address === tokenA.address && q.tokenOut.address === tokenB.address
-    );
+    const opportunities: TradingPayload[] = [];
 
-    if (buyQuotes.length === 0 || sellQuotes.length === 0) return [];
+    for (let i = 0; i < validQuotes.length; i++) {
+      for (let j = 0; j < validQuotes.length; j++) {
+        if (i === j) continue;
 
-    const bestBuyQuote = buyQuotes[0]; // Lowest priceAB
-    const bestSellQuote = sellQuotes[sellQuotes.length - 1]; // Highest priceAB
+        const buyQuote = validQuotes[i];
+        const sellQuote = validQuotes[j];
 
-    // Calculate profit margin
-    const profitMargin = ((bestSellQuote.priceAB - bestBuyQuote.priceAB) / bestBuyQuote.priceAB) * 100;
+        // Ensure we're buying and selling on different DEXes
+        if (buyQuote.dex === sellQuote.dex) continue;
 
-    // Set a minimum profit margin threshold
-    const MIN_PROFIT_MARGIN = 1; // Adjust as needed
-    if (profitMargin < MIN_PROFIT_MARGIN) return [];
+        // We need to buy tokenA with tokenB and sell tokenA for tokenB
+        if (
+          buyQuote.tokenIn.address === tokenB.address &&
+          buyQuote.tokenOut.address === tokenA.address &&
+          sellQuote.tokenIn.address === tokenA.address &&
+          sellQuote.tokenOut.address === tokenB.address
+        ) {
+          // Calculate profit margin
+          const profitMargin = ((sellQuote.priceAB - buyQuote.priceAB) / buyQuote.priceAB) * 100;
 
-    // Prepare QuotePayload
-    const toQuotePayload = (quote: typeof bestBuyQuote): QuotePayload => ({
-      tokenIn: quote.tokenIn,
-      tokenOut: quote.tokenOut,
-      dex: quote.dex,
-      networkUrl: quote.network.rpcUrl,
-      amountInRaw: quote.amountIn.toString(),
-      fee: 0
-    });
+          // Set a minimum profit margin threshold
+          const MIN_PROFIT_MARGIN = 1; // Adjust as needed
+          if (profitMargin < MIN_PROFIT_MARGIN) continue;
 
-    return [
-      {
-        quoteResult1: toQuotePayload(bestBuyQuote),
-        quoteResult2: toQuotePayload(bestSellQuote),
-        profit: profitMargin
+          // Prepare QuotePayload
+          const toQuotePayload = (quote: typeof buyQuote): QuotePayload => ({
+            tokenIn: quote.tokenIn,
+            tokenOut: quote.tokenOut,
+            dex: quote.dex,
+            networkUrl: quote.network.rpcUrl,
+            amountInRaw: quote.amountIn.toString(),
+            fee: 0
+          });
+
+          opportunities.push({
+            quoteResult1: toQuotePayload(buyQuote),
+            quoteResult2: toQuotePayload(sellQuote),
+            profit: profitMargin
+          });
+        }
       }
-    ];
+    }
+
+    return opportunities;
   });
 }
 
