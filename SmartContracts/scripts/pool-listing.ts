@@ -1,9 +1,7 @@
-import { Token } from '@uniswap/sdk-core';
-import cliProgress from 'cli-progress';
 import fs from 'fs';
 import path from 'path';
 import { NETWORKS, TOKENS } from './constants';
-import { DEX, IDexPool, INetwork, QuotePayload, QuoteResult, UniswapFee } from './interfaces';
+import { DEX, IDexPool, INetwork, QuotePayload, UniswapFee } from './interfaces';
 import { getQuote } from './quote-request';
 
 // Generate all possible token pairs and pool configurations

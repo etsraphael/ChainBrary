@@ -1,13 +1,13 @@
+import { Token } from '@uniswap/sdk-core';
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
-import { TOKENS } from './constants';
-import { DEX, IDexPool, NetworkNameList, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
-import inquirer from 'inquirer';
-import { getQuote } from './quote-request';
-import { Token } from '@uniswap/sdk-core';
-import { startTrading } from './trading-process';
-import path from 'path';
 import fs from 'fs';
+import inquirer from 'inquirer';
+import path from 'path';
+import { TOKENS } from './constants';
+import { DEX, IDexPool, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
+import { getQuote } from './quote-request';
+import { startTrading } from './trading-process';
 
 // Function to prompt the user to select a token to grow
 async function selectTokenToGrow(): Promise<Token> {

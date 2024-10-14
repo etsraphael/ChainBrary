@@ -74,31 +74,3 @@ export function routerContracts(dex: DEX): { [chainId: number]: string } | null 
       return null;
   }
 }
-
-// // List of token pairs to quote
-// export const TOKEN_PAIRS: IDexPool[] = [
-//   {
-//     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
-//     tokenIn: TOKENS.BSC.WETH,
-//     tokenOut: TOKENS.BSC.USDT,
-//     amountIn: '1',
-//     fee: 100,
-//     dexSupported: [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]
-//   },
-//   {
-//     network: getNetworkByName(NetworkNameList.BSC_MAINNET),
-//     tokenIn: TOKENS.BSC.WBNB,
-//     tokenOut: TOKENS.BSC.USDT,
-//     amountIn: '1',
-//     fee: 100,
-//     dexSupported: [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]
-//   },
-//   {
-//     network: getNetworkByName(NetworkNameList.ETH_MAINNET),
-//     tokenIn: TOKENS.ETH.LINK,
-//     tokenOut: TOKENS.ETH.USDT,
-//     amountIn: '1',
-//     fee: 3000,
-//     dexSupported: [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]
-//   }
-// ];
