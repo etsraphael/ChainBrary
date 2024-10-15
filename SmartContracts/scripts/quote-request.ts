@@ -1,5 +1,5 @@
 import { DEX, QuotePayload, QuoteResult } from './interfaces';
-import { getUniswapV2Quote, getUniswapV3Quote } from './quote-uniswap';
+import { getUniswapV3Quote } from './quote-uniswap';
 
 // Function to get Uniswap quote
 export async function getQuote(payload: QuotePayload): Promise<QuoteResult | null> {

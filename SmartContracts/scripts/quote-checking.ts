@@ -165,8 +165,8 @@ async function runQuotes(): Promise<void> {
 
   // Prepare trade options with more context
   const tradeChoices = profitableResult.map((trade, index) => {
-    const amountIn = parseFloat(trade.quoteResult1.amountInRaw);
-    const amountOut = parseFloat(trade.quoteResult2.amountInRaw);
+    const amountIn = parseFloat(trade.quoteResult1.amountIn);
+    const amountOut = parseFloat(trade.quoteResult2.amountOut);
     return {
       name: `Trade ${index + 1}: Buy ${amountIn} ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Profit: ${trade.profit.toFixed(2)}%`,
       value: index
@@ -238,10 +238,10 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
   // Generate trading opportunities
   return Object.values(groupedResults).flatMap(({ tokenA, tokenB, quotes }) => {
     const validQuotes = quotes
-      .filter((q) => q.quoteResult !== null)
+      .filter((q) => q.amountOut !== null)
       .map((q) => {
         const amountIn = parseFloat(q.amountIn);
-        const quoteResult = parseFloat(q.quoteResult!);
+        const quoteResult = parseFloat(q.amountOut!);
         let priceAB: number;
 
         if (q.tokenIn.address === tokenA.address) {
@@ -282,13 +282,14 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
           if (profitMargin < MIN_PROFIT_MARGIN) continue;
 
           // Prepare QuotePayload
-          const toQuotePayload = (quote: typeof buyQuote): QuotePayload => ({
+          const toQuotePayload = (quote: typeof buyQuote): QuoteResult => ({
             tokenIn: quote.tokenIn,
             tokenOut: quote.tokenOut,
             dex: quote.dex,
-            networkUrl: quote.network.rpcUrl,
-            amountInRaw: quote.amountIn.toString(),
-            fee: 0
+            network: quote.network,
+            amountIn: quote.amountIn.toString(),
+            amountOut: quote.quoteResult.toString(),
+            fee: quote.fee
           });
 
           opportunities.push({
@@ -355,7 +356,7 @@ function displayResults(results: QuoteResult[]) {
       // Map DEX names to quotes
       const dexQuotes = pairResults.reduce(
         (acc, result) => {
-          const amount = parseFloat(result.quoteResult || 'NaN');
+          const amount = parseFloat(result.amountOut || 'NaN');
           if (!isNaN(amount)) {
             acc[result.dex] = amount;
           }

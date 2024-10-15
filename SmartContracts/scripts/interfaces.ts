@@ -1,18 +1,19 @@
 import { Token } from '@uniswap/sdk-core';
 
 export interface TradingPayload {
-  quoteResult1: QuotePayload;
-  quoteResult2: QuotePayload;
+  quoteResult1: QuoteResult;
+  quoteResult2: QuoteResult;
   profit: number;
 }
 
 export interface QuoteResult {
   amountIn: string;
+  amountOut: string;
   tokenIn: Token;
   tokenOut: Token;
   network: INetwork;
   dex: DEX;
-  quoteResult: string | null;
+  fee: number;
 }
 
 export interface QuotePayload {

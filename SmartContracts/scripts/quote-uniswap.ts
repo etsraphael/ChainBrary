@@ -4,46 +4,46 @@ import { ethers } from 'ethers';
 import { NETWORKS, routerContracts } from './constants';
 import { INetwork, QuotePayload, QuoteResult } from './interfaces';
 
-export async function getUniswapV2Quote(payload: QuotePayload): Promise<string | null> {
-  try {
-    const { tokenIn, tokenOut, networkUrl, amountInRaw, dex } = payload;
+// export async function getUniswapV2Quote(payload: QuotePayload): Promise<string | null> {
+//   try {
+//     const { tokenIn, tokenOut, networkUrl, amountInRaw, dex } = payload;
 
-    // Get the router address based on DEX and chainId
-    const routerAddresses = routerContracts(dex);
-    if (!routerAddresses) {
-      return null;
-    }
-    const routerAddress = routerAddresses[tokenIn.chainId];
-    if (!routerAddress) {
-      return null;
-    }
+//     // Get the router address based on DEX and chainId
+//     const routerAddresses = routerContracts(dex);
+//     if (!routerAddresses) {
+//       return null;
+//     }
+//     const routerAddress = routerAddresses[tokenIn.chainId];
+//     if (!routerAddress) {
+//       return null;
+//     }
 
-    // Connect to the network
-    const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
+//     // Connect to the network
+//     const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
 
-    // Router ABI
-    const ROUTER_ABI: string[] = [
-      'function getAmountsOut(uint256 amountIn, address[] memory path) external view returns (uint256[] memory amounts)'
-    ];
+//     // Router ABI
+//     const ROUTER_ABI: string[] = [
+//       'function getAmountsOut(uint256 amountIn, address[] memory path) external view returns (uint256[] memory amounts)'
+//     ];
 
-    // Create router contract instance
-    const routerContract: ethers.Contract = new ethers.Contract(routerAddress, ROUTER_ABI, provider);
+//     // Create router contract instance
+//     const routerContract: ethers.Contract = new ethers.Contract(routerAddress, ROUTER_ABI, provider);
 
-    // Amount of tokenIn to swap
-    const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenIn.decimals);
+//     // Amount of tokenIn to swap
+//     const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenIn.decimals);
 
-    // Path
-    const path: string[] = [tokenIn.address, tokenOut.address];
+//     // Path
+//     const path: string[] = [tokenIn.address, tokenOut.address];
 
-    // Get quote
-    const amountsOut: ethers.BigNumberish[] = await routerContract.getAmountsOut(amountIn, path);
+//     // Get quote
+//     const amountsOut: ethers.BigNumberish[] = await routerContract.getAmountsOut(amountIn, path);
 
-    const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
-    return amountOut;
-  } catch (error) {
-    return null;
-  }
-}
+//     const amountOut: string = ethers.formatUnits(amountsOut[1], tokenOut.decimals);
+//     return amountOut;
+//   } catch (error) {
+//     return null;
+//   }
+// }
 
 export async function getUniswapV3Quote(payload: QuotePayload): Promise<QuoteResult | null> {
   try {
@@ -111,11 +111,12 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<QuoteRes
 
     return {
       amountIn: amountIn.toSignificant(6),
+      amountOut: trade.outputAmount.toSignificant(6),
       tokenIn: tokenA,
       tokenOut: tokenB,
       network: getNetworkFromChainId(tokenA.chainId),
       dex: dex,
-      quoteResult: amountOut
+      fee: fee
     };
   } catch (error) {
     console.log('error', error);

@@ -27,13 +27,20 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
   // update amount in raw here to 1
-  payload.quoteResult1.amountInRaw = '10';
-  payload.quoteResult2.amountInRaw = '10';
-  payload.quoteResult1.fee = 100;
-  payload.quoteResult2.fee = 100;
+  const quoteResult1: QuotePayload = {
+    ...payload.quoteResult1,
+    amountInRaw: payload.quoteResult1.amountIn,
+    networkUrl: payload.quoteResult1.network.rpcUrl
+  };
 
-  const quote1: QuoteResult | null = await getQuote(payload.quoteResult1);
-  const quote2: QuoteResult | null = await getQuote(payload.quoteResult2);
+  const quoteResult2: QuotePayload = {
+    ...payload.quoteResult2,
+    amountInRaw: payload.quoteResult2.amountIn,
+    networkUrl: payload.quoteResult2.network.rpcUrl
+  };
+
+  const quote1: QuoteResult | null = await getQuote(quoteResult1);
+  const quote2: QuoteResult | null = await getQuote(quoteResult2);
 
   // explain the profit
   console.log(
@@ -42,7 +49,7 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
       ' ' +
       payload.quoteResult2.tokenOut.symbol +
       ' to ' +
-      payload.quoteResult2.amountInRaw +
+      payload.quoteResult2.amountOut +
       ' ' +
       payload.quoteResult2.tokenIn.symbol +
       ' from ' +
@@ -55,7 +62,7 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
       ' ' +
       payload.quoteResult1.tokenOut.symbol +
       ' to ' +
-      payload.quoteResult1.amountInRaw +
+      payload.quoteResult1.amountOut +
       ' ' +
       payload.quoteResult1.tokenIn.symbol +
       ' from ' +
@@ -101,16 +108,16 @@ async function executeTrades(payload: TradingPayload) {
       //   }
       //   break;
 
-      case DEX.UNISWAP_V3:
-      case DEX.PANCAKESWAP_V3:
-        const isTrade2V3Successful: boolean = await executeUniswapV3Trade(payload.quoteResult2);
-        if (isTrade2V3Successful) {
-          console.log('Second trade (V3) executed successfully');
-        } else {
-          console.log('Second trade (V3) execution failed');
-          return;
-        }
-        break;
+      // case DEX.UNISWAP_V3:
+      // case DEX.PANCAKESWAP_V3:
+      //   const isTrade2V3Successful: boolean = await executeUniswapV3Trade(payload.quoteResult2);
+      //   if (isTrade2V3Successful) {
+      //     console.log('Second trade (V3) executed successfully');
+      //   } else {
+      //     console.log('Second trade (V3) execution failed');
+      //     return;
+      //   }
+      //   break;
 
       default:
         console.log(`Unsupported DEX for the second trade: ${payload.quoteResult2.dex}`);
