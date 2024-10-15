@@ -10,7 +10,7 @@ import { getQuote } from './quote-request';
 import { startTrading } from './trading-process';
 
 // Function to prompt the user to select a token to grow
-async function selectTokenToGrow(): Promise<Token|null> {
+async function selectTokenToGrow(): Promise<Token | null> {
   const tokenChoices = [
     {
       name: 'All tokens',
@@ -85,8 +85,10 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
 
   // Filter pools based on the selected token if provided
   const filteredPools: IDexPool[] = selectedToken
-  ? pools.filter(pool => pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address)
-  : pools;
+    ? pools.filter(
+        (pool) => pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address
+      )
+    : pools;
 
   const results: QuoteResult[] = [];
   const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
@@ -96,7 +98,11 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
 
   for (const pool of filteredPools) {
     // Filter pools based on the selected token if provided
-    if (selectedToken && (pool.tokenIn.address !== selectedToken.address && pool.tokenOut.address !== selectedToken.address)) {
+    if (
+      selectedToken &&
+      pool.tokenIn.address !== selectedToken.address &&
+      pool.tokenOut.address !== selectedToken.address
+    ) {
       continue;
     }
 
@@ -110,7 +116,13 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
     };
 
     try {
-      const quote = await getQuote(payload);
+      const quote: string | null = await getQuote(payload);
+
+      // if quote inferior to 1, skip
+      if (quote !== null && parseFloat(quote) < 1) {
+        continue;
+      }
+
       results.push({
         amountIn: pool.amountIn,
         tokenIn: pool.tokenIn,
@@ -314,7 +326,6 @@ function displayResults(results: QuoteResult[]) {
     const columns = [
       { name: 'tokenPair', title: 'Token Pair', alignment: 'left' },
       ...allDexes.map((dex) => ({ name: dex, title: `${dex} Quote`, alignment: 'right' })),
-      { name: 'bestQuote', title: 'Best Quote', alignment: 'center', color: 'green' },
       { name: 'percentageDifference', title: '% Difference', alignment: 'left' }
     ];
 
@@ -351,7 +362,6 @@ function displayResults(results: QuoteResult[]) {
       if (Object.keys(dexQuotes).length === 0) {
         const rowData: any = {
           tokenPair: tokenPair,
-          bestQuote: 'No valid quotes available',
           percentageDifference: ''
         };
         allDexes.forEach((dex) => {
@@ -377,7 +387,6 @@ function displayResults(results: QuoteResult[]) {
       // Prepare data for the table
       const rowData: any = {
         tokenPair: tokenPair,
-        bestQuote: bestDex,
         percentageDifference: percentageDifferences.map((diff) => `${diff.dex}: ${diff.difference}%`).join(', ')
       };
 
