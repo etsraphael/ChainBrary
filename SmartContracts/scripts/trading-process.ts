@@ -26,7 +26,6 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 }
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
-  // update amount in raw here to 1
   const quoteResult1: QuotePayload = {
     ...payload.quoteResult1,
     amountInRaw: payload.quoteResult1.amountIn,

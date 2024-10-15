@@ -165,10 +165,11 @@ async function runQuotes(): Promise<void> {
 
   // Prepare trade options with more context
   const tradeChoices = profitableResult.map((trade, index) => {
-    const amountIn = parseFloat(trade.quoteResult1.amountIn);
-    const amountOut = parseFloat(trade.quoteResult2.amountOut);
+    const amountIn: number = parseFloat(trade.quoteResult1.amountIn);
+    const amountOut: number = parseFloat(trade.quoteResult2.amountOut);
+    const profitAmount: number = amountOut - amountIn;
     return {
-      name: `Trade ${index + 1}: Buy ${amountIn} ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Profit: ${trade.profit.toFixed(2)}%`,
+      name: `Trade ${index + 1}: Start with ${amountIn} ${trade.quoteResult1.tokenIn.symbol} to buy ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Path: ${trade.quoteResult1.tokenIn.symbol} -> ${trade.quoteResult1.tokenOut.symbol} -> ${trade.quoteResult2.tokenOut.symbol}. Profit: ${trade.profit.toFixed(2)}% (${profitAmount.toFixed(2)} ${trade.quoteResult2.tokenOut.symbol})`,
       value: index
     };
   });
