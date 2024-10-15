@@ -1,8 +1,8 @@
 import { CurrencyAmount, Token, TradeType } from '@uniswap/sdk-core';
 import { Pool, Route, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
-import { routerContracts } from './constants';
-import { DEX, QuotePayload } from './interfaces';
+import { NETWORKS, routerContracts } from './constants';
+import { INetwork, QuotePayload, QuoteResult } from './interfaces';
 
 export async function getUniswapV2Quote(payload: QuotePayload): Promise<string | null> {
   try {
@@ -45,7 +45,7 @@ export async function getUniswapV2Quote(payload: QuotePayload): Promise<string |
   }
 }
 
-export async function getUniswapV3Quote(payload: QuotePayload): Promise<string | null> {
+export async function getUniswapV3Quote(payload: QuotePayload): Promise<QuoteResult | null> {
   try {
     const { tokenIn, tokenOut, networkUrl, amountInRaw, fee, dex } = payload;
 
@@ -108,9 +108,25 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<string |
 
     // Get the quote for the trade (output amount)
     const amountOut: string = trade.outputAmount.toSignificant(6);
-    return amountOut;
+
+    return {
+      amountIn: amountIn.toSignificant(6),
+      tokenIn: tokenA,
+      tokenOut: tokenB,
+      network: getNetworkFromChainId(tokenA.chainId),
+      dex: dex,
+      quoteResult: amountOut
+    };
   } catch (error) {
     console.log('error', error);
     return null;
   }
+}
+
+function getNetworkFromChainId(chainId: number): INetwork {
+  const network: INetwork | undefined = NETWORKS.find((network: INetwork) => network.chainId === chainId);
+  if (!network) {
+    throw new Error('Network not supported');
+  }
+  return network;
 }

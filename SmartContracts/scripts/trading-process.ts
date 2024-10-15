@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 import inquirer from 'inquirer';
 import JSBI from 'jsbi';
 import { routerContracts } from './constants';
-import { DEX, QuotePayload, TradingPayload } from './interfaces';
+import { DEX, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import { getQuote } from './quote-request';
 
 export async function startTrading(payload: TradingPayload): Promise<string | null> {
@@ -32,8 +32,8 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
   payload.quoteResult1.fee = 100;
   payload.quoteResult2.fee = 100;
 
-  const quote1: string | null = await getQuote(payload.quoteResult1);
-  const quote2: string | null = await getQuote(payload.quoteResult2);
+  const quote1: QuoteResult | null = await getQuote(payload.quoteResult1);
+  const quote2: QuoteResult | null = await getQuote(payload.quoteResult2);
 
   // explain the profit
   console.log(

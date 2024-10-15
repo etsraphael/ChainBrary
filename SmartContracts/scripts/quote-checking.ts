@@ -103,7 +103,8 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
   // Filter pools based on the selected token if provided
   const filteredPools: IDexPool[] = selectedToken
     ? pools.filter(
-        (pool: IDexPool) => pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address
+        (pool: IDexPool) =>
+          pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address
       )
     : pools;
 
@@ -133,16 +134,8 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
     };
 
     try {
-      const quote: string | null = await getQuote(payload);
-
-      results.push({
-        amountIn: pool.amountIn,
-        tokenIn: pool.tokenIn,
-        tokenOut: pool.tokenOut,
-        network: pool.network,
-        dex: pool.dex,
-        quoteResult: quote
-      });
+      const quote: QuoteResult | null = await getQuote(payload);
+      quote ? results.push(quote) : null;
     } catch (error) {
       console.error(`Error fetching quote for ${pool.dex}`, error);
     }
