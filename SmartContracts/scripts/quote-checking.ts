@@ -60,6 +60,7 @@ function loadPools(): IDexPool[] {
   return filteredPools;
 }
 
+// Load pools and add reverse directions
 function loadFilteredPools(): IDexPool[] {
   const pools: IDexPool[] = loadPools();
 
@@ -102,7 +103,7 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
   // Filter pools based on the selected token if provided
   const filteredPools: IDexPool[] = selectedToken
     ? pools.filter(
-        (pool) => pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address
+        (pool: IDexPool) => pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address
       )
     : pools;
 
@@ -133,11 +134,6 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
 
     try {
       const quote: string | null = await getQuote(payload);
-
-      // if quote inferior to 1, skip
-      if (quote !== null && parseFloat(quote) < 1) {
-        continue;
-      }
 
       results.push({
         amountIn: pool.amountIn,
@@ -226,6 +222,7 @@ async function runQuotes(): Promise<void> {
   }
 }
 
+// Function to check profitability of trades
 function checkProfitability(results: QuoteResult[]): TradingPayload[] {
   // Group quotes by unordered pair of token addresses
   const groupedResults = results.reduce<Record<string, { tokenA: Token; tokenB: Token; quotes: QuoteResult[] }>>(
