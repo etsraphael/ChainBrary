@@ -36,12 +36,28 @@ async function selectTokenToGrow(): Promise<Token | null> {
 
 // Load pools from the generated JSON file
 function loadPools(): IDexPool[] {
-  const filePath = path.resolve(__dirname, './generated-data/pool-listing.json');
+  const filePath: string = path.resolve(__dirname, './generated-data/pool-listing.json');
   if (!fs.existsSync(filePath)) {
     throw new Error(`File not found: ${filePath}`);
   }
   const rawData = fs.readFileSync(filePath, 'utf-8');
-  return JSON.parse(rawData) as IDexPool[];
+  const pools: IDexPool[] = JSON.parse(rawData) as IDexPool[];
+
+  // Group pools by token pairs
+  const groupedPools: Record<string, IDexPool[]> = pools.reduce<Record<string, IDexPool[]>>((acc, pool) => {
+    const addresses: string[] = [pool.tokenIn.address, pool.tokenOut.address].sort();
+    const key: string = `${addresses[0]}-${addresses[1]}`;
+    if (!acc[key]) acc[key] = [];
+    acc[key].push(pool);
+    return acc;
+  }, {});
+
+  // Filter out pairs that have only one pool
+  const filteredPools: IDexPool[] = Object.values(groupedPools)
+    .filter((poolGroup: IDexPool[]) => poolGroup.length > 1)
+    .flat();
+
+  return filteredPools;
 }
 
 function loadFilteredPools(): IDexPool[] {
