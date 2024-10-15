@@ -10,12 +10,17 @@ import { getQuote } from './quote-request';
 import { startTrading } from './trading-process';
 
 // Function to prompt the user to select a token to grow
-async function selectTokenToGrow(): Promise<Token> {
-  const allTokens = Object.values(TOKENS).flatMap((tokenMap) => Object.values(tokenMap));
-  const tokenChoices = allTokens.map((token) => ({
-    name: `${token.symbol} (${token.name}) on chain ${token.chainId}`,
-    value: token
-  }));
+async function selectTokenToGrow(): Promise<Token|null> {
+  const tokenChoices = [
+    {
+      name: 'All tokens',
+      value: null
+    },
+    ...TOKENS.map((token: Token) => ({
+      name: `${token.symbol} (${token.name}) on chain ${token.chainId}`,
+      value: token
+    }))
+  ];
 
   const response = await inquirer.prompt([
     {
@@ -74,13 +79,64 @@ function loadFilteredPools(): IDexPool[] {
   return bidirectionalPools;
 }
 
-// Function to run quotes for all token pairs
+// Modify getQuotes to accept an optional Token parameter
+async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
+  const pools: IDexPool[] = loadFilteredPools();
+
+  // Filter pools based on the selected token if provided
+  const filteredPools: IDexPool[] = selectedToken
+  ? pools.filter(pool => pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address)
+  : pools;
+
+  const results: QuoteResult[] = [];
+  const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+
+  console.log(`Fetching quotes for ${filteredPools.length} pools...`);
+  progressBar.start(filteredPools.length, 0);
+
+  for (const pool of filteredPools) {
+    // Filter pools based on the selected token if provided
+    if (selectedToken && (pool.tokenIn.address !== selectedToken.address && pool.tokenOut.address !== selectedToken.address)) {
+      continue;
+    }
+
+    const payload: QuotePayload = {
+      tokenIn: pool.tokenIn,
+      tokenOut: pool.tokenOut,
+      networkUrl: pool.network.rpcUrl,
+      amountInRaw: pool.amountIn,
+      fee: pool.fee,
+      dex: pool.dex
+    };
+
+    try {
+      const quote = await getQuote(payload);
+      results.push({
+        amountIn: pool.amountIn,
+        tokenIn: pool.tokenIn,
+        tokenOut: pool.tokenOut,
+        network: pool.network,
+        dex: pool.dex,
+        quoteResult: quote
+      });
+    } catch (error) {
+      console.error(`Error fetching quote for ${pool.dex}`, error);
+    }
+
+    progressBar.increment();
+  }
+
+  progressBar.stop();
+  return results;
+}
+
+// Update runQuotes to prompt the user for a token selection and pass it to getQuotes
 async function runQuotes(): Promise<void> {
   // Prompt the user to select the token to grow
-  // const selectedToken = await selectTokenToGrow();
+  const selectedToken = await selectTokenToGrow();
 
   // get quotes and display
-  const results: QuoteResult[] = await getQuotes();
+  const results: QuoteResult[] = await getQuotes(selectedToken);
   displayResults(results);
 
   // check profitability
@@ -228,46 +284,6 @@ function checkProfitability(results: QuoteResult[]): TradingPayload[] {
 
     return opportunities;
   });
-}
-
-// Fetch quotes for all pools from the loaded file
-async function getQuotes(): Promise<QuoteResult[]> {
-  const pools: IDexPool[] = loadFilteredPools();
-  const results: QuoteResult[] = [];
-  const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
-
-  console.log(`Fetching quotes for ${pools.length} pools...`);
-  progressBar.start(pools.length, 0);
-
-  for (const pool of pools) {
-    const payload: QuotePayload = {
-      tokenIn: pool.tokenIn,
-      tokenOut: pool.tokenOut,
-      networkUrl: pool.network.rpcUrl,
-      amountInRaw: pool.amountIn,
-      fee: pool.fee,
-      dex: pool.dex
-    };
-
-    try {
-      const quote = await getQuote(payload);
-      results.push({
-        amountIn: pool.amountIn,
-        tokenIn: pool.tokenIn,
-        tokenOut: pool.tokenOut,
-        network: pool.network,
-        dex: pool.dex,
-        quoteResult: quote
-      });
-    } catch (error) {
-      console.error(`Error fetching quote for ${pool.dex}`, error);
-    }
-
-    progressBar.increment();
-  }
-
-  progressBar.stop();
-  return results;
 }
 
 // Function to display results in a table
