@@ -56,6 +56,7 @@ export interface IDexPool {
   type: 'BUY' | 'SELL';
 }
 
+// TODO: Replace by FeeAmount from @uniswap/v3-sdk
 export enum UniswapFee {
   LOW = 100,
   MEDIUM = 500,

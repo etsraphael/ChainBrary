@@ -16,24 +16,27 @@ async function getPoolData(
   dex: DEX
 ): Promise<{ pool: Pool } | null> {
   try {
+    // Ensure tokenIn and tokenOut are instances of Token
+    const tokenA = new Token(tokenIn.chainId, tokenIn.address, tokenIn.decimals, tokenIn.symbol, tokenIn.name);
+    const tokenB = new Token(tokenOut.chainId, tokenOut.address, tokenOut.decimals, tokenOut.symbol, tokenOut.name);
+
     // Get the factory address based on DEX and chainId
     const factoryAddresses = routerContracts(dex);
-    if (!factoryAddresses) {
-      console.error('Factory address not found for this DEX.');
-      return null;
-    }
-    const FACTORY_ADDRESS: string = factoryAddresses[tokenIn.chainId];
-    if (!FACTORY_ADDRESS) {
-      console.error('Factory address not available for this chain.');
-      return null;
-    }
+    if (!factoryAddresses) return null;
 
-    // Get the pool details from the contract
+    const FACTORY_ADDRESS: string = factoryAddresses[tokenA.chainId];
+    if (!FACTORY_ADDRESS) return null;
+
+    // Factory ABI
     const FACTORY_ABI = [
       'function getPool(address tokenA, address tokenB, uint24 fee) external view returns (address pool)'
     ];
+
+    // Create factory contract instance
     const factoryContract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
-    const poolAddress = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
+
+    // Get pool address
+    const poolAddress: string = await factoryContract.getPool(tokenA.address, tokenB.address, fee);
 
     if (poolAddress === ethers.ZeroAddress) {
       console.error('No pool found for the given tokens and fee.');
@@ -42,20 +45,32 @@ async function getPoolData(
 
     // Pool contract ABI
     const POOL_ABI: string[] = [
-      'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)',
+      'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16, uint16, uint16, uint8, bool)',
       'function liquidity() external view returns (uint128)'
     ];
 
     // Connect to the pool contract
     const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, provider);
 
-    // Fetch pool details
+    // Fetch pool details: slot0 and liquidity
     const [slot0, liquidity] = await Promise.all([poolContract.slot0(), poolContract.liquidity()]);
-    const sqrtPriceX96: bigint = slot0[0];
-    const tick: number = slot0[1];
 
-    // Create the pool instance
-    const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), tick);
+    // Extract sqrtPriceX96 and tick from slot0
+    const sqrtPriceX96 = slot0.sqrtPriceX96 || slot0[0];
+    const tick = slot0.tick || slot0[1];
+
+    if (sqrtPriceX96 === undefined || tick === undefined) {
+      console.error('Invalid slot0 data');
+      return null;
+    }
+
+    // Convert BigInt values to strings
+    const sqrtPriceX96Str = sqrtPriceX96.toString();
+    const liquidityStr = liquidity.toString();
+    const tickInt = Number(tick);
+
+    // Create a Uniswap V3 pool instance
+    const pool: Pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96Str, liquidityStr, tickInt);
 
     return { pool };
   } catch (error) {
@@ -177,6 +192,8 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
     console.log('The quotes are no longer valid.');
     return false;
   }
+
+  console.log('called')
 
   // Estimate gas fees for both trades
   const [gasFees1, gasFees2] = await Promise.all([estimateGasFees(latestQuote1), estimateGasFees(latestQuote2)]);
