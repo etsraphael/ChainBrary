@@ -4,6 +4,7 @@ export interface TradingPayload {
   quoteResult1: QuoteResult;
   quoteResult2: QuoteResult;
   profit: number;
+  profitAmount: number;
 }
 
 export interface QuoteResult {
@@ -14,6 +15,8 @@ export interface QuoteResult {
   network: INetwork;
   dex: DEX;
   fee: number;
+  type: 'BUY' | 'SELL';
+  relatedBuyQuote?: QuoteResult;
 }
 
 export interface QuotePayload {
@@ -50,6 +53,7 @@ export interface IDexPool {
   amountIn: string;
   fee: number;
   dex: DEX;
+  type: 'BUY' | 'SELL';
 }
 
 export enum UniswapFee {

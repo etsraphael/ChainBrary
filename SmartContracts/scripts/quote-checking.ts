@@ -4,35 +4,10 @@ import { Table } from 'console-table-printer';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import path from 'path';
-import { TOKENS } from './constants';
+import { NETWORKS, routerContracts, TOKENS } from './constants';
 import { DEX, IDexPool, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import { getQuote } from './quote-request';
 import { startTrading } from './trading-process';
-
-// Function to prompt the user to select a token to grow
-async function selectTokenToGrow(): Promise<Token | null> {
-  const tokenChoices = [
-    {
-      name: 'All tokens',
-      value: null
-    },
-    ...TOKENS.map((token: Token) => ({
-      name: `${token.symbol} (${token.name}) on chain ${token.chainId}`,
-      value: token
-    }))
-  ];
-
-  const response = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'token',
-      message: 'Which token would you like to grow?',
-      choices: tokenChoices
-    }
-  ]);
-
-  return response.token;
-}
 
 // Load pools from the generated JSON file
 function loadPools(): IDexPool[] {
@@ -96,34 +71,95 @@ function loadFilteredPools(): IDexPool[] {
   return bidirectionalPools;
 }
 
-// Modify getQuotes to accept an optional Token parameter
-async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
-  const pools: IDexPool[] = loadFilteredPools();
+// Function to prompt the user to select a token to grow and amount
+async function selectTokenToGrow(): Promise<{ token: Token | null; amount: string }> {
+  const tokenChoices = [
+    {
+      name: 'All tokens',
+      value: null
+    },
+    ...TOKENS.map((token: Token) => ({
+      name: `${token.symbol} (${token.name}) on chain ${token.chainId}`,
+      value: token
+    }))
+  ];
 
-  // Filter pools based on the selected token if provided
-  const filteredPools: IDexPool[] = selectedToken
-    ? pools.filter(
-        (pool: IDexPool) =>
-          pool.tokenIn.address === selectedToken.address || pool.tokenOut.address === selectedToken.address
-      )
-    : pools;
+  const response = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'token',
+      message: 'Which token would you like to grow?',
+      choices: tokenChoices
+    }
+  ]);
+
+  let amount = '1'; // default amount
+
+  if (response.token) {
+    const amountResponse = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'amount',
+        message: `Enter the amount of ${response.token.symbol} to start with:`,
+        validate: (input: string) => {
+          return !isNaN(parseFloat(input)) && parseFloat(input) > 0
+            ? true
+            : 'Please enter a valid number greater than 0';
+        },
+        default: '1'
+      }
+    ]);
+    amount = amountResponse.amount;
+  }
+
+  return { token: response.token, amount };
+}
+
+// Generate pools dynamically based on the selected token
+function generatePoolsForToken(selectedToken: Token, amountIn: string): IDexPool[] {
+  const pools: IDexPool[] = [];
+  for (const network of NETWORKS) {
+    if (network.chainId !== selectedToken.chainId) continue; // Ensure tokens are on the same chain
+    const tokensInNetwork = TOKENS.filter((t) => t.chainId === network.chainId);
+    const otherTokens = tokensInNetwork.filter((t) => t.address !== selectedToken.address);
+
+    for (const token of otherTokens) {
+      for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]) {
+        const router = routerContracts(dex);
+        if (router && router[network.chainId]) {
+          // Assume fee levels
+          const feeLevels = [100, 500, 3000];
+
+          for (const fee of feeLevels) {
+            // Create buy pool (selectedToken -> other token)
+            pools.push({
+              network,
+              tokenIn: selectedToken,
+              tokenOut: token,
+              amountIn: amountIn,
+              fee,
+              dex,
+              type: 'BUY'
+            });
+          }
+        }
+      }
+    }
+  }
+  return pools;
+}
+
+// Modify getQuotes to fetch sell quotes after obtaining buy quotes
+async function getQuotes(selectedToken?: Token | null, amountIn?: string): Promise<QuoteResult[]> {
+  const pools: IDexPool[] = selectedToken ? generatePoolsForToken(selectedToken, amountIn || '1') : loadFilteredPools(); // You can implement loadFilteredPools if needed
 
   const results: QuoteResult[] = [];
   const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
-  console.log(`Fetching quotes for ${filteredPools.length} pools...`);
-  progressBar.start(filteredPools.length, 0);
+  console.log(`Fetching quotes for ${pools.length} pools...`);
+  progressBar.start(pools.length, 0);
 
-  for (const pool of filteredPools) {
-    // Filter pools based on the selected token if provided
-    if (
-      selectedToken &&
-      pool.tokenIn.address !== selectedToken.address &&
-      pool.tokenOut.address !== selectedToken.address
-    ) {
-      continue;
-    }
-
+  for (const pool of pools) {
     const payload: QuotePayload = {
       tokenIn: pool.tokenIn,
       tokenOut: pool.tokenOut,
@@ -134,8 +170,30 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
     };
 
     try {
-      const quote: QuoteResult | null = await getQuote(payload);
-      quote ? results.push(quote) : null;
+      const buyQuote: QuoteResult | null = await getQuote(payload);
+      if (buyQuote) {
+        const buyQuoteWithType: QuoteResult = { ...buyQuote, type: 'BUY' };
+        results.push(buyQuoteWithType);
+
+        // Now fetch the sell quote using the amountOut of the buy quote as amountIn
+        const sellPayload: QuotePayload = {
+          tokenIn: pool.tokenOut, // token we obtained from buy
+          tokenOut: pool.tokenIn, // original token
+          networkUrl: pool.network.rpcUrl,
+          amountInRaw: buyQuote.amountOut,
+          fee: pool.fee,
+          dex: pool.dex === DEX.UNISWAP_V3 ? DEX.PANCAKESWAP_V3 : DEX.UNISWAP_V3 // Use different DEX for sell
+        };
+        const sellQuote: QuoteResult | null = await getQuote(sellPayload);
+        if (sellQuote) {
+          const sellQuoteWithType: QuoteResult = {
+            ...sellQuote,
+            type: 'SELL',
+            relatedBuyQuote: buyQuoteWithType
+          };
+          results.push(sellQuoteWithType);
+        }
+      }
     } catch (error) {
       console.error(`Error fetching quote for ${pool.dex}`, error);
     }
@@ -147,17 +205,59 @@ async function getQuotes(selectedToken?: Token | null): Promise<QuoteResult[]> {
   return results;
 }
 
-// Update runQuotes to prompt the user for a token selection and pass it to getQuotes
+// Function to check profitability of trades
+function checkProfitability(results: QuoteResult[], selectedToken?: Token | null): TradingPayload[] {
+  const opportunities: TradingPayload[] = [];
+
+  // Filter buy and sell quotes
+  const buyQuotes = results.filter((q) => q.type === 'BUY') as QuoteResult[];
+  const sellQuotes = results.filter((q) => q.type === 'SELL') as QuoteResult[];
+
+  for (const buyQuote of buyQuotes) {
+    const relatedSellQuote = sellQuotes.find(
+      (sellQuote: QuoteResult) =>
+        sellQuote.relatedBuyQuote &&
+        sellQuote.relatedBuyQuote.tokenIn.address === buyQuote.tokenIn.address &&
+        sellQuote.relatedBuyQuote.tokenOut.address === buyQuote.tokenOut.address &&
+        sellQuote.dex !== buyQuote.dex && // Ensure different DEXes
+        sellQuote.tokenIn.address === buyQuote.tokenOut.address &&
+        sellQuote.tokenOut.address === buyQuote.tokenIn.address &&
+        sellQuote.relatedBuyQuote.amountOut === buyQuote.amountOut // Ensure matching amounts
+    );
+
+    if (relatedSellQuote) {
+      const startingAmount = parseFloat(buyQuote.amountIn);
+      const endingAmount = parseFloat(relatedSellQuote.amountOut);
+
+      const profitAmount = endingAmount - startingAmount;
+      const profitPercentage = (profitAmount / startingAmount) * 100;
+
+      const MIN_PROFIT_MARGIN = 0.5; // Adjust as needed
+      if (profitPercentage >= MIN_PROFIT_MARGIN) {
+        opportunities.push({
+          quoteResult1: buyQuote,
+          quoteResult2: relatedSellQuote,
+          profit: profitPercentage,
+          profitAmount: profitAmount
+        });
+      }
+    }
+  }
+
+  return opportunities;
+}
+
+// Update runQuotes to use the updated functions
 async function runQuotes(): Promise<void> {
-  // Prompt the user to select the token to grow
-  const selectedToken = await selectTokenToGrow();
+  // Prompt the user to select the token to grow and amount
+  const { token: selectedToken, amount: amountIn } = await selectTokenToGrow();
 
   // get quotes and display
-  const results: QuoteResult[] = await getQuotes(selectedToken);
+  const results: QuoteResult[] = await getQuotes(selectedToken, amountIn);
   displayResults(results);
 
   // check profitability
-  const profitableResult: TradingPayload[] = checkProfitability(results);
+  const profitableResult: TradingPayload[] = checkProfitability(results, selectedToken);
   if (profitableResult.length === 0) {
     console.log('No profitable trades found.');
     return;
@@ -167,9 +267,9 @@ async function runQuotes(): Promise<void> {
   const tradeChoices = profitableResult.map((trade, index) => {
     const amountIn: number = parseFloat(trade.quoteResult1.amountIn);
     const amountOut: number = parseFloat(trade.quoteResult2.amountOut);
-    const profitAmount: number = amountOut - amountIn;
+    const profitAmount: number = trade.profitAmount!;
     return {
-      name: `Trade ${index + 1}: Start with ${amountIn} ${trade.quoteResult1.tokenIn.symbol} to buy ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Path: ${trade.quoteResult1.tokenIn.symbol} -> ${trade.quoteResult1.tokenOut.symbol} -> ${trade.quoteResult2.tokenOut.symbol}. Profit: ${trade.profit.toFixed(2)}% (${profitAmount.toFixed(2)} ${trade.quoteResult2.tokenOut.symbol})`,
+      name: `Trade ${index + 1}: Start with ${amountIn} ${trade.quoteResult1.tokenIn.symbol} to buy ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut.toFixed(6)} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Path: ${trade.quoteResult1.tokenIn.symbol} -> ${trade.quoteResult1.tokenOut.symbol} -> ${trade.quoteResult2.tokenOut.symbol}. Profit: ${trade.profit.toFixed(2)}% (${profitAmount.toFixed(6)} ${trade.quoteResult2.tokenOut.symbol})`,
       value: index
     };
   });
@@ -206,7 +306,8 @@ async function runQuotes(): Promise<void> {
     const tradePayload: TradingPayload = {
       quoteResult1: selectedTrade.quoteResult1,
       quoteResult2: selectedTrade.quoteResult2,
-      profit: selectedTrade.profit
+      profit: selectedTrade.profit,
+      profitAmount: selectedTrade.profitAmount
     };
     startTrading(tradePayload);
   } else {
@@ -216,97 +317,7 @@ async function runQuotes(): Promise<void> {
   }
 }
 
-// Function to check profitability of trades
-function checkProfitability(results: QuoteResult[]): TradingPayload[] {
-  // Group quotes by unordered pair of token addresses
-  const groupedResults = results.reduce<Record<string, { tokenA: Token; tokenB: Token; quotes: QuoteResult[] }>>(
-    (acc, result) => {
-      const addresses = [result.tokenIn.address, result.tokenOut.address].sort();
-      const key = `${addresses[0]}-${addresses[1]}`;
-      if (!acc[key]) {
-        const tokens =
-          addresses[0] === result.tokenIn.address
-            ? { tokenA: result.tokenIn, tokenB: result.tokenOut }
-            : { tokenA: result.tokenOut, tokenB: result.tokenIn };
-        acc[key] = { ...tokens, quotes: [] };
-      }
-      acc[key].quotes.push(result);
-      return acc;
-    },
-    {}
-  );
-
-  // Generate trading opportunities
-  return Object.values(groupedResults).flatMap(({ tokenA, tokenB, quotes }) => {
-    const validQuotes = quotes
-      .filter((q) => q.amountOut !== null)
-      .map((q) => {
-        const amountIn = parseFloat(q.amountIn);
-        const quoteResult = parseFloat(q.amountOut!);
-        let priceAB: number;
-
-        if (q.tokenIn.address === tokenA.address) {
-          // Selling tokenA for tokenB
-          priceAB = quoteResult / amountIn; // Price of tokenA in terms of tokenB
-        } else {
-          // Buying tokenA with tokenB
-          priceAB = amountIn / quoteResult; // Price of tokenA in terms of tokenB
-        }
-
-        return { ...q, amountIn, quoteResult, priceAB };
-      });
-
-    const opportunities: TradingPayload[] = [];
-
-    for (let i = 0; i < validQuotes.length; i++) {
-      for (let j = 0; j < validQuotes.length; j++) {
-        if (i === j) continue;
-
-        const buyQuote = validQuotes[i];
-        const sellQuote = validQuotes[j];
-
-        // Ensure we're buying and selling on different DEXes
-        if (buyQuote.dex === sellQuote.dex) continue;
-
-        // We need to buy tokenA with tokenB and sell tokenA for tokenB
-        if (
-          buyQuote.tokenIn.address === tokenB.address &&
-          buyQuote.tokenOut.address === tokenA.address &&
-          sellQuote.tokenIn.address === tokenA.address &&
-          sellQuote.tokenOut.address === tokenB.address
-        ) {
-          // Calculate profit margin
-          const profitMargin = ((sellQuote.priceAB - buyQuote.priceAB) / buyQuote.priceAB) * 100;
-
-          // Set a minimum profit margin threshold
-          const MIN_PROFIT_MARGIN = 1; // Adjust as needed
-          if (profitMargin < MIN_PROFIT_MARGIN) continue;
-
-          // Prepare QuotePayload
-          const toQuotePayload = (quote: typeof buyQuote): QuoteResult => ({
-            tokenIn: quote.tokenIn,
-            tokenOut: quote.tokenOut,
-            dex: quote.dex,
-            network: quote.network,
-            amountIn: quote.amountIn.toString(),
-            amountOut: quote.quoteResult.toString(),
-            fee: quote.fee
-          });
-
-          opportunities.push({
-            quoteResult1: toQuotePayload(buyQuote),
-            quoteResult2: toQuotePayload(sellQuote),
-            profit: profitMargin
-          });
-        }
-      }
-    }
-
-    return opportunities;
-  });
-}
-
-// Function to display results in a table
+// Modify displayResults to only show one direction per token pair
 function displayResults(results: QuoteResult[]) {
   // Group results by network
   const groupedResults: {
@@ -339,10 +350,14 @@ function displayResults(results: QuoteResult[]) {
 
     const p: Table = new Table({ columns });
 
-    // Group results by token pair within the network
+    // Group results by ordered token pair within the network
     const tokenPairResults = networkResults.reduce(
       (acc: { [tokenPair: string]: QuoteResult[] }, result: QuoteResult) => {
-        const key = `${result.tokenIn.symbol}/${result.tokenOut.symbol}`;
+        if (result.type !== 'BUY') return acc; // Only consider 'BUY' quotes for display
+        const addresses = [result.tokenIn.address, result.tokenOut.address];
+        const symbols = [result.tokenIn.symbol, result.tokenOut.symbol];
+        const sorted = addresses[0] < addresses[1];
+        const key = sorted ? `${symbols[0]}/${symbols[1]}` : `${symbols[1]}/${symbols[0]}`;
         if (!acc[key]) {
           acc[key] = [];
         }
@@ -399,7 +414,7 @@ function displayResults(results: QuoteResult[]) {
       };
 
       allDexes.forEach((dex) => {
-        rowData[dex] = dexQuotes[dex as DEX]?.toString() || 'N/A';
+        rowData[dex] = dexQuotes[dex as DEX]?.toFixed(6) || 'N/A';
       });
 
       p.addRow(rowData);

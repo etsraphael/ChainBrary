@@ -1,7 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 import { NETWORKS, TOKENS } from './constants';
-import { DEX, IDexPool, INetwork, QuotePayload, UniswapFee } from './interfaces';
+import { DEX, IDexPool, INetwork, QuotePayload, QuoteResult, UniswapFee } from './interfaces';
 import { getQuote } from './quote-request';
 
 // Generate all possible token pairs and pool configurations
@@ -27,7 +27,8 @@ function generateAllPools(): IDexPool[] {
             tokenOut,
             amountIn: '1',
             fee, // No need for `Number(fee)` as it's already numeric
-            dex
+            dex,
+            type: 'BUY'
           });
         }
       }
@@ -66,9 +67,9 @@ async function getQuotes(): Promise<IDexPool[]> {
     };
 
     try {
-      const quoteResult: string | null = await getQuote(payload);
+      const quoteResult: QuoteResult | null = await getQuote(payload);
       if (quoteResult) {
-        const quoteValue = parseFloat(quoteResult);
+        const quoteValue = parseFloat(quoteResult.amountOut);
         if (quoteValue > 1) {
           // Add to valid pools and mark this pair as "checked"
           validPools.push(pool);

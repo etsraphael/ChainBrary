@@ -116,7 +116,8 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<QuoteRes
       tokenOut: tokenB,
       network: getNetworkFromChainId(tokenA.chainId),
       dex: dex,
-      fee: fee
+      fee: fee,
+      type: 'BUY'
     };
   } catch (error) {
     console.log('error', error);
