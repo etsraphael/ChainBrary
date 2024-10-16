@@ -1,11 +1,135 @@
 import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core';
-import { FeeAmount, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
+import { FeeAmount, MethodParameters, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
 import inquirer from 'inquirer';
 import JSBI from 'jsbi';
 import { routerContracts } from './constants';
 import { DEX, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import { getQuote } from './quote-request';
+
+// Function to get pool data
+async function getPoolData(
+  tokenIn: Token,
+  tokenOut: Token,
+  fee: number,
+  provider: ethers.JsonRpcProvider,
+  dex: DEX
+): Promise<{ pool: Pool } | null> {
+  try {
+    // Get the factory address based on DEX and chainId
+    const factoryAddresses = routerContracts(dex);
+    if (!factoryAddresses) {
+      console.error('Factory address not found for this DEX.');
+      return null;
+    }
+    const FACTORY_ADDRESS: string = factoryAddresses[tokenIn.chainId];
+    if (!FACTORY_ADDRESS) {
+      console.error('Factory address not available for this chain.');
+      return null;
+    }
+
+    // Get the pool details from the contract
+    const FACTORY_ABI = [
+      'function getPool(address tokenA, address tokenB, uint24 fee) external view returns (address pool)'
+    ];
+    const factoryContract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
+    const poolAddress = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
+
+    if (poolAddress === ethers.ZeroAddress) {
+      console.error('No pool found for the given tokens and fee.');
+      return null;
+    }
+
+    // Pool contract ABI
+    const POOL_ABI: string[] = [
+      'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16 observationIndex, uint16 observationCardinality, uint16 observationCardinalityNext, uint8 feeProtocol, bool unlocked)',
+      'function liquidity() external view returns (uint128)'
+    ];
+
+    // Connect to the pool contract
+    const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, provider);
+
+    // Fetch pool details
+    const [slot0, liquidity] = await Promise.all([poolContract.slot0(), poolContract.liquidity()]);
+    const sqrtPriceX96: bigint = slot0[0];
+    const tick: number = slot0[1];
+
+    // Create the pool instance
+    const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), tick);
+
+    return { pool };
+  } catch (error) {
+    console.error('Error fetching pool data:', error);
+    return null;
+  }
+}
+
+async function estimateGasFees(
+  quoteResult: QuoteResult
+): Promise<{ gasLimit: bigint; gasPrice: bigint; gasCostEth: string }> {
+  try {
+    const { tokenIn, tokenOut, network, amountIn, fee, dex } = quoteResult;
+
+    // Connect to the network
+    const provider = new ethers.JsonRpcProvider(network.rpcUrl);
+
+    // Get the router address based on DEX and chainId
+    const routerAddresses = routerContracts(dex);
+    if (!routerAddresses) {
+      console.error('Router address not found for this DEX.');
+      return { gasLimit: BigInt(0), gasPrice: BigInt(0), gasCostEth: '0' };
+    }
+    const ROUTER_ADDRESS: string = routerAddresses[tokenIn.chainId];
+    if (!ROUTER_ADDRESS) {
+      console.error('Router address not available for this chain.');
+      return { gasLimit: BigInt(0), gasPrice: BigInt(0), gasCostEth: '0' };
+    }
+
+    // Get the pool details
+    const poolData = await getPoolData(tokenIn, tokenOut, fee, provider, dex);
+    if (!poolData) {
+      console.error('Pool data could not be fetched.');
+      return { gasLimit: BigInt(0), gasPrice: BigInt(0), gasCostEth: '0' };
+    }
+    const { pool } = poolData;
+
+    // Amount of tokenIn to swap
+    const amountInCurrency = CurrencyAmount.fromRawAmount(tokenIn, amountIn);
+
+    // Create a trade object using the pool
+    const trade = await Trade.fromRoute(new Route([pool], tokenIn, tokenOut), amountInCurrency, TradeType.EXACT_INPUT);
+
+    // Define swap options
+    const options: SwapOptions = {
+      slippageTolerance: new Percent(50, 10_000), // 0.5%
+      deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now
+      recipient: process.env.WALLET_PUBLIC_ADDRESS as string
+    };
+
+    // Get the method parameters for the swap
+    const methodParameters: MethodParameters = SwapRouter.swapCallParameters([trade], options);
+
+    // Build the transaction
+    const tx: ethers.TransactionRequest = {
+      data: methodParameters.calldata,
+      to: ROUTER_ADDRESS,
+      value: methodParameters.value,
+      from: process.env.WALLET_PUBLIC_ADDRESS as string
+    };
+
+    // Estimate gas
+    const gasLimit: bigint = await provider.estimateGas(tx);
+    const feeData = await provider.getFeeData();
+    const gasPrice: bigint = feeData.gasPrice ?? BigInt(0);
+    const gasCost = gasLimit * gasPrice;
+    const gasCostEth = ethers.formatEther(gasCost);
+
+    return { gasLimit, gasPrice, gasCostEth };
+  } catch (error) {
+    console.error('Error estimating gas fees:', error);
+    return { gasLimit: BigInt(0), gasPrice: BigInt(0), gasCostEth: '0' };
+  }
+}
 
 export async function startTrading(payload: TradingPayload): Promise<string | null> {
   try {
@@ -21,67 +145,67 @@ export async function startTrading(payload: TradingPayload): Promise<string | nu
 
     return null;
   } catch (error) {
+    console.error('Error in startTrading:', error);
     return null;
   }
 }
 
 async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
-  const quoteResult1: QuotePayload = {
-    ...payload.quoteResult1,
-    amountInRaw: payload.quoteResult1.amountIn,
-    networkUrl: payload.quoteResult1.network.rpcUrl
-  };
+  const quoteResult1: QuoteResult = payload.quoteResult1;
+  const quoteResult2: QuoteResult = payload.quoteResult2;
 
-  const quoteResult2: QuotePayload = {
-    ...payload.quoteResult2,
-    amountInRaw: payload.quoteResult2.amountIn,
-    networkUrl: payload.quoteResult2.network.rpcUrl
-  };
+  // Get the latest quotes
+  const latestQuote1: QuoteResult | null = await getQuote({
+    tokenIn: quoteResult1.tokenIn,
+    tokenOut: quoteResult1.tokenOut,
+    amountInRaw: quoteResult1.amountIn,
+    networkUrl: quoteResult1.network.rpcUrl,
+    fee: quoteResult1.fee,
+    dex: quoteResult1.dex
+  });
 
-  const quote1: QuoteResult | null = await getQuote(quoteResult1);
-  const quote2: QuoteResult | null = await getQuote(quoteResult2);
+  const latestQuote2: QuoteResult | null = await getQuote({
+    tokenIn: quoteResult2.tokenIn,
+    tokenOut: quoteResult2.tokenOut,
+    amountInRaw: quoteResult2.amountIn,
+    networkUrl: quoteResult2.network.rpcUrl,
+    fee: quoteResult2.fee,
+    dex: quoteResult2.dex
+  });
 
-  // explain the profit
-  console.log(
-    'First trade: ' +
-      quote2 +
-      ' ' +
-      payload.quoteResult2.tokenOut.symbol +
-      ' to ' +
-      payload.quoteResult2.amountOut +
-      ' ' +
-      payload.quoteResult2.tokenIn.symbol +
-      ' from ' +
-      payload.quoteResult2.dex
-  );
-
-  console.log(
-    'Second trade: ' +
-      quote1 +
-      ' ' +
-      payload.quoteResult1.tokenOut.symbol +
-      ' to ' +
-      payload.quoteResult1.amountOut +
-      ' ' +
-      payload.quoteResult1.tokenIn.symbol +
-      ' from ' +
-      payload.quoteResult1.dex
-  );
-
-  if (quote1 === null || quote2 === null) {
+  if (latestQuote1 === null || latestQuote2 === null) {
     console.log('The quotes are no longer valid.');
     return false;
   }
 
-  const profit: number = ((Number(quote1) - Number(quote2)) / Number(quote2)) * 100;
-  console.log(`Old Profit: ${payload.profit.toFixed(2)}%`);
-  console.log(`New Profit: ${profit.toFixed(2)}%`);
+  // Estimate gas fees for both trades
+  const [gasFees1, gasFees2] = await Promise.all([estimateGasFees(latestQuote1), estimateGasFees(latestQuote2)]);
+
+  const totalGasCost = parseFloat(gasFees1.gasCostEth) + parseFloat(gasFees2.gasCostEth);
+
+  const startingAmount = parseFloat(latestQuote1.amountIn);
+  const endingAmount = parseFloat(latestQuote2.amountOut);
+
+  const profitAmount = endingAmount - startingAmount - totalGasCost;
+  const profitPercentage = (profitAmount / startingAmount) * 100;
+
+  console.log('\nTrade Details:');
+  console.log(
+    `First trade: Buy ${latestQuote1.tokenOut.symbol} with ${latestQuote1.amountIn} ${latestQuote1.tokenIn.symbol} on ${latestQuote1.dex}`
+  );
+  console.log(
+    `Second trade: Sell ${latestQuote2.amountIn} ${latestQuote2.tokenIn.symbol} for ${latestQuote2.amountOut} ${latestQuote2.tokenOut.symbol} on ${latestQuote2.dex}`
+  );
+  console.log(`Estimated Gas Fees: ${totalGasCost.toFixed(6)} ${latestQuote1.tokenIn.symbol}`);
+  console.log(`Profit before fees: ${(endingAmount - startingAmount).toFixed(6)} ${latestQuote1.tokenIn.symbol}`);
+  console.log(`Profit after fees: ${profitAmount.toFixed(6)} ${latestQuote1.tokenIn.symbol}`);
+  console.log(`Profit Percentage after fees: ${profitPercentage.toFixed(2)}%\n`);
 
   const { confirm } = await inquirer.prompt([
     {
       type: 'confirm',
       name: 'confirm',
-      message: `Do you want to execute the trade? The latest profit calculated is ${profit.toFixed(2)}%`,
+      message: `Do you want to execute the trade? The latest profit calculated is ${profitPercentage.toFixed(2)}% after fees`,
       default: false
     }
   ]);
@@ -90,288 +214,142 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
 }
 
 async function executeTrades(payload: TradingPayload) {
-  console.log('executeTrades', payload);
+  console.log('Executing Trades...');
 
-  return;
   try {
-    // Buy the cheaper token first
-    switch (payload.quoteResult2.dex) {
-      // case DEX.SUSHISWAP_V2:
-      // case DEX.PANCAKESWAP_V2:
-      //   const isTrade2V2Successful: boolean = await executeUniswapV2Trade(payload.quoteResult2);
-      //   if (isTrade2V2Successful) {
-      //     console.log('Second trade (V2) executed successfully');
-      //   } else {
-      //     console.log('Second trade (V2) execution failed');
-      //     return;
-      //   }
-      //   break;
-
-      // case DEX.UNISWAP_V3:
-      // case DEX.PANCAKESWAP_V3:
-      //   const isTrade2V3Successful: boolean = await executeUniswapV3Trade(payload.quoteResult2);
-      //   if (isTrade2V3Successful) {
-      //     console.log('Second trade (V3) executed successfully');
-      //   } else {
-      //     console.log('Second trade (V3) execution failed');
-      //     return;
-      //   }
-      //   break;
-
-      default:
-        console.log(`Unsupported DEX for the second trade: ${payload.quoteResult2.dex}`);
-        return;
+    // Execute the first trade (buy)
+    console.log('Executing first trade...');
+    const isTrade1Successful = await executeUniswapV3Trade(payload.quoteResult1);
+    if (isTrade1Successful) {
+      console.log('First trade executed successfully');
+    } else {
+      console.log('First trade execution failed');
+      return;
     }
 
-    // // Sell the more expensive token next
-    // switch (payload.quoteResult1.dex) {
-    //   case DEX.SUSHISWAP_V2:
-    //   case DEX.PANCAKESWAP_V2:
-    //     const isTrade1V2Successful = await executeUniswapV2Trade(payload.quoteResult1);
-    //     if (isTrade1V2Successful) {
-    //       console.log('First trade (V2) executed successfully');
-    //     } else {
-    //       console.log('First trade (V2) execution failed');
-    //       return;
-    //     }
-    //     break;
+    // Execute the second trade (sell)
+    console.log('Executing second trade...');
+    const isTrade2Successful: boolean = await executeUniswapV3Trade(payload.quoteResult2);
+    if (isTrade2Successful) {
+      console.log('Second trade executed successfully');
+    } else {
+      console.log('Second trade execution failed');
 
-    //   case DEX.UNISWAP_V3:
-    //   case DEX.PANCAKESWAP_V3:
-    //     const isTrade1V3Successful = await executeUniswapV3Trade(payload.quoteResult1);
-    //     if (isTrade1V3Successful) {
-    //       console.log('First trade (V3) executed successfully');
-    //     } else {
-    //       console.log('First trade (V3) execution failed');
-    //       return;
-    //     }
-    //     break;
+      // Backup plan: Attempt to sell the token on the same DEX as the first trade
+      console.log('Attempting backup plan to mitigate loss...');
 
-    //   default:
-    //     console.log(`Unsupported DEX for the first trade: ${payload.quoteResult1.dex}`);
-    //     return;
-    // }
+      const backupQuotePayload: QuotePayload = {
+        tokenIn: payload.quoteResult2.tokenIn,
+        tokenOut: payload.quoteResult2.tokenOut,
+        amountInRaw: payload.quoteResult2.amountIn,
+        networkUrl: payload.quoteResult2.network.rpcUrl,
+        fee: payload.quoteResult2.fee,
+        dex: payload.quoteResult1.dex // Use the DEX from the first trade
+      };
+
+      const backupQuoteResult: QuoteResult | null = await getQuote(backupQuotePayload);
+
+      if (backupQuoteResult) {
+        const isBackupTradeSuccessful = await executeUniswapV3Trade(backupQuoteResult);
+
+        if (isBackupTradeSuccessful) {
+          console.log('Backup trade executed successfully');
+        } else {
+          console.log('Backup trade execution failed. You may need to manually sell the token.');
+        }
+      } else {
+        console.log('Unable to get backup quote. You may need to manually sell the token.');
+      }
+    }
   } catch (error) {
     console.error('Error executing trades:', error);
   }
 }
 
-// Function to execute Uniswap V2 trade
-async function executeUniswapV2Trade(payload: QuotePayload): Promise<boolean> {
-  console.log('payload', payload);
+async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean> {
+  const MAX_FEE_PER_GAS = ethers.parseUnits('100', 'gwei');
+  const MAX_PRIORITY_FEE_PER_GAS = ethers.parseUnits('10', 'gwei');
+
   try {
-    const { tokenIn, tokenOut, networkUrl, amountInRaw, dex } = payload;
+    const { tokenIn, tokenOut, network, amountIn, fee, dex } = quoteResult;
 
     // Get the router address based on DEX and chainId
     const routerAddresses = routerContracts(dex);
     if (!routerAddresses) {
+      console.error('Router address not found for this DEX.');
       return false;
     }
-    const routerAddress = routerAddresses[tokenIn.chainId];
-    if (!routerAddress) {
-      return false;
-    }
-
-    // Connect to the network
-    const provider: ethers.JsonRpcProvider = new ethers.JsonRpcProvider(networkUrl);
-    const wallet: ethers.Wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
-
-    // Router ABI for swapExactTokensForTokens
-    const ROUTER_ABI: string[] = [
-      'function swapExactTokensForTokens(uint256 amountIn, uint256 amountOutMin, address[] memory path, address to, uint256 deadline) external returns (uint256[] memory amounts)',
-      'function getAmountsOut(uint256 amountIn, address[] calldata path) external view returns (uint256[] memory amounts)'
-    ];
-
-    const routerContract: ethers.Contract = new ethers.Contract(routerAddress, ROUTER_ABI, wallet);
-
-    // Token contract ABI
-    const TOKEN_ABI: string[] = [
-      'function approve(address spender, uint256 amount) public returns (bool)',
-      'function balanceOf(address owner) public view returns (uint256)',
-      'function allowance(address owner, address spender) public view returns (uint256)'
-    ];
-
-    const tokenContract: ethers.Contract = new ethers.Contract(tokenOut.address, TOKEN_ABI, wallet);
-
-    // Amount of tokenIn to swap
-    const amountIn: bigint = ethers.parseUnits(amountInRaw, tokenOut.decimals);
-
-    // Check balance
-    const balance: bigint = await tokenContract.balanceOf(wallet.address);
-
-    // logs the amount by ether
-    console.log('amountIn', ethers.formatEther(amountIn.toString()));
-    console.log('balance', ethers.formatEther(balance.toString()));
-
-    if (balance < amountIn) {
-      console.error('Insufficient token balance');
-      return false;
-    }
-
-    // Fetch the current gas price from fee data (in Wei)
-    const feeData: ethers.FeeData = await provider.getFeeData();
-    const currentGasPrice: bigint | null = feeData.gasPrice; // Gas price in Wei
-
-    // Ensure gasPrice exists in the feeData
-    if (!currentGasPrice) {
-      throw new Error('Could not fetch gas price');
-    }
-
-    // logs the gas price in ether
-    console.log('currentGasPrice: ', ethers.formatEther(currentGasPrice.toString()));
-
-    // Check allowance
-    const allowance: bigint = await tokenContract.allowance(wallet.address, routerAddress);
-    const adjustedGasPrice: bigint = (currentGasPrice * 110n) / 100n; // Multiply by 110% (use `n` to indicate `bigint`)
-
-    console.log('allowance', ethers.formatEther(allowance.toString()));
-
-    return true; // stop here for now
-
-    if (allowance < amountIn) {
-      console.log('Not enough allowance. Approving...');
-      // Adjust the gas price (e.g., increase by 10% to prioritize)
-
-      const approvalTx = await tokenContract.approve(routerAddress, amountIn, {
-        gasPrice: adjustedGasPrice
-      });
-
-      await approvalTx.wait();
-      console.log(`Approved ${tokenOut.symbol} for ${amountInRaw}`);
-    }
-
-    if (allowance >= amountIn) {
-      console.log('Already enough allowance');
-    }
-
-    // Set up the swap
-    const path: string[] = [tokenOut.address, tokenIn.address];
-    const amountOutMin = ethers.parseUnits('0.95', tokenOut.decimals); // Slippage tolerance: 5%
-    const deadline = Math.floor(Date.now() / 1000) + 60 * 2; // 2 minutes from now
-
-    // Get expected amounts out
-    const amountsOut = await routerContract.getAmountsOut(amountIn, path);
-    const expectedAmountOut = amountsOut[amountsOut.length - 1];
-    console.log('Expected amount out:', ethers.formatUnits(expectedAmountOut, tokenIn.decimals));
-
-    // Execute the swap
-    // const tx = await routerContract.swapExactTokensForTokens(amountIn, amountOutMin, path, wallet.address, deadline); // this one does not work
-    // await tx.wait();
-
-    console.log('Uniswap V2 Trade Executed');
-    return true;
-  } catch (error) {
-    console.error('Error executing Uniswap V2 trade:', error);
-    return false;
-  }
-}
-
-// Function to execute Uniswap V3 trade
-async function executeUniswapV3Trade(payload: QuotePayload): Promise<boolean> {
-  const MAX_FEE_PER_GAS = ethers.parseUnits('100', 'gwei');
-  const MAX_PRIORITY_FEE_PER_GAS = ethers.parseUnits('10', 'gwei');
-
-  const CurrentConfig = {
-    wallet: {
-      address: process.env.WALLET_PUBLIC_ADDRESS as string,
-      privateKey: process.env.WALLET_PRIVATE_KEY as string
-    },
-    tokens: {
-      in: payload.tokenIn,
-      amountIn: payload.amountInRaw, // Use the actual input amount
-      out: payload.tokenOut,
-      poolFee: FeeAmount.MEDIUM
-    }
-  };
-
-  try {
-    const { tokenIn, tokenOut, networkUrl, amountInRaw, fee } = payload;
-
-    // Get the factory address based on DEX and chainId
-    const factoryAddresses = routerContracts(DEX.UNISWAP_V3);
-    if (!factoryAddresses) {
-      console.error('Factory address not found for this DEX.');
-      return false;
-    }
-    const FACTORY_ADDRESS: string = factoryAddresses[tokenIn.chainId];
-    if (!FACTORY_ADDRESS) {
-      console.error('Factory address not available for this chain.');
+    const ROUTER_ADDRESS: string = routerAddresses[tokenIn.chainId];
+    if (!ROUTER_ADDRESS) {
+      console.error('Router address not available for this chain.');
       return false;
     }
 
     // Connect to the network
-    const provider = new ethers.JsonRpcProvider(networkUrl);
+    const provider = new ethers.JsonRpcProvider(network.rpcUrl);
     const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
 
-    // Get the pool details from the contract (you will need on-chain data for this)
-    const FACTORY_ABI = [
-      'function getPool(address tokenA, address tokenB, uint24 fee) external view returns (address pool)'
-    ];
-    const factoryContract = new ethers.Contract(FACTORY_ADDRESS, FACTORY_ABI, provider);
-    const poolAddress = await factoryContract.getPool(tokenIn.address, tokenOut.address, fee);
-
-    if (poolAddress === ethers.ZeroAddress) {
-      console.error('No pool found for the given tokens and fee.');
+    // Get the pool data
+    const poolData = await getPoolData(tokenIn, tokenOut, fee, provider, dex);
+    if (!poolData) {
+      console.error('Pool data could not be fetched.');
       return false;
     }
-
-    // Pool contract ABI
-    const POOL_ABI: string[] = [
-      'function slot0() external view returns (uint160 sqrtPriceX96, int24 tick, uint16, uint16, uint16, uint8, bool)',
-      'function liquidity() external view returns (uint128)'
-    ];
-
-    // Connect to the pool contract
-    const poolContract: ethers.Contract = new ethers.Contract(poolAddress, POOL_ABI, provider);
-
-    // Fetch pool details: sqrtPriceX96, liquidity, tick (these should be fetched from on-chain data)
-    const slot0 = await poolContract.slot0();
-    const sqrtPriceX96 = slot0[0];
-    const tick = slot0[1];
-    const liquidity = await poolContract.liquidity();
-
-    // Create the pool instance using the fetched pool data
-    const pool: Pool = new Pool(tokenIn, tokenOut, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
+    const { pool } = poolData;
 
     // Amount of tokenIn to swap
-    const amountIn: JSBI = JSBI.BigInt(amountInRaw); // You can also use ethers.parseUnits(amountInRaw, tokenIn.decimals)
+    const amountInCurrency = CurrencyAmount.fromRawAmount(tokenIn, amountIn);
 
     // Create a trade object using the pool
-    const uncheckedTrade: Trade<Token, Token, TradeType.EXACT_INPUT> = Trade.createUncheckedTrade({
-      route: new Route([pool], tokenIn, tokenOut),
-      inputAmount: CurrencyAmount.fromRawAmount(tokenIn, amountIn),
-      outputAmount: CurrencyAmount.fromRawAmount(tokenOut, JSBI.BigInt('0')), // Placeholder
-      tradeType: TradeType.EXACT_INPUT
-    });
+    const trade = await Trade.fromRoute(new Route([pool], tokenIn, tokenOut), amountInCurrency, TradeType.EXACT_INPUT);
 
     // Define swap options
     const options: SwapOptions = {
-      slippageTolerance: new Percent(50, 10_000), // 50 bips, or 0.50%
+      slippageTolerance: new Percent(50, 10_000), // 0.5%
       deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now
       recipient: wallet.address
     };
 
     // Get the method parameters for the swap
-    const methodParameters = SwapRouter.swapCallParameters([uncheckedTrade], options);
+    const methodParameters: MethodParameters = SwapRouter.swapCallParameters([trade], options);
+
+    // Check allowance and approve if necessary
+    const tokenInContract = new ethers.Contract(
+      tokenIn.address,
+      [
+        'function allowance(address, address) view returns (uint256)',
+        'function approve(address spender, uint256 amount) returns (bool)'
+      ],
+      wallet
+    );
+
+    const allowance: bigint = await tokenInContract.allowance(wallet.address, ROUTER_ADDRESS);
+
+    if (allowance < BigInt(amountIn)) {
+      console.log(`Approving ${tokenIn.symbol} for trade...`);
+      const approveTx = await tokenInContract.approve(ROUTER_ADDRESS, ethers.MaxUint256);
+      await approveTx.wait();
+      console.log('Approval transaction confirmed.');
+    }
 
     // Create the transaction
     const tx: ethers.TransactionRequest = {
       data: methodParameters.calldata,
-      to: poolAddress, // Uniswap V3 Router Address (mainnet example)
+      to: ROUTER_ADDRESS,
       value: methodParameters.value,
-      from: CurrentConfig.wallet.address,
+      from: wallet.address,
       maxFeePerGas: MAX_FEE_PER_GAS,
       maxPriorityFeePerGas: MAX_PRIORITY_FEE_PER_GAS
     };
 
     // Send the transaction
-    const txResponse = await wallet.sendTransaction(tx);
+    const txResponse: ethers.TransactionResponse = await wallet.sendTransaction(tx);
+    console.log(`Transaction sent: ${txResponse.hash}`);
     await txResponse.wait();
-
-    console.log('Uniswap V3 Trade Executed');
+    console.log('Trade executed successfully.');
     return true;
   } catch (error) {
-    console.error('Error executing Uniswap V3 trade:', error);
+    console.error('Error executing trade:', error);
     return false;
   }
 }
