@@ -114,6 +114,18 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<QuoteRes
       return null;
     }
 
+    console.log('------------ Uniswap quote  ------------------')
+    console.log({
+      tokenA: tokenA.name,
+      tokenB: tokenB.name,
+      fee,
+      sqrtPriceX96: sqrtPriceX96.toString(),
+      liquidity: liquidity.toString(),
+      poolAddress,
+      dex: dex,
+      tick: Number(tick)
+    })
+
     return {
       amountIn: amountIn.toSignificant(6),
       amountOut: trade.outputAmount.toSignificant(6),

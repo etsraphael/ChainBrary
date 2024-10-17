@@ -1,3 +1,4 @@
+// trading-process.ts is used to execute trades based on the quotes generated in pool-listing.ts.
 import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core';
 import { MethodParameters, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
@@ -65,6 +66,17 @@ async function getPoolData(
     }
     const pool: Pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
+    console.log('-- Pool Data --');
+    console.log({
+      tokenA: tokenA.name,
+      tokenB: tokenB.name,
+      fee,
+      sqrtPriceX96: sqrtPriceX96.toString(),
+      liquidity: liquidity.toString(),
+      poolAddress,
+      tick: Number(tick)
+    })
+
     // check liquidity to know if pool is still valid
     const tradeAmount: bigint = BigInt(ethers.parseUnits(amountInRaw, tokenA.decimals).toString());
 
@@ -110,11 +122,25 @@ async function estimateGasFees(
     }
     const { pool } = poolData;
 
-    // Amount of tokenIn to swap
-    const amountInCurrency = CurrencyAmount.fromRawAmount(tokenIn, amountIn);
+    // Convert amountIn to raw amount
+    const amountInRaw = ethers.parseUnits(amountIn, tokenIn.decimals).toString();
 
-    // Create a trade object using the pool
-    const trade = await Trade.fromRoute(new Route([pool], tokenIn, tokenOut), amountInCurrency, TradeType.EXACT_INPUT);
+    // Amount of tokenIn to swap
+    const amountInCurrency = CurrencyAmount.fromRawAmount(tokenIn, amountInRaw);
+
+    // Create a route
+    const route = new Route([pool], tokenIn, tokenOut);
+
+    // Calculate the output amount
+    const outputAmount = route.midPrice.quote(amountInCurrency);
+
+    // Create a trade object using the route
+    const trade = Trade.createUncheckedTrade({
+      route: route,
+      inputAmount: amountInCurrency,
+      outputAmount: outputAmount,
+      tradeType: TradeType.EXACT_INPUT
+    });
 
     // Define swap options
     const options: SwapOptions = {
@@ -311,11 +337,25 @@ async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean>
     }
     const { pool } = poolData;
 
-    // Amount of tokenIn to swap
-    const amountInCurrency = CurrencyAmount.fromRawAmount(tokenIn, amountIn);
+    // Convert amountIn to raw amount
+    const amountInRaw = ethers.parseUnits(amountIn, tokenIn.decimals).toString();
 
-    // Create a trade object using the pool
-    const trade = await Trade.fromRoute(new Route([pool], tokenIn, tokenOut), amountInCurrency, TradeType.EXACT_INPUT);
+    // Amount of tokenIn to swap
+    const amountInCurrency = CurrencyAmount.fromRawAmount(tokenIn, amountInRaw);
+
+    // Create a route
+    const route = new Route([pool], tokenIn, tokenOut);
+
+    // Calculate the output amount
+    const outputAmount = route.midPrice.quote(amountInCurrency);
+
+    // Create a trade object using the route
+    const trade = Trade.createUncheckedTrade({
+      route: route,
+      inputAmount: amountInCurrency,
+      outputAmount: outputAmount,
+      tradeType: TradeType.EXACT_INPUT
+    });
 
     // Define swap options
     const options: SwapOptions = {
@@ -339,7 +379,7 @@ async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean>
 
     const allowance: bigint = await tokenInContract.allowance(wallet.address, ROUTER_ADDRESS);
 
-    if (allowance < BigInt(amountIn)) {
+    if (allowance < BigInt(amountInRaw)) {
       console.log(`Approving ${tokenIn.symbol} for trade...`);
       const approveTx = await tokenInContract.approve(ROUTER_ADDRESS, ethers.MaxUint256);
       await approveTx.wait();
