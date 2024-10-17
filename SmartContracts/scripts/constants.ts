@@ -75,7 +75,7 @@ export function routerContracts(dex: DEX): { [chainId: number]: string } | null 
         1: '0xbACEB8eC6b9355Dfc0269C18bac9d6E2Bdc29C4F', // Ethereum Mainnet
         56: '0x126555dd55a39328F69400d6aE4F782Bd4C34ABb', // BSC Mainnet
         42161: '0x1af415a1EbA07a4986a52B6f2e7dE7003D82231e' // Arbitrum Mainnet
-      }
+      };
     default:
       return null;
   }

@@ -1,4 +1,5 @@
 import { Token } from '@uniswap/sdk-core';
+import { FeeAmount } from '@uniswap/v3-sdk';
 import cliProgress from 'cli-progress';
 import { Table } from 'console-table-printer';
 import fs from 'fs';
@@ -115,7 +116,7 @@ async function selectTokenToGrow(): Promise<{ token: Token | null; amount: strin
   return { token: response.token, amount };
 }
 
-// Generate pools dynamically based on the selected token
+// Update generatePoolsForToken to include SUSHISWAP_V3
 function generatePoolsForToken(selectedToken: Token, amountIn: string): IDexPool[] {
   const pools: IDexPool[] = [];
   for (const network of NETWORKS) {
@@ -124,11 +125,22 @@ function generatePoolsForToken(selectedToken: Token, amountIn: string): IDexPool
     const otherTokens = tokensInNetwork.filter((t) => t.address !== selectedToken.address);
 
     for (const token of otherTokens) {
-      for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3 ]) {
+      for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3, DEX.SUSHISWAP_V3]) {
         const router = routerContracts(dex);
         if (router && router[network.chainId]) {
-          // Assume fee levels
-          const feeLevels = [100, 500, 3000];
+          // Define fee levels per DEX
+          const feeLevels: number[] = (() => {
+            switch (dex) {
+              case DEX.UNISWAP_V3:
+                return [FeeAmount.LOWEST, FeeAmount.LOW, FeeAmount.MEDIUM];
+              case DEX.PANCAKESWAP_V3:
+                return [FeeAmount.LOWEST, 2500, FeeAmount.HIGH];
+              case DEX.SUSHISWAP_V3:
+                return [FeeAmount.LOW, FeeAmount.MEDIUM, FeeAmount.HIGH];
+              default:
+                return [];
+            }
+          })();
 
           for (const fee of feeLevels) {
             // Create buy pool (selectedToken -> other token)
@@ -151,13 +163,15 @@ function generatePoolsForToken(selectedToken: Token, amountIn: string): IDexPool
 
 // Modify getQuotes to fetch sell quotes after obtaining buy quotes
 async function getQuotes(selectedToken?: Token | null, amountIn?: string): Promise<QuoteResult[]> {
-  const pools: IDexPool[] = selectedToken ? generatePoolsForToken(selectedToken, amountIn || '1') : loadFilteredPools(); // You can implement loadFilteredPools if needed
+  const pools: IDexPool[] = selectedToken ? generatePoolsForToken(selectedToken, amountIn || '1') : loadFilteredPools();
 
   const results: QuoteResult[] = [];
   const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
   console.log(`Fetching quotes for ${pools.length} pools...`);
   progressBar.start(pools.length, 0);
+
+  const dexes = [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3, DEX.SUSHISWAP_V3];
 
   for (const pool of pools) {
     const payload: QuotePayload = {
@@ -175,14 +189,17 @@ async function getQuotes(selectedToken?: Token | null, amountIn?: string): Promi
         const buyQuoteWithType: QuoteResult = { ...buyQuote, type: 'BUY' };
         results.push(buyQuoteWithType);
 
-        // Now fetch the sell quote using the amountOut of the buy quote as amountIn
+        // Rotate to the next DEX for sell
+        const dexIndex = dexes.indexOf(pool.dex);
+        const sellDex = dexes[(dexIndex + 1) % dexes.length];
+
         const sellPayload: QuotePayload = {
           tokenIn: pool.tokenOut, // token we obtained from buy
           tokenOut: pool.tokenIn, // original token
           networkUrl: pool.network.rpcUrl,
           amountInRaw: buyQuote.amountOut,
           fee: pool.fee,
-          dex: pool.dex === DEX.UNISWAP_V3 ? DEX.PANCAKESWAP_V3 : DEX.UNISWAP_V3 // Use different DEX for sell
+          dex: sellDex // Use a different DEX for sell
         };
         const sellQuote: QuoteResult | null = await getQuote(sellPayload);
         if (sellQuote) {
@@ -395,11 +412,11 @@ function displayResults(results: QuoteResult[]) {
       }
 
       // Find the best quote
-      const bestDex: string = Object.keys(dexQuotes).reduce((best, dex) => {
+      const bestDex: DEX = Object.keys(dexQuotes).reduce((best, dex) => {
         return dexQuotes[dex as DEX] > dexQuotes[best as DEX] ? dex : best;
-      }, Object.keys(dexQuotes)[0]);
+      }, Object.keys(dexQuotes)[0]) as DEX;
 
-      const bestQuoteAmount: number = dexQuotes[bestDex as DEX];
+      const bestQuoteAmount: number = dexQuotes[bestDex];
 
       // Calculate percentage differences
       const percentageDifferences = Object.entries(dexQuotes).map(([dex, amount]) => {

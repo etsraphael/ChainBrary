@@ -71,9 +71,9 @@ async function getPoolData(
     // Check if the liquidity is enough for the trade amount
     if (tradeAmount > liquidity) {
       console.error('Insufficient liquidity in the pool.');
-      return null
+      return null;
     }
-    
+
     return { pool };
   } catch (error) {
     console.error('Error fetching pool data:', error);

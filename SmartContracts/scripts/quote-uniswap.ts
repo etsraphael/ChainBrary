@@ -111,7 +111,7 @@ export async function getUniswapV3Quote(payload: QuotePayload): Promise<QuoteRes
 
     // Check if the liquidity is enough for the trade amount
     if (tradeAmount > liquidity) {
-      return null
+      return null;
     }
 
     return {
