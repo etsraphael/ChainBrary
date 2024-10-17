@@ -20,7 +20,7 @@ function generateAllPools(): IDexPool[] {
       for (const fee of fees) {
         const network = getNetworkByChainId(tokenIn.chainId);
 
-        for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]) {
+        for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3, DEX.SUSHISWAP_V3]) {
           pools.push({
             network,
             tokenIn,

@@ -124,7 +124,7 @@ function generatePoolsForToken(selectedToken: Token, amountIn: string): IDexPool
     const otherTokens = tokensInNetwork.filter((t) => t.address !== selectedToken.address);
 
     for (const token of otherTokens) {
-      for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3]) {
+      for (const dex of [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3 ]) {
         const router = routerContracts(dex);
         if (router && router[network.chainId]) {
           // Assume fee levels

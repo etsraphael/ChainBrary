@@ -6,6 +6,7 @@ export async function getQuote(payload: QuotePayload): Promise<QuoteResult | nul
   switch (payload.dex) {
     case DEX.UNISWAP_V3:
     case DEX.PANCAKESWAP_V3:
+    case DEX.SUSHISWAP_V3:
       return getUniswapV3Quote(payload);
     // case DEX.SUSHISWAP_V2:
     // case DEX.PANCAKESWAP_V2:

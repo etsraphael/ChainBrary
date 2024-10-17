@@ -43,7 +43,8 @@ export interface INetwork {
 
 export enum DEX {
   UNISWAP_V3 = 'Uniswap_v3',
-  PANCAKESWAP_V3 = 'PancakeSwap_v3'
+  PANCAKESWAP_V3 = 'PancakeSwap_v3',
+  SUSHISWAP_V3 = 'SushiSwap_v3'
 }
 
 export interface IDexPool {

@@ -1,14 +1,14 @@
 import { CurrencyAmount, Percent, Token, TradeType } from '@uniswap/sdk-core';
-import { FeeAmount, MethodParameters, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
+import { MethodParameters, Pool, Route, SwapOptions, SwapRouter, Trade } from '@uniswap/v3-sdk';
 import { ethers } from 'ethers';
 import inquirer from 'inquirer';
-import JSBI from 'jsbi';
 import { routerContracts } from './constants';
 import { DEX, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import { getQuote } from './quote-request';
 
 // Function to get pool data
 async function getPoolData(
+  amountInRaw: string,
   tokenIn: Token,
   tokenOut: Token,
   fee: number,
@@ -63,15 +63,17 @@ async function getPoolData(
       console.error('Invalid slot0 data');
       return null;
     }
+    const pool: Pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
-    // Convert BigInt values to strings
-    const sqrtPriceX96Str = sqrtPriceX96.toString();
-    const liquidityStr = liquidity.toString();
-    const tickInt = Number(tick);
+    // check liquidity to know if pool is still valid
+    const tradeAmount: bigint = BigInt(ethers.parseUnits(amountInRaw, tokenA.decimals).toString());
 
-    // Create a Uniswap V3 pool instance
-    const pool: Pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96Str, liquidityStr, tickInt);
-
+    // Check if the liquidity is enough for the trade amount
+    if (tradeAmount > liquidity) {
+      console.error('Insufficient liquidity in the pool.');
+      return null
+    }
+    
     return { pool };
   } catch (error) {
     console.error('Error fetching pool data:', error);
@@ -101,7 +103,7 @@ async function estimateGasFees(
     }
 
     // Get the pool details
-    const poolData = await getPoolData(tokenIn, tokenOut, fee, provider, dex);
+    const poolData = await getPoolData(amountIn, tokenIn, tokenOut, fee, provider, dex);
     if (!poolData) {
       console.error('Pool data could not be fetched.');
       return { gasLimit: BigInt(0), gasPrice: BigInt(0), gasCostEth: '0' };
@@ -193,18 +195,13 @@ async function checkProfitChecking(payload: TradingPayload): Promise<boolean> {
     return false;
   }
 
-  console.log('called')
-
   // Estimate gas fees for both trades
   const [gasFees1, gasFees2] = await Promise.all([estimateGasFees(latestQuote1), estimateGasFees(latestQuote2)]);
-
-  const totalGasCost = parseFloat(gasFees1.gasCostEth) + parseFloat(gasFees2.gasCostEth);
-
-  const startingAmount = parseFloat(latestQuote1.amountIn);
-  const endingAmount = parseFloat(latestQuote2.amountOut);
-
-  const profitAmount = endingAmount - startingAmount - totalGasCost;
-  const profitPercentage = (profitAmount / startingAmount) * 100;
+  const totalGasCost: number = parseFloat(gasFees1.gasCostEth) + parseFloat(gasFees2.gasCostEth);
+  const startingAmount: number = parseFloat(latestQuote1.amountIn);
+  const endingAmount: number = parseFloat(latestQuote2.amountOut);
+  const profitAmount: number = endingAmount - startingAmount - totalGasCost;
+  const profitPercentage: number = (profitAmount / startingAmount) * 100;
 
   console.log('\nTrade Details:');
   console.log(
@@ -307,7 +304,7 @@ async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean>
     const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
 
     // Get the pool data
-    const poolData = await getPoolData(tokenIn, tokenOut, fee, provider, dex);
+    const poolData = await getPoolData(amountIn, tokenIn, tokenOut, fee, provider, dex);
     if (!poolData) {
       console.error('Pool data could not be fetched.');
       return false;
