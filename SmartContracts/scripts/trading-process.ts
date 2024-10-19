@@ -9,13 +9,15 @@ import { getQuote } from './quote-request';
 
 export async function startTrading(payload: TradingPayload): Promise<string | null> {
   try {
-
     const provider = new ethers.JsonRpcProvider(payload.quoteResult1.network.rpcUrl);
     const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
 
     // Check user balance for ERC20 token
     const userTokenBalance: bigint = await getUserBalance(provider, wallet.address, payload.quoteResult1.tokenIn);
-    const requiredTokenAmount: bigint = ethers.parseUnits(payload.quoteResult1.amountIn, payload.quoteResult1.tokenIn.decimals);
+    const requiredTokenAmount: bigint = ethers.parseUnits(
+      payload.quoteResult1.amountIn,
+      payload.quoteResult1.tokenIn.decimals
+    );
 
     if (userTokenBalance < requiredTokenAmount) {
       console.error('Insufficient ERC20 token balance to execute the trade.');
