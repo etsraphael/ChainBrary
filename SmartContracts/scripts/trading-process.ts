@@ -7,7 +7,63 @@ import { routerContracts } from './constants';
 import { DEX, QuotePayload, QuoteResult, TradingPayload } from './interfaces';
 import { getQuote } from './quote-request';
 
-// Function to get pool data
+export async function startTrading(payload: TradingPayload): Promise<string | null> {
+  try {
+
+    const provider = new ethers.JsonRpcProvider(payload.quoteResult1.network.rpcUrl);
+    const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
+
+    // Check user balance for ERC20 token
+    const userTokenBalance: bigint = await getUserBalance(provider, wallet.address, payload.quoteResult1.tokenIn);
+    const requiredTokenAmount: bigint = ethers.parseUnits(payload.quoteResult1.amountIn, payload.quoteResult1.tokenIn.decimals);
+
+    if (userTokenBalance < requiredTokenAmount) {
+      console.error('Insufficient ERC20 token balance to execute the trade.');
+      return null;
+    }
+
+    // Check user balance for native token (for gas fees)
+    const userNativeBalance: bigint = await getNativeBalance(provider, wallet.address);
+    const estimatedGasFees = await estimateGasFees(payload.quoteResult1); // Assuming this function returns gas fees in native token
+    const requiredNativeAmount: bigint = estimatedGasFees.gasLimit * estimatedGasFees.gasPrice;
+
+    if (userNativeBalance < requiredNativeAmount) {
+      console.error('Insufficient native token balance to cover gas fees.');
+      return null;
+    }
+
+    // Check if the quote results are still valid
+    const isTradeAccepted: boolean = await checkProfitChecking(payload);
+    if (!isTradeAccepted) {
+      console.log('The trade has been cancelled');
+      return null;
+    }
+
+    // Execute the trade if the user confirms
+    await executeTrades(payload);
+
+    return null;
+  } catch (error) {
+    console.error('Error in startTrading:', error);
+    return null;
+  }
+}
+
+async function getNativeBalance(provider: ethers.JsonRpcProvider, walletAddress: string): Promise<bigint> {
+  const balance: bigint = await provider.getBalance(walletAddress);
+  return balance;
+}
+
+async function getUserBalance(provider: ethers.JsonRpcProvider, walletAddress: string, token: Token): Promise<bigint> {
+  const tokenContract = new ethers.Contract(
+    token.address,
+    ['function balanceOf(address owner) view returns (uint256)'],
+    provider
+  );
+  const balance: bigint = await tokenContract.balanceOf(walletAddress);
+  return balance;
+}
+
 async function getPoolData(
   amountInRaw: string,
   tokenIn: Token,
@@ -66,16 +122,16 @@ async function getPoolData(
     }
     const pool: Pool = new Pool(tokenA, tokenB, fee, sqrtPriceX96.toString(), liquidity.toString(), Number(tick));
 
-    console.log('-- Pool Data --');
-    console.log({
-      tokenA: tokenA.name,
-      tokenB: tokenB.name,
-      fee,
-      sqrtPriceX96: sqrtPriceX96.toString(),
-      liquidity: liquidity.toString(),
-      poolAddress,
-      tick: Number(tick)
-    })
+    // console.log('-- Pool Data --');
+    // console.log({
+    //   tokenA: tokenA.name,
+    //   tokenB: tokenB.name,
+    //   fee,
+    //   sqrtPriceX96: sqrtPriceX96.toString(),
+    //   liquidity: liquidity.toString(),
+    //   poolAddress,
+    //   tick: Number(tick)
+    // })
 
     // check liquidity to know if pool is still valid
     const tradeAmount: bigint = BigInt(ethers.parseUnits(amountInRaw, tokenA.decimals).toString());
@@ -101,6 +157,7 @@ async function estimateGasFees(
 
     // Connect to the network
     const provider = new ethers.JsonRpcProvider(network.rpcUrl);
+    const wallet = new ethers.Wallet(process.env.WALLET_PRIVATE_KEY as string, provider);
 
     // Get the router address based on DEX and chainId
     const routerAddresses = routerContracts(dex);
@@ -146,22 +203,34 @@ async function estimateGasFees(
     const options: SwapOptions = {
       slippageTolerance: new Percent(50, 10_000), // 0.5%
       deadline: Math.floor(Date.now() / 1000) + 60 * 20, // 20 minutes from now
-      recipient: process.env.WALLET_PUBLIC_ADDRESS as string
+      recipient: wallet.address
     };
 
     // Get the method parameters for the swap
     const methodParameters: MethodParameters = SwapRouter.swapCallParameters([trade], options);
 
+    // Log method parameters for debugging
+    // console.log('Method Parameters:', methodParameters);
+
     // Build the transaction
     const tx: ethers.TransactionRequest = {
       data: methodParameters.calldata,
       to: ROUTER_ADDRESS,
-      value: methodParameters.value,
-      from: process.env.WALLET_PUBLIC_ADDRESS as string
+      value: 0n, // Set value to zero for ERC20 swaps
+      from: wallet.address
     };
 
     // Estimate gas
-    const gasLimit: bigint = await provider.estimateGas(tx);
+    let gasLimit: bigint;
+    try {
+      console.log('Estimating gas fees...', tx);
+      gasLimit = await provider.estimateGas(tx);
+    } catch (error) {
+      console.error('Gas estimation failed:', error);
+      // Set a default gas limit if estimation fails
+      gasLimit = ethers.parseUnits('500000', 'wei'); // Adjust as necessary
+    }
+
     const feeData = await provider.getFeeData();
     const gasPrice: bigint = feeData.gasPrice ?? BigInt(0);
     const gasCost = gasLimit * gasPrice;
@@ -171,25 +240,6 @@ async function estimateGasFees(
   } catch (error) {
     console.error('Error estimating gas fees:', error);
     return { gasLimit: BigInt(0), gasPrice: BigInt(0), gasCostEth: '0' };
-  }
-}
-
-export async function startTrading(payload: TradingPayload): Promise<string | null> {
-  try {
-    // Check if the quote results are still valid
-    const isTradeAccepted: boolean = await checkProfitChecking(payload);
-    if (!isTradeAccepted) {
-      console.log('The trade has been cancelled');
-      return null;
-    }
-
-    // Execute the trade if the user confirms
-    await executeTrades(payload);
-
-    return null;
-  } catch (error) {
-    console.error('Error in startTrading:', error);
-    return null;
   }
 }
 
@@ -367,6 +417,9 @@ async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean>
     // Get the method parameters for the swap
     const methodParameters: MethodParameters = SwapRouter.swapCallParameters([trade], options);
 
+    // Log method parameters for debugging
+    console.log('Method Parameters:', methodParameters);
+
     // Check allowance and approve if necessary
     const tokenInContract = new ethers.Contract(
       tokenIn.address,
@@ -381,7 +434,12 @@ async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean>
 
     if (allowance < BigInt(amountInRaw)) {
       console.log(`Approving ${tokenIn.symbol} for trade...`);
-      const approveTx = await tokenInContract.approve(ROUTER_ADDRESS, ethers.MaxUint256);
+
+      // Reset allowance to zero if necessary (for USDT)
+      const resetApproveTx = await tokenInContract.approve(ROUTER_ADDRESS, 0);
+      await resetApproveTx.wait();
+
+      const approveTx = await tokenInContract.approve(ROUTER_ADDRESS, amountInRaw);
       await approveTx.wait();
       console.log('Approval transaction confirmed.');
     }
@@ -390,8 +448,8 @@ async function executeUniswapV3Trade(quoteResult: QuoteResult): Promise<boolean>
     const tx: ethers.TransactionRequest = {
       data: methodParameters.calldata,
       to: ROUTER_ADDRESS,
-      value: methodParameters.value,
-      from: wallet.address,
+      value: 0n, // Set value to zero explicitly
+      // Remove 'from' field
       maxFeePerGas: MAX_FEE_PER_GAS,
       maxPriorityFeePerGas: MAX_PRIORITY_FEE_PER_GAS
     };

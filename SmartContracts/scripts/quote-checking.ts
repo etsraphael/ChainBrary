@@ -166,12 +166,12 @@ async function getQuotes(selectedToken?: Token | null, amountIn?: string): Promi
   const pools: IDexPool[] = selectedToken ? generatePoolsForToken(selectedToken, amountIn || '1') : loadFilteredPools();
 
   const results: QuoteResult[] = [];
-  const progressBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
+  const progressBar: cliProgress.SingleBar = new cliProgress.SingleBar({}, cliProgress.Presets.shades_classic);
 
   console.log(`Fetching quotes for ${pools.length} pools...`);
   progressBar.start(pools.length, 0);
 
-  const dexes = [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3, DEX.SUSHISWAP_V3];
+  const dexes: DEX[] = [DEX.UNISWAP_V3, DEX.PANCAKESWAP_V3, DEX.SUSHISWAP_V3];
 
   for (const pool of pools) {
     const payload: QuotePayload = {
@@ -286,7 +286,7 @@ async function runQuotes(): Promise<void> {
     const amountOut: number = parseFloat(trade.quoteResult2.amountOut);
     const profitAmount: number = trade.profitAmount!;
     return {
-      name: `Trade ${index + 1}: Start with ${amountIn} ${trade.quoteResult1.tokenIn.symbol} to buy ${trade.quoteResult1.tokenOut.symbol} on ${trade.quoteResult1.dex}, then sell for ${amountOut.toFixed(6)} ${trade.quoteResult2.tokenOut.symbol} on ${trade.quoteResult2.dex}. Path: ${trade.quoteResult1.tokenIn.symbol} -> ${trade.quoteResult1.tokenOut.symbol} -> ${trade.quoteResult2.tokenOut.symbol}. Profit: ${trade.profit.toFixed(2)}% (${profitAmount.toFixed(6)} ${trade.quoteResult2.tokenOut.symbol})`,
+      name: `Trade ${index + 1}: Start with ${amountIn} ${trade.quoteResult1.tokenIn.symbol} (Chain ID: ${trade.quoteResult1.tokenIn.chainId}) to buy ${trade.quoteResult1.tokenOut.symbol} (Chain ID: ${trade.quoteResult1.tokenOut.chainId}) on ${trade.quoteResult1.dex}, then sell for ${amountOut.toFixed(6)} ${trade.quoteResult2.tokenOut.symbol} (Chain ID: ${trade.quoteResult2.tokenOut.chainId}) on ${trade.quoteResult2.dex}. Path: ${trade.quoteResult1.tokenIn.symbol} -> ${trade.quoteResult1.tokenOut.symbol} -> ${trade.quoteResult2.tokenOut.symbol}. Profit: ${trade.profit.toFixed(2)}% (${profitAmount.toFixed(6)} ${trade.quoteResult2.tokenOut.symbol})`,
       value: index
     };
   });
