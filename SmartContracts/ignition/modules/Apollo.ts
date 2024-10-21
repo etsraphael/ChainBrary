@@ -35,8 +35,8 @@ export default buildModule('Apollo', (m) => {
     basicCrossChainTokenSender,
     mockingCcipRouter,
     crossChainDEX,
-    swapFactory
-    // swapRouter
+    swapFactory,
+    swapRouter
   };
 });
 
