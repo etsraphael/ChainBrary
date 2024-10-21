@@ -74,67 +74,67 @@ contract ChainbrarySwapRouter {
     }
 
     // Cross-Chain Swap Function
-    function crossChainSwap(
-        uint64 destinationChainSelector,
-        address[] memory path,
-        uint24[] memory fees,
-        uint256 amountIn,
-        uint256 amountOutMin,
-        address receiver
-    ) external payable {
-        require(path.length >= 2, "Invalid path");
-        require(fees.length == path.length - 1, "Invalid fees length");
+    // function crossChainSwap(
+    //     uint64 destinationChainSelector,
+    //     address[] memory path,
+    //     uint24[] memory fees,
+    //     uint256 amountIn,
+    //     uint256 amountOutMin,
+    //     address receiver
+    // ) external payable {
+    //     require(path.length >= 2, "Invalid path");
+    //     require(fees.length == path.length - 1, "Invalid fees length");
 
-        // Get output amounts along the path
-        uint256[] memory amounts = getAmountsOut(amountIn, path, fees);
-        require(amounts[amounts.length - 1] >= amountOutMin, "Insufficient output amount");
+    //     // Get output amounts along the path
+    //     uint256[] memory amounts = getAmountsOut(amountIn, path, fees);
+    //     require(amounts[amounts.length - 1] >= amountOutMin, "Insufficient output amount");
 
-        // Transfer input token from sender to the contract
-        IERC20(path[0]).safeTransferFrom(msg.sender, address(this), amounts[0]);
+    //     // Transfer input token from sender to the contract
+    //     IERC20(path[0]).safeTransferFrom(msg.sender, address(this), amounts[0]);
 
-        // Perform swaps up to the last token before the cross-chain transfer
-        for (uint256 i = 0; i < path.length - 2; i++) {
-            address poolAddress = factory.getPool(path[i], path[i + 1], fees[i]);
-            require(poolAddress != address(0), "Pool doesn't exist");
+    //     // Perform swaps up to the last token before the cross-chain transfer
+    //     for (uint256 i = 0; i < path.length - 2; i++) {
+    //         address poolAddress = factory.getPool(path[i], path[i + 1], fees[i]);
+    //         require(poolAddress != address(0), "Pool doesn't exist");
 
-            Pool pool = Pool(poolAddress);
-            IERC20(path[i]).approve(poolAddress, amounts[i]);
+    //         Pool pool = Pool(poolAddress);
+    //         IERC20(path[i]).approve(poolAddress, amounts[i]);
 
-            pool.swap(amounts[i], path[i], address(this));
-        }
+    //         pool.swap(amounts[i], path[i], address(this));
+    //     }
 
-        // The last token in the path is what will be transferred cross-chain
-        uint256 crossChainAmount = amounts[amounts.length - 2];
-        address crossChainToken = path[path.length - 2];
+    //     // The last token in the path is what will be transferred cross-chain
+    //     uint256 crossChainAmount = amounts[amounts.length - 2];
+    //     address crossChainToken = path[path.length - 2];
 
-        // Approve the CCIP router to transfer the token cross-chain
-        IERC20(crossChainToken).approve(ccipRouter, crossChainAmount);
+    //     // Approve the CCIP router to transfer the token cross-chain
+    //     IERC20(crossChainToken).approve(ccipRouter, crossChainAmount);
 
-        // Create the Client.EVMTokenAmount for cross-chain message
-        Client.EVMTokenAmount[] memory tokensToSendDetails = new Client.EVMTokenAmount[](1);
-        tokensToSendDetails[0] = Client.EVMTokenAmount({token: crossChainToken, amount: crossChainAmount});
+    //     // Create the Client.EVMTokenAmount for cross-chain message
+    //     Client.EVMTokenAmount[] memory tokensToSendDetails = new Client.EVMTokenAmount[](1);
+    //     tokensToSendDetails[0] = Client.EVMTokenAmount({token: crossChainToken, amount: crossChainAmount});
 
-        // Prepare the data for the message (encoded receiver address)
-        bytes memory data = abi.encode(receiver);
+    //     // Prepare the data for the message (encoded receiver address)
+    //     bytes memory data = abi.encode(receiver);
 
-        // Construct the cross-chain message
-        Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
-            receiver: abi.encode(receiver),
-            data: data,
-            tokenAmounts: tokensToSendDetails,
-            extraArgs: "",
-            feeToken: address(0) // Native token for fees
-        });
+    //     // Construct the cross-chain message
+    //     Client.EVM2AnyMessage memory message = Client.EVM2AnyMessage({
+    //         receiver: abi.encode(receiver),
+    //         data: data,
+    //         tokenAmounts: tokensToSendDetails,
+    //         extraArgs: "",
+    //         feeToken: address(0) // Native token for fees
+    //     });
 
-        // Get the fee required for sending the message via CCIP
-        uint256 fee = IRouterClient(ccipRouter).getFee(destinationChainSelector, message);
-        require(msg.value >= fee, "Insufficient fee");
+    //     // Get the fee required for sending the message via CCIP
+    //     uint256 fee = IRouterClient(ccipRouter).getFee(destinationChainSelector, message);
+    //     require(msg.value >= fee, "Insufficient fee");
 
-        // Send the cross-chain message
-        bytes32 messageId = IRouterClient(ccipRouter).ccipSend{value: fee}(destinationChainSelector, message);
+    //     // Send the cross-chain message
+    //     bytes32 messageId = IRouterClient(ccipRouter).ccipSend{value: fee}(destinationChainSelector, message);
 
-        emit CrossChainSwapInitiated(msg.sender, receiver, messageId);
-    }
+    //     emit CrossChainSwapInitiated(msg.sender, receiver, messageId);
+    // }
 
     // CCIP Receive Function
     function ccipReceive(Client.Any2EVMMessage calldata message) external {

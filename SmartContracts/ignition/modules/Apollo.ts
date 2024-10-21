@@ -17,6 +17,8 @@ export default buildModule('Apollo', (m) => {
   const basicCrossChainTokenSender = deployBasicCrossChainTokenSender(m);
   const mockingCcipRouter = deployMockingCcipRouter(m);
   const crossChainDEX = deployCrossChainDEX(m);
+  const swapFactory = deployChainbrarySwapFactory(m);
+  const swapRouter = deployChainbrarySwapRouter(m);
 
   return {
     rocketContract,
@@ -32,7 +34,9 @@ export default buildModule('Apollo', (m) => {
     mockingPriceFeed,
     basicCrossChainTokenSender,
     mockingCcipRouter,
-    crossChainDEX
+    crossChainDEX,
+    swapFactory
+    // swapRouter
   };
 });
 
@@ -126,4 +130,14 @@ function deployMockingCcipRouter(m: any) {
 function deployCrossChainDEX(m: any) {
   const crossChainDEX = m.contract('CrossChainDEX', ['0x70997970C51812dc3A010C7d01b50e0d17dc79C8']);
   return crossChainDEX;
+}
+
+function deployChainbrarySwapFactory(m: any) {
+  const swapFactory = m.contract('ChainbrarySwapFactory');
+  return swapFactory;
+}
+
+function deployChainbrarySwapRouter(m: any) {
+  const swapRouter = m.contract('ChainbrarySwapRouter', ['0x9E545E3C0baAB3E08CdfD552C960A1050f373042', '0x9E545E3C0baAB3E08CdfD552C960A1050f373042']);
+  return swapRouter;
 }
