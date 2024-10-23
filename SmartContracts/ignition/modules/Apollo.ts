@@ -138,6 +138,6 @@ function deployChainbrarySwapFactory(m: any) {
 }
 
 function deployChainbrarySwapRouter(m: any) {
-  const swapRouter = m.contract('ChainbrarySwapRouter', ['0x9E545E3C0baAB3E08CdfD552C960A1050f373042', '0x9E545E3C0baAB3E08CdfD552C960A1050f373042']);
+  const swapRouter = m.contract('ChainbrarySwapRouter');
   return swapRouter;
 }
