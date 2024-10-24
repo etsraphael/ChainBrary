@@ -2,10 +2,11 @@ import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
 import { ethers } from 'hardhat';
 import { CustomERC20Token, CustomERC20Token__factory, Pool, Pool__factory } from '../typechain-types';
+import { BigNumber } from 'bignumber.js';
 
 const FEE = 3000;
 const INITIAL_LIQUIDITY_0 = 1000;
-const INITIAL_LIQUIDITY_1 = 2000;
+const INITIAL_LIQUIDITY_1 = 1000;
 
 describe('Pool', function () {
   const deployTokenAFixture = async () => {
@@ -59,110 +60,164 @@ describe('Pool', function () {
 
     const { poolInstance, owner, addr1, addr2 } = await deployPoolFixture(tokenAAddress, tokenBAddress);
 
-    return { poolInstance, tokenAAddress, tokenBAddress, owner, addr1, addr2 };
+    return { poolInstance, tokenA, tokenB, owner, addr1, addr2 };
   };
 
   it('should initialize the Pool with correct parameters', async () => {
-    const { poolInstance, tokenAAddress, tokenBAddress } = await loadFixture(deployPoolWithTokensFixture);
+    const { poolInstance, tokenA, tokenB } = await loadFixture(deployPoolWithTokensFixture);
+
+    const tokenAAddress = await tokenA.getAddress();
+    const tokenBAddress = await tokenB.getAddress();
 
     expect(tokenAAddress).to.equal(await poolInstance.token0());
     expect(tokenBAddress).to.equal(await poolInstance.token1());
     expect(await poolInstance.fee()).to.equal(FEE);
   });
 
-  //   it.only('should add liquidity successfully', async () => {
-  //     const { poolInstance, owner, addr1 } = await loadFixture(deployPoolFixture);
-  //     const { token: tokenA } = await loadFixture(deployTokenAFixture);
-  //     const { token: tokenB } = await loadFixture(deployTokenBFixture);
+  it('should add liquidity successfully', async () => {
+    const { poolInstance, tokenA, tokenB, addr1 } = await loadFixture(deployPoolWithTokensFixture);
 
-  //     // Transfer tokens to users
-  //     await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
-  //     await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
+    const poolAddress: string = await poolInstance.getAddress();
 
-  //     // Check balances before adding liquidity
-  //     const balanceA = await tokenA.balanceOf(addr1.address);
-  //     const balanceB = await tokenB.balanceOf(addr1.address);
+    // Transfer tokens to users
+    await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
 
-  //     expect(balanceA).to.be.equal(INITIAL_LIQUIDITY_0);
-  //     expect(balanceB).to.be.equal(INITIAL_LIQUIDITY_1);
+    // Approve tokens for transfer
+    await tokenA.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_1);
 
-  //     // Add liquidity to the pool
-  //     await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1); // does not work
+    // Check allowances before adding liquidity
+    const allowanceA = await tokenA.allowance(addr1.address, poolAddress);
+    const allowanceB = await tokenB.allowance(addr1.address, poolAddress);
+    expect(allowanceA).to.be.at.least(INITIAL_LIQUIDITY_0);
+    expect(allowanceB).to.be.at.least(INITIAL_LIQUIDITY_1);
 
-  //     // expect(await poolInstance.reserve0()).to.equal(INITIAL_LIQUIDITY_0);
-  //     // expect(await poolInstance.reserve1()).to.equal(INITIAL_LIQUIDITY_1);
-  //   });
+    // Check balances before adding liquidity
+    const balanceA = await tokenA.balanceOf(addr1.address);
+    const balanceB = await tokenB.balanceOf(addr1.address);
+    expect(balanceA).to.be.equal(INITIAL_LIQUIDITY_0);
+    expect(balanceB).to.be.equal(INITIAL_LIQUIDITY_1);
 
-  //   it('should fail to add liquidity if amounts are zero', async () => {
-  //     const { poolInstance, owner } = await loadFixture(deployPoolFixture);
+    // Add liquidity to the pool
+    await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
 
-  //     await expect(poolInstance.connect(owner).addLiquidity(0, INITIAL_LIQUIDITY_1)).to.be.revertedWith(
-  //       'Amounts must be greater than zero'
-  //     );
-  //     await expect(poolInstance.connect(owner).addLiquidity(INITIAL_LIQUIDITY_0, 0)).to.be.revertedWith(
-  //       'Amounts must be greater than zero'
-  //     );
-  //   });
+    expect(await poolInstance.reserve0()).to.equal(INITIAL_LIQUIDITY_0);
+    expect(await poolInstance.reserve1()).to.equal(INITIAL_LIQUIDITY_1);
+  });
 
-  //   it('should remove liquidity successfully', async () => {
-  //     const { poolInstance, owner } = await loadFixture(deployPoolFixture);
+  it('should fail to add liquidity if amounts are zero', async () => {
+    const { poolInstance, addr1 } = await loadFixture(deployPoolWithTokensFixture);
 
-  //     // Add liquidity to the pool
-  //     await poolInstance.connect(owner).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+    await expect(poolInstance.connect(addr1).addLiquidity(0, INITIAL_LIQUIDITY_1)).to.be.revertedWith(
+      'Amounts must be greater than zero'
+    );
+    await expect(poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, 0)).to.be.revertedWith(
+      'Amounts must be greater than zero'
+    );
+  });
 
-  //     // Remove liquidity from the pool
-  //     await poolInstance.connect(owner).removeLiquidity(INITIAL_LIQUIDITY_0);
+  it('should remove liquidity successfully', async () => {
+    const { poolInstance, tokenA, tokenB, addr1 } = await loadFixture(deployPoolWithTokensFixture);
 
-  //     expect(await poolInstance.reserve0()).to.equal(0);
-  //     expect(await poolInstance.reserve1()).to.equal(0);
-  //   });
+    const poolAddress: string = await poolInstance.getAddress();
 
-  //   it('should fail to remove liquidity if amount is zero', async () => {
-  //     const { poolInstance, owner } = await loadFixture(deployPoolFixture);
+    // Transfer tokens to users
+    await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
 
-  //     await expect(poolInstance.connect(owner).removeLiquidity(0)).to.be.revertedWith(
-  //       'Liquidity must be greater than zero'
-  //     );
-  //   });
+    // Approve tokens for transfer
+    await tokenA.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_1);
 
-  //   it('should fail to remove liquidity if no liquidity available', async () => {
-  //     const { poolInstance, owner } = await loadFixture(deployPoolFixture);
+    // Add liquidity to the pool
+    await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
 
-  //     await expect(poolInstance.connect(owner).removeLiquidity(INITIAL_LIQUIDITY_0)).to.be.revertedWith(
-  //       'No liquidity available'
-  //     );
-  //   });
+    // Get reserves after adding liquidity
+    const reserve0: bigint = await poolInstance.reserve0();
+    const reserve1: bigint = await poolInstance.reserve1();
 
-  //   it('should execute a swap successfully', async () => {
-  //     const { poolInstance, owner, addr1 } = await loadFixture(deployPoolFixture);
+    // Calculate liquidity to remove based on the proportionality of reserves
+    const totalLiquidity: BigNumber = new BigNumber(reserve0.toString()).plus(new BigNumber(reserve1.toString()));
 
-  //     // Add liquidity to the pool
-  //     await poolInstance.connect(owner).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+    // Here, we are considering removing half of the provided liquidity as an example.
+    const liquidityToRemove: BigNumber = totalLiquidity.dividedBy(2);
 
-  //     // Swap token0 for token1
-  //     const amountIn = 100;
-  //     await poolInstance.connect(addr1).swap(amountIn, TOKEN_1_ADDRESS, addr1.address);
+    // Remove liquidity
+    await poolInstance.connect(addr1).removeLiquidity(liquidityToRemove.toFixed(0)); // Convert BigNumber to string
 
-  //     const reserve0 = await poolInstance.reserve0();
-  //     const reserve1 = await poolInstance.reserve1();
+    // Get reserves after liquidity removal
+    const reserve0After: bigint = await poolInstance.reserve0();
+    const reserve1After: bigint = await poolInstance.reserve1();
 
-  //     expect(reserve0).to.be.above(INITIAL_LIQUIDITY_0);
-  //     expect(reserve1).to.be.below(INITIAL_LIQUIDITY_1);
-  //   });
+    // Expected reserves after removing half the liquidity
+    const expectedReserve0 = new BigNumber(reserve0.toString()).minus(liquidityToRemove.dividedBy(2));
+    const expectedReserve1 = new BigNumber(reserve1.toString()).minus(liquidityToRemove.dividedBy(2));
 
-  //   it('should fail to execute a swap if amountIn is zero', async () => {
-  //     const { poolInstance, addr1 } = await loadFixture(deployPoolFixture);
+    // Check if reserves are as expected
+    expect(reserve0After.toString()).to.equal(expectedReserve0.toFixed(0));
+    expect(reserve1After.toString()).to.equal(expectedReserve1.toFixed(0));
+  });
 
-  //     await expect(poolInstance.connect(addr1).swap(0, TOKEN_1_ADDRESS, addr1.address)).to.be.revertedWith(
-  //       'AmountIn must be greater than zero'
-  //     );
-  //   });
+  it('should fail to remove liquidity if amount is zero', async () => {
+    const { poolInstance, addr1 } = await loadFixture(deployPoolWithTokensFixture);
 
-  //   it('should fail to execute a swap if recipient address is zero', async () => {
-  //     const { poolInstance, addr1 } = await loadFixture(deployPoolFixture);
+    await expect(poolInstance.connect(addr1).removeLiquidity(0)).to.be.revertedWith(
+      'Liquidity must be greater than zero'
+    );
+  });
 
-  //     await expect(poolInstance.connect(addr1).swap(100, TOKEN_1_ADDRESS, ethers.ZeroAddress)).to.be.revertedWith(
-  //       'Invalid recipient address'
-  //     );
-  //   });
+  it('should fail to remove liquidity if no liquidity available', async () => {
+    const { poolInstance, addr1 } = await loadFixture(deployPoolWithTokensFixture);
+
+    await expect(poolInstance.connect(addr1).removeLiquidity(INITIAL_LIQUIDITY_0)).to.be.revertedWith(
+      'No liquidity available'
+    );
+  });
+
+  it('should execute a swap successfully', async () => {
+    const { poolInstance, tokenA, tokenB, addr1 } = await loadFixture(deployPoolWithTokensFixture);
+
+    const poolAddress: string = await poolInstance.getAddress();
+    const tokenAAddress: string = await tokenA.getAddress();
+
+    // Transfer tokens to users
+    await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
+
+    // Approve tokens for transfer
+    await tokenA.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_1);
+
+    // Add liquidity to the pool
+    await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+
+    // Swap token0 for token1
+    const amountIn = 100;
+    await poolInstance.connect(addr1).swap(amountIn, tokenAAddress, addr1.address);
+
+    const reserve0 = await poolInstance.reserve0();
+    const reserve1 = await poolInstance.reserve1();
+
+    expect(reserve0).to.be.above(INITIAL_LIQUIDITY_0);
+    expect(reserve1).to.be.below(INITIAL_LIQUIDITY_1);
+  });
+
+  it('should fail to execute a swap if amountIn is zero', async () => {
+    const { poolInstance, addr1, tokenA } = await loadFixture(deployPoolWithTokensFixture);
+    const tokenAAddress: string = await tokenA.getAddress();
+
+    await expect(poolInstance.connect(addr1).swap(0, tokenAAddress, addr1.address)).to.be.revertedWith(
+      'AmountIn must be greater than zero'
+    );
+  });
+
+  it('should fail to execute a swap if recipient address is zero', async () => {
+    const { poolInstance, addr1, tokenA } = await loadFixture(deployPoolWithTokensFixture);
+    const tokenAAddress: string = await tokenA.getAddress();
+
+    await expect(poolInstance.connect(addr1).swap(100, tokenAAddress, ethers.ZeroAddress)).to.be.revertedWith(
+      'Invalid recipient address'
+    );
+  });
 });

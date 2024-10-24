@@ -17,6 +17,9 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
     uint256 public reserve0;
     uint256 public reserve1;
 
+    mapping(address => uint256) public liquidityProvided0;
+    mapping(address => uint256) public liquidityProvided1;
+
     event Swap(address indexed sender, uint256 amountIn, uint256 amountOut);
     event Mint(address indexed sender, uint256 amount0, uint256 amount1);
     event Burn(address indexed sender, uint256 amount0, uint256 amount1);
@@ -35,29 +38,42 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
     function addLiquidity(uint256 amount0, uint256 amount1) external nonReentrant {
         require(amount0 > 0 && amount1 > 0, "Amounts must be greater than zero");
 
-        IERC20(token0).safeTransferFrom(msg.sender, address(this), amount0);
-        IERC20(token1).safeTransferFrom(msg.sender, address(this), amount1);
+        IERC20(token0).safeTransferFrom(_msgSender(), address(this), amount0);
+        IERC20(token1).safeTransferFrom(_msgSender(), address(this), amount1);
 
         reserve0 += amount0;
         reserve1 += amount1;
 
-        emit Mint(msg.sender, amount0, amount1);
+        liquidityProvided0[_msgSender()] += amount0;
+        liquidityProvided1[_msgSender()] += amount1;
+
+        emit Mint(_msgSender(), amount0, amount1);
     }
 
-    function removeLiquidity(uint256 liquidity) external nonReentrant onlyOwner {
+    function removeLiquidity(uint256 liquidity) external nonReentrant {
         require(liquidity > 0, "Liquidity must be greater than zero");
         require(reserve0 > 0 && reserve1 > 0, "No liquidity available");
 
-        uint256 amount0 = Math.min(reserve0, liquidity);
-        uint256 amount1 = Math.min(reserve1, liquidity);
+        uint256 userLiquidity0 = liquidityProvided0[_msgSender()];
+        uint256 userLiquidity1 = liquidityProvided1[_msgSender()];
+
+        require(userLiquidity0 > 0 && userLiquidity1 > 0, "No liquidity provided by user");
+
+        uint256 amount0 = Math.min(userLiquidity0, (liquidity * reserve0) / (reserve0 + reserve1));
+        uint256 amount1 = Math.min(userLiquidity1, (liquidity * reserve1) / (reserve0 + reserve1));
+
+        require(amount0 > 0 && amount1 > 0, "Insufficient liquidity to withdraw");
 
         reserve0 -= amount0;
         reserve1 -= amount1;
 
-        IERC20(token0).safeTransfer(msg.sender, amount0);
-        IERC20(token1).safeTransfer(msg.sender, amount1);
+        liquidityProvided0[_msgSender()] -= amount0;
+        liquidityProvided1[_msgSender()] -= amount1;
 
-        emit Burn(msg.sender, amount0, amount1);
+        IERC20(token0).safeTransfer(_msgSender(), amount0);
+        IERC20(token1).safeTransfer(_msgSender(), amount1);
+
+        emit Burn(_msgSender(), amount0, amount1);
     }
 
     function swap(uint256 amountIn, address tokenIn, address to) external nonReentrant {
@@ -69,7 +85,7 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         uint256 reserveIn = (tokenIn == token0) ? reserve0 : reserve1;
         uint256 reserveOut = (tokenIn == token0) ? reserve1 : reserve0;
 
-        IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
+        IERC20(tokenIn).safeTransferFrom(_msgSender(), address(this), amountIn);
 
         uint256 amountInWithFee = amountIn * (1000000 - fee);
         uint256 amountOut = (amountInWithFee * reserveOut) / (reserveIn * 1000000 + amountInWithFee);
@@ -86,7 +102,7 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
         IERC20(tokenOut).safeTransfer(to, amountOut);
 
-        emit Swap(msg.sender, amountIn, amountOut);
+        emit Swap(_msgSender(), amountIn, amountOut);
     }
 
     function getReserves(address tokenA, address tokenB) external view returns (uint256 reserveA, uint256 reserveB) {
