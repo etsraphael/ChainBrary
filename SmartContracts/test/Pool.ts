@@ -7,6 +7,7 @@ import { BigNumber } from 'bignumber.js';
 const FEE = 3000;
 const INITIAL_LIQUIDITY_0 = 1000;
 const INITIAL_LIQUIDITY_1 = 1000;
+const SWAP_AMOUNT = 100;
 
 describe('Pool', function () {
   const deployTokenAFixture = async () => {
@@ -176,14 +177,17 @@ describe('Pool', function () {
   });
 
   it('should execute a swap successfully', async () => {
-    const { poolInstance, tokenA, tokenB, addr1 } = await loadFixture(deployPoolWithTokensFixture);
+    const { poolInstance, tokenA, tokenB, addr1, addr2 } = await loadFixture(deployPoolWithTokensFixture);
 
     const poolAddress: string = await poolInstance.getAddress();
     const tokenAAddress: string = await tokenA.getAddress();
 
-    // Transfer tokens to users
+    // Transfer tokens to user 1
     await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
     await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
+
+    // Transfer tokens to user 2
+    await tokenA.transfer(addr2.address, SWAP_AMOUNT);
 
     // Approve tokens for transfer
     await tokenA.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_0);
@@ -192,15 +196,24 @@ describe('Pool', function () {
     // Add liquidity to the pool
     await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
 
+    // Approve tokens for swap
+    await tokenA.connect(addr2).approve(poolAddress, SWAP_AMOUNT);
+
+    // Calculate expected output based on current reserves and swap amount
+    const reserve0BeforeSwap: bigint = await poolInstance.reserve0();
+    const reserve1BeforeSwap: bigint = await poolInstance.reserve1();
+    const amountInWithFee: number = SWAP_AMOUNT * (1000000 - FEE);
+    const expectedAmountOut: bigint = BigInt(Math.floor((amountInWithFee * Number(reserve1BeforeSwap)) / (Number(reserve0BeforeSwap) * 1000000 + amountInWithFee)));
+
     // Swap token0 for token1
-    const amountIn = 100;
-    await poolInstance.connect(addr1).swap(amountIn, tokenAAddress, addr1.address);
+    await poolInstance.connect(addr2).swap(SWAP_AMOUNT, tokenAAddress, addr2.address);
 
-    const reserve0 = await poolInstance.reserve0();
-    const reserve1 = await poolInstance.reserve1();
+    const reserve0AfterSwap: bigint = await poolInstance.reserve0();
+    const reserve1AfterSwap: bigint = await poolInstance.reserve1();
 
-    expect(reserve0).to.be.above(INITIAL_LIQUIDITY_0);
-    expect(reserve1).to.be.below(INITIAL_LIQUIDITY_1);
+    // Verify reserves after swap
+    expect(reserve0AfterSwap).to.equal(reserve0BeforeSwap + BigInt(SWAP_AMOUNT));
+    expect(reserve1AfterSwap).to.equal(reserve1BeforeSwap - expectedAmountOut);
   });
 
   it('should fail to execute a swap if amountIn is zero', async () => {
