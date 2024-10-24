@@ -203,7 +203,11 @@ describe('Pool', function () {
     const reserve0BeforeSwap: bigint = await poolInstance.reserve0();
     const reserve1BeforeSwap: bigint = await poolInstance.reserve1();
     const amountInWithFee: number = SWAP_AMOUNT * (1000000 - FEE);
-    const expectedAmountOut: bigint = BigInt(Math.floor((amountInWithFee * Number(reserve1BeforeSwap)) / (Number(reserve0BeforeSwap) * 1000000 + amountInWithFee)));
+    const expectedAmountOut: bigint = BigInt(
+      Math.floor(
+        (amountInWithFee * Number(reserve1BeforeSwap)) / (Number(reserve0BeforeSwap) * 1000000 + amountInWithFee)
+      )
+    );
 
     // Swap token0 for token1
     await poolInstance.connect(addr2).swap(SWAP_AMOUNT, tokenAAddress, addr2.address);
@@ -232,5 +236,86 @@ describe('Pool', function () {
     await expect(poolInstance.connect(addr1).swap(100, tokenAAddress, ethers.ZeroAddress)).to.be.revertedWith(
       'Invalid recipient address'
     );
+  });
+
+  it('should fail if the approval is not enough', async () => {
+    const { poolInstance, addr1, tokenA, tokenB } = await loadFixture(deployPoolWithTokensFixture);
+    const tokenAAddress: string = await tokenA.getAddress();
+    const poolAddress: string = await poolInstance.getAddress();
+
+    await expect(poolInstance.connect(addr1).swap(2000, tokenAAddress, addr1.address)).to.be.revertedWithCustomError(
+      tokenA,
+      'ERC20InsufficientAllowance'
+    );
+
+    // Transfer and approve tokens for addr1
+    await tokenA.transfer(addr1.address, 2000);
+    await tokenB.transfer(addr1.address, 100);
+    await tokenA.connect(addr1).approve(poolAddress, 2000);
+    await tokenB.connect(addr1).approve(poolAddress, 100);
+
+    // Add a small amount of liquidity to create an insufficient liquidity scenario
+    await poolInstance.connect(addr1).addLiquidity(50, 50); // Small amounts of liquidity
+
+    // Try to swap an amount larger than the pool can handle
+    await poolInstance.connect(addr1).swap(1000, tokenAAddress, addr1.address);
+  });
+
+  it('should fail if a user is not authorized to withdraw the liquidity', async () => {
+    const { poolInstance, tokenA, tokenB, addr1, addr2 } = await loadFixture(deployPoolWithTokensFixture);
+
+    const poolAddress: string = await poolInstance.getAddress();
+
+    await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
+
+    await tokenA.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_1);
+
+    await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+
+    await expect(poolInstance.connect(addr2).removeLiquidity(INITIAL_LIQUIDITY_0)).to.be.revertedWith(
+      'No liquidity provided by user'
+    );
+  });
+
+  it('should execute 3 different users adding liquidity, removing liquidity, and swapping', async () => {
+    const { poolInstance, tokenA, tokenB, owner, addr1, addr2 } = await loadFixture(deployPoolWithTokensFixture);
+
+    const poolAddress: string = await poolInstance.getAddress();
+
+    // Transfer tokens to users
+    await tokenA.transfer(addr1.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(addr1.address, INITIAL_LIQUIDITY_1);
+    await tokenA.transfer(addr2.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(addr2.address, INITIAL_LIQUIDITY_1);
+    await tokenA.transfer(owner.address, INITIAL_LIQUIDITY_0);
+    await tokenB.transfer(owner.address, INITIAL_LIQUIDITY_1);
+
+    // Approve tokens for transfer
+    await tokenA.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(addr1).approve(poolAddress, INITIAL_LIQUIDITY_1);
+    await tokenA.connect(addr2).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(addr2).approve(poolAddress, INITIAL_LIQUIDITY_1);
+    await tokenA.connect(owner).approve(poolAddress, INITIAL_LIQUIDITY_0);
+    await tokenB.connect(owner).approve(poolAddress, INITIAL_LIQUIDITY_1);
+
+    // Add liquidity to the pool
+    await poolInstance.connect(addr1).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+    await poolInstance.connect(addr2).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+    await poolInstance.connect(owner).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
+
+    // Users remove liquidity
+    await poolInstance.connect(addr1).removeLiquidity(INITIAL_LIQUIDITY_0 / 2);
+    await poolInstance.connect(addr2).removeLiquidity(INITIAL_LIQUIDITY_0 / 2);
+    await poolInstance.connect(owner).removeLiquidity(INITIAL_LIQUIDITY_0 / 2);
+
+    // User swaps
+    await tokenA.connect(addr1).approve(poolAddress, SWAP_AMOUNT);
+    await poolInstance.connect(addr1).swap(SWAP_AMOUNT, await tokenA.getAddress(), addr1.address);
+    await tokenB.connect(addr2).approve(poolAddress, SWAP_AMOUNT);
+    await poolInstance.connect(addr2).swap(SWAP_AMOUNT, await tokenB.getAddress(), addr2.address);
+    await tokenA.connect(owner).approve(poolAddress, SWAP_AMOUNT);
+    await poolInstance.connect(owner).swap(SWAP_AMOUNT, await tokenA.getAddress(), owner.address);
   });
 });
