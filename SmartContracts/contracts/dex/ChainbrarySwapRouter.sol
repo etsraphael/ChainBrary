@@ -44,8 +44,13 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
 
             (uint256 reserveIn, uint256 reserveOut) = pool.getReserves(path[i], path[i + 1]);
 
-            uint256 amountInWithFee = amounts[i] * (1000000 - fees[i]);
-            uint256 amountOut = (amountInWithFee * reserveOut) / (reserveIn * 1000000 + amountInWithFee);
+            uint256 amountInWithFee = (amounts[i] * (1000000 - fees[i])) / 1000000;
+
+            uint256 numerator = amountInWithFee * reserveOut;
+            uint256 denominator = (reserveIn * 1000000) + amountInWithFee;
+
+            require(denominator > 0, "Denominator is zero"); // Additional safety check
+            uint256 amountOut = numerator / denominator;
 
             amounts[i + 1] = amountOut;
         }
