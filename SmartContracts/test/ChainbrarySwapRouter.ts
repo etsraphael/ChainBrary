@@ -1,28 +1,41 @@
 import { loadFixture } from '@nomicfoundation/hardhat-network-helpers';
 import { expect } from 'chai';
+import { ContractTransactionReceipt, ContractTransactionResponse, EventLog, Log, LogDescription } from 'ethers';
 import { ethers } from 'hardhat';
 import {
+  ChainbrarySwapFactory,
+  ChainbrarySwapFactory__factory,
+  ChainbrarySwapRouter,
+  ChainbrarySwapRouter__factory,
   CustomERC20Token,
   CustomERC20Token__factory,
   Pool,
-  Pool__factory,
-  ChainbrarySwapRouter,
-  ChainbrarySwapRouter__factory,
-  ChainbrarySwapFactory,
-  ChainbrarySwapFactory__factory
+  Pool__factory
 } from '../typechain-types';
-import { BigNumber } from 'bignumber.js';
+import { token } from '../typechain-types/@openzeppelin/contracts';
+import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
-const FEE = 3000;
-const INITIAL_LIQUIDITY_0 = 100000;
-const INITIAL_LIQUIDITY_1 = 100000;
-const SWAP_AMOUNT = 100;
+const FEE = 100;
+const INITIAL_LIQUIDITY_0: bigint = ethers.parseUnits('100000', 'ether');
+const INITIAL_LIQUIDITY_1: bigint = ethers.parseUnits('100000', 'ether');
+const SWAP_AMOUNT: bigint = ethers.parseUnits('1', 'ether');
 const DEST_CHAIN_SELECTOR = 1;
 
 describe('ChainbrarySwapRouter', function () {
+
+  const getPoolFromFactory = async (factory: ChainbrarySwapFactory, tokenA: CustomERC20Token, tokenB: CustomERC20Token, addr: HardhatEthersSigner): Promise<Pool> => {
+    const tokenAAddress: string = await tokenA.getAddress();
+    const tokenBAddress: string = await tokenB.getAddress();
+    const factoryPool = await factory.getPool(tokenAAddress, tokenBAddress, FEE);
+    return Pool__factory.connect(factoryPool, addr);
+  }
+
+  const getPoolFromPoolContract = async (poolAddress: string, addr: HardhatEthersSigner): Promise<Pool> => {
+    return Pool__factory.connect(poolAddress, addr);
+  }
+
   async function deployRouterFixture() {
     const CustomERC20Token: CustomERC20Token__factory = await ethers.getContractFactory('CustomERC20Token');
-    const Pool: Pool__factory = await ethers.getContractFactory('Pool');
     const ChainbrarySwapFactory: ChainbrarySwapFactory__factory =
       await ethers.getContractFactory('ChainbrarySwapFactory');
     const ChainbrarySwapRouter: ChainbrarySwapRouter__factory = await ethers.getContractFactory('ChainbrarySwapRouter');
@@ -34,7 +47,7 @@ describe('ChainbrarySwapRouter', function () {
       owner.address,
       'CustomTokenA',
       'CTKA',
-      100000,
+      ethers.parseUnits('1000000', 'ether'),
       true,
       false,
       false,
@@ -45,7 +58,7 @@ describe('ChainbrarySwapRouter', function () {
       owner.address,
       'CustomTokenB',
       'CTKB',
-      100000,
+      ethers.parseUnits('1000000', 'ether'),
       true,
       false,
       false,
@@ -57,18 +70,61 @@ describe('ChainbrarySwapRouter', function () {
     const factory: ChainbrarySwapFactory = await ChainbrarySwapFactory.deploy();
     const factoryAddress: string = await factory.getAddress();
     const router: ChainbrarySwapRouter = await ChainbrarySwapRouter.deploy();
-    await router.initialize(factoryAddress, addr1.address); // Assume addr1 is used as the CCIP Router
+    await router.initialize(factoryAddress, addr1.address);
 
-    // Deploy a pool and register it in the factory
-    const pool: Pool = await Pool.deploy();
+    // Deploy a pool from the factory
     const tokenAAddress: string = await tokenA.getAddress();
     const tokenBAddress: string = await tokenB.getAddress();
-    await pool.initialize(tokenAAddress, tokenBAddress, FEE);
 
-    await factory.createPool(tokenAAddress, tokenBAddress, FEE);
+    // Listen for the PoolCreated event and create a pool
+    const tx: ContractTransactionResponse = await factory.createPool(tokenAAddress, tokenBAddress, FEE);
+    const receipt: ContractTransactionReceipt | null = await tx.wait();
 
-    return { router, factory, pool, tokenA, tokenB, owner, addr1, addr2 };
+    if(!receipt) { 
+      throw new Error('Transaction receipt not found');
+    }
+
+    // Extract the pool address from the event
+    const poolCreatedEvent: LogDescription | null | undefined = receipt.logs
+      .map((log: EventLog | Log) => factory.interface.parseLog(log))
+      .find((event: LogDescription | null) => event?.name === 'PoolCreated');
+    if (!poolCreatedEvent) {
+      throw new Error('PoolCreated event not found');
+    }
+
+    const poolAddress: string = poolCreatedEvent.args?.pool;
+
+    return { router, factory, poolAddress, tokenA, tokenB, owner, addr1, addr2 };
   }
+
+  it('should find the correct pool address', async () => {
+    const { factory, tokenA, tokenB, poolAddress, addr1 } = await loadFixture(deployRouterFixture);
+
+    const tokenAAddress: string = await tokenA.getAddress();
+    const tokenBAddress: string = await tokenB.getAddress();
+
+    // Get the pool address from the factory
+    const poolInstanceFromFactory: Pool = await getPoolFromFactory(factory, tokenA, tokenB, addr1);
+    const poolAddressFromFactory: string = await poolInstanceFromFactory.getAddress();
+    expect(poolAddress).to.equal(poolAddressFromFactory);
+    expect(tokenAAddress).to.equal(await poolInstanceFromFactory.token0());
+    expect(tokenBAddress).to.equal(await poolInstanceFromFactory.token1());
+
+    // Get pool from Pool contract 
+    const poolInstanceFromPoolContract: Pool = await getPoolFromPoolContract(poolAddress, addr1);
+    const poolAddressFromPoolContract: string = await poolInstanceFromPoolContract.getAddress();
+    expect(poolAddress).to.equal(poolAddressFromPoolContract);
+    expect(tokenAAddress).to.equal(await poolInstanceFromPoolContract.token0());
+    expect(tokenBAddress).to.equal(await poolInstanceFromPoolContract.token1());
+
+    // Check if the pool addresses are the same
+    expect(poolAddressFromFactory).to.equal(poolAddressFromPoolContract);
+  
+    // Check if the tokens are the same
+    expect(await poolInstanceFromPoolContract.token0()).to.equal(await poolInstanceFromFactory.token0());
+    expect(await poolInstanceFromPoolContract.token1()).to.equal(await poolInstanceFromFactory.token1());
+
+  });
 
   it('should initialize the ChainbrarySwapRouter with correct parameters', async () => {
     const { router, factory } = await loadFixture(deployRouterFixture);
@@ -104,20 +160,24 @@ describe('ChainbrarySwapRouter', function () {
     await expect(router.getAmountsOut(amountIn, path, fees)).to.be.revertedWith('Invalid path');
   });
 
-  it('should execute a token swap successfully', async () => {
-    const { router, pool, tokenA, tokenB, addr1, addr2 } = await loadFixture(deployRouterFixture);
+  it.only('should execute a token swap successfully', async () => {
+    const { router, factory, poolAddress, tokenA, tokenB, addr1, addr2 } = await loadFixture(deployRouterFixture);
 
     const tokenAAddress: string = await tokenA.getAddress();
     const tokenBAddress: string = await tokenB.getAddress();
+    const poolForAddr1: Pool = await getPoolFromPoolContract(poolAddress, addr1);
 
     const path: string[] = [tokenAAddress, tokenBAddress];
     const fees: number[] = [FEE];
-    const amountIn: number = 10000; // Increase the swap amount
+    const amountIn: bigint = SWAP_AMOUNT; // Increase the swap amount
     const amountOutMin: number = 1; // Set to 1 to ensure the output is greater than zero
-    const liquidity: number[] = [INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1];
+    const liquidity: bigint[] = [INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1];
 
     const routerAddress: string = await router.getAddress();
-    const poolAddress: string = await pool.getAddress();
+
+    // Check token addresses
+    expect(tokenAAddress).to.equal(await poolForAddr1.token0());
+    expect(tokenBAddress).to.equal(await poolForAddr1.token1());
 
     // Transfer tokens to addr1 and set approval and liquidity
     await tokenA.transfer(addr1.address, liquidity[0]);
@@ -128,15 +188,19 @@ describe('ChainbrarySwapRouter', function () {
     await tokenB.connect(addr1).approve(poolAddress, liquidity[1]);
 
     // Add liquidity to the pool
-    await pool.connect(addr1).addLiquidity(liquidity[0], liquidity[1]);
+    const addLiquidityTx = await poolForAddr1.connect(addr1).addLiquidity(liquidity[0], liquidity[1]);
+    await addLiquidityTx.wait();
 
     // Get reserves
-    const reserve0BeforeSwap: bigint = await pool.reserve0();
-    const reserve1BeforeSwap: bigint = await pool.reserve1();
-    const fee: bigint = await pool.fee();
+    const reserve0BeforeSwap: bigint = await poolForAddr1.reserve0();
+    const reserve1BeforeSwap: bigint = await poolForAddr1.reserve1();
+    const fee: bigint = await poolForAddr1.fee();
     expect(reserve0BeforeSwap).to.be.equal(BigInt(liquidity[0]));
     expect(reserve1BeforeSwap).to.be.equal(BigInt(liquidity[1]));
     expect(fee).to.be.equal(BigInt(FEE));
+
+    // Check if pool was created from factory
+    expect(await factory.getPool(tokenAAddress, tokenBAddress, FEE)).to.equal(poolAddress);
   
     // Set up addr2 with tokens
     await tokenA.transfer(addr2.address, amountIn);
@@ -144,14 +208,25 @@ describe('ChainbrarySwapRouter', function () {
   
     // Calculate the amountOut manually using the same logic as the contract
     const amountInWithFee: bigint = BigInt(amountIn) * BigInt(1000000 - FEE) / BigInt(1000000);
-    const expectedAmountOut: bigint = (amountInWithFee * reserve1BeforeSwap) / (reserve0BeforeSwap * BigInt(1000000) + amountInWithFee);
+    const expectedAmountOut: bigint = (amountInWithFee * reserve1BeforeSwap) / (reserve0BeforeSwap + amountInWithFee);
   
     // Get the output amounts from the router contract
-    const amountsOut: bigint[] = await router.connect(addr2).getAmountsOut(amountIn, path, fees);
+    const routerInstance: ChainbrarySwapRouter = ChainbrarySwapRouter__factory.connect(routerAddress, addr2);
+    const amountsOut: bigint[] = await routerInstance.getAmountsOut(amountIn, path, fees);
     const amountOut: bigint = amountsOut[1];
+
+    console.log(`reserve0BeforeSwap: ${reserve0BeforeSwap}`);
+    console.log(`reserve1BeforeSwap: ${reserve1BeforeSwap}`);
+    console.log(`fee: ${fee}`);
+    console.log(`amountIn: ${amountIn}`);
+    console.log(`amountInWithFee: ${amountInWithFee}`);
+    console.log(`expectedAmountOut: ${expectedAmountOut}`);
+    console.log(`amountOut: ${amountOut}`);
+    console.log('amountsOut', amountsOut);
+
   
     // Compare manual calculation with the contract result
-    expect(amountOut).to.be.equal(expectedAmountOut);
+    expect(amountsOut[1]).to.be.equal(expectedAmountOut);
   
     // // Execute the swap if the above calculations are consistent
     // await router.connect(addr2).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr2.address);
@@ -160,7 +235,7 @@ describe('ChainbrarySwapRouter', function () {
     // const balanceAfter = await tokenB.balanceOf(addr2.address);
     // expect(balanceAfter).to.be.gt(0); // Ensure addr2 received tokens from the swap
   });
-  
+
 
   // it('should fail to execute a swap if output is less than minimum specified', async () => {
   //   const { router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
