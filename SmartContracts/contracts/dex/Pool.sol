@@ -87,10 +87,13 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
         IERC20(tokenIn).safeTransferFrom(_msgSender(), address(this), amountIn);
 
-        uint256 amountInWithFee = amountIn * (1000000 - fee);
-        uint256 amountOut = (amountInWithFee * reserveOut) / (reserveIn * 1000000 + amountInWithFee);
+        uint256 amountInWithFee = (amountIn * (1000000 - fee)) / 1000000;
+        uint256 amountOut = (amountInWithFee * reserveOut) / (reserveIn + amountInWithFee);
 
         require(amountOut > 0, "Insufficient output amount");
+
+        uint256 feeAmount = amountIn - amountInWithFee;
+        IERC20(tokenIn).safeTransfer(owner(), feeAmount);
 
         if (tokenIn == token0) {
             reserve0 += amountIn;

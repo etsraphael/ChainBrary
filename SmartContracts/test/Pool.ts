@@ -47,7 +47,7 @@ describe('Pool', function () {
   const deployPoolFixture = async (tokenAAddress: string, tokenBAddress: string) => {
     const pool: Pool__factory = await ethers.getContractFactory('Pool');
     const [owner, addr1, addr2] = await ethers.getSigners();
-    const poolInstance: Pool = await pool.deploy();
+    const poolInstance: Pool = await pool.connect(owner).deploy();
     await poolInstance.initialize(tokenAAddress, tokenBAddress, FEE);
     return { poolInstance, owner, addr1, addr2 };
   };
@@ -177,7 +177,7 @@ describe('Pool', function () {
   });
 
   it('should execute a swap successfully', async () => {
-    const { poolInstance, tokenA, tokenB, addr1, addr2 } = await loadFixture(deployPoolWithTokensFixture);
+    const { poolInstance, tokenA, tokenB, addr1, addr2, owner } = await loadFixture(deployPoolWithTokensFixture);
 
     const poolAddress: string = await poolInstance.getAddress();
     const tokenAAddress: string = await tokenA.getAddress();
