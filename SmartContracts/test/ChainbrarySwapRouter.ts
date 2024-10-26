@@ -18,6 +18,7 @@ const FEE = 100;
 const INITIAL_LIQUIDITY_0: bigint = ethers.parseUnits('100000', 'ether');
 const INITIAL_LIQUIDITY_1: bigint = ethers.parseUnits('100000', 'ether');
 const SWAP_AMOUNT: bigint = ethers.parseUnits('1', 'ether');
+const MIN_AMOUNT_OUT: bigint = ethers.parseUnits('0.5', 'ether');
 const DEST_CHAIN_SELECTOR = 1;
 
 describe('ChainbrarySwapRouter', function () {
@@ -270,51 +271,4 @@ describe('ChainbrarySwapRouter', function () {
     ).to.be.revertedWith('Insufficient output amount');
   });
 
-  // it('should initiate a cross-chain swap', async () => {
-  //   const { router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
-
-  //   const tokenAAddress: string = await tokenA.getAddress();
-  //   const tokenBAddress: string = await tokenB.getAddress();
-
-  //   const path = [tokenAAddress, tokenBAddress];
-  //   const fees = [FEE];
-  //   const amountIn = SWAP_AMOUNT;
-  //   const amountOutMin = 1;
-
-  //   // Transfer tokens to addr1 and approve the router
-  //   await tokenA.transfer(addr1.address, amountIn);
-  //   await tokenA.connect(addr1).approve(router.address, amountIn);
-
-  //   // Initiate the cross-chain swap
-  //   await expect(
-  //     router.connect(addr1).crossChainSwap(DEST_CHAIN_SELECTOR, path, fees, amountIn, amountOutMin, addr1.address, {
-  //       value: ethers.parseEther('0.1')
-  //     })
-  //   )
-  //     .to.emit(router, 'CrossChainSwapInitiated')
-  //     .withArgs(addr1.address, addr1.address); // Check that the event was emitted with correct arguments
-  // });
-
-  // it('should fail to initiate a cross-chain swap with insufficient fee', async () => {
-  //   const { router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
-
-  //   const tokenAAddress: string = await tokenA.getAddress();
-  //   const tokenBAddress: string = await tokenB.getAddress();
-
-  //   const path = [tokenAAddress, tokenBAddress];
-  //   const fees = [FEE];
-  //   const amountIn = SWAP_AMOUNT;
-  //   const amountOutMin = 1;
-
-  //   // Transfer tokens to addr1 and approve the router
-  //   await tokenA.transfer(addr1.address, amountIn);
-  //   await tokenA.connect(addr1).approve(router.address, amountIn);
-
-  //   // Try to initiate the cross-chain swap with insufficient fee
-  //   await expect(
-  //     router.connect(addr1).crossChainSwap(DEST_CHAIN_SELECTOR, path, fees, amountIn, amountOutMin, addr1.address, {
-  //       value: ethers.parseEther('0.001')
-  //     })
-  //   ).to.be.revertedWith('Insufficient fee');
-  // });
 });

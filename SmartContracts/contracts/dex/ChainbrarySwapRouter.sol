@@ -77,7 +77,7 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
         uint256[] memory amounts = getAmountsOut(amountIn, path, fees);
         require(amounts[amounts.length - 1] >= amountOutMin, "Insufficient output amount");
 
-        IERC20(path[0]).safeTransferFrom(msg.sender, address(this), amounts[0]);
+        IERC20(path[0]).safeTransferFrom(_msgSender(), address(this), amounts[0]);
 
         for (uint256 i = 0; i < path.length - 1; i++) {
             address poolAddress = factory.getPool(path[i], path[i + 1], fees[i]);
@@ -105,7 +105,7 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
         uint256[] memory amounts = getAmountsOut(amountIn, path, fees);
         require(amounts[amounts.length - 1] >= amountOutMin, "Insufficient output amount");
 
-        IERC20(path[0]).safeTransferFrom(msg.sender, address(this), amounts[0]);
+        IERC20(path[0]).safeTransferFrom(_msgSender(), address(this), amounts[0]);
 
         for (uint256 i = 0; i < path.length - 2; i++) {
             address poolAddress = factory.getPool(path[i], path[i + 1], fees[i]);
@@ -129,7 +129,7 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
 
         bytes32 messageId = IRouterClient(ccipRouter).ccipSend{value: fee}(destinationChainSelector, message);
 
-        emit CrossChainSwapInitiated(msg.sender, receiver, messageId);
+        emit CrossChainSwapInitiated(_msgSender(), receiver, messageId);
     }
 
     function prepareCrossChainMessage(
@@ -160,7 +160,7 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
     }
 
     function ccipReceive(Client.Any2EVMMessage calldata message) external {
-        require(msg.sender == ccipRouter, "Only CCIP Router can call");
+        require(_msgSender() == ccipRouter, "Only CCIP Router can call");
 
         address receiver = abi.decode(message.data, (address));
 
@@ -170,27 +170,5 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
         }
 
         emit CrossChainSwapReceived(receiver, message.messageId);
-    }
-
-    function crossChainSingleTokenTransfer(
-        uint64 destinationChainSelector,
-        address token,
-        uint256 amount,
-        address receiver
-    ) external payable nonReentrant {
-        require(amount > 0, "Amount must be greater than zero");
-
-        IERC20(token).safeTransferFrom(msg.sender, address(this), amount);
-
-        IERC20(token).approve(ccipRouter, amount);
-
-        Client.EVM2AnyMessage memory message = prepareCrossChainMessage(receiver, token, amount);
-
-        uint256 fee = getCrossChainFee(destinationChainSelector, message);
-        require(msg.value >= fee, "Insufficient fee");
-
-        bytes32 messageId = IRouterClient(ccipRouter).ccipSend{value: fee}(destinationChainSelector, message);
-
-        emit CrossChainSwapInitiated(msg.sender, receiver, messageId);
     }
 }
