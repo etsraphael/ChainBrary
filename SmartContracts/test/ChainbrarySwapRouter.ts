@@ -12,7 +12,6 @@ import {
   Pool,
   Pool__factory
 } from '../typechain-types';
-import { token } from '../typechain-types/@openzeppelin/contracts';
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
 
 const FEE = 100;
@@ -32,6 +31,25 @@ describe('ChainbrarySwapRouter', function () {
 
   const getPoolFromPoolContract = async (poolAddress: string, addr: HardhatEthersSigner): Promise<Pool> => {
     return Pool__factory.connect(poolAddress, addr);
+  }
+
+  const fillUpLiquidity = async (pool: Pool, amount: bigint, tokenA: CustomERC20Token, tokenB: CustomERC20Token, addr: HardhatEthersSigner) => {
+    const poolAddress = await pool.getAddress();
+
+    // Transfer tokens to addr and set approval
+    await tokenA.transfer(addr.address, amount);
+    await tokenB.transfer(addr.address, amount);
+    await tokenA.connect(addr).approve(poolAddress, amount);
+    await tokenB.connect(addr).approve(poolAddress, amount);
+
+
+    await tokenA.transfer(addr.address, amount);
+    await tokenB.transfer(addr.address, amount);
+
+    await tokenA.connect(addr).approve(poolAddress, amount);
+    await tokenB.connect(addr).approve(poolAddress, amount);
+
+    await pool.connect(addr).addLiquidity(amount, amount);
   }
 
   async function deployRouterFixture() {
@@ -133,20 +151,19 @@ describe('ChainbrarySwapRouter', function () {
     expect(await router.factory()).to.equal(factoryAddress);
   });
 
-  it('should get the correct output amounts for a swap', async () => {
-    const { router, tokenA, tokenB } = await loadFixture(deployRouterFixture);
+  it('should get an error message if reserve is empty', async () => {
+    const { router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
 
     const tokenAAddress: string = await tokenA.getAddress();
     const tokenBAddress: string = await tokenB.getAddress();
 
     const path = [tokenAAddress, tokenBAddress];
     const fees = [FEE];
-    const amountIn = 1000;
+    const amountIn = SWAP_AMOUNT;
 
-    const amountsOut = await router.getAmountsOut(amountIn, path, fees);
-    expect(amountsOut.length).to.equal(2);
-    expect(amountsOut[0]).to.equal(amountIn);
-    expect(amountsOut[1]).to.be.equal(0); // Ensure output is greater than 0
+    await expect(router.connect(addr1).getAmountsOut(amountIn, path, fees)).to.be.revertedWith(
+      'Invalid reserves'
+    );
   });
 
   it('should fail to get amounts out if path length is invalid', async () => {
@@ -160,7 +177,7 @@ describe('ChainbrarySwapRouter', function () {
     await expect(router.getAmountsOut(amountIn, path, fees)).to.be.revertedWith('Invalid path');
   });
 
-  it.only('should execute a token swap successfully', async () => {
+  it('should execute a token swap successfully', async () => {
     const { router, factory, poolAddress, tokenA, tokenB, addr1, addr2 } = await loadFixture(deployRouterFixture);
 
     const tokenAAddress: string = await tokenA.getAddress();
@@ -215,46 +232,43 @@ describe('ChainbrarySwapRouter', function () {
     const amountsOut: bigint[] = await routerInstance.getAmountsOut(amountIn, path, fees);
     const amountOut: bigint = amountsOut[1];
 
-    console.log(`reserve0BeforeSwap: ${reserve0BeforeSwap}`);
-    console.log(`reserve1BeforeSwap: ${reserve1BeforeSwap}`);
-    console.log(`fee: ${fee}`);
-    console.log(`amountIn: ${amountIn}`);
-    console.log(`amountInWithFee: ${amountInWithFee}`);
-    console.log(`expectedAmountOut: ${expectedAmountOut}`);
-    console.log(`amountOut: ${amountOut}`);
-    console.log('amountsOut', amountsOut);
-
-  
     // Compare manual calculation with the contract result
     expect(amountsOut[1]).to.be.equal(expectedAmountOut);
+
+    const balanceBefore: bigint = await tokenB.balanceOf(addr2.address);
+    expect(balanceBefore).to.be.equal(0);
   
-    // // Execute the swap if the above calculations are consistent
-    // await router.connect(addr2).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr2.address);
+    // Execute the swap if the above calculations are consistent
+    await router.connect(addr2).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr2.address);
   
-    // // Check balances after swap
-    // const balanceAfter = await tokenB.balanceOf(addr2.address);
-    // expect(balanceAfter).to.be.gt(0); // Ensure addr2 received tokens from the swap
+    // Check balances after swap
+    const balanceAfter: bigint = await tokenB.balanceOf(addr2.address);
+    expect(balanceAfter).to.be.equal(expectedAmountOut);
   });
 
+  it('should fail to execute a swap if output is less than minimum specified', async () => {
+    const { factory, router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
 
-  // it('should fail to execute a swap if output is less than minimum specified', async () => {
-  //   const { router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
+    // fill up liquidity
+    const pool: Pool = await getPoolFromFactory(factory, tokenA, tokenB, addr1);
+    await fillUpLiquidity(pool, SWAP_AMOUNT, tokenA, tokenB, addr1);
 
-  //   const tokenAAddress: string = await tokenA.getAddress();
-  //   const tokenBAddress: string = await tokenB.getAddress();
+    const tokenAAddress: string = await tokenA.getAddress();
+    const tokenBAddress: string = await tokenB.getAddress();
+    const routerAddress: string = await router.getAddress();
 
-  //   const path = [tokenAAddress, tokenBAddress];
-  //   const fees = [FEE];
-  //   const amountIn = SWAP_AMOUNT;
-  //   const amountOutMin = 10000; // Set too high to trigger failure
+    const path: string[] = [tokenAAddress, tokenBAddress];
+    const fees: number[] = [FEE];
+    const amountIn: bigint = SWAP_AMOUNT;
+    const amountOutMin: bigint = SWAP_AMOUNT;
 
-  //   await tokenA.transfer(addr1.address, amountIn);
-  //   await tokenA.connect(addr1).approve(router.address, amountIn);
+    await tokenA.transfer(addr1.address, amountIn);
+    await tokenA.connect(addr1).approve(routerAddress, amountIn);
 
-  //   await expect(
-  //     router.connect(addr1).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr1.address)
-  //   ).to.be.revertedWith('Insufficient output amount');
-  // });
+    await expect(
+      router.connect(addr1).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr1.address)
+    ).to.be.revertedWith('Insufficient output amount');
+  });
 
   // it('should initiate a cross-chain swap', async () => {
   //   const { router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
