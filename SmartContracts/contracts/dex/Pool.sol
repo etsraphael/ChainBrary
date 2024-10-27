@@ -76,25 +76,34 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         emit Burn(_msgSender(), amount0, amount1);
     }
 
+    // use 1e18 scale for precision
     function swap(uint256 amountIn, address tokenIn, address to) external nonReentrant {
         require(amountIn > 0, "AmountIn must be greater than zero");
         require(tokenIn == token0 || tokenIn == token1, "Invalid tokenIn");
         require(to != address(0), "Invalid recipient address");
 
+        // Determine the output token and reserves based on the input token
         address tokenOut = (tokenIn == token0) ? token1 : token0;
         uint256 reserveIn = (tokenIn == token0) ? reserve0 : reserve1;
         uint256 reserveOut = (tokenIn == token0) ? reserve1 : reserve0;
 
+        // Transfer the input tokens from the sender to the contract
         IERC20(tokenIn).safeTransferFrom(_msgSender(), address(this), amountIn);
 
+        // Calculate the input amount after deducting the fee
         uint256 amountInWithFee = (amountIn * (1000000 - fee)) / 1000000;
+        // Calculate the output amount using the constant product formula
         uint256 amountOut = (amountInWithFee * reserveOut) / (reserveIn + amountInWithFee);
 
+        // Ensure the output amount is greater than zero
         require(amountOut > 0, "Insufficient output amount");
 
+        // Calculate the fee amount
         uint256 feeAmount = amountIn - amountInWithFee;
+        // Transfer the fee to the contract owner
         IERC20(tokenIn).safeTransfer(owner(), feeAmount);
 
+        // Update the reserves based on the input and output amounts
         if (tokenIn == token0) {
             reserve0 += amountIn;
             reserve1 -= amountOut;
@@ -103,8 +112,10 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
             reserve0 -= amountOut;
         }
 
+        // Transfer the output tokens to the recipient
         IERC20(tokenOut).safeTransfer(to, amountOut);
 
+        // Emit a Swap event
         emit Swap(_msgSender(), amountIn, amountOut);
     }
 

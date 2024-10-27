@@ -5,9 +5,9 @@ import { CustomERC20Token, CustomERC20Token__factory, Pool, Pool__factory } from
 import { BigNumber } from 'bignumber.js';
 
 const FEE = 3000;
-const INITIAL_LIQUIDITY_0 = 1000;
-const INITIAL_LIQUIDITY_1 = 1000;
-const SWAP_AMOUNT = 100;
+const INITIAL_LIQUIDITY_0: bigint = ethers.parseUnits('100000', 'ether');
+const INITIAL_LIQUIDITY_1: bigint = ethers.parseUnits('100000', 'ether');
+const SWAP_AMOUNT: bigint = ethers.parseUnits('1', 'ether');
 
 describe('Pool', function () {
   const deployTokenAFixture = async () => {
@@ -17,7 +17,7 @@ describe('Pool', function () {
       owner,
       'CustomTokenA',
       'CTKA',
-      1000,
+      ethers.parseUnits('1000000', 'ether'),
       true,
       false,
       false,
@@ -34,7 +34,7 @@ describe('Pool', function () {
       owner,
       'CustomTokenB',
       'CTKB',
-      1000,
+      ethers.parseUnits('1000000', 'ether'),
       true,
       false,
       false,
@@ -202,12 +202,10 @@ describe('Pool', function () {
     // Calculate expected output based on current reserves and swap amount
     const reserve0BeforeSwap: bigint = await poolInstance.reserve0();
     const reserve1BeforeSwap: bigint = await poolInstance.reserve1();
-    const amountInWithFee: number = SWAP_AMOUNT * (1000000 - FEE);
-    const expectedAmountOut: bigint = BigInt(
-      Math.floor(
-        (amountInWithFee * Number(reserve1BeforeSwap)) / (Number(reserve0BeforeSwap) * 1000000 + amountInWithFee)
-      )
-    );
+
+    // Calculate the amountOut manually using the same logic as the contract
+    const amountInWithFee: bigint = BigInt(SWAP_AMOUNT) * BigInt(1000000 - FEE) / BigInt(1000000);
+    const expectedAmountOut: bigint = (amountInWithFee * reserve1BeforeSwap) / (reserve0BeforeSwap + amountInWithFee);
 
     // Swap token0 for token1
     await poolInstance.connect(addr2).swap(SWAP_AMOUNT, tokenAAddress, addr2.address);
@@ -306,9 +304,9 @@ describe('Pool', function () {
     await poolInstance.connect(owner).addLiquidity(INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1);
 
     // Users remove liquidity
-    await poolInstance.connect(addr1).removeLiquidity(INITIAL_LIQUIDITY_0 / 2);
-    await poolInstance.connect(addr2).removeLiquidity(INITIAL_LIQUIDITY_0 / 2);
-    await poolInstance.connect(owner).removeLiquidity(INITIAL_LIQUIDITY_0 / 2);
+    await poolInstance.connect(addr1).removeLiquidity(INITIAL_LIQUIDITY_0 / BigInt(2));
+    await poolInstance.connect(addr2).removeLiquidity(INITIAL_LIQUIDITY_0 / BigInt(2));
+    await poolInstance.connect(owner).removeLiquidity(INITIAL_LIQUIDITY_0 / BigInt(2));
 
     // User swaps
     await tokenA.connect(addr1).approve(poolAddress, SWAP_AMOUNT);
