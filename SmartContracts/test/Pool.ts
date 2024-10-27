@@ -64,7 +64,7 @@ describe('Pool', function () {
     return { poolInstance, tokenA, tokenB, owner, addr1, addr2 };
   };
 
-  it.only('should execute a swap successfully', async () => {
+  it('should execute a swap successfully', async () => {
     const { poolInstance, tokenA, tokenB, addr1, addr2, owner } = await loadFixture(deployPoolWithTokensFixture);
   
     const poolAddress: string = await poolInstance.getAddress();
