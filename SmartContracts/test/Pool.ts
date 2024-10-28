@@ -95,8 +95,8 @@ describe('Pool', function () {
     const amountInWithFee: bigint = BigInt(SWAP_AMOUNT) * BigInt(1000000 - FEE) / BigInt(1000000);
     const expectedAmountOut: bigint = (amountInWithFee * reserve1BeforeSwap) / (reserve0BeforeSwap + amountInWithFee);
   
-    // Get owner's balance before swap
-    const ownerBalanceBeforeSwap: bigint = await tokenA.balanceOf(owner.address);
+    // Get addr2's balance before swap
+    const addr2BalanceBeforeSwap: bigint = await tokenB.balanceOf(addr2.address);
   
     // Swap token0 for token1
     await poolInstance.connect(addr2).swap(SWAP_AMOUNT, tokenAAddress, addr2.address);
@@ -108,14 +108,11 @@ describe('Pool', function () {
     expect(reserve0AfterSwap).to.equal(reserve0BeforeSwap + BigInt(SWAP_AMOUNT));
     expect(reserve1AfterSwap).to.equal(reserve1BeforeSwap - expectedAmountOut);
   
-    // Calculate the fee amount
-    const feeAmount: bigint = BigInt(SWAP_AMOUNT) - amountInWithFee;
+    // Get addr2's balance after swap
+    const addr2BalanceAfterSwap: bigint = await tokenB.balanceOf(addr2.address);
   
-    // Get owner's balance after swap
-    const ownerBalanceAfterSwap: bigint = await tokenA.balanceOf(owner.address);
-  
-    // Verify owner's balance increased by the fee amount
-    expect(ownerBalanceAfterSwap).to.equal(ownerBalanceBeforeSwap + feeAmount);
+    // Verify addr2's balance increased by the expected amount out
+    expect(addr2BalanceAfterSwap).to.equal(addr2BalanceBeforeSwap + expectedAmountOut);
   });
 
   it('should initialize the Pool with correct parameters', async () => {
