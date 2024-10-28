@@ -17,8 +17,8 @@ contract BasicCrossChainTokenSender {
 
     receive() external payable {}
 
-    function getSupportedTokens(address router, uint64 chainSelector) external view returns (address[] memory tokens) {
-        tokens = IRouterClient(router).getSupportedTokens(chainSelector);
+    function isChainSupported(address router, uint64 chainSelector) external view returns (bool supported) {
+        supported = IRouterClient(router).isChainSupported(chainSelector);
     }
 
     // Function to send tokens across chains (router and link now passed dynamically)
