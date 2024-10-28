@@ -23,7 +23,8 @@
     "@chainlink/contracts-ccip": "^1.4.0",
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
-    "bignumber.js": "^9.1.2"
+    "bignumber.js": "^9.1.2",
+    "cookie": "^0.7.0"
   },
   "overrides": {
     "@openzeppelin/contracts": "^5.0.2",
