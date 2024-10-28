@@ -13,7 +13,6 @@
   "devDependencies": {
     "@nomicfoundation/hardhat-ignition": "^0.15.5",
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
-    "@types/cli-progress": "^3.11.6",
     "hardhat": "^2.22.9",
     "hardhat-abi-exporter": "^2.10.1",
     "prettier": "^3.3.3",
