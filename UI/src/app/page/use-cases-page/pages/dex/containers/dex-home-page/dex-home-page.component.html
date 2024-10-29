@@ -1,1 +1,17 @@
-<p>dex-home-page works!</p>
+<div class="container pt-3 pb-5">
+  <!-- Header -->
+  <div class="d-flex justify-content-center">
+    <div class="col-12">
+      <nav class="nav nav-pills nav-justified p-1">
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['swap']">Swap</a>
+        <a class="nav-link" routerLinkActive="active" [routerLink]="['liquidity']">Liquidity</a>
+      </nav>
+    </div>
+  </div>
+  <!-- Body -->
+  <div class="row">
+    <div class="container">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
