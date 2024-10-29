@@ -48,6 +48,11 @@ const routes: Routes = [
         loadChildren: () => import('./pages/setup-token/setup-token.module').then((m) => m.SetupTokenModule)
       },
       {
+        title: 'Dex',
+        path: 'dex',
+        loadChildren: () => import('./pages/dex/dex.module').then((m) => m.DexModule)
+      },
+      {
         title: 'Activity',
         path: 'activity',
         component: ActivityContainerComponent,

@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { SharedComponentsModule } from './../../shared/components/shared-components.module';
 import { ActivityModule } from './pages/activity/activity.module';
 import { BidModule } from './pages/bid/bid.module';
+import { DexModule } from './pages/dex/dex.module';
 import { PaymentRequestModule } from './pages/payment-request/payment-request.module';
 import { SetupTokenModule } from './pages/setup-token/setup-token.module';
 import { ShopQrCodeModule } from './pages/shop-qr-code/shop-qr-code.module';
@@ -19,7 +20,8 @@ import { UseCasesPageComponent } from './use-cases-page.component';
     ActivityModule,
     BidModule,
     ShopQrCodeModule,
-    SetupTokenModule
+    SetupTokenModule,
+    DexModule
   ]
 })
 export class UseCasesPageModule {}
