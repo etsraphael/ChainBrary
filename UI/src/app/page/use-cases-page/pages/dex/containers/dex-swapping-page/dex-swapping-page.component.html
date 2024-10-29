@@ -1,6 +1,6 @@
 <div class="d-flex justify-content-center mt-4">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
-    <div class="card p-4 text-center">
+    <div class="card cb-card border-0 shadow-sm p-4 text-center">
       <!-- Pay Section -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <span class="fw-bold">Send</span>
@@ -9,8 +9,11 @@
       <div class="d-flex mb-4">
         <mat-form-field appearance="outline" class="col-12">
           <mat-label>Amount</mat-label>
-          <input class="custom-placeholder" matInput type="number" placeholder="0">
-          <span matTextSuffix>USDC</span>
+          <input class="px-2" matInput type="number" placeholder="0" />
+          <span class="currency-container-input px-2" matTextSuffix>
+            USDC
+            <i class="bi bi-chevron-down"></i>
+          </span>
         </mat-form-field>
       </div>
 
@@ -37,12 +40,15 @@
         </mat-form-field>
         <mat-form-field appearance="fill" class="col-8">
           <mat-label>Amount</mat-label>
-          <input matInput type="number" placeholder="0">
+          <input matInput type="number" placeholder="0" />
         </mat-form-field>
       </div>
 
       <!-- Exchange Rate -->
-      <div class="text-muted mb-4">1 BUSD = 1.0005 USDC <button class="btn btn-link p-0"><mat-icon class="mat-icon material-icons">refresh</mat-icon></button></div>
+      <div class="text-muted mb-4">
+        1 BUSD = 1.0005 USDC
+        <button class="btn btn-link p-0"><mat-icon class="mat-icon material-icons">refresh</mat-icon></button>
+      </div>
 
       <!-- Confirm Order Button -->
       <button class="btn btn-primary w-100 mb-4">Confirm Order</button>
