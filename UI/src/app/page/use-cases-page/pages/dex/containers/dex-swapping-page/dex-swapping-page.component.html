@@ -3,8 +3,10 @@
     <div class="card cb-card border-0 shadow-sm p-4 text-center">
       <!-- Pay Section -->
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <span class="fw-bold">Send</span>
-        <span class="text-muted">Available: 500</span>
+        <div class="d-flex align-items-center">
+          <span class="fw-bold">From</span>
+          <button class="btn btn-network w-100 mx-2">+ Polygon</button>
+        </div>
       </div>
       <div class="d-flex mb-4">
         <mat-form-field appearance="outline" class="col-12">
@@ -14,33 +16,30 @@
             USDC
             <i class="bi bi-chevron-down"></i>
           </span>
+          <mat-hint>
+            <span class="text-muted">Available: 500</span>
+          </mat-hint>
         </mat-form-field>
       </div>
-
-      <button class="btn btn-secondary w-100 mb-4">+ Polygon</button>
-
       <!-- Swap Icon -->
-      <div class="my-3">
+      <div>
         <mat-icon class="mat-icon material-icons">arrow_downward</mat-icon>
       </div>
-
       <!-- Receive Section -->
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <span class="fw-bold">Receive (Estimated)</span>
-        <span class="text-muted">Available: 1,200</span>
+        <div class="d-flex align-items-center">
+          <span class="fw-bold">To</span>
+          <button class="btn btn-network w-100 mx-2">+ Polygon</button>
+        </div>
       </div>
       <div class="d-flex mb-4">
-        <mat-form-field appearance="fill" class="col-4">
-          <mat-label>Currency</mat-label>
-          <mat-select>
-            <mat-option value="USDC">USDC</mat-option>
-            <mat-option value="BUSD">BUSD</mat-option>
-            <mat-option value="USDT">USDT</mat-option>
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="col-8">
+        <mat-form-field appearance="outline" class="col-12">
           <mat-label>Amount</mat-label>
-          <input matInput type="number" placeholder="0" />
+          <input class="px-2" matInput type="number" placeholder="0" />
+          <span class="currency-container-input px-2" matTextSuffix>
+            USDC
+            <i class="bi bi-chevron-down"></i>
+          </span>
         </mat-form-field>
       </div>
 
