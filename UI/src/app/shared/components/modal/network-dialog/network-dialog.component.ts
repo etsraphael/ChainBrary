@@ -1,28 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { MatDialogRef } from '@angular/material/dialog';
+import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
+import { environment } from './../../../../../environments/environment';
 
 @Component({
   selector: 'app-network-dialog',
   templateUrl: './network-dialog.component.html',
   styleUrl: './network-dialog.component.scss'
 })
-export class NetworkDialogComponent {
+export class NetworkDialogComponent implements OnInit {
   searchTerm: string = '';
-  networks = [
-    { name: 'Ethereum Mainnet', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Scroll Mainnet', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Astar', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'BNB Chain', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Avalanche', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Polygon PoS', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Arbitrum One', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'OP Mainnet', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Arbitrum Nova', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Aptos', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Fantom', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' },
-    { name: 'Flow EVM', icon: 'https://s2.coinmarketcap.com/static/img/coins/64x64/1.png' }
-  ];
+  networkList: INetworkDetail[] = [];
+  networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.contracts.map((x) => x.chainId);
 
-  get filteredNetworks() {
-    return this.networks.filter((network) => network.name.toLowerCase().includes(this.searchTerm.toLowerCase()));
+  constructor(
+    private web3LoginService: Web3LoginService,
+    private dialogRef: MatDialogRef<NetworkDialogComponent>
+  ) {}
+
+  get filteredNetworks(): INetworkDetail[] {
+    return this.networkList.filter((network: INetworkDetail) =>
+      network.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+  }
+
+  ngOnInit(): void {
+    this.generateNetworkSupported();
+  }
+
+  networkSelected(chainId: NetworkChainId): void {
+    return this.dialogRef.close(chainId);
+  }
+
+  private generateNetworkSupported(): void {
+    this.networkList = this.networkSupported.map((chainId: NetworkChainId) =>
+      this.web3LoginService.getNetworkDetailByChainId(chainId)
+    );
   }
 }
