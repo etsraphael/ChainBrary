@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, Web3LoginService } from '@chainbrary/web3-login';
 import { environment } from './../../../../../environments/environment';
 
@@ -15,8 +15,13 @@ export class NetworkDialogComponent implements OnInit {
 
   constructor(
     private web3LoginService: Web3LoginService,
-    private dialogRef: MatDialogRef<NetworkDialogComponent>
+    private dialogRef: MatDialogRef<NetworkDialogComponent>,
+    @Inject(MAT_DIALOG_DATA) public data: INetworkDialogData
   ) {}
+
+  isSelected(chainId: NetworkChainId): boolean {
+    return this.data.chainIdSelected === chainId;
+  }
 
   get filteredNetworks(): INetworkDetail[] {
     return this.networkList.filter((network: INetworkDetail) =>
@@ -37,4 +42,8 @@ export class NetworkDialogComponent implements OnInit {
       this.web3LoginService.getNetworkDetailByChainId(chainId)
     );
   }
+}
+
+export interface INetworkDialogData {
+  chainIdSelected: NetworkChainId;
 }

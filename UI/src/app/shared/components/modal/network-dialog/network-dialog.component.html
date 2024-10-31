@@ -12,6 +12,7 @@
         <div class="network-item col-12 col-md-6 p-1" *ngFor="let network of filteredNetworks">
           <div
             class="btn btn-light btn-network w-100 d-flex align-items-center p-3"
+            [ngClass]="{ active: isSelected(network.chainId) }"
             (click)="networkSelected(network.chainId)"
           >
             <!-- <img class="network-img" [src]="network." [alt]="network.name" /> -->

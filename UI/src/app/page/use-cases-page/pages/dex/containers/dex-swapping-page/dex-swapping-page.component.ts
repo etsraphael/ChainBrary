@@ -22,6 +22,9 @@ export class DexSwappingPageComponent {
   openNetowkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
     const dialogRef: MatDialogRef<NetworkDialogComponent> = this.dialog.open(NetworkDialogComponent, {
       panelClass: ['col-12', 'col-md-8', 'col-lg-6', 'col-xl-5'],
+      data: {
+        chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId
+      },
       autoFocus: false
     });
 
