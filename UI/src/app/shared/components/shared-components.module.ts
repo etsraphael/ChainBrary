@@ -23,6 +23,7 @@ import { TransactionCardComponent } from './transaction-card/transaction-card.co
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { LOAD_WASM, NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
 import { NetworkDialogComponent } from './modal/network-dialog/network-dialog.component';
+import { TokensDialogComponent } from './modal/tokens-dialog/tokens-dialog.component';
 
 // Necessary to solve the problem of losing internet connection
 LOAD_WASM().subscribe();
@@ -42,7 +43,8 @@ LOAD_WASM().subscribe();
     DrawerSidebarComponent,
     ServiceCardComponent,
     QrCodeScanningPageComponent,
-    NetworkDialogComponent
+    NetworkDialogComponent,
+    TokensDialogComponent
   ],
   imports: [
     CommonModule,
@@ -67,7 +69,8 @@ LOAD_WASM().subscribe();
     DrawerSidebarComponent,
     ServiceCardComponent,
     QrCodeScanningPageComponent,
-    NetworkDialogComponent
+    NetworkDialogComponent,
+    TokensDialogComponent
   ]
 })
 export class SharedComponentsModule {}
