@@ -1,6 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { tokenList } from './../../../../shared/data/tokenList';
 import { IToken } from './../../../../shared/interfaces';
 
@@ -42,7 +42,7 @@ export class TokensDialogComponent implements OnInit {
     }
   }
 
-  tokenSelected(tokenId: string): void {
+  tokenSelected(tokenId: TokenId | string): void {
     return this.dialogRef.close(tokenId);
   }
 }
