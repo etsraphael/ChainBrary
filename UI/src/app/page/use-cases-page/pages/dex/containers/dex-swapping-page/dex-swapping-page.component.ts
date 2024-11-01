@@ -14,6 +14,7 @@ export class DexSwappingPageComponent {
     this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON),
     this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON)
   ];
+  tokenPath: string[] = [this.networkPath[0].nativeCurrency.id, this.networkPath[1].nativeCurrency.id];
 
   constructor(
     private dialog: MatDialog,
@@ -39,14 +40,27 @@ export class DexSwappingPageComponent {
   openTokensDialog(from: boolean): MatDialogRef<TokensDialogComponent> {
     const dialogRef: MatDialogRef<TokensDialogComponent> = this.dialog.open(TokensDialogComponent, {
       panelClass: ['col-12', 'col-md-8', 'col-lg-6', 'col-xl-5'],
+      data: {
+        chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId,
+        tokenId: from ? this.tokenPath[0] : this.tokenPath[1]
+      },
       autoFocus: false
     });
 
-    dialogRef.afterClosed().subscribe((chainId: NetworkChainId) => {
-      if (chainId) this.handleNetworkSelected(chainId, from);
+    dialogRef.afterClosed().subscribe((tokenId: string) => {
+      if (tokenId) this.handleTokenSelected(tokenId, from);
     });
 
     return dialogRef;
+  }
+
+  private handleTokenSelected(tokenId: string, from: boolean): void {
+    // Handle the selected token here
+    if (from) {
+      this.tokenPath[0] = tokenId;
+    } else {
+      this.tokenPath[1] = tokenId;
+    }
   }
 
   private handleNetworkSelected(chainId: NetworkChainId, from: boolean): void {

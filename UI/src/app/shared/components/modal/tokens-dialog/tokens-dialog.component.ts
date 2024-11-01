@@ -1,42 +1,53 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { NetworkChainId } from '@chainbrary/web3-login';
+import { tokenList } from './../../../../shared/data/tokenList';
+import { IToken } from './../../../../shared/interfaces';
 
 @Component({
   selector: 'app-tokens-dialog',
   templateUrl: './tokens-dialog.component.html',
-  styleUrl: './tokens-dialog.component.scss'
+  styleUrls: ['./tokens-dialog.component.scss']
 })
 export class TokensDialogComponent implements OnInit {
   searchTerm: string = '';
-  // TODO: Replace any[] with the correct type
-  tokenList: any[] = [
-    { name: 'Tether USD', symbol: 'USDT' },
-    { name: 'USD Coin', symbol: 'USDC' },
-    { name: 'Wrapped ETH', symbol: 'WETH' },
-    { name: 'Ethereum Token', symbol: 'ETH' },
-    { name: 'Flourishing AI', symbol: 'AI' },
-    { name: 'AltLayer Token', symbol: 'ALT' },
-    { name: 'Animal Concerts Token', symbol: 'ANML' }
-  ];
-  filteredTokens: any[] = [];   // TODO: Replace any[] with the correct type
+  tokenList: IToken[] = tokenList;
+  filteredTokens: IToken[] = [];
 
   constructor(
     private dialogRef: MatDialogRef<TokensDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any   // TODO: Replace any with the correct type
-
+    @Inject(MAT_DIALOG_DATA) public data: ITokensDialogData
   ) {}
 
+  isSelected(tokenId: string): boolean {
+    return this.data.tokenId === tokenId;
+  }
+
   ngOnInit(): void {
-    this.filteredTokens = this.tokenList;
+    this.applyFilters();
   }
 
   filterTokens(): void {
-    this.filteredTokens = this.tokenList.filter((token) =>
-      token.name.toLowerCase().includes(this.searchTerm.toLowerCase())
-    );
+    this.applyFilters();
   }
 
-  tokenSelected(tokenSymbol: string): void {
-    this.dialogRef.close(tokenSymbol);
+  private applyFilters(): void {
+    this.filteredTokens = this.tokenList.filter((token: IToken) =>
+      token.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+    );
+    if (this.data.chainIdSelected !== null) {
+      this.filteredTokens = this.filteredTokens.filter((token: IToken) =>
+        token.networkSupport.some((network) => network.chainId === this.data.chainIdSelected)
+      );
+    }
   }
+
+  tokenSelected(tokenId: string): void {
+    return this.dialogRef.close(tokenId);
+  }
+}
+
+export interface ITokensDialogData {
+  chainIdSelected: NetworkChainId | null;
+  tokenId: string | null;
 }

@@ -12,7 +12,8 @@
         <div class="token-item col-12 p-1" *ngFor="let token of filteredTokens">
           <div
             class="btn btn-light btn-token w-100 d-flex align-items-center p-3"
-            (click)="tokenSelected(token.symbol)"
+            [ngClass]="{ active: isSelected(token.tokenId) }"
+            (click)="tokenSelected(token.tokenId)"
           >
             <span class="ms-3">{{ token.name }}</span>
             <span class="ms-auto text-muted">-- {{ token.symbol }}</span>
