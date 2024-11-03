@@ -3,6 +3,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { NetworkDialogComponent } from './../../../../../../shared/components/modal/network-dialog/network-dialog.component';
 import { TokensDialogComponent } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
+import { tokenList } from './../../../../../../shared/data/tokenList';
+import { IToken } from './../../../../../../shared/interfaces';
 
 @Component({
   selector: 'app-dex-swapping-page',
@@ -14,7 +16,10 @@ export class DexSwappingPageComponent {
     this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON),
     this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON)
   ];
-  tokenPath: TokenId[] = [this.networkPath[0].nativeCurrency.id, this.networkPath[1].nativeCurrency.id];
+  tokenPath: IToken[] = [
+    this.findTokenById(this.networkPath[0].nativeCurrency.id) as IToken,
+    this.findTokenById(this.networkPath[1].nativeCurrency.id) as IToken
+  ];
 
   constructor(
     private dialog: MatDialog,
@@ -55,12 +60,9 @@ export class DexSwappingPageComponent {
   }
 
   private handleTokenSelected(tokenId: TokenId, from: boolean): void {
-    // Handle the selected token here
-    if (from) {
-      this.tokenPath[0] = tokenId;
-    } else {
-      this.tokenPath[1] = tokenId;
-    }
+    const token: IToken | undefined = this.findTokenById(tokenId);
+    if (!token) return;
+    from ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
   }
 
   private handleNetworkSelected(chainId: NetworkChainId, from: boolean): void {
@@ -70,5 +72,9 @@ export class DexSwappingPageComponent {
     } else {
       this.networkPath[1] = this.web3loginService.getNetworkDetailByChainId(chainId);
     }
+  }
+
+  private findTokenById(tokenId: TokenId): IToken | undefined {
+    return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
 }

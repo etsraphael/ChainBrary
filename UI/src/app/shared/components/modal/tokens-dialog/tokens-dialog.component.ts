@@ -11,7 +11,6 @@ import { IToken } from './../../../../shared/interfaces';
 })
 export class TokensDialogComponent implements OnInit {
   searchTerm: string = '';
-  tokenList: IToken[] = tokenList;
   filteredTokens: IToken[] = [];
 
   constructor(
@@ -32,7 +31,7 @@ export class TokensDialogComponent implements OnInit {
   }
 
   private applyFilters(): void {
-    this.filteredTokens = this.tokenList.filter((token: IToken) =>
+    this.filteredTokens = tokenList.filter((token: IToken) =>
       token.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     if (this.data.chainIdSelected !== null) {

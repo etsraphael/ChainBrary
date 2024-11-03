@@ -13,7 +13,7 @@
           <mat-label>Amount</mat-label>
           <input class="px-2" matInput type="number" placeholder="0" />
           <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matTextSuffix>
-            USDC
+            {{ tokenPath[0].symbol }}
             <i class="bi bi-chevron-down"></i>
           </span>
           <mat-hint>
@@ -39,7 +39,8 @@
           <mat-label>Amount</mat-label>
           <input class="px-2" matInput type="number" placeholder="0" />
           <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matTextSuffix>
-            USDC
+            {{ tokenPath[1].symbol }}
+
             <i class="bi bi-chevron-down"></i>
           </span>
         </mat-form-field>
