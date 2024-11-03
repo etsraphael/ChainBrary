@@ -5,7 +5,7 @@ import { ISwapState } from './interfaces';
 
 export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   initialState,
-  on(SwapActions.resetSwapActions, (): ISwapState => initialState)
+  on(SwapActions.resetSwapAction, (): ISwapState => initialState)
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {

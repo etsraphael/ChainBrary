@@ -1,57 +1,60 @@
 <div class="d-flex justify-content-center mt-4">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
     <div class="card cb-card border-0 shadow-sm p-4 text-center">
-      <!-- Pay Section -->
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="d-flex align-items-center">
-          <h6 class="mb-0 text-muted">From</h6>
-          <button class="btn btn-network w-100 mx-2" (click)="openNetowkDialog(true)">{{ networkPath[0].name }}</button>
+      <form [formGroup]="swapForm" (ngSubmit)="sendSwapRequest()">
+        <!-- Pay Section -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center">
+            <h6 class="mb-0 text-muted">From</h6>
+            <button class="btn btn-network w-100 mx-2" (click)="openNetowkDialog(true)">
+              {{ networkPath[0].name }}
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="d-flex mb-4">
-        <mat-form-field appearance="outline" class="col-12">
-          <mat-label>Amount</mat-label>
-          <input class="px-2" matInput type="number" placeholder="0" />
-          <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matTextSuffix>
-            {{ tokenPath[0].symbol }}
-            <i class="bi bi-chevron-down"></i>
-          </span>
-          <mat-hint>
-            <span class="text-muted">Available: 500</span>
-          </mat-hint>
-        </mat-form-field>
-      </div>
-      <!-- Swap Icon -->
-      <div>
-        <mat-icon class="mat-icon material-icons">arrow_downward</mat-icon>
-      </div>
-      <!-- Receive Section -->
-      <div class="d-flex justify-content-between align-items-center mb-2">
-        <div class="d-flex align-items-center">
-          <h6 class="mb-0 text-muted">To</h6>
-          <button class="btn btn-network w-100 mx-2" (click)="openNetowkDialog(false)">
-            {{ networkPath[1].name }}
-          </button>
+        <div class="d-flex mb-4">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Amount</mat-label>
+            <input class="px-2" matInput type="number" placeholder="0" formControlName="fromAmount" />
+            <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matTextSuffix>
+              {{ tokenPath[0].symbol }}
+              <i class="bi bi-chevron-down"></i>
+            </span>
+            <mat-hint>
+              <span class="text-muted">Available: 500</span>
+            </mat-hint>
+          </mat-form-field>
         </div>
-      </div>
-      <div class="d-flex mb-4">
-        <mat-form-field appearance="outline" class="col-12">
-          <mat-label>Amount</mat-label>
-          <input class="px-2" matInput type="number" placeholder="0" />
-          <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matTextSuffix>
-            {{ tokenPath[1].symbol }}
-
-            <i class="bi bi-chevron-down"></i>
-          </span>
-        </mat-form-field>
-      </div>
-      <!-- Exchange Rate -->
-      <div class="text-muted mb-4">
-        1 BUSD = 1.0005 USDC
-        <button class="btn btn-link p-0"><mat-icon class="mat-icon material-icons">refresh</mat-icon></button>
-      </div>
-      <!-- Confirm Order Button -->
-      <button class="btn btn-primary w-100 mb-4">Confirm Order</button>
+        <!-- Swap Icon -->
+        <div>
+          <mat-icon class="mat-icon material-icons">arrow_downward</mat-icon>
+        </div>
+        <!-- Receive Section -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <div class="d-flex align-items-center">
+            <h6 class="mb-0 text-muted">To</h6>
+            <button class="btn btn-network w-100 mx-2" (click)="openNetowkDialog(false)">
+              {{ networkPath[1].name }}
+            </button>
+          </div>
+        </div>
+        <div class="d-flex mb-4">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Amount</mat-label>
+            <input class="px-2" matInput type="number" placeholder="0" />
+            <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matTextSuffix>
+              {{ tokenPath[1].symbol }}
+              <i class="bi bi-chevron-down"></i>
+            </span>
+          </mat-form-field>
+        </div>
+        <!-- Exchange Rate -->
+        <div class="text-muted mb-4">
+          1 BUSD = 1.0005 USDC
+          <button class="btn btn-link p-0"><mat-icon class="mat-icon material-icons">refresh</mat-icon></button>
+        </div>
+        <!-- Confirm Order Button -->
+        <button class="btn btn-primary w-100 mb-4" type="submit">Confirm Order</button>
+      </form>
       <!-- Trading Info -->
       <div class="d-flex justify-content-between">
         <span class="text-muted">Trade Minting <mat-icon class="mat-icon material-icons">help_outline</mat-icon></span>
