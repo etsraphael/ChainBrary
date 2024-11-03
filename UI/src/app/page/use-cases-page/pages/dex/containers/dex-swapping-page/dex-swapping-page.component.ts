@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
-import { NetworkDialogComponent } from './../../../../../../shared/components/modal/network-dialog/network-dialog.component';
-import { TokensDialogComponent } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
+import { INetworkDialogData, NetworkDialogComponent } from './../../../../../../shared/components/modal/network-dialog/network-dialog.component';
+import { ITokensDialogData, TokensDialogComponent } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
 import { IToken } from './../../../../../../shared/interfaces';
 
@@ -27,12 +27,14 @@ export class DexSwappingPageComponent {
   ) {}
 
   openNetowkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
+    const data: INetworkDialogData = {
+      chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId
+    }
+
     const dialogRef: MatDialogRef<NetworkDialogComponent> = this.dialog.open(NetworkDialogComponent, {
       panelClass: ['col-12', 'col-md-8', 'col-lg-6', 'col-xl-5'],
-      data: {
-        chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId
-      },
-      autoFocus: false
+      autoFocus: false,
+      data
     });
 
     dialogRef.afterClosed().subscribe((chainId: NetworkChainId) => {
@@ -43,13 +45,15 @@ export class DexSwappingPageComponent {
   }
 
   openTokensDialog(from: boolean): MatDialogRef<TokensDialogComponent> {
+    const data: ITokensDialogData = {
+      chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId,
+      tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId
+    }
+
     const dialogRef: MatDialogRef<TokensDialogComponent> = this.dialog.open(TokensDialogComponent, {
       panelClass: ['col-12', 'col-md-8', 'col-lg-6', 'col-xl-5'],
-      data: {
-        chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId,
-        tokenId: from ? this.tokenPath[0] : this.tokenPath[1]
-      },
-      autoFocus: false
+      autoFocus: false,
+      data
     });
 
     dialogRef.afterClosed().subscribe((tokenId: TokenId) => {
