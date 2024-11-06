@@ -52,6 +52,7 @@ export class DexService {
       });
   }
 
+  // TODO: addLiquidity is coming from PoolContract, not SwapRouterContract
   async addLiquidity(rpcUrl: string, from: string, payload: ILiquidityPayload): Promise<string> {
     const web3: Web3 = new Web3(rpcUrl);
     const swapRouterContract = new SwapRouterContract(payload.chainId);
@@ -92,4 +93,6 @@ export class DexService {
         return 'Liquidity added';
       });
   }
+
+  // TODO: getPool from ChainbrarySwapFactoryContract
 }
