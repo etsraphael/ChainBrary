@@ -126,6 +126,9 @@ export const environment = {
       ],
       maxAttempt: 5,
       attemptTimeout: 0.1 // minutes
+    },
+    swapRouter: {
+      contracts: []
     }
   },
   organizationName: 'chainbrary0',
