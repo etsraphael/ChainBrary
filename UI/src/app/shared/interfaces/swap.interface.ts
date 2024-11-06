@@ -18,3 +18,11 @@ export interface SwapPayload {
   recipient: string;
   chainId: NetworkChainId;
 }
+
+export interface ILiquidityPayload {
+  token1: IToken;
+  token2: IToken;
+  token1Amount: number;
+  token2Amount: number;
+  chainId: NetworkChainId;
+}

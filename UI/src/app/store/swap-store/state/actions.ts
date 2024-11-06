@@ -1,5 +1,15 @@
 import { createAction, props } from '@ngrx/store';
-import { QuotePayload } from '../../../shared/interfaces';
+import { ILiquidityPayload, QuotePayload } from '../../../shared/interfaces';
+
+export const addLiquidityAction = createAction('[Swap] Add Liquidity Actions', props<{ payload: ILiquidityPayload }>());
+export const addLiquidityActionSuccess = createAction(
+  '[Swap] Add Liquidity Actions Success',
+  props<{ message: string }>()
+);
+export const addLiquidityActionFailure = createAction(
+  '[Swap] Add Liquidity Actions Failure',
+  props<{ message: string }>()
+);
 
 export const swapAction = createAction('[Swap] Swap Actions', props<{ payload: QuotePayload }>());
 export const swapActionSuccess = createAction('[Swap] Swap Actions Success', props<{ message: string }>());

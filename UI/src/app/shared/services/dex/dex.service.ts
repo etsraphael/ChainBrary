@@ -3,7 +3,7 @@ import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
 import { ITokenContract } from '../../interfaces';
-import { SwapPayload } from '../../interfaces/swap.interface';
+import { ILiquidityPayload, SwapPayload } from '../../interfaces/swap.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +49,47 @@ export class DexService {
         }
 
         return res[0].map((value: bigint) => Number(web3.utils.fromWei(String(value), 'ether')));
+      });
+  }
+
+  async addLiquidity(rpcUrl: string, from: string, payload: ILiquidityPayload): Promise<string> {
+    const web3: Web3 = new Web3(rpcUrl);
+    const swapRouterContract = new SwapRouterContract(payload.chainId);
+
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      swapRouterContract.getAbi() as AbiItem[],
+      swapRouterContract.getAddress()
+    );
+
+    const token1Address: string | undefined = payload.token1.networkSupport.find(
+      (network: ITokenContract) => network.chainId === payload.chainId
+    )?.address;
+    const token2Address: string | undefined = payload.token2.networkSupport.find(
+      (network: ITokenContract) => network.chainId === payload.chainId
+    )?.address;
+
+    if (!token1Address || !token2Address) {
+      return Promise.reject('Token not supported on this network');
+    }
+
+    return contract.methods['addLiquidity'](
+      token1Address,
+      token2Address,
+      payload.token1Amount,
+      payload.token2Amount,
+      0,
+      0,
+      payload.token1Amount,
+      payload.token2Amount,
+      from
+    )
+      .send({ from: from })
+      .then((res) => {
+        if (!this.isAmountsOutResponseValid(res)) {
+          return Promise.reject('Invalid liquidity response');
+        }
+
+        return 'Liquidity added';
       });
   }
 }

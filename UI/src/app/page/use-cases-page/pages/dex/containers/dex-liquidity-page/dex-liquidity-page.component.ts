@@ -3,10 +3,17 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { INetworkDialogData, NetworkDialogComponent } from '../../../../../../shared/components/modal/network-dialog/network-dialog.component';
-import { ITokensDialogData, TokensDialogComponent } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
+import {
+  INetworkDialogData,
+  NetworkDialogComponent
+} from '../../../../../../shared/components/modal/network-dialog/network-dialog.component';
+import {
+  ITokensDialogData,
+  TokensDialogComponent
+} from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from '../../../../../../shared/data/tokenList';
-import { IToken } from '../../../../../../shared/interfaces';
+import { ILiquidityPayload, IToken } from '../../../../../../shared/interfaces';
+import { addLiquidityAction } from '../../../../../../store/swap-store/state/actions';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -76,14 +83,15 @@ export class DexLiquidityPageComponent {
     this.liquidityForm.markAllAsTouched();
     if (this.liquidityForm.invalid) return;
 
-    // const payload = {
-    //   token1: this.tokenPath[0],
-    //   token2: this.tokenPath[1],
-    //   token1Amount: this.liquidityForm.get('token1Amount')?.value as number,
-    //   token2Amount: this.liquidityForm.get('token2Amount')?.value as number
-    // };
+    const payload: ILiquidityPayload = {
+      token1: this.tokenPath[0],
+      token2: this.tokenPath[1],
+      token1Amount: this.liquidityForm.get('token1Amount')?.value as number,
+      token2Amount: this.liquidityForm.get('token2Amount')?.value as number,
+      chainId: this.networkSelected.chainId
+    };
 
-    // this.store.dispatch(addLiquidityAction({ payload }));
+    return this.store.dispatch(addLiquidityAction({ payload }));
   }
 
   private handleTokenSelected(tokenId: TokenId, from: boolean): void {
