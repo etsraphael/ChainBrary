@@ -1,1 +1,67 @@
-<p>dex-liquidity-page works!</p>
+<div class="d-flex justify-content-center mt-4">
+  <div class="col-12 col-md-6 col-lg-5 col-xl-4">
+    <div class="card cb-card border-0 shadow-sm p-4">
+      <form [formGroup]="liquidityForm" (ngSubmit)="addLiquidity()">
+        <!-- Network Selector -->
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <button mat-button class="btn-network text-muted px-3" (click)="openNetworkDialog()">
+            {{ networkSelected.name }}
+          </button>
+        </div>
+
+        <!-- Token 1 Input -->
+        <div class="d-flex mb-2">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Amount</mat-label>
+            <input class="px-2" matInput type="number" placeholder="0" formControlName="token1Amount" />
+            <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matSuffix>
+              {{ tokenPath[0].symbol }}
+              <i class="bi bi-chevron-down"></i>
+            </span>
+            <mat-hint>
+              <span class="text-muted">Available: {{ token1Available }}</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Plus Icon -->
+        <div class="text-center mb-2">
+          <mat-icon class="mat-icon material-icons">add</mat-icon>
+        </div>
+
+        <!-- Token 2 Input -->
+        <div class="d-flex mb-2">
+          <mat-form-field appearance="outline" class="col-12">
+            <mat-label>Amount</mat-label>
+            <input class="px-2" matInput type="number" placeholder="0" formControlName="token2Amount" />
+            <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matSuffix>
+              {{ tokenPath[1].symbol }}
+              <i class="bi bi-chevron-down"></i>
+            </span>
+            <mat-hint>
+              <span class="text-muted">Available: {{ token2Available }}</span>
+            </mat-hint>
+          </mat-form-field>
+        </div>
+
+        <!-- Total Liquidity Info -->
+        <div class="d-flex flex-column align-items-center mb-4">
+          <div class="text-muted">Total Liquidity</div>
+          <div class="fw-bold">{{ totalLiquidity1 }}</div>
+          <div class="fw-bold">{{ totalLiquidity2 }}</div>
+        </div>
+
+        <!-- Add Liquidity Button -->
+        <button class="btn btn-primary w-100 mb-4" type="submit">Add Liquidity</button>
+      </form>
+
+      <!-- Liquidity Info Text -->
+      <div class="p-3 bg-light rounded footer-container">
+        <small class="text-muted">
+          By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair.
+          Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
