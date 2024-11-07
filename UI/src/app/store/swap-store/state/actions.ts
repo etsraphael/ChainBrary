@@ -1,6 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 import { ILiquidityPayload, IPoolSearch, QuotePayload } from '../../../shared/interfaces';
 
+export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
+export const createPoolActionSuccess = createAction('[Swap] Create Pool Actions Success', props<{ message: string }>()); // TODO: Add type here
+export const createPoolActionFailure = createAction('[Swap] Create Pool Actions Failure', props<{ message: string }>());
+
 export const addLiquidityAction = createAction('[Swap] Add Liquidity Actions', props<{ payload: ILiquidityPayload }>());
 export const addLiquidityActionSuccess = createAction(
   '[Swap] Add Liquidity Actions Success',
@@ -22,5 +26,18 @@ export const loadQuoteActionFailure = createAction('[Swap] Load Quote Actions Fa
 export const loadPoolAction = createAction('[Swap] Load Pool Actions', props<{ payload: IPoolSearch }>());
 export const loadPoolActionSuccess = createAction('[Swap] Load Pool Actions Success', props<{ message: string }>()); // TODO: Add type here
 export const loadPoolActionFailure = createAction('[Swap] Load Pool Actions Failure', props<{ message: string }>());
+
+export const removeLiquidityAction = createAction(
+  '[Swap] Remove Liquidity Actions',
+  props<{ payload: ILiquidityPayload }>()
+);
+export const removeLiquidityActionSuccess = createAction(
+  '[Swap] Remove Liquidity Actions Success', // TODO: Add type here
+  props<{ message: string }>()
+);
+export const removeLiquidityActionFailure = createAction(
+  '[Swap] Remove Liquidity Actions Failure',
+  props<{ message: string }>()
+);
 
 export const resetSwapAction = createAction('[Swap] Reset Swap Actions');

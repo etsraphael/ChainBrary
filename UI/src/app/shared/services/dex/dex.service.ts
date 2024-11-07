@@ -106,25 +106,25 @@ export class DexService {
       });
   }
 
+  // TODO: Currently working, but need to replace the hardcoded addresses
   async getPool(search: IPoolSearch): Promise<string> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(search.chainId));
     const swapRouterContract = new SwapFactoryContract(search.chainId);
 
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       swapRouterContract.getAbi() as AbiItem[],
-      '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+      swapRouterContract.getAddress()
     );
 
     return contract.methods['getPool'](
       '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
-      '100'
+      swapRouterContract.fee
     )
       .call()
-      .then((res: void | [] | any) => {
-        // TODO: Remove any soon
-        console.log('res', res);
-        return res.address;
+      .then((res: void | [] | string) => {
+        if(web3.utils.isNullish(res) || res === '0x0000000000000000000000000000000000000000') return Promise.reject('Pool_not_found')
+        else return res as string;
       })
       .catch((error: string) => {
         console.log('error', error);

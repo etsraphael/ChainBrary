@@ -17,17 +17,13 @@ export class SwapEffects {
     private dexService: DexService
   ) {}
 
-  // TODO: Implement swapping logic here
   loadPool$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DexActions.loadPoolAction),
       switchMap((action: ReturnType<typeof DexActions.loadPoolAction>) => {
         return from(this.dexService.getPool(action.payload)).pipe(
           map((response: string) => DexActions.loadPoolActionSuccess({ message: response })),
-          catchError((error: string) => {
-            console.log('Error:', error);
-            return of(DexActions.loadPoolActionFailure({ message: error }));
-          })
+          catchError((error: string) => of(DexActions.loadPoolActionFailure({ message: error })))
         );
       })
     );
