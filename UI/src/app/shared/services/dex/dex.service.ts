@@ -2,16 +2,16 @@ import { Injectable } from '@angular/core';
 import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { PoolContract, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
-import { ITokenContract } from '../../interfaces';
-import { ILiquidityPayload, SwapPayload } from '../../interfaces/swap.interface';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { ITokenContract } from '../../interfaces';
+import { ILiquidityPayload, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
+import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DexService {
-  constructor() {}
+  constructor(private web3ProviderService: Web3ProviderService) {}
 
   private isAmountsOutResponseValid(res: unknown): res is SwapRouterObjectResponse {
     if (typeof res !== 'object' || res === null) {
@@ -106,20 +106,29 @@ export class DexService {
       });
   }
 
-  async getPool(rpcUrl: string, chainId: NetworkChainId, token1: string, token2: string): Promise<string> {
-    const web3: Web3 = new Web3(rpcUrl);
-    const swapRouterContract = new SwapFactoryContract(chainId);
+  async getPool(search: IPoolSearch): Promise<string> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(search.chainId));
+    const swapRouterContract = new SwapFactoryContract(search.chainId);
 
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
       swapRouterContract.getAbi() as AbiItem[],
-      swapRouterContract.getAddress()
+      '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
     );
 
-    return contract.methods['getPool'](token1, token2, '100')
+    return contract.methods['getPool'](
+      '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+      '100'
+    )
       .call()
       .then((res: void | [] | any) => {
         // TODO: Remove any soon
+        console.log('res', res);
         return res.address;
+      })
+      .catch((error: string) => {
+        console.log('error', error);
+        return Promise.reject(error);
       });
   }
 }

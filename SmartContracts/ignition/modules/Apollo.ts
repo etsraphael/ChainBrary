@@ -10,7 +10,8 @@ export default buildModule('Apollo', (m) => {
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
   const documentLocker = deployDocumentLocker(m);
-  const customERC20Token = deployCustomERC20Token(m);
+  const customERC20Token1 = deployCustomERC20Token(m, 'Custom Token 1', 'CT1', 'CustomERC20Token1');
+  const customERC20Token2 = deployCustomERC20Token(m, 'Custom Token 2', 'CT2', 'CustomERC20Token2');  
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
   const mockingPriceFeed = deployMockingPriceFeed(m);
   const mockingCcipRouter = deployMockingCcipRouter(m);
@@ -27,7 +28,8 @@ export default buildModule('Apollo', (m) => {
     erc20FixedSupply,
     bidContract,
     documentLocker,
-    customERC20Token,
+    customERC20Token1,
+    customERC20Token2,
     customERC20TokenFactory,
     mockingPriceFeed,
     mockingCcipRouter,
@@ -95,8 +97,8 @@ function deployDocumentLocker(m: any) {
   return documentLocker;
 }
 
-function deployCustomERC20Token(m: any) {
-  const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', 'Custom Token', 'CTK', 18, true, true,true, [], []]);
+function deployCustomERC20Token(m: any, name: string, symbol: string, id: string) {
+  const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', name, symbol, 18, true, true, true, [], []], { id });
   return customERC20Token;
 }
 

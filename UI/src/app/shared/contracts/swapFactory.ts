@@ -25,33 +25,6 @@ export class SwapFactoryContract extends BaseContract {
         type: 'constructor'
       },
       {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'target',
-            type: 'address'
-          }
-        ],
-        name: 'AddressEmptyCode',
-        type: 'error'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'account',
-            type: 'address'
-          }
-        ],
-        name: 'AddressInsufficientBalance',
-        type: 'error'
-      },
-      {
-        inputs: [],
-        name: 'FailedInnerCall',
-        type: 'error'
-      },
-      {
         inputs: [],
         name: 'InvalidInitialization',
         type: 'error'
@@ -84,47 +57,6 @@ export class SwapFactoryContract extends BaseContract {
         type: 'error'
       },
       {
-        inputs: [],
-        name: 'ReentrancyGuardReentrantCall',
-        type: 'error'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'token',
-            type: 'address'
-          }
-        ],
-        name: 'SafeERC20FailedOperation',
-        type: 'error'
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: 'address',
-            name: 'sender',
-            type: 'address'
-          },
-          {
-            indexed: false,
-            internalType: 'uint256',
-            name: 'amount0',
-            type: 'uint256'
-          },
-          {
-            indexed: false,
-            internalType: 'uint256',
-            name: 'amount1',
-            type: 'uint256'
-          }
-        ],
-        name: 'Burn',
-        type: 'event'
-      },
-      {
         anonymous: false,
         inputs: [
           {
@@ -135,31 +67,6 @@ export class SwapFactoryContract extends BaseContract {
           }
         ],
         name: 'Initialized',
-        type: 'event'
-      },
-      {
-        anonymous: false,
-        inputs: [
-          {
-            indexed: true,
-            internalType: 'address',
-            name: 'sender',
-            type: 'address'
-          },
-          {
-            indexed: false,
-            internalType: 'uint256',
-            name: 'amount0',
-            type: 'uint256'
-          },
-          {
-            indexed: false,
-            internalType: 'uint256',
-            name: 'amount1',
-            type: 'uint256'
-          }
-        ],
-        name: 'Mint',
         type: 'event'
       },
       {
@@ -187,55 +94,30 @@ export class SwapFactoryContract extends BaseContract {
           {
             indexed: true,
             internalType: 'address',
-            name: 'sender',
+            name: 'tokenA',
+            type: 'address'
+          },
+          {
+            indexed: true,
+            internalType: 'address',
+            name: 'tokenB',
             type: 'address'
           },
           {
             indexed: false,
-            internalType: 'uint256',
-            name: 'amountIn',
-            type: 'uint256'
+            internalType: 'uint24',
+            name: 'fee',
+            type: 'uint24'
           },
           {
             indexed: false,
-            internalType: 'uint256',
-            name: 'amountOut',
-            type: 'uint256'
+            internalType: 'address',
+            name: 'pool',
+            type: 'address'
           }
         ],
-        name: 'Swap',
+        name: 'PoolCreated',
         type: 'event'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'uint256',
-            name: 'amount0',
-            type: 'uint256'
-          },
-          {
-            internalType: 'uint256',
-            name: 'amount1',
-            type: 'uint256'
-          }
-        ],
-        name: 'addLiquidity',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'fee',
-        outputs: [
-          {
-            internalType: 'uint24',
-            name: '',
-            type: 'uint24'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
       },
       {
         inputs: [
@@ -248,61 +130,38 @@ export class SwapFactoryContract extends BaseContract {
             internalType: 'address',
             name: 'tokenB',
             type: 'address'
-          }
-        ],
-        name: 'getReserves',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: 'reserveA',
-            type: 'uint256'
-          },
-          {
-            internalType: 'uint256',
-            name: 'reserveB',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: '_token0',
-            type: 'address'
-          },
-          {
-            internalType: 'address',
-            name: '_token1',
-            type: 'address'
           },
           {
             internalType: 'uint24',
-            name: '_fee',
+            name: 'fee',
             type: 'uint24'
           }
         ],
-        name: 'initialize',
-        outputs: [],
+        name: 'createPool',
+        outputs: [
+          {
+            internalType: 'address',
+            name: 'pool',
+            type: 'address'
+          }
+        ],
         stateMutability: 'nonpayable',
         type: 'function'
       },
       {
         inputs: [
           {
-            internalType: 'address',
-            name: '',
-            type: 'address'
-          }
-        ],
-        name: 'liquidityProvided0',
-        outputs: [
-          {
             internalType: 'uint256',
             name: '',
             type: 'uint256'
+          }
+        ],
+        name: 'feeTiers',
+        outputs: [
+          {
+            internalType: 'uint24',
+            name: '',
+            type: 'uint24'
           }
         ],
         stateMutability: 'view',
@@ -314,17 +173,34 @@ export class SwapFactoryContract extends BaseContract {
             internalType: 'address',
             name: '',
             type: 'address'
+          },
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address'
+          },
+          {
+            internalType: 'uint24',
+            name: '',
+            type: 'uint24'
           }
         ],
-        name: 'liquidityProvided1',
+        name: 'getPool',
         outputs: [
           {
-            internalType: 'uint256',
+            internalType: 'address',
             name: '',
-            type: 'uint256'
+            type: 'address'
           }
         ],
         stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'initialize',
+        outputs: [],
+        stateMutability: 'nonpayable',
         type: 'function'
       },
       {
@@ -341,98 +217,10 @@ export class SwapFactoryContract extends BaseContract {
         type: 'function'
       },
       {
-        inputs: [
-          {
-            internalType: 'uint256',
-            name: 'liquidity',
-            type: 'uint256'
-          }
-        ],
-        name: 'removeLiquidity',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
         inputs: [],
         name: 'renounceOwnership',
         outputs: [],
         stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'reserve0',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'reserve1',
-        outputs: [
-          {
-            internalType: 'uint256',
-            name: '',
-            type: 'uint256'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'uint256',
-            name: 'amountIn',
-            type: 'uint256'
-          },
-          {
-            internalType: 'address',
-            name: 'tokenIn',
-            type: 'address'
-          },
-          {
-            internalType: 'address',
-            name: 'to',
-            type: 'address'
-          }
-        ],
-        name: 'swap',
-        outputs: [],
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'token0',
-        outputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address'
-          }
-        ],
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        inputs: [],
-        name: 'token1',
-        outputs: [
-          {
-            internalType: 'address',
-            name: '',
-            type: 'address'
-          }
-        ],
-        stateMutability: 'view',
         type: 'function'
       },
       {

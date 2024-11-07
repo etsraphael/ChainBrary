@@ -26,3 +26,9 @@ export interface ILiquidityPayload {
   token2Amount: number;
   chainId: NetworkChainId;
 }
+
+export interface IPoolSearch {
+  token1Address: string;
+  token2Address: string;
+  chainId: NetworkChainId;
+}

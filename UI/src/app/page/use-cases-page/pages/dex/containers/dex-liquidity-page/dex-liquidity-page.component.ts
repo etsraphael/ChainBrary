@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
@@ -12,20 +12,17 @@ import {
   TokensDialogComponent
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from '../../../../../../shared/data/tokenList';
-import { ILiquidityPayload, IToken } from '../../../../../../shared/interfaces';
-import { addLiquidityAction } from '../../../../../../store/swap-store/state/actions';
+import { ILiquidityPayload, IPoolSearch, IToken } from '../../../../../../shared/interfaces';
+import { addLiquidityAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
 
 @Component({
   selector: 'app-dex-liquidity-page',
   templateUrl: './dex-liquidity-page.component.html',
   styleUrl: './dex-liquidity-page.component.scss'
 })
-export class DexLiquidityPageComponent {
-  networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON);
-  tokenPath: IToken[] = [
-    this.findTokenById(this.networkSelected.nativeCurrency.id) as IToken,
-    this.findTokenById(this.networkSelected.nativeCurrency.id) as IToken
-  ];
+export class DexLiquidityPageComponent implements OnInit {
+  networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST);
+  tokenPath: IToken[] = [this.findTokenById('usdc') as IToken, this.findTokenById('chainlink') as IToken];
   token1Available: number = 500;
   token2Available: number = 1200;
   totalLiquidity1: number = 9577.514455;
@@ -41,6 +38,10 @@ export class DexLiquidityPageComponent {
     private web3loginService: Web3LoginService,
     private store: Store
   ) {}
+
+  ngOnInit(): void {
+    this.loadPool();
+  }
 
   openNetworkDialog(): MatDialogRef<NetworkDialogComponent> {
     const data: INetworkDialogData = {
@@ -94,6 +95,21 @@ export class DexLiquidityPageComponent {
     return this.store.dispatch(addLiquidityAction({ payload }));
   }
 
+  private loadPool(): void {
+    console.log(this.tokenPath[0]);
+
+    const payload: IPoolSearch = {
+      token1Address: this.tokenPath[0].networkSupport.find(
+        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+      )?.address as string,
+      token2Address: this.tokenPath[1].networkSupport.find(
+        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+      )?.address as string,
+      chainId: this.networkSelected.chainId
+    };
+    return this.store.dispatch(loadPoolAction({ payload }));
+  }
+
   private handleTokenSelected(tokenId: TokenId, from: boolean): void {
     const token: IToken | undefined = this.findTokenById(tokenId);
     if (!token) return;
@@ -104,7 +120,7 @@ export class DexLiquidityPageComponent {
     this.networkSelected = this.web3loginService.getNetworkDetailByChainId(chainId);
   }
 
-  private findTokenById(tokenId: TokenId): IToken | undefined {
+  private findTokenById(tokenId: TokenId | string): IToken | undefined {
     return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
 }
