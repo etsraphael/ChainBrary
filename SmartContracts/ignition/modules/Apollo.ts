@@ -12,13 +12,12 @@ export default buildModule('Apollo', (m) => {
   const documentLocker = deployDocumentLocker(m);
   const customERC20Token = deployCustomERC20Token(m);
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
-  const chainbraryToken = deployChainbraryToken(m);
   const mockingPriceFeed = deployMockingPriceFeed(m);
-  const basicCrossChainTokenSender = deployBasicCrossChainTokenSender(m);
   const mockingCcipRouter = deployMockingCcipRouter(m);
   const crossChainDEX = deployCrossChainDEX(m);
   const swapFactory = deployChainbrarySwapFactory(m);
   const swapRouter = deployChainbrarySwapRouter(m);
+  const chainbraryPool = deployChainbraryPool(m);
 
   return {
     rocketContract,
@@ -30,13 +29,12 @@ export default buildModule('Apollo', (m) => {
     documentLocker,
     customERC20Token,
     customERC20TokenFactory,
-    chainbraryToken,
     mockingPriceFeed,
-    basicCrossChainTokenSender,
     mockingCcipRouter,
     crossChainDEX,
     swapFactory,
-    swapRouter
+    swapRouter,
+    chainbraryPool
   };
 });
 
@@ -107,19 +105,9 @@ function deployCustomERC20TokenFactory(m: any, communityVaultAddress: string) {
   return customERC20TokenFactory;
 }
 
-function deployChainbraryToken(m: any) {
-  const chainbraryToken = m.contract('ChainbraryToken');
-  return chainbraryToken;
-}
-
 function deployMockingPriceFeed(m: any) {
   const mockingPriceFeed = m.contract('MockingPriceFeed', ['18', '1000000000000000000']);
   return mockingPriceFeed;
-}
-
-function deployBasicCrossChainTokenSender(m: any) {
-  const basicCrossChainTokenSender = m.contract('BasicCrossChainTokenSender');
-  return basicCrossChainTokenSender;
 }
 
 function deployMockingCcipRouter(m: any) {
@@ -140,4 +128,9 @@ function deployChainbrarySwapFactory(m: any) {
 function deployChainbrarySwapRouter(m: any) {
   const swapRouter = m.contract('ChainbrarySwapRouter');
   return swapRouter;
+}
+
+function deployChainbraryPool(m: any) {
+  const chainbraryPool = m.contract('Pool');
+  return chainbraryPool;
 }
