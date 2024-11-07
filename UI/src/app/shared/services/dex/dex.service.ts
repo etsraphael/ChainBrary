@@ -125,7 +125,9 @@ export class DexService {
       .then((res: void | [] | string) => {
         if (web3.utils.isNullish(res) || res === '0x0000000000000000000000000000000000000000')
           return Promise.reject('Pool_not_found');
-        else return res as string;
+        else {
+          return res as string;
+        }
       })
       .catch((error: string) => {
         console.log('error', error);
@@ -142,26 +144,36 @@ export class DexService {
       swapRouterContract.getAddress()
     );
 
-    const token1Address: string | undefined = payload.token1.networkSupport.find(
-      (network: ITokenContract) => network.chainId === payload.chainId
-    )?.address;
-    const token2Address: string | undefined = payload.token2.networkSupport.find(
-      (network: ITokenContract) => network.chainId === payload.chainId
-    )?.address;
+    // const token1Address: string | undefined = payload.token1.networkSupport.find(
+    //   (network: ITokenContract) => network.chainId === payload.chainId
+    // )?.address;
+    // const token2Address: string | undefined = payload.token2.networkSupport.find(
+    //   (network: ITokenContract) => network.chainId === payload.chainId
+    // )?.address;
 
-    if (!token1Address || !token2Address) {
-      return Promise.reject('Token not supported on this network');
-    }
+    // if (!token1Address || !token2Address) {
+    //   return Promise.reject('Token not supported on this network');
+    // }
+
+    const gas: bigint = await contract.methods['createPool'](
+      '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+      swapRouterContract.fee
+    ).estimateGas({ from });
 
     return contract.methods['createPool'](
       '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
       swapRouterContract.fee
     )
-      .send({ from: from })
+      .send({ from, gas: gas.toString() })
       .then((res: void | [] | any) => {
         console.log('res', res);
         return res;
+      })
+      .catch((error: string) => {
+        console.log('error', error);
+        return Promise.reject(error);
       });
   }
 }
