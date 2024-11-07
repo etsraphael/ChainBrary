@@ -123,12 +123,45 @@ export class DexService {
     )
       .call()
       .then((res: void | [] | string) => {
-        if(web3.utils.isNullish(res) || res === '0x0000000000000000000000000000000000000000') return Promise.reject('Pool_not_found')
+        if (web3.utils.isNullish(res) || res === '0x0000000000000000000000000000000000000000')
+          return Promise.reject('Pool_not_found');
         else return res as string;
       })
       .catch((error: string) => {
         console.log('error', error);
         return Promise.reject(error);
+      });
+  }
+
+  async createPool(from: string, payload: ILiquidityPayload): Promise<string> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const swapRouterContract = new SwapFactoryContract(payload.chainId);
+
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      swapRouterContract.getAbi() as AbiItem[],
+      swapRouterContract.getAddress()
+    );
+
+    const token1Address: string | undefined = payload.token1.networkSupport.find(
+      (network: ITokenContract) => network.chainId === payload.chainId
+    )?.address;
+    const token2Address: string | undefined = payload.token2.networkSupport.find(
+      (network: ITokenContract) => network.chainId === payload.chainId
+    )?.address;
+
+    if (!token1Address || !token2Address) {
+      return Promise.reject('Token not supported on this network');
+    }
+
+    return contract.methods['createPool'](
+      '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+      swapRouterContract.fee
+    )
+      .send({ from: from })
+      .then((res: void | [] | any) => {
+        console.log('res', res);
+        return res;
       });
   }
 }

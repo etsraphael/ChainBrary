@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center mt-4">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
     <div class="card cb-card border-0 shadow-sm p-4">
-      <form [formGroup]="liquidityForm" (ngSubmit)="addLiquidity()">
+      <form [formGroup]="liquidityForm">
         <!-- Network Selector -->
         <div class="d-flex justify-content-between align-items-center mb-2">
           <button mat-button class="btn-network text-muted px-3" (click)="openNetworkDialog()">
@@ -52,7 +52,14 @@
         </div>
 
         <!-- Add Liquidity Button -->
-        <button class="btn btn-primary w-100 mb-4" type="submit">Add Liquidity</button>
+         <ng-container *ngIf="(poolIsNotCreated$|async) === false">
+          <button class="btn btn-primary w-100 mb-4" type="submit" (click)="addLiquidity()">Add Liquidity</button>
+         </ng-container>
+
+         <!-- Create Pool Button -->
+          <ng-container *ngIf="(poolIsNotCreated$|async) === true">
+            <button class="btn btn-primary w-100 mb-4" type="submit" (click)="createPool()">Create Pool</button>
+          </ng-container>
       </form>
 
       <!-- Liquidity Info Text -->

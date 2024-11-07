@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -13,7 +14,8 @@ import {
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from '../../../../../../shared/data/tokenList';
 import { ILiquidityPayload, IPoolSearch, IToken } from '../../../../../../shared/interfaces';
-import { addLiquidityAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
+import { addLiquidityAction, createPoolAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
+import { selectPoolIsNotCreated } from '../../../../../../store/swap-store/state/selectors';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -38,6 +40,8 @@ export class DexLiquidityPageComponent implements OnInit {
     private web3loginService: Web3LoginService,
     private store: Store
   ) {}
+
+  readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
 
   ngOnInit(): void {
     this.loadPool();
@@ -95,9 +99,19 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(addLiquidityAction({ payload }));
   }
 
-  private loadPool(): void {
-    console.log(this.tokenPath[0]);
 
+  createPool(): void {
+    const payload: ILiquidityPayload = {
+      token1: this.tokenPath[0],
+      token2: this.tokenPath[1],
+      token1Amount: this.liquidityForm.get('token1Amount')?.value as number,
+      token2Amount: this.liquidityForm.get('token2Amount')?.value as number,
+      chainId: this.networkSelected.chainId
+    }
+    return this.store.dispatch(createPoolAction({ payload }));
+  }
+
+  private loadPool(): void {
     const payload: IPoolSearch = {
       token1Address: this.tokenPath[0].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
