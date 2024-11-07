@@ -111,21 +111,38 @@ export class DexService {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(search.chainId));
     const swapRouterContract = new SwapFactoryContract(search.chainId);
 
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+    const swapRouterFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
       swapRouterContract.getAbi() as AbiItem[],
       swapRouterContract.getAddress()
     );
 
-    return contract.methods['getPool'](
+    return swapRouterFragment.methods['getPool'](
       '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
       swapRouterContract.fee
     )
       .call()
-      .then((res: void | [] | string) => {
+      .then(async (res: void | [] | string) => {
         if (web3.utils.isNullish(res) || res === '0x0000000000000000000000000000000000000000')
           return Promise.reject('Pool_not_found');
         else {
+          const poolContract = new PoolContract(search.chainId);
+          const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+            poolContract.getAbi() as AbiItem[],
+            res as string
+          );
+
+          // get token0 and token1 from the pool
+          const token0 = await poolFragment.methods['token0']().call();
+          const token1 = await poolFragment.methods['token1']().call();
+
+          // get getReserves(address tokenA, address tokenB) from the pool
+          const reserves = await poolFragment.methods['getReserves'](token0, token1).call();
+          console.log('reserves', reserves);
+
+          console.log('token0', token0);
+          console.log('token1', token1);
+
           return res as string;
         }
       })
