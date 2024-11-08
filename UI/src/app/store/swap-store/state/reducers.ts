@@ -2,6 +2,7 @@ import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
 import * as SwapActions from './actions';
 import { initialState } from './init';
 import { ISwapState } from './interfaces';
+import { IPoolDetail } from 'src/app/shared/interfaces';
 
 export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   initialState,
@@ -19,10 +20,10 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   ),
   on(
     SwapActions.loadPoolActionSuccess,
-    (state: ISwapState): ISwapState => ({
+    (state: ISwapState, action: { result: IPoolDetail}): ISwapState => ({
       ...state,
       searchPool: {
-        data: null, // TODO: Replace with real data soon
+        data: action.result,
         loading: false,
         error: null
       }

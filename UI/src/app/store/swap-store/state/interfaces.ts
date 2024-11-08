@@ -1,10 +1,10 @@
-import { ActionStoreProcessing, StoreState } from '../../../shared/interfaces';
+import { ActionStoreProcessing, IPoolDetail, StoreState } from '../../../shared/interfaces';
 
 export const SWAP_FEATURE_KEY = 'swap';
 
 export interface ISwapState {
   isSwapping: ActionStoreProcessing;
-  searchPool: StoreState<null>; // TODO: Define the type of the data soon
+  searchPool: StoreState<IPoolDetail|null>;
 }
 
 export interface SwapState {

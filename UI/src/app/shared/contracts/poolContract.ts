@@ -2,6 +2,16 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 import { AbiItem } from 'web3-utils';
 import { BaseContractFactory } from './baseContract';
 
+
+export interface PoolDetailObjectResponse {
+  0: string;
+  1: string;
+  2: bigint;
+  3: bigint;
+  4: bigint;
+  __length__: number;
+}
+
 export class PoolContract extends BaseContractFactory {
   constructor(public chainId: NetworkChainId) {
     super();
@@ -222,6 +232,63 @@ export class PoolContract extends BaseContractFactory {
             internalType: 'uint24',
             name: '',
             type: 'uint24'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [
+          {
+            internalType: 'address',
+            name: 'user',
+            type: 'address'
+          }
+        ],
+        name: 'getLiquidityProvided',
+        outputs: [
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          }
+        ],
+        stateMutability: 'view',
+        type: 'function'
+      },
+      {
+        inputs: [],
+        name: 'getPoolDetails',
+        outputs: [
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address'
+          },
+          {
+            internalType: 'address',
+            name: '',
+            type: 'address'
+          },
+          {
+            internalType: 'uint24',
+            name: '',
+            type: 'uint24'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
+          },
+          {
+            internalType: 'uint256',
+            name: '',
+            type: 'uint256'
           }
         ],
         stateMutability: 'view',

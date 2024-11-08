@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { ILiquidityPayload, IPoolSearch, QuotePayload } from '../../../shared/interfaces';
+import { ILiquidityPayload, IPoolDetail, IPoolSearch, QuotePayload } from '../../../shared/interfaces';
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
 export const createPoolActionSuccess = createAction('[Swap] Create Pool Actions Success', props<{ message: string }>()); // TODO: Add type here
@@ -24,7 +24,7 @@ export const loadQuoteActionSuccess = createAction('[Swap] Load Quote Actions Su
 export const loadQuoteActionFailure = createAction('[Swap] Load Quote Actions Failure', props<{ message: string }>());
 
 export const loadPoolAction = createAction('[Swap] Load Pool Actions', props<{ payload: IPoolSearch }>());
-export const loadPoolActionSuccess = createAction('[Swap] Load Pool Actions Success', props<{ message: string }>()); // TODO: Add type here
+export const loadPoolActionSuccess = createAction('[Swap] Load Pool Actions Success', props<{ result: IPoolDetail }>());
 export const loadPoolActionFailure = createAction('[Swap] Load Pool Actions Failure', props<{ message: string }>());
 
 export const removeLiquidityAction = createAction(

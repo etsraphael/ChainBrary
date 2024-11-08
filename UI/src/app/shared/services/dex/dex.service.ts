@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
-import { PoolContract, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
+import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
 import { ITokenContract } from '../../interfaces';
-import { ILiquidityPayload, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
+import { ILiquidityPayload, IPoolDetail, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
@@ -21,6 +21,23 @@ export class DexService {
     const obj = res as { [key: string]: unknown };
 
     return typeof obj[0] === 'bigint' && obj['__length__'] === 'number';
+  }
+
+  private isPoolDetailResponseValid(res: unknown): res is IPoolDetail {
+    if (typeof res !== 'object' || res === null) {
+      return false;
+    }
+
+    const obj = res as { [key: string]: unknown };
+
+    return (
+      typeof obj[0] === 'string' &&
+      typeof obj[1] === 'string' &&
+      typeof obj[2] === 'bigint' &&
+      typeof obj[3] === 'bigint' &&
+      typeof obj[4] === 'bigint' &&
+      typeof obj['__length__'] === 'number'
+    );
   }
 
   async getAmountsOut(rpcUrl: string, payload: SwapPayload): Promise<number[]> {
@@ -107,7 +124,7 @@ export class DexService {
   }
 
   // TODO: Currently working, but need to replace the hardcoded addresses
-  async getPool(search: IPoolSearch): Promise<string> {
+  async getPool(search: IPoolSearch): Promise<IPoolDetail> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(search.chainId));
     const swapRouterContract = new SwapFactoryContract(search.chainId);
 
@@ -132,18 +149,21 @@ export class DexService {
             res as string
           );
 
-          // get token0 and token1 from the pool
-          const token0 = await poolFragment.methods['token0']().call();
-          const token1 = await poolFragment.methods['token1']().call();
+          const poolDetailResponse: PoolDetailObjectResponse = await poolFragment.methods['getPoolDetails']().call();
 
-          // get getReserves(address tokenA, address tokenB) from the pool
-          const reserves = await poolFragment.methods['getReserves'](token0, token1).call();
-          console.log('reserves', reserves);
+          if (!this.isPoolDetailResponseValid(poolDetailResponse)) {
+            return Promise.reject('Invalid pool detail response');
+          }
+          const poolDetail: IPoolDetail = {
+            id: res as string,
+            token1Address: poolDetailResponse[0],
+            token2Address: poolDetailResponse[1],
+            token1Amount: Number(web3.utils.fromWei(String(poolDetailResponse[2]), 'ether')),
+            token2Amount: Number(web3.utils.fromWei(String(poolDetailResponse[3]), 'ether')),
+            chainId: search.chainId
+          }
 
-          console.log('token0', token0);
-          console.log('token1', token1);
-
-          return res as string;
+          return poolDetail;
         }
       })
       .catch((error: string) => {

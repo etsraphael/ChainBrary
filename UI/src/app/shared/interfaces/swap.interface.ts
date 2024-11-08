@@ -32,3 +32,12 @@ export interface IPoolSearch {
   token2Address: string;
   chainId: NetworkChainId;
 }
+
+export interface IPoolDetail {
+  id: string;
+  token1Address: string;
+  token2Address: string;
+  token1Amount: number;
+  token2Amount: number;
+  chainId: NetworkChainId;
+}

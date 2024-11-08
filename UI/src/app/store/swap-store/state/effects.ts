@@ -5,6 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
+import { IPoolDetail } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -25,10 +26,7 @@ export class SwapEffects {
       ofType(DexActions.loadPoolAction),
       switchMap((action: ReturnType<typeof DexActions.loadPoolAction>) => {
         return from(this.dexService.getPool(action.payload)).pipe(
-          map((response: string) => {
-            console.log('response', response);
-            return DexActions.loadPoolActionSuccess({ message: response })
-          }),
+          map((result: IPoolDetail) => DexActions.loadPoolActionSuccess({ result})),
           catchError((error: string) => of(DexActions.loadPoolActionFailure({ message: error })))
         );
       })
