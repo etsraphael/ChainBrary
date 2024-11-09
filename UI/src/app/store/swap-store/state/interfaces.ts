@@ -4,7 +4,7 @@ export const SWAP_FEATURE_KEY = 'swap';
 
 export interface ISwapState {
   isSwapping: ActionStoreProcessing;
-  searchPool: StoreState<IPoolDetail|null>;
+  searchPool: StoreState<IPoolDetail | null>;
 }
 
 export interface SwapState {

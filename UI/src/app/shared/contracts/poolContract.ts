@@ -2,13 +2,13 @@ import { NetworkChainId } from '@chainbrary/web3-login';
 import { AbiItem } from 'web3-utils';
 import { BaseContractFactory } from './baseContract';
 
-
 export interface PoolDetailObjectResponse {
   0: string;
   1: string;
   2: bigint;
   3: bigint;
   4: bigint;
+  5: bigint;
   __length__: number;
 }
 

@@ -158,10 +158,11 @@ export class DexService {
             id: res as string,
             token1Address: poolDetailResponse[0],
             token2Address: poolDetailResponse[1],
-            token1Amount: Number(web3.utils.fromWei(String(poolDetailResponse[2]), 'ether')),
-            token2Amount: Number(web3.utils.fromWei(String(poolDetailResponse[3]), 'ether')),
+            fee: Number(web3.utils.fromWei(String(poolDetailResponse[2]), 'ether')),
+            token1Amount: Number(web3.utils.fromWei(String(poolDetailResponse[3]), 'ether')),
+            token2Amount: Number(web3.utils.fromWei(String(poolDetailResponse[4]), 'ether')),
             chainId: search.chainId
-          }
+          };
 
           return poolDetail;
         }

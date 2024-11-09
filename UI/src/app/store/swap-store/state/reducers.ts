@@ -20,7 +20,7 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   ),
   on(
     SwapActions.loadPoolActionSuccess,
-    (state: ISwapState, action: { result: IPoolDetail}): ISwapState => ({
+    (state: ISwapState, action: { result: IPoolDetail }): ISwapState => ({
       ...state,
       searchPool: {
         data: action.result,

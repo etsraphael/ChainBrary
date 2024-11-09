@@ -3,7 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -13,9 +13,9 @@ import {
   TokensDialogComponent
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from '../../../../../../shared/data/tokenList';
-import { ILiquidityPayload, IPoolSearch, IToken } from '../../../../../../shared/interfaces';
+import { ILiquidityPayload, IPoolDetail, IPoolSearch, IToken, StoreState } from '../../../../../../shared/interfaces';
 import { addLiquidityAction, createPoolAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
-import { selectPoolIsNotCreated } from '../../../../../../store/swap-store/state/selectors';
+import { selectPoolDetail, selectPoolIsNotCreated } from '../../../../../../store/swap-store/state/selectors';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -42,6 +42,15 @@ export class DexLiquidityPageComponent implements OnInit {
   ) {}
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
+  readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
+
+  get poolDetail$(): Observable<IPoolDetail | null> {
+    return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
+  }
+
+  get poolIsLoading$(): Observable<boolean> {
+    return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.loading));
+  }
 
   ngOnInit(): void {
     this.loadPool();
@@ -99,7 +108,6 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(addLiquidityAction({ payload }));
   }
 
-
   createPool(): void {
     const payload: ILiquidityPayload = {
       token1: this.tokenPath[0],
@@ -107,7 +115,7 @@ export class DexLiquidityPageComponent implements OnInit {
       token1Amount: this.liquidityForm.get('token1Amount')?.value as number,
       token2Amount: this.liquidityForm.get('token2Amount')?.value as number,
       chainId: this.networkSelected.chainId
-    }
+    };
     return this.store.dispatch(createPoolAction({ payload }));
   }
 

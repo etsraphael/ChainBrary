@@ -37,6 +37,7 @@ export interface IPoolDetail {
   id: string;
   token1Address: string;
   token2Address: string;
+  fee: number;
   token1Amount: number;
   token2Amount: number;
   chainId: NetworkChainId;

@@ -47,19 +47,33 @@
         <!-- Total Liquidity Info -->
         <div class="d-flex flex-column align-items-center mb-4">
           <div class="text-muted">Total Liquidity</div>
-          <div class="fw-bold">{{ totalLiquidity1 }}</div>
-          <div class="fw-bold">{{ totalLiquidity2 }}</div>
+          <div class="fw-bold">
+            <ng-container *ngIf="poolIsLoading$ | async; else token1">
+              <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+            </ng-container>
+            <ng-template #token1>
+              {{ (poolDetail$ | async)?.token1Amount + ' ' + tokenPath[0].symbol }}
+            </ng-template>
+          </div>
+          <div class="fw-bold">
+            <ng-container *ngIf="poolIsLoading$ | async; else token2">
+              <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+            </ng-container>
+            <ng-template #token2>
+              {{ (poolDetail$ | async)?.token2Amount + ' ' + tokenPath[1].symbol }}
+            </ng-template>
+          </div>
         </div>
 
         <!-- Add Liquidity Button -->
-         <ng-container *ngIf="(poolIsNotCreated$|async) === false">
+        <ng-container *ngIf="(poolIsNotCreated$ | async) === false">
           <button class="btn btn-primary w-100 mb-4" type="submit" (click)="addLiquidity()">Add Liquidity</button>
-         </ng-container>
+        </ng-container>
 
-         <!-- Create Pool Button -->
-          <ng-container *ngIf="(poolIsNotCreated$|async) === true">
-            <button class="btn btn-primary w-100 mb-4" type="submit" (click)="createPool()">Create Pool</button>
-          </ng-container>
+        <!-- Create Pool Button -->
+        <ng-container *ngIf="(poolIsNotCreated$ | async) === true">
+          <button class="btn btn-primary w-100 mb-4" type="submit" (click)="createPool()">Create Pool</button>
+        </ng-container>
       </form>
 
       <!-- Liquidity Info Text -->

@@ -26,7 +26,7 @@ export class SwapEffects {
       ofType(DexActions.loadPoolAction),
       switchMap((action: ReturnType<typeof DexActions.loadPoolAction>) => {
         return from(this.dexService.getPool(action.payload)).pipe(
-          map((result: IPoolDetail) => DexActions.loadPoolActionSuccess({ result})),
+          map((result: IPoolDetail) => DexActions.loadPoolActionSuccess({ result })),
           catchError((error: string) => of(DexActions.loadPoolActionFailure({ message: error })))
         );
       })
@@ -46,11 +46,11 @@ export class SwapEffects {
         return from(this.dexService.createPool(action[2], action[0].payload)).pipe(
           map((response: string) => {
             console.log('response', response);
-            return DexActions.createPoolActionSuccess({ message: response })
+            return DexActions.createPoolActionSuccess({ message: response });
           }),
           catchError((error: string) => {
             console.log('error', error);
-            return of(DexActions.createPoolActionFailure({ message: error }))
+            return of(DexActions.createPoolActionFailure({ message: error }));
           })
         );
       })
