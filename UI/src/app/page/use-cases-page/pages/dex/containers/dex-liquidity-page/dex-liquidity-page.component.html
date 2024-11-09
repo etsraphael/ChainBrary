@@ -47,22 +47,26 @@
         <!-- Total Liquidity Info -->
         <div class="d-flex flex-column align-items-center mb-4">
           <div class="text-muted">Total Liquidity</div>
-          <div class="fw-bold">
-            <ng-container *ngIf="poolIsLoading$ | async; else token1">
+          <ng-container *ngIf="poolIsLoading$ | async; else token1">
+            <div class="w-50">
               <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
-            </ng-container>
-            <ng-template #token1>
+            </div>
+          </ng-container>
+          <ng-template #token1>
+            <div class="fw-bold">
               {{ (poolDetail$ | async)?.token1Amount + ' ' + tokenPath[0].symbol }}
-            </ng-template>
-          </div>
-          <div class="fw-bold">
-            <ng-container *ngIf="poolIsLoading$ | async; else token2">
+            </div>
+          </ng-template>
+          <ng-container *ngIf="poolIsLoading$ | async; else token2">
+            <div class="w-50">
               <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
-            </ng-container>
-            <ng-template #token2>
+            </div>
+          </ng-container>
+          <ng-template #token2>
+            <div class="fw-bold">
               {{ (poolDetail$ | async)?.token2Amount + ' ' + tokenPath[1].symbol }}
-            </ng-template>
-          </div>
+            </div>
+          </ng-template>
         </div>
 
         <!-- Add Liquidity Button -->
