@@ -173,7 +173,7 @@ export class DexService {
       });
   }
 
-  async createPool(from: string, payload: ILiquidityPayload): Promise<string> {
+  async createPool(from: string, payload: ILiquidityPayload): Promise<IPoolDetail> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapFactoryContract(payload.chainId);
 
@@ -205,13 +205,47 @@ export class DexService {
       swapRouterContract.fee
     )
       .send({ from, gas: gas.toString() })
-      .then((res: void | [] | any) => {
-        console.log('res', res);
-        return res;
+      .then(async () => {
+        // After pool creation, get the pool address
+        const poolAddress = await contract.methods['getPool'](
+          '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+          '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+          swapRouterContract.fee
+        ).call();
+
+        if (
+          typeof poolAddress !== 'string' ||
+          web3.utils.isNullish(poolAddress) ||
+          poolAddress === '0x0000000000000000000000000000000000000000'
+        ) {
+          return Promise.reject('Pool not found after creation');
+        }
+
+        // Get pool details
+        const poolContract = new PoolContract(payload.chainId);
+        const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+          poolContract.getAbi() as AbiItem[],
+          poolAddress
+        );
+
+        const poolDetailResponse: PoolDetailObjectResponse = await poolFragment.methods['getPoolDetails']().call();
+
+        if (!this.isPoolDetailResponseValid(poolDetailResponse)) {
+          return Promise.reject('Invalid pool detail response');
+        }
+
+        const poolDetail: IPoolDetail = {
+          id: poolAddress,
+          token1Address: poolDetailResponse[0],
+          token2Address: poolDetailResponse[1],
+          fee: Number(web3.utils.fromWei(String(poolDetailResponse[2]), 'ether')),
+          token1Amount: Number(web3.utils.fromWei(String(poolDetailResponse[3]), 'ether')),
+          token2Amount: Number(web3.utils.fromWei(String(poolDetailResponse[4]), 'ether')),
+          chainId: payload.chainId
+        };
+
+        return poolDetail;
       })
-      .catch((error: string) => {
-        console.log('error', error);
-        return Promise.reject(error);
-      });
+      .catch((error: string) => Promise.reject(error));
   }
 }

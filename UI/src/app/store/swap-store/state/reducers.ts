@@ -1,8 +1,8 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
+import { IPoolDetail } from '../../../shared/interfaces';
 import * as SwapActions from './actions';
 import { initialState } from './init';
 import { ISwapState } from './interfaces';
-import { IPoolDetail } from 'src/app/shared/interfaces';
 
 export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   initialState,
@@ -19,6 +19,7 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
     })
   ),
   on(
+    SwapActions.createPoolActionSuccess,
     SwapActions.loadPoolActionSuccess,
     (state: ISwapState, action: { result: IPoolDetail }): ISwapState => ({
       ...state,

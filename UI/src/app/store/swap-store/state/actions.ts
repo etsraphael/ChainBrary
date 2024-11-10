@@ -2,7 +2,10 @@ import { createAction, props } from '@ngrx/store';
 import { ILiquidityPayload, IPoolDetail, IPoolSearch, QuotePayload } from '../../../shared/interfaces';
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
-export const createPoolActionSuccess = createAction('[Swap] Create Pool Actions Success', props<{ message: string }>()); // TODO: Add type here
+export const createPoolActionSuccess = createAction(
+  '[Swap] Create Pool Actions Success',
+  props<{ result: IPoolDetail }>()
+);
 export const createPoolActionFailure = createAction('[Swap] Create Pool Actions Failure', props<{ message: string }>());
 
 export const addLiquidityAction = createAction('[Swap] Add Liquidity Actions', props<{ payload: ILiquidityPayload }>());

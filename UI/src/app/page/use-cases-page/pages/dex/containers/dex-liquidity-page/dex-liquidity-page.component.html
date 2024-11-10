@@ -45,7 +45,7 @@
         </div>
 
         <!-- Total Liquidity Info -->
-        <div class="d-flex flex-column align-items-center mb-4">
+        <div *ngIf="poolDetail$ | async" class="d-flex flex-column align-items-center mb-4">
           <div class="text-muted">Total Liquidity</div>
           <ng-container *ngIf="poolIsLoading$ | async; else token1">
             <div class="w-50">
