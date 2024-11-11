@@ -38,6 +38,12 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
     function addLiquidity(uint256 amount0, uint256 amount1) external nonReentrant {
         require(amount0 > 0 && amount1 > 0, "Amounts must be greater than zero");
 
+        uint256 allowance0 = IERC20(token0).allowance(_msgSender(), address(this));
+        uint256 allowance1 = IERC20(token1).allowance(_msgSender(), address(this));
+
+        require(allowance0 >= amount0, "Insufficient allowance for token0");
+        require(allowance1 >= amount1, "Insufficient allowance for token1");
+
         IERC20(token0).safeTransferFrom(_msgSender(), address(this), amount0);
         IERC20(token1).safeTransferFrom(_msgSender(), address(this), amount1);
 
