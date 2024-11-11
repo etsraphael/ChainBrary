@@ -50,4 +50,22 @@ export class SwapEffects {
       })
     );
   });
+
+  addLiquidity$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.addLiquidityAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (payload: [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider, string]
+      ),
+      switchMap((action: [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider, string]) => {
+        return from(this.dexService.addLiquidity(action[1], action[0].payload)).pipe(
+          map((result: string) => DexActions.addLiquidityActionSuccess({ message: result })),
+          catchError((error: string) => of(DexActions.addLiquidityActionFailure({ message: error })))
+        );
+      })
+    );
+  });
 }
