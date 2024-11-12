@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
 import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
-import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
+import {
+  ERC20TokenContract,
+  PoolContract,
+  PoolDetailObjectResponse,
+  SwapRouterContract,
+  SwapRouterObjectResponse
+} from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { ITokenContract } from '../../interfaces';
+import { IToken, ITokenContract } from '../../interfaces';
 import { ILiquidityPayload, IPoolDetail, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
@@ -93,11 +100,7 @@ export class DexService {
           from: res.id
         });
 
-
-        return poolFragment.methods['addLiquidity'](
-          amount0,
-          amount1
-        )
+        return poolFragment.methods['addLiquidity'](amount0, amount1)
           .send({
             from: from,
             gas: gasEstimate.toString()
@@ -105,12 +108,53 @@ export class DexService {
           .then((res) => {
             console.log('res', res);
             return 'Liquidity added';
-          })
+          });
       })
       .catch((error: string) => {
         console.log(error);
         return Promise.reject(error);
       });
+  }
+
+  async getERC20TokenAndBalance(
+    rpcUrl: string,
+    chainId: NetworkChainId,
+    tokenAddress: string,
+    from: string,
+    poolAddress: string
+  ): Promise<IToken> {
+    const web3: Web3 = new Web3(rpcUrl);
+    const erc20Contract = new ERC20TokenContract(chainId, tokenAddress);
+
+    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+      erc20Contract.getAbi() as AbiItem[],
+      erc20Contract.getAddress()
+    );
+
+    try {
+      const name = (await contractFragment.methods['name']().call()) as string;
+      const symbol = (await contractFragment.methods['symbol']().call()) as string;
+      const allowance = await contractFragment.methods['allowance'](from, poolAddress).call();
+      const balance = await contractFragment.methods['balanceOf'](from).call();
+
+      const token: IToken = {
+        tokenId: tokenAddress,
+        decimals: 18,
+        name,
+        symbol,
+        networkSupport: [{ chainId, address: tokenAddress, priceFeed: [] }]
+      };
+
+      console.log('name:', name);
+      console.log('symbol:', symbol);
+      console.log('allowance:', allowance);
+      console.log('balance:', balance);
+
+      return token;
+    } catch (error) {
+      console.error('Error retrieving ERC20 details:', error);
+      return Promise.reject(error);
+    }
   }
 
   // TODO: Currently working, but need to replace the hardcoded addresses

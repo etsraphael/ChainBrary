@@ -44,3 +44,16 @@ export const removeLiquidityActionFailure = createAction(
 );
 
 export const resetSwapAction = createAction('[Swap] Reset Swap Actions');
+
+export const lookUpTokenAction = createAction(
+  '[Swap] Look Up Token Actions',
+  props<{ address: string; tokenIn: boolean }>()
+);
+export const lookUpTokenActionSuccess = createAction(
+  '[Swap] Look Up Token Actions Success',
+  props<{ message: string; tokenIn: boolean }>()
+);
+export const lookUpTokenActionFailure = createAction(
+  '[Swap] Look Up Token Actions Failure',
+  props<{ message: string; tokenIn: boolean }>()
+);

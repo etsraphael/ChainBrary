@@ -135,7 +135,7 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         } else {
             revert("Invalid token pair");
         }
-    }   
+    }
 
     function getLiquidityProvided(address user) external view returns (uint256, uint256) {
         return (liquidityProvided0[user], liquidityProvided1[user]);
@@ -143,5 +143,5 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
     function getPoolDetails() external view returns (address, address, uint24, uint256, uint256) {
         return (token0, token1, fee, reserve0, reserve1);
-    } 
+    }
 }
