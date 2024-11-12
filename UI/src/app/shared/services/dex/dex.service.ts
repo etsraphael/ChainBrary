@@ -72,59 +72,45 @@ export class DexService {
   }
 
   async addLiquidity(from: string, payload: ILiquidityPayload): Promise<string> {
-    console.log('addLiquidity', payload);
-    console.log('from', from);
-    // const token1Address: string | undefined = payload.token1.networkSupport.find(
-    //   (network: ITokenContract) => network.chainId === payload.chainId
-    // )?.address;
-    // const token2Address: string | undefined = payload.token2.networkSupport.find(
-    //   (network: ITokenContract) => network.chainId === payload.chainId
-    // )?.address;
-
-    // if (!token1Address || !token2Address) {
-    //   return Promise.reject('Token not supported on this network');
-    // }
-
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
-    // const swapRouterContract = new SwapFactoryContract(payload.chainId);
-
-    // const swapRouterFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
-    //   swapRouterContract.getAbi() as AbiItem[],
-    //   swapRouterContract.getAddress()
-    // );
 
     return this.getPool({
       chainId: payload.chainId,
       token1Address: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
       token2Address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
     })
-      .then((res: IPoolDetail) => {
-        // TODO: Remove any soon
-        const poolContract = new PoolContract(payload.chainId);
-        const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
-          poolContract.getAbi() as AbiItem[],
-          res.id // TODO: get the address from the response
-        );
+      .then(async (res: IPoolDetail) => {
+        console.log('res', res);
+        console.log('chainId', payload.chainId);
+
+        const poolContract: PoolContract = new PoolContract(payload.chainId);
+        const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(poolContract.getAbi() as AbiItem[], res.id);
+
+        const amount0 = web3.utils.toWei('1', 'ether');
+        const amount1 = web3.utils.toWei('1', 'ether');
+
+        const gasEstimate: bigint = await poolFragment.methods['addLiquidity'](amount0, amount1).estimateGas({
+          from: res.id
+        });
+
 
         return poolFragment.methods['addLiquidity'](
-          '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-          '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
-          0,
-          0,
+          amount0,
+          amount1
         )
-          .send({ from: from })
+          .send({
+            from: from,
+            gas: gasEstimate.toString()
+          })
           .then((res) => {
-            if (!this.isAmountsOutResponseValid(res)) {
-              return Promise.reject('Invalid liquidity response');
-            }
-
+            console.log('res', res);
             return 'Liquidity added';
           })
-          .catch((error: string) => {
-            console.log('Error adding liquidity', error);
-            return Promise.reject(error)
-          });
       })
+      .catch((error: string) => {
+        console.log(error);
+        return Promise.reject(error);
+      });
   }
 
   // TODO: Currently working, but need to replace the hardcoded addresses
@@ -213,7 +199,6 @@ export class DexService {
           token2Address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
         })
       )
-
       .catch((error: string) => Promise.reject(error));
   }
 }
