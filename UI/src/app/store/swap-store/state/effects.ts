@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
-import { IPoolDetail } from '../../../shared/interfaces';
+import { IERC20TokenAndBalancePayload, IERC20TokenAndBalanceResponse, IPoolDetail } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -64,6 +64,31 @@ export class SwapEffects {
         return from(this.dexService.addLiquidity(action[1], action[0].payload)).pipe(
           map((result: string) => DexActions.addLiquidityActionSuccess({ message: result })),
           catchError((error: string) => of(DexActions.addLiquidityActionFailure({ message: error })))
+        );
+      })
+    );
+  });
+
+  lookUpToken$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.lookUpTokenAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (payload: [ReturnType<typeof DexActions.lookUpTokenAction>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DexActions.lookUpTokenAction>, WalletProvider, string]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap((action: [ReturnType<typeof DexActions.lookUpTokenAction>, WalletProvider, string]) => {
+        const payload: IERC20TokenAndBalancePayload = {
+          chainId: action[0].chainId,
+          tokenAddress: action[0].address,
+          from: action[2]
+        };
+        return from(this.dexService.getERC20TokenAndBalance(payload)).pipe(
+          map((result: IERC20TokenAndBalanceResponse) => DexActions.lookUpTokenActionSuccess({ result })),
+          catchError((error: string) =>
+            of(DexActions.lookUpTokenActionFailure({ message: error, tokenIn: action[0].tokenIn }))
+          )
         );
       })
     );

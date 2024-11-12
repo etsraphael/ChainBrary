@@ -42,3 +42,14 @@ export interface IPoolDetail {
   token2Amount: number;
   chainId: NetworkChainId;
 }
+
+export interface IERC20TokenAndBalancePayload {
+  chainId: NetworkChainId;
+  tokenAddress: string;
+  from: string;
+}
+
+export interface IERC20TokenAndBalanceResponse {
+  token: IToken;
+  balance: string;
+}

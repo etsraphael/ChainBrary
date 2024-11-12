@@ -1,5 +1,12 @@
 import { createAction, props } from '@ngrx/store';
-import { ILiquidityPayload, IPoolDetail, IPoolSearch, QuotePayload } from '../../../shared/interfaces';
+import {
+  IERC20TokenAndBalanceResponse,
+  ILiquidityPayload,
+  IPoolDetail,
+  IPoolSearch,
+  QuotePayload
+} from '../../../shared/interfaces';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
 export const createPoolActionSuccess = createAction(
@@ -47,11 +54,11 @@ export const resetSwapAction = createAction('[Swap] Reset Swap Actions');
 
 export const lookUpTokenAction = createAction(
   '[Swap] Look Up Token Actions',
-  props<{ address: string; tokenIn: boolean }>()
+  props<{ address: string; chainId: NetworkChainId; tokenIn: boolean }>()
 );
 export const lookUpTokenActionSuccess = createAction(
   '[Swap] Look Up Token Actions Success',
-  props<{ message: string; tokenIn: boolean }>()
+  props<{ result: IERC20TokenAndBalanceResponse }>()
 );
 export const lookUpTokenActionFailure = createAction(
   '[Swap] Look Up Token Actions Failure',

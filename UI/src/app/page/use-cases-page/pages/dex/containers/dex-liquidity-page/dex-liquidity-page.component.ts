@@ -76,7 +76,7 @@ export class DexLiquidityPageComponent implements OnInit {
 
   openTokensDialog(from: boolean): MatDialogRef<TokensDialogComponent> {
     const data: ITokensDialogData = {
-      chainIdSelected: NetworkChainId.POLYGON,
+      chainIdSelected: this.networkSelected.chainId,
       tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId
     };
 
