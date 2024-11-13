@@ -1,5 +1,5 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { IPoolDetail, StoreState } from '../../../shared/interfaces';
+import { IPoolDetail, IToken, StoreState } from '../../../shared/interfaces';
 import { ISwapState, SWAP_FEATURE_KEY } from './interfaces';
 
 export const selectSwapState = createFeatureSelector<ISwapState>(SWAP_FEATURE_KEY);
@@ -12,4 +12,9 @@ export const selectPoolIsNotCreated: MemoizedSelector<object, boolean> = createS
 export const selectPoolDetail: MemoizedSelector<object, StoreState<IPoolDetail | null>> = createSelector(
   selectSwapState,
   (s: ISwapState) => s.searchPool
+);
+
+export const selectTokenSearch: MemoizedSelector<object, StoreState<IToken | null>> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => s.tokenSearch
 );

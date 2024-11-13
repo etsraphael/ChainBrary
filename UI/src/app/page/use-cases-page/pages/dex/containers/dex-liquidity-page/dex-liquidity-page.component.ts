@@ -15,7 +15,11 @@ import {
 import { tokenList } from '../../../../../../shared/data/tokenList';
 import { ILiquidityPayload, IPoolDetail, IPoolSearch, IToken, StoreState } from '../../../../../../shared/interfaces';
 import { addLiquidityAction, createPoolAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
-import { selectPoolDetail, selectPoolIsNotCreated } from '../../../../../../store/swap-store/state/selectors';
+import {
+  selectPoolDetail,
+  selectPoolIsNotCreated,
+  selectTokenSearch
+} from '../../../../../../store/swap-store/state/selectors';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -77,7 +81,8 @@ export class DexLiquidityPageComponent implements OnInit {
   openTokensDialog(from: boolean): MatDialogRef<TokensDialogComponent> {
     const data: ITokensDialogData = {
       chainIdSelected: this.networkSelected.chainId,
-      tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId
+      tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId,
+      tokenSearch$: this.store.select(selectTokenSearch)
     };
 
     const dialogRef: MatDialogRef<TokensDialogComponent> = this.dialog.open(TokensDialogComponent, {
@@ -86,9 +91,7 @@ export class DexLiquidityPageComponent implements OnInit {
       data
     });
 
-    dialogRef.afterClosed().subscribe((tokenId: TokenId) => {
-      if (tokenId) this.handleTokenSelected(tokenId, from);
-    });
+    dialogRef.afterClosed().subscribe((token: IToken) => this.handleTokenSelected(token, from));
 
     return dialogRef;
   }
@@ -132,9 +135,7 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(loadPoolAction({ payload }));
   }
 
-  private handleTokenSelected(tokenId: TokenId, from: boolean): void {
-    const token: IToken | undefined = this.findTokenById(tokenId);
-    if (!token) return;
+  private handleTokenSelected(token: IToken, from: boolean): void {
     from ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
   }
 

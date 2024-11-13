@@ -85,7 +85,7 @@ export class SwapEffects {
           from: action[2]
         };
         return from(this.dexService.getERC20TokenAndBalance(payload)).pipe(
-          map((result: IERC20TokenAndBalanceResponse) => DexActions.lookUpTokenActionSuccess({ result })),
+          map((result: IERC20TokenAndBalanceResponse) => DexActions.lookUpTokenActionSuccess({ result })), // TODO: Use lookUpTokenActionSuccess to add the token to the store
           catchError((error: string) =>
             of(DexActions.lookUpTokenActionFailure({ message: error, tokenIn: action[0].tokenIn }))
           )

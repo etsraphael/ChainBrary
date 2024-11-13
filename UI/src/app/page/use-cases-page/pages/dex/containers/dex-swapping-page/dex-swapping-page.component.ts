@@ -3,7 +3,6 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
-import { swapAction } from 'src/app/store/swap-store/state/actions';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -14,6 +13,8 @@ import {
 } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
 import { IToken, QuotePayload } from './../../../../../../shared/interfaces';
+import { swapAction } from './../../../../../../store/swap-store/state/actions';
+import { selectTokenSearch } from './../../../../../../store/swap-store/state/selectors';
 
 @Component({
   selector: 'app-dex-swapping-page',
@@ -61,7 +62,8 @@ export class DexSwappingPageComponent {
   openTokensDialog(from: boolean): MatDialogRef<TokensDialogComponent> {
     const data: ITokensDialogData = {
       chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId,
-      tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId
+      tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId,
+      tokenSearch$: this.store.select(selectTokenSearch)
     };
 
     const dialogRef: MatDialogRef<TokensDialogComponent> = this.dialog.open(TokensDialogComponent, {
@@ -70,9 +72,7 @@ export class DexSwappingPageComponent {
       data
     });
 
-    dialogRef.afterClosed().subscribe((tokenId: TokenId) => {
-      if (tokenId) this.handleTokenSelected(tokenId, from);
-    });
+    dialogRef.afterClosed().subscribe((token: IToken) => this.handleTokenSelected(token, from));
 
     return dialogRef;
   }
@@ -92,9 +92,7 @@ export class DexSwappingPageComponent {
     this.store.dispatch(swapAction({ payload }));
   }
 
-  private handleTokenSelected(tokenId: TokenId, from: boolean): void {
-    const token: IToken | undefined = this.findTokenById(tokenId);
-    if (!token) return;
+  private handleTokenSelected(token: IToken, from: boolean): void {
     from ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
   }
 

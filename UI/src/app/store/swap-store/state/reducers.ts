@@ -1,5 +1,5 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { IPoolDetail } from '../../../shared/interfaces';
+import { IERC20TokenAndBalanceResponse, IPoolDetail } from '../../../shared/interfaces';
 import * as SwapActions from './actions';
 import { initialState } from './init';
 import { ISwapState } from './interfaces';
@@ -35,6 +35,39 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
     (state: ISwapState, { message }): ISwapState => ({
       ...state,
       searchPool: {
+        data: null,
+        loading: false,
+        error: message
+      }
+    })
+  ),
+  on(
+    SwapActions.lookUpTokenAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      tokenSearch: {
+        data: null,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.lookUpTokenActionSuccess,
+    (state: ISwapState, action: { result: IERC20TokenAndBalanceResponse }): ISwapState => ({
+      ...state,
+      tokenSearch: {
+        data: action.result.token,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.lookUpTokenActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      tokenSearch: {
         data: null,
         loading: false,
         error: message

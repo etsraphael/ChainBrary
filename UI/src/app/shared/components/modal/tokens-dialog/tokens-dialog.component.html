@@ -13,7 +13,7 @@
           <div
             class="btn btn-light btn-token w-100 d-flex align-items-center p-3"
             [ngClass]="{ active: isSelected(token.tokenId) }"
-            (click)="tokenSelected(token.tokenId)"
+            (click)="tokenSelected(token)"
           >
             <span class="ms-3">{{ token.name }}</span>
             <span class="ms-auto text-muted">{{ token.symbol }}</span>

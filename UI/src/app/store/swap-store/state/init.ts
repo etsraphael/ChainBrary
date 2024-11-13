@@ -9,5 +9,10 @@ export const initialState: ISwapState = {
     data: null,
     loading: false,
     error: null
+  },
+  tokenSearch: {
+    data: null,
+    loading: false,
+    error: null
   }
 };
