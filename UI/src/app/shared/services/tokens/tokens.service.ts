@@ -14,6 +14,7 @@ import { tokenList } from '../../data/tokenList';
 import {
   IReceiptTransaction,
   IToken,
+  ITokenAndBalance,
   SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
@@ -32,6 +33,10 @@ export class TokensService {
   getTokensListed(): IToken[] {
     return tokenList;
   }
+
+  // getTokenAndBalance(payload: IBalancePayload, ): Promise<ITokenAndBalance> {
+
+  // }
 
   getBalanceOfAddress(payload: IBalancePayload): Promise<number> {
     return this.erc20Service.getBalance(payload);

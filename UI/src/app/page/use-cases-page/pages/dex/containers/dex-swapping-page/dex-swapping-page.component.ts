@@ -72,7 +72,7 @@ export class DexSwappingPageComponent {
       data
     });
 
-    dialogRef.afterClosed().subscribe((token: IToken) => this.handleTokenSelected(token, from));
+    dialogRef.afterClosed().subscribe((token: IToken | null) => (token ? this.handleTokenSelected(token, from) : null));
 
     return dialogRef;
   }

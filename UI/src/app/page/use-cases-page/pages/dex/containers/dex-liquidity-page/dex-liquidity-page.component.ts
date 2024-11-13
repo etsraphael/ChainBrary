@@ -91,7 +91,12 @@ export class DexLiquidityPageComponent implements OnInit {
       data
     });
 
-    dialogRef.afterClosed().subscribe((token: IToken) => this.handleTokenSelected(token, from));
+    dialogRef
+      .afterClosed()
+      .pipe()
+      .subscribe((token: IToken | null) => {
+        token ? this.handleTokenSelected(token, from) : null;
+      });
 
     return dialogRef;
   }
