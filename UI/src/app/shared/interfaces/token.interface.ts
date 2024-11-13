@@ -26,3 +26,8 @@ export interface INativeToken {
   name: string;
   symbol: string;
 }
+
+export interface ITokenAndBalance {
+  token: IToken;
+  balance: string;
+}

@@ -5,7 +5,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
-import { IERC20TokenAndBalancePayload, IERC20TokenAndBalanceResponse, IPoolDetail } from '../../../shared/interfaces';
+import { IERC20TokenAndBalancePayload, IPoolDetail, ITokenAndBalance } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
@@ -84,8 +84,8 @@ export class SwapEffects {
           tokenAddress: action[0].address,
           from: action[2]
         };
-        return from(this.dexService.getERC20TokenAndBalance(payload)).pipe(
-          map((result: IERC20TokenAndBalanceResponse) => DexActions.lookUpTokenActionSuccess({ result })), // TODO: Use lookUpTokenActionSuccess to add the token to the store
+        return from(this.dexService.getERC20TokenByAddress(payload)).pipe(
+          map((result: ITokenAndBalance) => DexActions.lookUpTokenActionSuccess({ result })),
           catchError((error: string) =>
             of(DexActions.lookUpTokenActionFailure({ message: error, tokenIn: action[0].tokenIn }))
           )

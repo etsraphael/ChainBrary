@@ -9,10 +9,9 @@ import {
   SwapRouterObjectResponse
 } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { IToken, ITokenContract } from '../../interfaces';
+import { IToken, ITokenAndBalance, ITokenContract } from '../../interfaces';
 import {
   IERC20TokenAndBalancePayload,
-  IERC20TokenAndBalanceResponse,
   ILiquidityPayload,
   IPoolDetail,
   IPoolSearch,
@@ -122,7 +121,7 @@ export class DexService {
       });
   }
 
-  async getERC20TokenAndBalance(payload: IERC20TokenAndBalancePayload): Promise<IERC20TokenAndBalanceResponse> {
+  async getERC20TokenByAddress(payload: IERC20TokenAndBalancePayload): Promise<ITokenAndBalance> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
 
@@ -134,7 +133,6 @@ export class DexService {
     try {
       const name = (await contractFragment.methods['name']().call()) as string;
       const symbol = (await contractFragment.methods['symbol']().call()) as string;
-      // const allowance = await contractFragment.methods['allowance'](payload.from, payload.poolAddress).call();
       const balance = (await contractFragment.methods['balanceOf'](payload.from).call()) as string;
 
       const token: IToken = {
@@ -145,17 +143,8 @@ export class DexService {
         networkSupport: [{ chainId: payload.chainId, address: payload.tokenAddress, priceFeed: [] }]
       };
 
-      console.log('name:', name);
-      console.log('symbol:', symbol);
-      // console.log('allowance:', allowance);
-      console.log('balance:', balance);
-
-      return {
-        token,
-        balance: web3.utils.fromWei(balance, 'ether')
-      };
+      return { token, balance: web3.utils.fromWei(balance, 'ether') };
     } catch (error) {
-      console.error('Error retrieving ERC20 details:', error);
       return Promise.reject(error);
     }
   }

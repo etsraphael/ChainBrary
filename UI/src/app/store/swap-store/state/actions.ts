@@ -1,9 +1,9 @@
 import { createAction, props } from '@ngrx/store';
 import {
-  IERC20TokenAndBalanceResponse,
   ILiquidityPayload,
   IPoolDetail,
   IPoolSearch,
+  ITokenAndBalance,
   QuotePayload
 } from '../../../shared/interfaces';
 import { NetworkChainId } from '@chainbrary/web3-login';
@@ -58,7 +58,7 @@ export const lookUpTokenAction = createAction(
 );
 export const lookUpTokenActionSuccess = createAction(
   '[Swap] Look Up Token Actions Success',
-  props<{ result: IERC20TokenAndBalanceResponse }>()
+  props<{ result: ITokenAndBalance }>()
 );
 export const lookUpTokenActionFailure = createAction(
   '[Swap] Look Up Token Actions Failure',

@@ -48,8 +48,3 @@ export interface IERC20TokenAndBalancePayload {
   tokenAddress: string;
   from: string;
 }
-
-export interface IERC20TokenAndBalanceResponse {
-  token: IToken;
-  balance: string;
-}
