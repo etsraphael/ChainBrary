@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
@@ -18,7 +17,6 @@ export class SwapEffects {
     private actions$: Actions,
     private web3LoginService: Web3LoginService,
     private readonly store: Store,
-    private router: Router,
     private dexService: DexService,
     private tokensService: TokensService
   ) {}
@@ -112,6 +110,28 @@ export class SwapEffects {
           catchError((error: string) =>
             of(DexActions.loadBalanceAndAllowanceActionFailure({ message: error, tokenIn: action[0].payload.tokenIn }))
           )
+        );
+      })
+    );
+  });
+
+  approveAllowance$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.approveAllowanceAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (payload: [ReturnType<typeof DexActions.approveAllowanceAction>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DexActions.approveAllowanceAction>, WalletProvider, string]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap((action: [ReturnType<typeof DexActions.approveAllowanceAction>, WalletProvider, string]) => {
+        return from(this.tokensService.approve(action[0].payload)).pipe(
+          map((result: boolean) =>
+            result
+              ? DexActions.approveAllowanceActionSuccess()
+              : DexActions.approveAllowanceActionFailure({ message: 'Failed to approve allowance' })
+          ),
+          catchError((error: string) => of(DexActions.approveAllowanceActionFailure({ message: error })))
         );
       })
     );

@@ -1,3 +1,4 @@
+import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import {
@@ -9,6 +10,18 @@ import {
   IToken,
   QuotePayload
 } from '../../../shared/interfaces';
+
+export const approveAllowanceAction = createAction(
+  '[Swap] Approve Allowance Actions',
+  props<{ payload: IEditAllowancePayload }>()
+);
+export const approveAllowanceActionSuccess = createAction(
+  '[Swap] Approve Allowance Actions Success'
+);
+export const approveAllowanceActionFailure = createAction(
+  '[Swap] Approve Allowance Actions Failure',
+  props<{ message: string }>()
+);
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
 export const createPoolActionSuccess = createAction(

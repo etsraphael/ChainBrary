@@ -24,6 +24,7 @@ import {
 } from '../../../../../../shared/interfaces';
 import {
   addLiquidityAction,
+  approveAllowanceAction,
   createPoolAction,
   loadBalanceAndAllowanceAction,
   loadPoolAction
@@ -34,6 +35,7 @@ import {
   selectTokensDetails,
   selectTokenSearch
 } from '../../../../../../store/swap-store/state/selectors';
+import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -43,10 +45,6 @@ import {
 export class DexLiquidityPageComponent implements OnInit {
   networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST);
   tokenPath: IToken[] = [this.findTokenById('usdc') as IToken, this.findTokenById('chainlink') as IToken];
-
-  totalLiquidity1: number = 9577.514455;
-  totalLiquidity2: number = 10831937.7876;
-
   liquidityForm: FormGroup<ILiquidityForm> = new FormGroup<ILiquidityForm>({
     token1Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),
     token2Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)])
@@ -80,6 +78,22 @@ export class DexLiquidityPageComponent implements OnInit {
   get token2Available$(): Observable<BalanceAndAllowance | null> {
     return this.selectTokensDetails$.pipe(
       map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[1]?.data || null)
+    );
+  }
+
+  get allowance1Needed$(): Observable<boolean> {
+    return this.token1Available$.pipe(
+      map((balanceAndAllowance: BalanceAndAllowance | null) => {
+        return Number(balanceAndAllowance?.allowance) < Number(this.liquidityForm.get('token1Amount')?.value);
+      })
+    );
+  }
+
+  get allowance2Needed$(): Observable<boolean> {
+    return this.token2Available$.pipe(
+      map((balanceAndAllowance: BalanceAndAllowance | null) => {
+        return Number(balanceAndAllowance?.allowance) < Number(this.liquidityForm.get('token2Amount')?.value);
+      })
     );
   }
 
@@ -154,6 +168,22 @@ export class DexLiquidityPageComponent implements OnInit {
       chainId: this.networkSelected.chainId
     };
     return this.store.dispatch(createPoolAction({ payload }));
+  }
+
+  approveToken(token: IToken):  void {
+    const amount = this.liquidityForm.get('token1Amount')?.value as number;
+
+    const payload: IEditAllowancePayload = {
+      chainId: this.networkSelected.chainId,
+      tokenAddress: token.networkSupport.find(
+        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+      )?.address as string,
+      owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+      spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
+      amount
+    };
+
+    this.store.dispatch(approveAllowanceAction({ payload }));
   }
 
   private loadPool(): void {
