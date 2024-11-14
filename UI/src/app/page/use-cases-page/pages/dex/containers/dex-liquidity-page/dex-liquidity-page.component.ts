@@ -13,11 +13,12 @@ import {
   TokensDialogComponent
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from '../../../../../../shared/data/tokenList';
-import { ILiquidityPayload, IPoolDetail, IPoolSearch, IToken, StoreState } from '../../../../../../shared/interfaces';
-import { addLiquidityAction, createPoolAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
+import { BalanceAndAllowance, IBalanceAndAllowancePayload, ILiquidityPayload, IPoolDetail, IPoolSearch, IToken, StoreState } from '../../../../../../shared/interfaces';
+import { addLiquidityAction, createPoolAction, loadBalanceAndAllowanceAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
 import {
   selectPoolDetail,
   selectPoolIsNotCreated,
+  selectTokensDetails,
   selectTokenSearch
 } from '../../../../../../store/swap-store/state/selectors';
 
@@ -29,8 +30,7 @@ import {
 export class DexLiquidityPageComponent implements OnInit {
   networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST);
   tokenPath: IToken[] = [this.findTokenById('usdc') as IToken, this.findTokenById('chainlink') as IToken];
-  token1Available: number = 500;
-  token2Available: number = 1200;
+
   totalLiquidity1: number = 9577.514455;
   totalLiquidity2: number = 10831937.7876;
 
@@ -47,6 +47,7 @@ export class DexLiquidityPageComponent implements OnInit {
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
+  readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> = this.store.select(selectTokensDetails);
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -54,6 +55,14 @@ export class DexLiquidityPageComponent implements OnInit {
 
   get poolIsLoading$(): Observable<boolean> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.loading));
+  }
+
+  get token1Available(): Observable<number> {
+    return this.selectTokensDetails$.pipe(map((storeState: StoreState<BalanceAndAllowance | null>[]) => Number(storeState[0]?.data?.balance)));
+  }
+
+  get token2Available(): Observable<number> {
+    return this.selectTokensDetails$.pipe(map((storeState: StoreState<BalanceAndAllowance | null>[]) => Number(storeState[1]?.data?.balance)));
   }
 
   ngOnInit(): void {
@@ -142,6 +151,16 @@ export class DexLiquidityPageComponent implements OnInit {
 
   private handleTokenSelected(token: IToken, from: boolean): void {
     from ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
+
+    const payload: IBalanceAndAllowancePayload = {
+      chainId: this.networkSelected.chainId,
+      tokenId: token.tokenId,
+      from: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
+      to: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)?.address as string,
+      tokenIn: from
+    }
+
+    this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
   }
 
   private handleNetworkSelected(chainId: NetworkChainId): void {

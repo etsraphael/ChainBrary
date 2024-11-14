@@ -31,3 +31,18 @@ export interface ITokenAndBalance {
   token: IToken;
   balance: string;
 }
+
+export interface BalanceAndAllowance {
+  tokenId: TokenId| string;
+  balance: string;
+  allowance: string;
+  tokenIn: boolean;
+}
+
+export interface IBalanceAndAllowancePayload {
+  chainId: NetworkChainId;
+  tokenId: TokenId| string;
+  from: string;
+  to: string;
+  tokenIn: boolean;
+}

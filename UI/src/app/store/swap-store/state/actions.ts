@@ -1,5 +1,7 @@
 import { createAction, props } from '@ngrx/store';
 import {
+  BalanceAndAllowance,
+  IBalanceAndAllowancePayload,
   ILiquidityPayload,
   IPoolDetail,
   IPoolSearch,
@@ -36,6 +38,19 @@ export const loadQuoteActionFailure = createAction('[Swap] Load Quote Actions Fa
 export const loadPoolAction = createAction('[Swap] Load Pool Actions', props<{ payload: IPoolSearch }>());
 export const loadPoolActionSuccess = createAction('[Swap] Load Pool Actions Success', props<{ result: IPoolDetail }>());
 export const loadPoolActionFailure = createAction('[Swap] Load Pool Actions Failure', props<{ message: string }>());
+
+export const loadBalanceAndAllowanceAction = createAction(
+  '[Swap] Load Balance and Allowance Actions',
+  props<{ payload: IBalanceAndAllowancePayload }>()
+);
+export const loadBalanceAndAllowanceActionSuccess = createAction(
+  '[Swap] Load Balance and Allowance Actions Success',
+  props<{ result: BalanceAndAllowance }>()
+);
+export const loadBalanceAndAllowanceActionFailure = createAction(
+  '[Swap] Load Balance and Allowance Actions Failure',
+  props<{ message: string, tokenIn: boolean }>()
+);
 
 export const removeLiquidityAction = createAction(
   '[Swap] Remove Liquidity Actions',

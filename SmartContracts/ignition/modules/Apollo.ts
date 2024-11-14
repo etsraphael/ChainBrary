@@ -98,7 +98,7 @@ function deployDocumentLocker(m: any) {
 }
 
 function deployCustomERC20Token(m: any, name: string, symbol: string, id: string) {
-  const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', name, symbol, 18, true, true, true, [], []], { id });
+  const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', name, symbol, ethers.parseUnits('21000000', 'ether'), true, true, true, [], []], { id });
   return customERC20Token;
 }
 

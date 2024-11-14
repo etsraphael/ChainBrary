@@ -1,5 +1,5 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { IPoolDetail, ITokenAndBalance } from '../../../shared/interfaces';
+import { BalanceAndAllowance, IBalanceAndAllowancePayload, IPoolDetail, ITokenAndBalance } from '../../../shared/interfaces';
 import * as SwapActions from './actions';
 import { initialState } from './init';
 import { ISwapState } from './interfaces';
@@ -73,7 +73,41 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         error: message
       }
     })
+  ),
+  on(
+    SwapActions.loadBalanceAndAllowanceAction,
+    (state: ISwapState, action: { payload: IBalanceAndAllowancePayload }): ISwapState => ({
+      ...state,
+      [action.payload.tokenIn ? 'token0Detail' : 'token1Detail']: {
+        data: null,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.loadBalanceAndAllowanceActionSuccess,
+    (state: ISwapState, action: { result: BalanceAndAllowance }): ISwapState => ({
+      ...state,
+      [action.result.tokenIn ? 'token0Detail' : 'token1Detail']: {
+        data: action.result,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.loadBalanceAndAllowanceActionFailure,
+    (state: ISwapState, { message, tokenIn }): ISwapState => ({
+      ...state,
+      [tokenIn ? 'token0Detail' : 'token1Detail']: {
+        data: null,
+        loading: false,
+        error: message
+      }
+    })
   )
+
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {

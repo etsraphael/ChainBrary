@@ -5,8 +5,14 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
-import { IERC20TokenAndBalancePayload, IPoolDetail, ITokenAndBalance } from '../../../shared/interfaces';
+import {
+  BalanceAndAllowance,
+  IERC20TokenAndBalancePayload,
+  IPoolDetail,
+  ITokenAndBalance
+} from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
+import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import * as DexActions from './actions';
@@ -18,7 +24,8 @@ export class SwapEffects {
     private web3LoginService: Web3LoginService,
     private readonly store: Store,
     private router: Router,
-    private dexService: DexService
+    private dexService: DexService,
+    private tokensService: TokensService
   ) {}
 
   loadPool$ = createEffect(() => {
@@ -89,6 +96,25 @@ export class SwapEffects {
           catchError((error: string) =>
             of(DexActions.lookUpTokenActionFailure({ message: error, tokenIn: action[0].tokenIn }))
           )
+        );
+      })
+    );
+  });
+
+  loadBalanceAndAllowance$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.loadBalanceAndAllowanceAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (
+          payload: [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider | null, string | null]
+        ) => payload as [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider, string]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap((action: [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider, string]) => {
+        return from(this.tokensService.getBalanceAndAllowance(action[0].payload)).pipe(
+          map((result: BalanceAndAllowance) => DexActions.loadBalanceAndAllowanceActionSuccess({ result })),
+          catchError((error: string) => of(DexActions.loadBalanceAndAllowanceActionFailure({ message: error, tokenIn: action[0].payload.tokenIn })))
         );
       })
     );

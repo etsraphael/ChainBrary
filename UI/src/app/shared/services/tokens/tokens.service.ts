@@ -12,14 +12,16 @@ import { AbiItem } from 'web3-utils';
 import { ERC20TokenContract, TransactionBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import {
+  BalanceAndAllowance,
+  IBalanceAndAllowancePayload,
   IReceiptTransaction,
   IToken,
-  ITokenAndBalance,
   SendNativeTokenPayload,
   SendTransactionTokenBridgePayload,
   TransactionTokenBridgePayload
 } from '../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
+import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,16 +29,37 @@ import { WalletService } from '../wallet/wallet.service';
 export class TokensService {
   constructor(
     private erc20Service: Erc20Service,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private web3ProviderService: Web3ProviderService
   ) {}
 
   getTokensListed(): IToken[] {
     return tokenList;
   }
 
-  // getTokenAndBalance(payload: IBalancePayload, ): Promise<ITokenAndBalance> {
+  async getBalanceAndAllowance(payload: IBalanceAndAllowancePayload): Promise<BalanceAndAllowance> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const erc20Contract = new ERC20TokenContract(payload.chainId, '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9');
 
-  // }
+    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+      erc20Contract.getAbi() as AbiItem[],
+      erc20Contract.getAddress()
+    );
+
+    try {
+      const balance = (await contractFragment.methods['balanceOf'](payload.from).call()) as string;
+      const allowance = (await contractFragment.methods['allowance'](payload.from, payload.to).call()) as string;
+
+      return {
+        tokenId: payload.tokenId,
+        balance: web3.utils.fromWei(balance, 'ether'),
+        allowance: web3.utils.fromWei(allowance, 'ether'),
+        tokenIn: payload.tokenIn
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
 
   getBalanceOfAddress(payload: IBalancePayload): Promise<number> {
     return this.erc20Service.getBalance(payload);

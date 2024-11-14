@@ -14,5 +14,15 @@ export const initialState: ISwapState = {
     data: null,
     loading: false,
     error: null
+  },
+  token0Detail: {
+    data: null,
+    loading: false,
+    error: null
+  },
+  token1Detail: {
+    data: null,
+    loading: false,
+    error: null
   }
 };
