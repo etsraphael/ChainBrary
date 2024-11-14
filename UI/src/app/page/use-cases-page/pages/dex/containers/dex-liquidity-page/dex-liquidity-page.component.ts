@@ -13,8 +13,21 @@ import {
   TokensDialogComponent
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from '../../../../../../shared/data/tokenList';
-import { BalanceAndAllowance, IBalanceAndAllowancePayload, ILiquidityPayload, IPoolDetail, IPoolSearch, IToken, StoreState } from '../../../../../../shared/interfaces';
-import { addLiquidityAction, createPoolAction, loadBalanceAndAllowanceAction, loadPoolAction } from '../../../../../../store/swap-store/state/actions';
+import {
+  BalanceAndAllowance,
+  IBalanceAndAllowancePayload,
+  ILiquidityPayload,
+  IPoolDetail,
+  IPoolSearch,
+  IToken,
+  StoreState
+} from '../../../../../../shared/interfaces';
+import {
+  addLiquidityAction,
+  createPoolAction,
+  loadBalanceAndAllowanceAction,
+  loadPoolAction
+} from '../../../../../../store/swap-store/state/actions';
 import {
   selectPoolDetail,
   selectPoolIsNotCreated,
@@ -47,7 +60,8 @@ export class DexLiquidityPageComponent implements OnInit {
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
-  readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> = this.store.select(selectTokensDetails);
+  readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
+    this.store.select(selectTokensDetails);
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -57,12 +71,16 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.loading));
   }
 
-  get token1Available(): Observable<number> {
-    return this.selectTokensDetails$.pipe(map((storeState: StoreState<BalanceAndAllowance | null>[]) => Number(storeState[0]?.data?.balance)));
+  get token1Available(): Observable<BalanceAndAllowance | null> {
+    return this.selectTokensDetails$.pipe(
+      map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[0]?.data || null)
+    );
   }
 
-  get token2Available(): Observable<number> {
-    return this.selectTokensDetails$.pipe(map((storeState: StoreState<BalanceAndAllowance | null>[]) => Number(storeState[1]?.data?.balance)));
+  get token2Available(): Observable<BalanceAndAllowance | null> {
+    return this.selectTokensDetails$.pipe(
+      map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[1]?.data || null)
+    );
   }
 
   ngOnInit(): void {
@@ -156,9 +174,10 @@ export class DexLiquidityPageComponent implements OnInit {
       chainId: this.networkSelected.chainId,
       tokenId: token.tokenId,
       from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-      to: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)?.address as string,
+      to: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+        ?.address as string,
       tokenIn: from
-    }
+    };
 
     this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
   }

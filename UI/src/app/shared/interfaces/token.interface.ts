@@ -33,7 +33,7 @@ export interface ITokenAndBalance {
 }
 
 export interface BalanceAndAllowance {
-  tokenId: TokenId| string;
+  tokenId: TokenId | string;
   balance: string;
   allowance: string;
   tokenIn: boolean;
@@ -41,7 +41,7 @@ export interface BalanceAndAllowance {
 
 export interface IBalanceAndAllowancePayload {
   chainId: NetworkChainId;
-  tokenId: TokenId| string;
+  tokenId: TokenId | string;
   from: string;
   to: string;
   tokenIn: boolean;

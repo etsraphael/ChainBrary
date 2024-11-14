@@ -1,3 +1,4 @@
+import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import {
   BalanceAndAllowance,
@@ -5,10 +6,9 @@ import {
   ILiquidityPayload,
   IPoolDetail,
   IPoolSearch,
-  ITokenAndBalance,
+  IToken,
   QuotePayload
 } from '../../../shared/interfaces';
-import { NetworkChainId } from '@chainbrary/web3-login';
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
 export const createPoolActionSuccess = createAction(
@@ -49,7 +49,7 @@ export const loadBalanceAndAllowanceActionSuccess = createAction(
 );
 export const loadBalanceAndAllowanceActionFailure = createAction(
   '[Swap] Load Balance and Allowance Actions Failure',
-  props<{ message: string, tokenIn: boolean }>()
+  props<{ message: string; tokenIn: boolean }>()
 );
 
 export const removeLiquidityAction = createAction(
@@ -73,7 +73,7 @@ export const lookUpTokenAction = createAction(
 );
 export const lookUpTokenActionSuccess = createAction(
   '[Swap] Look Up Token Actions Success',
-  props<{ result: ITokenAndBalance }>()
+  props<{ result: IToken }>()
 );
 export const lookUpTokenActionFailure = createAction(
   '[Swap] Look Up Token Actions Failure',

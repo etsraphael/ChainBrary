@@ -18,8 +18,8 @@
               {{ tokenPath[0].symbol }}
               <i class="bi bi-chevron-down"></i>
             </span>
-            <mat-hint>
-              <span class="text-muted">Available: {{ (token1Available | async) }}</span>
+            <mat-hint *ngIf="token1Available | async; let t">
+              <span class="text-muted">Available: {{ t.balance }}</span>
             </mat-hint>
           </mat-form-field>
         </div>
@@ -38,8 +38,8 @@
               {{ tokenPath[1].symbol }}
               <i class="bi bi-chevron-down"></i>
             </span>
-            <mat-hint>
-              <span class="text-muted">Available: {{ (token2Available|async) }}</span>
+            <mat-hint *ngIf="token2Available | async; let t">
+              <span class="text-muted">Available: {{ t.balance }}</span>
             </mat-hint>
           </mat-form-field>
         </div>

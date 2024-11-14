@@ -1,5 +1,5 @@
 import { Action, ActionReducer, createReducer, on } from '@ngrx/store';
-import { BalanceAndAllowance, IBalanceAndAllowancePayload, IPoolDetail, ITokenAndBalance } from '../../../shared/interfaces';
+import { BalanceAndAllowance, IBalanceAndAllowancePayload, IPoolDetail } from '../../../shared/interfaces';
 import * as SwapActions from './actions';
 import { initialState } from './init';
 import { ISwapState } from './interfaces';
@@ -54,10 +54,10 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   ),
   on(
     SwapActions.lookUpTokenActionSuccess,
-    (state: ISwapState, action: { result: ITokenAndBalance }): ISwapState => ({
+    (state: ISwapState, action): ISwapState => ({
       ...state,
       tokenSearch: {
-        data: action.result.token,
+        data: action.result,
         loading: false,
         error: null
       }
@@ -107,7 +107,6 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
       }
     })
   )
-
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {

@@ -1,22 +1,10 @@
 import { Injectable } from '@angular/core';
 import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
-import {
-  ERC20TokenContract,
-  PoolContract,
-  PoolDetailObjectResponse,
-  SwapRouterContract,
-  SwapRouterObjectResponse
-} from '../../contracts';
+import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { IToken, ITokenAndBalance, ITokenContract } from '../../interfaces';
-import {
-  IERC20TokenAndBalancePayload,
-  ILiquidityPayload,
-  IPoolDetail,
-  IPoolSearch,
-  SwapPayload
-} from '../../interfaces/swap.interface';
+import { ITokenContract } from '../../interfaces';
+import { ILiquidityPayload, IPoolDetail, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
@@ -119,34 +107,6 @@ export class DexService {
         console.log(error);
         return Promise.reject(error);
       });
-  }
-
-  async getERC20TokenByAddress(payload: IERC20TokenAndBalancePayload): Promise<ITokenAndBalance> {
-    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
-    const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
-
-    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
-      erc20Contract.getAbi() as AbiItem[],
-      erc20Contract.getAddress()
-    );
-
-    try {
-      const name = (await contractFragment.methods['name']().call()) as string;
-      const symbol = (await contractFragment.methods['symbol']().call()) as string;
-      const balance = (await contractFragment.methods['balanceOf'](payload.from).call()) as string;
-
-      const token: IToken = {
-        tokenId: payload.tokenAddress,
-        decimals: 18,
-        name,
-        symbol,
-        networkSupport: [{ chainId: payload.chainId, address: payload.tokenAddress, priceFeed: [] }]
-      };
-
-      return { token, balance: web3.utils.fromWei(balance, 'ether') };
-    } catch (error) {
-      return Promise.reject(error);
-    }
   }
 
   // TODO: Currently working, but need to replace the hardcoded addresses
