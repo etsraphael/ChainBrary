@@ -15,9 +15,7 @@ export const approveAllowanceAction = createAction(
   '[Swap] Approve Allowance Actions',
   props<{ payload: IEditAllowancePayload }>()
 );
-export const approveAllowanceActionSuccess = createAction(
-  '[Swap] Approve Allowance Actions Success'
-);
+export const approveAllowanceActionSuccess = createAction('[Swap] Approve Allowance Actions Success');
 export const approveAllowanceActionFailure = createAction(
   '[Swap] Approve Allowance Actions Failure',
   props<{ message: string }>()

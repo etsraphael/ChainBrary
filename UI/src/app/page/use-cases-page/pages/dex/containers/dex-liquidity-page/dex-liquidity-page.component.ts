@@ -100,7 +100,7 @@ export class DexLiquidityPageComponent implements OnInit {
   ngOnInit(): void {
     this.loadPool();
 
-    this.token1Available$.subscribe(console.log) // TODO: Remove this after testing
+    this.token1Available$.subscribe(console.log); // TODO: Remove this after testing
   }
 
   openNetworkDialog(): MatDialogRef<NetworkDialogComponent> {
@@ -170,14 +170,13 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(createPoolAction({ payload }));
   }
 
-  approveToken(token: IToken):  void {
+  approveToken(token: IToken): void {
     const amount = this.liquidityForm.get('token1Amount')?.value as number;
 
     const payload: IEditAllowancePayload = {
       chainId: this.networkSelected.chainId,
-      tokenAddress: token.networkSupport.find(
-        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string,
+      tokenAddress: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+        ?.address as string,
       owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
       spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
       amount
@@ -206,8 +205,9 @@ export class DexLiquidityPageComponent implements OnInit {
       chainId: this.networkSelected.chainId,
       tokenId: token.tokenId,
       from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-      to: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+      tokenAddress: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
         ?.address as string,
+      spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
       tokenIn: from
     };
 

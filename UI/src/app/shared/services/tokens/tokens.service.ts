@@ -240,7 +240,7 @@ export class TokensService {
 
     try {
       const balance = (await contractFragment.methods['balanceOf'](payload.from).call()) as string;
-      const allowance = (await contractFragment.methods['allowance'](payload.from, payload.to).call()) as string;
+      const allowance = (await contractFragment.methods['allowance'](payload.from, payload.spender).call()) as string;
 
       return {
         tokenId: payload.tokenId,

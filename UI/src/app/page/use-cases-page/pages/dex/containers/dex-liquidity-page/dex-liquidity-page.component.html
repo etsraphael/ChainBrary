@@ -70,16 +70,33 @@
         </div>
 
         <!-- Add Liquidity Button -->
-        <ng-container *ngIf="(poolIsNotCreated$ | async) === false && ((allowance1Needed$|async) === false && (allowance2Needed$|async) === false)">
+        <ng-container
+          *ngIf="
+            (poolIsNotCreated$ | async) === false &&
+            (allowance1Needed$ | async) === false && (allowance2Needed$ | async) === false
+          "
+        >
           <button class="btn btn-primary w-100 mb-4" type="submit" (click)="addLiquidity()">Add Liquidity</button>
         </ng-container>
 
         <!-- Approval Buttons -->
-        <ng-container *ngIf="(allowance1Needed$|async) ||  (allowance2Needed$|async)">
-          <button *ngIf="(allowance1Needed$|async)" class="btn btn-primary w-100 mb-2" type="submit"
-            (click)="approveToken(tokenPath[0])">Approve {{ tokenPath[0].symbol }}</button>
-          <button *ngIf="(allowance2Needed$|async)" class="btn btn-primary w-100 mb-4" type="submit"
-            (click)="approveToken(tokenPath[0])">Approve {{ tokenPath[1].symbol }}</button>
+        <ng-container *ngIf="(allowance1Needed$ | async) || (allowance2Needed$ | async)">
+          <button
+            *ngIf="allowance1Needed$ | async"
+            class="btn btn-primary w-100 mb-2"
+            type="submit"
+            (click)="approveToken(tokenPath[0])"
+          >
+            Approve {{ tokenPath[0].symbol }}
+          </button>
+          <button
+            *ngIf="allowance2Needed$ | async"
+            class="btn btn-primary w-100 mb-4"
+            type="submit"
+            (click)="approveToken(tokenPath[0])"
+          >
+            Approve {{ tokenPath[1].symbol }}
+          </button>
         </ng-container>
 
         <!-- Create Pool Button -->
