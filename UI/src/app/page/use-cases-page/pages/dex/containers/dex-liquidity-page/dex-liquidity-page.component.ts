@@ -71,13 +71,13 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.loading));
   }
 
-  get token1Available(): Observable<BalanceAndAllowance | null> {
+  get token1Available$(): Observable<BalanceAndAllowance | null> {
     return this.selectTokensDetails$.pipe(
       map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[0]?.data || null)
     );
   }
 
-  get token2Available(): Observable<BalanceAndAllowance | null> {
+  get token2Available$(): Observable<BalanceAndAllowance | null> {
     return this.selectTokensDetails$.pipe(
       map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[1]?.data || null)
     );
@@ -85,6 +85,8 @@ export class DexLiquidityPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPool();
+
+    this.token1Available$.subscribe(console.log) // TODO: Remove this after testing
   }
 
   openNetworkDialog(): MatDialogRef<NetworkDialogComponent> {
