@@ -93,7 +93,7 @@
             *ngIf="allowance1Needed$ | async"
             class="btn btn-primary w-100 mb-2"
             type="submit"
-            (click)="approveToken(tokenPath[0], true)"
+            (click)="approveToken(true)"
           >
             Approve {{ tokenPath[0].symbol }}
           </button>
@@ -101,7 +101,7 @@
             *ngIf="allowance2Needed$ | async"
             class="btn btn-primary w-100 mb-4"
             type="submit"
-            (click)="approveToken(tokenPath[0], false)"
+            (click)="approveToken(false)"
           >
             Approve {{ tokenPath[1].symbol }}
           </button>

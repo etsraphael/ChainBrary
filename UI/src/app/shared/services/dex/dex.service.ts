@@ -73,6 +73,8 @@ export class DexService {
 
   async addLiquidity(from: string, payload: ILiquidityPayload): Promise<string> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    console.log('from', from);
+    console.log('payload', payload);
 
     return this.getPool({
       chainId: payload.chainId,
@@ -89,9 +91,13 @@ export class DexService {
         const amount0 = web3.utils.toWei('1', 'ether');
         const amount1 = web3.utils.toWei('1', 'ether');
 
+        console.log('starting add liquidity');
+
         const gasEstimate: bigint = await poolFragment.methods['addLiquidity'](amount0, amount1).estimateGas({
-          from: res.id
+          from
         });
+
+        console.log('gasEstimate', gasEstimate.toString());
 
         return poolFragment.methods['addLiquidity'](amount0, amount1)
           .send({

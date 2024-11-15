@@ -171,7 +171,7 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(createPoolAction({ payload }));
   }
 
-  approveToken(token: IToken, tokenIn: boolean): void {
+  approveToken(tokenIn: boolean): void {
     const amount = tokenIn
       ? (this.liquidityForm.get('token1Amount')?.value as number)
       : (this.liquidityForm.get('token2Amount')?.value as number);

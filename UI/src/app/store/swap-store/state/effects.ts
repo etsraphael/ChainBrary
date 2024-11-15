@@ -61,7 +61,7 @@ export class SwapEffects {
           payload as [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider, string]
       ),
       switchMap((action: [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider, string]) => {
-        return from(this.dexService.addLiquidity(action[1], action[0].payload)).pipe(
+        return from(this.dexService.addLiquidity(action[2], action[0].payload)).pipe(
           map((result: string) => DexActions.addLiquidityActionSuccess({ message: result })),
           catchError((error: string) => of(DexActions.addLiquidityActionFailure({ message: error })))
         );
