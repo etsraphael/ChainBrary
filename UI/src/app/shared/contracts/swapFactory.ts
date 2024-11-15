@@ -14,7 +14,7 @@ export class SwapFactoryContract extends BaseContract {
   }
 
   getAddress(): string {
-    const contractLink: IContract = environment.contracts.swapRouter.contracts.find(
+    const contractLink: IContract = environment.contracts.swapFactory.contracts.find(
       (contract: IContract) => this.chainId === contract.chainId
     ) as IContract;
     return contractLink.address;

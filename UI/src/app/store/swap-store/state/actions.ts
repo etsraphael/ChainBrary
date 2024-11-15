@@ -8,7 +8,8 @@ import {
   IPoolDetail,
   IPoolSearch,
   IToken,
-  QuotePayload
+  QuotePayload,
+  SwapPayload
 } from '../../../shared/interfaces';
 
 export const approveAllowanceAction = createAction(
@@ -42,7 +43,7 @@ export const swapAction = createAction('[Swap] Swap Actions', props<{ payload: Q
 export const swapActionSuccess = createAction('[Swap] Swap Actions Success', props<{ message: string }>());
 export const swapActionFailure = createAction('[Swap] Swap Actions Failure', props<{ message: string }>());
 
-export const loadQuoteAction = createAction('[Swap] Load Quote Actions', props<{ action: string }>());
+export const loadQuoteAction = createAction('[Swap] Load Quote Actions', props<{ payload: SwapPayload }>());
 export const loadQuoteActionSuccess = createAction('[Swap] Load Quote Actions Success', props<{ message: string }>());
 export const loadQuoteActionFailure = createAction('[Swap] Load Quote Actions Failure', props<{ message: string }>());
 

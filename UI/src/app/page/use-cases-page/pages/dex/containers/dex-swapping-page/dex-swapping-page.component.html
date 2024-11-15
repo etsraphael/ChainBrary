@@ -1,7 +1,7 @@
 <div class="d-flex justify-content-center mt-4">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
     <div class="card cb-card border-0 shadow-sm p-4 text-center">
-      <form [formGroup]="swapForm" (ngSubmit)="sendSwapRequest()">
+      <form [formGroup]="swapForm">
         <!-- Pay Section -->
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="d-flex align-items-center">
@@ -50,7 +50,9 @@
         <!-- Exchange Rate -->
         <div class="text-muted mb-4">
           1 BUSD = 1.0005 USDC
-          <button class="btn btn-link p-0"><mat-icon class="mat-icon material-icons">refresh</mat-icon></button>
+          <button (click)="loadQuote()" class="btn btn-link p-0">
+            <mat-icon class="mat-icon material-icons">refresh</mat-icon>
+          </button>
         </div>
         <!-- Confirm Order Button -->
         <button class="btn btn-primary w-100 mb-4" type="submit">Confirm Order</button>

@@ -12,8 +12,8 @@ import {
   TokensDialogComponent
 } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
-import { IToken, QuotePayload } from './../../../../../../shared/interfaces';
-import { swapAction } from './../../../../../../store/swap-store/state/actions';
+import { IToken, QuotePayload, SwapPayload } from './../../../../../../shared/interfaces';
+import { loadQuoteAction, swapAction } from './../../../../../../store/swap-store/state/actions';
 import { selectTokenSearch } from './../../../../../../store/swap-store/state/selectors';
 
 @Component({
@@ -92,6 +92,20 @@ export class DexSwappingPageComponent {
     this.store.dispatch(swapAction({ payload }));
   }
 
+  loadQuote(): void {
+    const payload: SwapPayload = {
+      from: this.tokenPath[0],
+      to: this.tokenPath[1],
+      amount: '1',
+      slippage: '1',
+      deadline: '1',
+      recipient: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+      chainId: NetworkChainId.LOCALHOST
+    };
+
+    return this.store.dispatch(loadQuoteAction({ payload }));
+  }
+
   private handleTokenSelected(token: IToken, from: boolean): void {
     from ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
   }
@@ -107,7 +121,6 @@ export class DexSwappingPageComponent {
   private findTokenById(tokenId: TokenId): IToken | undefined {
     return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
-
 }
 
 interface ISwappingForm {

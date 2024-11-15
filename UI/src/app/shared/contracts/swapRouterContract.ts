@@ -14,9 +14,8 @@ export class SwapRouterContract extends BaseContract {
     super();
   }
 
-  // TODO: Replace with the actual contract address, communityVault will be replace by swapRouter
   getAddress(): string {
-    const contractLink: IContract = environment.contracts.communityVault.contracts.find(
+    const contractLink: IContract = environment.contracts.swapRouter.contracts.find(
       (contract: IContract) => this.chainId === contract.chainId
     ) as IContract;
     return contractLink.address;

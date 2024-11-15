@@ -40,11 +40,12 @@ export class DexService {
     );
   }
 
-  async getAmountsOut(rpcUrl: string, payload: SwapPayload): Promise<number[]> {
-    const web3: Web3 = new Web3(rpcUrl);
+  async getAmountsOut(payload: SwapPayload): Promise<number[]> {
+    console.log('payload', payload);
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapRouterContract(payload.chainId);
 
-    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
       swapRouterContract.getAbi() as AbiItem[],
       swapRouterContract.getAddress()
     );
@@ -60,14 +61,29 @@ export class DexService {
       return Promise.reject('Token not supported on this network');
     }
 
-    return contract.methods['getAmountsOut'](payload.amount, [tokenInAddress, tokenOutAddress], 100)
+    // get owner address
+    const ownerAddress: string = await contractFragment.methods['ccipRouter']().call();
+    console.log('ownerAddress', ownerAddress);
+
+    console.log('swapRouterContract.getAddress()', swapRouterContract.getAddress());
+
+    console.log('starting getAmountsOut');
+    console.log(web3.utils.toWei(payload.amount, 'ether'), [tokenInAddress, tokenOutAddress], [500]);
+
+    return contractFragment.methods['getAmountsOut'](
+      web3.utils.toWei(1, 'ether'),
+      [tokenInAddress, tokenOutAddress],
+      [500]
+    )
       .call()
       .then((res: void | [] | SwapRouterObjectResponse) => {
-        if (!this.isAmountsOutResponseValid(res)) {
-          return Promise.reject('Invalid amounts out response');
-        }
+        console.log('res', res);
 
-        return res[0].map((value: bigint) => Number(web3.utils.fromWei(String(value), 'ether')));
+        return [1, 2];
+      })
+      .catch((error: string) => {
+        console.log('error', error);
+        return Promise.reject(error);
       });
   }
 
