@@ -121,10 +121,10 @@ export class DexLiquidityPageComponent implements OnInit {
     return dialogRef;
   }
 
-  openTokensDialog(from: boolean): MatDialogRef<TokensDialogComponent> {
+  openTokensDialog(tokenIn: boolean): MatDialogRef<TokensDialogComponent> {
     const data: ITokensDialogData = {
       chainIdSelected: this.networkSelected.chainId,
-      tokenId: from ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId,
+      tokenId: tokenIn ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId,
       tokenSearch$: this.store.select(selectTokenSearch)
     };
 
@@ -138,12 +138,13 @@ export class DexLiquidityPageComponent implements OnInit {
       .afterClosed()
       .pipe()
       .subscribe((token: IToken | null) => {
-        token ? this.handleTokenSelected(token, from) : null;
+        token ? this.handleTokenSelected(token, tokenIn) : null;
       });
 
     return dialogRef;
   }
 
+  // TODO: 2. Try this one
   addLiquidity(): void {
     this.liquidityForm.markAllAsTouched();
     if (this.liquidityForm.invalid) return;
@@ -170,13 +171,21 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(createPoolAction({ payload }));
   }
 
-  approveToken(token: IToken): void {
-    const amount = this.liquidityForm.get('token1Amount')?.value as number;
+  approveToken(token: IToken, tokenIn: boolean): void {
+    const amount = tokenIn
+      ? (this.liquidityForm.get('token1Amount')?.value as number)
+      : (this.liquidityForm.get('token2Amount')?.value as number);
+    const tokenAddress: string = tokenIn
+      ? (this.tokenPath[0].networkSupport.find(
+          (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+        )?.address as string)
+      : (this.tokenPath[1].networkSupport.find(
+          (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+        )?.address as string);
 
     const payload: IEditAllowancePayload = {
       chainId: this.networkSelected.chainId,
-      tokenAddress: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
-        ?.address as string,
+      tokenAddress: tokenAddress,
       owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
       spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
       amount
@@ -198,8 +207,9 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(loadPoolAction({ payload }));
   }
 
-  private handleTokenSelected(token: IToken, from: boolean): void {
-    from ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
+  // TODO: 1. Add real values to the parameters
+  private handleTokenSelected(token: IToken, tokenIn: boolean): void {
+    tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
     const payload: IBalanceAndAllowancePayload = {
       chainId: this.networkSelected.chainId,
@@ -208,7 +218,7 @@ export class DexLiquidityPageComponent implements OnInit {
       tokenAddress: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
         ?.address as string,
       spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
-      tokenIn: from
+      tokenIn
     };
 
     this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
