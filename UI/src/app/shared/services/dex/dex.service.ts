@@ -88,8 +88,8 @@ export class DexService {
         const poolContract: PoolContract = new PoolContract(payload.chainId);
         const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(poolContract.getAbi() as AbiItem[], res.id);
 
-        const amount0 = web3.utils.toWei('1', 'ether');
-        const amount1 = web3.utils.toWei('1', 'ether');
+        const amount0 = web3.utils.toWei(payload.token1Amount, 'ether');
+        const amount1 = web3.utils.toWei(payload.token1Amount, 'ether');
 
         console.log('starting add liquidity');
 

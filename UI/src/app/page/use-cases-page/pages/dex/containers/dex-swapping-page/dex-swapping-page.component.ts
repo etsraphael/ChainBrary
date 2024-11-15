@@ -23,8 +23,8 @@ import { selectTokenSearch } from './../../../../../../store/swap-store/state/se
 })
 export class DexSwappingPageComponent {
   networkPath: INetworkDetail[] = [
-    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON),
-    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON)
+    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST),
+    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST)
   ];
   tokenPath: IToken[] = [
     this.findTokenById(this.networkPath[0].nativeCurrency.id) as IToken,
@@ -107,6 +107,7 @@ export class DexSwappingPageComponent {
   private findTokenById(tokenId: TokenId): IToken | undefined {
     return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
+
 }
 
 interface ISwappingForm {
