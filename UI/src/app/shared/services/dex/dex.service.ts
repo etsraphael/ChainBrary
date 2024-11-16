@@ -62,8 +62,12 @@ export class DexService {
     }
 
     // get owner address
-    const ownerAddress: string = await contractFragment.methods['ccipRouter']().call();
-    console.log('ownerAddress', ownerAddress);
+    const ccipRouter: string = await contractFragment.methods['ccipRouter']().call();
+    const factory: string = await contractFragment.methods['factory']().call();
+    console.log('factory', factory); // TODO: The main issue here, this should not be null
+    console.log('ccipRouter', ccipRouter);
+    // TODO: I suspect ccipRouter will always be null if the contract is not initialized
+    // and this will make null all the rest
 
     console.log('swapRouterContract.getAddress()', swapRouterContract.getAddress());
 

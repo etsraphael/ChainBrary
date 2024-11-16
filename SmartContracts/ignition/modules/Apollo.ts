@@ -129,6 +129,7 @@ function deployChainbrarySwapFactory(m: any) {
 
 function deployChainbrarySwapRouter(m: any) {
   const swapRouter = m.contract('ChainbrarySwapRouter');
+  m.call(swapRouter, 'initialize', ['0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512', '0x0000000000000000000000000000000000000001']);
   return swapRouter;
 }
 
