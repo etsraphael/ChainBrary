@@ -3,7 +3,7 @@ import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { ITokenContract } from '../../interfaces';
+import { IQuoteResult, ITokenContract } from '../../interfaces';
 import { ILiquidityPayload, IPoolDetail, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
@@ -40,7 +40,7 @@ export class DexService {
     );
   }
 
-  async getAmountsOut(payload: SwapPayload): Promise<number[]> {
+  async getAmountsOut(payload: SwapPayload): Promise<IQuoteResult> {
     console.log('payload', payload);
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapRouterContract(payload.chainId);
@@ -88,10 +88,10 @@ export class DexService {
           return Promise.reject('Invalid amounts out response');
         }
 
-        return [
-          Number(web3.utils.fromWei(String(res[0]), 'ether')),
-          Number(web3.utils.fromWei(String(res[1]), 'ether'))
-        ]
+        return {
+          token0: Number(web3.utils.fromWei(String(res[0]), 'ether')),
+          token1: Number(web3.utils.fromWei(String(res[1]), 'ether'))
+        }
       })
       .catch((error: string) => {
         console.log('error', error);

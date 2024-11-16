@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
+import { map, Observable } from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -12,9 +13,9 @@ import {
   TokensDialogComponent
 } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
-import { IToken, QuotePayload, SwapPayload } from './../../../../../../shared/interfaces';
+import { IQuoteResult, IToken, QuotePayload, StoreState, SwapPayload } from './../../../../../../shared/interfaces';
 import { loadQuoteAction, swapAction } from './../../../../../../store/swap-store/state/actions';
-import { selectTokenSearch } from './../../../../../../store/swap-store/state/selectors';
+import { selectQuote, selectTokenSearch } from './../../../../../../store/swap-store/state/selectors';
 
 @Component({
   selector: 'app-dex-swapping-page',
@@ -35,11 +36,24 @@ export class DexSwappingPageComponent {
     fromAmount: new FormControl<string | null>(null, [Validators.required, Validators.min(0.000001)])
   });
 
+  readonly quote$: Observable<StoreState<IQuoteResult | null>> = this.store.select(selectQuote);
+
   constructor(
     private dialog: MatDialog,
     private web3loginService: Web3LoginService,
     private store: Store
   ) {}
+
+  get tokenQuoteText$(): Observable<string> {
+    return this.quote$.pipe(
+      map((quote: StoreState<IQuoteResult | null>) => {
+        if (quote.data) {
+          return `1 ${this.tokenPath[0].symbol} = ${quote.data.token1} ${this.tokenPath[1].symbol}`;
+        }
+        return '';
+      })
+    );
+  }
 
   openNetowkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
     const data: INetworkDialogData = {

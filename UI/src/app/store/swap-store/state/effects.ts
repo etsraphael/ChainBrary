@@ -4,7 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
-import { BalanceAndAllowance, IERC20TokenAndBalancePayload, IPoolDetail, IToken } from '../../../shared/interfaces';
+import { BalanceAndAllowance, IERC20TokenAndBalancePayload, IPoolDetail, IQuoteResult, IToken } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
@@ -148,10 +148,7 @@ export class SwapEffects {
       filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.loadQuoteAction>, WalletProvider, string]) => {
         return from(this.dexService.getAmountsOut(action[0].payload)).pipe(
-          map((result: number[]) => {
-            console.log('result', result);
-            return DexActions.loadQuoteActionSuccess({ message: 'okok' });
-          }),
+          map((result: IQuoteResult) => DexActions.loadQuoteActionSuccess({ result })),
           catchError((error: string) => of(DexActions.loadQuoteActionFailure({ message: error })))
         );
       })

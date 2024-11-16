@@ -47,3 +47,8 @@ export interface IBalanceAndAllowancePayload {
   tokenAddress: string;
   tokenIn: boolean;
 }
+
+export interface IQuoteResult {
+  token0: number;
+  token1: number;
+}

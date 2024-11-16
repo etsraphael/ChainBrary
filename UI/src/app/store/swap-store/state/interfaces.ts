@@ -2,6 +2,7 @@ import {
   ActionStoreProcessing,
   BalanceAndAllowance,
   IPoolDetail,
+  IQuoteResult,
   IToken,
   StoreState
 } from '../../../shared/interfaces';
@@ -14,6 +15,7 @@ export interface ISwapState {
   tokenSearch: StoreState<IToken | null>;
   token0Detail: StoreState<BalanceAndAllowance | null>;
   token1Detail: StoreState<BalanceAndAllowance | null>;
+  quote: StoreState<IQuoteResult|null>;
 }
 
 export interface SwapState {

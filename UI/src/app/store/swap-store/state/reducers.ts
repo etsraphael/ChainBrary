@@ -106,7 +106,40 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         error: message
       }
     })
-  )
+  ),
+  on(
+    SwapActions.loadQuoteAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      quote: {
+        data: null,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.loadQuoteActionSuccess,
+    (state: ISwapState, action): ISwapState => ({
+      ...state,
+      quote: {
+        data: action.result,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.loadQuoteActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      quote: {
+        data: null,
+        loading: false,
+        error: message
+      }
+    })
+  ),
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {

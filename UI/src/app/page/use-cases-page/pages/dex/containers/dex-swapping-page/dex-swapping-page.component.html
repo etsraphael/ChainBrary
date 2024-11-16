@@ -49,7 +49,7 @@
         </div>
         <!-- Exchange Rate -->
         <div class="text-muted mb-4">
-          1 BUSD = 1.0005 USDC
+          {{ tokenQuoteText$ | async }}
           <button (click)="loadQuote()" class="btn btn-link p-0">
             <mat-icon class="mat-icon material-icons">refresh</mat-icon>
           </button>
@@ -57,11 +57,6 @@
         <!-- Confirm Order Button -->
         <button class="btn btn-primary w-100 mb-4" type="submit">Confirm Order</button>
       </form>
-      <!-- Trading Info -->
-      <div class="d-flex justify-content-between">
-        <span class="text-muted">Trade Minting <mat-icon class="mat-icon material-icons">help_outline</mat-icon></span>
-        <span class="fw-bold">Max Reward 5.04 DEX $16.68</span>
-      </div>
     </div>
   </div>
 </div>

@@ -24,5 +24,10 @@ export const initialState: ISwapState = {
     data: null,
     loading: false,
     error: null
+  },
+  quote: {
+    data: null,
+    loading: false,
+    error: null
   }
 };
