@@ -1,12 +1,13 @@
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { IToken } from './token.interface';
 
-export interface QuotePayload {
-  from: IToken;
-  to: IToken;
+export interface ISwappingPayload {
+  chainId: NetworkChainId;
   amount: string;
-  slippage: string;
-  deadline: string;
+  amountOutMin: string;
+  path: string[];
+  fees: number;
+  to: string;
 }
 
 export interface SwapPayload {

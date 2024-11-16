@@ -13,7 +13,14 @@ import {
   TokensDialogComponent
 } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import { tokenList } from './../../../../../../shared/data/tokenList';
-import { IQuoteResult, IToken, QuotePayload, StoreState, SwapPayload } from './../../../../../../shared/interfaces';
+import {
+  IQuoteResult,
+  ISwappingPayload,
+  IToken,
+  ITokenContract,
+  StoreState,
+  SwapPayload
+} from './../../../../../../shared/interfaces';
 import { loadQuoteAction, swapAction } from './../../../../../../store/swap-store/state/actions';
 import { selectQuote, selectTokenSearch } from './../../../../../../store/swap-store/state/selectors';
 
@@ -95,12 +102,21 @@ export class DexSwappingPageComponent {
     this.swapForm.markAllAsTouched();
     if (this.swapForm.invalid) return;
 
-    const payload: QuotePayload = {
-      from: this.tokenPath[0],
-      to: this.tokenPath[1],
-      amount: this.swapForm.get('fromAmount')?.value as string,
-      slippage: '0.5',
-      deadline: (Math.floor(Date.now() / 1000) + 60 * 20).toString() // 20 minutes from now
+    const token0Address: string = this.tokenPath[0].networkSupport.find(
+      (network: ITokenContract) => network.chainId === this.networkPath[0].chainId
+    )?.address as string;
+    const token1Address: string = this.tokenPath[1].networkSupport.find(
+      (network: ITokenContract) => network.chainId === this.networkPath[1].chainId
+    )?.address as string;
+    const fromAmount: string = this.swapForm.get('fromAmount')?.value as string;
+
+    const payload: ISwappingPayload = {
+      chainId: this.networkPath[0].chainId,
+      amount: fromAmount,
+      amountOutMin: '1',
+      path: [token0Address, token1Address],
+      fees: 500,
+      to: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
     };
 
     this.store.dispatch(swapAction({ payload }));

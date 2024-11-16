@@ -139,7 +139,7 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         error: message
       }
     })
-  ),
+  )
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {

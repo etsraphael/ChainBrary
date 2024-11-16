@@ -24,7 +24,7 @@ export const selectTokensDetails: MemoizedSelector<object, StoreState<BalanceAnd
   (s: ISwapState) => [s.token0Detail, s.token1Detail]
 );
 
-export const selectQuote: MemoizedSelector<object, StoreState<IQuoteResult|null>> = createSelector(
+export const selectQuote: MemoizedSelector<object, StoreState<IQuoteResult | null>> = createSelector(
   selectSwapState,
   (s: ISwapState) => s.quote
 );

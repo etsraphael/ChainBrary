@@ -4,7 +4,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
-import { BalanceAndAllowance, IERC20TokenAndBalancePayload, IPoolDetail, IQuoteResult, IToken } from '../../../shared/interfaces';
+import {
+  BalanceAndAllowance,
+  IERC20TokenAndBalancePayload,
+  IPoolDetail,
+  IQuoteResult,
+  IToken
+} from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
@@ -150,6 +156,27 @@ export class SwapEffects {
         return from(this.dexService.getAmountsOut(action[0].payload)).pipe(
           map((result: IQuoteResult) => DexActions.loadQuoteActionSuccess({ result })),
           catchError((error: string) => of(DexActions.loadQuoteActionFailure({ message: error })))
+        );
+      })
+    );
+  });
+
+  swapAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.swapAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (payload: [ReturnType<typeof DexActions.swapAction>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DexActions.swapAction>, WalletProvider, string]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap((action: [ReturnType<typeof DexActions.swapAction>, WalletProvider, string]) => {
+        return from(this.dexService.swapExactTokensForTokens(action[0].payload)).pipe(
+          map((result: string) => DexActions.swapActionSuccess({ message: result })),
+          catchError((error: string) => {
+            console.log('swapAction$ error', error);
+            return of(DexActions.swapActionFailure({ message: error }));
+          })
         );
       })
     );

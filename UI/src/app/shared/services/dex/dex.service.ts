@@ -4,7 +4,13 @@ import { AbiItem } from 'web3-utils';
 import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
 import { IQuoteResult, ITokenContract } from '../../interfaces';
-import { ILiquidityPayload, IPoolDetail, IPoolSearch, SwapPayload } from '../../interfaces/swap.interface';
+import {
+  ILiquidityPayload,
+  IPoolDetail,
+  IPoolSearch,
+  ISwappingPayload,
+  SwapPayload
+} from '../../interfaces/swap.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
@@ -81,17 +87,16 @@ export class DexService {
     )
       .call()
       .then((res: void | [] | SwapRouterObjectResponse) => {
-
         console.log('res', res);
 
-        if(!this.isAmountsOutResponseValid(res)) {
+        if (!this.isAmountsOutResponseValid(res)) {
           return Promise.reject('Invalid amounts out response');
         }
 
         return {
           token0: Number(web3.utils.fromWei(String(res[0]), 'ether')),
           token1: Number(web3.utils.fromWei(String(res[1]), 'ether'))
-        }
+        };
       })
       .catch((error: string) => {
         console.log('error', error);
@@ -230,5 +235,69 @@ export class DexService {
         })
       )
       .catch((error: string) => Promise.reject(error));
+  }
+
+  async swapExactTokensForTokens(payload: ISwappingPayload): Promise<string> {
+    console.log('swapExactTokensForTokens starting');
+    console.log('payload', payload);
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const swapRouterContract = new SwapRouterContract(payload.chainId);
+
+    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+      swapRouterContract.getAbi() as AbiItem[],
+      swapRouterContract.getAddress()
+    );
+
+    const tokenInAddress: string | undefined = payload.path[0];
+    const tokenOutAddress: string | undefined = payload.path[1];
+
+    if (!tokenInAddress || !tokenOutAddress) {
+      return Promise.reject('Token not supported on this network');
+    }
+
+    console.log('gaz estimate starting');
+
+    // calculate gaz
+    const gasEstimate: bigint = await contractFragment.methods['swapExactTokensForTokens'](
+      web3.utils.toWei(payload.amount, 'ether'),
+      web3.utils.toWei('0.5', 'ether'),
+      [tokenInAddress, tokenOutAddress],
+      [500],
+      payload.to
+    )
+      .estimateGas({
+        from: payload.to
+      })
+      .catch((error: string) => {
+        console.log('error', error);
+        return Promise.reject(error);
+      });
+
+    console.log('gasEstimate', gasEstimate.toString());
+
+    return 'okok';
+
+    // message: 'Web3 validator found 2 error[s]:\nExpected array, received string\nvalue "500" at "/4" must pass "address" validation'
+
+    // return contractFragment.methods['swapExactTokensForTokens'](
+    //   web3.utils.toWei(payload.amount, 'ether'),
+    //   web3.utils.toWei(payload.amountOutMin, 'ether'),
+    //   [tokenInAddress, tokenOutAddress],
+    //   [500],
+    //   payload.to,
+    // )
+    //   .send({
+    //      from: payload.to,
+    //      gas: gasEstimate.toString()
+    //      })
+    //   .then((res) => {
+    //     console.log('res', res);
+    //     return 'Swap successful'
+    //   })
+    //   .catch((error: string) => {
+    //     console.log('error0', error);
+
+    //     return  Promise.reject(error)
+    //   });
   }
 }
