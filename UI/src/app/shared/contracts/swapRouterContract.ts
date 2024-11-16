@@ -5,8 +5,8 @@ import { environment } from '../../../environments/environment';
 import { BaseContract } from './baseContract';
 
 export interface SwapRouterObjectResponse {
-  0: bigint[];
-  __length__: number;
+  0: bigint;
+  1: bigint;
 }
 
 export class SwapRouterContract extends BaseContract {

@@ -20,7 +20,7 @@ export class DexService {
 
     const obj = res as { [key: string]: unknown };
 
-    return typeof obj[0] === 'bigint' && obj['__length__'] === 'number';
+    return typeof obj[0] === 'bigint' && typeof obj[1] === 'bigint';
   }
 
   private isPoolDetailResponseValid(res: unknown): res is IPoolDetail {
@@ -81,9 +81,17 @@ export class DexService {
     )
       .call()
       .then((res: void | [] | SwapRouterObjectResponse) => {
+
         console.log('res', res);
 
-        return [1, 2];
+        if(!this.isAmountsOutResponseValid(res)) {
+          return Promise.reject('Invalid amounts out response');
+        }
+
+        return [
+          Number(web3.utils.fromWei(String(res[0]), 'ether')),
+          Number(web3.utils.fromWei(String(res[1]), 'ether'))
+        ]
       })
       .catch((error: string) => {
         console.log('error', error);
