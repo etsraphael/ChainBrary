@@ -99,8 +99,6 @@ export class DexLiquidityPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadPool();
-
-    this.token1Available$.subscribe(console.log); // TODO: Remove this after testing
   }
 
   openNetworkDialog(): MatDialogRef<NetworkDialogComponent> {
