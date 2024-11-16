@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
 import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -27,7 +29,8 @@ import {
   approveAllowanceAction,
   createPoolAction,
   loadBalanceAndAllowanceAction,
-  loadPoolAction
+  loadPoolAction,
+  lookUpTokenAction
 } from '../../../../../../store/swap-store/state/actions';
 import {
   selectPoolDetail,
@@ -35,7 +38,6 @@ import {
   selectTokensDetails,
   selectTokenSearch
 } from '../../../../../../store/swap-store/state/selectors';
-import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -53,7 +55,9 @@ export class DexLiquidityPageComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private web3loginService: Web3LoginService,
-    private store: Store
+    private store: Store,
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
@@ -98,7 +102,8 @@ export class DexLiquidityPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadPool();
+    this.loadPool(); // TODO: Only when the token is updated
+    this.fetchFormValues();
   }
 
   openNetworkDialog(): MatDialogRef<NetworkDialogComponent> {
@@ -208,22 +213,49 @@ export class DexLiquidityPageComponent implements OnInit {
   // TODO: 1. Add real values to the parameters
   private handleTokenSelected(token: IToken, tokenIn: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
+    const tokenAddress: string = token.networkSupport.find(
+      (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+    )?.address as string;
 
     const payload: IBalanceAndAllowancePayload = {
       chainId: this.networkSelected.chainId,
       tokenId: token.tokenId,
       from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-      tokenAddress: token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
-        ?.address as string,
+      tokenAddress: tokenAddress,
       spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
       tokenIn
     };
 
     this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
+
+    this.router.navigate([], {
+      queryParams: {
+        [tokenIn ? 'token1' : 'token2']: tokenAddress
+      },
+      queryParamsHandling: 'merge'
+    });
+  }
+
+  private fetchFormValues(): void {
+    const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
+    const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
+    const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
+    console.log(token1, token2, chainId)
+
+
+    // this.tokenPath[0] = this.findTokenById(token1 as TokenId) || this.tokenPath[0];
+    // this.tokenPath[1] = this.findTokenById(token2 as TokenId) || this.tokenPath[1];
   }
 
   private handleNetworkSelected(chainId: NetworkChainId): void {
     this.networkSelected = this.web3loginService.getNetworkDetailByChainId(chainId);
+
+    this.router.navigate([], {
+      queryParams: {
+        chainId
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   private findTokenById(tokenId: TokenId | string): IToken | undefined {

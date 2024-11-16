@@ -6,6 +6,7 @@ import {
   IBalanceAndAllowancePayload,
   ILiquidityPayload,
   IPoolDetail,
+  IPoolDetailForm,
   IPoolSearch,
   IQuoteResult,
   ISwappingPayload,
@@ -94,4 +95,16 @@ export const lookUpTokenActionSuccess = createAction(
 export const lookUpTokenActionFailure = createAction(
   '[Swap] Look Up Token Actions Failure',
   props<{ message: string; tokenIn: boolean }>()
+);
+
+export const preloadLiquidityFormAction = createAction('[Swap] Preload Liquidity Form Actions',
+  props<{ payload: IPoolSearch }>()
+);
+export const preloadLiquidityFormActionSuccess = createAction(
+  '[Swap] Preload Liquidity Form Actions Success',
+  props<{ result: IPoolDetailForm }>()
+);
+export const preloadLiquidityFormActionFailure = createAction(
+  '[Swap] Preload Liquidity Form Actions Failure',
+  props<{ message: string }>()
 );
