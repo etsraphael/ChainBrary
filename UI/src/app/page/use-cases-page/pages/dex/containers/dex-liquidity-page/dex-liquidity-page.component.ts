@@ -30,7 +30,7 @@ import {
   createPoolAction,
   loadBalanceAndAllowanceAction,
   loadPoolAction,
-  lookUpTokenAction
+  preloadLiquidityFormAction
 } from '../../../../../../store/swap-store/state/actions';
 import {
   selectPoolDetail,
@@ -240,7 +240,15 @@ export class DexLiquidityPageComponent implements OnInit {
     const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
     const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
-    console.log(token1, token2, chainId)
+    console.log(token1, token2, chainId);
+
+    const payload: IPoolSearch = {
+      token1Address: token1 as string,
+      token2Address: token2 as string,
+      chainId: NetworkChainId.LOCALHOST
+    };
+
+    this.store.dispatch(preloadLiquidityFormAction({ payload }));
 
 
     // this.tokenPath[0] = this.findTokenById(token1 as TokenId) || this.tokenPath[0];

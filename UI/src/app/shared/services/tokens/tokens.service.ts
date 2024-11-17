@@ -23,6 +23,7 @@ import {
 } from '../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
+import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
@@ -253,9 +254,9 @@ export class TokensService {
     }
   }
 
-  async getERC20TokenByAddress(payload: IERC20TokenAndBalancePayload): Promise<IToken> {
-    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
-    const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
+  async getERC20TokenByAddress(chainId: NetworkChainId, tokenAddress: string): Promise<IToken> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(chainId));
+    const erc20Contract = new ERC20TokenContract(chainId, tokenAddress);
 
     const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
       erc20Contract.getAbi() as AbiItem[],
@@ -267,11 +268,11 @@ export class TokensService {
       const symbol = (await contractFragment.methods['symbol']().call()) as string;
 
       const token: IToken = {
-        tokenId: payload.tokenAddress,
+        tokenId: tokenAddress,
         decimals: 18,
         name,
         symbol,
-        networkSupport: [{ chainId: payload.chainId, address: payload.tokenAddress, priceFeed: [] }]
+        networkSupport: [{ chainId: chainId, address: tokenAddress, priceFeed: [] }]
       };
 
       return token;

@@ -3,21 +3,26 @@ import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { IQuoteResult, ITokenContract } from '../../interfaces';
+import { IQuoteResult, IToken, ITokenContract } from '../../interfaces';
 import {
   ILiquidityPayload,
   IPoolDetail,
+  IPoolDetailForm,
   IPoolSearch,
   ISwappingPayload,
   SwapPayload
 } from '../../interfaces/swap.interface';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
+import { TokensService } from '../tokens/tokens.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DexService {
-  constructor(private web3ProviderService: Web3ProviderService) {}
+  constructor(
+    private web3ProviderService: Web3ProviderService,
+    private tokensService: TokensService
+  ) {}
 
   private isAmountsOutResponseValid(res: unknown): res is SwapRouterObjectResponse {
     if (typeof res !== 'object' || res === null) {
@@ -295,5 +300,37 @@ export class DexService {
 
         return  Promise.reject(error)
       });
+  }
+
+  async preloadLiquidityForm(payload: IPoolSearch): Promise<IPoolDetailForm> {
+
+    console.log('preloadLiquidityForm starting');
+    console.log('payload', payload);
+
+    const token1: IToken = await this.tokensService.getERC20TokenByAddress(payload.chainId, payload.token1Address);
+    const token2: IToken = await this.tokensService.getERC20TokenByAddress(payload.chainId, payload.token2Address);
+
+    console.log('token1', token1);
+    console.log('token2', token2);
+
+
+    // Error message if not found
+    if (!token1 || !token2) {
+      return Promise.reject('Token not found');
+    }
+
+    return this.getPool(payload)
+      .then((res: IPoolDetail) => {
+        return {
+          poolId: res.id,
+          token1,
+          token2,
+          token1Amount: res.token1Amount,
+          token2Amount: res.token2Amount,
+          chainId: payload.chainId,
+          fee: res.fee
+        };
+      })
+      .catch((error: string) => Promise.reject(error));
   }
 }

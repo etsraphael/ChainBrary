@@ -8,6 +8,7 @@ import {
   BalanceAndAllowance,
   IERC20TokenAndBalancePayload,
   IPoolDetail,
+  IPoolDetailForm,
   IQuoteResult,
   IToken
 } from '../../../shared/interfaces';
@@ -85,12 +86,7 @@ export class SwapEffects {
       ),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.lookUpTokenAction>, WalletProvider, string]) => {
-        const payload: IERC20TokenAndBalancePayload = {
-          chainId: action[0].chainId,
-          tokenAddress: action[0].address,
-          from: action[2]
-        };
-        return from(this.tokensService.getERC20TokenByAddress(payload)).pipe(
+        return from(this.tokensService.getERC20TokenByAddress(action[0].chainId, action[0].address )).pipe(
           map((result: IToken) => DexActions.lookUpTokenActionSuccess({ result })),
           catchError((error: string) =>
             of(DexActions.lookUpTokenActionFailure({ message: error, tokenIn: action[0].tokenIn }))
@@ -181,4 +177,23 @@ export class SwapEffects {
       })
     );
   });
+
+  preloadLiquidityFormAction$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.preloadLiquidityFormAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (payload: [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider | null, string | null]) =>
+          payload as [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider, string]
+      ),
+      // filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap((action: [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider, string]) => {
+        return from(this.dexService.preloadLiquidityForm(action[0].payload)).pipe(
+          map((result: IPoolDetailForm) => DexActions.preloadLiquidityFormActionSuccess({ result })),
+          catchError((error: string) => of(DexActions.preloadLiquidityFormActionFailure({ message: error }))
+          )
+        );
+      })
+    );
+  })
 }
