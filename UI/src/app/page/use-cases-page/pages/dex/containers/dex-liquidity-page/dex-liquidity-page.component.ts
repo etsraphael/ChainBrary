@@ -242,10 +242,8 @@ export class DexLiquidityPageComponent implements OnInit {
     const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
     const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
-    console.log(token1, token2, chainId);
 
     if (!token1 || !token2 || !chainId) return;
-    console.log('fetchFormValues');
 
     const payload: IPoolSearch = {
       token1Address: token1 as string,

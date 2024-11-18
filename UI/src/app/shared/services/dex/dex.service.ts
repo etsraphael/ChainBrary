@@ -111,31 +111,26 @@ export class DexService {
 
   async addLiquidity(from: string, payload: ILiquidityPayload): Promise<string> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
-    console.log('from', from);
-    console.log('payload', payload);
 
     return this.getPool({
       chainId: payload.chainId,
-      token1Address: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      token2Address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
+      token1Address: payload.token1.networkSupport.find(
+        (network: ITokenContract) => network.chainId === payload.chainId
+      )?.address as string,
+      token2Address: payload.token2.networkSupport.find(
+        (network: ITokenContract) => network.chainId === payload.chainId
+      )?.address as string
     })
       .then(async (res: IPoolDetail) => {
-        console.log('res', res);
-        console.log('chainId', payload.chainId);
-
         const poolContract: PoolContract = new PoolContract(payload.chainId);
         const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(poolContract.getAbi() as AbiItem[], res.id);
 
         const amount0 = web3.utils.toWei(payload.token1Amount, 'ether');
         const amount1 = web3.utils.toWei(payload.token1Amount, 'ether');
 
-        console.log('starting add liquidity');
-
         const gasEstimate: bigint = await poolFragment.methods['addLiquidity'](amount0, amount1).estimateGas({
           from
         });
-
-        console.log('gasEstimate', gasEstimate.toString());
 
         return poolFragment.methods['addLiquidity'](amount0, amount1)
           .send({
@@ -153,7 +148,6 @@ export class DexService {
       });
   }
 
-  // TODO: Currently working, but need to replace the hardcoded addresses
   async getPool(search: IPoolSearch): Promise<IPoolDetail> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(search.chainId));
     const swapRouterContract = new SwapFactoryContract(search.chainId);
@@ -163,11 +157,7 @@ export class DexService {
       swapRouterContract.getAddress()
     );
 
-    return swapRouterFragment.methods['getPool'](
-      '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
-      swapRouterContract.fee
-    )
+    return swapRouterFragment.methods['getPool'](search.token1Address, search.token2Address, swapRouterContract.fee)
       .call()
       .then(async (res: void | [] | string) => {
         if (web3.utils.isNullish(res) || res === '0x0000000000000000000000000000000000000000')
@@ -311,18 +301,21 @@ export class DexService {
       return Promise.reject('Token not found');
     }
 
-    return this.getPool(payload)
-      .then((res: IPoolDetail) => {
-        return {
-          poolId: res.id,
-          token1,
-          token2,
-          token1Amount: res.token1Amount,
-          token2Amount: res.token2Amount,
-          chainId: payload.chainId,
-          fee: res.fee
-        };
-      })
-      .catch((error: string) => Promise.reject(error));
+    let res: IPoolDetail | null = null;
+    try {
+      res = await this.getPool(payload);
+    } catch (error) {
+      console.log('Error fetching pool details', error);
+    }
+
+    return {
+      poolId: res?.id ?? null,
+      token1,
+      token2,
+      token1Amount: res?.token1Amount ?? 0,
+      token2Amount: res?.token2Amount ?? 0,
+      chainId: payload.chainId,
+      fee: res?.fee ?? 0
+    };
   }
 }

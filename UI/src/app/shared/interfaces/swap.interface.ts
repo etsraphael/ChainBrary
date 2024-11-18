@@ -45,7 +45,7 @@ export interface IPoolDetail {
 }
 
 export interface IPoolDetailForm {
-  poolId: string;
+  poolId: string | null;
   token1: IToken;
   token2: IToken;
   token1Amount: number;

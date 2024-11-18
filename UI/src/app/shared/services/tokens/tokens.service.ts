@@ -6,6 +6,7 @@ import {
   IEditAllowancePayload,
   ITransferPayload
 } from '@chainbrary/token-bridge';
+import { NetworkChainId } from '@chainbrary/web3-login';
 import BigNumber from 'bignumber.js';
 import Web3, { AbiFragment, Contract, TransactionReceipt } from 'web3';
 import { AbiItem } from 'web3-utils';
@@ -14,7 +15,6 @@ import { tokenList } from '../../data/tokenList';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
-  IERC20TokenAndBalancePayload,
   IReceiptTransaction,
   IToken,
   SendNativeTokenPayload,
@@ -23,7 +23,6 @@ import {
 } from '../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
 import { Web3ProviderService } from '../web3-provider/web3-provider.service';
-import { NetworkChainId } from '@chainbrary/web3-login';
 
 @Injectable({
   providedIn: 'root'
