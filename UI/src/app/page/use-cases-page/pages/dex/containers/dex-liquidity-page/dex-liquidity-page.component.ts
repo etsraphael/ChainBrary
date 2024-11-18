@@ -4,8 +4,9 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -30,7 +31,8 @@ import {
   createPoolAction,
   loadBalanceAndAllowanceAction,
   loadPoolAction,
-  preloadLiquidityFormAction
+  preloadLiquidityFormAction,
+  preloadLiquidityFormActionSuccess
 } from '../../../../../../store/swap-store/state/actions';
 import {
   selectPoolDetail,
@@ -57,7 +59,8 @@ export class DexLiquidityPageComponent implements OnInit {
     private web3loginService: Web3LoginService,
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private actions$: Actions
   ) {}
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
@@ -102,7 +105,6 @@ export class DexLiquidityPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadPool(); // TODO: Only when the token is updated
     this.fetchFormValues();
   }
 
@@ -242,6 +244,9 @@ export class DexLiquidityPageComponent implements OnInit {
     const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
     console.log(token1, token2, chainId);
 
+    if (!token1 || !token2 || !chainId) return;
+    console.log('fetchFormValues');
+
     const payload: IPoolSearch = {
       token1Address: token1 as string,
       token2Address: token2 as string,
@@ -250,9 +255,16 @@ export class DexLiquidityPageComponent implements OnInit {
 
     this.store.dispatch(preloadLiquidityFormAction({ payload }));
 
-
-    // this.tokenPath[0] = this.findTokenById(token1 as TokenId) || this.tokenPath[0];
-    // this.tokenPath[1] = this.findTokenById(token2 as TokenId) || this.tokenPath[1];
+    // Handle preloadLiquidityFormActionSuccess here, and set the form values
+    this.actions$
+      .pipe(ofType(preloadLiquidityFormActionSuccess), take(1))
+      .subscribe((action: ReturnType<typeof preloadLiquidityFormActionSuccess>) => {
+        // Set the tokenPath
+        this.handleTokenSelected(action.result.token1, true);
+        this.handleTokenSelected(action.result.token2, false);
+        // Set the networkSelected
+        this.networkSelected = this.web3loginService.getNetworkDetailByChainId(chainId);
+      });
   }
 
   private handleNetworkSelected(chainId: NetworkChainId): void {

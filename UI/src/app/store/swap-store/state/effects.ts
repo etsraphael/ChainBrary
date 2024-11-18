@@ -6,7 +6,6 @@ import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
 import {
   BalanceAndAllowance,
-  IERC20TokenAndBalancePayload,
   IPoolDetail,
   IPoolDetailForm,
   IQuoteResult,

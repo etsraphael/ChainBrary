@@ -303,16 +303,8 @@ export class DexService {
   }
 
   async preloadLiquidityForm(payload: IPoolSearch): Promise<IPoolDetailForm> {
-
-    console.log('preloadLiquidityForm starting');
-    console.log('payload', payload);
-
     const token1: IToken = await this.tokensService.getERC20TokenByAddress(payload.chainId, payload.token1Address);
     const token2: IToken = await this.tokensService.getERC20TokenByAddress(payload.chainId, payload.token2Address);
-
-    console.log('token1', token1);
-    console.log('token2', token2);
-
 
     // Error message if not found
     if (!token1 || !token2) {
