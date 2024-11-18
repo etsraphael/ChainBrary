@@ -157,7 +157,7 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
           chainId: result.chainId
         },
         loading: false,
-        error: null
+        error: result?.poolId ? null : 'Pool_not_found'
       }
     })
   )

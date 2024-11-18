@@ -112,14 +112,17 @@ export class DexService {
   async addLiquidity(from: string, payload: ILiquidityPayload): Promise<string> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
 
+    const address1: string = payload.token1.networkSupport.find(
+      (network: ITokenContract) => network.chainId === payload.chainId
+    )?.address as string;
+    const address2: string = payload.token2.networkSupport.find(
+      (network: ITokenContract) => network.chainId === payload.chainId
+    )?.address as string;
+
     return this.getPool({
       chainId: payload.chainId,
-      token1Address: payload.token1.networkSupport.find(
-        (network: ITokenContract) => network.chainId === payload.chainId
-      )?.address as string,
-      token2Address: payload.token2.networkSupport.find(
-        (network: ITokenContract) => network.chainId === payload.chainId
-      )?.address as string
+      token1Address: address1,
+      token2Address: address2
     })
       .then(async (res: IPoolDetail) => {
         const poolContract: PoolContract = new PoolContract(payload.chainId);

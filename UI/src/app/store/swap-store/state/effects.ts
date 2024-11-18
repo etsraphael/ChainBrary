@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import { MatDialogRef } from '@angular/material/dialog';
+import { WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
-import { catchError, filter, from, map, of, switchMap } from 'rxjs';
+import { catchError, filter, from, map, of, switchMap, take } from 'rxjs';
 import { BalanceAndAllowance, IPoolDetail, IPoolDetailForm, IQuoteResult, IToken } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { TokensService } from '../../../shared/services/tokens/tokens.service';
@@ -184,6 +185,25 @@ export class SwapEffects {
         return from(this.dexService.preloadLiquidityForm(action[0].payload)).pipe(
           map((result: IPoolDetailForm) => DexActions.preloadLiquidityFormActionSuccess({ result })),
           catchError((error: string) => of(DexActions.preloadLiquidityFormActionFailure({ message: error })))
+        );
+      })
+    );
+  });
+
+  showLoginModal$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.addLiquidityAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] === null || payload[2] === null),
+      switchMap((action: [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider | null, string | null]) => {
+        const dialog: MatDialogRef<Web3LoginComponent> = this.web3LoginService.openLoginModal();
+        return dialog.afterClosed().pipe(
+          switchMap(() =>
+            this.web3LoginService.onWalletConnectedEvent$.pipe(
+              take(1),
+              map(() => DexActions.addLiquidityAction(action[0]))
+            )
+          )
         );
       })
     );
