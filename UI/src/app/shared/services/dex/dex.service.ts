@@ -288,17 +288,17 @@ export class DexService {
       payload.to
     )
       .send({
-         from: payload.to,
-         gas: gasEstimate.toString()
-         })
+        from: payload.to,
+        gas: gasEstimate.toString()
+      })
       .then((res) => {
         console.log('res', res);
-        return 'Swap successful'
+        return 'Swap successful';
       })
       .catch((error: string) => {
         console.log('error0', error);
 
-        return  Promise.reject(error)
+        return Promise.reject(error);
       });
   }
 

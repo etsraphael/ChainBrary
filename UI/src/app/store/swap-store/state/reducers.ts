@@ -139,6 +139,27 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         error: message
       }
     })
+  ),
+  on(
+    SwapActions.preloadLiquidityFormActionSuccess,
+    (state: ISwapState, { result }): ISwapState => ({
+      ...state,
+      searchPool: {
+        data: {
+          id: result.poolId,
+          token1Address: result.token1.networkSupport.find((tokenContract) => tokenContract.chainId === result.chainId)
+            ?.address as string,
+          token2Address: result.token2.networkSupport.find((tokenContract) => tokenContract.chainId === result.chainId)
+            ?.address as string,
+          fee: result.fee,
+          token1Amount: result.token1Amount,
+          token2Amount: result.token2Amount,
+          chainId: result.chainId
+        },
+        loading: false,
+        error: null
+      }
+    })
   )
 );
 

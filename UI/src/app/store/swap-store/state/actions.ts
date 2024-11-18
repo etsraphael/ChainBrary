@@ -97,7 +97,8 @@ export const lookUpTokenActionFailure = createAction(
   props<{ message: string; tokenIn: boolean }>()
 );
 
-export const preloadLiquidityFormAction = createAction('[Swap] Preload Liquidity Form Actions',
+export const preloadLiquidityFormAction = createAction(
+  '[Swap] Preload Liquidity Form Actions',
   props<{ payload: IPoolSearch }>()
 );
 export const preloadLiquidityFormActionSuccess = createAction(

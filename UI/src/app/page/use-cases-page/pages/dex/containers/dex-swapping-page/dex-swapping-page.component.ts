@@ -23,8 +23,17 @@ import {
   StoreState,
   SwapPayload
 } from './../../../../../../shared/interfaces';
-import { approveAllowanceAction, loadBalanceAndAllowanceAction, loadQuoteAction, swapAction } from './../../../../../../store/swap-store/state/actions';
-import { selectQuote, selectTokensDetails, selectTokenSearch } from './../../../../../../store/swap-store/state/selectors';
+import {
+  approveAllowanceAction,
+  loadBalanceAndAllowanceAction,
+  loadQuoteAction,
+  swapAction
+} from './../../../../../../store/swap-store/state/actions';
+import {
+  selectQuote,
+  selectTokensDetails,
+  selectTokenSearch
+} from './../../../../../../store/swap-store/state/selectors';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 
 @Component({
@@ -160,7 +169,7 @@ export class DexSwappingPageComponent implements OnInit {
   }
 
   approveToken(tokenIn: boolean): void {
-    const amount = tokenIn ? (this.swapForm.get('fromAmount')?.value as number ) : 1;
+    const amount = tokenIn ? (this.swapForm.get('fromAmount')?.value as number) : 1;
     const tokenAddress: string = this.tokenPath[tokenIn ? 0 : 1].networkSupport.find(
       (network: ITokenContract) => network.chainId === this.networkPath[tokenIn ? 0 : 1].chainId
     )?.address as string;
@@ -179,7 +188,6 @@ export class DexSwappingPageComponent implements OnInit {
   private handleTokenSelected(token: IToken, tokenIn: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
-
     const tokenAddress: string = token.networkSupport.find(
       (network: ITokenContract) => network.chainId === this.networkPath[tokenIn ? 0 : 1].chainId
     )?.address as string;
@@ -194,7 +202,6 @@ export class DexSwappingPageComponent implements OnInit {
     };
 
     this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
-
   }
 
   private handleNetworkSelected(chainId: NetworkChainId, from: boolean): void {

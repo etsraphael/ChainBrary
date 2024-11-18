@@ -55,16 +55,12 @@
           </button>
         </div>
 
-                <!-- Approval Buttons -->
-                <ng-container>
-                  <button
-                    class="btn btn-primary w-100 mb-2"
-                    type="submit"
-                    (click)="approveToken(true)"
-                  >
-                    Approve {{ tokenPath[0].symbol }}
-                  </button>
-                  <!-- <button
+        <!-- Approval Buttons -->
+        <ng-container>
+          <button class="btn btn-primary w-100 mb-2" type="submit" (click)="approveToken(true)">
+            Approve {{ tokenPath[0].symbol }}
+          </button>
+          <!-- <button
                     *ngIf="allowance2Needed$ | async"
                     class="btn btn-primary w-100 mb-4"
                     type="submit"
@@ -72,8 +68,7 @@
                   >
                     Approve {{ tokenPath[1].symbol }}
                   </button> -->
-                </ng-container>
-
+        </ng-container>
 
         <!-- Confirm Order Button -->
         <button (click)="sendSwapRequest()" class="btn btn-primary w-100 mb-4" type="submit">Confirm Order</button>

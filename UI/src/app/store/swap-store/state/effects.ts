@@ -4,13 +4,7 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, of, switchMap } from 'rxjs';
-import {
-  BalanceAndAllowance,
-  IPoolDetail,
-  IPoolDetailForm,
-  IQuoteResult,
-  IToken
-} from '../../../shared/interfaces';
+import { BalanceAndAllowance, IPoolDetail, IPoolDetailForm, IQuoteResult, IToken } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
@@ -85,7 +79,7 @@ export class SwapEffects {
       ),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.lookUpTokenAction>, WalletProvider, string]) => {
-        return from(this.tokensService.getERC20TokenByAddress(action[0].chainId, action[0].address )).pipe(
+        return from(this.tokensService.getERC20TokenByAddress(action[0].chainId, action[0].address)).pipe(
           map((result: IToken) => DexActions.lookUpTokenActionSuccess({ result })),
           catchError((error: string) =>
             of(DexActions.lookUpTokenActionFailure({ message: error, tokenIn: action[0].tokenIn }))
@@ -189,10 +183,9 @@ export class SwapEffects {
       switchMap((action: [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider, string]) => {
         return from(this.dexService.preloadLiquidityForm(action[0].payload)).pipe(
           map((result: IPoolDetailForm) => DexActions.preloadLiquidityFormActionSuccess({ result })),
-          catchError((error: string) => of(DexActions.preloadLiquidityFormActionFailure({ message: error }))
-          )
+          catchError((error: string) => of(DexActions.preloadLiquidityFormActionFailure({ message: error })))
         );
       })
     );
-  })
+  });
 }
