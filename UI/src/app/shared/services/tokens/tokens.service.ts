@@ -229,7 +229,7 @@ export class TokensService {
     }
   }
 
-  async getBalanceAndAllowance(payload: IBalanceAndAllowancePayload): Promise<BalanceAndAllowance> {
+  async getBalanceAndAllowance(from: string, payload: IBalanceAndAllowancePayload): Promise<BalanceAndAllowance> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
 
@@ -239,8 +239,8 @@ export class TokensService {
     );
 
     try {
-      const balance = (await contractFragment.methods['balanceOf'](payload.from).call()) as string;
-      const allowance = (await contractFragment.methods['allowance'](payload.from, payload.spender).call()) as string;
+      const balance = (await contractFragment.methods['balanceOf'](from).call()) as string;
+      const allowance = (await contractFragment.methods['allowance'](from, payload.spender).call()) as string;
 
       return {
         tokenId: payload.tokenId,

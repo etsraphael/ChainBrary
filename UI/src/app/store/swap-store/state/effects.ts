@@ -101,7 +101,7 @@ export class SwapEffects {
       ),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider, string]) => {
-        return from(this.tokensService.getBalanceAndAllowance(action[0].payload)).pipe(
+        return from(this.tokensService.getBalanceAndAllowance(action[2], action[0].payload)).pipe(
           map((result: BalanceAndAllowance) => DexActions.loadBalanceAndAllowanceActionSuccess({ result })),
           catchError((error: string) =>
             of(DexActions.loadBalanceAndAllowanceActionFailure({ message: error, tokenIn: action[0].payload.tokenIn }))
@@ -190,7 +190,7 @@ export class SwapEffects {
     );
   });
 
-  showLoginModal$ = createEffect(() => {
+  showLoginModalBeforeAddingLiquidity$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DexActions.addLiquidityAction),
       concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
@@ -202,6 +202,25 @@ export class SwapEffects {
             this.web3LoginService.onWalletConnectedEvent$.pipe(
               take(1),
               map(() => DexActions.addLiquidityAction(action[0]))
+            )
+          )
+        );
+      })
+    );
+  });
+
+  showLoginModalBeforeCreatingPool$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.createPoolAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      filter((payload) => payload[1] === null || payload[2] === null),
+      switchMap((action: [ReturnType<typeof DexActions.createPoolAction>, WalletProvider | null, string | null]) => {
+        const dialog: MatDialogRef<Web3LoginComponent> = this.web3LoginService.openLoginModal();
+        return dialog.afterClosed().pipe(
+          switchMap(() =>
+            this.web3LoginService.onWalletConnectedEvent$.pipe(
+              take(1),
+              map(() => DexActions.createPoolAction(action[0]))
             )
           )
         );

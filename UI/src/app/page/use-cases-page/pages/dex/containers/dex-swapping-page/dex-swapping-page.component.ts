@@ -195,7 +195,7 @@ export class DexSwappingPageComponent implements OnInit {
     const payload: IBalanceAndAllowancePayload = {
       chainId: this.networkPath[0].chainId,
       tokenId: this.tokenPath[tokenIn ? 0 : 1].tokenId,
-      from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
+      // from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
       tokenAddress: tokenAddress,
       spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
       tokenIn

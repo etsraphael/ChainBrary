@@ -42,7 +42,6 @@ export interface BalanceAndAllowance {
 export interface IBalanceAndAllowancePayload {
   chainId: NetworkChainId;
   tokenId: TokenId | string;
-  from: string;
   spender: string;
   tokenAddress: string;
   tokenIn: boolean;
