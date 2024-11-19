@@ -242,6 +242,13 @@ export class TokensService {
       const balance = (await contractFragment.methods['balanceOf'](from).call()) as string;
       const allowance = (await contractFragment.methods['allowance'](from, payload.spender).call()) as string;
 
+      console.log({
+        tokenId: payload.tokenId,
+        balance: web3.utils.fromWei(balance, 'ether'),
+        allowance: web3.utils.fromWei(allowance, 'ether'),
+        tokenIn: payload.tokenIn
+      })
+
       return {
         tokenId: payload.tokenId,
         balance: web3.utils.fromWei(balance, 'ether'),
@@ -249,6 +256,7 @@ export class TokensService {
         tokenIn: payload.tokenIn
       };
     } catch (error) {
+       console.log('error', error);
       return Promise.reject(error);
     }
   }

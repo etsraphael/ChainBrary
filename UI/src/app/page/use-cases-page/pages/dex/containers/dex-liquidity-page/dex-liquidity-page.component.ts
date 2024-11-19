@@ -3,10 +3,10 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, Observable, take } from 'rxjs';
+import { combineLatest, filter, map, Observable, skipWhile, take, withLatestFrom } from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -40,6 +40,7 @@ import {
   selectTokensDetails,
   selectTokenSearch
 } from '../../../../../../store/swap-store/state/selectors';
+import { selectWalletConnected } from 'src/app/store/global-store/state/selectors';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -67,6 +68,7 @@ export class DexLiquidityPageComponent implements OnInit {
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
+  readonly selectWalletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected)
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -212,29 +214,38 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(loadPoolAction({ payload }));
   }
 
-  // TODO: 1. Add real values to the parameters
   private handleTokenSelected(token: IToken, tokenIn: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
     const tokenAddress: string = token.networkSupport.find(
       (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
     )?.address as string;
 
-    const payload: IBalanceAndAllowancePayload = {
-      chainId: this.networkSelected.chainId,
-      tokenId: token.tokenId,
-      tokenAddress: tokenAddress,
-      spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
-      tokenIn
-    };
 
-    this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
+    combineLatest([this.selectWalletConnected$, this.poolDetail$]).pipe(
+      skipWhile(([walletConnected, poolDetail]) => !walletConnected || !poolDetail),
+      take(1),
+      map(([, poolDetail]) => poolDetail as IPoolDetail)
+    ).subscribe((poolDetail: IPoolDetail) => {
 
-    this.router.navigate([], {
-      queryParams: {
-        [tokenIn ? 'token1' : 'token2']: tokenAddress
-      },
-      queryParamsHandling: 'merge'
-    });
+      const payload: IBalanceAndAllowancePayload = {
+        chainId: this.networkSelected.chainId,
+        tokenId: token.tokenId,
+        tokenAddress: tokenAddress,
+        spender: poolDetail.id,
+        tokenIn
+      };
+
+      this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
+
+      this.router.navigate([], {
+        queryParams: {
+          [tokenIn ? 'token1' : 'token2']: tokenAddress
+        },
+        queryParamsHandling: 'merge'
+      });
+    })
+
+
   }
 
   private fetchFormValues(): void {
