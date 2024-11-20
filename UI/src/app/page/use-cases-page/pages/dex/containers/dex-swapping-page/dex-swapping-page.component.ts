@@ -16,6 +16,7 @@ import { tokenList } from './../../../../../../shared/data/tokenList';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
+  IPoolSearch,
   IQuoteResult,
   ISwappingPayload,
   IToken,
@@ -27,6 +28,7 @@ import {
   approveAllowanceAction,
   loadBalanceAndAllowanceAction,
   loadQuoteAction,
+  preloadLiquidityFormAction,
   swapAction
 } from './../../../../../../store/swap-store/state/actions';
 import {
@@ -35,6 +37,7 @@ import {
   selectTokenSearch
 } from './../../../../../../store/swap-store/state/selectors';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dex-swapping-page',
@@ -62,11 +65,13 @@ export class DexSwappingPageComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private web3loginService: Web3LoginService,
-    private store: Store
+    private store: Store,
+    private router: Router,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
-    throw new Error('Method not implemented.');
+    this.fetchFormValues();
   }
 
   get token1Available$(): Observable<BalanceAndAllowance | null> {
@@ -202,6 +207,8 @@ export class DexSwappingPageComponent implements OnInit {
     };
 
     this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
+
+    // TODO: Update the router here
   }
 
   private handleNetworkSelected(chainId: NetworkChainId, from: boolean): void {
@@ -210,10 +217,36 @@ export class DexSwappingPageComponent implements OnInit {
     } else {
       this.networkPath[1] = this.web3loginService.getNetworkDetailByChainId(chainId);
     }
+
+    // TODO: Impletement chainIn and chainOut here
+    this.router.navigate([], {
+      queryParams: {
+        chainId
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   private findTokenById(tokenId: TokenId): IToken | undefined {
     return tokenList.find((token: IToken) => token.tokenId === tokenId);
+  }
+
+  private fetchFormValues(): void {
+    const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
+    const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
+    const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
+
+    if (!token1 || !token2 || !chainId) return;
+
+    const payload: IPoolSearch = {
+      token1Address: token1 as string,
+      token2Address: token2 as string,
+      chainId: NetworkChainId.LOCALHOST
+    };
+
+    // TODO: Set up the route first
+    // this.store.dispatch(preloadLiquidityFormAction({ payload }));
+
   }
 }
 

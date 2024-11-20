@@ -151,7 +151,6 @@ export class DexLiquidityPageComponent implements OnInit {
     return dialogRef;
   }
 
-  // TODO: 2. Try this one
   addLiquidity(): void {
     this.liquidityForm.markAllAsTouched();
     if (this.liquidityForm.invalid) return;
@@ -201,6 +200,7 @@ export class DexLiquidityPageComponent implements OnInit {
     this.store.dispatch(approveAllowanceAction({ payload }));
   }
 
+  // TODO: Load this one when a new pair of tokens is detected
   private loadPool(): void {
     const payload: IPoolSearch = {
       token1Address: this.tokenPath[0].networkSupport.find(
