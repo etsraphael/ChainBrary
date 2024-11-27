@@ -67,7 +67,7 @@ export class DexSwappingPageComponent implements OnInit {
     private web3loginService: Web3LoginService,
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
@@ -208,7 +208,12 @@ export class DexSwappingPageComponent implements OnInit {
 
     this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
 
-    // TODO: Update the router here
+    this.router.navigate([], {
+      queryParams: {
+        [tokenIn ? 'token1' : 'token2']: tokenAddress
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
   private handleNetworkSelected(chainId: NetworkChainId, from: boolean): void {
@@ -218,10 +223,9 @@ export class DexSwappingPageComponent implements OnInit {
       this.networkPath[1] = this.web3loginService.getNetworkDetailByChainId(chainId);
     }
 
-    // TODO: Impletement chainIn and chainOut here
     this.router.navigate([], {
       queryParams: {
-        chainId
+        [from ? 'chainIdIn' : 'chainIdOut']: chainId
       },
       queryParamsHandling: 'merge'
     });
@@ -246,7 +250,6 @@ export class DexSwappingPageComponent implements OnInit {
 
     // TODO: Set up the route first
     // this.store.dispatch(preloadLiquidityFormAction({ payload }));
-
   }
 }
 

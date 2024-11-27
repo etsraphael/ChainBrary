@@ -12,6 +12,7 @@ export default buildModule('Apollo', (m) => {
   const documentLocker = deployDocumentLocker(m);
   const customERC20Token1 = deployCustomERC20Token(m, 'Custom Token 1', 'CT1', 'CustomERC20Token1');
   const customERC20Token2 = deployCustomERC20Token(m, 'Custom Token 2', 'CT2', 'CustomERC20Token2');  
+  const customERC20Token3 = deployCustomERC20Token(m, 'Custom Token 3', 'CT3', 'CustomERC20Token3');  
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
   const mockingPriceFeed = deployMockingPriceFeed(m);
   const mockingCcipRouter = deployMockingCcipRouter(m);
@@ -30,6 +31,7 @@ export default buildModule('Apollo', (m) => {
     documentLocker,
     customERC20Token1,
     customERC20Token2,
+    customERC20Token3,
     customERC20TokenFactory,
     mockingPriceFeed,
     mockingCcipRouter,

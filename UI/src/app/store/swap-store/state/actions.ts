@@ -24,7 +24,7 @@ export const approveAllowanceActionFailure = createAction(
   props<{ message: string }>()
 );
 
-export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: ILiquidityPayload }>());
+export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: IPoolSearch }>());
 export const createPoolActionSuccess = createAction(
   '[Swap] Create Pool Actions Success',
   props<{ result: IPoolDetail }>()

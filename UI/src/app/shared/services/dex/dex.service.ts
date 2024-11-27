@@ -193,7 +193,7 @@ export class DexService {
       .catch((error: string) => Promise.reject(error));
   }
 
-  async createPool(from: string, payload: ILiquidityPayload): Promise<IPoolDetail> {
+  async createPool(from: string, payload: IPoolSearch): Promise<IPoolDetail> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapFactoryContract(payload.chainId);
 
@@ -202,34 +202,23 @@ export class DexService {
       swapRouterContract.getAddress()
     );
 
-    // const token1Address: string | undefined = payload.token1.networkSupport.find(
-    //   (network: ITokenContract) => network.chainId === payload.chainId
-    // )?.address;
-    // const token2Address: string | undefined = payload.token2.networkSupport.find(
-    //   (network: ITokenContract) => network.chainId === payload.chainId
-    // )?.address;
-
-    // if (!token1Address || !token2Address) {
-    //   return Promise.reject('Token not supported on this network');
-    // }
-
     const gas: bigint = await contract.methods['createPool'](
-      '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+      payload.token1Address,
+      payload.token2Address,
       swapRouterContract.fee
     ).estimateGas({ from });
 
     return contract.methods['createPool'](
-      '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-      '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',
+      payload.token1Address,
+      payload.token2Address,
       swapRouterContract.fee
     )
       .send({ from, gas: gas.toString() })
       .then(() =>
         this.getPool({
           chainId: payload.chainId,
-          token1Address: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-          token2Address: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707'
+          token1Address: payload.token1Address,
+          token2Address: payload.token2Address,
         })
       )
       .catch((error: string) => Promise.reject(error));

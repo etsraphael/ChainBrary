@@ -167,11 +167,13 @@ export class DexLiquidityPageComponent implements OnInit {
   }
 
   createPool(): void {
-    const payload: ILiquidityPayload = {
-      token1: this.tokenPath[0],
-      token2: this.tokenPath[1],
-      token1Amount: this.liquidityForm.get('token1Amount')?.value as number,
-      token2Amount: this.liquidityForm.get('token2Amount')?.value as number,
+    const payload: IPoolSearch = {
+      token1Address: (this.tokenPath[0].networkSupport.find(
+        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+      )?.address as string),
+      token2Address: (this.tokenPath[1].networkSupport.find(
+        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
+      )?.address as string),
       chainId: this.networkSelected.chainId
     };
     return this.store.dispatch(createPoolAction({ payload }));
@@ -220,6 +222,17 @@ export class DexLiquidityPageComponent implements OnInit {
       (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
     )?.address as string;
 
+    this.router.navigate([], {
+      queryParams: {
+        [tokenIn ? 'token1' : 'token2']: tokenAddress,
+        chainId: this.networkSelected.chainId
+      },
+      queryParamsHandling: 'merge'
+    });
+
+    // TODO: load pool if the URL have been changed
+    this.loadPool();
+
     // Check allowance for pool
     combineLatest([this.selectWalletConnected$, this.poolDetail$])
       .pipe(
@@ -238,13 +251,6 @@ export class DexLiquidityPageComponent implements OnInit {
         };
 
         this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
-
-        this.router.navigate([], {
-          queryParams: {
-            [tokenIn ? 'token1' : 'token2']: tokenAddress
-          },
-          queryParamsHandling: 'merge'
-        });
       });
   }
 
