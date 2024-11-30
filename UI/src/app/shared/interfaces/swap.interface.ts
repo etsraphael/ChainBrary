@@ -35,7 +35,7 @@ export interface IPoolSearch {
 }
 
 export interface IPoolDetail {
-  id: string;
+  contractAddress: string;
   token1Address: string;
   token2Address: string;
   fee: number;

@@ -146,7 +146,7 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
       ...state,
       searchPool: {
         data: {
-          id: result.poolId as string,
+          contractAddress: result.poolId as string,
           token1Address: result.token1.networkSupport.find((tokenContract) => tokenContract.chainId === result.chainId)
             ?.address as string,
           token2Address: result.token2.networkSupport.find((tokenContract) => tokenContract.chainId === result.chainId)

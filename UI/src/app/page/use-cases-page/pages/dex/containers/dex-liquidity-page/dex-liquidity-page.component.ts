@@ -236,7 +236,7 @@ export class DexLiquidityPageComponent implements OnInit {
     // Check allowance for pool
     combineLatest([this.selectWalletConnected$, this.poolDetail$])
       .pipe(
-        skipWhile(([walletConnected, poolDetail]) => !walletConnected || !poolDetail?.id),
+        skipWhile(([walletConnected, poolDetail]) => !walletConnected || !poolDetail?.contractAddress),
         take(1),
         map(([, poolDetail]) => poolDetail as IPoolDetail)
       )
@@ -246,7 +246,7 @@ export class DexLiquidityPageComponent implements OnInit {
           chainId: this.networkSelected.chainId,
           tokenId: token.tokenId,
           tokenAddress: tokenAddress,
-          spender: poolDetail.id,
+          spender: poolDetail.contractAddress,
           tokenIn
         };
 

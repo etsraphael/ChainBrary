@@ -109,7 +109,10 @@ export class DexService {
     })
       .then(async (res: IPoolDetail) => {
         const poolContract: PoolContract = new PoolContract(payload.chainId);
-        const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(poolContract.getAbi() as AbiItem[], res.id);
+        const poolFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+          poolContract.getAbi() as AbiItem[],
+          res.contractAddress
+        );
 
         const amount0 = web3.utils.toWei(payload.token1Amount, 'ether');
         const amount1 = web3.utils.toWei(payload.token1Amount, 'ether');
@@ -161,7 +164,7 @@ export class DexService {
             return Promise.reject('Invalid pool detail response');
           }
           const poolDetail: IPoolDetail = {
-            id: res as string,
+            contractAddress: res as string,
             token1Address: poolDetailResponse[0],
             token2Address: poolDetailResponse[1],
             fee: Number(web3.utils.fromWei(String(poolDetailResponse[2]), 'ether')),
@@ -280,7 +283,7 @@ export class DexService {
     }
 
     return {
-      poolId: res?.id ?? null,
+      poolId: res?.contractAddress ?? null,
       token1,
       token2,
       token1Amount: res?.token1Amount ?? 0,
