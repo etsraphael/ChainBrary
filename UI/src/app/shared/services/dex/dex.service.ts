@@ -78,7 +78,6 @@ export class DexService {
     )
       .call()
       .then((res: void | [] | SwapRouterObjectResponse) => {
-
         if (!this.isAmountsOutResponseValid(res)) {
           return Promise.reject('Invalid amounts out response');
         }
@@ -192,17 +191,13 @@ export class DexService {
       swapRouterContract.fee
     ).estimateGas({ from });
 
-    return contract.methods['createPool'](
-      payload.token1Address,
-      payload.token2Address,
-      swapRouterContract.fee
-    )
+    return contract.methods['createPool'](payload.token1Address, payload.token2Address, swapRouterContract.fee)
       .send({ from, gas: gas.toString() })
       .then(() =>
         this.getPool({
           chainId: payload.chainId,
           token1Address: payload.token1Address,
-          token2Address: payload.token2Address,
+          token2Address: payload.token2Address
         })
       )
       .catch((error: string) => Promise.reject(error));

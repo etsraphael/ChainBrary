@@ -168,12 +168,12 @@ export class DexLiquidityPageComponent implements OnInit {
 
   createPool(): void {
     const payload: IPoolSearch = {
-      token1Address: (this.tokenPath[0].networkSupport.find(
+      token1Address: this.tokenPath[0].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string),
-      token2Address: (this.tokenPath[1].networkSupport.find(
+      )?.address as string,
+      token2Address: this.tokenPath[1].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string),
+      )?.address as string,
       chainId: this.networkSelected.chainId
     };
     return this.store.dispatch(createPoolAction({ payload }));

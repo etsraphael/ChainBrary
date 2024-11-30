@@ -40,7 +40,7 @@
         <div class="d-flex mb-4">
           <mat-form-field appearance="outline" class="col-12">
             <mat-label>Amount</mat-label>
-            <input class="px-2" matInput type="number" placeholder="0" formControlName="toAmount"  />
+            <input class="px-2" matInput type="number" placeholder="0" formControlName="toAmount" />
             <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matTextSuffix>
               {{ tokenPath[1].symbol }}
               <i class="bi bi-chevron-down"></i>
@@ -56,7 +56,7 @@
         </div>
 
         <!-- Approval Buttons -->
-        <ng-container *ngIf="(allowance1Needed$|async) === true; else confirmBtn">
+        <ng-container *ngIf="(allowance1Needed$ | async) === true; else confirmBtn">
           <button class="btn btn-primary w-100 mb-2" type="submit" (click)="approveToken(true)">
             Approve {{ tokenPath[0].symbol }}
           </button>
