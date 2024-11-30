@@ -136,14 +136,8 @@ export class SwapEffects {
   loadQuoteAction$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DexActions.loadQuoteAction),
-      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
-      map(
-        (payload: [ReturnType<typeof DexActions.loadQuoteAction>, WalletProvider | null, string | null]) =>
-          payload as [ReturnType<typeof DexActions.loadQuoteAction>, WalletProvider, string]
-      ),
-      filter((payload) => payload[1] !== null && payload[2] !== null),
-      switchMap((action: [ReturnType<typeof DexActions.loadQuoteAction>, WalletProvider, string]) => {
-        return from(this.dexService.getAmountsOut(action[0].payload)).pipe(
+      switchMap((action: ReturnType<typeof DexActions.loadQuoteAction>) => {
+        return from(this.dexService.getAmountsOut(action.payload)).pipe(
           map((result: IQuoteResult) => DexActions.loadQuoteActionSuccess({ result })),
           catchError((error: string) => of(DexActions.loadQuoteActionFailure({ message: error })))
         );

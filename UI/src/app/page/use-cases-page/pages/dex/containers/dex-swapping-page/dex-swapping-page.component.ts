@@ -57,7 +57,8 @@ export class DexSwappingPageComponent implements OnInit {
   ];
 
   swapForm: FormGroup<ISwappingForm> = new FormGroup<ISwappingForm>({
-    fromAmount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)])
+    fromAmount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),
+    toAmount: new FormControl<number | null>(null, [Validators.required])
   });
 
   readonly quote$: Observable<StoreState<IQuoteResult | null>> = this.store.select(selectQuote);
@@ -75,6 +76,7 @@ export class DexSwappingPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchFormValues();
+    this.listenFormChanges();
   }
 
   get token1Available$(): Observable<BalanceAndAllowance | null> {
@@ -270,8 +272,40 @@ export class DexSwappingPageComponent implements OnInit {
         this.loadQuote();
       });
   }
+
+  // private listenToQuoteChanges(): void {
+  //   this.quote$.subscribe((quote: StoreState<IQuoteResult | null>) => {
+  //     if (quote.loading === true) {
+  //       // if first input is focused, freeze the second input
+  //       if (
+  //         document.activeElement === document.getElementById('fromAmount') &&
+  //         this.swapForm.get('fromAmount')?.value !== null
+  //       ) {
+  //         this.swapForm.get('toAmount')?.disable();
+  //       }
+  //     }
+  //   });
+  // }
+
+  private listenFormChanges(): void {
+    const updateAmount = (source: string, target: string, factor: (value: number, quote: IQuoteResult) => number): void => {
+      this.swapForm.get(source)?.valueChanges.subscribe((value: number | null) => {
+        this.quote$.pipe(take(1)).subscribe((quote: StoreState<IQuoteResult | null>) => {
+          if (value && quote.data) {
+            const result: number = factor(value, quote.data);
+            this.swapForm.get(target)?.setValue(parseFloat(result.toFixed(6)));
+          }
+        });
+      });
+    };
+
+    // listen to input 1 and 2
+    updateAmount('fromAmount', 'toAmount', (value, quote) => value * quote.token1);
+    updateAmount('toAmount', 'fromAmount', (value, quote) => value / quote.token1);
+  }
 }
 
 interface ISwappingForm {
   fromAmount: FormControl<number | null>;
+  toAmount: FormControl<number | null>;
 }

@@ -52,7 +52,6 @@ export class DexService {
   }
 
   async getAmountsOut(payload: SwapPayload): Promise<IQuoteResult> {
-    console.log('payload', payload);
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapRouterContract(payload.chainId);
 
@@ -72,19 +71,6 @@ export class DexService {
       return Promise.reject('Token not supported on this network');
     }
 
-    // get owner address
-    const ccipRouter: string = await contractFragment.methods['ccipRouter']().call();
-    const factory: string = await contractFragment.methods['factory']().call();
-    console.log('factory', factory); // TODO: The main issue here, this should not be null
-    console.log('ccipRouter', ccipRouter);
-    // TODO: I suspect ccipRouter will always be null if the contract is not initialized
-    // and this will make null all the rest
-
-    console.log('swapRouterContract.getAddress()', swapRouterContract.getAddress());
-
-    console.log('starting getAmountsOut');
-    console.log(web3.utils.toWei(payload.amount, 'ether'), [tokenInAddress, tokenOutAddress], [500]);
-
     return contractFragment.methods['getAmountsOut'](
       web3.utils.toWei(1, 'ether'),
       [tokenInAddress, tokenOutAddress],
@@ -92,7 +78,6 @@ export class DexService {
     )
       .call()
       .then((res: void | [] | SwapRouterObjectResponse) => {
-        console.log('res', res);
 
         if (!this.isAmountsOutResponseValid(res)) {
           return Promise.reject('Invalid amounts out response');
@@ -104,7 +89,6 @@ export class DexService {
         };
       })
       .catch((error: string) => {
-        console.log('error', error);
         return Promise.reject(error);
       });
   }
