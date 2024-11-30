@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
+import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, Observable } from 'rxjs';
+import { map, Observable, take } from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -29,6 +32,7 @@ import {
   loadBalanceAndAllowanceAction,
   loadQuoteAction,
   preloadLiquidityFormAction,
+  preloadLiquidityFormActionSuccess,
   swapAction
 } from './../../../../../../store/swap-store/state/actions';
 import {
@@ -36,8 +40,6 @@ import {
   selectTokensDetails,
   selectTokenSearch
 } from './../../../../../../store/swap-store/state/selectors';
-import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-dex-swapping-page',
@@ -67,7 +69,8 @@ export class DexSwappingPageComponent implements OnInit {
     private web3loginService: Web3LoginService,
     private store: Store,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private actions$: Actions
   ) {}
 
   ngOnInit(): void {
@@ -163,8 +166,8 @@ export class DexSwappingPageComponent implements OnInit {
     const payload: SwapPayload = {
       from: this.tokenPath[0],
       to: this.tokenPath[1],
-      amount: '1',
-      slippage: '1',
+      amount: (this.swapForm.get('fromAmount')?.value ?? 1).toString(),
+      slippage: '0.5',
       deadline: '1',
       recipient: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
       chainId: NetworkChainId.LOCALHOST
@@ -238,18 +241,34 @@ export class DexSwappingPageComponent implements OnInit {
   private fetchFormValues(): void {
     const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
-    const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
+    const chainIdIn: string | null = this.route.snapshot.queryParamMap.get('chainIdIn');
 
-    if (!token1 || !token2 || !chainId) return;
+    if (!token1 || !token2 || !chainIdIn) return;
 
     const payload: IPoolSearch = {
       token1Address: token1 as string,
       token2Address: token2 as string,
-      chainId: NetworkChainId.LOCALHOST
+      chainId: chainIdIn as NetworkChainId
     };
 
-    // TODO: Set up the route first
-    // this.store.dispatch(preloadLiquidityFormAction({ payload }));
+    this.store.dispatch(preloadLiquidityFormAction({ payload }));
+
+    this.actions$
+      .pipe(ofType(preloadLiquidityFormActionSuccess), take(1))
+      .subscribe((action: ReturnType<typeof preloadLiquidityFormActionSuccess>) => {
+        // Set the tokenPath
+        this.handleTokenSelected(action.result.token1, true);
+        this.handleTokenSelected(action.result.token2, false);
+        // Set the networkSelected
+        this.networkPath = [
+          this.web3loginService.getNetworkDetailByChainId(action.result.chainId as NetworkChainId),
+          this.web3loginService.getNetworkDetailByChainId(action.result.chainId as NetworkChainId)
+        ];
+        // Set fromAmount to 1
+        this.swapForm.get('fromAmount')?.setValue(1);
+        // Load the quote
+        this.loadQuote();
+      });
   }
 }
 
