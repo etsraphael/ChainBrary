@@ -1,4 +1,3 @@
-import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { NetworkChainId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import {
@@ -16,7 +15,12 @@ import {
 
 export const approveAllowanceAction = createAction(
   '[Swap] Approve Allowance Actions',
-  props<{ payload: IEditAllowancePayload }>()
+  props<{
+    tokenAddress: string;
+    chainId: string;
+    amount: number;
+    spender: string;
+  }>()
 );
 export const approveAllowanceActionSuccess = createAction('[Swap] Approve Allowance Actions Success');
 export const approveAllowanceActionFailure = createAction(

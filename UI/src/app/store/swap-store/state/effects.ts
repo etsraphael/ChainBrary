@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
+import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
@@ -121,7 +122,15 @@ export class SwapEffects {
       ),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.approveAllowanceAction>, WalletProvider, string]) => {
-        return from(this.tokensService.approve(action[0].payload)).pipe(
+        const payload: IEditAllowancePayload = {
+          tokenAddress: action[0].tokenAddress,
+          chainId: action[0].chainId,
+          owner: action[2],
+          spender: action[0].spender,
+          amount: action[0].amount
+        };
+
+        return from(this.tokensService.approve(payload)).pipe(
           map((result: boolean) =>
             result
               ? DexActions.approveAllowanceActionSuccess()

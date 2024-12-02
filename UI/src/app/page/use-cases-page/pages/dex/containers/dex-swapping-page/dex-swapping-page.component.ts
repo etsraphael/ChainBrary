@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { INetworkDetail, NetworkChainId, TokenId, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, TokenId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { map, Observable, ReplaySubject, take, takeUntil } from 'rxjs';
+import { distinctUntilChanged, map, Observable, ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
+import { environment } from '../../../../../../../environments/environment';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -27,6 +27,7 @@ import {
   StoreState,
   SwapPayload
 } from './../../../../../../shared/interfaces';
+import { selectWalletConnected } from './../../../../../../store/global-store/state/selectors';
 import {
   approveAllowanceAction,
   loadBalanceAndAllowanceAction,
@@ -64,6 +65,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   readonly quote$: Observable<StoreState<IQuoteResult | null>> = this.store.select(selectQuote);
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
+  readonly selectWalletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected);
 
   constructor(
     private dialog: MatDialog,
@@ -190,15 +192,16 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       (network: ITokenContract) => network.chainId === this.networkPath[tokenIn ? 0 : 1].chainId
     )?.address as string;
 
-    const payload: IEditAllowancePayload = {
-      chainId: this.networkPath[0].chainId,
-      tokenAddress: tokenAddress,
-      owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-      spender: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0',
-      amount
-    };
-
-    this.store.dispatch(approveAllowanceAction({ payload }));
+    return this.store.dispatch(
+      approveAllowanceAction({
+        chainId: this.networkPath[0].chainId,
+        tokenAddress: tokenAddress,
+        amount,
+        spender: environment.contracts.swapRouter.contracts.find(
+          (contract) => contract.chainId === this.networkPath[0].chainId
+        )?.address as string
+      })
+    );
   }
 
   private handleTokenSelected(token: IToken, tokenIn: boolean): void {
@@ -211,13 +214,14 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     const payload: IBalanceAndAllowancePayload = {
       chainId: this.networkPath[0].chainId,
       tokenId: this.tokenPath[tokenIn ? 0 : 1].tokenId,
-      // from: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
       tokenAddress: tokenAddress,
-      spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
+      spender: environment.contracts.swapRouter.contracts.find(
+        (contract) => contract.chainId === this.networkPath[0].chainId
+      )?.address as string,
       tokenIn
     };
 
-    this.store.dispatch(loadBalanceAndAllowanceAction({ payload }));
+    console.log('payload', payload);
 
     this.router.navigate([], {
       queryParams: {
@@ -225,6 +229,13 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge'
     });
+
+    this.selectWalletConnected$
+      .pipe(
+        skipWhile((wallet: WalletProvider | null) => !wallet),
+        take(1)
+      )
+      .subscribe(() => this.store.dispatch(loadBalanceAndAllowanceAction({ payload })));
   }
 
   private handleNetworkSelected(chainId: NetworkChainId, from: boolean): void {
@@ -285,14 +296,17 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       target: string,
       factor: (value: number, quote: IQuoteResult) => number
     ): void => {
-      this.swapForm.get(source)?.valueChanges.subscribe((value: number | null) => {
-        this.quote$.pipe(take(1)).subscribe((quote: StoreState<IQuoteResult | null>) => {
-          if (value && quote.data) {
-            const result: number = factor(value, quote.data);
-            this.swapForm.get(target)?.setValue(parseFloat(result.toFixed(6)));
-          }
+      this.swapForm
+        .get(source)
+        ?.valueChanges.pipe(distinctUntilChanged())
+        .subscribe((value: number | null) => {
+          this.quote$.pipe(take(1)).subscribe((quote: StoreState<IQuoteResult | null>) => {
+            if (value && quote.data?.token1 && quote.data) {
+              const result: number = factor(value, quote.data);
+              this.swapForm.get(target)?.setValue(parseFloat(result.toFixed(6)));
+            }
+          });
         });
-      });
     };
 
     // listen to input 1 and 2

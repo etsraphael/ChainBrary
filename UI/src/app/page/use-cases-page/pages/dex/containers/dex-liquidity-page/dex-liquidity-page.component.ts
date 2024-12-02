@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IEditAllowancePayload } from '@chainbrary/token-bridge';
 import { INetworkDetail, NetworkChainId, TokenId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -191,15 +190,16 @@ export class DexLiquidityPageComponent implements OnInit {
           (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
         )?.address as string);
 
-    const payload: IEditAllowancePayload = {
-      chainId: this.networkSelected.chainId,
-      tokenAddress: tokenAddress,
-      owner: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
-      spender: '0xCafac3dD18aC6c6e92c921884f9E4176737C052c',
-      amount
-    };
-
-    this.store.dispatch(approveAllowanceAction({ payload }));
+    this.poolDetail$.pipe(take(1)).subscribe((pool: IPoolDetail | null) => {
+      return this.store.dispatch(
+        approveAllowanceAction({
+          chainId: this.networkSelected.chainId,
+          tokenAddress: tokenAddress,
+          amount,
+          spender: pool?.contractAddress as string
+        })
+      );
+    });
   }
 
   // TODO: Load this one when a new pair of tokens is detected
