@@ -267,7 +267,7 @@ export class DexService {
     try {
       res = await this.getPool(payload);
     } catch (error) {
-      throw new Error('Error fetching pool details');
+      res = null;
     }
 
     return {

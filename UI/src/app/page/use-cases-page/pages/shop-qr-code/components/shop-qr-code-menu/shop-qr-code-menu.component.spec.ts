@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { HeaderBodyPageComponent } from 'src/app/shared/components/header-body-page/header-body-page.component';
 import { UserCasesSharedComponentsModule } from '../../../../components/user-cases-shared-components.module';
+import { HeaderBodyPageComponent } from './../../../../../../shared/components/header-body-page/header-body-page.component';
 import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
 import { ShopQrCodeMenuComponent } from './shop-qr-code-menu.component';
 
