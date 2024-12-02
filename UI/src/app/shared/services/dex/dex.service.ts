@@ -126,13 +126,11 @@ export class DexService {
             from: from,
             gas: gasEstimate.toString()
           })
-          .then((res) => {
-            console.log('res', res);
+          .then(() => {
             return 'Liquidity added';
           });
       })
       .catch((error: string) => {
-        console.log(error);
         return Promise.reject(error);
       });
   }
@@ -206,9 +204,7 @@ export class DexService {
       .catch((error: string) => Promise.reject(error));
   }
 
-  async swapExactTokensForTokens(payload: ISwappingPayload): Promise<string> {
-    console.log('swapExactTokensForTokens starting');
-    console.log('payload', payload);
+  async swapExactTokensForTokens(payload: ISwappingPayload, from: string): Promise<string> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapRouterContract(payload.chainId);
 
@@ -224,44 +220,36 @@ export class DexService {
       return Promise.reject('Token not supported on this network');
     }
 
-    console.log('gaz estimate starting');
-
     // calculate gaz
     const gasEstimate: bigint = await contractFragment.methods['swapExactTokensForTokens'](
       web3.utils.toWei(payload.amount, 'ether'),
       web3.utils.toWei('0.5', 'ether'),
       [tokenInAddress, tokenOutAddress],
       [500],
-      payload.to
+      from
     )
       .estimateGas({
-        from: payload.to
+        from: from
       })
       .catch((error: string) => {
-        console.log('error', error);
         return Promise.reject(error);
       });
-
-    console.log('gasEstimate', gasEstimate.toString());
 
     return contractFragment.methods['swapExactTokensForTokens'](
       web3.utils.toWei(payload.amount, 'ether'),
       web3.utils.toWei('0.5', 'ether'),
       [tokenInAddress, tokenOutAddress],
       [500],
-      payload.to
+      from
     )
       .send({
-        from: payload.to,
+        from: from,
         gas: gasEstimate.toString()
       })
-      .then((res) => {
-        console.log('res', res);
+      .then(() => {
         return 'Swap successful';
       })
       .catch((error: string) => {
-        console.log('error0', error);
-
         return Promise.reject(error);
       });
   }
@@ -279,7 +267,7 @@ export class DexService {
     try {
       res = await this.getPool(payload);
     } catch (error) {
-      console.log('Error fetching pool details', error);
+      throw new Error('Error fetching pool details');
     }
 
     return {

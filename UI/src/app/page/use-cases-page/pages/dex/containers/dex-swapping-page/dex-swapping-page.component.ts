@@ -165,8 +165,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       amount: fromAmount,
       amountOutMin: '1',
       path: [token0Address, token1Address],
-      fees: 500,
-      to: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266'
+      fees: 500
     };
 
     this.store.dispatch(swapAction({ payload }));
@@ -179,7 +178,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       amount: (this.swapForm.get('fromAmount')?.value ?? 1).toString(),
       slippage: '0.5',
       deadline: '1',
-      recipient: '0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266',
       chainId: NetworkChainId.LOCALHOST
     };
 
@@ -220,8 +218,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       )?.address as string,
       tokenIn
     };
-
-    console.log('payload', payload);
 
     this.router.navigate([], {
       queryParams: {

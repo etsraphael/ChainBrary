@@ -241,7 +241,6 @@ export class DexLiquidityPageComponent implements OnInit {
         map(([, poolDetail]) => poolDetail as IPoolDetail)
       )
       .subscribe((poolDetail: IPoolDetail) => {
-        console.log('pool', poolDetail);
         const payload: IBalanceAndAllowancePayload = {
           chainId: this.networkSelected.chainId,
           tokenId: token.tokenId,

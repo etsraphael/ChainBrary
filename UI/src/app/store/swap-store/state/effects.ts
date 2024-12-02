@@ -164,12 +164,9 @@ export class SwapEffects {
       ),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.swapAction>, WalletProvider, string]) => {
-        return from(this.dexService.swapExactTokensForTokens(action[0].payload)).pipe(
+        return from(this.dexService.swapExactTokensForTokens(action[0].payload, action[2])).pipe(
           map((result: string) => DexActions.swapActionSuccess({ message: result })),
-          catchError((error: string) => {
-            console.log('swapAction$ error', error);
-            return of(DexActions.swapActionFailure({ message: error }));
-          })
+          catchError((error: string) => of(DexActions.swapActionFailure({ message: error })))
         );
       })
     );

@@ -7,7 +7,6 @@ export interface ISwappingPayload {
   amountOutMin: string;
   path: string[];
   fees: number;
-  to: string;
 }
 
 export interface SwapPayload {
@@ -16,7 +15,6 @@ export interface SwapPayload {
   amount: string;
   slippage: string;
   deadline: string;
-  recipient: string;
   chainId: NetworkChainId;
 }
 
