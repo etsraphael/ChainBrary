@@ -150,6 +150,18 @@ export class DexLiquidityPageComponent implements OnInit {
     return dialogRef;
   }
 
+  // round number to 6 decimal places
+  roundNumber(num: string): string {
+    const [integerPart, decimalPart = ''] = num.split('.');
+    if (decimalPart.length <= 3) return `${integerPart}.${decimalPart.padEnd(3, '0')}`;
+
+    const roundedDecimal = Math.round(parseInt(decimalPart.slice(0, 4)) / 10)
+      .toString()
+      .padEnd(3, '0');
+    if (roundedDecimal.length > 3) return `${(BigInt(integerPart) + BigInt(1)).toString()}.000`;
+
+    return `${integerPart}.${roundedDecimal}`;
+  }
   addLiquidity(): void {
     this.liquidityForm.markAllAsTouched();
     if (this.liquidityForm.invalid) return;
