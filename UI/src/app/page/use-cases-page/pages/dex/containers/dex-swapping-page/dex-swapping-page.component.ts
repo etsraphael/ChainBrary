@@ -24,6 +24,7 @@ import {
   ISwappingPayload,
   IToken,
   ITokenContract,
+  ITransactionCard,
   StoreState,
   SwapPayload
 } from './../../../../../../shared/interfaces';
@@ -41,6 +42,7 @@ import {
   selectTokensDetails,
   selectTokenSearch
 } from './../../../../../../store/swap-store/state/selectors';
+import { selectRecentTransactionsByComponent } from './../../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-dex-swapping-page',
@@ -66,6 +68,9 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
   readonly selectWalletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected);
+  readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
+    selectRecentTransactionsByComponent('DexSwappingPageComponent')
+  );
 
   constructor(
     private dialog: MatDialog,

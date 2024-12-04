@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import { NetworkChainId, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
@@ -12,6 +12,7 @@ import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import * as DexActions from './actions';
+import { localTransactionSentSuccessfully } from '../../transaction-store/state/actions';
 
 @Injectable()
 export class SwapEffects {
@@ -227,4 +228,26 @@ export class SwapEffects {
       })
     );
   });
+
+  showSuccessMessageForLiquidity$ = createEffect(
+    () => {
+      return this.actions$.pipe(
+        ofType(
+          DexActions.createPoolActionSuccess,
+          DexActions.addLiquidityActionSuccess,
+          DexActions.approveAllowanceActionSuccess
+        ),
+        map(() => {
+          return localTransactionSentSuccessfully({ card: {
+            title: 'Transaction Sent Successfully',
+            type: 'success',
+            hash: '123',
+            component: 'DexLiquidityPageComponent',
+            chainId: NetworkChainId.LOCALHOST
+          } });
+        })
+      );
+    }
+  );
+
 }

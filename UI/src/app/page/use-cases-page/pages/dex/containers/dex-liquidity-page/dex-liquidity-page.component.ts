@@ -22,6 +22,7 @@ import {
   IPoolDetail,
   IPoolSearch,
   IToken,
+  ITransactionCard,
   StoreState
 } from '../../../../../../shared/interfaces';
 import { selectWalletConnected } from '../../../../../../store/global-store/state/selectors';
@@ -40,6 +41,7 @@ import {
   selectTokensDetails,
   selectTokenSearch
 } from '../../../../../../store/swap-store/state/selectors';
+import { selectRecentTransactionsByComponent } from '../../../../../../store/transaction-store/state/selectors';
 
 @Component({
   selector: 'app-dex-liquidity-page',
@@ -68,6 +70,9 @@ export class DexLiquidityPageComponent implements OnInit {
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
   readonly selectWalletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected);
+  readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
+    selectRecentTransactionsByComponent('DexLiquidityPageComponent')
+  );
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
