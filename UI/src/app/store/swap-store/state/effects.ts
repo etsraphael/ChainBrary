@@ -140,10 +140,13 @@ export class SwapEffects {
         return from(this.tokensService.approve(payload)).pipe(
           map((result: boolean) =>
             result
-              ? DexActions.approveAllowanceActionSuccess()
-              : DexActions.approveAllowanceActionFailure({ message: 'Failed to approve allowance' })
+              ? DexActions.approveAllowanceActionSuccess({
+                tokenAddress: action[0].tokenAddress,
+                view: action[0].view
+              })
+              : DexActions.approveAllowanceActionFailure({ tokenAddress: action[0].tokenAddress, message: 'Failed to approve allowance', view: action[0].view })
           ),
-          catchError((error: string) => of(DexActions.approveAllowanceActionFailure({ message: error })))
+          catchError((error: string) => of(DexActions.approveAllowanceActionFailure({ tokenAddress: action[0].tokenAddress, message: error, view: action[0].view })))
         );
       })
     );

@@ -37,6 +37,7 @@ import {
 } from '../../../../../../store/swap-store/state/actions';
 import {
   selectIsPoolCreating,
+  selectLiquidityApproval,
   selectPoolDetail,
   selectPoolIsNotCreated,
   selectTokensDetails,
@@ -75,6 +76,7 @@ export class DexLiquidityPageComponent implements OnInit {
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('DexLiquidityPageComponent')
   );
+  readonly liquidityApproval$: Observable<boolean[]> = this.store.select(selectLiquidityApproval);
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -198,6 +200,7 @@ export class DexLiquidityPageComponent implements OnInit {
     return this.store.dispatch(createPoolAction({ payload }));
   }
 
+  // Add loading animation here and disable the button while loading
   approveToken(tokenIn: boolean): void {
     const amount = tokenIn
       ? (this.liquidityForm.get('token1Amount')?.value as number)
@@ -215,6 +218,7 @@ export class DexLiquidityPageComponent implements OnInit {
         approveAllowanceAction({
           chainId: this.networkSelected.chainId,
           tokenAddress: tokenAddress,
+          view: 'liquidity',
           amount,
           spender: pool?.contractAddress as string
         })
@@ -222,7 +226,6 @@ export class DexLiquidityPageComponent implements OnInit {
     });
   }
 
-  // TODO: Load this one when a new pair of tokens is detected
   private loadPool(): void {
     const payload: IPoolSearch = {
       token1Address: this.tokenPath[0].networkSupport.find(

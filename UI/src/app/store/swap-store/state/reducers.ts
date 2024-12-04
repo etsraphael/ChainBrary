@@ -199,6 +199,78 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         error: result?.poolId ? null : 'Pool_not_found'
       }
     })
+  ),
+  on(
+    SwapActions.approveAllowanceAction,
+    (state: ISwapState, action): ISwapState => {
+      const { tokenAddress, view } = action;
+      const { token1Address, token2Address } = state.searchPool.data || {};
+
+      const isToken0: boolean = tokenAddress === token1Address;
+      const isToken1: boolean = tokenAddress === token2Address;
+
+      const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
+      const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
+
+      return {
+        ...state,
+        [approvalType]: {
+          ...state[approvalType],
+          [tokenKey]: {
+            isLoading: true,
+            errorMessage: null
+          }
+        }
+      };
+    }
+  ),
+  on(
+    SwapActions.approveAllowanceActionSuccess,
+    (state: ISwapState, action): ISwapState => {
+      const { tokenAddress, view } = action;
+      const { token1Address, token2Address } = state.searchPool.data || {};
+
+      const isToken0: boolean = tokenAddress === token1Address;
+      const isToken1: boolean = tokenAddress === token2Address;
+
+      const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
+      const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
+
+      return {
+        ...state,
+        [approvalType]: {
+          ...state[approvalType],
+          [tokenKey]: {
+            isLoading: false,
+            errorMessage: null
+          }
+        }
+      };
+    }
+  ),
+  on(
+    SwapActions.approveAllowanceActionFailure,
+    (state: ISwapState, action): ISwapState => {
+      const { tokenAddress, view, message } = action;
+      const { token1Address, token2Address } = state.searchPool.data || {};
+
+      const isToken0: boolean = tokenAddress === token1Address;
+      const isToken1: boolean = tokenAddress === token2Address;
+
+      const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
+      const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
+
+      return {
+        ...state,
+        [approvalType]: {
+          ...state[approvalType],
+          [tokenKey]: {
+            isLoading: false,
+            errorMessage: message
+          }
+        }
+      };
+    }
   )
 );
 

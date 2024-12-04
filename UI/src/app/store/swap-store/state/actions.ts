@@ -20,12 +20,13 @@ export const approveAllowanceAction = createAction(
     chainId: string;
     amount: number;
     spender: string;
+    view: 'liquidity' | 'swap';
   }>()
 );
-export const approveAllowanceActionSuccess = createAction('[Swap] Approve Allowance Actions Success');
+export const approveAllowanceActionSuccess = createAction('[Swap] Approve Allowance Actions Success', props<{ tokenAddress: string, view: 'liquidity' | 'swap'  }>());
 export const approveAllowanceActionFailure = createAction(
   '[Swap] Approve Allowance Actions Failure',
-  props<{ message: string }>()
+  props<{ tokenAddress: string, message: string, view: 'liquidity' | 'swap' }>()
 );
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: IPoolSearch }>());

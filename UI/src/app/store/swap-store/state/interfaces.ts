@@ -17,6 +17,14 @@ export interface ISwapState {
   token0Detail: StoreState<BalanceAndAllowance | null>;
   token1Detail: StoreState<BalanceAndAllowance | null>;
   quote: StoreState<IQuoteResult | null>;
+  liquidityApproval: {
+    token0: ActionStoreProcessing;
+    token1: ActionStoreProcessing;
+  },
+  swapApproval: {
+    token0: ActionStoreProcessing;
+    token1: ActionStoreProcessing;
+  },
 }
 
 export interface SwapState {

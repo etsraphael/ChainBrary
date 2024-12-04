@@ -33,5 +33,25 @@ export const initialState: ISwapState = {
     data: null,
     loading: false,
     error: null
+  },
+  liquidityApproval: {
+    token0: {
+      isLoading: false,
+      errorMessage: null
+    },
+    token1: {
+      isLoading: false,
+      errorMessage: null
+    }
+  },
+  swapApproval: {
+    token0: {
+      isLoading: false,
+      errorMessage: null
+    },
+    token1: {
+      isLoading: false,
+      errorMessage: null
+    }
   }
 };

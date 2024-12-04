@@ -108,13 +108,31 @@
         </ng-container>
         <!-- Approval Buttons -->
         <ng-container *ngIf="(allowance1Needed$ | async) || (allowance2Needed$ | async)">
-          <button *ngIf="allowance1Needed$ | async" class="btn btn-primary w-100 mb-2" type="submit"
-            (click)="approveToken(true)">
-            Approve {{ tokenPath[0].symbol }}
+          <button *ngIf="allowance1Needed$ | async" class="btn btn-primary w-100 mb-2" [disabled]="(liquidityApproval$ | async)?.[0]" (click)="approveToken(true)">
+            <ng-container *ngIf="(liquidityApproval$ | async)?.[0]; else approve">
+              <div class="d-flex justify-content-center">
+                <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
+                <div class="ms-2">
+                Approving {{ tokenPath[0].symbol }}
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #approve>
+              Approve {{ tokenPath[0].symbol }}
+            </ng-template>
           </button>
-          <button *ngIf="allowance2Needed$ | async" class="btn btn-primary w-100 mb-4" type="submit"
-            (click)="approveToken(false)">
-            Approve {{ tokenPath[1].symbol }}
+          <button *ngIf="allowance2Needed$ | async" class="btn btn-primary w-100 mb-4" [disabled]="(liquidityApproval$ | async)?.[1]" (click)="approveToken(false)">
+            <ng-container *ngIf="(liquidityApproval$ | async)?.[1]; else approve">
+              <div class="d-flex justify-content-center">
+                <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
+                <div class="ms-2">
+                Approving {{ tokenPath[1].symbol }}
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #approve>
+              Approve {{ tokenPath[1].symbol }}
+            </ng-template>
           </button>
         </ng-container>
         <!-- Liquidity Info Text -->

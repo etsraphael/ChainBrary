@@ -33,3 +33,13 @@ export const selectIsPoolCreating: MemoizedSelector<object, boolean> = createSel
   selectSwapState,
   (s: ISwapState) => s.isPoolCreating.isLoading
 );
+
+export const selectLiquidityApproval: MemoizedSelector<object, boolean[]> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => [s.liquidityApproval.token0.isLoading, s.liquidityApproval.token1.isLoading]
+);
+
+export const selectSwapApproval: MemoizedSelector<object, boolean[]> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => [s.swapApproval.token0.isLoading, s.swapApproval.token1.isLoading]
+);
