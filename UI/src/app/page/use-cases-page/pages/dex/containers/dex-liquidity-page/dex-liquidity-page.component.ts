@@ -169,6 +169,7 @@ export class DexLiquidityPageComponent implements OnInit {
 
     return `${integerPart}.${roundedDecimal}`;
   }
+
   addLiquidity(): void {
     this.liquidityForm.markAllAsTouched();
     if (this.liquidityForm.invalid) return;
@@ -249,7 +250,6 @@ export class DexLiquidityPageComponent implements OnInit {
       queryParamsHandling: 'merge'
     });
 
-    // TODO: load pool if the URL have been changed
     this.loadPool();
 
     // Check allowance for pool
