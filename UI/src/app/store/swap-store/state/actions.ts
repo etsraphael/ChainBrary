@@ -31,7 +31,7 @@ export const approveAllowanceActionFailure = createAction(
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: IPoolSearch }>());
 export const createPoolActionSuccess = createAction(
   '[Swap] Create Pool Actions Success',
-  props<{ result: IPoolDetail }>()
+  props<{ result: IPoolDetail; hash: string; chainId: NetworkChainId }>()
 );
 export const createPoolActionFailure = createAction('[Swap] Create Pool Actions Failure', props<{ message: string }>());
 

@@ -36,6 +36,7 @@ import {
   preloadLiquidityFormActionSuccess
 } from '../../../../../../store/swap-store/state/actions';
 import {
+  selectIsPoolCreating,
   selectPoolDetail,
   selectPoolIsNotCreated,
   selectTokensDetails,
@@ -66,6 +67,7 @@ export class DexLiquidityPageComponent implements OnInit {
   ) {}
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
+  readonly poolIsCreating$: Observable<boolean> = this.store.select(selectIsPoolCreating);
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);

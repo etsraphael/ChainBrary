@@ -5,6 +5,10 @@ export const initialState: ISwapState = {
     isLoading: false,
     errorMessage: null
   },
+  isPoolCreating: {
+    isLoading: false,
+    errorMessage: null
+  },
   searchPool: {
     data: null,
     loading: false,

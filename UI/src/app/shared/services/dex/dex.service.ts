@@ -177,7 +177,7 @@ export class DexService {
       .catch((error: string) => Promise.reject(error));
   }
 
-  async createPool(from: string, payload: IPoolSearch): Promise<IPoolDetail> {
+  async createPool(from: string, payload: IPoolSearch): Promise<{ poolDetail: IPoolDetail; transactionHash: string }> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapFactoryContract(payload.chainId);
 
@@ -194,13 +194,14 @@ export class DexService {
 
     return contract.methods['createPool'](payload.token1Address, payload.token2Address, swapRouterContract.fee)
       .send({ from, gas: gas.toString() })
-      .then(() =>
-        this.getPool({
+      .then(async (receipt) => {
+        const poolDetail = await this.getPool({
           chainId: payload.chainId,
           token1Address: payload.token1Address,
           token2Address: payload.token2Address
-        })
-      )
+        });
+        return { poolDetail, transactionHash: receipt.transactionHash };
+      })
       .catch((error: string) => Promise.reject(error));
   }
 

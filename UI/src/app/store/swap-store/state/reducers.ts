@@ -19,7 +19,46 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
     })
   ),
   on(
+    SwapActions.createPoolAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isPoolCreating: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
     SwapActions.createPoolActionSuccess,
+    (state: ISwapState, action: { result: IPoolDetail }): ISwapState => ({
+      ...state,
+      searchPool: {
+        data: action.result,
+        loading: false,
+        error: null
+      },
+      isPoolCreating: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.createPoolActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      searchPool: {
+        data: null,
+        loading: false,
+        error: message
+      },
+      isPoolCreating: {
+        isLoading: false,
+        errorMessage: message
+      }
+    })
+  ),
+  on(
     SwapActions.loadPoolActionSuccess,
     (state: ISwapState, action: { result: IPoolDetail }): ISwapState => ({
       ...state,

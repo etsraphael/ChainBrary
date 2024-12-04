@@ -13,9 +13,7 @@ export class TransactionCardComponent implements OnInit {
   @Input() cardContent: ITransactionCard;
   scanLink: string;
 
-  constructor(
-    private store: Store
-  ) {}
+  constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.generateScanLink(this.cardContent.chainId);

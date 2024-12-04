@@ -28,3 +28,8 @@ export const selectQuote: MemoizedSelector<object, StoreState<IQuoteResult | nul
   selectSwapState,
   (s: ISwapState) => s.quote
 );
+
+export const selectIsPoolCreating: MemoizedSelector<object, boolean> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => s.isPoolCreating.isLoading
+);

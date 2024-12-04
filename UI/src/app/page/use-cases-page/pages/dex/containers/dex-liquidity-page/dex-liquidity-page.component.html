@@ -1,133 +1,146 @@
 <!-- Transaction cards -->
- <div class="my-2">
+<div class="my-2">
   <div *ngIf="(transactionCards$ | async)?.length! > 0" class="d-flex justify-content-center my-2">
     <div class="col-12 col-md-6 col-lg-5 col-xl-4">
       <app-transaction-card [cardContent]="(transactionCards$ | async)![0]"></app-transaction-card>
     </div>
   </div>
- </div>
+</div>
 <div class="d-flex justify-content-center">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
-    <div class="card cb-card border-0 shadow-sm p-4">
-      <form [formGroup]="liquidityForm">
-        <!-- Network Selector -->
-        <div class="d-flex justify-content-between align-items-center mb-2">
-          <button mat-button class="btn-network text-muted px-3" (click)="openNetworkDialog()">
-            {{ networkSelected.name }}
-          </button>
+    <!-- Loading Spinner -->
+    <ng-container *ngIf="(poolIsCreating$ | async) === true; else body">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div class="d-flex flex-column align-items-center pt-5">
+            <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+            <p class="mt-3 text-secondary text-center">
+              <span i18n>Creating your pool... Please confirm the request on your wallet and wait</span>
+            </p>
+          </div>
         </div>
+      </div>
+    </ng-container>
+    <ng-template #body>
+      <div class="card cb-card border-0 shadow-sm p-4">
+        <form [formGroup]="liquidityForm">
+          <!-- Network Selector -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <button mat-button class="btn-network text-muted px-3" (click)="openNetworkDialog()">
+              {{ networkSelected.name }}
+            </button>
+          </div>
 
-        <!-- Token 1 Input -->
-        <div class="d-flex mb-2">
-          <mat-form-field appearance="outline" class="col-12">
-            <mat-label>Amount</mat-label>
-            <input class="px-2" matInput type="number" placeholder="0" formControlName="token1Amount" />
-            <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matSuffix>
-              {{ tokenPath[0].symbol }}
-              <i class="bi bi-chevron-down"></i>
-            </span>
-            <mat-hint class="w-100 text-end" *ngIf="token1Available$ | async; let t">
-              <span class="text-muted">{{ roundNumber(t.balance) + ' ' + tokenPath[0].symbol }}</span>
-            </mat-hint>
-          </mat-form-field>
-        </div>
+          <!-- Token 1 Input -->
+          <div class="d-flex mb-2">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Amount</mat-label>
+              <input class="px-2" matInput type="number" placeholder="0" formControlName="token1Amount" />
+              <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matSuffix>
+                {{ tokenPath[0].symbol }}
+                <i class="bi bi-chevron-down"></i>
+              </span>
+              <mat-hint class="w-100 text-end" *ngIf="token1Available$ | async; let t">
+                <span class="text-muted">{{ roundNumber(t.balance) + ' ' + tokenPath[0].symbol }}</span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
 
-        <!-- Plus Icon -->
-        <div class="text-center mb-2">
-          <mat-icon class="mat-icon material-icons">add</mat-icon>
-        </div>
+          <!-- Plus Icon -->
+          <div class="text-center mb-2">
+            <mat-icon class="mat-icon material-icons">add</mat-icon>
+          </div>
 
-        <!-- Token 2 Input -->
-        <div class="d-flex mb-2">
-          <mat-form-field appearance="outline" class="col-12">
-            <mat-label>Amount</mat-label>
-            <input class="px-2" matInput type="number" placeholder="0" formControlName="token2Amount" />
-            <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matSuffix>
-              {{ tokenPath[1].symbol }}
-              <i class="bi bi-chevron-down"></i>
-            </span>
-            <mat-hint class="w-100 text-end" *ngIf="token2Available$ | async; let t">
-              <span class="text-muted">{{ roundNumber(t.balance) + ' ' + tokenPath[1].symbol }}</span>
-            </mat-hint>
-          </mat-form-field>
-        </div>
+          <!-- Token 2 Input -->
+          <div class="d-flex mb-2">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Amount</mat-label>
+              <input class="px-2" matInput type="number" placeholder="0" formControlName="token2Amount" />
+              <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matSuffix>
+                {{ tokenPath[1].symbol }}
+                <i class="bi bi-chevron-down"></i>
+              </span>
+              <mat-hint class="w-100 text-end" *ngIf="token2Available$ | async; let t">
+                <span class="text-muted">{{ roundNumber(t.balance) + ' ' + tokenPath[1].symbol }}</span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
 
-        <!-- Total Liquidity Info -->
-        <div *ngIf="poolDetail$ | async" class="d-flex flex-column align-items-center mb-4">
-          <div class="text-muted">Total Liquidity</div>
-          <ng-container *ngIf="poolIsLoading$ | async; else token1">
-            <div class="w-50">
-              <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
-            </div>
+          <!-- Total Liquidity Info -->
+          <div *ngIf="poolDetail$ | async" class="d-flex flex-column align-items-center mb-4">
+            <div class="text-muted">Total Liquidity</div>
+            <ng-container *ngIf="poolIsLoading$ | async; else token1">
+              <div class="w-50">
+                <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+              </div>
+            </ng-container>
+            <ng-template #token1>
+              <div class="fw-bold">
+                {{ (poolDetail$ | async)?.token1Amount + ' ' + tokenPath[0].symbol }}
+              </div>
+            </ng-template>
+            <ng-container *ngIf="poolIsLoading$ | async; else token2">
+              <div class="w-50">
+                <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
+              </div>
+            </ng-container>
+            <ng-template #token2>
+              <div class="fw-bold">
+                {{ (poolDetail$ | async)?.token2Amount + ' ' + tokenPath[1].symbol }}
+              </div>
+            </ng-template>
+          </div>
+
+          <!-- Add Liquidity Button -->
+          <ng-container
+            *ngIf="
+              (poolIsNotCreated$ | async) === false &&
+              (allowance1Needed$ | async) === false &&
+              (allowance2Needed$ | async) === false
+            "
+          >
+            <button
+              [disabled]="liquidityForm.invalid"
+              class="btn btn-primary w-100 mb-4"
+              type="submit"
+              (click)="addLiquidity()"
+            >
+              Add Liquidity
+            </button>
           </ng-container>
-          <ng-template #token1>
-            <div class="fw-bold">
-              {{ (poolDetail$ | async)?.token1Amount + ' ' + tokenPath[0].symbol }}
-            </div>
-          </ng-template>
-          <ng-container *ngIf="poolIsLoading$ | async; else token2">
-            <div class="w-50">
-              <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
-            </div>
+
+          <!-- Approval Buttons -->
+          <ng-container *ngIf="(allowance1Needed$ | async) || (allowance2Needed$ | async)">
+            <button
+              *ngIf="allowance1Needed$ | async"
+              class="btn btn-primary w-100 mb-2"
+              type="submit"
+              (click)="approveToken(true)"
+            >
+              Approve {{ tokenPath[0].symbol }}
+            </button>
+            <button
+              *ngIf="allowance2Needed$ | async"
+              class="btn btn-primary w-100 mb-4"
+              type="submit"
+              (click)="approveToken(false)"
+            >
+              Approve {{ tokenPath[1].symbol }}
+            </button>
           </ng-container>
-          <ng-template #token2>
-            <div class="fw-bold">
-              {{ (poolDetail$ | async)?.token2Amount + ' ' + tokenPath[1].symbol }}
-            </div>
-          </ng-template>
-        </div>
-
-        <!-- Add Liquidity Button -->
-        <ng-container
-          *ngIf="
-            (poolIsNotCreated$ | async) === false &&
-            (allowance1Needed$ | async) === false &&
-            (allowance2Needed$ | async) === false
-          "
-        >
-          <button
-            [disabled]="liquidityForm.invalid"
-            class="btn btn-primary w-100 mb-4"
-            type="submit"
-            (click)="addLiquidity()"
-          >
-            Add Liquidity
-          </button>
-        </ng-container>
-
-        <!-- Approval Buttons -->
-        <ng-container *ngIf="(allowance1Needed$ | async) || (allowance2Needed$ | async)">
-          <button
-            *ngIf="allowance1Needed$ | async"
-            class="btn btn-primary w-100 mb-2"
-            type="submit"
-            (click)="approveToken(true)"
-          >
-            Approve {{ tokenPath[0].symbol }}
-          </button>
-          <button
-            *ngIf="allowance2Needed$ | async"
-            class="btn btn-primary w-100 mb-4"
-            type="submit"
-            (click)="approveToken(false)"
-          >
-            Approve {{ tokenPath[1].symbol }}
-          </button>
-        </ng-container>
-
+        </form>
         <!-- Create Pool Button -->
         <ng-container *ngIf="(poolIsNotCreated$ | async) === true">
-          <button class="btn btn-primary w-100 mb-4" type="submit" (click)="createPool()">Create Pool</button>
+          <button class="btn btn-primary w-100 mb-4" (click)="createPool()">Create Pool</button>
         </ng-container>
-      </form>
-
-      <!-- Liquidity Info Text -->
-      <div class="p-3 bg-light rounded footer-container">
-        <small class="text-muted">
-          By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair.
-          Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.
-        </small>
+        <!-- Liquidity Info Text -->
+        <div class="p-3 bg-light rounded footer-container">
+          <small class="text-muted">
+            By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair.
+            Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.
+          </small>
+        </div>
       </div>
-    </div>
+    </ng-template>
   </div>
 </div>
