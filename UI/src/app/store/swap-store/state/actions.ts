@@ -1,4 +1,4 @@
-import { NetworkChainId } from '@chainbrary/web3-login';
+import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
 import { createAction, props } from '@ngrx/store';
 import {
   BalanceAndAllowance,
@@ -20,13 +20,17 @@ export const approveAllowanceAction = createAction(
     chainId: string;
     amount: number;
     spender: string;
+    tokenId: TokenId | string;
     view: 'liquidity' | 'swap';
   }>()
 );
-export const approveAllowanceActionSuccess = createAction('[Swap] Approve Allowance Actions Success', props<{ tokenAddress: string, view: 'liquidity' | 'swap'  }>());
+export const approveAllowanceActionSuccess = createAction(
+  '[Swap] Approve Allowance Actions Success',
+  props<{ tokenId: TokenId | string; tokenAddress: string; view: 'liquidity' | 'swap' }>()
+);
 export const approveAllowanceActionFailure = createAction(
   '[Swap] Approve Allowance Actions Failure',
-  props<{ tokenAddress: string, message: string, view: 'liquidity' | 'swap' }>()
+  props<{ tokenAddress: string; message: string; view: 'liquidity' | 'swap' }>()
 );
 
 export const createPoolAction = createAction('[Swap] Create Pool Actions', props<{ payload: IPoolSearch }>());

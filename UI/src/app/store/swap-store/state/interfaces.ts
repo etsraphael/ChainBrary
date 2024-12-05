@@ -20,11 +20,11 @@ export interface ISwapState {
   liquidityApproval: {
     token0: ActionStoreProcessing;
     token1: ActionStoreProcessing;
-  },
+  };
   swapApproval: {
     token0: ActionStoreProcessing;
     token1: ActionStoreProcessing;
-  },
+  };
 }
 
 export interface SwapState {

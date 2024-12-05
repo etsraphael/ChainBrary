@@ -203,7 +203,8 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
         amount,
         spender: environment.contracts.swapRouter.contracts.find(
           (contract) => contract.chainId === this.networkPath[0].chainId
-        )?.address as string
+        )?.address as string,
+        tokenId: this.tokenPath[tokenIn ? 0 : 1].tokenId
       })
     );
   }

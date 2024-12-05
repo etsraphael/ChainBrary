@@ -1,18 +1,27 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import { NetworkChainId, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, mergeMap, of, switchMap, take } from 'rxjs';
-import { BalanceAndAllowance, IPoolDetail, IPoolDetailForm, IQuoteResult, IToken } from '../../../shared/interfaces';
+import {
+  BalanceAndAllowance,
+  IBalanceAndAllowancePayload,
+  IPoolDetail,
+  IPoolDetailForm,
+  IQuoteResult,
+  IToken,
+  StoreState
+} from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { localTransactionSentSuccessfully } from '../../transaction-store/state/actions';
 import * as DexActions from './actions';
+import { selectPoolContractAddress, selectTokensDetails } from './selectors';
 
 @Injectable()
 export class SwapEffects {
@@ -141,12 +150,25 @@ export class SwapEffects {
           map((result: boolean) =>
             result
               ? DexActions.approveAllowanceActionSuccess({
+                  tokenAddress: action[0].tokenAddress,
+                  view: action[0].view,
+                  tokenId: action[0].tokenId
+                })
+              : DexActions.approveAllowanceActionFailure({
+                  tokenAddress: action[0].tokenAddress,
+                  message: 'Failed to approve allowance',
+                  view: action[0].view
+                })
+          ),
+          catchError((error: string) =>
+            of(
+              DexActions.approveAllowanceActionFailure({
                 tokenAddress: action[0].tokenAddress,
+                message: error,
                 view: action[0].view
               })
-              : DexActions.approveAllowanceActionFailure({ tokenAddress: action[0].tokenAddress, message: 'Failed to approve allowance', view: action[0].view })
-          ),
-          catchError((error: string) => of(DexActions.approveAllowanceActionFailure({ tokenAddress: action[0].tokenAddress, message: error, view: action[0].view })))
+            )
+          )
         );
       })
     );
@@ -190,7 +212,6 @@ export class SwapEffects {
         (payload: [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider | null, string | null]) =>
           payload as [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider, string]
       ),
-      // filter((payload) => payload[1] !== null && payload[2] !== null),
       switchMap((action: [ReturnType<typeof DexActions.preloadLiquidityFormAction>, WalletProvider, string]) => {
         return from(this.dexService.preloadLiquidityForm(action[0].payload)).pipe(
           map((result: IPoolDetailForm) => DexActions.preloadLiquidityFormActionSuccess({ result })),
@@ -257,6 +278,75 @@ export class SwapEffects {
           }
         });
       })
+    );
+  });
+
+  loadAllowanceAfterApproveAllowanceSuccessFromLiquidty$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.approveAllowanceActionSuccess),
+      filter((action: ReturnType<typeof DexActions.approveAllowanceActionSuccess>) => action.view === 'liquidity'),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokensDetails),
+        this.store.select(selectPoolContractAddress)
+      ]),
+      map(
+        (
+          payload: [
+            ReturnType<typeof DexActions.approveAllowanceActionSuccess>,
+            WalletProvider | null,
+            string | null,
+            StoreState<BalanceAndAllowance | null>[],
+            string | null
+          ]
+        ) =>
+          payload as [
+            ReturnType<typeof DexActions.approveAllowanceActionSuccess>,
+            WalletProvider,
+            string,
+            StoreState<BalanceAndAllowance | null>[],
+            string
+          ]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof DexActions.approveAllowanceActionSuccess>,
+            WalletProvider,
+            string,
+            StoreState<BalanceAndAllowance | null>[],
+            string
+          ]
+        ) => {
+          const [token0, token1]: [string | undefined, string | undefined] = [
+            action[3][0].data?.tokenId,
+            action[3][1].data?.tokenId
+          ];
+          const tokenIn: boolean | null =
+            action[0].tokenId === token0 ? true : action[0].tokenId === token1 ? false : null;
+
+          if (tokenIn === null) {
+            return of(DexActions.loadBalanceAndAllowanceActionFailure({ message: 'Token not found', tokenIn: true }));
+          }
+
+          const payload: IBalanceAndAllowancePayload = {
+            chainId: NetworkChainId.LOCALHOST,
+            tokenId: action[0].tokenId,
+            spender: action[4],
+            tokenAddress: action[0].tokenAddress,
+            tokenIn
+          };
+
+          return from(this.tokensService.getBalanceAndAllowance(action[2], payload)).pipe(
+            map((result: BalanceAndAllowance) => DexActions.loadBalanceAndAllowanceActionSuccess({ result })),
+            catchError((error: string) =>
+              of(DexActions.loadBalanceAndAllowanceActionFailure({ message: error, tokenIn }))
+            )
+          );
+        }
+      )
     );
   });
 }

@@ -220,7 +220,8 @@ export class DexLiquidityPageComponent implements OnInit {
           tokenAddress: tokenAddress,
           view: 'liquidity',
           amount,
-          spender: pool?.contractAddress as string
+          spender: pool?.contractAddress as string,
+          tokenId: tokenIn ? this.tokenPath[0].tokenId : this.tokenPath[1].tokenId
         })
       );
     });

@@ -14,6 +14,11 @@ export const selectPoolDetail: MemoizedSelector<object, StoreState<IPoolDetail |
   (s: ISwapState) => s.searchPool
 );
 
+export const selectPoolContractAddress: MemoizedSelector<object, string | null> = createSelector(
+  selectPoolDetail,
+  (s: StoreState<IPoolDetail | null>) => s.data?.contractAddress || null
+);
+
 export const selectTokenSearch: MemoizedSelector<object, StoreState<IToken | null>> = createSelector(
   selectSwapState,
   (s: ISwapState) => s.tokenSearch

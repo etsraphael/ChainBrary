@@ -200,78 +200,69 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
       }
     })
   ),
-  on(
-    SwapActions.approveAllowanceAction,
-    (state: ISwapState, action): ISwapState => {
-      const { tokenAddress, view } = action;
-      const { token1Address, token2Address } = state.searchPool.data || {};
+  on(SwapActions.approveAllowanceAction, (state: ISwapState, action): ISwapState => {
+    const { tokenAddress, view } = action;
+    const { token1Address, token2Address } = state.searchPool.data || {};
 
-      const isToken0: boolean = tokenAddress === token1Address;
-      const isToken1: boolean = tokenAddress === token2Address;
+    const isToken0: boolean = tokenAddress === token1Address;
+    const isToken1: boolean = tokenAddress === token2Address;
 
-      const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
-      const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
+    const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
+    const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
 
-      return {
-        ...state,
-        [approvalType]: {
-          ...state[approvalType],
-          [tokenKey]: {
-            isLoading: true,
-            errorMessage: null
-          }
+    return {
+      ...state,
+      [approvalType]: {
+        ...state[approvalType],
+        [tokenKey]: {
+          isLoading: true,
+          errorMessage: null
         }
-      };
-    }
-  ),
-  on(
-    SwapActions.approveAllowanceActionSuccess,
-    (state: ISwapState, action): ISwapState => {
-      const { tokenAddress, view } = action;
-      const { token1Address, token2Address } = state.searchPool.data || {};
+      }
+    };
+  }),
+  on(SwapActions.approveAllowanceActionSuccess, (state: ISwapState, action): ISwapState => {
+    const { tokenAddress, view } = action;
+    const { token1Address, token2Address } = state.searchPool.data || {};
 
-      const isToken0: boolean = tokenAddress === token1Address;
-      const isToken1: boolean = tokenAddress === token2Address;
+    const isToken0: boolean = tokenAddress === token1Address;
+    const isToken1: boolean = tokenAddress === token2Address;
 
-      const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
-      const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
+    const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
+    const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
 
-      return {
-        ...state,
-        [approvalType]: {
-          ...state[approvalType],
-          [tokenKey]: {
-            isLoading: false,
-            errorMessage: null
-          }
+    return {
+      ...state,
+      [approvalType]: {
+        ...state[approvalType],
+        [tokenKey]: {
+          isLoading: false,
+          errorMessage: null
         }
-      };
-    }
-  ),
-  on(
-    SwapActions.approveAllowanceActionFailure,
-    (state: ISwapState, action): ISwapState => {
-      const { tokenAddress, view, message } = action;
-      const { token1Address, token2Address } = state.searchPool.data || {};
+      }
+    };
+  }),
+  on(SwapActions.approveAllowanceActionFailure, (state: ISwapState, action): ISwapState => {
+    const { tokenAddress, view, message } = action;
+    const { token1Address, token2Address } = state.searchPool.data || {};
 
-      const isToken0: boolean = tokenAddress === token1Address;
-      const isToken1: boolean = tokenAddress === token2Address;
+    const isToken0: boolean = tokenAddress === token1Address;
+    const isToken1: boolean = tokenAddress === token2Address;
 
-      const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
-      const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
+    const approvalType = view === 'liquidity' ? 'liquidityApproval' : 'swapApproval';
+    const tokenKey = isToken0 ? 'token0' : isToken1 ? 'token1' : 'token0';
 
-      return {
-        ...state,
-        [approvalType]: {
-          ...state[approvalType],
-          [tokenKey]: {
-            isLoading: false,
-            errorMessage: message
-          }
+    return {
+      ...state,
+      [approvalType]: {
+        ...state[approvalType],
+        [tokenKey]: {
+          isLoading: false,
+          errorMessage: message
         }
-      };
-    }
-  )
+      }
+    };
+  })
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {
