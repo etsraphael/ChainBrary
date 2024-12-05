@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { IEditAllowancePayload } from '@chainbrary/token-bridge';
-import { NetworkChainId, WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
+import { WalletProvider, Web3LoginComponent, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { catchError, filter, from, map, mergeMap, of, switchMap, take } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
@@ -80,7 +81,7 @@ export class SwapEffects {
       ),
       switchMap((action: [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider, string]) => {
         return from(this.dexService.addLiquidity(action[2], action[0].payload)).pipe(
-          map((result: string) => DexActions.addLiquidityActionSuccess({ message: result })),
+          map((result: string) => DexActions.addLiquidityActionSuccess({ message: result })), // TODO: Manage the result here
           catchError((error: string) => of(DexActions.addLiquidityActionFailure({ message: error })))
         );
       })
@@ -152,7 +153,8 @@ export class SwapEffects {
               ? DexActions.approveAllowanceActionSuccess({
                   tokenAddress: action[0].tokenAddress,
                   view: action[0].view,
-                  tokenId: action[0].tokenId
+                  tokenId: action[0].tokenId,
+                  chainId: action[0].chainId
                 })
               : DexActions.approveAllowanceActionFailure({
                   tokenAddress: action[0].tokenAddress,
@@ -281,10 +283,20 @@ export class SwapEffects {
     );
   });
 
-  loadAllowanceAfterApproveAllowanceSuccessFromLiquidty$ = createEffect(() => {
+  loadAllowanceAfterApproveAllowanceSuccess$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DexActions.approveAllowanceActionSuccess),
-      filter((action: ReturnType<typeof DexActions.approveAllowanceActionSuccess>) => action.view === 'liquidity'),
+      switchMap((action: ReturnType<typeof DexActions.approveAllowanceActionSuccess>) => {
+        return action.view === 'liquidity'
+          ? of(DexActions.loadAllowanceAfterApproveAllowanceSuccessFromLiquidity(action))
+          : of(DexActions.loadAllowanceAfterApproveAllowanceSuccessFromSwap(action));
+      })
+    );
+  });
+
+  loadAllowanceAfterApproveAllowanceSuccessFromLiquidity$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.loadAllowanceAfterApproveAllowanceSuccessFromLiquidity),
       concatLatestFrom(() => [
         this.store.select(selectWalletConnected),
         this.store.select(selectPublicAddress),
@@ -294,7 +306,7 @@ export class SwapEffects {
       map(
         (
           payload: [
-            ReturnType<typeof DexActions.approveAllowanceActionSuccess>,
+            ReturnType<typeof DexActions.loadAllowanceAfterApproveAllowanceSuccessFromLiquidity>,
             WalletProvider | null,
             string | null,
             StoreState<BalanceAndAllowance | null>[],
@@ -302,7 +314,7 @@ export class SwapEffects {
           ]
         ) =>
           payload as [
-            ReturnType<typeof DexActions.approveAllowanceActionSuccess>,
+            ReturnType<typeof DexActions.loadAllowanceAfterApproveAllowanceSuccessFromLiquidity>,
             WalletProvider,
             string,
             StoreState<BalanceAndAllowance | null>[],
@@ -313,7 +325,7 @@ export class SwapEffects {
       switchMap(
         (
           action: [
-            ReturnType<typeof DexActions.approveAllowanceActionSuccess>,
+            ReturnType<typeof DexActions.loadAllowanceAfterApproveAllowanceSuccessFromLiquidity>,
             WalletProvider,
             string,
             StoreState<BalanceAndAllowance | null>[],
@@ -332,9 +344,75 @@ export class SwapEffects {
           }
 
           const payload: IBalanceAndAllowancePayload = {
-            chainId: NetworkChainId.LOCALHOST,
+            chainId: action[0].chainId,
             tokenId: action[0].tokenId,
             spender: action[4],
+            tokenAddress: action[0].tokenAddress,
+            tokenIn
+          };
+
+          return from(this.tokensService.getBalanceAndAllowance(action[2], payload)).pipe(
+            map((result: BalanceAndAllowance) => DexActions.loadBalanceAndAllowanceActionSuccess({ result })),
+            catchError((error: string) =>
+              of(DexActions.loadBalanceAndAllowanceActionFailure({ message: error, tokenIn }))
+            )
+          );
+        }
+      )
+    );
+  });
+
+  loadAllowanceAfterApproveAllowanceSuccessFromSwap$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.loadAllowanceAfterApproveAllowanceSuccessFromSwap),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectTokensDetails)
+      ]),
+      map(
+        (
+          payload: [
+            ReturnType<typeof DexActions.loadAllowanceAfterApproveAllowanceSuccessFromSwap>,
+            WalletProvider | null,
+            string | null,
+            StoreState<BalanceAndAllowance | null>[]
+          ]
+        ) =>
+          payload as [
+            ReturnType<typeof DexActions.loadAllowanceAfterApproveAllowanceSuccessFromSwap>,
+            WalletProvider,
+            string,
+            StoreState<BalanceAndAllowance | null>[]
+          ]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap(
+        (
+          action: [
+            ReturnType<typeof DexActions.loadAllowanceAfterApproveAllowanceSuccessFromSwap>,
+            WalletProvider,
+            string,
+            StoreState<BalanceAndAllowance | null>[]
+          ]
+        ) => {
+          const [token0, token1]: [string | undefined, string | undefined] = [
+            action[3][0].data?.tokenId,
+            action[3][1].data?.tokenId
+          ];
+          const tokenIn: boolean | null =
+            action[0].tokenId === token0 ? true : action[0].tokenId === token1 ? false : null;
+
+          if (tokenIn === null) {
+            return of(DexActions.loadBalanceAndAllowanceActionFailure({ message: 'Token not found', tokenIn: true }));
+          }
+
+          const payload: IBalanceAndAllowancePayload = {
+            chainId: action[0].chainId,
+            tokenId: action[0].tokenId,
+            spender: environment.contracts.swapRouter.contracts.find(
+              (contract) => contract.chainId === action[0].chainId
+            )?.address as string,
             tokenAddress: action[0].tokenAddress,
             tokenIn
           };

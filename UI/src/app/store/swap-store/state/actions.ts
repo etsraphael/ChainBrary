@@ -17,7 +17,7 @@ export const approveAllowanceAction = createAction(
   '[Swap] Approve Allowance Actions',
   props<{
     tokenAddress: string;
-    chainId: string;
+    chainId: NetworkChainId;
     amount: number;
     spender: string;
     tokenId: TokenId | string;
@@ -26,7 +26,7 @@ export const approveAllowanceAction = createAction(
 );
 export const approveAllowanceActionSuccess = createAction(
   '[Swap] Approve Allowance Actions Success',
-  props<{ tokenId: TokenId | string; tokenAddress: string; view: 'liquidity' | 'swap' }>()
+  props<{ tokenId: TokenId | string; tokenAddress: string; view: 'liquidity' | 'swap'; chainId: NetworkChainId }>()
 );
 export const approveAllowanceActionFailure = createAction(
   '[Swap] Approve Allowance Actions Failure',
@@ -117,4 +117,13 @@ export const preloadLiquidityFormActionSuccess = createAction(
 export const preloadLiquidityFormActionFailure = createAction(
   '[Swap] Preload Liquidity Form Actions Failure',
   props<{ message: string }>()
+);
+
+export const loadAllowanceAfterApproveAllowanceSuccessFromLiquidity = createAction(
+  '[Swap] Load Allowance After Approve Allowance Success From Liquidty',
+  props<{ tokenId: TokenId | string; tokenAddress: string; chainId: NetworkChainId }>()
+);
+export const loadAllowanceAfterApproveAllowanceSuccessFromSwap = createAction(
+  '[Swap] Load Allowance After Approve Allowance Success From Swap',
+  props<{ tokenId: TokenId | string; tokenAddress: string; chainId: NetworkChainId }>()
 );
