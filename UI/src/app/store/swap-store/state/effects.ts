@@ -14,6 +14,7 @@ import {
   IPoolDetailForm,
   IQuoteResult,
   IToken,
+  ITokenContract,
   StoreState
 } from '../../../shared/interfaces';
 import { DexService } from '../../../shared/services/dex/dex.service';
@@ -81,7 +82,23 @@ export class SwapEffects {
       ),
       switchMap((action: [ReturnType<typeof DexActions.addLiquidityAction>, WalletProvider, string]) => {
         return from(this.dexService.addLiquidity(action[2], action[0].payload)).pipe(
-          map((result: string) => DexActions.addLiquidityActionSuccess({ message: result })), // TODO: Manage the result here
+          mergeMap((hash: string) => [
+            DexActions.addLiquidityActionSuccess({
+              chainId: action[0].payload.chainId,
+              hash
+            }),
+            DexActions.loadPoolAction({
+              payload: {
+                chainId: action[0].payload.chainId,
+                token1Address: action[0].payload.token1.networkSupport.find(
+                  (network: ITokenContract) => network.chainId === action[0].payload.chainId
+                )?.address as string,
+                token2Address: action[0].payload.token2.networkSupport.find(
+                  (network: ITokenContract) => network.chainId === action[0].payload.chainId
+                )?.address as string
+              }
+            })
+          ]),
           catchError((error: string) => of(DexActions.addLiquidityActionFailure({ message: error })))
         );
       })
@@ -263,23 +280,23 @@ export class SwapEffects {
 
   showSuccessMessageForLiquidity$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(
-        DexActions.createPoolActionSuccess
-        // DexActions.addLiquidityActionSuccess,
-        // DexActions.approveAllowanceActionSuccess
-      ),
-      map((action: ReturnType<typeof DexActions.createPoolActionSuccess>) => {
-        return localTransactionSentSuccessfully({
-          card: {
-            title: 'Transaction Sent Successfully',
-            type: 'success',
-            hash: action.hash,
-            component: 'DexLiquidityPageComponent',
-            chainId: action.chainId,
-            createdAt: new Date()
-          }
-        });
-      })
+      ofType(DexActions.createPoolActionSuccess, DexActions.addLiquidityActionSuccess),
+      map(
+        (
+          action: ReturnType<typeof DexActions.createPoolActionSuccess | typeof DexActions.addLiquidityActionSuccess>
+        ) => {
+          return localTransactionSentSuccessfully({
+            card: {
+              title: 'Transaction Sent Successfully',
+              type: 'success',
+              hash: action.hash,
+              component: 'DexLiquidityPageComponent',
+              chainId: action.chainId,
+              createdAt: new Date()
+            }
+          });
+        }
+      )
     );
   });
 

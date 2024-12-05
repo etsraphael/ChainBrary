@@ -43,7 +43,7 @@ export const createPoolActionFailure = createAction('[Swap] Create Pool Actions 
 export const addLiquidityAction = createAction('[Swap] Add Liquidity Actions', props<{ payload: ILiquidityPayload }>());
 export const addLiquidityActionSuccess = createAction(
   '[Swap] Add Liquidity Actions Success',
-  props<{ message: string }>()
+  props<{ hash: string; chainId: NetworkChainId }>()
 );
 export const addLiquidityActionFailure = createAction(
   '[Swap] Add Liquidity Actions Failure',

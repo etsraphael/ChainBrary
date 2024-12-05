@@ -262,7 +262,37 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         }
       }
     };
-  })
+  }),
+  on(
+    SwapActions.addLiquidityAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isAddingLiquidity: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.addLiquidityActionSuccess,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isAddingLiquidity: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.addLiquidityActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      isAddingLiquidity: {
+        isLoading: false,
+        errorMessage: message
+      }
+    })
+  )
 );
 
 export function reducer(state: ISwapState = initialState, action: Action): ISwapState {

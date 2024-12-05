@@ -9,6 +9,10 @@ export const initialState: ISwapState = {
     isLoading: false,
     errorMessage: null
   },
+  isAddingLiquidity: {
+    isLoading: false,
+    errorMessage: null
+  },
   searchPool: {
     data: null,
     loading: false,

@@ -9,13 +9,13 @@
 <div class="d-flex justify-content-center">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
     <!-- Loading Spinner -->
-    <ng-container *ngIf="(poolIsCreating$ | async) === true; else body">
+    <ng-container *ngIf="(showSpinner$ | async) === true; else body">
       <div class="row justify-content-center">
         <div class="col-10">
           <div class="d-flex flex-column align-items-center pt-5">
             <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
             <p class="mt-3 text-secondary text-center">
-              <span i18n>Creating your pool... Please confirm the request on your wallet and wait</span>
+              <span i18n>Transaction is getting confirmed... Please confirm the request on your wallet and wait</span>
             </p>
           </div>
         </div>

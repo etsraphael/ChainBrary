@@ -36,6 +36,7 @@ import {
   preloadLiquidityFormActionSuccess
 } from '../../../../../../store/swap-store/state/actions';
 import {
+  selectIsAddingLiquidity,
   selectIsPoolCreating,
   selectLiquidityApproval,
   selectPoolDetail,
@@ -77,6 +78,7 @@ export class DexLiquidityPageComponent implements OnInit {
     selectRecentTransactionsByComponent('DexLiquidityPageComponent')
   );
   readonly liquidityApproval$: Observable<boolean[]> = this.store.select(selectLiquidityApproval);
+  readonly isAddingLiquidity$: Observable<boolean> = this.store.select(selectIsAddingLiquidity);
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -111,6 +113,12 @@ export class DexLiquidityPageComponent implements OnInit {
       map((balanceAndAllowance: BalanceAndAllowance | null) => {
         return Number(balanceAndAllowance?.allowance) < Number(this.liquidityForm.get('token2Amount')?.value);
       })
+    );
+  }
+
+  get showSpinner$(): Observable<boolean> {
+    return combineLatest([this.poolIsCreating$, this.isAddingLiquidity$]).pipe(
+      map(([poolIsCreating, isAddingLiquidity]) => poolIsCreating || isAddingLiquidity)
     );
   }
 

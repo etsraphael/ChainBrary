@@ -12,6 +12,7 @@ export const SWAP_FEATURE_KEY = 'swap';
 export interface ISwapState {
   isSwapping: ActionStoreProcessing;
   isPoolCreating: ActionStoreProcessing;
+  isAddingLiquidity: ActionStoreProcessing;
   searchPool: StoreState<IPoolDetail | null>;
   tokenSearch: StoreState<IToken | null>;
   token0Detail: StoreState<BalanceAndAllowance | null>;

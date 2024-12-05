@@ -126,9 +126,7 @@ export class DexService {
             from: from,
             gas: gasEstimate.toString()
           })
-          .then(() => {
-            return 'Liquidity added';
-          });
+          .then((receipt) => receipt.transactionHash);
       })
       .catch((error: string) => {
         return Promise.reject(error);
