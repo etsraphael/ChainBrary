@@ -53,3 +53,8 @@ export const selectIsAddingLiquidity: MemoizedSelector<object, boolean> = create
   selectSwapState,
   (s: ISwapState) => s.isAddingLiquidity.isLoading
 );
+
+export const selectIsSwapping: MemoizedSelector<object, boolean> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => s.isSwapping.isLoading
+);

@@ -245,12 +245,8 @@ export class DexService {
         from: from,
         gas: gasEstimate.toString()
       })
-      .then(() => {
-        return 'Swap successful';
-      })
-      .catch((error: string) => {
-        return Promise.reject(error);
-      });
+      .then((receipt) => receipt.transactionHash)
+      .catch((error: string) => Promise.reject(error));
   }
 
   async preloadLiquidityForm(payload: IPoolSearch): Promise<IPoolDetailForm> {

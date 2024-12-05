@@ -292,6 +292,36 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         errorMessage: message
       }
     })
+  ),
+  on(
+    SwapActions.swapAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isSwapping: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.swapActionSuccess,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isSwapping: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.swapActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      isSwapping: {
+        isLoading: false,
+        errorMessage: message
+      }
+    })
   )
 );
 

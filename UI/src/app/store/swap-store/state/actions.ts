@@ -51,7 +51,10 @@ export const addLiquidityActionFailure = createAction(
 );
 
 export const swapAction = createAction('[Swap] Swap Actions', props<{ payload: ISwappingPayload }>());
-export const swapActionSuccess = createAction('[Swap] Swap Actions Success', props<{ message: string }>());
+export const swapActionSuccess = createAction(
+  '[Swap] Swap Actions Success',
+  props<{ hash: string; chainId: NetworkChainId }>()
+);
 export const swapActionFailure = createAction('[Swap] Swap Actions Failure', props<{ message: string }>());
 
 export const loadQuoteAction = createAction('[Swap] Load Quote Actions', props<{ payload: SwapPayload }>());

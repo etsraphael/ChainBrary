@@ -38,6 +38,7 @@ import {
   swapAction
 } from './../../../../../../store/swap-store/state/actions';
 import {
+  selectIsSwapping,
   selectQuote,
   selectTokensDetails,
   selectTokenSearch
@@ -71,6 +72,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('DexSwappingPageComponent')
   );
+  readonly isSwapping$: Observable<boolean> = this.store.select(selectIsSwapping);
 
   constructor(
     private dialog: MatDialog,
