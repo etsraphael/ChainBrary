@@ -63,14 +63,14 @@
             </mat-form-field>
           </div>
           <!-- Pool is empty message -->
-          <ng-container *ngIf="(poolIsEmpty$|async) === true">
+          <ng-container *ngIf="(poolIsEmpty$ | async) === true">
             <div class="text-center">
               <h6 class="text-muted" i18n>
                 The pool is empty. Please try again later or provide liquidity to the pool.
               </h6>
             </div>
           </ng-container>
-          <ng-container *ngIf="(poolIsEmpty$|async) === false">
+          <ng-container *ngIf="(poolIsEmpty$ | async) === false">
             <!-- Exchange Rate -->
             <div class="text-muted mb-4">
               {{ tokenQuoteText$ | async }}
@@ -86,8 +86,9 @@
             </ng-container>
             <!-- Confirm Order Button -->
             <ng-template #confirmBtn>
-              <button (click)="sendSwapRequest()" class="btn btn-primary w-100 mb-4" type="submit">Confirm
-                Order</button>
+              <button (click)="sendSwapRequest()" class="btn btn-primary w-100 mb-4" type="submit">
+                Confirm Order
+              </button>
             </ng-template>
           </ng-container>
         </form>

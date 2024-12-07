@@ -169,7 +169,9 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       data
     });
 
-    dialogRef.afterClosed().subscribe((token: IToken | null) => (token ? this.handleTokenSelected(token, from) : null));
+    dialogRef
+      .afterClosed()
+      .subscribe((token: IToken | null) => (token ? this.handleTokenSelected(token, from, false) : null));
 
     return dialogRef;
   }
@@ -230,7 +232,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     return this.store.dispatch(loadPoolAction({ payload }));
   }
 
-  private handleTokenSelected(token: IToken, tokenIn: boolean): void {
+  private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
     const tokenAddress: string = token.networkSupport.find(
@@ -247,12 +249,14 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       tokenIn
     };
 
-    this.router.navigate([], {
-      queryParams: {
-        [tokenIn ? 'token1' : 'token2']: tokenAddress
-      },
-      queryParamsHandling: 'merge'
-    });
+    !skipRouteConfig
+      ? this.router.navigate([], {
+          queryParams: {
+            [tokenIn ? 'token1' : 'token2']: tokenAddress
+          },
+          queryParamsHandling: 'merge'
+        })
+      : null;
 
     this.selectWalletConnected$
       .pipe(
@@ -282,7 +286,12 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
     const chainIdIn: string | null = this.route.snapshot.queryParamMap.get('chainIdIn');
 
-    if (!token1 || !token2 || !chainIdIn) return;
+    if (!token1 || !token2 || !chainIdIn) {
+      // Set the default tokenPath
+      this.handleTokenSelected(this.tokenPath[0], true, true);
+      this.handleTokenSelected(this.tokenPath[1], false, true);
+      return;
+    }
 
     const payload: IPoolSearch = {
       token1Address: token1 as string,
@@ -296,8 +305,8 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       .pipe(ofType(preloadLiquidityFormActionSuccess), takeUntil(this.destroyed$), take(1))
       .subscribe((action: ReturnType<typeof preloadLiquidityFormActionSuccess>) => {
         // Set the tokenPath
-        this.handleTokenSelected(action.result.token1, true);
-        this.handleTokenSelected(action.result.token2, false);
+        this.handleTokenSelected(action.result.token1, true, true);
+        this.handleTokenSelected(action.result.token2, false, true);
         // Set the networkSelected
         this.networkPath = [
           this.web3loginService.getNetworkDetailByChainId(action.result.chainId as NetworkChainId),
@@ -352,8 +361,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
 
   // TODO: Start here
   // TODO: Show message when pool is not found
-  // TODO: Show message when pool is empty
-  // TODO: Load allowance page is initialized
 }
 
 interface ISwappingForm {

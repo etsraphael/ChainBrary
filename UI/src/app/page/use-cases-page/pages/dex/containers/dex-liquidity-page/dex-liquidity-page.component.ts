@@ -286,13 +286,15 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
       (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
     )?.address as string;
 
-    !skipRouteConfig ? this.router.navigate([], {
-      queryParams: {
-        [tokenIn ? 'token1' : 'token2']: tokenAddress,
-        chainId: this.networkSelected.chainId
-      },
-      queryParamsHandling: 'merge'
-    }) : null;
+    !skipRouteConfig
+      ? this.router.navigate([], {
+          queryParams: {
+            [tokenIn ? 'token1' : 'token2']: tokenAddress,
+            chainId: this.networkSelected.chainId
+          },
+          queryParamsHandling: 'merge'
+        })
+      : null;
 
     this.loadPool();
 
