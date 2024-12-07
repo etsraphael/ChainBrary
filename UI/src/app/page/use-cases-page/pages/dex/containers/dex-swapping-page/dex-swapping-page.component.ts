@@ -57,7 +57,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   ];
   tokenPath: IToken[] = [
     this.findTokenById(this.networkPath[0].nativeCurrency.id) as IToken,
-    this.findTokenById(this.networkPath[1].nativeCurrency.id) as IToken
+    this.findTokenById('usdc') as IToken
   ];
   swapForm: FormGroup<ISwappingForm> = new FormGroup<ISwappingForm>({
     fromAmount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),
@@ -258,7 +258,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  private findTokenById(tokenId: TokenId): IToken | undefined {
+  private findTokenById(tokenId: TokenId | string): IToken | undefined {
     return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
 

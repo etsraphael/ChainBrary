@@ -1,11 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { INetworkDetail, NetworkChainId, TokenId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, Observable, skipWhile, take } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  filter,
+  map,
+  Observable,
+  ReplaySubject,
+  skipWhile,
+  switchMap,
+  take,
+  takeUntil
+} from 'rxjs';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -28,6 +39,7 @@ import {
 import { selectWalletConnected } from '../../../../../../store/global-store/state/selectors';
 import {
   addLiquidityAction,
+  addLiquidityActionSuccess,
   approveAllowanceAction,
   createPoolAction,
   loadBalanceAndAllowanceAction,
@@ -51,13 +63,17 @@ import { selectRecentTransactionsByComponent } from '../../../../../../store/tra
   templateUrl: './dex-liquidity-page.component.html',
   styleUrl: './dex-liquidity-page.component.scss'
 })
-export class DexLiquidityPageComponent implements OnInit {
+export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST);
-  tokenPath: IToken[] = [this.findTokenById('usdc') as IToken, this.findTokenById('chainlink') as IToken];
+  tokenPath: IToken[] = [
+    this.findTokenById(this.networkSelected.nativeCurrency.id) as IToken,
+    this.findTokenById('usdc') as IToken
+  ];
   liquidityForm: FormGroup<ILiquidityForm> = new FormGroup<ILiquidityForm>({
     token1Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),
     token2Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)])
   });
+  private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
   constructor(
     private dialog: MatDialog,
@@ -122,8 +138,26 @@ export class DexLiquidityPageComponent implements OnInit {
     );
   }
 
+  get poolQuote$(): Observable<number | null> {
+    return this.poolDetail$.pipe(
+      map((pool: IPoolDetail | null) => {
+        if (!pool) return null;
+        const token1Balance = Number(pool.token1Amount);
+        const token2Balance = Number(pool.token2Amount);
+        return token1Balance / token2Balance;
+      })
+    );
+  }
+
   ngOnInit(): void {
     this.fetchFormValues();
+    this.listenToActions();
+    this.freezeToken2AmountIfPoolExists();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed$.next(true);
+    this.destroyed$.complete();
   }
 
   openNetworkDialog(): MatDialogRef<NetworkDialogComponent> {
@@ -324,6 +358,43 @@ export class DexLiquidityPageComponent implements OnInit {
 
   private findTokenById(tokenId: TokenId | string): IToken | undefined {
     return tokenList.find((token: IToken) => token.tokenId === tokenId);
+  }
+
+  private listenToActions(): void {
+    // reset form after addLiquidityActionSuccess
+    this.actions$.pipe(ofType(addLiquidityActionSuccess), takeUntil(this.destroyed$)).subscribe(() => {
+      this.liquidityForm.reset();
+    });
+  }
+
+  private freezeToken2AmountIfPoolExists(): void {
+    this.poolDetail$
+      .pipe(
+        filter((pool: IPoolDetail | null) => !!(pool?.token1Amount || pool?.token2Amount)),
+        takeUntil(this.destroyed$)
+      )
+      .subscribe((pool: IPoolDetail | null) => {
+        pool ? this.liquidityForm.get('token2Amount')?.disable() : this.liquidityForm.get('token2Amount')?.enable();
+      });
+
+    // listen to token1Amount if pool exists
+    this.poolDetail$
+      .pipe(
+        filter((pool: IPoolDetail | null) => !!(pool?.token1Amount || pool?.token2Amount)),
+        switchMap(
+          () =>
+            this.liquidityForm.get('token1Amount')?.valueChanges?.pipe(debounceTime(300), takeUntil(this.destroyed$)) ||
+            []
+        )
+      )
+      .subscribe((value: number | null) => {
+        if (value) {
+          this.poolQuote$.pipe(take(1)).subscribe((quote: number | null) => {
+            if (!quote) return;
+            this.liquidityForm.get('token2Amount')?.setValue(value / quote);
+          });
+        }
+      });
   }
 }
 

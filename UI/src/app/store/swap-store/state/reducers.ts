@@ -275,11 +275,35 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
   ),
   on(
     SwapActions.addLiquidityActionSuccess,
-    (state: ISwapState): ISwapState => ({
+    (state: ISwapState, action): ISwapState => ({
       ...state,
       isAddingLiquidity: {
         isLoading: false,
         errorMessage: null
+      },
+      token0Detail: {
+        ...state.token0Detail,
+        data: {
+          ...(state.token0Detail.data as BalanceAndAllowance),
+          balance: state.token0Detail.data
+            ? (parseFloat(state.token0Detail.data.balance) - action.token1Amount).toString()
+            : '0',
+          allowance: state.token0Detail.data
+            ? (parseFloat(state.token0Detail.data.allowance) - action.token1Amount).toString()
+            : '0'
+        }
+      },
+      token1Detail: {
+        ...state.token1Detail,
+        data: {
+          ...(state.token1Detail.data as BalanceAndAllowance),
+          balance: state.token1Detail.data
+            ? (parseFloat(state.token1Detail.data.balance) - action.token2Amount).toString()
+            : '0',
+          allowance: state.token1Detail.data
+            ? (parseFloat(state.token1Detail.data.allowance) - action.token2Amount).toString()
+            : '0'
+        }
       }
     })
   ),

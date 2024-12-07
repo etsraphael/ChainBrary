@@ -85,7 +85,9 @@ export class SwapEffects {
           mergeMap((hash: string) => [
             DexActions.addLiquidityActionSuccess({
               chainId: action[0].payload.chainId,
-              hash
+              hash,
+              token1Amount: action[0].payload.token1Amount,
+              token2Amount: action[0].payload.token2Amount
             }),
             DexActions.loadPoolAction({
               payload: {
