@@ -115,7 +115,7 @@ export class DexService {
         );
 
         const amount0 = web3.utils.toWei(payload.token1Amount, 'ether');
-        const amount1 = web3.utils.toWei(payload.token1Amount, 'ether');
+        const amount1 = web3.utils.toWei(payload.token2Amount, 'ether');
 
         const gasEstimate: bigint = await poolFragment.methods['addLiquidity'](amount0, amount1).estimateGas({
           from
