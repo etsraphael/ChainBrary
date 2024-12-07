@@ -123,6 +123,19 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  get poolDetail$(): Observable<IPoolDetail | null> {
+    return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
+  }
+
+  get poolIsEmpty$(): Observable<boolean> {
+    return this.poolDetail$.pipe(
+      map(
+        (poolDetail: IPoolDetail | null) =>
+          poolDetail?.token1Amount?.toString() === '0' && poolDetail?.token2Amount?.toString() === '0'
+      )
+    );
+  }
+
   openNetowkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
     const data: INetworkDialogData = {
       chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId
@@ -221,9 +234,9 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
         (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
       )?.address as string,
       token2Address: this.tokenPath[1].networkSupport.find(
-        (tokenContract) => tokenContract.chainId ===  this.networkPath[0].chainId
+        (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
       )?.address as string,
-      chainId:  this.networkPath[0].chainId
+      chainId: this.networkPath[0].chainId
     };
     return this.store.dispatch(loadPoolAction({ payload }));
   }
@@ -350,6 +363,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
 
   // TODO: Show message when pool is not found
   // TODO: Show message when pool is empty
+  // TODO: Load allowance page is initialized
 }
 
 interface ISwappingForm {
