@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { INetworkDetail, NetworkChainId, TokenId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, map, Observable, ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
@@ -16,7 +16,6 @@ import {
   ITokensDialogData,
   TokensDialogComponent
 } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
-import { tokenList } from './../../../../../../shared/data/tokenList';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
@@ -34,6 +33,7 @@ import { selectWalletConnected } from './../../../../../../store/global-store/st
 import {
   approveAllowanceAction,
   loadBalanceAndAllowanceAction,
+  loadPoolAction,
   loadQuoteAction,
   preloadLiquidityFormAction,
   preloadLiquidityFormActionSuccess,
@@ -86,6 +86,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setUpDefaultNetworkPair(this.networkPath[0].chainId);
+    this.loadPool();
     this.fetchFormValues();
     this.listenFormChanges();
     this.listenToQuote();
@@ -214,6 +215,19 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     );
   }
 
+  private loadPool(): void {
+    const payload: IPoolSearch = {
+      token1Address: this.tokenPath[0].networkSupport.find(
+        (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
+      )?.address as string,
+      token2Address: this.tokenPath[1].networkSupport.find(
+        (tokenContract) => tokenContract.chainId ===  this.networkPath[0].chainId
+      )?.address as string,
+      chainId:  this.networkPath[0].chainId
+    };
+    return this.store.dispatch(loadPoolAction({ payload }));
+  }
+
   private handleTokenSelected(token: IToken, tokenIn: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
@@ -259,10 +273,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge'
     });
-  }
-
-  private findTokenById(tokenId: TokenId | string): IToken | undefined {
-    return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
 
   private fetchFormValues(): void {
@@ -337,6 +347,9 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       this.tokenPath[1] = foundDefaultNetworkPair.token2;
     }
   }
+
+  // TODO: Show message when pool is not found
+  // TODO: Show message when pool is empty
 }
 
 interface ISwappingForm {
