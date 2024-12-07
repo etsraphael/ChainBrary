@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
-import { INetworkDetail, NetworkChainId, TokenId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
+import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -26,7 +26,6 @@ import {
   ITokensDialogData,
   TokensDialogComponent
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
-import { tokenList } from '../../../../../../shared/data/tokenList';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
@@ -152,7 +151,6 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
     this.fetchFormValues();
     this.listenToActions();
     this.freezeToken2AmountIfPoolExists();
-    this.loadPool();
   }
 
   ngOnDestroy(): void {
@@ -195,7 +193,7 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
       .afterClosed()
       .pipe()
       .subscribe((token: IToken | null) => {
-        token ? this.handleTokenSelected(token, tokenIn) : null;
+        token ? this.handleTokenSelected(token, tokenIn, false) : null;
       });
 
     return dialogRef;
@@ -282,19 +280,19 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
     return this.store.dispatch(loadPoolAction({ payload }));
   }
 
-  private handleTokenSelected(token: IToken, tokenIn: boolean): void {
+  private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
     const tokenAddress: string = token.networkSupport.find(
       (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
     )?.address as string;
 
-    this.router.navigate([], {
+    !skipRouteConfig ? this.router.navigate([], {
       queryParams: {
         [tokenIn ? 'token1' : 'token2']: tokenAddress,
         chainId: this.networkSelected.chainId
       },
       queryParamsHandling: 'merge'
-    });
+    }) : null;
 
     this.loadPool();
 
@@ -323,12 +321,17 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
     const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
 
-    if (!token1 || !token2 || !chainId) return;
+    if (!token1 || !token2 || !chainId) {
+      // Set the default tokenPath
+      this.handleTokenSelected(this.tokenPath[0], true, true);
+      this.handleTokenSelected(this.tokenPath[1], false, true);
+      return;
+    }
 
     const payload: IPoolSearch = {
       token1Address: token1 as string,
       token2Address: token2 as string,
-      chainId: NetworkChainId.LOCALHOST
+      chainId: this.networkSelected.chainId
     };
 
     this.store.dispatch(preloadLiquidityFormAction({ payload }));
@@ -338,8 +341,8 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
       .pipe(ofType(preloadLiquidityFormActionSuccess), take(1))
       .subscribe((action: ReturnType<typeof preloadLiquidityFormActionSuccess>) => {
         // Set the tokenPath
-        this.handleTokenSelected(action.result.token1, true);
-        this.handleTokenSelected(action.result.token2, false);
+        this.handleTokenSelected(action.result.token1, true, true);
+        this.handleTokenSelected(action.result.token2, false, true);
         // Set the networkSelected
         this.networkSelected = this.web3loginService.getNetworkDetailByChainId(chainId);
       });
@@ -357,10 +360,6 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
 
     this.setUpDefaultNetworkPair(chainId);
     this.loadPool();
-  }
-
-  private findTokenById(tokenId: TokenId | string): IToken | undefined {
-    return tokenList.find((token: IToken) => token.tokenId === tokenId);
   }
 
   private listenToActions(): void {

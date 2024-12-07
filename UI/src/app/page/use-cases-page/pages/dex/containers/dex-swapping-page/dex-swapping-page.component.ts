@@ -21,20 +21,17 @@ import {
   IBalanceAndAllowancePayload,
   IPoolDetail,
   IPoolSearch,
-  IQuoteResult,
   ISwappingPayload,
   IToken,
   ITokenContract,
   ITransactionCard,
-  StoreState,
-  SwapPayload
+  StoreState
 } from './../../../../../../shared/interfaces';
 import { selectWalletConnected } from './../../../../../../store/global-store/state/selectors';
 import {
   approveAllowanceAction,
   loadBalanceAndAllowanceAction,
   loadPoolAction,
-  loadQuoteAction,
   preloadLiquidityFormAction,
   preloadLiquidityFormActionSuccess,
   swapAction
@@ -42,7 +39,6 @@ import {
 import {
   selectIsSwapping,
   selectPoolDetail,
-  selectQuote,
   selectTokensDetails,
   selectTokenSearch
 } from './../../../../../../store/swap-store/state/selectors';
@@ -65,7 +61,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   });
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
-  readonly quote$: Observable<StoreState<IQuoteResult | null>> = this.store.select(selectQuote);
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
   readonly selectWalletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected);
@@ -90,7 +85,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     this.fetchFormValues();
     this.listenFormChanges();
     this.listenToQuote();
-    this.loadQuote();
   }
 
   ngOnDestroy(): void {
@@ -113,12 +107,9 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   }
 
   get tokenQuoteText$(): Observable<string> {
-    return this.quote$.pipe(
-      map((quote: StoreState<IQuoteResult | null>) => {
-        if (quote.data) {
-          return `1 ${this.tokenPath[0].symbol} = ${quote.data.token1} ${this.tokenPath[1].symbol}`;
-        }
-        return '';
+    return this.poolQuote$.pipe(
+      map((quote: number | null) => {
+        return quote ? `1 ${this.tokenPath[0].symbol} = ${quote.toFixed(6)} ${this.tokenPath[1].symbol}` : '';
       })
     );
   }
@@ -133,6 +124,17 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
         (poolDetail: IPoolDetail | null) =>
           poolDetail?.token1Amount?.toString() === '0' && poolDetail?.token2Amount?.toString() === '0'
       )
+    );
+  }
+
+  get poolQuote$(): Observable<number | null> {
+    return this.poolDetail$.pipe(
+      map((pool: IPoolDetail | null) => {
+        if (!pool) return null;
+        const token1Balance = Number(pool.token1Amount);
+        const token2Balance = Number(pool.token2Amount);
+        return token1Balance / token2Balance;
+      })
     );
   }
 
@@ -195,19 +197,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     this.store.dispatch(swapAction({ payload }));
   }
 
-  loadQuote(): void {
-    const payload: SwapPayload = {
-      from: this.tokenPath[0],
-      to: this.tokenPath[1],
-      amount: (this.swapForm.get('fromAmount')?.value ?? 1).toString(),
-      slippage: '0.5',
-      deadline: '1',
-      chainId: this.networkPath[0].chainId
-    };
-
-    return this.store.dispatch(loadQuoteAction({ payload }));
-  }
-
   approveToken(tokenIn: boolean): void {
     const amount = tokenIn ? (this.swapForm.get('fromAmount')?.value as number) : 1;
     const tokenAddress: string = this.tokenPath[tokenIn ? 0 : 1].networkSupport.find(
@@ -228,7 +217,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  private loadPool(): void {
+  loadPool(): void {
     const payload: IPoolSearch = {
       token1Address: this.tokenPath[0].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
@@ -317,7 +306,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
         // Set fromAmount to 1
         this.swapForm.get('fromAmount')?.setValue(1);
         // Load the quote
-        this.loadQuote();
+        this.loadPool();
       });
   }
 
@@ -325,15 +314,15 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     const updateAmount = (
       source: string,
       target: string,
-      factor: (value: number, quote: IQuoteResult) => number
+      factor: (value: number, quote: { token1: number }) => number
     ): void => {
       this.swapForm
         .get(source)
         ?.valueChanges.pipe(distinctUntilChanged())
         .subscribe((value: number | null) => {
-          this.quote$.pipe(take(1)).subscribe((quote: StoreState<IQuoteResult | null>) => {
-            if (value && quote.data?.token1 && quote.data) {
-              const result: number = factor(value, quote.data);
+          this.poolQuote$.pipe(take(1)).subscribe((quote: number | null) => {
+            if (value && quote) {
+              const result: number = factor(value, { token1: quote });
               this.swapForm.get(target)?.setValue(parseFloat(result.toFixed(6)));
             }
           });
@@ -346,7 +335,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   }
 
   private listenToQuote(): void {
-    this.quote$.pipe(takeUntil(this.destroyed$)).subscribe((quote: StoreState<IQuoteResult | null>) => {
+    this.poolDetailStore$.pipe(takeUntil(this.destroyed$)).subscribe((quote: StoreState<IPoolDetail | null>) => {
       quote.loading ? this.swapForm.disable() : this.swapForm.enable();
     });
   }
@@ -361,6 +350,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  // TODO: Start here
   // TODO: Show message when pool is not found
   // TODO: Show message when pool is empty
   // TODO: Load allowance page is initialized
