@@ -11,7 +11,7 @@ import { environment } from './../../../../../environments/environment';
 export class NetworkDialogComponent implements OnInit {
   searchTerm: string = '';
   networkList: INetworkDetail[] = [];
-  networkSupported: NetworkChainId[] = environment.contracts.bridgeTransfer.contracts.map((x) => x.chainId);
+  networkSupported: NetworkChainId[] = environment.contracts.swapFactory.contracts.map((x) => x.chainId);
 
   constructor(
     private web3LoginService: Web3LoginService,

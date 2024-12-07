@@ -17,6 +17,7 @@ import {
   take,
   takeUntil
 } from 'rxjs';
+import { DefaultNetworkPair, DefaultNetworkPairs } from '../../../../../../data/dex.data';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -65,10 +66,7 @@ import { selectRecentTransactionsByComponent } from '../../../../../../store/tra
 })
 export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST);
-  tokenPath: IToken[] = [
-    this.findTokenById(this.networkSelected.nativeCurrency.id) as IToken,
-    this.findTokenById('usdc') as IToken
-  ];
+  tokenPath: IToken[] = [];
   liquidityForm: FormGroup<ILiquidityForm> = new FormGroup<ILiquidityForm>({
     token1Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),
     token2Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)])
@@ -150,9 +148,11 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.setUpDefaultNetworkPair(this.networkSelected.chainId);
     this.fetchFormValues();
     this.listenToActions();
     this.freezeToken2AmountIfPoolExists();
+    this.loadPool();
   }
 
   ngOnDestroy(): void {
@@ -354,6 +354,9 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
       },
       queryParamsHandling: 'merge'
     });
+
+    this.setUpDefaultNetworkPair(chainId);
+    this.loadPool();
   }
 
   private findTokenById(tokenId: TokenId | string): IToken | undefined {
@@ -395,6 +398,16 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
           });
         }
       });
+  }
+
+  private setUpDefaultNetworkPair(chainId: NetworkChainId): void {
+    const foundDefaultNetworkPair: DefaultNetworkPair | undefined = DefaultNetworkPairs.find(
+      (defaultNetworkPair) => defaultNetworkPair.chainId === chainId
+    );
+    if (foundDefaultNetworkPair) {
+      this.tokenPath[0] = foundDefaultNetworkPair.token1;
+      this.tokenPath[1] = foundDefaultNetworkPair.token2;
+    }
   }
 }
 

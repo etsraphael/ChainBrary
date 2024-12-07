@@ -7,6 +7,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { distinctUntilChanged, map, Observable, ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
+import { DefaultNetworkPair, DefaultNetworkPairs } from './../../../../../../data/dex.data';
 import {
   INetworkDialogData,
   NetworkDialogComponent
@@ -55,10 +56,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST),
     this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST)
   ];
-  tokenPath: IToken[] = [
-    this.findTokenById(this.networkPath[0].nativeCurrency.id) as IToken,
-    this.findTokenById('usdc') as IToken
-  ];
+  tokenPath: IToken[] = [];
   swapForm: FormGroup<ISwappingForm> = new FormGroup<ISwappingForm>({
     fromAmount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),
     toAmount: new FormControl<number | null>(null, [Validators.required])
@@ -84,9 +82,11 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.setUpDefaultNetworkPair(this.networkPath[0].chainId);
     this.fetchFormValues();
     this.listenFormChanges();
     this.listenToQuote();
+    this.loadQuote();
   }
 
   ngOnDestroy(): void {
@@ -185,7 +185,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       amount: (this.swapForm.get('fromAmount')?.value ?? 1).toString(),
       slippage: '0.5',
       deadline: '1',
-      chainId: NetworkChainId.LOCALHOST
+      chainId: this.networkPath[0].chainId
     };
 
     return this.store.dispatch(loadQuoteAction({ payload }));
@@ -323,6 +323,16 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     this.quote$.pipe(takeUntil(this.destroyed$)).subscribe((quote: StoreState<IQuoteResult | null>) => {
       quote.loading ? this.swapForm.disable() : this.swapForm.enable();
     });
+  }
+
+  private setUpDefaultNetworkPair(chainId: NetworkChainId): void {
+    const foundDefaultNetworkPair: DefaultNetworkPair | undefined = DefaultNetworkPairs.find(
+      (defaultNetworkPair) => defaultNetworkPair.chainId === chainId
+    );
+    if (foundDefaultNetworkPair) {
+      this.tokenPath[0] = foundDefaultNetworkPair.token1;
+      this.tokenPath[1] = foundDefaultNetworkPair.token2;
+    }
   }
 }
 
