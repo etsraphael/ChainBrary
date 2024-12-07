@@ -20,6 +20,7 @@ import { tokenList } from './../../../../../../shared/data/tokenList';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
+  IPoolDetail,
   IPoolSearch,
   IQuoteResult,
   ISwappingPayload,
@@ -40,6 +41,7 @@ import {
 } from './../../../../../../store/swap-store/state/actions';
 import {
   selectIsSwapping,
+  selectPoolDetail,
   selectQuote,
   selectTokensDetails,
   selectTokenSearch
@@ -71,6 +73,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     selectRecentTransactionsByComponent('DexSwappingPageComponent')
   );
   readonly isSwapping$: Observable<boolean> = this.store.select(selectIsSwapping);
+  readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
 
   constructor(
     private dialog: MatDialog,
