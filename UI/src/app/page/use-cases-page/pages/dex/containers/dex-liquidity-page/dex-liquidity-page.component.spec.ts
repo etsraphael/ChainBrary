@@ -14,6 +14,7 @@ describe('DexLiquidityPageComponent', () => {
     await TestBed.configureTestingModule({
       imports: [SharedTestModule, UserCasesSharedComponentsModule, StoreModule.forRoot({
         swap: () => ({}),
+        global: () => ({}),
         transactions: () => ({})
       }), RouterModule.forRoot([])],
       declarations: [DexLiquidityPageComponent],
@@ -52,3 +53,8 @@ describe('DexLiquidityPageComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+
+
+// 09 12 2024 21:43:48.668:WARN [web-server]: 404: /_karma_webpack_/assets/wasm/index.js
+// WARN: '@ngrx/store: The feature name "global" does not exist in the state, therefore createFeatureSelector cannot access it.  Be sure it is imported in a loaded module using StoreModule.forRoot('global', ...) or StoreModule.forFeature('global', ...).  If the default state is intended to be undefined, as is the case with router state, this development-only warning message can be ignored.'
