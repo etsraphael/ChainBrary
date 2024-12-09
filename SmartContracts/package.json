@@ -24,7 +24,7 @@
     "@openzeppelin/contracts": "^5.0.2",
     "@openzeppelin/contracts-upgradeable": "^5.0.2",
     "bignumber.js": "^9.1.2",
-    "cookie": "^1.0.1"
+    "cookie": "^1.0.2"
   },
   "overrides": {
     "@openzeppelin/contracts": "^5.0.2",
