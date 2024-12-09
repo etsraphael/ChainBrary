@@ -12,7 +12,10 @@ describe('DexLiquidityPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedTestModule, UserCasesSharedComponentsModule, StoreModule.forRoot({}), RouterModule.forRoot([])],
+      imports: [SharedTestModule, UserCasesSharedComponentsModule, StoreModule.forRoot({
+        swap: () => ({}),
+        transactions: () => ({})
+      }), RouterModule.forRoot([])],
       declarations: [DexLiquidityPageComponent],
       providers: [
         { provide: 'config', useValue: {} },
