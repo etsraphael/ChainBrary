@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { distinctUntilChanged, map, Observable, ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, Observable, ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
 import { DefaultNetworkPair, DefaultNetworkPairs } from './../../../../../../data/dex.data';
 import {
@@ -21,17 +21,20 @@ import {
   IBalanceAndAllowancePayload,
   IPoolDetail,
   IPoolSearch,
+  IQuoteResult,
   ISwappingPayload,
   IToken,
   ITokenContract,
   ITransactionCard,
-  StoreState
+  StoreState,
+  SwapPayload
 } from './../../../../../../shared/interfaces';
 import { selectWalletConnected } from './../../../../../../store/global-store/state/selectors';
 import {
   approveAllowanceAction,
   loadBalanceAndAllowanceAction,
   loadPoolAction,
+  loadQuoteAction,
   preloadLiquidityFormAction,
   preloadLiquidityFormActionSuccess,
   swapAction
@@ -39,6 +42,7 @@ import {
 import {
   selectIsSwapping,
   selectPoolDetail,
+  selectQuote,
   selectTokensDetails,
   selectTokenSearch
 } from './../../../../../../store/swap-store/state/selectors';
@@ -61,6 +65,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   });
   private destroyed$: ReplaySubject<boolean> = new ReplaySubject();
 
+  readonly quote$: Observable<StoreState<IQuoteResult | null>> = this.store.select(selectQuote);
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
   readonly selectWalletConnected$: Observable<WalletProvider | null> = this.store.select(selectWalletConnected);
@@ -69,6 +74,50 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   );
   readonly isSwapping$: Observable<boolean> = this.store.select(selectIsSwapping);
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
+
+  get token1Available$(): Observable<BalanceAndAllowance | null> {
+    return this.selectTokensDetails$.pipe(
+      map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[0]?.data || null)
+    );
+  }
+
+  get allowance1Needed$(): Observable<boolean> {
+    return this.token1Available$.pipe(
+      map((balanceAndAllowance: BalanceAndAllowance | null) => {
+        return Number(balanceAndAllowance?.allowance) < Number(this.swapForm.get('fromAmount')?.value);
+      })
+    );
+  }
+
+  get tokenQuoteText$(): Observable<string> {
+    return this.quote$.pipe(
+      map((quote: StoreState<IQuoteResult | null>) => {
+        if (quote.data) {
+          return `1 ${this.tokenPath[0].symbol} = ${quote.data.token1} ${this.tokenPath[1].symbol}`;
+        }
+        return '';
+      })
+    );
+  }
+
+  get poolDetail$(): Observable<IPoolDetail | null> {
+    return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
+  }
+
+  get poolIsEmpty$(): Observable<boolean> {
+    return this.poolDetail$.pipe(
+      map(
+        (poolDetail: IPoolDetail | null) =>
+          poolDetail?.token1Amount?.toString() === '0' && poolDetail?.token2Amount?.toString() === '0'
+      )
+    );
+  }
+
+  get poolIsNotFound$(): Observable<boolean> {
+    return this.poolDetailStore$.pipe(
+      map((storeState: StoreState<IPoolDetail | null>) => storeState.error === 'Pool_not_found')
+    );
+  }
 
   constructor(
     private dialog: MatDialog,
@@ -90,52 +139,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed$.next(true);
     this.destroyed$.complete();
-  }
-
-  get token1Available$(): Observable<BalanceAndAllowance | null> {
-    return this.selectTokensDetails$.pipe(
-      map((storeState: StoreState<BalanceAndAllowance | null>[]) => storeState[0]?.data || null)
-    );
-  }
-
-  get allowance1Needed$(): Observable<boolean> {
-    return this.token1Available$.pipe(
-      map((balanceAndAllowance: BalanceAndAllowance | null) => {
-        return Number(balanceAndAllowance?.allowance) < Number(this.swapForm.get('fromAmount')?.value);
-      })
-    );
-  }
-
-  get tokenQuoteText$(): Observable<string> {
-    return this.poolQuote$.pipe(
-      map((quote: number | null) => {
-        return quote ? `1 ${this.tokenPath[0].symbol} = ${quote.toFixed(6)} ${this.tokenPath[1].symbol}` : '';
-      })
-    );
-  }
-
-  get poolDetail$(): Observable<IPoolDetail | null> {
-    return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
-  }
-
-  get poolIsEmpty$(): Observable<boolean> {
-    return this.poolDetail$.pipe(
-      map(
-        (poolDetail: IPoolDetail | null) =>
-          poolDetail?.token1Amount?.toString() === '0' && poolDetail?.token2Amount?.toString() === '0'
-      )
-    );
-  }
-
-  get poolQuote$(): Observable<number | null> {
-    return this.poolDetail$.pipe(
-      map((pool: IPoolDetail | null) => {
-        if (!pool) return null;
-        const token1Balance = Number(pool.token1Amount);
-        const token2Balance = Number(pool.token2Amount);
-        return token1Balance / token2Balance;
-      })
-    );
   }
 
   openNetowkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
@@ -220,6 +223,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   }
 
   loadPool(): void {
+    this.loadQuote();
     const payload: IPoolSearch = {
       token1Address: this.tokenPath[0].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
@@ -230,6 +234,19 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       chainId: this.networkPath[0].chainId
     };
     return this.store.dispatch(loadPoolAction({ payload }));
+  }
+
+  private loadQuote(): void {
+    const payload: SwapPayload = {
+      from: this.tokenPath[0],
+      to: this.tokenPath[1],
+      amount: (this.swapForm.get('fromAmount')?.value ?? 1).toString(),
+      slippage: '0.5',
+      deadline: '1',
+      chainId: this.networkPath[0].chainId
+    };
+
+    return this.store.dispatch(loadQuoteAction({ payload }));
   }
 
   private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
@@ -327,11 +344,11 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     ): void => {
       this.swapForm
         .get(source)
-        ?.valueChanges.pipe(distinctUntilChanged())
+        ?.valueChanges.pipe(distinctUntilChanged(), debounceTime(1500))
         .subscribe((value: number | null) => {
-          this.poolQuote$.pipe(take(1)).subscribe((quote: number | null) => {
-            if (value && quote) {
-              const result: number = factor(value, { token1: quote });
+          this.quote$.pipe(take(1)).subscribe((quote: StoreState<IQuoteResult | null>) => {
+            if (value && quote.data?.token1 && quote.data) {
+              const result: number = factor(value, quote.data);
               this.swapForm.get(target)?.setValue(parseFloat(result.toFixed(6)));
             }
           });
