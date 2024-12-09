@@ -141,7 +141,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     this.destroyed$.complete();
   }
 
-  openNetowkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
+  openNetworkDialog(from: boolean): MatDialogRef<NetworkDialogComponent> {
     const data: INetworkDialogData = {
       chainIdSelected: from ? this.networkPath[0].chainId : this.networkPath[1].chainId
     };
@@ -375,9 +375,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
       this.tokenPath[1] = foundDefaultNetworkPair.token2;
     }
   }
-
-  // TODO: Start here
-  // TODO: Show message when pool is not found
 }
 
 interface ISwappingForm {

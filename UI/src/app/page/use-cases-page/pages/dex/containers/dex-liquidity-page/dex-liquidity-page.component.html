@@ -113,7 +113,9 @@
           <button class="btn btn-primary w-100 mb-4" (click)="createPool()">Create Pool</button>
         </ng-container>
         <!-- Approval Buttons -->
-        <ng-container *ngIf="(allowance1Needed$ | async) || (allowance2Needed$ | async)">
+        <ng-container
+          *ngIf="(allowance1Needed$ | async) || ((allowance2Needed$ | async) && (poolIsNotCreated$ | async) === false)"
+        >
           <button
             *ngIf="allowance1Needed$ | async"
             class="btn btn-primary w-100 mb-2"
