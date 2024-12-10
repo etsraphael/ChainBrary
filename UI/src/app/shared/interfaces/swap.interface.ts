@@ -26,6 +26,18 @@ export interface ILiquidityPayload {
   chainId: NetworkChainId;
 }
 
+export interface IRemoveLiquidityPayload {
+  poolAddress: string;
+  liquidity: number;
+  chainId: NetworkChainId;
+}
+
+export interface ILiquidityBalanceCheckPayload {
+  from: string;
+  poolAddress: string;
+  chainId: NetworkChainId;
+}
+
 export interface IPoolSearch {
   token1Address: string;
   token2Address: string;

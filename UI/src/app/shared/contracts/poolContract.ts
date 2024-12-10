@@ -12,6 +12,12 @@ export interface PoolDetailObjectResponse {
   __length__: number;
 }
 
+export interface PoolLiquidityResponse {
+  0: bigint;
+  1: bigint;
+  __length__: number;
+}
+
 export class PoolContract extends BaseContractFactory {
   constructor(public chainId: NetworkChainId) {
     super();

@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core';
 import Web3, { AbiFragment, Contract } from 'web3';
 import { AbiItem } from 'web3-utils';
-import { PoolContract, PoolDetailObjectResponse, SwapRouterContract, SwapRouterObjectResponse } from '../../contracts';
+import {
+  PoolContract,
+  PoolDetailObjectResponse,
+  PoolLiquidityResponse,
+  SwapRouterContract,
+  SwapRouterObjectResponse
+} from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
 import { IQuoteResult, IToken, ITokenContract } from '../../interfaces';
 import {
+  ILiquidityBalanceCheckPayload,
   ILiquidityPayload,
   IPoolDetail,
   IPoolDetailForm,
   IPoolSearch,
+  IRemoveLiquidityPayload,
   ISwappingPayload,
   SwapPayload
 } from '../../interfaces/swap.interface';
-import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 import { TokensService } from '../tokens/tokens.service';
+import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -32,6 +40,16 @@ export class DexService {
     const obj = res as { [key: string]: unknown };
 
     return typeof obj[0] === 'bigint' && typeof obj[1] === 'bigint';
+  }
+
+  private isPoolLiquidityResponseValid(res: unknown): res is PoolLiquidityResponse {
+    if (typeof res !== 'object' || res === null) {
+      return false;
+    }
+
+    const obj = res as { [key: string]: unknown };
+
+    return typeof obj[0] === 'bigint' && typeof obj[1] === 'bigint' && typeof obj['__length__'] === 'number';
   }
 
   private isPoolDetailResponseValid(res: unknown): res is IPoolDetail {
@@ -131,6 +149,30 @@ export class DexService {
       .catch((error: string) => {
         return Promise.reject(error);
       });
+  }
+
+  async removeLiquidity(from: string, payload: IRemoveLiquidityPayload): Promise<string> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const poolContract = new PoolContract(payload.chainId);
+
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      poolContract.getAbi() as AbiItem[],
+      payload.poolAddress
+    );
+
+    const gasEstimate: bigint = await contract.methods['removeLiquidity'](
+      web3.utils.toWei(payload.liquidity.toString(), 'ether')
+    ).estimateGas({
+      from
+    });
+
+    return contract.methods['removeLiquidity'](web3.utils.toWei(payload.liquidity.toString(), 'ether'))
+      .send({
+        from: from,
+        gas: gasEstimate.toString()
+      })
+      .then((receipt) => receipt.transactionHash)
+      .catch((error: string) => Promise.reject(error));
   }
 
   async getPool(search: IPoolSearch): Promise<IPoolDetail> {
@@ -274,5 +316,32 @@ export class DexService {
       chainId: payload.chainId,
       fee: res?.fee ?? 0
     };
+  }
+
+  // TODO: Clean this method
+  async callLiquidityAmount(payload: ILiquidityBalanceCheckPayload): Promise<number[]> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const poolContract = new PoolContract(payload.chainId);
+    const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
+      poolContract.getAbi() as AbiItem[],
+      payload.poolAddress
+    );
+
+    return contract.methods['getLiquidityProvided'](payload.from)
+      .call()
+      .then((liquidity: void | [] | PoolLiquidityResponse) => {
+        console.log('liquidity', liquidity);
+        if (!this.isPoolLiquidityResponseValid(liquidity)) {
+          return Promise.reject('Invalid liquidity response');
+        }
+        return [
+          Number(web3.utils.fromWei(String(liquidity[0]), 'ether')),
+          Number(web3.utils.fromWei(String(liquidity[1]), 'ether'))
+        ];
+      })
+      .catch((error: string) => {
+        console.log('error', error);
+        return Promise.reject(error);
+      });
   }
 }

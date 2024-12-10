@@ -10,9 +10,11 @@ import { environment } from '../../../../environments/environment';
 import {
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
+  ILiquidityBalanceCheckPayload,
   IPoolDetail,
   IPoolDetailForm,
   IQuoteResult,
+  IRemoveLiquidityPayload,
   IToken,
   ITokenContract,
   StoreState
@@ -23,7 +25,7 @@ import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { localTransactionSentSuccessfully } from '../../transaction-store/state/actions';
 import * as DexActions from './actions';
-import { selectPoolContractAddress, selectTokensDetails } from './selectors';
+import { selectPoolContractAddress, selectPoolDetail, selectTokensDetails } from './selectors';
 
 @Injectable()
 export class SwapEffects {
@@ -34,6 +36,54 @@ export class SwapEffects {
     private dexService: DexService,
     private tokensService: TokensService
   ) {}
+
+  removeLiquidity$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.removeLiquidityAction),
+      concatLatestFrom(() => [
+        this.store.select(selectWalletConnected),
+        this.store.select(selectPublicAddress),
+        this.store.select(selectPoolDetail)
+      ]),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      map(
+        (
+          payload: [
+            ReturnType<typeof DexActions.removeLiquidityAction>,
+            WalletProvider | null,
+            string | null,
+            StoreState<IPoolDetail | null>
+          ]
+        ) =>
+          payload as [
+            ReturnType<typeof DexActions.removeLiquidityAction>,
+            WalletProvider,
+            string,
+            StoreState<IPoolDetail>
+          ]
+      ),
+      switchMap(
+        (
+          action: [ReturnType<typeof DexActions.removeLiquidityAction>, WalletProvider, string, StoreState<IPoolDetail>]
+        ) => {
+          const payload: IRemoveLiquidityPayload = {
+            poolAddress: action[3].data?.contractAddress as string,
+            liquidity: action[0].liquidity,
+            chainId: action[0].chainId
+          };
+          return from(this.dexService.removeLiquidity(action[2], payload)).pipe(
+            map((hash: string) =>
+              DexActions.removeLiquidityActionSuccess({
+                hash,
+                chainId: action[0].chainId
+              })
+            ),
+            catchError((error: string) => of(DexActions.removeLiquidityActionFailure({ message: error })))
+          );
+        }
+      )
+    );
+  });
 
   loadPool$ = createEffect(() => {
     return this.actions$.pipe(
@@ -287,10 +337,18 @@ export class SwapEffects {
 
   showSuccessMessageForLiquidity$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(DexActions.createPoolActionSuccess, DexActions.addLiquidityActionSuccess),
+      ofType(
+        DexActions.createPoolActionSuccess,
+        DexActions.addLiquidityActionSuccess,
+        DexActions.removeLiquidityActionSuccess
+      ),
       map(
         (
-          action: ReturnType<typeof DexActions.createPoolActionSuccess | typeof DexActions.addLiquidityActionSuccess>
+          action: ReturnType<
+            | typeof DexActions.createPoolActionSuccess
+            | typeof DexActions.addLiquidityActionSuccess
+            | typeof DexActions.removeLiquidityActionSuccess
+          >
         ) => {
           return localTransactionSentSuccessfully({
             card: {
@@ -467,6 +525,56 @@ export class SwapEffects {
           );
         }
       )
+    );
+  });
+
+  checkIfLiquidityBalanceIsAvailable$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.loadPoolActionSuccess),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected)]),
+      switchMap(([action, walletProvider]) =>
+        this.store.select(selectPublicAddress).pipe(
+          filter((publicAddress) => publicAddress !== null),
+          take(1),
+          map(
+            (publicAddress) =>
+              [action, walletProvider, publicAddress] as [
+                ReturnType<typeof DexActions.loadPoolActionSuccess>,
+                WalletProvider,
+                string
+              ]
+          )
+        )
+      ),
+      map(([action, walletProvider, publicAddress]) => {
+        console.log('action, walletProvider, publicAddress', action, walletProvider, publicAddress);
+        const pool: IPoolDetail = action.result;
+        return DexActions.loadLiquidityBalanceCheckAction({ pool });
+      })
+    );
+  });
+
+  loadLiquidityBalanceCheck$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.loadLiquidityBalanceCheckAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (
+          payload: [ReturnType<typeof DexActions.loadLiquidityBalanceCheckAction>, WalletProvider | null, string | null]
+        ) => payload as [ReturnType<typeof DexActions.loadLiquidityBalanceCheckAction>, WalletProvider, string]
+      ),
+      filter((payload) => payload[1] !== null && payload[2] !== null),
+      switchMap((action: [ReturnType<typeof DexActions.loadLiquidityBalanceCheckAction>, WalletProvider, string]) => {
+        const payload: ILiquidityBalanceCheckPayload = {
+          poolAddress: action[0].pool.contractAddress,
+          chainId: action[0].pool.chainId,
+          from: action[2] as string
+        };
+        return from(this.dexService.callLiquidityAmount(payload)).pipe(
+          map((result: number[]) => DexActions.loadLiquidityBalanceCheckActionSuccess({ result })),
+          catchError((error: string) => of(DexActions.loadLiquidityBalanceCheckActionFailure({ message: error })))
+        );
+      })
     );
   });
 }

@@ -11,11 +11,15 @@ describe('DexSwappingPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [SharedTestModule, StoreModule.forRoot({
-        swap: () => ({}),
-        transactions: () => ({}),
-        global: () => ({}),
-      }), RouterModule.forRoot([])],
+      imports: [
+        SharedTestModule,
+        StoreModule.forRoot({
+          swap: () => ({}),
+          transactions: () => ({}),
+          global: () => ({})
+        }),
+        RouterModule.forRoot([])
+      ],
       declarations: [DexSwappingPageComponent],
       providers: [
         { provide: 'config', useValue: {} },

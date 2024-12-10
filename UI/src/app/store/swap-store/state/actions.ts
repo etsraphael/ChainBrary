@@ -83,11 +83,11 @@ export const loadBalanceAndAllowanceActionFailure = createAction(
 
 export const removeLiquidityAction = createAction(
   '[Swap] Remove Liquidity Actions',
-  props<{ payload: ILiquidityPayload }>()
+  props<{ liquidity: number; chainId: NetworkChainId }>()
 );
 export const removeLiquidityActionSuccess = createAction(
-  '[Swap] Remove Liquidity Actions Success', // TODO: Add type here
-  props<{ message: string }>()
+  '[Swap] Remove Liquidity Actions Success',
+  props<{ hash: string; chainId: NetworkChainId }>()
 );
 export const removeLiquidityActionFailure = createAction(
   '[Swap] Remove Liquidity Actions Failure',
@@ -129,4 +129,17 @@ export const loadAllowanceAfterApproveAllowanceSuccessFromLiquidity = createActi
 export const loadAllowanceAfterApproveAllowanceSuccessFromSwap = createAction(
   '[Swap] Load Allowance After Approve Allowance Success From Swap',
   props<{ tokenId: TokenId | string; tokenAddress: string; chainId: NetworkChainId }>()
+);
+
+export const loadLiquidityBalanceCheckAction = createAction(
+  '[Swap] Load Liquidity Balance Check Actions',
+  props<{ pool: IPoolDetail }>()
+);
+export const loadLiquidityBalanceCheckActionSuccess = createAction(
+  '[Swap] Load Liquidity Balance Check Actions Success',
+  props<{ result: number[] }>()
+);
+export const loadLiquidityBalanceCheckActionFailure = createAction(
+  '[Swap] Load Liquidity Balance Check Actions Failure',
+  props<{ message: string }>()
 );
