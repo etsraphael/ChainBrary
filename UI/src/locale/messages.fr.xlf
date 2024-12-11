@@ -116,7 +116,7 @@
       </trans-unit>
       <trans-unit id="136627898854555850" datatype="html">
         <source>The pool is empty. Please try again later or provide liquidity to the pool.</source>
-        <target state="new">The pool is empty. Please try again later or provide liquidity to the pool.</target>
+        <target>La piscine est vide. Veuillez réessayer plus tard ou fournir de la liquidité à la piscine.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
           <context context-type="linenumber">76</context>
@@ -156,7 +156,7 @@
       </trans-unit>
       <trans-unit id="1505760232808626419" datatype="html">
         <source>By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair. Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.</source>
-        <target state="new">By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair. Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.</target>
+        <target>En ajoutant de la liquidité, vous gagnerez des frais proportionnels à votre part du pool sur tous les échanges pour cette paire. Les frais sont ajoutés au pool, s'accumulent en temps réel et peuvent être réclamés lorsque vous retirez votre liquidité.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">174</context>
@@ -228,7 +228,7 @@
       </trans-unit>
       <trans-unit id="2024641763879770520" datatype="html">
         <source>Approving <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></source>
-        <target state="new">Approving <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></target>
+        <target>Approbation de <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">137</context>
@@ -240,7 +240,7 @@
       </trans-unit>
       <trans-unit id="2108385670328259811" datatype="html">
         <source>Transaction is getting confirmed... Please confirm the request on your wallet and wait</source>
-        <target state="new">Transaction is getting confirmed... Please confirm the request on your wallet and wait</target>
+        <target>La transaction est en cours de confirmation... Veuillez confirmer la demande sur votre portefeuille et attendez</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">18</context>
@@ -444,7 +444,7 @@
       </trans-unit>
       <trans-unit id="3233928210503239977" datatype="html">
         <source>Available: <x id="INTERPOLATION" equiv-text="{{ t.balance }}"/></source>
-        <target state="new">Available: <x id="INTERPOLATION" equiv-text="{{ t.balance }}"/></target>
+        <target>Disponible : <x id="INTERPOLATION" equiv-text="{{ t.balance }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
           <context context-type="linenumber">46</context>
@@ -452,7 +452,7 @@
       </trans-unit>
       <trans-unit id="3289319788037944340" datatype="html">
         <source>Add Liquidity</source>
-        <target state="new">Add Liquidity</target>
+        <target>Ajouter de la liquidité</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">107</context>
@@ -892,7 +892,7 @@
       </trans-unit>
       <trans-unit id="4657716279506426852" datatype="html">
         <source>Approve <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></source>
-        <target state="new">Approve <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></target>
+        <target>Approuvez <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">144</context>
@@ -1120,7 +1120,7 @@
       </trans-unit>
       <trans-unit id="5826017704044668914" datatype="html">
         <source>Confirm Order</source>
-        <target state="new">Confirm Order</target>
+        <target>Confirmer la commande</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
           <context context-type="linenumber">101</context>
@@ -1264,7 +1264,7 @@
       </trans-unit>
       <trans-unit id="6412108386270170927" datatype="html">
         <source>Total Liquidity</source>
-        <target state="new">Total Liquidity</target>
+        <target>Liquidité Totale</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">71</context>
@@ -1800,7 +1800,7 @@
       </trans-unit>
       <trans-unit id="869178650616432594" datatype="html">
         <source>The pool is not found. Please try again later or provide liquidity to the pool.</source>
-        <target state="new">The pool is not found. Please try again later or provide liquidity to the pool.</target>
+        <target>La piscine est introuvable. Veuillez réessayer plus tard ou fournir de la liquidité à la piscine.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
           <context context-type="linenumber">68</context>
@@ -1832,7 +1832,7 @@
       </trans-unit>
       <trans-unit id="8805564990489152899" datatype="html">
         <source>Remove Liquidity</source>
-        <target state="new">Remove Liquidity</target>
+        <target>Retirer la liquidité</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
           <context context-type="linenumber">113</context>
