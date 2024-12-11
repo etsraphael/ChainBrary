@@ -34,7 +34,7 @@
           <!-- Token 1 Input -->
           <div class="d-flex mb-2">
             <mat-form-field appearance="outline" class="col-12">
-              <mat-label>Amount</mat-label>
+              <mat-label i18n>Amount</mat-label>
               <input class="px-2" matInput type="number" placeholder="0" formControlName="token1Amount" />
               <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matSuffix>
                 {{ tokenPath[0].symbol }}
@@ -54,7 +54,7 @@
           <!-- Token 2 Input -->
           <div class="d-flex mb-2">
             <mat-form-field appearance="outline" class="col-12">
-              <mat-label>Amount</mat-label>
+              <mat-label i18n>Amount</mat-label>
               <input class="px-2" matInput type="number" placeholder="0" formControlName="token2Amount" />
               <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matSuffix>
                 {{ tokenPath[1].symbol }}
@@ -68,7 +68,7 @@
 
           <!-- Total Liquidity Info -->
           <div *ngIf="poolDetail$ | async" class="d-flex flex-column align-items-center mb-4">
-            <div class="text-muted">Total Liquidity</div>
+            <div class="text-muted" i18n>Total Liquidity</div>
             <ng-container *ngIf="poolIsLoading$ | async; else token1">
               <div class="w-50">
                 <ngx-skeleton-loader count="1" appearance="line"></ngx-skeleton-loader>
@@ -104,13 +104,15 @@
               type="submit"
               (click)="addLiquidity()"
             >
-              Add Liquidity
+            <span i18n>Add Liquidity</span>
             </button>
           </ng-container>
           <!-- Remove Liquidity Button -->
           <ng-container *ngIf="(removeLiquidityIsAvailable$ | async) === true">
             <button class="btn btn-primary w-100 mb-4" type="submit" (click)="removeLiquidity()">
-              Remove Liquidity
+              <span i18n>
+                Remove Liquidity
+              </span>
             </button>
           </ng-container>
         </form>
@@ -131,10 +133,18 @@
             <ng-container *ngIf="(liquidityApproval$ | async)?.[0]; else approve">
               <div class="d-flex justify-content-center">
                 <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
-                <div class="ms-2">Approving {{ tokenPath[0].symbol }}</div>
+                <div class="ms-2">
+                  <span i18n>
+                    Approving {{ tokenPath[0].symbol }}
+                  </span>
+                  </div>
               </div>
             </ng-container>
-            <ng-template #approve> Approve {{ tokenPath[0].symbol }} </ng-template>
+            <ng-template #approve>
+            <span i18n>
+              Approve {{ tokenPath[0].symbol }}
+            </span>
+          </ng-template>
           </button>
           <button
             *ngIf="allowance2Needed$ | async"
@@ -145,15 +155,23 @@
             <ng-container *ngIf="(liquidityApproval$ | async)?.[1]; else approve">
               <div class="d-flex justify-content-center">
                 <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
-                <div class="ms-2">Approving {{ tokenPath[1].symbol }}</div>
+                <div class="ms-2">
+                  <span i18n>
+                  Approving {{ tokenPath[1].symbol }}
+                </span>
+                </div>
               </div>
             </ng-container>
-            <ng-template #approve> Approve {{ tokenPath[1].symbol }} </ng-template>
+            <ng-template #approve>
+              <span i18n>
+              Approve {{ tokenPath[1].symbol }}
+            </span>
+            </ng-template>
           </button>
         </ng-container>
         <!-- Liquidity Info Text -->
         <div class="p-3 bg-light rounded footer-container">
-          <small class="text-muted">
+          <small class="text-muted" i18n>
             By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair.
             Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.
           </small>
