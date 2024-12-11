@@ -25,7 +25,7 @@ import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { localTransactionSentSuccessfully } from '../../transaction-store/state/actions';
 import * as DexActions from './actions';
-import { selectPoolContractAddress, selectPoolDetail, selectTokensDetails } from './selectors';
+import { selectLiquidityBalance, selectPoolContractAddress, selectPoolDetail, selectTokensDetails } from './selectors';
 
 @Injectable()
 export class SwapEffects {
@@ -43,7 +43,8 @@ export class SwapEffects {
       concatLatestFrom(() => [
         this.store.select(selectWalletConnected),
         this.store.select(selectPublicAddress),
-        this.store.select(selectPoolDetail)
+        this.store.select(selectPoolDetail),
+        this.store.select(selectLiquidityBalance)
       ]),
       filter((payload) => payload[1] !== null && payload[2] !== null),
       map(
@@ -52,23 +53,31 @@ export class SwapEffects {
             ReturnType<typeof DexActions.removeLiquidityAction>,
             WalletProvider | null,
             string | null,
-            StoreState<IPoolDetail | null>
+            StoreState<IPoolDetail | null>,
+            number[]
           ]
         ) =>
           payload as [
             ReturnType<typeof DexActions.removeLiquidityAction>,
             WalletProvider,
             string,
-            StoreState<IPoolDetail>
+            StoreState<IPoolDetail>,
+            number[]
           ]
       ),
       switchMap(
         (
-          action: [ReturnType<typeof DexActions.removeLiquidityAction>, WalletProvider, string, StoreState<IPoolDetail>]
+          action: [
+            ReturnType<typeof DexActions.removeLiquidityAction>,
+            WalletProvider,
+            string,
+            StoreState<IPoolDetail>,
+            number[]
+          ]
         ) => {
           const payload: IRemoveLiquidityPayload = {
             poolAddress: action[3].data?.contractAddress as string,
-            liquidity: action[0].liquidity,
+            liquidity: action[4][0] + action[4][1],
             chainId: action[0].chainId
           };
           return from(this.dexService.removeLiquidity(action[2], payload)).pipe(
@@ -531,6 +540,7 @@ export class SwapEffects {
   checkIfLiquidityBalanceIsAvailable$ = createEffect(() => {
     return this.actions$.pipe(
       ofType(DexActions.loadPoolActionSuccess),
+      filter((action) => action.result.token1Amount > 0 && action.result.token2Amount > 0),
       concatLatestFrom(() => [this.store.select(selectWalletConnected)]),
       switchMap(([action, walletProvider]) =>
         this.store.select(selectPublicAddress).pipe(

@@ -13,7 +13,9 @@ export interface ISwapState {
   isSwapping: ActionStoreProcessing;
   isPoolCreating: ActionStoreProcessing;
   isAddingLiquidity: ActionStoreProcessing;
+  isRemovingLiquidity: ActionStoreProcessing;
   searchPool: StoreState<IPoolDetail | null>;
+  liquidityBalance: StoreState<number[] | null>;
   tokenSearch: StoreState<IToken | null>;
   token0Detail: StoreState<BalanceAndAllowance | null>;
   token1Detail: StoreState<BalanceAndAllowance | null>;

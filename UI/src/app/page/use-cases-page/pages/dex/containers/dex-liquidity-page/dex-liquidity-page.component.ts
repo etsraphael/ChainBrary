@@ -45,14 +45,17 @@ import {
   loadBalanceAndAllowanceAction,
   loadPoolAction,
   preloadLiquidityFormAction,
-  preloadLiquidityFormActionSuccess
+  preloadLiquidityFormActionSuccess,
+  removeLiquidityAction
 } from '../../../../../../store/swap-store/state/actions';
 import {
   selectIsAddingLiquidity,
   selectIsPoolCreating,
+  selectIsRemovingLiquidity,
   selectLiquidityApproval,
   selectPoolDetail,
   selectPoolIsNotCreated,
+  selectRemoveLiquidityIsAvailable,
   selectTokensDetails,
   selectTokenSearch
 } from '../../../../../../store/swap-store/state/selectors';
@@ -92,6 +95,8 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   );
   readonly liquidityApproval$: Observable<boolean[]> = this.store.select(selectLiquidityApproval);
   readonly isAddingLiquidity$: Observable<boolean> = this.store.select(selectIsAddingLiquidity);
+  readonly selectIsRemovingLiquidity$: Observable<boolean> = this.store.select(selectIsRemovingLiquidity);
+  readonly removeLiquidityIsAvailable$: Observable<boolean> = this.store.select(selectRemoveLiquidityIsAvailable);
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -130,8 +135,11 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   }
 
   get showSpinner$(): Observable<boolean> {
-    return combineLatest([this.poolIsCreating$, this.isAddingLiquidity$]).pipe(
-      map(([poolIsCreating, isAddingLiquidity]) => poolIsCreating || isAddingLiquidity)
+    return combineLatest([this.poolIsCreating$, this.isAddingLiquidity$, this.selectIsRemovingLiquidity$]).pipe(
+      map(
+        ([poolIsCreating, isAddingLiquidity, isRemovingLiquidity]) =>
+          poolIsCreating || isAddingLiquidity || isRemovingLiquidity
+      )
     );
   }
 
@@ -225,6 +233,10 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
     };
 
     return this.store.dispatch(addLiquidityAction({ payload }));
+  }
+
+  removeLiquidity(): void {
+    return this.store.dispatch(removeLiquidityAction({ chainId: this.networkSelected.chainId }));
   }
 
   createPool(): void {

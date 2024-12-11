@@ -13,6 +13,10 @@ export const initialState: ISwapState = {
     isLoading: false,
     errorMessage: null
   },
+  isRemovingLiquidity: {
+    isLoading: false,
+    errorMessage: null
+  },
   searchPool: {
     data: null,
     loading: false,
@@ -57,5 +61,10 @@ export const initialState: ISwapState = {
       isLoading: false,
       errorMessage: null
     }
+  },
+  liquidityBalance: {
+    data: null,
+    loading: false,
+    error: null
   }
 };

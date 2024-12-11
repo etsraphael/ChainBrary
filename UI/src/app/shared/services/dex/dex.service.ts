@@ -318,7 +318,6 @@ export class DexService {
     };
   }
 
-  // TODO: Clean this method
   async callLiquidityAmount(payload: ILiquidityBalanceCheckPayload): Promise<number[]> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const poolContract = new PoolContract(payload.chainId);
@@ -330,7 +329,6 @@ export class DexService {
     return contract.methods['getLiquidityProvided'](payload.from)
       .call()
       .then((liquidity: void | [] | PoolLiquidityResponse) => {
-        console.log('liquidity', liquidity);
         if (!this.isPoolLiquidityResponseValid(liquidity)) {
           return Promise.reject('Invalid liquidity response');
         }
@@ -339,9 +337,6 @@ export class DexService {
           Number(web3.utils.fromWei(String(liquidity[1]), 'ether'))
         ];
       })
-      .catch((error: string) => {
-        console.log('error', error);
-        return Promise.reject(error);
-      });
+      .catch((error: string) => Promise.reject(error));
   }
 }

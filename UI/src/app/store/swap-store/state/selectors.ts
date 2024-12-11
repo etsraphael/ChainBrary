@@ -58,3 +58,18 @@ export const selectIsSwapping: MemoizedSelector<object, boolean> = createSelecto
   selectSwapState,
   (s: ISwapState) => s.isSwapping.isLoading
 );
+
+export const selectIsRemovingLiquidity: MemoizedSelector<object, boolean> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => s.isRemovingLiquidity.isLoading
+);
+
+export const selectRemoveLiquidityIsAvailable: MemoizedSelector<object, boolean> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => (s.liquidityBalance.data?.[0] ?? 0) > 0 && (s.liquidityBalance.data?.[1] ?? 0) > 0
+);
+
+export const selectLiquidityBalance: MemoizedSelector<object, number[]> = createSelector(
+  selectSwapState,
+  (s: ISwapState) => s.liquidityBalance.data ?? [0, 0]
+);

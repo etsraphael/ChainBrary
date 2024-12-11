@@ -107,6 +107,12 @@
               Add Liquidity
             </button>
           </ng-container>
+          <!-- Remove Liquidity Button -->
+          <ng-container *ngIf="(removeLiquidityIsAvailable$ | async) === true">
+            <button class="btn btn-primary w-100 mb-4" type="submit" (click)="removeLiquidity()">
+              Remove Liquidity
+            </button>
+          </ng-container>
         </form>
         <!-- Create Pool Button -->
         <ng-container *ngIf="(poolIsNotCreated$ | async) === true">

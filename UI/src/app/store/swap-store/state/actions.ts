@@ -83,7 +83,7 @@ export const loadBalanceAndAllowanceActionFailure = createAction(
 
 export const removeLiquidityAction = createAction(
   '[Swap] Remove Liquidity Actions',
-  props<{ liquidity: number; chainId: NetworkChainId }>()
+  props<{ chainId: NetworkChainId }>()
 );
 export const removeLiquidityActionSuccess = createAction(
   '[Swap] Remove Liquidity Actions Success',

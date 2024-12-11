@@ -346,6 +346,69 @@ export const authReducer: ActionReducer<ISwapState, Action> = createReducer(
         errorMessage: message
       }
     })
+  ),
+  on(
+    SwapActions.loadLiquidityBalanceCheckAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      liquidityBalance: {
+        data: null,
+        loading: true,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.loadLiquidityBalanceCheckActionSuccess,
+    (state: ISwapState, { result }): ISwapState => ({
+      ...state,
+      liquidityBalance: {
+        data: result,
+        loading: false,
+        error: null
+      }
+    })
+  ),
+  on(
+    SwapActions.loadLiquidityBalanceCheckActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      liquidityBalance: {
+        data: null,
+        loading: false,
+        error: message
+      }
+    })
+  ),
+  on(
+    SwapActions.removeLiquidityAction,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isRemovingLiquidity: {
+        isLoading: true,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.removeLiquidityActionSuccess,
+    (state: ISwapState): ISwapState => ({
+      ...state,
+      isRemovingLiquidity: {
+        isLoading: false,
+        errorMessage: null
+      }
+    })
+  ),
+  on(
+    SwapActions.removeLiquidityActionFailure,
+    (state: ISwapState, { message }): ISwapState => ({
+      ...state,
+      isRemovingLiquidity: {
+        isLoading: false,
+        errorMessage: message
+      }
+    })
   )
 );
 
