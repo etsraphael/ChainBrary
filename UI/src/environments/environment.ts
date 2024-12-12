@@ -120,6 +120,10 @@ export const environment = {
         {
           chainId: NetworkChainId.LOCALHOST,
           address: '0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512'
+        },
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x47831A8D81932EA2144c42f704ddA6d35f5A3ca4'
         }
       ]
     },
@@ -128,6 +132,10 @@ export const environment = {
         {
           chainId: NetworkChainId.LOCALHOST,
           address: '0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0'
+        },
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
         }
       ]
     }
@@ -140,7 +148,7 @@ export const environment = {
   communityAddress: '0xd288b9F2028cea98F3132B700Fa45c95023EcA24',
   rpcKeys: {
     eth: 'https://eth-mainnet.rpc.grove.city/v1/2501ba49',
-    sepolia: 'https://sepolia.rpc.grove.city/v1/2501ba49',
+    sepolia: 'https://eth-sepolia-testnet.rpc.grove.city/v1/2501ba49',
     polygon: 'https://poly-mainnet.rpc.grove.city/v1/2501ba49',
     avalanche: 'https://avax-mainnet.rpc.grove.city/v1/2501ba49',
     bnb: 'https://bsc-mainnet.rpc.grove.city/v1/2501ba49',

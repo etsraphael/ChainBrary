@@ -37,6 +37,35 @@ export const DefaultNetworkPairs: DefaultNetworkPair[] = [
     }
   },
   {
+    chainId: NetworkChainId.SEPOLIA,
+    token1: {
+      tokenId: '0x332cc82837b1E75600e31D231D42f6Ac36c899A8',
+      decimals: 18,
+      name: 'Custom Token 1',
+      symbol: 'CT1',
+      networkSupport: [
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x332cc82837b1E75600e31D231D42f6Ac36c899A8',
+          priceFeed: []
+        }
+      ]
+    },
+    token2: {
+      tokenId: '0x4566A56531CD978829a6EB1565F39E4892377C55',
+      decimals: 18,
+      name: 'Custom Token 2',
+      symbol: 'CT2',
+      networkSupport: [
+        {
+          chainId: NetworkChainId.SEPOLIA,
+          address: '0x4566A56531CD978829a6EB1565F39E4892377C55',
+          priceFeed: []
+        }
+      ]
+    }
+  },
+  {
     chainId: NetworkChainId.ETHEREUM,
     token1: findTokenById(TokenId.ETHEREUM) as IToken,
     token2: findTokenById('usdc') as IToken
