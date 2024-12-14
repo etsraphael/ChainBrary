@@ -104,15 +104,13 @@
               type="submit"
               (click)="addLiquidity()"
             >
-            <span i18n>Add Liquidity</span>
+              <span i18n>Add Liquidity</span>
             </button>
           </ng-container>
           <!-- Remove Liquidity Button -->
           <ng-container *ngIf="(removeLiquidityIsAvailable$ | async) === true">
             <button class="btn btn-primary w-100 mb-4" type="submit" (click)="removeLiquidity()">
-              <span i18n>
-                Remove Liquidity
-              </span>
+              <span i18n> Remove Liquidity </span>
             </button>
           </ng-container>
         </form>
@@ -134,17 +132,13 @@
               <div class="d-flex justify-content-center">
                 <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
                 <div class="ms-2">
-                  <span i18n>
-                    Approving {{ tokenPath[0].symbol }}
-                  </span>
-                  </div>
+                  <span i18n> Approving {{ tokenPath[0].symbol }} </span>
+                </div>
               </div>
             </ng-container>
             <ng-template #approve>
-            <span i18n>
-              Approve {{ tokenPath[0].symbol }}
-            </span>
-          </ng-template>
+              <span i18n> Approve {{ tokenPath[0].symbol }} </span>
+            </ng-template>
           </button>
           <button
             *ngIf="allowance2Needed$ | async"
@@ -156,16 +150,12 @@
               <div class="d-flex justify-content-center">
                 <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
                 <div class="ms-2">
-                  <span i18n>
-                  Approving {{ tokenPath[1].symbol }}
-                </span>
+                  <span i18n> Approving {{ tokenPath[1].symbol }} </span>
                 </div>
               </div>
             </ng-container>
             <ng-template #approve>
-              <span i18n>
-              Approve {{ tokenPath[1].symbol }}
-            </span>
+              <span i18n> Approve {{ tokenPath[1].symbol }} </span>
             </ng-template>
           </button>
         </ng-container>

@@ -127,7 +127,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.SEPOLIA,
-          address: '0x47831A8D81932EA2144c42f704ddA6d35f5A3ca4'
+          address: '0x9839e975d9ab1b18f9708DeBAc5bfCD75Cff2684'
         }
       ]
     },
@@ -139,7 +139,7 @@ export const environment = {
         },
         {
           chainId: NetworkChainId.SEPOLIA,
-          address: '0xB314575eF85E7Cec0401c79A7b989c011aeC04f4'
+          address: '0xe932493F692f6A9a861Af7546BD534E4E74299Ca'
         }
       ]
     }

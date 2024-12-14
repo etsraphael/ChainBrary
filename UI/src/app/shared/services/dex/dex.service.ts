@@ -218,7 +218,7 @@ export class DexService {
   }
 
   async createPool(from: string, payload: IPoolSearch): Promise<{ poolDetail: IPoolDetail; transactionHash: string }> {
-    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const web3: Web3 = new Web3(window.ethereum);
     const swapRouterContract = new SwapFactoryContract(payload.chainId);
 
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
