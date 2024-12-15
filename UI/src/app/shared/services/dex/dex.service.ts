@@ -111,7 +111,7 @@ export class DexService {
   }
 
   async addLiquidity(from: string, payload: ILiquidityPayload): Promise<string> {
-    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const web3: Web3 = new Web3(window.ethereum);
 
     const address1: string = payload.token1.networkSupport.find(
       (network: ITokenContract) => network.chainId === payload.chainId
@@ -152,7 +152,7 @@ export class DexService {
   }
 
   async removeLiquidity(from: string, payload: IRemoveLiquidityPayload): Promise<string> {
-    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const web3: Web3 = new Web3(window.ethereum);
     const poolContract = new PoolContract(payload.chainId);
 
     const contract: Contract<AbiFragment[]> = new web3.eth.Contract(
@@ -246,7 +246,7 @@ export class DexService {
   }
 
   async swapExactTokensForTokens(payload: ISwappingPayload, from: string): Promise<string> {
-    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const web3: Web3 = new Web3(window.ethereum);
     const swapRouterContract = new SwapRouterContract(payload.chainId);
 
     const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(

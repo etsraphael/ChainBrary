@@ -1,5 +1,12 @@
 import { createFeatureSelector, createSelector, MemoizedSelector } from '@ngrx/store';
-import { BalanceAndAllowance, IPoolDetail, IQuoteResult, IToken, StoreState } from '../../../shared/interfaces';
+import {
+  ActionStoreProcessing,
+  BalanceAndAllowance,
+  IPoolDetail,
+  IQuoteResult,
+  IToken,
+  StoreState
+} from '../../../shared/interfaces';
 import { ISwapState, SWAP_FEATURE_KEY } from './interfaces';
 
 export const selectSwapState = createFeatureSelector<ISwapState>(SWAP_FEATURE_KEY);
@@ -44,9 +51,9 @@ export const selectLiquidityApproval: MemoizedSelector<object, boolean[]> = crea
   (s: ISwapState) => [s.liquidityApproval.token0.isLoading, s.liquidityApproval.token1.isLoading]
 );
 
-export const selectSwapApproval: MemoizedSelector<object, boolean[]> = createSelector(
+export const selectSwapApproval: MemoizedSelector<object, ActionStoreProcessing[]> = createSelector(
   selectSwapState,
-  (s: ISwapState) => [s.swapApproval.token0.isLoading, s.swapApproval.token1.isLoading]
+  (s: ISwapState) => [s.swapApproval.token0, s.swapApproval.token1]
 );
 
 export const selectIsAddingLiquidity: MemoizedSelector<object, boolean> = createSelector(
@@ -54,9 +61,9 @@ export const selectIsAddingLiquidity: MemoizedSelector<object, boolean> = create
   (s: ISwapState) => s.isAddingLiquidity.isLoading
 );
 
-export const selectIsSwapping: MemoizedSelector<object, boolean> = createSelector(
+export const selectIsSwapping: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
   selectSwapState,
-  (s: ISwapState) => s.isSwapping.isLoading
+  (s: ISwapState) => s.isSwapping
 );
 
 export const selectIsRemovingLiquidity: MemoizedSelector<object, boolean> = createSelector(

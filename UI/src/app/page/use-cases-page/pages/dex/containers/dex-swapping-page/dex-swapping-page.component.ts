@@ -5,7 +5,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { INetworkDetail, NetworkChainId, WalletProvider, Web3LoginService } from '@chainbrary/web3-login';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { debounceTime, distinctUntilChanged, map, Observable, ReplaySubject, skipWhile, take, takeUntil } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  map,
+  Observable,
+  ReplaySubject,
+  skipWhile,
+  take,
+  takeUntil
+} from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
 import { DefaultNetworkPair, DefaultNetworkPairs } from './../../../../../../data/dex.data';
 import {
@@ -17,6 +27,7 @@ import {
   TokensDialogComponent
 } from './../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import {
+  ActionStoreProcessing,
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
   IPoolDetail,
@@ -43,6 +54,7 @@ import {
   selectIsSwapping,
   selectPoolDetail,
   selectQuote,
+  selectSwapApproval,
   selectTokensDetails,
   selectTokenSearch
 } from './../../../../../../store/swap-store/state/selectors';
@@ -55,8 +67,8 @@ import { selectRecentTransactionsByComponent } from './../../../../../../store/t
 })
 export class DexSwappingPageComponent implements OnInit, OnDestroy {
   networkPath: INetworkDetail[] = [
-    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST),
-    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.LOCALHOST)
+    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.SEPOLIA),
+    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.SEPOLIA)
   ];
   tokenPath: IToken[] = [];
   swapForm: FormGroup<ISwappingForm> = new FormGroup<ISwappingForm>({
@@ -72,8 +84,18 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('DexSwappingPageComponent')
   );
-  readonly isSwapping$: Observable<boolean> = this.store.select(selectIsSwapping);
+  readonly isSwapping$: Observable<ActionStoreProcessing> = this.store.select(selectIsSwapping);
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
+  readonly swapApproval$: Observable<ActionStoreProcessing[]> = this.store.select(selectSwapApproval);
+
+  get showErrorMessage$(): Observable<string | null> {
+    return combineLatest([this.isSwapping$, this.swapApproval$]).pipe(
+      map(
+        ([isSwapping, swapApproval]) =>
+          isSwapping.errorMessage || swapApproval[0].errorMessage || swapApproval[1].errorMessage || null
+      )
+    );
+  }
 
   get token1Available$(): Observable<BalanceAndAllowance | null> {
     return this.selectTokensDetails$.pipe(

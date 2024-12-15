@@ -556,11 +556,7 @@ export class SwapEffects {
           )
         )
       ),
-      map(([action, walletProvider, publicAddress]) => {
-        console.log('action, walletProvider, publicAddress', action, walletProvider, publicAddress);
-        const pool: IPoolDetail = action.result;
-        return DexActions.loadLiquidityBalanceCheckAction({ pool });
-      })
+      map(([action]) => DexActions.loadLiquidityBalanceCheckAction({ pool: action.result }))
     );
   });
 

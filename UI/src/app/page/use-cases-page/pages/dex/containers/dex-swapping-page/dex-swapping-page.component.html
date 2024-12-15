@@ -9,7 +9,7 @@
 <div class="d-flex justify-content-center">
   <div class="col-12 col-md-6 col-lg-5 col-xl-4">
     <!-- Loading Spinner -->
-    <ng-container *ngIf="(isSwapping$ | async) === true; else body">
+    <ng-container *ngIf="(isSwapping$ | async)?.isLoading === true; else body">
       <div class="row justify-content-center">
         <div class="col-10">
           <div class="d-flex flex-column align-items-center pt-5">
@@ -88,16 +88,42 @@
             </div>
             <!-- Approval Buttons -->
             <ng-container *ngIf="(allowance1Needed$ | async) === true; else confirmBtn">
-              <button class="btn btn-primary w-100 mb-2" type="submit" (click)="approveToken(true)">
-                <span i18n> Approve {{ tokenPath[0].symbol }} </span>
+              <button
+                [disabled]="(swapApproval$ | async)?.[0]?.isLoading"
+                class="btn btn-primary w-100 mb-2"
+                type="submit"
+                (click)="approveToken(true)"
+              >
+                <ng-container *ngIf="(swapApproval$ | async)?.[0]?.isLoading; else approve">
+                  <div class="d-flex justify-content-center">
+                    <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
+                    <div class="ms-2">
+                      <span i18n> Approving {{ tokenPath[0].symbol }} </span>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #approve>
+                  <span i18n> Approve {{ tokenPath[0].symbol }} </span>
+                </ng-template>
               </button>
             </ng-container>
             <!-- Confirm Order Button -->
             <ng-template #confirmBtn>
-              <button (click)="sendSwapRequest()" class="btn btn-primary w-100 mb-4" type="submit">
+              <button
+                [disabled]="swapForm.invalid"
+                (click)="sendSwapRequest()"
+                class="btn btn-primary w-100 mb-4"
+                type="submit"
+              >
                 <span i18n> Confirm Order </span>
               </button>
             </ng-template>
+            <!-- Error message -->
+            <ng-container *ngIf="(showErrorMessage$ | async) !== null">
+              <div class="alert alert-danger text-center border-0" role="alert">
+                <span>{{ showErrorMessage$ | async }}</span>
+              </div>
+            </ng-container>
           </ng-container>
         </form>
       </div>
