@@ -272,7 +272,6 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   }
 
   private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
-    console.log('token', token);
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
     const tokenAddress: string = token.networkSupport.find(
