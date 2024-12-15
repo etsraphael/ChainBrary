@@ -66,6 +66,11 @@ export const DefaultNetworkPairs: DefaultNetworkPair[] = [
     }
   },
   {
+    chainId: NetworkChainId.POLYGON,
+    token1: findTokenById('chainlink') as IToken,
+    token2: findTokenById('usdc') as IToken
+  },
+  {
     chainId: NetworkChainId.ETHEREUM,
     token1: findTokenById(TokenId.ETHEREUM) as IToken,
     token2: findTokenById('usdc') as IToken

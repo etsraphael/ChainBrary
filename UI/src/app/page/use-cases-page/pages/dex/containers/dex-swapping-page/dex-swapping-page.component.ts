@@ -67,8 +67,8 @@ import { selectRecentTransactionsByComponent } from './../../../../../../store/t
 })
 export class DexSwappingPageComponent implements OnInit, OnDestroy {
   networkPath: INetworkDetail[] = [
-    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.SEPOLIA),
-    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.SEPOLIA)
+    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON),
+    this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON)
   ];
   tokenPath: IToken[] = [];
   swapForm: FormGroup<ISwappingForm> = new FormGroup<ISwappingForm>({
@@ -272,6 +272,7 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   }
 
   private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
+    console.log('token', token);
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
     const tokenAddress: string = token.networkSupport.find(

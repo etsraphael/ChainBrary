@@ -68,7 +68,7 @@ import { selectRecentTransactionsByComponent } from '../../../../../../store/tra
   styleUrl: './dex-liquidity-page.component.scss'
 })
 export class DexLiquidityPageComponent implements OnInit, OnDestroy {
-  networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.SEPOLIA);
+  networkSelected: INetworkDetail = this.web3loginService.getNetworkDetailByChainId(NetworkChainId.POLYGON);
   tokenPath: IToken[] = [];
   liquidityForm: FormGroup<ILiquidityForm> = new FormGroup<ILiquidityForm>({
     token1Amount: new FormControl<number | null>(null, [Validators.required, Validators.min(0.000001)]),

@@ -136,6 +136,10 @@ export const environment = {
         {
           chainId: NetworkChainId.SEPOLIA,
           address: '0x9839e975d9ab1b18f9708DeBAc5bfCD75Cff2684'
+        },
+        {
+          chainId: NetworkChainId.POLYGON,
+          address: '0x47831A8D81932EA2144c42f704ddA6d35f5A3ca4'
         }
       ]
     },
@@ -148,6 +152,10 @@ export const environment = {
         {
           chainId: NetworkChainId.SEPOLIA,
           address: '0xe932493F692f6A9a861Af7546BD534E4E74299Ca'
+        },
+        {
+          chainId: NetworkChainId.POLYGON,
+          address: '0x14d3bDDd07Bfe22892b12C7d84f16fc204Feb0bf'
         }
       ]
     }
