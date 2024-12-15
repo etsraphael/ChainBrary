@@ -29,33 +29,6 @@ export class SwapRouterContract extends BaseContract {
         type: 'constructor'
       },
       {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'target',
-            type: 'address'
-          }
-        ],
-        name: 'AddressEmptyCode',
-        type: 'error'
-      },
-      {
-        inputs: [
-          {
-            internalType: 'address',
-            name: 'account',
-            type: 'address'
-          }
-        ],
-        name: 'AddressInsufficientBalance',
-        type: 'error'
-      },
-      {
-        inputs: [],
-        name: 'FailedInnerCall',
-        type: 'error'
-      },
-      {
         inputs: [],
         name: 'InvalidInitialization',
         type: 'error'
@@ -392,7 +365,7 @@ export class SwapRouterContract extends BaseContract {
         ],
         name: 'swapExactTokensForTokens',
         outputs: [],
-        stateMutability: 'nonpayable',
+        stateMutability: 'payable',
         type: 'function'
       },
       {
