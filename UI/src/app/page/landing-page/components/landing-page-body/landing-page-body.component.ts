@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { footerListData } from './../../../../data/socialMediaCard.data';
+import { footerListData } from '../../../../shared/data/socialMediaCard.data';
 import { IServiceCard } from './../../../../shared/components/service-card/service-card.component';
 import { SocialMediaCardItem } from './../../../../shared/interfaces';
 

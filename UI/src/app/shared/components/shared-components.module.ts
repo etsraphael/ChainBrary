@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MarkdownModule } from 'ngx-markdown';
-import { web3LoginConfig } from './../../data/web3LoginConfig.data';
+import { web3LoginConfig } from '../data/web3LoginConfig.data';
 import { MaterialModule } from './../../module/material.module';
 import { AuthBannerComponent } from './auth-banner/auth-banner.component';
 import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';

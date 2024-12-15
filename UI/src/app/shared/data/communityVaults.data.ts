@@ -1,6 +1,6 @@
 import { NetworkChainId } from '@chainbrary/web3-login';
-import { VaultSupported } from '../shared/interfaces';
-import { environment } from './../../environments/environment';
+import { VaultSupported } from '../interfaces';
+import { environment } from '../../../environments/environment';
 import { isDevMode } from '@angular/core';
 
 export const communityVaults: VaultSupported[] = [

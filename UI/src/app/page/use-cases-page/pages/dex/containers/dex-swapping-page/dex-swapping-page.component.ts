@@ -17,7 +17,7 @@ import {
   takeUntil
 } from 'rxjs';
 import { environment } from '../../../../../../../environments/environment';
-import { DefaultNetworkPair, DefaultNetworkPairs } from './../../../../../../data/dex.data';
+import { DefaultNetworkPair, DefaultNetworkPairs } from '../../../../../../shared/data/dex.data';
 import {
   INetworkDialogData,
   NetworkDialogComponent

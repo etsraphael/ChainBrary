@@ -4,7 +4,7 @@ import { StoreState, Vault } from './../../../shared/interfaces';
 import * as VaultsActions from './actions';
 import { initialState } from './init';
 import { IVaultsState } from './interfaces';
-import { communityVaults } from './../../../data/communityVaults.data';
+import { communityVaults } from '../../../shared/data/communityVaults.data';
 
 export const authReducer: ActionReducer<IVaultsState, Action> = createReducer(
   initialState,

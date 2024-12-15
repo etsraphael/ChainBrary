@@ -1,6 +1,6 @@
 import { NetworkChainId, TokenId } from '@chainbrary/web3-login';
-import { tokenList } from '../shared/data/tokenList';
-import { IToken } from '../shared/interfaces';
+import { tokenList } from './tokenList';
+import { IToken } from '../interfaces';
 
 const findTokenById = (tokenId: TokenId | string): IToken | undefined => {
   return tokenList.find((token: IToken) => token.tokenId === tokenId);

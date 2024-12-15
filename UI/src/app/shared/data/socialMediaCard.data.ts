@@ -1,4 +1,4 @@
-import { SocialMediaCardItem } from '../shared/interfaces';
+import { SocialMediaCardItem } from '../interfaces';
 
 export const footerListData: SocialMediaCardItem[] = [
   {
