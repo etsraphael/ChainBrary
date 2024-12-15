@@ -141,7 +141,7 @@
         <source>By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair. Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
-          <context context-type="linenumber">174</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="153027490108697752" datatype="html">
@@ -188,6 +188,13 @@
           <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="1852337942156079840" datatype="html">
+        <source>Search chain by name or chain ID</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/network-dialog/network-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="1877816060137394749" datatype="html">
         <source>The link is broken. Try again or choose a different QR.</source>
         <context-group purpose="location">
@@ -206,11 +213,15 @@
         <source>Approving <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
-          <context context-type="linenumber">137</context>
+          <context context-type="linenumber">135</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
-          <context context-type="linenumber">159</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2108385670328259811" datatype="html">
@@ -236,6 +247,20 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="23090562742925861" datatype="html">
+        <source>Select Source Chain</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/network-dialog/network-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2313906492074115045" datatype="html">
+        <source>Search token by name or address</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/tokens-dialog/tokens-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2399301267677654105" datatype="html">
@@ -793,15 +818,15 @@
         <source>Approve <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
-          <context context-type="linenumber">144</context>
+          <context context-type="linenumber">140</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
-          <context context-type="linenumber">166</context>
+          <context context-type="linenumber">158</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
-          <context context-type="linenumber">92</context>
+          <context context-type="linenumber">106</context>
         </context-group>
       </trans-unit>
       <trans-unit id="4789735819534327004" datatype="html">
@@ -996,7 +1021,7 @@
         <source>Confirm Order</source>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
-          <context context-type="linenumber">101</context>
+          <context context-type="linenumber">118</context>
         </context-group>
       </trans-unit>
       <trans-unit id="5874523164192679080" datatype="html">
@@ -1192,6 +1217,13 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="661300302516307030" datatype="html">
+        <source>Swap</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-home-page/dex-home-page.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="664573589261423471" datatype="html">
         <source>Terms and Conditions</source>
         <context-group purpose="location">
@@ -1218,6 +1250,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="67933701892581429" datatype="html">
+        <source>Liquidity</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-home-page/dex-home-page.component.html</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6837890927238901672" datatype="html">
@@ -1722,6 +1761,13 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-result/bid-result.component.html</context>
           <context context-type="linenumber">149</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="9143083558784900412" datatype="html">
+        <source>Select a token</source>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/tokens-dialog/tokens-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
       <trans-unit id="9169235287547304268" datatype="html">
