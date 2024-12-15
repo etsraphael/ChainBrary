@@ -41,14 +41,14 @@ export const selectQuote: MemoizedSelector<object, StoreState<IQuoteResult | nul
   (s: ISwapState) => s.quote
 );
 
-export const selectIsPoolCreating: MemoizedSelector<object, boolean> = createSelector(
+export const selectIsPoolCreating: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
   selectSwapState,
-  (s: ISwapState) => s.isPoolCreating.isLoading
+  (s: ISwapState) => s.isPoolCreating
 );
 
-export const selectLiquidityApproval: MemoizedSelector<object, boolean[]> = createSelector(
+export const selectLiquidityApproval: MemoizedSelector<object, ActionStoreProcessing[]> = createSelector(
   selectSwapState,
-  (s: ISwapState) => [s.liquidityApproval.token0.isLoading, s.liquidityApproval.token1.isLoading]
+  (s: ISwapState) => [s.liquidityApproval.token0, s.liquidityApproval.token1]
 );
 
 export const selectSwapApproval: MemoizedSelector<object, ActionStoreProcessing[]> = createSelector(
@@ -56,9 +56,9 @@ export const selectSwapApproval: MemoizedSelector<object, ActionStoreProcessing[
   (s: ISwapState) => [s.swapApproval.token0, s.swapApproval.token1]
 );
 
-export const selectIsAddingLiquidity: MemoizedSelector<object, boolean> = createSelector(
+export const selectIsAddingLiquidity: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
   selectSwapState,
-  (s: ISwapState) => s.isAddingLiquidity.isLoading
+  (s: ISwapState) => s.isAddingLiquidity
 );
 
 export const selectIsSwapping: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
@@ -66,9 +66,9 @@ export const selectIsSwapping: MemoizedSelector<object, ActionStoreProcessing> =
   (s: ISwapState) => s.isSwapping
 );
 
-export const selectIsRemovingLiquidity: MemoizedSelector<object, boolean> = createSelector(
+export const selectIsRemovingLiquidity: MemoizedSelector<object, ActionStoreProcessing> = createSelector(
   selectSwapState,
-  (s: ISwapState) => s.isRemovingLiquidity.isLoading
+  (s: ISwapState) => s.isRemovingLiquidity
 );
 
 export const selectRemoveLiquidityIsAvailable: MemoizedSelector<object, boolean> = createSelector(

@@ -125,10 +125,10 @@
           <button
             *ngIf="allowance1Needed$ | async"
             class="btn btn-primary w-100 mb-2"
-            [disabled]="(liquidityApproval$ | async)?.[0]"
+            [disabled]="(liquidityApproval$ | async)?.[0]?.isLoading"
             (click)="approveToken(true)"
           >
-            <ng-container *ngIf="(liquidityApproval$ | async)?.[0]; else approve">
+            <ng-container *ngIf="(liquidityApproval$ | async)?.[0]?.isLoading; else approve">
               <div class="d-flex justify-content-center">
                 <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
                 <div class="ms-2">
@@ -143,10 +143,10 @@
           <button
             *ngIf="allowance2Needed$ | async"
             class="btn btn-primary w-100 mb-4"
-            [disabled]="(liquidityApproval$ | async)?.[1]"
+            [disabled]="(liquidityApproval$ | async)?.[1]?.isLoading"
             (click)="approveToken(false)"
           >
-            <ng-container *ngIf="(liquidityApproval$ | async)?.[1]; else approve">
+            <ng-container *ngIf="(liquidityApproval$ | async)?.[1]?.isLoading; else approve">
               <div class="d-flex justify-content-center">
                 <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
                 <div class="ms-2">
@@ -165,6 +165,14 @@
             By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair.
             Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.
           </small>
+        </div>
+        <!-- Error Message -->
+        <div class="d-flex justify-content-center mt-3">
+          <div class="col-12">
+            <div class="alert alert-danger" *ngIf="liquidityErrorMessage$ | async; let m">
+              <span>{{ m }}</span>
+            </div>
+          </div>
         </div>
       </div>
     </ng-template>

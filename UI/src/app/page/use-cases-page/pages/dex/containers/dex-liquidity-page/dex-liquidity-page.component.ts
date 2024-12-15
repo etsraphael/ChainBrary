@@ -27,6 +27,7 @@ import {
   TokensDialogComponent
 } from '../../../../../../shared/components/modal/tokens-dialog/tokens-dialog.component';
 import {
+  ActionStoreProcessing,
   BalanceAndAllowance,
   IBalanceAndAllowancePayload,
   ILiquidityPayload,
@@ -85,7 +86,7 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   ) {}
 
   readonly poolIsNotCreated$: Observable<boolean> = this.store.select(selectPoolIsNotCreated);
-  readonly poolIsCreating$: Observable<boolean> = this.store.select(selectIsPoolCreating);
+  readonly poolIsCreating$: Observable<ActionStoreProcessing> = this.store.select(selectIsPoolCreating);
   readonly poolDetailStore$: Observable<StoreState<IPoolDetail | null>> = this.store.select(selectPoolDetail);
   readonly selectTokensDetails$: Observable<StoreState<BalanceAndAllowance | null>[]> =
     this.store.select(selectTokensDetails);
@@ -93,10 +94,19 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
   readonly transactionCards$: Observable<ITransactionCard[]> = this.store.select(
     selectRecentTransactionsByComponent('DexLiquidityPageComponent')
   );
-  readonly liquidityApproval$: Observable<boolean[]> = this.store.select(selectLiquidityApproval);
-  readonly isAddingLiquidity$: Observable<boolean> = this.store.select(selectIsAddingLiquidity);
-  readonly selectIsRemovingLiquidity$: Observable<boolean> = this.store.select(selectIsRemovingLiquidity);
+  readonly liquidityApproval$: Observable<ActionStoreProcessing[]> = this.store.select(selectLiquidityApproval);
+  readonly isAddingLiquidity$: Observable<ActionStoreProcessing> = this.store.select(selectIsAddingLiquidity);
+  readonly selectIsRemovingLiquidity$: Observable<ActionStoreProcessing> = this.store.select(selectIsRemovingLiquidity);
   readonly removeLiquidityIsAvailable$: Observable<boolean> = this.store.select(selectRemoveLiquidityIsAvailable);
+
+  get liquidityErrorMessage$(): Observable<string | null> {
+    return combineLatest([this.isAddingLiquidity$, this.liquidityApproval$]).pipe(
+      map(
+        ([isAddingLiquidity, swapApproval]) =>
+          isAddingLiquidity.errorMessage || swapApproval[0].errorMessage || swapApproval[1].errorMessage || null
+      )
+    );
+  }
 
   get poolDetail$(): Observable<IPoolDetail | null> {
     return this.poolDetailStore$.pipe(map((storeState: StoreState<IPoolDetail | null>) => storeState.data));
@@ -138,7 +148,7 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
     return combineLatest([this.poolIsCreating$, this.isAddingLiquidity$, this.selectIsRemovingLiquidity$]).pipe(
       map(
         ([poolIsCreating, isAddingLiquidity, isRemovingLiquidity]) =>
-          poolIsCreating || isAddingLiquidity || isRemovingLiquidity
+          poolIsCreating.isLoading || isAddingLiquidity.isLoading || isRemovingLiquidity.isLoading
       )
     );
   }
