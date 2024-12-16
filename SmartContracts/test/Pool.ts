@@ -8,7 +8,7 @@ import { ContractTransactionResponse, ContractTransactionReceipt } from 'ethers'
 const FEE = 3000;
 const INITIAL_LIQUIDITY_0: bigint = ethers.parseUnits('100000', 'ether');
 const INITIAL_LIQUIDITY_1: bigint = ethers.parseUnits('100000', 'ether');
-const INITIAL_NATIVE_LIQUIDITY: bigint = ethers.parseUnits('100', 'ether');
+const INITIAL_NATIVE_LIQUIDITY: bigint = ethers.parseUnits('1', 'ether');
 const SWAP_AMOUNT: bigint = ethers.parseUnits('1', 'ether');
 
 describe('Pool', function () {
