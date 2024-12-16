@@ -26,3 +26,28 @@ export interface INativeToken {
   name: string;
   symbol: string;
 }
+
+export interface ITokenAndBalance {
+  token: IToken;
+  balance: string;
+}
+
+export interface BalanceAndAllowance {
+  tokenId: TokenId | string;
+  balance: string;
+  allowance: string;
+  tokenIn: boolean;
+}
+
+export interface IBalanceAndAllowancePayload {
+  chainId: NetworkChainId;
+  tokenId: TokenId | string;
+  spender: string;
+  tokenAddress: string;
+  tokenIn: boolean;
+}
+
+export interface IQuoteResult {
+  token0: number;
+  token1: number;
+}

@@ -5,5 +5,7 @@ export * from './customERC20TokenFactoryContract';
 export * from './documentLocker';
 export * from './ERC20TokenContract';
 export * from './organizationContract';
+export * from './poolContract';
 export * from './priceFeedContract';
+export * from './swapRouterContract';
 export * from './transactionBridgeContract';

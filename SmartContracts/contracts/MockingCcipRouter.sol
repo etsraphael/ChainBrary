@@ -14,7 +14,7 @@ contract MockingCcipRouter is IRouterClient {
     }
 
     // Mock implementation of getSupportedTokens
-    function getSupportedTokens(uint64 chainSelector) external pure override returns (address[] memory tokens) {
+    function getSupportedTokens(uint64 chainSelector) external pure returns (address[] memory tokens) {
         require(chainSelector >= 0, "chainSelector must be non-negative"); // Just to use the parameter
         return new address[](0);
     }

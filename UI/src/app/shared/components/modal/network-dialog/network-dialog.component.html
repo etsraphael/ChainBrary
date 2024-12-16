@@ -1,0 +1,29 @@
+<div mat-dialog-content>
+  <div class="network-dialog-container">
+    <h3 class="text-dark">
+      <span i18n>Select Source Chain</span>
+    </h3>
+    <div class="search-bar mt-3">
+      <mat-form-field subscriptSizing="dynamic" appearance="outline" class="w-100">
+        <mat-label>
+          <span i18n>Search chain by name or chain ID</span>
+        </mat-label>
+        <input matInput type="text" [(ngModel)]="searchTerm" />
+      </mat-form-field>
+    </div>
+    <div class="network-list mt-4">
+      <div class="row">
+        <div class="network-item col-12 col-md-6 p-1" *ngFor="let network of filteredNetworks">
+          <div
+            class="btn btn-light btn-network w-100 d-flex align-items-center p-3"
+            [ngClass]="{ active: isSelected(network.chainId) }"
+            (click)="networkSelected(network.chainId)"
+          >
+            <!-- <img class="network-img" [src]="network." [alt]="network.name" /> -->
+            <span class="ms-3">{{ network.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,11 +2,11 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { Observable, ReplaySubject, filter, map, mergeMap, take, takeUntil } from 'rxjs';
-import { selectRecentTransactionsByComponent } from 'src/app/store/transaction-store/state/selectors';
-import { communityVaults } from './../../../../data/communityVaults.data';
+import { communityVaults } from '../../../../shared/data/communityVaults.data';
 import { IHeaderBodyPage } from './../../../../shared/components/header-body-page/header-body-page.component';
 import { ITransactionCard, StoreState, Vault } from './../../../../shared/interfaces';
 import { setAuthPublicAddress } from './../../../../store/auth-store/state/actions';
+import { selectRecentTransactionsByComponent } from './../../../../store/transaction-store/state/selectors';
 import { loadVaults } from './../../../../store/vaults-store/state/actions';
 import { selectIsVaultsLoaded, selectVaults } from './../../../../store/vaults-store/state/selectors';
 

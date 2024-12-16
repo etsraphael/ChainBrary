@@ -6,4 +6,5 @@ export interface ITransactionCard {
   hash: string;
   component: string;
   chainId: NetworkChainId;
+  createdAt: Date;
 }

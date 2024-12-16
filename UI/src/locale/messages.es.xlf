@@ -113,6 +113,14 @@
           <context context-type="linenumber">47</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="136627898854555850" datatype="html">
+        <source>The pool is empty. Please try again later or provide liquidity to the pool.</source>
+        <target>La piscina está vacía. Vuelva a intentarlo más tarde o proporcione liquidez a la piscina.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">76</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="1408738139206271318" datatype="html">
         <source>To submit a report, please email us at <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;chainbrary@outlook.com&quot;&gt;"/>chainbrary@outlook.com<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. Ensure your report is detailed and includes the necessary evidence for validation.</source>
         <target>Para enviar un informe, por favor envíenos un correo electrónico a <x id="START_LINK" ctype="x-a" equiv-text="&lt;a href=&quot;chainbrary@outlook.com&quot;&gt;"/>chainbrary@outlook.com<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/>. Asegúrese de que su informe sea detallado e incluya la evidencia necesaria para su validación.</target>
@@ -143,6 +151,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/components/upload-img-modal/upload-img-modal.component.html</context>
           <context context-type="linenumber">43</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="1505760232808626419" datatype="html">
+        <source>By adding liquidity, you will earn fees proportional to your share of the pool on all trades for this pair. Fees are added to the pool, accrue in real time, and can be claimed when you withdraw your liquidity.</source>
+        <target>Al agregar liquidez, ganarás comisiones proporcionales a tu participación en el fondo en todos los intercambios de este par. Las comisiones se añaden al fondo, se acumulan en tiempo real y pueden reclamarse cuando retires tu liquidez.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">164</context>
         </context-group>
       </trans-unit>
       <trans-unit id="153027490108697752" datatype="html">
@@ -193,6 +209,14 @@
           <context context-type="linenumber">91</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="1852337942156079840" datatype="html">
+        <source>Search chain by name or chain ID</source>
+        <target>Buscar cadena por nombre o ID de cadena</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/network-dialog/network-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="1877816060137394749" datatype="html">
         <source>The link is broken. Try again or choose a different QR.</source>
         <target>El enlace está roto. Intenta de nuevo o elige un QR diferente.</target>
@@ -209,6 +233,34 @@
           <context context-type="linenumber">148</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="2024641763879770520" datatype="html">
+        <source>Approving <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></source>
+        <target>Aprobando <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">135</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">153</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">101</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2108385670328259811" datatype="html">
+        <source>Transaction is getting confirmed... Please confirm the request on your wallet and wait</source>
+        <target>La transacción se está confirmando... Por favor, confirma la solicitud en tu billetera y espera</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">18</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="2126091035409486953" datatype="html">
         <source>Hide card</source>
         <target>Ocultar tarjeta</target>
@@ -223,6 +275,22 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
           <context context-type="linenumber">74</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="23090562742925861" datatype="html">
+        <source>Select Source Chain</source>
+        <target>Seleccionar cadena de origen</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/network-dialog/network-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="2313906492074115045" datatype="html">
+        <source>Search token by name or address</source>
+        <target>Buscar token por nombre o dirección</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/tokens-dialog/tokens-dialog.component.html</context>
+          <context context-type="linenumber">9</context>
         </context-group>
       </trans-unit>
       <trans-unit id="2399301267677654105" datatype="html">
@@ -399,6 +467,22 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-content/document-locker-content.component.html</context>
           <context context-type="linenumber">29</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3233928210503239977" datatype="html">
+        <source>Available: <x id="INTERPOLATION" equiv-text="{{ t.balance }}"/></source>
+        <target>Disponible: <x id="INTERPOLATION" equiv-text="{{ t.balance }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">46</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="3289319788037944340" datatype="html">
+        <source>Add Liquidity</source>
+        <target>Agregar liquidez</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">107</context>
         </context-group>
       </trans-unit>
       <trans-unit id="333539848676335364" datatype="html">
@@ -833,6 +917,22 @@
           <context context-type="linenumber">16</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="4657716279506426852" datatype="html">
+        <source>Approve <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></source>
+        <target>Aprobar <x id="INTERPOLATION" equiv-text="{{ tokenPath[0].symbol }}"/></target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">140</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">158</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">106</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="4789735819534327004" datatype="html">
         <source>Coming soon..</source>
         <target>Próximamente...</target>
@@ -1045,6 +1145,14 @@
           <context context-type="linenumber">14</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="5826017704044668914" datatype="html">
+        <source>Confirm Order</source>
+        <target>Confirmar pedido</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">118</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="5874523164192679080" datatype="html">
         <source>Total Supply</source>
         <target>Suministro Total</target>
@@ -1181,6 +1289,14 @@
           <context context-type="linenumber">101</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="6412108386270170927" datatype="html">
+        <source>Total Liquidity</source>
+        <target>Total de liquidez</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">71</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="6533918067030990396" datatype="html">
         <source>Amount</source>
         <target>Cantidad</target>
@@ -1199,6 +1315,18 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/bid/components/bid-withdrawal/bid-withdrawal.component.html</context>
           <context context-type="linenumber">17</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">37</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">57</context>
+        </context-group>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">57</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/components/payment-request-price-settings/payment-request-price-settings.component.html</context>
@@ -1237,6 +1365,14 @@
           <context context-type="linenumber">4</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="661300302516307030" datatype="html">
+        <source>Swap</source>
+        <target>Intercambiar</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-home-page/dex-home-page.component.html</context>
+          <context context-type="linenumber">7</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="664573589261423471" datatype="html">
         <source>Terms and Conditions</source>
         <target>Términos y Condiciones</target>
@@ -1267,6 +1403,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/document-locker/component/document-locker-form/document-locker-form.component.html</context>
           <context context-type="linenumber">79</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="67933701892581429" datatype="html">
+        <source>Liquidity</source>
+        <target>Liquidez</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-home-page/dex-home-page.component.html</context>
+          <context context-type="linenumber">10</context>
         </context-group>
       </trans-unit>
       <trans-unit id="6837890927238901672" datatype="html">
@@ -1697,6 +1841,14 @@
           <context context-type="linenumber">61</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="869178650616432594" datatype="html">
+        <source>The pool is not found. Please try again later or provide liquidity to the pool.</source>
+        <target>La piscina no se encuentra. Por favor, inténtelo de nuevo más tarde o proporcione liquidez a la piscina.</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-swapping-page/dex-swapping-page.component.html</context>
+          <context context-type="linenumber">68</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="8747971835530189027" datatype="html">
         <source>Withdrawal Details</source>
         <target>Detalles de retiro</target>
@@ -1710,7 +1862,7 @@
         <target>Tu transacción ha sido enviada y está procesándose en la blockchain. Gracias por elegir nuestra plataforma segura y confiable. Verifica su estado haciendo clic <x id="START_LINK" ctype="x-a" equiv-text="&lt;a class=&quot;text-light&quot; (click)=&quot;goToHashKuriExplorer()&quot;&gt;"/>aquí<x id="CLOSE_LINK" ctype="x-a" equiv-text="&lt;/a&gt;"/></target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/components/transaction-card/transaction-card.component.html</context>
-          <context context-type="linenumber">4</context>
+          <context context-type="linenumber">7</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8766840274158243690" datatype="html">
@@ -1719,6 +1871,14 @@
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-not-found-page/pay-now-not-found-page.component.html</context>
           <context context-type="linenumber">9</context>
+        </context-group>
+      </trans-unit>
+      <trans-unit id="8805564990489152899" datatype="html">
+        <source>Remove Liquidity</source>
+        <target>Eliminar liquidez</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/page/use-cases-page/pages/dex/containers/dex-liquidity-page/dex-liquidity-page.component.html</context>
+          <context context-type="linenumber">113</context>
         </context-group>
       </trans-unit>
       <trans-unit id="8842979419223449260" datatype="html">
@@ -1821,6 +1981,14 @@
           <context context-type="linenumber">149</context>
         </context-group>
       </trans-unit>
+      <trans-unit id="9143083558784900412" datatype="html">
+        <source>Select a token</source>
+        <target>Seleccione un token</target>
+        <context-group purpose="location">
+          <context context-type="sourcefile">src/app/shared/components/modal/tokens-dialog/tokens-dialog.component.html</context>
+          <context context-type="linenumber">4</context>
+        </context-group>
+      </trans-unit>
       <trans-unit id="9169235287547304268" datatype="html">
         <source>Amount has to be greater than 0</source>
         <target>El monto tiene que ser mayor que 0</target>
@@ -1866,7 +2034,7 @@
         <target>Monto (en <x id="PH" equiv-text="currency"/>)</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">182</context>
+          <context context-type="linenumber">180</context>
         </context-group>
       </trans-unit>
       <trans-unit id="bidCreation.ImageAlreadyAdded" datatype="html">
@@ -2976,7 +3144,7 @@
         <target>Conectar billetera</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">189</context>
+          <context context-type="linenumber">187</context>
         </context-group>
       </trans-unit>
       <trans-unit id="PayButton.PayNow" datatype="html">
@@ -2984,7 +3152,7 @@
         <target>Paga ahora</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/page/use-cases-page/pages/payment-request/containers/pay-now-page/pay-now-page.component.ts</context>
-          <context context-type="linenumber">190</context>
+          <context context-type="linenumber">188</context>
         </context-group>
       </trans-unit>
       <trans-unit id="paymentRequestDescription" datatype="html">
@@ -3204,7 +3372,7 @@
         <target>Crea una votación y compártela con tus amigos para votar de forma anónima</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">50</context>
+          <context context-type="linenumber">57</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.anonymousVoteServiceTitle" datatype="html">
@@ -3212,7 +3380,7 @@
         <target>Voto Anónimo</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">49</context>
+          <context context-type="linenumber">56</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.networkBridgeServiceDesc" datatype="html">
@@ -3220,7 +3388,7 @@
         <target>Conecta dos redes diferentes y transfiere tokens entre ellas.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">58</context>
+          <context context-type="linenumber">65</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.networkBridgeServiceTitle" datatype="html">
@@ -3228,7 +3396,7 @@
         <target>Puente de red</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">57</context>
+          <context context-type="linenumber">64</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.payTogetherServiceDesc" datatype="html">
@@ -3236,7 +3404,7 @@
         <target>Crea un enlace de pago y compártelo con tus amigos para pagar juntos.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">42</context>
+          <context context-type="linenumber">49</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.payTogetherServiceTitle" datatype="html">
@@ -3244,7 +3412,7 @@
         <target>Pagar Juntos</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">41</context>
+          <context context-type="linenumber">48</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.tokenSetupServiceDesc" datatype="html">
@@ -3268,7 +3436,7 @@
         <target>Intercambia tokens por otro token en la misma red.</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">66</context>
+          <context context-type="linenumber">42</context>
         </context-group>
       </trans-unit>
       <trans-unit id="servicePage.tokenSwapServiceTitle" datatype="html">
@@ -3276,7 +3444,7 @@
         <target>Intercambio de Tokens</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/shared/data/useCaseRoutes.ts</context>
-          <context context-type="linenumber">65</context>
+          <context context-type="linenumber">41</context>
         </context-group>
       </trans-unit>
       <trans-unit id="termsAndCondGlobal" datatype="html">
@@ -3305,15 +3473,15 @@
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">52</context>
+          <context context-type="linenumber">53</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">69</context>
+          <context context-type="linenumber">71</context>
         </context-group>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">86</context>
+          <context context-type="linenumber">89</context>
         </context-group>
       </trans-unit>
       <trans-unit id="transaction.WalletIsNotConnected" datatype="html">
@@ -3321,7 +3489,7 @@
         <target>La billetera no está conectada</target>
         <context-group purpose="location">
           <context context-type="sourcefile">src/app/store/transaction-store/state/effects.ts</context>
-          <context context-type="linenumber">106</context>
+          <context context-type="linenumber">110</context>
         </context-group>
       </trans-unit>
       <trans-unit id="useCases.bid.createBid" datatype="html">

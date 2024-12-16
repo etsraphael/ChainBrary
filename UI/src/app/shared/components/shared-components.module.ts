@@ -6,7 +6,7 @@ import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from '@angular/router/testing';
 import { QRCodeModule } from 'angularx-qrcode';
 import { MarkdownModule } from 'ngx-markdown';
-import { web3LoginConfig } from './../../data/web3LoginConfig.data';
+import { web3LoginConfig } from '../data/web3LoginConfig.data';
 import { MaterialModule } from './../../module/material.module';
 import { AuthBannerComponent } from './auth-banner/auth-banner.component';
 import { ChainbraryButtonComponent } from './chainbrary-button/chainbrary-button.component';
@@ -22,6 +22,8 @@ import { TermAndCondModalComponent } from './term-and-cond-modal/term-and-cond-m
 import { TransactionCardComponent } from './transaction-card/transaction-card.component';
 import { UserAvatarComponent } from './user-avatar/user-avatar.component';
 import { LOAD_WASM, NgxScannerQrcodeModule } from 'ngx-scanner-qrcode';
+import { NetworkDialogComponent } from './modal/network-dialog/network-dialog.component';
+import { TokensDialogComponent } from './modal/tokens-dialog/tokens-dialog.component';
 
 // Necessary to solve the problem of losing internet connection
 LOAD_WASM().subscribe();
@@ -40,7 +42,9 @@ LOAD_WASM().subscribe();
     LoadingScreenComponent,
     DrawerSidebarComponent,
     ServiceCardComponent,
-    QrCodeScanningPageComponent
+    QrCodeScanningPageComponent,
+    NetworkDialogComponent,
+    TokensDialogComponent
   ],
   imports: [
     CommonModule,
@@ -64,7 +68,9 @@ LOAD_WASM().subscribe();
     LoadingScreenComponent,
     DrawerSidebarComponent,
     ServiceCardComponent,
-    QrCodeScanningPageComponent
+    QrCodeScanningPageComponent,
+    NetworkDialogComponent,
+    TokensDialogComponent
   ]
 })
 export class SharedComponentsModule {}

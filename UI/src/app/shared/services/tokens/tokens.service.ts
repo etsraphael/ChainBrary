@@ -6,12 +6,15 @@ import {
   IEditAllowancePayload,
   ITransferPayload
 } from '@chainbrary/token-bridge';
+import { NetworkChainId } from '@chainbrary/web3-login';
 import BigNumber from 'bignumber.js';
 import Web3, { AbiFragment, Contract, TransactionReceipt } from 'web3';
 import { AbiItem } from 'web3-utils';
 import { ERC20TokenContract, TransactionBridgeContract } from '../../contracts';
 import { tokenList } from '../../data/tokenList';
 import {
+  BalanceAndAllowance,
+  IBalanceAndAllowancePayload,
   IReceiptTransaction,
   IToken,
   SendNativeTokenPayload,
@@ -19,6 +22,7 @@ import {
   TransactionTokenBridgePayload
 } from '../../interfaces';
 import { WalletService } from '../wallet/wallet.service';
+import { Web3ProviderService } from '../web3-provider/web3-provider.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +30,8 @@ import { WalletService } from '../wallet/wallet.service';
 export class TokensService {
   constructor(
     private erc20Service: Erc20Service,
-    private walletService: WalletService
+    private walletService: WalletService,
+    private web3ProviderService: Web3ProviderService
   ) {}
 
   getTokensListed(): IToken[] {
@@ -221,6 +226,57 @@ export class TokensService {
       });
     } catch (error) {
       return Promise.reject(this.walletService.formatErrorMessage(error));
+    }
+  }
+
+  async getBalanceAndAllowance(from: string, payload: IBalanceAndAllowancePayload): Promise<BalanceAndAllowance> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
+    const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
+
+    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+      erc20Contract.getAbi() as AbiItem[],
+      erc20Contract.getAddress()
+    );
+
+    try {
+      const balance = (await contractFragment.methods['balanceOf'](from).call()) as string;
+      const allowance = (await contractFragment.methods['allowance'](from, payload.spender).call()) as string;
+
+      return {
+        tokenId: payload.tokenId,
+        balance: web3.utils.fromWei(balance, 'ether'),
+        allowance: web3.utils.fromWei(allowance, 'ether'),
+        tokenIn: payload.tokenIn
+      };
+    } catch (error) {
+      return Promise.reject(error);
+    }
+  }
+
+  async getERC20TokenByAddress(chainId: NetworkChainId, tokenAddress: string): Promise<IToken> {
+    const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(chainId));
+    const erc20Contract = new ERC20TokenContract(chainId, tokenAddress);
+
+    const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
+      erc20Contract.getAbi() as AbiItem[],
+      erc20Contract.getAddress()
+    );
+
+    try {
+      const name = (await contractFragment.methods['name']().call()) as string;
+      const symbol = (await contractFragment.methods['symbol']().call()) as string;
+
+      const token: IToken = {
+        tokenId: tokenAddress,
+        decimals: 18,
+        name,
+        symbol,
+        networkSupport: [{ chainId: chainId, address: tokenAddress, priceFeed: [] }]
+      };
+
+      return token;
+    } catch (error) {
+      return Promise.reject(error);
     }
   }
 }

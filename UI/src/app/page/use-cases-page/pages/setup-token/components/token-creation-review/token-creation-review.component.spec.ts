@@ -1,8 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TokenCreationReviewComponent } from './token-creation-review.component';
-import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
-import { ITokenCreationPayload } from 'src/app/shared/interfaces';
 import { NetworkChainId } from '@chainbrary/web3-login';
+import { SharedTestModule } from './../../../../../../shared/components/shared-components.module';
+import { ITokenCreationPayload } from './../../../../../../shared/interfaces';
+import { TokenCreationReviewComponent } from './token-creation-review.component';
 
 describe('TokenCreationReviewComponent', () => {
   let component: TokenCreationReviewComponent;

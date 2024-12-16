@@ -28,7 +28,8 @@ export class PayNowSuccessfulPageComponent {
       type: 'success',
       hash: this.route.snapshot.queryParams['hash'],
       component: 'PayNowSuccessfulPageComponent',
-      chainId: this.route.snapshot.queryParams['network']
+      chainId: this.route.snapshot.queryParams['network'],
+      createdAt: new Date()
     };
   }
 

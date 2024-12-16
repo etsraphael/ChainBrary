@@ -344,7 +344,6 @@ export class TokenManagementEffects {
         this.store.select(selectPublicAddress),
         this.store.select(selectTokenDetailData)
       ]),
-      tap(console.log),
       filter((payload) => payload[1] !== null && payload[2] !== null && payload[3] !== null),
       map(
         (

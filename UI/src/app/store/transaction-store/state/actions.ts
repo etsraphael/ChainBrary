@@ -2,6 +2,11 @@ import { ITransactionLog } from '@chainbrary/transaction-search';
 import { createAction, props } from '@ngrx/store';
 import { ITransactionCard } from '../../../shared/interfaces';
 
+export const removeTransactionByHash = createAction(
+  '[Transaction] Remove Transaction By Id',
+  props<{ hash: string }>()
+);
+
 export const localTransactionSentSuccessfully = createAction(
   '[Transaction] Local Transaction Sent Successfully',
   props<{ card: ITransactionCard }>()
