@@ -8,7 +8,7 @@ import { Web3LoginModule } from '@chainbrary/web3-login';
 import * as Sentry from '@sentry/angular-ivy';
 import { NgxSkeletonLoaderModule } from 'ngx-skeleton-loader';
 import { AppComponent } from './app.component';
-import { web3LoginConfig } from './data/web3LoginConfig.data';
+import { web3LoginConfig } from './shared/data/web3LoginConfig.data';
 import { AppRoutingModule } from './module/app-routing.module';
 import { GraphQLModule } from './module/graphql.module';
 import { MaterialModule } from './module/material.module';

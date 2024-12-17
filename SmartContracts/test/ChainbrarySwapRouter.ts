@@ -18,8 +18,6 @@ const FEE = 100;
 const INITIAL_LIQUIDITY_0: bigint = ethers.parseUnits('100000', 'ether');
 const INITIAL_LIQUIDITY_1: bigint = ethers.parseUnits('100000', 'ether');
 const SWAP_AMOUNT: bigint = ethers.parseUnits('1', 'ether');
-const MIN_AMOUNT_OUT: bigint = ethers.parseUnits('0.5', 'ether');
-const DEST_CHAIN_SELECTOR = 1;
 
 describe('ChainbrarySwapRouter', function () {
 

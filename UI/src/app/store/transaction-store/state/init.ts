@@ -1,7 +1,7 @@
+import { ITransactionLog } from '@chainbrary/transaction-search';
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { ITransactionCard } from './../../../shared/interfaces';
 import { ITransactionsState } from './interfaces';
-import { ITransactionLog } from '@chainbrary/transaction-search';
 
 export const transactionAdapter: EntityAdapter<ITransactionCard> = createEntityAdapter<ITransactionCard>({
   selectId: (transaction: ITransactionCard) => transaction.hash

@@ -70,25 +70,35 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
         address[] memory path,
         uint24[] memory fees,
         address to
-    ) external nonReentrant {
+    ) external payable nonReentrant {
         require(path.length >= 2, "Invalid path");
         require(fees.length == path.length - 1, "Invalid fees length");
 
         uint256[] memory amounts = getAmountsOut(amountIn, path, fees);
         require(amounts[amounts.length - 1] >= amountOutMin, "Insufficient output amount");
 
-        IERC20(path[0]).safeTransferFrom(_msgSender(), address(this), amounts[0]);
+        if (path[0] == address(0)) {
+            require(msg.value == amounts[0], "Incorrect native token amount");
+        } else {
+            IERC20(path[0]).safeTransferFrom(_msgSender(), address(this), amounts[0]);
+        }
 
         for (uint256 i = 0; i < path.length - 1; i++) {
             address poolAddress = factory.getPool(path[i], path[i + 1], fees[i]);
             Pool pool = Pool(poolAddress);
 
-            IERC20(path[i]).approve(poolAddress, amounts[i]);
+            if (path[i] != address(0)) {
+                IERC20(path[i]).approve(poolAddress, amounts[i]);
+            }
 
-            pool.swap(amounts[i], path[i], address(this));
+            pool.swap{value: path[i] == address(0) ? amounts[i] : 0}(amounts[i], path[i], address(this));
         }
 
-        IERC20(path[path.length - 1]).safeTransfer(to, amounts[amounts.length - 1]);
+        if (path[path.length - 1] == address(0)) {
+            payable(to).transfer(amounts[amounts.length - 1]);
+        } else {
+            IERC20(path[path.length - 1]).safeTransfer(to, amounts[amounts.length - 1]);
+        }
     }
 
     function crossChainSwap(
@@ -105,22 +115,30 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
         uint256[] memory amounts = getAmountsOut(amountIn, path, fees);
         require(amounts[amounts.length - 1] >= amountOutMin, "Insufficient output amount");
 
-        IERC20(path[0]).safeTransferFrom(_msgSender(), address(this), amounts[0]);
+        if (path[0] == address(0)) {
+            require(msg.value == amounts[0], "Incorrect native token amount");
+        } else {
+            IERC20(path[0]).safeTransferFrom(_msgSender(), address(this), amounts[0]);
+        }
 
         for (uint256 i = 0; i < path.length - 2; i++) {
             address poolAddress = factory.getPool(path[i], path[i + 1], fees[i]);
             require(poolAddress != address(0), "Pool doesn't exist");
 
             Pool pool = Pool(poolAddress);
-            IERC20(path[i]).approve(poolAddress, amounts[i]);
+            if (path[i] != address(0)) {
+                IERC20(path[i]).approve(poolAddress, amounts[i]);
+            }
 
-            pool.swap(amounts[i], path[i], address(this));
+            pool.swap{value: path[i] == address(0) ? amounts[i] : 0}(amounts[i], path[i], address(this));
         }
 
         uint256 crossChainAmount = amounts[amounts.length - 2];
         address crossChainToken = path[path.length - 2];
 
-        IERC20(crossChainToken).approve(ccipRouter, crossChainAmount);
+        if (crossChainToken != address(0)) {
+            IERC20(crossChainToken).approve(ccipRouter, crossChainAmount);
+        }
 
         Client.EVM2AnyMessage memory message = prepareCrossChainMessage(receiver, crossChainToken, crossChainAmount);
 
@@ -170,5 +188,9 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
         }
 
         emit CrossChainSwapReceived(receiver, message.messageId);
+    }
+
+    function updateCCIPRouter(address _ccipRouter) external onlyOwner {
+        ccipRouter = _ccipRouter;
     }
 }

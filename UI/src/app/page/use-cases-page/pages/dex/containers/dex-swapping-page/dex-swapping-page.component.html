@@ -1,0 +1,132 @@
+<!-- Transaction cards -->
+<div class="my-2">
+  <div *ngIf="(transactionCards$ | async)?.length! > 0" class="d-flex justify-content-center my-2">
+    <div class="col-12 col-md-6 col-lg-5 col-xl-4">
+      <app-transaction-card [cardContent]="(transactionCards$ | async)![0]"></app-transaction-card>
+    </div>
+  </div>
+</div>
+<div class="d-flex justify-content-center">
+  <div class="col-12 col-md-6 col-lg-5 col-xl-4">
+    <!-- Loading Spinner -->
+    <ng-container *ngIf="(isSwapping$ | async)?.isLoading === true; else body">
+      <div class="row justify-content-center">
+        <div class="col-10">
+          <div class="d-flex flex-column align-items-center pt-5">
+            <mat-spinner [diameter]="50" [strokeWidth]="2"></mat-spinner>
+            <p class="mt-3 text-secondary text-center">
+              <span i18n>Transaction is getting confirmed... Please confirm the request on your wallet and wait</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <!-- Swapping form -->
+    <ng-template #body>
+      <div class="card cb-card border-0 shadow-sm p-4 text-center">
+        <form [formGroup]="swapForm">
+          <!-- Pay Section -->
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <div class="d-flex align-items-center">
+              <h6 class="mb-0 text-muted">From</h6>
+              <button class="btn btn-network w-100 mx-2" (click)="openNetworkDialog(true)">
+                {{ networkPath[0].name }}
+              </button>
+            </div>
+          </div>
+          <div class="d-flex">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label>Amount</mat-label>
+              <input class="px-2" matInput type="number" placeholder="0" formControlName="fromAmount" />
+              <span (click)="openTokensDialog(true)" class="currency-container-input px-2" matTextSuffix>
+                {{ tokenPath[0].symbol }}
+                <i class="bi bi-chevron-down"></i>
+              </span>
+              <mat-hint *ngIf="token1Available$ | async; let t">
+                <span class="text-muted" i18n>Available: {{ t.balance }}</span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <!-- Swap Icon -->
+          <div class="mb-3">
+            <mat-icon class="mat-icon material-icons">arrow_downward</mat-icon>
+          </div>
+          <!-- Receive Section -->
+          <div class="d-flex mb-4">
+            <mat-form-field appearance="outline" class="col-12">
+              <mat-label i18n>Amount</mat-label>
+              <input class="px-2" matInput type="number" placeholder="0" formControlName="toAmount" />
+              <span (click)="openTokensDialog(false)" class="currency-container-input px-2" matTextSuffix>
+                {{ tokenPath[1].symbol }}
+                <i class="bi bi-chevron-down"></i>
+              </span>
+            </mat-form-field>
+          </div>
+          <!-- Pool is not found -->
+          <ng-container *ngIf="(poolIsNotFound$ | async) === true">
+            <div class="text-center">
+              <h6 class="text-muted" i18n>
+                The pool is not found. Please try again later or provide liquidity to the pool.
+              </h6>
+            </div>
+          </ng-container>
+          <!-- Pool is empty message -->
+          <ng-container *ngIf="(poolIsEmpty$ | async) === true">
+            <div class="text-center">
+              <h6 class="text-muted" i18n>
+                The pool is empty. Please try again later or provide liquidity to the pool.
+              </h6>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="(poolIsEmpty$ | async) === false && (poolIsNotFound$ | async) === false">
+            <!-- Exchange Rate -->
+            <div class="text-muted mb-4">
+              {{ tokenQuoteText$ | async }}
+              <button (click)="loadPool()" class="btn btn-link p-0">
+                <mat-icon class="mat-icon material-icons">refresh</mat-icon>
+              </button>
+            </div>
+            <!-- Approval Buttons -->
+            <ng-container *ngIf="(allowance1Needed$ | async) === true; else confirmBtn">
+              <button
+                [disabled]="(swapApproval$ | async)?.[0]?.isLoading"
+                class="btn btn-primary w-100 mb-2"
+                type="submit"
+                (click)="approveToken(true)"
+              >
+                <ng-container *ngIf="(swapApproval$ | async)?.[0]?.isLoading; else approve">
+                  <div class="d-flex justify-content-center">
+                    <mat-spinner [diameter]="25" [strokeWidth]="4" color="warn"></mat-spinner>
+                    <div class="ms-2">
+                      <span i18n> Approving {{ tokenPath[0].symbol }} </span>
+                    </div>
+                  </div>
+                </ng-container>
+                <ng-template #approve>
+                  <span i18n> Approve {{ tokenPath[0].symbol }} </span>
+                </ng-template>
+              </button>
+            </ng-container>
+            <!-- Confirm Order Button -->
+            <ng-template #confirmBtn>
+              <button
+                [disabled]="swapForm.invalid"
+                (click)="sendSwapRequest()"
+                class="btn btn-primary w-100 mb-4"
+                type="submit"
+              >
+                <span i18n> Confirm Order </span>
+              </button>
+            </ng-template>
+            <!-- Error message -->
+            <ng-container *ngIf="(showErrorMessage$ | async) !== null">
+              <div class="alert alert-danger text-center border-0" role="alert">
+                <span>{{ showErrorMessage$ | async }}</span>
+              </div>
+            </ng-container>
+          </ng-container>
+        </form>
+      </div>
+    </ng-template>
+  </div>
+</div>

@@ -37,6 +37,13 @@ const serviceCards: IServiceCard[] = [
     routerUrl: './../../use-cases/setup-token/services'
   },
   {
+    id: 'swap-token',
+    title: $localize`:@@servicePage.tokenSwapServiceTitle: Token Swap`,
+    description: $localize`:@@servicePage.tokenSwapServiceDesc: Swap tokens for another token on the same network.`,
+    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/swap-token.svg',
+    routerUrl: './../../use-cases/dex'
+  },
+  {
     id: 'shop-qr-code',
     title: $localize`:@@servicePage.payTogetherServiceTitle:Pay Together`,
     description: $localize`:@@servicePage.payTogetherServiceDesc: Create a payment link and share it with your friends to pay together.`,
@@ -57,14 +64,6 @@ const serviceCards: IServiceCard[] = [
     title: $localize`:@@servicePage.networkBridgeServiceTitle: Network Bridge`,
     description: $localize`:@@servicePage.networkBridgeServiceDesc: Connect two different networks and transfer tokens between them.`,
     img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/swap-bridge.svg',
-    routerUrl: null,
-    isDisabled: true
-  },
-  {
-    id: 'swap-token',
-    title: $localize`:@@servicePage.tokenSwapServiceTitle: Token Swap`,
-    description: $localize`:@@servicePage.tokenSwapServiceDesc: Swap tokens for another token on the same network.`,
-    img: 'https://chainbraryfrontendassets.blob.core.windows.net/illustrations/swap-token.svg',
     routerUrl: null,
     isDisabled: true
   }

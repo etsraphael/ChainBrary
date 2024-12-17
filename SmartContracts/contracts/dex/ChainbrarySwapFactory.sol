@@ -17,7 +17,7 @@ contract ChainbrarySwapFactory is Ownable, Initializable {
         feeTiers = [500, 3000, 10000];
     }
 
-    function createPool(address tokenA, address tokenB, uint24 fee) external onlyOwner returns (address pool) {
+    function createPool(address tokenA, address tokenB, uint24 fee) external returns (address pool) {
         require(tokenA != tokenB, "Identical tokens");
         require(tokenA != address(0) && tokenB != address(0), "Zero address");
         require(getPool[tokenA][tokenB][fee] == address(0), "Pool exists");

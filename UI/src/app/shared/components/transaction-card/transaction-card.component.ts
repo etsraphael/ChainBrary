@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ITransactionCard } from '../../interfaces';
 import { NetworkChainId } from '@chainbrary/web3-login';
+import { Store } from '@ngrx/store';
+import { removeTransactionByHash } from '../../../store/transaction-store/state/actions';
+import { ITransactionCard } from '../../interfaces';
 
 @Component({
   selector: 'app-transaction-card[cardContent]',
@@ -11,11 +13,17 @@ export class TransactionCardComponent implements OnInit {
   @Input() cardContent: ITransactionCard;
   scanLink: string;
 
+  constructor(private store: Store) {}
+
   ngOnInit(): void {
     this.generateScanLink(this.cardContent.chainId);
   }
 
-  generateScanLink(chainId: NetworkChainId): void {
+  removeTransaction(): void {
+    return this.store.dispatch(removeTransactionByHash({ hash: this.cardContent.hash }));
+  }
+
+  private generateScanLink(chainId: NetworkChainId): void {
     switch (chainId) {
       case NetworkChainId.ETHEREUM:
         this.scanLink = `https://etherscan.io/tx/${this.cardContent.hash}`;

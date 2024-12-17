@@ -1,0 +1,25 @@
+@import './../../../../../../shared/styles/form.scss';
+@import './../../../../../../../../node_modules/bootstrap/scss/mixins';
+@import './../../../../../../../../node_modules/bootstrap/scss/functions';
+@import './../../../../../../../../node_modules/bootstrap/scss/variables';
+
+.currency-container-input {
+  cursor: pointer;
+}
+
+@include media-breakpoint-down(sm) {
+  .cb-card {
+    border: none !important;
+    box-shadow: none !important;
+    background-color: transparent !important;
+  }
+
+  .footer-container {
+    background-color: var(--bs-gray-200) !important;
+  }
+}
+
+.btn-network {
+  background-color: var(--bs-gray-300);
+  border-radius: 30px;
+}

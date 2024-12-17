@@ -8,7 +8,7 @@ import { catchError, filter, from, map, mergeMap, of, switchMap, tap } from 'rxj
 import { selectPublicAddress } from '../../auth-store/state/selectors';
 import { selectWalletConnected } from '../../global-store/state/selectors';
 import { hideLoadingScreen, showLoadingScreen } from '../../notification-store/state/actions';
-import { communityVaults } from './../../../data/communityVaults.data';
+import { communityVaults } from '../../../shared/data/communityVaults.data';
 import { IReceiptTransaction, Vault, VaultSupported } from './../../../shared/interfaces';
 import { CommunityVaultsService } from './../../../shared/services/community-vaults/community-vaults.service';
 import * as VaultsActions from './actions';

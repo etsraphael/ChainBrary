@@ -51,6 +51,13 @@ export const transactionReducer: ActionReducer<ITransactionsState, Action> = cre
         error
       }
     })
+  ),
+  on(
+    TransactionActions.removeTransactionByHash,
+    (state, { hash }): ITransactionsState => ({
+      ...state,
+      recentTransactions: transactionAdapter.removeOne(hash, state.recentTransactions)
+    })
   )
 );
 

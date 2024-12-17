@@ -1,7 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { TransactionCardComponent } from './transaction-card.component';
-import { ITransactionCard } from '../../interfaces';
 import { NetworkChainId } from '@chainbrary/web3-login';
+import { StoreModule } from '@ngrx/store';
+import { ITransactionCard } from '../../interfaces';
+import { TransactionCardComponent } from './transaction-card.component';
 
 describe('TransactionCardComponent', () => {
   let component: TransactionCardComponent;
@@ -12,11 +13,13 @@ describe('TransactionCardComponent', () => {
     type: 'success',
     hash: '0x1234567890',
     component: 'Component 1',
-    chainId: NetworkChainId.SEPOLIA
+    chainId: NetworkChainId.SEPOLIA,
+    createdAt: new Date()
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [StoreModule.forRoot({})],
       declarations: [TransactionCardComponent]
     }).compileComponents();
 

@@ -10,15 +10,16 @@ export default buildModule('Apollo', (m) => {
   const erc20FixedSupply = deployERC20FixedSupply(m);
   const bidContract = deployBidContract(m);
   const documentLocker = deployDocumentLocker(m);
-  const customERC20Token = deployCustomERC20Token(m);
+  const customERC20Token1 = deployCustomERC20Token(m, 'Custom Token 1', 'CT1', 'CustomERC20Token1');
+  const customERC20Token2 = deployCustomERC20Token(m, 'Custom Token 2', 'CT2', 'CustomERC20Token2');  
+  const customERC20Token3 = deployCustomERC20Token(m, 'Custom Token 3', 'CT3', 'CustomERC20Token3');  
   const customERC20TokenFactory = deployCustomERC20TokenFactory(m, communityVaultAddress);
-  const chainbraryToken = deployChainbraryToken(m);
   const mockingPriceFeed = deployMockingPriceFeed(m);
-  const basicCrossChainTokenSender = deployBasicCrossChainTokenSender(m);
   const mockingCcipRouter = deployMockingCcipRouter(m);
   const crossChainDEX = deployCrossChainDEX(m);
   const swapFactory = deployChainbrarySwapFactory(m);
   const swapRouter = deployChainbrarySwapRouter(m);
+  const chainbraryPool = deployChainbraryPool(m);
 
   return {
     rocketContract,
@@ -28,15 +29,16 @@ export default buildModule('Apollo', (m) => {
     erc20FixedSupply,
     bidContract,
     documentLocker,
-    customERC20Token,
+    customERC20Token1,
+    customERC20Token2,
+    customERC20Token3,
     customERC20TokenFactory,
-    chainbraryToken,
     mockingPriceFeed,
-    basicCrossChainTokenSender,
     mockingCcipRouter,
     crossChainDEX,
     swapFactory,
-    swapRouter
+    swapRouter,
+    chainbraryPool
   };
 });
 
@@ -97,8 +99,8 @@ function deployDocumentLocker(m: any) {
   return documentLocker;
 }
 
-function deployCustomERC20Token(m: any) {
-  const customERC20Token = m.contract('CustomERC20Token', ['0xd174c9C31ddA6FFC5E1335664374c1EbBE2144af', 'Custom Token', 'CTK', 18, true, true,true, [], []]);
+function deployCustomERC20Token(m: any, name: string, symbol: string, id: string) {
+  const customERC20Token = m.contract('CustomERC20Token', ['0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266', name, symbol, ethers.parseUnits('1', 'ether'), true, true, true, [], []], { id });
   return customERC20Token;
 }
 
@@ -107,19 +109,9 @@ function deployCustomERC20TokenFactory(m: any, communityVaultAddress: string) {
   return customERC20TokenFactory;
 }
 
-function deployChainbraryToken(m: any) {
-  const chainbraryToken = m.contract('ChainbraryToken');
-  return chainbraryToken;
-}
-
 function deployMockingPriceFeed(m: any) {
   const mockingPriceFeed = m.contract('MockingPriceFeed', ['18', '1000000000000000000']);
   return mockingPriceFeed;
-}
-
-function deployBasicCrossChainTokenSender(m: any) {
-  const basicCrossChainTokenSender = m.contract('BasicCrossChainTokenSender');
-  return basicCrossChainTokenSender;
 }
 
 function deployMockingCcipRouter(m: any) {
@@ -139,5 +131,11 @@ function deployChainbrarySwapFactory(m: any) {
 
 function deployChainbrarySwapRouter(m: any) {
   const swapRouter = m.contract('ChainbrarySwapRouter');
+  m.call(swapRouter, 'initialize', ['0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512', '0x0000000000000000000000000000000000000001']);
   return swapRouter;
+}
+
+function deployChainbraryPool(m: any) {
+  const chainbraryPool = m.contract('Pool');
+  return chainbraryPool;
 }

@@ -35,17 +35,32 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         fee = _fee;
     }
 
-    function addLiquidity(uint256 amount0, uint256 amount1) external nonReentrant {
-        require(amount0 > 0 && amount1 > 0, "Amounts must be greater than zero");
+    function addLiquidity(uint256 amount0, uint256 amount1) external payable nonReentrant {
+        require(amount0 > 0 || amount1 > 0, "Amounts must be greater than zero");
 
-        IERC20(token0).safeTransferFrom(_msgSender(), address(this), amount0);
-        IERC20(token1).safeTransferFrom(_msgSender(), address(this), amount1);
+        if (token0 == address(0)) {
+            require(msg.value == amount0, "Incorrect native token amount");
+            reserve0 += msg.value;
+            liquidityProvided0[_msgSender()] += msg.value;
+        } else {
+            uint256 allowance0 = IERC20(token0).allowance(_msgSender(), address(this));
+            require(allowance0 >= amount0, "Insufficient allowance for token0");
+            IERC20(token0).safeTransferFrom(_msgSender(), address(this), amount0);
+            reserve0 += amount0;
+            liquidityProvided0[_msgSender()] += amount0;
+        }
 
-        reserve0 += amount0;
-        reserve1 += amount1;
-
-        liquidityProvided0[_msgSender()] += amount0;
-        liquidityProvided1[_msgSender()] += amount1;
+        if (token1 == address(0)) {
+            require(msg.value == amount1, "Incorrect native token amount");
+            reserve1 += msg.value;
+            liquidityProvided1[_msgSender()] += msg.value;
+        } else {
+            uint256 allowance1 = IERC20(token1).allowance(_msgSender(), address(this));
+            require(allowance1 >= amount1, "Insufficient allowance for token1");
+            IERC20(token1).safeTransferFrom(_msgSender(), address(this), amount1);
+            reserve1 += amount1;
+            liquidityProvided1[_msgSender()] += amount1;
+        }
 
         emit Mint(_msgSender(), amount0, amount1);
     }
@@ -70,14 +85,23 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         liquidityProvided0[_msgSender()] -= amount0;
         liquidityProvided1[_msgSender()] -= amount1;
 
-        IERC20(token0).safeTransfer(_msgSender(), amount0);
-        IERC20(token1).safeTransfer(_msgSender(), amount1);
+        if (token0 == address(0)) {
+            payable(_msgSender()).transfer(amount0);
+        } else {
+            IERC20(token0).safeTransfer(_msgSender(), amount0);
+        }
+
+        if (token1 == address(0)) {
+            payable(_msgSender()).transfer(amount1);
+        } else {
+            IERC20(token1).safeTransfer(_msgSender(), amount1);
+        }
 
         emit Burn(_msgSender(), amount0, amount1);
     }
 
     // use 1e18 scale for precision
-    function swap(uint256 amountIn, address tokenIn, address to) external nonReentrant {
+    function swap(uint256 amountIn, address tokenIn, address to) external payable nonReentrant {
         require(amountIn > 0, "AmountIn must be greater than zero");
         require(tokenIn == token0 || tokenIn == token1, "Invalid tokenIn");
         require(to != address(0), "Invalid recipient address");
@@ -88,7 +112,11 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         uint256 reserveOut = (tokenIn == token0) ? reserve1 : reserve0;
 
         // Transfer the input tokens from the sender to the contract
-        IERC20(tokenIn).safeTransferFrom(_msgSender(), address(this), amountIn);
+        if (tokenIn == address(0)) {
+            require(msg.value == amountIn, "Incorrect native token amount");
+        } else {
+            IERC20(tokenIn).safeTransferFrom(_msgSender(), address(this), amountIn);
+        }
 
         // Calculate the input amount after deducting the fee
         uint256 amountInWithFee = (amountIn * (1000000 - fee)) / 1000000;
@@ -101,7 +129,11 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         // Calculate the fee amount
         uint256 feeAmount = amountIn - amountInWithFee;
         // Transfer the fee to the contract owner
-        IERC20(tokenIn).safeTransfer(owner(), feeAmount);
+        if (tokenIn == address(0)) {
+            payable(owner()).transfer(feeAmount);
+        } else {
+            IERC20(tokenIn).safeTransfer(owner(), feeAmount);
+        }
 
         // Update the reserves based on the input and output amounts
         if (tokenIn == token0) {
@@ -113,7 +145,11 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         }
 
         // Transfer the output tokens to the recipient
-        IERC20(tokenOut).safeTransfer(to, amountOut);
+        if (tokenOut == address(0)) {
+            payable(to).transfer(amountOut);
+        } else {
+            IERC20(tokenOut).safeTransfer(to, amountOut);
+        }
 
         // Emit a Swap event
         emit Swap(_msgSender(), amountIn, amountOut);
@@ -129,5 +165,13 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         } else {
             revert("Invalid token pair");
         }
+    }
+
+    function getLiquidityProvided(address user) external view returns (uint256, uint256) {
+        return (liquidityProvided0[user], liquidityProvided1[user]);
+    }
+
+    function getPoolDetails() external view returns (address, address, uint24, uint256, uint256) {
+        return (token0, token1, fee, reserve0, reserve1);
     }
 }

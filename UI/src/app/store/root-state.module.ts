@@ -9,6 +9,7 @@ import { DocumentLockerStoreModule } from './document-locker-store';
 import { GlobalStoreModule } from './global-store';
 import { NotificationStoreModule } from './notification-store';
 import { PaymentRequestStoreModule } from './payment-request-store';
+import { SwapStoreModule } from './swap-store';
 import { TokenManagementStoreModule } from './tokens-management-store';
 import { TransactionStoreModule } from './transaction-store';
 import { VaultsStoreModule } from './vaults-store';
@@ -28,6 +29,7 @@ import { VaultsStoreModule } from './vaults-store';
     DocumentLockerStoreModule,
     VaultsStoreModule,
     TokenManagementStoreModule,
+    SwapStoreModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: !isDevMode(), connectInZone: true })
   ]
 })

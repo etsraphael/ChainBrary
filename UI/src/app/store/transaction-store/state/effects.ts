@@ -36,7 +36,8 @@ export class TransactionEffects {
             type: 'success',
             hash: action.hash,
             component: 'PaymentPageComponent',
-            chainId: action.chainId
+            chainId: action.chainId,
+            createdAt: new Date()
           }
         });
       })
@@ -53,7 +54,8 @@ export class TransactionEffects {
             type: 'success',
             hash: action.hash,
             component: 'CommunityVaultsListPageContainerComponent',
-            chainId: action.chainId
+            chainId: action.chainId,
+            createdAt: new Date()
           }
         });
       })
@@ -70,7 +72,8 @@ export class TransactionEffects {
             type: 'success',
             hash: action.txn,
             component: 'TokenManagementPageComponent',
-            chainId: action.chainId
+            chainId: action.chainId,
+            createdAt: new Date()
           }
         });
       })
@@ -87,7 +90,8 @@ export class TransactionEffects {
             type: 'success',
             hash: action.hash,
             component: 'CommunityVaultsListPageContainerComponent',
-            chainId: action.chainId
+            chainId: action.chainId,
+            createdAt: new Date()
           }
         });
       })
