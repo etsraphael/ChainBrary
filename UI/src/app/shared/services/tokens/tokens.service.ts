@@ -231,7 +231,7 @@ export class TokensService {
 
   async getBalanceAndAllowance(from: string, payload: IBalanceAndAllowancePayload): Promise<BalanceAndAllowance> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
-    const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress);
+    const erc20Contract = new ERC20TokenContract(payload.chainId, payload.tokenAddress as string);
 
     const contractFragment: Contract<AbiFragment[]> = new web3.eth.Contract(
       erc20Contract.getAbi() as AbiItem[],

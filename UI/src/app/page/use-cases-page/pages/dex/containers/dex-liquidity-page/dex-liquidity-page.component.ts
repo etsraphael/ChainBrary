@@ -305,9 +305,9 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
 
   private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
-    const tokenAddress: string = token.networkSupport.find(
-      (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-    )?.address as string;
+    const tokenAddress: string | null =
+      token.networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)?.address ??
+      null;
 
     !skipRouteConfig
       ? this.router.navigate([], {
