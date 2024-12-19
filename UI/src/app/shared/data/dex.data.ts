@@ -74,6 +74,11 @@ export const DefaultNetworkPairs: DefaultNetworkPair[] = [
     chainId: NetworkChainId.ETHEREUM,
     token1: findTokenById(TokenId.ETHEREUM) as IToken,
     token2: findTokenById('usdc') as IToken
+  },
+  {
+    chainId: NetworkChainId.BNB,
+    token1: findTokenById(TokenId.BNB) as IToken,
+    token2: findTokenById('usdc') as IToken
   }
 ];
 
