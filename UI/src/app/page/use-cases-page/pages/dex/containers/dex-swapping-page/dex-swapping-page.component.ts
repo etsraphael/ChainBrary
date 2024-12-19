@@ -38,7 +38,8 @@ import {
   ITokenContract,
   ITransactionCard,
   StoreState,
-  SwapPayload
+  SwapPayload,
+  ZeroAddress
 } from './../../../../../../shared/interfaces';
 import { selectWalletConnected } from './../../../../../../store/global-store/state/selectors';
 import {
@@ -152,8 +153,8 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setUpDefaultNetworkPair(this.networkPath[0].chainId);
-    this.loadPool();
     this.fetchFormValues();
+    this.loadPool();
     this.listenFormChanges();
     this.listenToQuote();
   }
@@ -207,10 +208,10 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
 
     const token0Address: string = this.tokenPath[0].networkSupport.find(
       (network: ITokenContract) => network.chainId === this.networkPath[0].chainId
-    )?.address as string;
+    )?.address || ZeroAddress;
     const token1Address: string = this.tokenPath[1].networkSupport.find(
       (network: ITokenContract) => network.chainId === this.networkPath[1].chainId
-    )?.address as string;
+    )?.address || ZeroAddress;
     const fromAmount: string = (this.swapForm.get('fromAmount')?.value as number).toString();
 
     const payload: ISwappingPayload = {
@@ -249,10 +250,10 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     const payload: IPoolSearch = {
       token1Address: this.tokenPath[0].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
-      )?.address as string,
+      )?.address || ZeroAddress,
       token2Address: this.tokenPath[1].networkSupport.find(
         (tokenContract) => tokenContract.chainId === this.networkPath[0].chainId
-      )?.address as string,
+      )?.address || ZeroAddress,
       chainId: this.networkPath[0].chainId
     };
     return this.store.dispatch(loadPoolAction({ payload }));
@@ -274,9 +275,9 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
   private handleTokenSelected(token: IToken, tokenIn: boolean, skipRouteConfig: boolean): void {
     tokenIn ? (this.tokenPath[0] = token) : (this.tokenPath[1] = token);
 
-    const tokenAddress: string = token.networkSupport.find(
+    const tokenAddress: string | null = token.networkSupport.find(
       (network: ITokenContract) => network.chainId === this.networkPath[tokenIn ? 0 : 1].chainId
-    )?.address as string;
+    )?.address ?? null ;
 
     const payload: IBalanceAndAllowancePayload = {
       chainId: this.networkPath[0].chainId,
@@ -324,6 +325,14 @@ export class DexSwappingPageComponent implements OnInit, OnDestroy {
     const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
     const chainIdIn: string | null = this.route.snapshot.queryParamMap.get('chainIdIn');
+
+    if (chainIdIn && !token1 && !token2) {
+      this.networkPath = [
+        this.web3loginService.getNetworkDetailByChainId(chainIdIn as NetworkChainId),
+        this.web3loginService.getNetworkDetailByChainId(chainIdIn as NetworkChainId)
+      ];
+      this.setUpDefaultNetworkPair(chainIdIn as NetworkChainId);
+    }
 
     if (!token1 || !token2 || !chainIdIn) {
       // Set the default tokenPath

@@ -69,6 +69,7 @@ export class DexService {
     );
   }
 
+  // TODO: This should include the real amount and be called every time the form gets updated
   async getAmountsOut(payload: SwapPayload): Promise<IQuoteResult> {
     const web3: Web3 = new Web3(this.web3ProviderService.getRpcUrl(payload.chainId));
     const swapRouterContract = new SwapRouterContract(payload.chainId);
@@ -78,12 +79,12 @@ export class DexService {
       swapRouterContract.getAddress()
     );
 
-    const tokenInAddress: string | undefined = payload.from.networkSupport.find(
+    const tokenInAddress: string = payload.from.networkSupport.find(
       (network: ITokenContract) => network.chainId === payload.chainId
-    )?.address;
-    const tokenOutAddress: string | undefined = payload.to.networkSupport.find(
+    )?.address || ZeroAddress;
+    const tokenOutAddress: string = payload.to.networkSupport.find(
       (network: ITokenContract) => network.chainId === payload.chainId
-    )?.address;
+    )?.address || ZeroAddress;
 
     if (!tokenInAddress || !tokenOutAddress) {
       return Promise.reject('Token not supported on this network');

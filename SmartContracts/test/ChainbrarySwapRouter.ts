@@ -114,6 +114,56 @@ describe('ChainbrarySwapRouter', function () {
     return { router, factory, poolAddress, tokenA, tokenB, owner, addr1, addr2 };
   }
 
+  async function deployRouterWithNativeTokenFixture() {
+    const CustomERC20Token: CustomERC20Token__factory = await ethers.getContractFactory('CustomERC20Token');
+    const ChainbrarySwapFactory: ChainbrarySwapFactory__factory = await ethers.getContractFactory('ChainbrarySwapFactory');
+    const ChainbrarySwapRouter: ChainbrarySwapRouter__factory = await ethers.getContractFactory('ChainbrarySwapRouter');
+  
+    const [owner, addr1, addr2] = await ethers.getSigners();
+  
+    // Deploy token
+    const tokenA: CustomERC20Token = await CustomERC20Token.deploy(
+      owner.address,
+      'CustomTokenA',
+      'CTKA',
+      ethers.parseUnits('1000000', 'ether'),
+      true,
+      false,
+      false,
+      [],
+      []
+    );
+  
+    // Deploy factory and router
+    const factory: ChainbrarySwapFactory = await ChainbrarySwapFactory.deploy();
+    const factoryAddress: string = await factory.getAddress();
+    const router: ChainbrarySwapRouter = await ChainbrarySwapRouter.deploy();
+    await router.initialize(factoryAddress, addr1.address);
+  
+    // Deploy a pool from the factory with native token
+    const tokenAAddress: string = await tokenA.getAddress();
+  
+    // Listen for the PoolCreated event and create a pool
+    const tx: ContractTransactionResponse = await factory.createPool(tokenAAddress, ethers.ZeroAddress, FEE);
+    const receipt: ContractTransactionReceipt | null = await tx.wait();
+  
+    if (!receipt) {
+      throw new Error('Transaction receipt not found');
+    }
+  
+    // Extract the pool address from the event
+    const poolCreatedEvent: LogDescription | null | undefined = receipt.logs
+      .map((log: EventLog | Log) => factory.interface.parseLog(log))
+      .find((event: LogDescription | null) => event?.name === 'PoolCreated');
+    if (!poolCreatedEvent) {
+      throw new Error('PoolCreated event not found');
+    }
+  
+    const poolAddress: string = poolCreatedEvent.args?.pool;
+  
+    return { router, factory, poolAddress, tokenA, owner, addr1, addr2 };
+  }
+    
   it('should find the correct pool address', async () => {
     const { factory, tokenA, tokenB, poolAddress, addr1 } = await loadFixture(deployRouterFixture);
 
@@ -244,6 +294,74 @@ describe('ChainbrarySwapRouter', function () {
     const balanceAfter: bigint = await tokenB.balanceOf(addr2.address);
     expect(balanceAfter).to.be.equal(expectedAmountOut);
   });
+
+  // TODO: Fix this test
+  // it.only('should execute a token swap with a native token successfully', async () => {
+
+  //   const { router, factory, poolAddress, tokenA, addr1, addr2 } = await loadFixture(deployRouterWithNativeTokenFixture);
+
+  // const tokenAAddress: string = await tokenA.getAddress();
+  // const poolForAddr1: Pool = await getPoolFromPoolContract(poolAddress, addr1);
+
+  // const path: string[] = [tokenAAddress, ethers.ZeroAddress];
+  // const fees: number[] = [FEE];
+  // const amountIn: bigint = SWAP_AMOUNT; // Increase the swap amount
+  // const amountOutMin: number = 1; // Set to 1 to ensure the output is greater than zero
+  // const liquidity: bigint[] = [INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1];
+
+  // const routerAddress: string = await router.getAddress();
+
+  // // Transfer tokens to addr1 and set approval and liquidity
+  // await tokenA.transfer(addr1.address, liquidity[0]);
+  // await tokenA.connect(addr1).approve(poolAddress, liquidity[0]);
+
+  // // Add liquidity to the pool
+  // const addLiquidityTx = await poolForAddr1.connect(addr1).addLiquidity(liquidity[0], liquidity[1], { value: liquidity[0] });
+  // await addLiquidityTx.wait();
+
+  // // Get reserves
+  // const reserve0BeforeSwap: bigint = await poolForAddr1.reserve0();
+  // const reserve1BeforeSwap: bigint = await poolForAddr1.reserve1();
+  // const fee: bigint = await poolForAddr1.fee();
+  // expect(reserve0BeforeSwap).to.be.equal(BigInt(liquidity[0]));
+  // expect(reserve1BeforeSwap).to.be.equal(BigInt(0));
+  // expect(fee).to.be.equal(BigInt(FEE));
+
+  // // Check if pool was created from factory
+  // expect(await factory.getPool(tokenAAddress, ethers.ZeroAddress, FEE)).to.equal(poolAddress);
+
+  // // Set up addr2 with tokens
+  // await tokenA.transfer(addr2.address, amountIn);
+  // await tokenA.connect(addr2).approve(routerAddress, amountIn);
+
+  // // Approve tokens for transfer
+  // await tokenA.connect(addr1).approve(poolAddress, amountIn);
+
+  // // Add liquidity to the pool
+  // const addLiquidityTx2 = await poolForAddr1.connect(addr2).addLiquidity(amountIn, amountIn, { value: amountIn });
+  // await addLiquidityTx2.wait();
+
+  // // Calculate the amountOut manually using the same logic as the contract
+  // const amountInWithFee: bigint = BigInt(amountIn) * BigInt(1000000 - FEE) / BigInt(1000000);
+  // const expectedAmountOut: bigint = (amountInWithFee * reserve0BeforeSwap) / (reserve1BeforeSwap + amountInWithFee);
+
+  // // Get the output amounts from the router contract
+  // const routerInstance: ChainbrarySwapRouter = ChainbrarySwapRouter__factory.connect(routerAddress, addr2);
+  // const amountsOut: bigint[] = await routerInstance.getAmountsOut(amountIn, path, fees);
+  // const amountOut: bigint = amountsOut[1];
+
+  // // Compare manual calculation with the contract result
+  // expect(amountsOut[1]).to.be.equal(expectedAmountOut);
+
+  // const balanceBefore: bigint = await ethers.provider.getBalance(addr2.address);
+
+  // // Execute the swap if the above calculations are consistent
+  // await router.connect(addr2).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr2.address);
+
+  // // Check balances after swap
+  // const balanceAfter: bigint = await ethers.provider.getBalance(addr2.address);
+  // expect(balanceAfter).to.be.equal(balanceBefore + expectedAmountOut);
+  // });
 
   it('should fail to execute a swap if output is less than minimum specified', async () => {
     const { factory, router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);

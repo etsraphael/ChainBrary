@@ -20,8 +20,10 @@ contract ChainbrarySwapFactory is Ownable, Initializable {
     function createPool(address tokenA, address tokenB, uint24 fee) external returns (address pool) {
         require(tokenA != tokenB, "Identical tokens");
         require(tokenA != address(0) || tokenB != address(0), "Zero address");
-        require(getPool[tokenA][tokenB][fee] == address(0), "Pool exists");
-        
+        require(
+            getPool[tokenA][tokenB][fee] == address(0) || getPool[tokenB][tokenA][fee] == address(0),
+            "Pool exists"
+        );
 
         // Deploy the Pool contract
         Pool newPool = new Pool();
