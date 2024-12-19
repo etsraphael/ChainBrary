@@ -35,7 +35,8 @@ import {
   IPoolSearch,
   IToken,
   ITransactionCard,
-  StoreState
+  StoreState,
+  ZeroAddress
 } from '../../../../../../shared/interfaces';
 import { selectWalletConnected } from '../../../../../../store/global-store/state/selectors';
 import {
@@ -251,12 +252,12 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
 
   createPool(): void {
     const payload: IPoolSearch = {
-      token1Address: this.tokenPath[0].networkSupport.find(
-        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string,
-      token2Address: this.tokenPath[1].networkSupport.find(
-        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string,
+      token1Address:
+        this.tokenPath[0].networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+          ?.address || ZeroAddress,
+      token2Address:
+        this.tokenPath[1].networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+          ?.address || ZeroAddress,
       chainId: this.networkSelected.chainId
     };
     return this.store.dispatch(createPoolAction({ payload }));
@@ -291,12 +292,12 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
 
   private loadPool(): void {
     const payload: IPoolSearch = {
-      token1Address: this.tokenPath[0].networkSupport.find(
-        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string,
-      token2Address: this.tokenPath[1].networkSupport.find(
-        (tokenContract) => tokenContract.chainId === this.networkSelected.chainId
-      )?.address as string,
+      token1Address:
+        this.tokenPath[0].networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+          ?.address || ZeroAddress,
+      token2Address:
+        this.tokenPath[1].networkSupport.find((tokenContract) => tokenContract.chainId === this.networkSelected.chainId)
+          ?.address || ZeroAddress,
       chainId: this.networkSelected.chainId
     };
     return this.store.dispatch(loadPoolAction({ payload }));
@@ -344,6 +345,11 @@ export class DexLiquidityPageComponent implements OnInit, OnDestroy {
     const token1: string | null = this.route.snapshot.queryParamMap.get('token1');
     const token2: string | null = this.route.snapshot.queryParamMap.get('token2');
     const chainId: string | null = this.route.snapshot.queryParamMap.get('chainId');
+
+    if (chainId && !token1 && !token2) {
+      this.networkSelected = this.web3loginService.getNetworkDetailByChainId(chainId);
+      this.setUpDefaultNetworkPair(chainId as NetworkChainId);
+    }
 
     if (!token1 || !token2 || !chainId) {
       // Set the default tokenPath

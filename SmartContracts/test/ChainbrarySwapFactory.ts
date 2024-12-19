@@ -40,7 +40,7 @@ describe('ChainbrarySwapFactory', function () {
     await createPoolTx.wait();
 
     const poolAddress: string = await chainbrarySwapFactoryInstance.getPool(TOKEN_1_ADDRESS, TOKEN_2_ADDRESS, FEE_TIER_1);
-    expect(poolAddress).to.properAddress;
+    expect(poolAddress).to.be.properAddress;
 
     // Verify that the pool has been created and stored in the mapping for both token pairs
     expect(await chainbrarySwapFactoryInstance.getPool(TOKEN_1_ADDRESS, TOKEN_2_ADDRESS, FEE_TIER_1)).to.equal(poolAddress);
@@ -66,10 +66,18 @@ describe('ChainbrarySwapFactory', function () {
       .to.be.revertedWith('Pool exists');
   });
 
-  it('should fail to create a pool if one of the token addresses is zero', async () => {
+  it('should create a pool with a native token', async () => {
     const { chainbrarySwapFactoryInstance, owner } = await loadFixture(deployChainbrarySwapFactoryFixture);
 
-    await expect(chainbrarySwapFactoryInstance.connect(owner).createPool(ethers.ZeroAddress, TOKEN_2_ADDRESS, FEE_TIER_1))
-      .to.be.revertedWith('Zero address');
-  });
+    // Create pool for TOKEN_1_ADDRESS and ETH with FEE_TIER_1
+    const createPoolTx: ContractTransactionResponse = await chainbrarySwapFactoryInstance.connect(owner).createPool(TOKEN_1_ADDRESS, ethers.ZeroAddress, FEE_TIER_1);
+    await createPoolTx.wait();
+
+    const poolAddress: string = await chainbrarySwapFactoryInstance.getPool(TOKEN_1_ADDRESS, ethers.ZeroAddress, FEE_TIER_1);
+    expect(poolAddress).to.properAddress;
+
+    // Verify that the pool has been created and stored in the mapping for both token pairs
+    expect(await chainbrarySwapFactoryInstance.getPool(TOKEN_1_ADDRESS, ethers.ZeroAddress, FEE_TIER_1)).to.equal(poolAddress);
+    expect(await chainbrarySwapFactoryInstance.getPool(ethers.ZeroAddress, TOKEN_1_ADDRESS, FEE_TIER_1)).to.equal(poolAddress);
+  })
 });

@@ -9,7 +9,7 @@ import {
   SwapRouterObjectResponse
 } from '../../contracts';
 import { SwapFactoryContract } from '../../contracts/swapFactory';
-import { IQuoteResult, IToken, ITokenContract } from '../../interfaces';
+import { IQuoteResult, IToken, ITokenContract, ZeroAddress } from '../../interfaces';
 import {
   ILiquidityBalanceCheckPayload,
   ILiquidityPayload,
@@ -113,12 +113,12 @@ export class DexService {
   async addLiquidity(from: string, payload: ILiquidityPayload): Promise<string> {
     const web3: Web3 = new Web3(window.ethereum);
 
-    const address1: string = payload.token1.networkSupport.find(
-      (network: ITokenContract) => network.chainId === payload.chainId
-    )?.address as string;
-    const address2: string = payload.token2.networkSupport.find(
-      (network: ITokenContract) => network.chainId === payload.chainId
-    )?.address as string;
+    const address1: string =
+      payload.token1.networkSupport.find((network: ITokenContract) => network.chainId === payload.chainId)?.address ||
+      ZeroAddress;
+    const address2: string =
+      payload.token2.networkSupport.find((network: ITokenContract) => network.chainId === payload.chainId)?.address ||
+      ZeroAddress;
 
     return this.getPool({
       chainId: payload.chainId,
@@ -136,13 +136,15 @@ export class DexService {
         const amount1 = web3.utils.toWei(payload.token2Amount, 'ether');
 
         const gasEstimate: bigint = await poolFragment.methods['addLiquidity'](amount0, amount1).estimateGas({
-          from
+          from,
+          value: address1 === ZeroAddress ? amount0 : address2 === ZeroAddress ? amount1 : '0'
         });
 
         return poolFragment.methods['addLiquidity'](amount0, amount1)
           .send({
             from: from,
-            gas: gasEstimate.toString()
+            gas: gasEstimate.toString(),
+            value: address1 === ZeroAddress ? amount0 : address2 === ZeroAddress ? amount1 : '0'
           })
           .then((receipt) => receipt.transactionHash);
       })

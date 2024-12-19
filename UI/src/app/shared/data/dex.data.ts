@@ -10,17 +10,11 @@ export const DefaultNetworkPairs: DefaultNetworkPair[] = [
   {
     chainId: NetworkChainId.LOCALHOST,
     token1: {
-      tokenId: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
+      tokenId: NetworkChainId.ETHEREUM,
       decimals: 18,
-      name: 'Custom Token 1',
-      symbol: 'CT1',
-      networkSupport: [
-        {
-          chainId: NetworkChainId.LOCALHOST,
-          address: '0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9',
-          priceFeed: []
-        }
-      ]
+      name: 'Ethereum',
+      symbol: 'ETH',
+      networkSupport: []
     },
     token2: {
       tokenId: '0x5FC8d32690cc91D4c39d9d3abcBD16989F875707',

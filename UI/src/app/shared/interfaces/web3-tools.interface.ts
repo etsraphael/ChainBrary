@@ -14,4 +14,4 @@ export interface IReceiptTransaction {
   type: bigint | undefined;
 }
 
-export const ZeroAddress: string = "0x0000000000000000000000000000000000000000";
+export const ZeroAddress: string = '0x0000000000000000000000000000000000000000';
