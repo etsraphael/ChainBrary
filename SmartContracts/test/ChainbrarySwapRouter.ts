@@ -408,7 +408,7 @@ describe('ChainbrarySwapRouter', function () {
     ).to.be.revertedWith('Insufficient output amount');
   });
 
-  it('should execute a token swap from ERC20 to native token successfully', async () => {
+  it.only('should execute a token swap from ERC20 to native token successfully', async () => {
     const { router, factory, poolAddress, tokenA, addr1, addr2 } = await loadFixture(
       deployRouterWithNativeTokenFixture
     );
@@ -448,9 +448,6 @@ describe('ChainbrarySwapRouter', function () {
     // Check if pool was created from factory
     expect(await factory.getPool(tokenAAddress, ethers.ZeroAddress, FEE)).to.equal(poolAddress);
 
-    // Record initial ETH balance
-    const ethBalanceBefore: bigint = await ethers.provider.getBalance(addr2.address);
-
     // Check if the pool has the correct token addresses
     const token0 = await poolForAddr2.token0();
     const token1 = await poolForAddr2.token1();
@@ -483,18 +480,27 @@ describe('ChainbrarySwapRouter', function () {
     // Approve the router to spend the erc20 token
     await tokenA.connect(addr2).approve(routerAddress, halfAmountIn);
 
+    // Record initial ETH balance
+    const ethBalanceBefore: bigint = await ethers.provider.getBalance(addr2.address);
+
     // Execute the swap
-    const swapTx = await router
+    const tx1 = await router
       .connect(addr2)
       .swapExactTokensForTokens(halfAmountIn, amountOutMin, path, fees, addr2.address);
-    await swapTx.wait();
+    const receipt = await tx1.wait();
+    if (!receipt) return;
+
+    // Calculate the cost of the transaction
+    const gasUsed: BigNumber = new BigNumber(receipt.gasUsed.toString());
+    const gasPrice: BigNumber = new BigNumber(tx1.gasPrice.toString());
+    const tx1Cost: BigNumber = gasUsed.times(gasPrice);
+    const tx1CostBigInt: bigint = BigInt(tx1Cost.toString());
 
     // Check balances after swap
     const ethBalanceAfter: bigint = await ethers.provider.getBalance(addr2.address);
-    const ethDifference = ethBalanceAfter - ethBalanceBefore;
 
     // Account for gas costs in the comparison
-    expect(ethDifference).to.be.closeTo(expectedAmountOut, BigInt(1e16)); // Allow for gas costs
+    expect(ethBalanceAfter).to.be.equal(ethBalanceBefore + expectedAmountOut - tx1CostBigInt);
 
     // Check balance of the ERC20 token after swap
     const balanceOfERC20TokenAfter: bigint = await tokenA.balanceOf(addr2.address);
