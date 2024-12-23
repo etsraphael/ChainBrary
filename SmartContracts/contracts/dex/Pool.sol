@@ -13,6 +13,7 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
     address public token0;
     address public token1;
     uint24 public fee; // Fee in hundredths of a bip
+    address public devAddress;
 
     uint256 public reserve0;
     uint256 public reserve1;
@@ -26,13 +27,14 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
     constructor() Ownable(_msgSender()) {}
 
-    function initialize(address _token0, address _token1, uint24 _fee) external initializer onlyOwner {
+    function initialize(address _token0, address _token1, uint24 _fee, address _devAddress) external initializer onlyOwner {
         require(_token0 != _token1, "Tokens must be different");
         require(_fee > 0 && _fee < 1000000, "Invalid fee");
 
         token0 = _token0;
         token1 = _token1;
         fee = _fee;
+        devAddress = _devAddress;
     }
 
     function addLiquidity(uint256 amount0, uint256 amount1) external payable nonReentrant {
@@ -130,9 +132,9 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         uint256 feeAmount = amountIn - amountInWithFee;
         // Transfer the fee to the contract owner
         if (tokenIn == address(0)) {
-            payable(owner()).transfer(feeAmount);
+            payable(devAddress).transfer(feeAmount); 
         } else {
-            IERC20(tokenIn).safeTransfer(owner(), feeAmount);
+            IERC20(tokenIn).safeTransfer(devAddress, feeAmount);
         }
 
         // Update the reserves based on the input and output amounts

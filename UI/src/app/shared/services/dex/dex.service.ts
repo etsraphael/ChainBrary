@@ -273,7 +273,8 @@ export class DexService {
       from
     )
       .estimateGas({
-        from: from
+        from: from,
+        value: tokenInAddress === ZeroAddress ? web3.utils.toWei(payload.amount, 'ether') : tokenOutAddress === ZeroAddress ? web3.utils.toWei(payload.amount, 'ether') : '0'
       })
       .catch((error: string) => {
         return Promise.reject(error);
@@ -288,7 +289,8 @@ export class DexService {
     )
       .send({
         from: from,
-        gas: gasEstimate.toString()
+        gas: gasEstimate.toString(),
+        value: tokenInAddress === ZeroAddress ? web3.utils.toWei(payload.amount, 'ether') : tokenOutAddress === ZeroAddress ? web3.utils.toWei(payload.amount, 'ether') : '0'
       })
       .then((receipt) => receipt.transactionHash)
       .catch((error: string) => Promise.reject(error));

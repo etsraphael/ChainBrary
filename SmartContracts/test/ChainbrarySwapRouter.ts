@@ -301,9 +301,10 @@ describe('ChainbrarySwapRouter', function () {
   const { router, factory, poolAddress, tokenA, addr1, addr2 } = await loadFixture(deployRouterWithNativeTokenFixture);
 
   const tokenAAddress: string = await tokenA.getAddress();
-  const pool: Pool = await getPoolFromPoolContract(poolAddress, addr1);
+  const poolForAddr1: Pool = await getPoolFromPoolContract(poolAddress, addr1);
+  const poolForAddr2: Pool = await getPoolFromPoolContract(poolAddress, addr2);
 
-  const path: string[] = [tokenAAddress, ethers.ZeroAddress];
+  const path: string[] = [ethers.ZeroAddress, tokenAAddress];
   const fees: number[] = [FEE];
   const amountIn: bigint = SWAP_AMOUNT; // Increase the swap amount
   const amountOutMin: number = 1; // Set to 1 to ensure the output is greater than zero
@@ -315,16 +316,19 @@ describe('ChainbrarySwapRouter', function () {
   await tokenA.transfer(addr1.address, liquidity[0]);
   await tokenA.connect(addr1).approve(poolAddress, liquidity[0]);
 
+  
   // Add liquidity to the pool
-  const addLiquidityTx = await pool.connect(addr1).addLiquidity(liquidity[0], liquidity[1], { value: liquidity[0] });
+  const addLiquidityTx = await poolForAddr1.connect(addr1).addLiquidity(liquidity[0], liquidity[1], { value: liquidity[0] });
   await addLiquidityTx.wait();
 
+  console.log('await poolForAddr1.reserve1()', (await poolForAddr1.reserve1()).toString());
+
   // Get reserves
-  const reserve0BeforeSwap: bigint = await pool.reserve0();
-  const reserve1BeforeSwap: bigint = await pool.reserve1();
-  const fee: bigint = await pool.fee();
+  const reserve0BeforeSwap: bigint = await poolForAddr1.reserve0();
+  const reserve1BeforeSwap: bigint = await poolForAddr1.reserve1();
+  const fee: bigint = await poolForAddr1.fee();
   expect(reserve0BeforeSwap).to.be.equal(BigInt(liquidity[0]));
-  expect(reserve1BeforeSwap).to.be.equal(BigInt(liquidity[0]));
+  expect(reserve1BeforeSwap).to.be.equal(BigInt(liquidity[1]));
   expect(fee).to.be.equal(BigInt(FEE));
 
   // Check if pool was created from factory
@@ -335,8 +339,8 @@ describe('ChainbrarySwapRouter', function () {
   expect(balanceBefore).to.be.equal(0);
 
   // Check if the pool has the correct token addresses
-  const token0 = await pool.token0();
-  const token1 = await pool.token1();
+  const token0 = await poolForAddr2.token0();
+  const token1 = await poolForAddr2.token1();
   expect(token0).to.be.equal(ethers.ZeroAddress);
   expect(token1).to.be.equal(tokenAAddress);
 
@@ -347,28 +351,41 @@ describe('ChainbrarySwapRouter', function () {
   // Execute the swap from pool
   const halfAmountIn: bigint = amountIn / BigInt(2);
   expect(halfAmountIn).to.be.gt(0);
-  // await pool.connect(addr2).swap(halfAmountIn, ethers.ZeroAddress, addr2.address, { value: halfAmountIn });
+  await poolForAddr2.connect(addr2).swap(halfAmountIn, ethers.ZeroAddress, addr2.address, { value: halfAmountIn });
 
-  // // Calculate the amountOut manually using the same logic as the contract
-  // const amountInWithFee: bigint = BigInt(amountIn) * BigInt(1000000 - FEE) / BigInt(1000000);
-  // const expectedAmountOut: bigint = (amountInWithFee * reserve0BeforeSwap) / (reserve1BeforeSwap + amountInWithFee);
+  // Calculate the amountOut manually using the same logic as the contract
+  const amountInWithFee: bigint = BigInt(halfAmountIn) * BigInt(1000000 - FEE);
+  const reserveAndCurrentFeeAdded: bigint = reserve1BeforeSwap + BigInt(halfAmountIn);
+  const numerator: bigint = amountInWithFee * reserveAndCurrentFeeAdded;
+  const denominator: bigint = (reserve0BeforeSwap * BigInt(1000000)) + (BigInt(amountInWithFee));
+  const expectedAmountOut: bigint = (numerator * BigInt(1e18) / denominator) / BigInt(1e18);
+  
+  console.log('amountInWithFee:', amountInWithFee.toString());
+  console.log('Fee:', FEE);
+  console.log('Half Amount In:', halfAmountIn.toString());
+  console.log('Reserve0 Before:', reserve0BeforeSwap.toString());
+  console.log('reserveOut:', reserve1BeforeSwap.toString());
+  console.log('Expected Amount Out:', expectedAmountOut.toString());
+  console.log('numerator:', numerator.toString());
+  console.log('await poolForAddr1.reserve1()', (await poolForAddr1.reserve1()).toString());
+  console.log('reserveAndCurrentFeeAdded', reserveAndCurrentFeeAdded.toString());
 
-  // // Get the output amounts from the router contract
-  // const routerInstance: ChainbrarySwapRouter = ChainbrarySwapRouter__factory.connect(routerAddress, addr2);
-  // const amountsOut: bigint[] = await routerInstance.getAmountsOut(amountIn, path, fees);
-  // const amountOut: bigint = amountsOut[1];
+  // Get the output amounts from the router contract
+  const routerInstance: ChainbrarySwapRouter = ChainbrarySwapRouter__factory.connect(routerAddress, addr2);
+  const amountsOut: bigint[] = await routerInstance.getAmountsOut(halfAmountIn, path, fees);
+  const amountOut: bigint = amountsOut[1];
 
-  // // Compare manual calculation with the contract result
-  // expect(amountsOut[1]).to.be.equal(expectedAmountOut);
+  // Compare manual calculation with the contract result
+  expect(amountsOut[1]).to.be.equal(amountOut);
 
-  // const balanceBefore: bigint = await ethers.provider.getBalance(addr2.address);
+  const balanceBefore1: bigint = await ethers.provider.getBalance(addr2.address);
 
-  // // Execute the swap if the above calculations are consistent
-  // await router.connect(addr2).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr2.address);
+  // Execute the swap if the above calculations are consistent
+  await router.connect(addr2).swapExactTokensForTokens(halfAmountIn, amountOutMin, path, fees, addr2.address, { value: halfAmountIn });
 
-  // // Check balances after swap
-  // const balanceAfter: bigint = await ethers.provider.getBalance(addr2.address);
-  // expect(balanceAfter).to.be.equal(balanceBefore + expectedAmountOut);
+  // Check balances after swap
+  const balanceAfter: bigint = await ethers.provider.getBalance(addr2.address);
+  // expect(balanceAfter).to.be.equal(balanceBefore1 + expectedAmountOut);
   });
 
   it('should fail to execute a swap if output is less than minimum specified', async () => {

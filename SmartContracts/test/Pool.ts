@@ -50,7 +50,7 @@ describe('Pool', function () {
     const pool: Pool__factory = await ethers.getContractFactory('Pool');
     const [owner, addr1, addr2] = await ethers.getSigners();
     const poolInstance: Pool = await pool.connect(owner).deploy();
-    await poolInstance.initialize(tokenAAddress, tokenBAddress, FEE);
+    await poolInstance.initialize(tokenAAddress, tokenBAddress, FEE, owner.address);
     return { poolInstance, owner, addr1, addr2 };
   };
 
