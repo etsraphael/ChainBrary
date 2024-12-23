@@ -13,6 +13,7 @@ import {
   Pool__factory
 } from '../typechain-types';
 import { HardhatEthersSigner } from "@nomicfoundation/hardhat-ethers/signers";
+import BigNumber from 'bignumber.js';
 
 const FEE = 100;
 const INITIAL_LIQUIDITY_0: bigint = ethers.parseUnits('100000', 'ether');
@@ -295,8 +296,7 @@ describe('ChainbrarySwapRouter', function () {
     expect(balanceAfter).to.be.equal(expectedAmountOut);
   });
 
-  // TODO: Fix this test
-  it.only('should execute a token swap with a native token successfully', async () => {
+  it('should execute a token swap with a native token successfully', async () => {
 
   const { router, factory, poolAddress, tokenA, addr1, addr2 } = await loadFixture(deployRouterWithNativeTokenFixture);
 
@@ -320,8 +320,6 @@ describe('ChainbrarySwapRouter', function () {
   // Add liquidity to the pool
   const addLiquidityTx = await poolForAddr1.connect(addr1).addLiquidity(liquidity[0], liquidity[1], { value: liquidity[0] });
   await addLiquidityTx.wait();
-
-  console.log('await poolForAddr1.reserve1()', (await poolForAddr1.reserve1()).toString());
 
   // Get reserves
   const reserve0BeforeSwap: bigint = await poolForAddr1.reserve0();
@@ -351,41 +349,28 @@ describe('ChainbrarySwapRouter', function () {
   // Execute the swap from pool
   const halfAmountIn: bigint = amountIn / BigInt(2);
   expect(halfAmountIn).to.be.gt(0);
-  await poolForAddr2.connect(addr2).swap(halfAmountIn, ethers.ZeroAddress, addr2.address, { value: halfAmountIn });
 
   // Calculate the amountOut manually using the same logic as the contract
-  const amountInWithFee: bigint = BigInt(halfAmountIn) * BigInt(1000000 - FEE);
-  const reserveAndCurrentFeeAdded: bigint = reserve1BeforeSwap + BigInt(halfAmountIn);
-  const numerator: bigint = amountInWithFee * reserveAndCurrentFeeAdded;
-  const denominator: bigint = (reserve0BeforeSwap * BigInt(1000000)) + (BigInt(amountInWithFee));
-  const expectedAmountOut: bigint = (numerator * BigInt(1e18) / denominator) / BigInt(1e18);
+  const amountInWithFee: bigint = BigInt(halfAmountIn) * BigInt(1000000 - FEE) / BigInt(1000000);
+  const expectedAmountOut: bigint = (amountInWithFee * reserve1BeforeSwap) / (reserve0BeforeSwap + amountInWithFee);
   
-  console.log('amountInWithFee:', amountInWithFee.toString());
-  console.log('Fee:', FEE);
-  console.log('Half Amount In:', halfAmountIn.toString());
-  console.log('Reserve0 Before:', reserve0BeforeSwap.toString());
-  console.log('reserveOut:', reserve1BeforeSwap.toString());
-  console.log('Expected Amount Out:', expectedAmountOut.toString());
-  console.log('numerator:', numerator.toString());
-  console.log('await poolForAddr1.reserve1()', (await poolForAddr1.reserve1()).toString());
-  console.log('reserveAndCurrentFeeAdded', reserveAndCurrentFeeAdded.toString());
-
   // Get the output amounts from the router contract
   const routerInstance: ChainbrarySwapRouter = ChainbrarySwapRouter__factory.connect(routerAddress, addr2);
   const amountsOut: bigint[] = await routerInstance.getAmountsOut(halfAmountIn, path, fees);
   const amountOut: bigint = amountsOut[1];
 
   // Compare manual calculation with the contract result
-  expect(amountsOut[1]).to.be.equal(amountOut);
+  expect(expectedAmountOut).to.be.equal(amountOut);
 
-  const balanceBefore1: bigint = await ethers.provider.getBalance(addr2.address);
+  const balanceOfERC20TokenBefore: bigint = await tokenA.balanceOf(addr2.address);
 
   // Execute the swap if the above calculations are consistent
   await router.connect(addr2).swapExactTokensForTokens(halfAmountIn, amountOutMin, path, fees, addr2.address, { value: halfAmountIn });
 
   // Check balances after swap
-  const balanceAfter: bigint = await ethers.provider.getBalance(addr2.address);
-  // expect(balanceAfter).to.be.equal(balanceBefore1 + expectedAmountOut);
+  const balanceOfERC20TokenAfter: bigint = await tokenA.balanceOf(addr2.address);
+
+  expect(balanceOfERC20TokenAfter).to.be.equal(expectedAmountOut + balanceOfERC20TokenBefore);
   });
 
   it('should fail to execute a swap if output is less than minimum specified', async () => {

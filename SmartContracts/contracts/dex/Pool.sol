@@ -27,7 +27,12 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
     constructor() Ownable(_msgSender()) {}
 
-    function initialize(address _token0, address _token1, uint24 _fee, address _devAddress) external initializer onlyOwner {
+    function initialize(
+        address _token0,
+        address _token1,
+        uint24 _fee,
+        address _devAddress
+    ) external initializer onlyOwner {
         require(_token0 != _token1, "Tokens must be different");
         require(_fee > 0 && _fee < 1000000, "Invalid fee");
 
@@ -132,7 +137,7 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
         uint256 feeAmount = amountIn - amountInWithFee;
         // Transfer the fee to the contract owner
         if (tokenIn == address(0)) {
-            payable(devAddress).transfer(feeAmount); 
+            payable(devAddress).transfer(feeAmount);
         } else {
             IERC20(tokenIn).safeTransfer(devAddress, feeAmount);
         }
