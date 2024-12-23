@@ -18,6 +18,7 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
 
     event CrossChainSwapInitiated(address indexed sender, address indexed receiver, bytes32 messageId);
     event CrossChainSwapReceived(address indexed receiver, bytes32 messageId);
+    event Received(address sender, uint amount);
 
     constructor() Ownable(_msgSender()) {}
 
@@ -192,5 +193,9 @@ contract ChainbrarySwapRouter is Ownable, ReentrancyGuard, Initializable {
 
     function updateCCIPRouter(address _ccipRouter) external onlyOwner {
         ccipRouter = _ccipRouter;
+    }
+
+    receive() external payable {
+        emit Received(_msgSender(), msg.value);
     }
 }

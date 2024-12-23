@@ -384,7 +384,6 @@ describe('ChainbrarySwapRouter', function () {
     expect(balanceOfERC20TokenAfter).to.be.equal(expectedAmountOut + balanceOfERC20TokenBefore);
   });
 
-
   it('should fail to execute a swap if output is less than minimum specified', async () => {
     const { factory, router, tokenA, tokenB, addr1 } = await loadFixture(deployRouterFixture);
 
@@ -407,5 +406,98 @@ describe('ChainbrarySwapRouter', function () {
     await expect(
       router.connect(addr1).swapExactTokensForTokens(amountIn, amountOutMin, path, fees, addr1.address)
     ).to.be.revertedWith('Insufficient output amount');
+  });
+
+  it('should execute a token swap from ERC20 to native token successfully', async () => {
+    const { router, factory, poolAddress, tokenA, addr1, addr2 } = await loadFixture(
+      deployRouterWithNativeTokenFixture
+    );
+
+    const tokenAAddress: string = await tokenA.getAddress();
+    const poolForAddr1: Pool = await getPoolFromPoolContract(poolAddress, addr1);
+    const poolForAddr2: Pool = await getPoolFromPoolContract(poolAddress, addr2);
+
+    const path: string[] = [tokenAAddress, ethers.ZeroAddress];
+    const fees: number[] = [FEE];
+    const amountIn: bigint = SWAP_AMOUNT;
+    const amountOutMin: number = 1;
+    const liquidity: bigint[] = [INITIAL_LIQUIDITY_0, INITIAL_LIQUIDITY_1];
+
+    const routerAddress: string = await router.getAddress();
+
+    // Transfer tokens to addr1 and addr2 for liquidity and swap
+    await tokenA.transfer(addr1.address, liquidity[0]);
+    await tokenA.transfer(addr2.address, amountIn);
+    await tokenA.connect(addr1).approve(poolAddress, liquidity[0]);
+    await tokenA.connect(addr2).approve(routerAddress, amountIn);
+
+    // Add liquidity to the pool
+    const addLiquidityTx = await poolForAddr1
+      .connect(addr1)
+      .addLiquidity(liquidity[0], liquidity[1], { value: liquidity[1] });
+    await addLiquidityTx.wait();
+
+    // Get reserves
+    const reserve0BeforeSwap: bigint = await poolForAddr1.reserve0();
+    const reserve1BeforeSwap: bigint = await poolForAddr1.reserve1();
+    const fee: bigint = await poolForAddr1.fee();
+    expect(reserve0BeforeSwap).to.be.equal(BigInt(liquidity[0]));
+    expect(reserve1BeforeSwap).to.be.equal(BigInt(liquidity[1]));
+    expect(fee).to.be.equal(BigInt(FEE));
+
+    // Check if pool was created from factory
+    expect(await factory.getPool(tokenAAddress, ethers.ZeroAddress, FEE)).to.equal(poolAddress);
+
+    // Record initial ETH balance
+    const ethBalanceBefore: bigint = await ethers.provider.getBalance(addr2.address);
+
+    // Check if the pool has the correct token addresses
+    const token0 = await poolForAddr2.token0();
+    const token1 = await poolForAddr2.token1();
+    expect(token0).to.be.equal(ethers.ZeroAddress);
+    expect(token1).to.be.equal(tokenAAddress);
+
+    // Check balance of the pool
+    const poolBalance = await ethers.provider.getBalance(poolAddress);
+    expect(poolBalance).to.be.equal(liquidity[1]);
+
+    // Execute the swap from pool
+    const halfAmountIn: bigint = amountIn / BigInt(2);
+    expect(halfAmountIn).to.be.gt(0);
+
+    // Calculate the amountOut manually using the same logic as the contract
+    const amountInWithFee: bigint = (BigInt(halfAmountIn) * BigInt(1000000 - FEE)) / BigInt(1000000);
+    const expectedAmountOut: bigint = (amountInWithFee * reserve1BeforeSwap) / (reserve0BeforeSwap + amountInWithFee);
+
+    // Get the output amounts from the router contract
+    const routerInstance: ChainbrarySwapRouter = ChainbrarySwapRouter__factory.connect(routerAddress, addr2);
+    const amountsOut: bigint[] = await routerInstance.getAmountsOut(halfAmountIn, path, fees);
+    const amountOut: bigint = amountsOut[1];
+
+    // Compare manual calculation with the contract result
+    expect(expectedAmountOut).to.be.equal(amountOut);
+
+    // Get erc20 token balance before swap
+    const balanceOfERC20TokenBefore: bigint = await tokenA.balanceOf(addr2.address);
+
+    // Approve the router to spend the erc20 token
+    await tokenA.connect(addr2).approve(routerAddress, halfAmountIn);
+
+    // Execute the swap
+    const swapTx = await router
+      .connect(addr2)
+      .swapExactTokensForTokens(halfAmountIn, amountOutMin, path, fees, addr2.address);
+    await swapTx.wait();
+
+    // Check balances after swap
+    const ethBalanceAfter: bigint = await ethers.provider.getBalance(addr2.address);
+    const ethDifference = ethBalanceAfter - ethBalanceBefore;
+
+    // Account for gas costs in the comparison
+    expect(ethDifference).to.be.closeTo(expectedAmountOut, BigInt(1e16)); // Allow for gas costs
+
+    // Check balance of the ERC20 token after swap
+    const balanceOfERC20TokenAfter: bigint = await tokenA.balanceOf(addr2.address);
+    expect(balanceOfERC20TokenAfter).to.be.equal(balanceOfERC20TokenBefore - halfAmountIn);
   });
 });

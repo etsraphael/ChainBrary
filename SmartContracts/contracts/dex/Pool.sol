@@ -153,7 +153,8 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
         // Transfer the output tokens to the recipient
         if (tokenOut == address(0)) {
-            payable(to).transfer(amountOut);
+            bool success = payable(to).send(amountOut);
+            require(success, "Transfer failed");
         } else {
             IERC20(tokenOut).safeTransfer(to, amountOut);
         }
