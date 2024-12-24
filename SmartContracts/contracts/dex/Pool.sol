@@ -81,16 +81,17 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
         require(userLiquidity0 > 0 && userLiquidity1 > 0, "No liquidity provided by user");
 
-        uint256 amount0 = Math.min(userLiquidity0, (liquidity * reserve0) / (reserve0 + reserve1));
-        uint256 amount1 = Math.min(userLiquidity1, (liquidity * reserve1) / (reserve0 + reserve1));
+        uint256 totalLiquidity = userLiquidity0 + userLiquidity1;
+        uint256 amount0 = (liquidity * reserve0) / totalLiquidity;
+        uint256 amount1 = (liquidity * reserve1) / totalLiquidity;
 
         require(amount0 > 0 && amount1 > 0, "Insufficient liquidity to withdraw");
 
         reserve0 -= amount0;
         reserve1 -= amount1;
 
-        liquidityProvided0[_msgSender()] -= amount0;
-        liquidityProvided1[_msgSender()] -= amount1;
+        liquidityProvided0[_msgSender()] -= (liquidity * userLiquidity0) / totalLiquidity;
+        liquidityProvided1[_msgSender()] -= (liquidity * userLiquidity1) / totalLiquidity;
 
         if (token0 == address(0)) {
             payable(_msgSender()).transfer(amount0);
@@ -144,10 +145,10 @@ contract Pool is Ownable, ReentrancyGuard, Initializable {
 
         // Update the reserves based on the input and output amounts
         if (tokenIn == token0) {
-            reserve0 += amountIn;
+            reserve0 += amountInWithFee;
             reserve1 -= amountOut;
         } else {
-            reserve1 += amountIn;
+            reserve1 += amountInWithFee;
             reserve0 -= amountOut;
         }
 

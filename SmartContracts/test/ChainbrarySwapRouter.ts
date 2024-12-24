@@ -408,7 +408,7 @@ describe('ChainbrarySwapRouter', function () {
     ).to.be.revertedWith('Insufficient output amount');
   });
 
-  it.only('should execute a token swap from ERC20 to native token successfully', async () => {
+  it('should execute a token swap from ERC20 to native token successfully', async () => {
     const { router, factory, poolAddress, tokenA, addr1, addr2 } = await loadFixture(
       deployRouterWithNativeTokenFixture
     );
