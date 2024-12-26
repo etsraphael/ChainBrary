@@ -138,7 +138,7 @@ export class DexService {
 
         const gasEstimate: bigint = await poolFragment.methods['addLiquidity'](amount0, amount1).estimateGas({
           from,
-          value: address1 === ZeroAddress ? amount0 : address2 === ZeroAddress ? amount1 : '0'
+          value: address1 === ZeroAddress ? amount0 : address2 === ZeroAddress ? amount1 : (address1 !== ZeroAddress && address2 !== ZeroAddress ? '0' : '0')
         });
 
         return poolFragment.methods['addLiquidity'](amount0, amount1)
