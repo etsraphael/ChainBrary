@@ -51,9 +51,13 @@ export class TokensDialogComponent implements OnInit, OnDestroy {
       token.name.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
     if (this.data.chainIdSelected !== null) {
-      this.filteredTokens = this.filteredTokens.filter((token: IToken) =>
-        token.networkSupport.some((network) => network.chainId === this.data.chainIdSelected)
-      );
+      this.filteredTokens = [
+        // add native token to the list
+        ...this.filteredTokens.filter((token: IToken) => token.nativeToChainId === this.data.chainIdSelected),
+        ...this.filteredTokens.filter((token: IToken) =>
+          token.networkSupport.some((network) => network.chainId === this.data.chainIdSelected)
+        )
+      ];
     }
   }
 

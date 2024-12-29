@@ -8,6 +8,7 @@ import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 contract ChainbrarySwapFactory is Ownable, Initializable {
     mapping(address => mapping(address => mapping(uint24 => address))) public getPool;
     uint24[] public feeTiers;
+    address public devAddress;
 
     event PoolCreated(address indexed tokenA, address indexed tokenB, uint24 fee, address pool);
 
@@ -15,23 +16,31 @@ contract ChainbrarySwapFactory is Ownable, Initializable {
 
     function initialize() external initializer onlyOwner {
         feeTiers = [500, 3000, 10000];
+        devAddress = _msgSender();
     }
 
     function createPool(address tokenA, address tokenB, uint24 fee) external returns (address pool) {
         require(tokenA != tokenB, "Identical tokens");
-        require(tokenA != address(0) && tokenB != address(0), "Zero address");
-        require(getPool[tokenA][tokenB][fee] == address(0), "Pool exists");
+        require(tokenA != address(0) || tokenB != address(0), "Zero address");
+        require(
+            getPool[tokenA][tokenB][fee] == address(0) || getPool[tokenB][tokenA][fee] == address(0),
+            "Pool exists"
+        );
 
         // Deploy the Pool contract
         Pool newPool = new Pool();
 
         // Initialize the Pool contract
-        newPool.initialize(tokenA, tokenB, fee);
+        newPool.initialize(tokenA, tokenB, fee, _msgSender());
         pool = address(newPool);
 
         getPool[tokenA][tokenB][fee] = pool;
         getPool[tokenB][tokenA][fee] = pool;
 
         emit PoolCreated(tokenA, tokenB, fee, pool);
+    }
+
+    function setDevAddress(address _devAddress) external onlyOwner {
+        devAddress = _devAddress;
     }
 }

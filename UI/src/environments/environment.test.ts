@@ -132,6 +132,10 @@ export const environment = {
         {
           chainId: NetworkChainId.POLYGON,
           address: '0x534B8c133D2ba1F02Aa8De539b177A989A209d0C'
+        },
+        {
+          chainId: NetworkChainId.BNB,
+          address: '0x08e3a202e2b9e0bB5496Fc78579eDD7B39B0a9A4'
         }
       ]
     },
@@ -148,6 +152,10 @@ export const environment = {
         {
           chainId: NetworkChainId.POLYGON,
           address: '0x9839e975d9ab1b18f9708DeBAc5bfCD75Cff2684'
+        },
+        {
+          chainId: NetworkChainId.BNB,
+          address: '0x32CBCF3fbca572B7fc6Bb2629B5daBC02B671F6B'
         }
       ]
     }

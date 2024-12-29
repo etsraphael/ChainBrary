@@ -19,6 +19,7 @@ import {
   ITokenContract,
   StoreState
 } from '../../../shared/interfaces';
+import { AuthService } from '../../../shared/services/auth/auth.service';
 import { DexService } from '../../../shared/services/dex/dex.service';
 import { TokensService } from '../../../shared/services/tokens/tokens.service';
 import { selectPublicAddress } from '../../auth-store/state/selectors';
@@ -34,7 +35,8 @@ export class SwapEffects {
     private web3LoginService: Web3LoginService,
     private readonly store: Store,
     private dexService: DexService,
-    private tokensService: TokensService
+    private tokensService: TokensService,
+    private authService: AuthService
   ) {}
 
   removeLiquidity$ = createEffect(() => {
@@ -201,6 +203,40 @@ export class SwapEffects {
           map((result: BalanceAndAllowance) => DexActions.loadBalanceAndAllowanceActionSuccess({ result })),
           catchError((error: string) =>
             of(DexActions.loadBalanceAndAllowanceActionFailure({ message: error, tokenIn: action[0].payload.tokenIn }))
+          )
+        );
+      })
+    );
+  });
+
+  loadNativeBalance$ = createEffect(() => {
+    return this.actions$.pipe(
+      ofType(DexActions.loadBalanceAndAllowanceAction),
+      concatLatestFrom(() => [this.store.select(selectWalletConnected), this.store.select(selectPublicAddress)]),
+      map(
+        (
+          payload: [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider | null, string | null]
+        ) => payload as [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider, string]
+      ),
+      filter(
+        (payload) =>
+          payload[0]?.payload.tokenAddress === null &&
+          payload[1] !== null &&
+          payload[2] !== null &&
+          !!this.authService.getRecentWallet()
+      ),
+      switchMap((action: [ReturnType<typeof DexActions.loadBalanceAndAllowanceAction>, WalletProvider, string]) => {
+        const recentWallet: WalletProvider = this.authService.getRecentWallet() as WalletProvider;
+        return this.web3LoginService.getCurrentBalance(recentWallet).pipe(
+          map((response: number) =>
+            DexActions.loadBalanceAndAllowanceActionSuccess({
+              result: {
+                tokenId: action[0].payload.tokenId,
+                balance: response.toString(),
+                allowance: response.toString(),
+                tokenIn: action[0].payload.tokenIn
+              }
+            })
           )
         );
       })

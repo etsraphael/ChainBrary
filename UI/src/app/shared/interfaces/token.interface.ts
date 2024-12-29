@@ -43,7 +43,7 @@ export interface IBalanceAndAllowancePayload {
   chainId: NetworkChainId;
   tokenId: TokenId | string;
   spender: string;
-  tokenAddress: string;
+  tokenAddress: string | null;
   tokenIn: boolean;
 }
 
